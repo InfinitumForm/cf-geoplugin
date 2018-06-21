@@ -1,0 +1,320 @@
+#mc_embed_signup{
+	background:#fff;
+	clear:left;
+	font:14px Helvetica,Arial,sans-serif;
+	width:100%;
+}
+code, .code{
+	padding: 2px 4px;
+	font-size: 90%;
+	color: #c7254e;
+	background-color: #f9f2f4;
+	border-radius: 4px;
+	font-family:"Lucida Console", Monaco, monospace
+}
+textarea{
+	resize:vertical;
+}
+.text-big{
+	font-size:36px;
+	padding:32px 15px;
+}
+.green{
+	color:#090;
+}
+.orange{
+	color:#F60;
+}
+.red{
+	color:#C00;
+}
+
+#cf_geo_banner_shortcode,
+.manage-column.column-cf_geo_banner_shortcode{
+	width: 40%;
+}
+
+
+.post-type-cf-geoplugin-banner .wp-list-table tr,
+.post-type-cf-geoplugin-banner .wp-list-table th,
+.post-type-cf-geoplugin-banner .wp-list-table td{
+	vertical-align:middle;
+}
+
+.post-type-cf-geoplugin-banner .row-actions {
+    left: 0;
+}
+
+.nav-tab-item{ display:none; }
+.nav-tab-item-active{ display:block; }
+
+.nav-tab:focus {
+    outline: none;
+	box-shadow:none;
+	-webkit-box-shadow:none;
+	-moz-box-shadow:none;
+	-ms-box-shadow:none;
+	-o-box-shadow:none;
+}
+
+#team{
+	width: 100%;
+    display: block;
+    float: left;
+    border: none;
+	padding: 0;
+    margin: 0;
+}
+#team+#team{
+	margin-top:15px;
+}
+#team-image{
+    float:left;
+    height: 80px;
+    margin: 25px 32px 25px 0;
+    border-radius: 100%;
+	-webkit-border-radius: 100%;
+	-moz-border-radius: 100%;
+	-ms-border-radius: 100%;
+	-o-border-radius: 100%;
+}
+#team-member-title{
+	
+}
+#sponsors{
+	text-align:center
+}
+#sponsor{
+	margin: 5px;
+    display: inline-block;
+}
+.cfgeo_select{
+	width:100%;
+}
+
+.info.fa-check{
+	color:#0C0;
+}
+.info.fa-minus-circle{
+	color:#F00;
+}
+#admin-page-geoplugin-new ul,
+.manage-menus ul{
+	display:table;
+	padding:15px;
+	background-color:#ffe9e9;
+	font-weight:500;
+}
+#admin-page-geoplugin-new ul li,
+.manage-menus ul li{
+	display:inline-block;
+	width:50%; /*width:33.33%;*/
+}
+/*@media all and (max-width:992px)
+{
+	#admin-page-geoplugin-new ul li,
+	.manage-menus ul li{
+		width:50%;
+	}
+}*/
+@media all and (max-width:768px)
+{
+	#admin-page-geoplugin-new ul li,
+	.manage-menus ul li{
+		width:100%;
+	}
+}
+#admin-page-geoplugin-new ul li.title,
+.manage-menus ul li.title{
+	width:100%;
+}
+#admin-page-geoplugin-new ul h1,
+#admin-page-geoplugin-new ul h2,
+#admin-page-geoplugin-new ul h3,
+#admin-page-geoplugin-new ul h4,
+#admin-page-geoplugin-new ul h5,
+#admin-page-geoplugin-new ul h6,
+.manage-menus ul h1,
+.manage-menus ul h2,
+.manage-menus ul h3,
+.manage-menus ul h4,
+.manage-menus ul h5,
+.manage-menus ul h6{
+	padding:0 0 6px 0;
+	margin:0;
+	border-bottom:1px solid #222;
+}
+#admin-page-geoplugin-new ul .fa-check,
+.manage-menus ul .fa-check{
+	color:green;
+}
+
+#cf_geoplugin_seo_redirection{
+	background: #f7f5ed
+}
+
+#side-sortables table.cfgeo_metabox .cfgeo_metabox_description,
+.inner-sidebar table.cfgeo_metabox .cfgeo_metabox_description {
+    display: block;
+    padding: 7px 0 0;
+    color: #555;
+}
+
+#cf_geoplugin_seo_redirection h2.hndle,
+#cf_geoplugin_seo_redirection h3.hndle{
+	background: brown;
+	color:#fff;
+}
+
+#cf_geoplugin_seo_redirection .button-link{
+	color:#fff;
+	opacity:0.5;
+}
+
+#cf_geoplugin_seo_redirection .accordion-section-title:hover:after,
+#cf_geoplugin_seo_redirection .handlediv:focus,
+#cf_geoplugin_seo_redirection .handlediv:hover,
+#cf_geoplugin_seo_redirection .item-edit:focus,
+#cf_geoplugin_seo_redirection .item-edit:hover,
+#cf_geoplugin_seo_redirection .sidebar-name:hover .sidebar-name-arrow,
+#cf_geoplugin_seo_redirection .widget-action:focus,
+#cf_geoplugin_seo_redirection .widget-top:hover .widget-action {
+    color: #fff;
+	opacity:1;
+}
+#cf_geoplugin_seo_redirection .inside{
+	border-bottom: 3px solid brown;
+}
+#cf_geoplugin_seo_redirection .cfgeo_id_cf_geo_metabox_enable_seo .cfgeo_metabox_description{
+	color: #cc0000 !important;
+	font-weight:bold;
+}
+
+#admin-page-geoplugin-new .fa-star{
+	color:orange;
+	margin-right:2px;
+	margin-left:2px
+}
+
+#the-list tr[data-slug='cf-geoplugin'] .row-actions.visible .fa-cog{
+	color: #555;
+}
+#the-list tr[data-slug='cf-geoplugin'] .row-actions.visible .fa-exclamation-triangle,
+#the-list tr[data-slug='cf-geoplugin'] .row-actions.visible .fa-heartbeat{
+	color: #cc0000;
+}
+
+#the-list tr[data-slug='cf-geoplugin'] .row-actions.visible .donate,
+#the-list tr[data-slug='cf-geoplugin'] .row-actions.visible .donate a{
+	color: #cc0000;
+	font-weight:bold;
+}
+
+#the-list tr[data-slug='cf-geoplugin'] .row-actions.visible .donate a:hover{
+	color: #cc0000;
+	font-weight:bold;
+	text-decoration:none;
+}
+
+#the-list tr[data-slug='cf-geoplugin'] .row-actions.visible .fa-star{
+	color: orange;
+}
+#the-list tr[data-slug='cf-geoplugin'] .row-actions.visible .fa-question-circle-o{
+	color: darkcyan
+}
+
+
+#pricelist {
+  width:100%;
+  margin:0 auto;
+  position:relative;
+}
+#pricelist ul {
+  display:flex;
+  top:0px;
+  z-index:10;
+  padding-bottom:14px;
+}
+#pricelist li {
+  list-style:none;
+  flex:1;
+}
+#pricelist li:last-child {
+  border-right:1px solid #DDD;
+}
+#pricelist button {
+  width:100%;
+  border: 1px solid #DDD;
+  border-right:0;
+  border-top:0;
+  padding: 10px;
+  background:#FFF;
+  font-size:14px;
+  font-weight:bold;
+  height:60px;
+  color:#999
+}
+#pricelist li.active button {
+  background:#F5F5F5;
+  color:#000;
+}
+#pricelist table { border-collapse:collapse; table-layout:fixed; width:100%; background:#FFF; }
+#pricelist th { background:#F5F5F5; display:none; font-size:24px; }
+#pricelist td, #pricelist th {
+  height:53px
+}
+#pricelist td,#pricelist th { border:1px solid #DDD; padding:10px; empty-cells:show; }
+#pricelist td,#pricelist th {
+  text-align:left;
+}
+#pricelist td+td, #pricelist th+th {
+  text-align:center;
+  display:none;
+}
+#pricelist td.default {
+  display:table-cell;
+}
+#pricelist .bg-purple {
+  border-top:3px solid #A32362;
+}
+#pricelist .bg-blue {
+  border-top:3px solid #0097CF;
+}
+#pricelist .bg-green {
+  border-top:3px solid #00CC66;
+}
+#pricelist .bg-orange {
+  border-top:3px solid #FF6600;
+}
+#pricelist .sep {
+  background:#1C8AC5;
+  color:#FFF;
+  font-weight:bold;
+}
+#pricelist td.t{
+	background:#F5F5F5;
+	font-weight:bold;
+}
+#pricelist .txt-l { font-size:28px; font-weight:bold; }
+#pricelist .txt-top { position:relative; top:-9px; left:-2px; }
+#pricelist .tick { font-size:18px; color:#2CA01C; }
+#pricelist .hide {
+  border:none;
+  background:#f1f1f1;
+}
+
+@media (min-width: 640px) {
+  #pricelist ul {
+    display:none;
+  }
+  #pricelist td,#pricelist th {
+    display:table-cell !important;
+  }
+  #pricelist td,#pricelist th {
+    width: 330px;
+  
+  }
+  #pricelist td+td, #pricelist th+th {
+    width: auto;
+  }
+}

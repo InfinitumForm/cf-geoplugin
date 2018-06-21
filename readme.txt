@@ -1,0 +1,267 @@
+﻿=== CF Geo Plugin ===
+Contributors: ivijanstefan, creativform
+Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=creativform@gmail.com
+Tags: geo plugin, geo location, geotarget, geo banner, market, conversion, conversion plugin, automatic banner, banner, business, location, google map, gmaps, gmap, seo, seo tool, user experience, ux plugin, contact form, dynamic keyword, ip, ip location, region, position, positioning, marketing, block visitors, defender, block spam, block region, tag, geo, target, local, find ip, ip finder, geo target, geo image, geo content. include content, exclude content, include, exclude, seo redirection, url redirection, country redirection, redirection, flag, country flag, national flag, flags, custom flags, gdpr
+Requires at least: 3.0
+Tested up to: 4.9
+Stable tag: 6.0.2
+License: GPLv2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+
+== Description ==
+
+The **CF Geo Plugin** allows you to attach content, geographic information and Google maps to posts, pages, widgets and custom templates by using simple Shortcodes, PHP code or JavaScript by user IP address. It also lets you to specify a default geographic location for your entire WordPress blog. This plugin is also great for SEO and increasing conversions on your blog or landing pages.
+
+= Compatibility =
+
+This plugin is compatible with any Wordpress installation, also compatible with *[Contact Form 7](https://wordpress.org/plugins/contact-form-7/)*, *[WooCommerce](https://woocommerce.com/)*, *[Nord VPN proxy service](https://goo.gl/lWm3e6)* and support *[Cloudflare](https://www.cloudflare.com/)*.
+
+Over the past year, we develop this plugin to be useful to you and from time to time we add new options according to your requirements and our research according to what is now most necessary for geolocation marketing strategy. Therefore, we introduced a new necessary and useful features in one place and have made a significant step in the development of our plugin.
+
+> <strong>All CF Geo Plugin 6.x.x Features</strong><br>
+>
+> * **Geo Plugin** - Allows you to attach geographical information inside your content via Shortcodes, PHP and JavaScript objects
+> * **Geo Banner** - Allows you to place dynamic content, images, videos and pages using shortcodes for specfic audience target by geo location
+> * **Google Map** - Allows you to attach Google Map inside content
+> * **Geo Defender** - Allows you to block acces on blog from specific location
+> * **Cloudflare Geolocation Support** - Cloudflare support for visitor geolocation
+> * **DNS Lookup** - Allows you to attach visitor DNS informations
+> * **SSL Support** - Keep you safe
+> * **PROXY Settings** - Allows you to use PROXY for the lookup
+> * **Country SEO Redirection** - Allows you to redirect any page, post or article
+> * **Country Flag Support** - Allows you to attach visitor or custom country flags inside content
+> * **Include Content by Geolocation** - Allows you to include content by geolocation
+> * **Exclude Content by Geolocation** - Allows you to exclude content by geolocation
+
+= Basics usage and example =
+
+`[cf_geo]`
+`[cf_geo return="region"]`
+`[cf_geo ip="127.0.0.1" return="area_code"]`
+`[cf_geo exclude="Toronto"] This text is seeing by everyone except Toronto people [/cf_geo]`
+`[cf_geo include="New York"] This text seeing only people from New York [/cf_geo]`
+
+= Usage & Example =
+
+**GEO PLUGIN:** Usage is simple. After installation and activation, in your post you just need to insert `[cf_geo]` shortcode and that's it. Enter a shortcode as this and it returns and display IP adress to a visitor. If you like to display region (for example California for users who are from California), you just need to use `return` attribute in your shortcode like this: `[cf_geo return="region"]`. By changing the return settings, you can display any information from list above. Each user who comes to the site will see information related to their area. 
+
+If you whant to track some custom IP and return some information from that IP, you can do that by adding one optional attribute ip like on example `[cf_geo ip="127.0.0.1" return="area_code"]` what will return area code from that IP address.
+
+If you like to ad default values to your shortcode if data is empty you need to add extra attribute in your shortcode like this example `[cf_geo return="country_code" default="US"]` what will return US if geoplugin can't locate country code.
+
+If you need to exclude some content from your page based on user location, you can do that using the `exclude` attribute like this: 
+
+`[cf_geo exclude="Toronto, Québec"] This text is seeing by everyone except people from Toronto and Québec [/cf_geo]`
+
+If you need to display some content in your page based on user location, you can do that using the `include` attribute like this: 
+
+`[cf_geo include="New York, Miami, Germany"] This text seeing only people from New York, Miami and Germany [/cf_geo]`
+
+**GOOGLE MAP:** If you whant to place simple google map in your post or page, you just need to place shortcode [cf_geo_map] and your visitor will see own city on google map by default.
+
+Like example, you can display own company street address inside Google map like this: `[cf_geo_map longitude="-74.0059" latitude="40.7128" zoom="15"]` and pointer will show your street and place where you work.
+
+Google map also allow you to use HTML inside map and display info bar: 
+
+`[cf_geo_map longitude="-74.0059" latitude="40.7128" zoom="15" title="My Company Name"] 
+   <h3>My Company Name<h3> 
+   <p>No Name Street 35, New York, USA</p> 
+   <p>We have what you need</p> 
+[/cf_geo_map]`
+
+With this plugin you can easy setup your google map.
+
+**GEO BANNER:** With this plugin you have also ability to make a dynamic content (text, images, banners, videos...) and target your messages to people from certain regions, track IP address, setup WordPress to work on user's timezone, etc. The possibilities are huge, you can increase conversions, use this plugin like support for your custom template, build your own plugin and use CF Geo Plugin like additional option, etc.
+
+You just need to create a new banner, place your content, select rules (country, region, city) save your banner, after that in your page pickup banner shortcode and place inside content.
+
+**COUNTRY FLAG** You can display country flags in text or like image.
+
+If you like to display country flag in your text like icon, you can do that simple like: 
+
+`[cf_geo_flag]` - and you will see flag in your text.
+
+If you like to display country flag in your content like image, you can do that also simple using img or image attributes like: 
+
+`[cf_geo_flag img]` - and you will see image flag in your content
+
+You also can give custom sizes of flags in %, px, in, pt or em using size attribute like this: 
+
+`[cf_geo_flag size="32px"]` - and you will see your flag in that size. You can use this size in image and normal text mode also.
+
+You also can display custom flag using country attribute by placing country code simple like: 
+
+`[cf_geo_flag country="ca"]` - and you will see flag in your text or like image.
+
+We allow you also full controll of this flags and you can place css, class or id attributes to be able use this in any kind of work like this: 
+
+`[cf_geo_flag css="padding:10px;" class="your-custom-class custom-class custom" id="top-flag"]`
+
+= Info & Contact =
+
+Please visit our website [www.cfgeoplugin.com](http://cfgeoplugin.com/) and fell free to contact us. We will provide for you all services what you need.
+
+Also please inform us if any errors occure via contact form on our website [http://cfgeoplugin.com/](http://cfgeoplugin.com/) with message subject: **CF Geo Plugin SUPPORT**
+
+Thank you for your concern!
+
+~ Your CF Geo Plugin Team
+
+== Installation ==
+
+You only need to install the  **CF Geo Plugin** through the WordPress plugins screen directly or download ZIP file, unpack and upload plugin folder to the `/wp-content/plugins/` directory.
+
+Afterwards, activate the plugin through the 'Plugins' screen in WordPress, go to your `http://siteexample.com/wp-admin/` area and use the `Settings->CF Geo Plugin` to see all available shortcodes and settings.
+
+== Frequently Asked Questions ==
+
+= How I can test CF Geo Plugin is work on certain country, region or city? =
+
+That part is little bit hard but you can use great VPN service - [NordVPN](https://goo.gl/AEd82e)
+With this service you can change your current location and test CF Geo Plugin and its functionality.
+
+= Can I use CF GeopPlugin inside custom template? =
+
+Yes! You can! You just need to follow instructions from your admin panel `http://siteexample.com/wp-admin/` area and use the `Settings->CF Geo Plugin` to see all available shortcodes and settings.
+NOTE: Some templates not support WordPress PHP function `[do_shortcode()](https://developer.wordpress.org/reference/functions/do_shortcode/)` and data from CF Geo Plugin will not be visible.
+
+= Can GeoPlugin slow down my site? =
+
+NO, CF Geo Plugin uses the asynchronous data reading from API services. After loading, all data is stored in a session. That session is stored until IP is changed. When user's IP changes, the plugin reads new data and stores in the new session.
+
+= Can I set the different value if shortcode shows no results? =
+
+YES, just add the attribute `default` in shortcode and corresponding text like this:
+`[cf_geo return="city" default="Your Default Text"]`
+
+= How to include CF GeopPlugin in PHP? =
+
+In PHP you can use WordPress function `[do_shortcode()](https://developer.wordpress.org/reference/functions/do_shortcode/)` to display data via shortcode inside your PHP file. Also you have option to use PHP class `new CF_Geoplugin` or you can use GLOBALS and get data via `global $CF_Geo` like example:
+
+`
+// check if plugin exists
+if(class_exists("CF_Geoplugin")){
+	// include plugin class
+	$cf_geo = new CF_Geoplugin;
+	// get data
+	$geo = $cf_geo->get();
+	// print data
+	echo $geo->city;
+}
+`
+
+or with globals:
+
+`
+global $CF_Geo;
+echo $CF_Geo->city
+`
+
+= How to use CF GeopPlugin inside JavaScript? =
+
+JavaScript is enabled from version 5.2.0. In JavaScript you have 2 ways to get geo data from our plugin, using `cf.geoplugin` or `window.cfgeo` objects. This 2 objects contain all geo informations from our plugin and is available inside public and admin area.
+`
+<script>
+	// Look in your console for all available objects
+	console.log(window.cfgeo);
+	
+	// you can use this everywhere you want
+	
+	var city = window.cfgeo.city,
+		state = window.cfgeo.state,
+		country = window.cfgeo.country,
+		ip = window.cfgeo.ip;
+</script>
+`
+
+= How to use CF Geo Plugin inside ContactForm7? =
+
+Sometimes you need to include other HTML, CSS and JavaScript, and jQuery codes inside ContactForm7. Sometimes you need to insert a geolocation in input fields. This is not easy but here is one example with jQuery:
+
+`
+[text* city placeholder "* City Name"]
+[text* country placeholder "* Country Name"]
+
+<script>
+jQuery(document).ready(function(){
+    jQuery("input[name^='city']").val(window.cfgeo.city);
+	jQuery("input[name^='country']").val(window.cfgeo.country);
+});
+</script>
+`
+
+This code will auto fill value of CF7 city field when a visitor visits the contact page (look screenshots).
+
+* All geo informations you can find inside global `window.cfgeo` object.
+
+= CF Geo Plugin don't display information =
+
+* It might be an error with the provider's [geoPlugin](http://www.geoplugin.com/) network or API and CF Geo Plugin can't display information by own.
+* Look inside `CF Geo Plugin` for all available shortcodes and settings,
+* Look inside `CF Geo Plugin->Settings` and enable/disable and check all options (SSL, proxy, etc),
+* Maby you have PHP error, you can see that if you enable plugin debug in `wp-config.php` inserting on first lines code: `define('WP_CF_GEO_DEBUG', true);`
+* Some people use a special software to hide IP address via proxy and geoplugin can't look deeper to get accurate location,
+* Look into error.log file to see if a problem is in CF Geo Plugin
+* Some servers not allow access to geoplugin sites and maby you need to use proxy setings inside plugin to enable tracking
+* You reach some API limitations
+
+Please inform us if any of these errors occure via contact form on our website [http://creativform.com](http://creativform.com/contact/) with message subject: **CF Geo Plugin SUPPORT**
+
+== Screenshots ==
+
+1. CF Geo Plugin Available shortcodes and values
+2. CF Google Map shortcodes and setup
+3. CF Geo Defender setup
+4. CF Geo Plugin global setup
+5. Debug Mode for CF Geo Plugin and IP Lookup
+6. Adding shortcode in text editor
+7. Admin bar quick links
+8. Example 1
+9. Example 2
+10. Example 3
+11. SEO Redirection
+
+== Changelog ==
+
+= 6.0.2 =
+
+* Fixed admin navigation
+* Fixed license bug
+
+= 6.0.1 =
+
+* Fixed bug in PRO version
+
+= 6.0.0 =
+
+* New API service
+* New Databases
+* Improved Lookup
+* Improved Speed
+* Improved Security
+
+
+== Other Notes ==
+
+= Plugin Links =
+
+* [CF Geo Plugin Official Website](http://cfgeoplugin.com/)
+* [CreativForm Development Team](http://creativform.com/)
+* [Drax Host Service Team](https://goo.gl/iRmYE8)
+
+= DONATION =
+
+Enjoy using *CF Geo Plugin*? Please consider [making a small donation](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=creativform@gmail.com) to support the project's continued development.
+
+= TERMS AND CONDITIONS  =
+
+Please read these Terms and Conditions ("Terms", "Terms and Conditions") carefully before using the [www.cfgeoplugin.com](http://cfgeoplugin.com) website and the CF Geo Plugin WordPress application (the "Service") operated by CF Geo Plugin.
+
+[Read about Terms and Conditions](http://cfgeoplugin.com/terms-and-conditions)
+
+= PRIVACY POLICY =
+We respect your privacy and take protecting it seriously. This Privacy Policy covers our collection, use and disclosure of information we collect through our website and service, [www.cfgeoplugin.com](http://cfgeoplugin.com) owned and operated by CF Geo Plugin. It also describes the choices available to you regarding our use of your personal information and how you can access and update this information. The use of information collected through our service shall be limited to the purpose of providing the service for which our Clients have engaged us. Also we respect and take care about Europe General Data Protection Regulation (GDPR) and your freedom and private choices.
+
+[Read about Privacy Policy](http://cfgeoplugin.com/privacy-policy)
+
+For further questions and clarifications, do not hesitate to contact us and we will reply back to you within 48 hours.

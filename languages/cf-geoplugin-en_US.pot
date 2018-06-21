@@ -1,0 +1,1092 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2015-2016 CF GeoPlugin
+# This file is distributed under the same license as the CF GeoPlugin package.
+# Ivijan-Stefan Stipic <info@cfgeoplugin.com>, 2016.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: CF GeoPlugin 4.0.4\n"
+"Report-Msgid-Bugs-To: creativform@gmail.com\n"
+"POT-Creation-Date: 2016-11-02 21:39+0100\n"
+"PO-Revision-Date: 2016-11-02 21:39+0100\n"
+"Last-Translator: Ivijan-Stefan Stipic <info@cfgeoplugin.com>\n"
+"Language-Team: Marija Mladenovic <buca_mai@yahoo.com>\n"
+"Language: English (U.S.)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+"X-Generator: Eazy Po 0.9.5.3\n"
+
+#: uninstall.php:115 admin/includes/functions-cf-geoplugin-admin.php:40
+msgid "Invalid taxonomy."
+msgstr "Invalid taxonomy."
+
+#: admin/includes/functions-cf-geoplugin-admin.php:73
+#: admin/includes/functions-cf-geoplugin-admin.php:74
+msgid "CF GeoPlugin"
+msgstr "CF GeoPlugin"
+
+#: admin/includes/functions-cf-geoplugin-admin.php:82
+#: admin/includes/functions-cf-geoplugin-admin.php:83
+msgid "Google Map"
+msgstr "Google Map"
+
+#: admin/includes/functions-cf-geoplugin-admin.php:91
+#: admin/includes/functions-cf-geoplugin-admin.php:92
+msgid "Geo Defender"
+msgstr "Geo Defender"
+
+#: admin/includes/functions-cf-geoplugin-admin.php:99
+#: admin/includes/functions-cf-geoplugin-admin.php:100
+#: admin/includes/functions-cf-geoplugin-admin.php:181
+#: admin/pages/page-debug.php:16
+msgid "Debug Mode"
+msgstr "Debug Mode"
+
+#: admin/includes/functions-cf-geoplugin-admin.php:107
+#: admin/includes/functions-cf-geoplugin-admin.php:108
+#: admin/includes/functions-cf-geoplugin-admin.php:188
+#: admin/pages/page-settings.php:23
+msgid "Settings"
+msgstr "Settings"
+
+#: admin/includes/functions-cf-geoplugin-admin.php:115
+#: admin/includes/functions-cf-geoplugin-admin.php:116
+#: admin/pages/page-credits.php:2 admin/pages/page-settings.php:33
+msgid "Credits & Info"
+msgstr "Credits & Info"
+
+#: admin/includes/functions-cf-geoplugin-admin.php:154
+#, php-format
+msgid "CF GeoPlugin ver.%s"
+msgstr "CF GeoPlugin ver.%s"
+
+#: admin/includes/functions-cf-geoplugin-admin.php:166
+#: admin/pages/page-google-map.php:12
+msgid "CF Google Map"
+msgstr "CF Google Map"
+
+#: admin/includes/functions-cf-geoplugin-admin.php:174
+#: admin/pages/page-defender.php:33 admin/pages/page-defender.php:35
+msgid "CF Geo Defender"
+msgstr "CF Geo Defender"
+
+#: admin/includes/functions-cf-geoplugin-admin.php:196
+#: admin/pages/page-debug.php:128 admin/pages/page-google-map.php:27
+msgid "Info"
+msgstr "Info"
+
+#: admin/includes/functions-cf-geoplugin-admin.php:207
+msgid "Your IP: 0.0.0.0"
+msgstr "Your IP: 0.0.0.0"
+
+#: admin/includes/functions-cf-geoplugin-admin.php:214
+msgid "Your IP"
+msgstr "Your IP"
+
+#: admin/includes/functions-cf-geoplugin-admin.php:224
+#: includes/class-cf-geoplugin.php:309 includes/class-cf-geoplugin.php:323
+msgid "City"
+msgstr "City"
+
+#: admin/includes/functions-cf-geoplugin-admin.php:230
+#: includes/class-cf-geoplugin.php:283 includes/class-cf-geoplugin.php:297
+msgid "Region"
+msgstr "Region"
+
+#: admin/includes/functions-cf-geoplugin-admin.php:236
+#: includes/class-cf-geoplugin.php:257 includes/class-cf-geoplugin.php:271
+msgid "Country"
+msgstr "Country"
+
+#: admin/includes/functions-cf-geoplugin-admin.php:242
+msgid "Continent"
+msgstr "Continent"
+
+#: admin/includes/functions-cf-geoplugin-admin.php:248
+msgid "Timezone"
+msgstr "Timezone"
+
+#: admin/includes/functions-cf-geoplugin-admin.php:254
+msgid "Status"
+msgstr "Status"
+
+#: admin/pages/page-debug.php:18
+msgid "NOTE: You running plugin on local server."
+msgstr "NOTE: You running plugin on local server."
+
+#: admin/pages/page-debug.php:20
+msgid "If you have issue with CF GeoPlugin, here you can see what CF GeoPlugin return from our API and how that looks."
+msgstr "If you have issue with CF GeoPlugin, here you can see what CF GeoPlugin return from our API and how that looks."
+
+#: admin/pages/page-debug.php:22
+msgid "CF GeoPlugin Warning"
+msgstr "CF GeoPlugin Warning"
+
+#: admin/pages/page-debug.php:26 admin/pages/page-geoplugin.php:291
+msgid "Connection quality"
+msgstr "Connection quality"
+
+#: admin/pages/page-debug.php:28 admin/pages/page-geoplugin.php:293
+msgid "exellent"
+msgstr "exellent"
+
+#: admin/pages/page-debug.php:31 admin/pages/page-geoplugin.php:296
+msgid "perfect"
+msgstr "perfect"
+
+#: admin/pages/page-debug.php:34 admin/pages/page-geoplugin.php:299
+msgid "good"
+msgstr "good"
+
+#: admin/pages/page-debug.php:37 admin/pages/page-geoplugin.php:302
+msgid "week"
+msgstr "week"
+
+#: admin/pages/page-debug.php:40 admin/pages/page-geoplugin.php:305
+msgid "bad"
+msgstr "bad"
+
+#: admin/pages/page-debug.php:49
+msgid "IP Lookup"
+msgstr "IP Lookup"
+
+#: admin/pages/page-debug.php:50
+#, php-format
+msgid "Enter your custom IP address to see how CF GeoPlugin API version %s works."
+msgstr "Enter your custom IP address to see how CF GeoPlugin API version %s works."
+
+#: admin/pages/page-debug.php:56
+msgid "Insert Custom IP"
+msgstr "Insert Custom IP"
+
+#: admin/pages/page-debug.php:59
+msgid "Lookup"
+msgstr "Lookup"
+
+#: admin/pages/page-debug.php:65
+msgid "Your WordPress Informations"
+msgstr "Your WordPress Informations"
+
+#: admin/pages/page-debug.php:66
+msgid "This informations are from your WordPress blog and is only visible to you"
+msgstr "This informations are from your WordPress blog and is only visible to you"
+
+#: admin/pages/page-debug.php:70 admin/pages/page-debug.php:126
+#: admin/pages/page-google-map.php:26
+msgid "Name"
+msgstr "Name"
+
+#: admin/pages/page-debug.php:71 admin/pages/page-debug.php:127
+#: admin/pages/page-debug.php:166
+msgid "Value"
+msgstr "Value"
+
+#: admin/pages/page-debug.php:76
+msgid "Site Title"
+msgstr "Site Title"
+
+#: admin/pages/page-debug.php:80
+msgid "Tagline"
+msgstr "Tagline"
+
+#: admin/pages/page-debug.php:84
+msgid "WordPress address (URL)"
+msgstr "WordPress address (URL)"
+
+#: admin/pages/page-debug.php:88
+msgid "WordPress Host"
+msgstr "WordPress Host"
+
+#: admin/pages/page-debug.php:95
+msgid "Admin Email"
+msgstr "Admin Email"
+
+#: admin/pages/page-debug.php:99
+msgid "Encoding for pages and feeds"
+msgstr "Encoding for pages and feeds"
+
+#: admin/pages/page-debug.php:103
+msgid "WordPress Version"
+msgstr "WordPress Version"
+
+#: admin/pages/page-debug.php:107
+msgid "Content-Type"
+msgstr "Content-Type"
+
+#: admin/pages/page-debug.php:111
+msgid "Language"
+msgstr "Language"
+
+#: admin/pages/page-debug.php:115
+msgid "Server Time"
+msgstr "Server Time"
+
+#: admin/pages/page-debug.php:121
+#, php-format
+msgid "CF GeoPlugin API ver.%s Request"
+msgstr "CF GeoPlugin API ver.%s Request"
+
+#: admin/pages/page-debug.php:122
+msgid "This informations are sent to CF GeoPlugin API. All of this informations (hostname, IP and timezone) are available for general public, world wide and we only use them for API purpose which helps plugin to determine the exact location of the visitors and prevent accidental collapse between the IP address. Your IP address is also a guarantee that you're not a robot or some spamming software."
+msgstr "This informations are sent to CF GeoPlugin API. All of this informations (hostname, IP and timezone) are available for general public, world wide and we only use them for API purpose which helps plugin to determine the exact location of the visitors and prevent accidental collapse between the IP address. Your IP address is also a guarantee that you're not a robot or some spamming software."
+
+#: admin/pages/page-debug.php:135
+msgid "Your or Visitor's IP Address"
+msgstr "Your or Visitor's IP Address"
+
+#: admin/pages/page-debug.php:140
+msgid "Server Current Unix Timestamp"
+msgstr "Server Current Unix Timestamp"
+
+#: admin/pages/page-debug.php:144
+msgid "Proxy Enabled"
+msgstr "Proxy Enabled"
+
+#: admin/pages/page-debug.php:145
+msgid "Server IP Address"
+msgstr "Server IP Address"
+
+#: admin/pages/page-debug.php:153
+msgid "Server Host Name"
+msgstr "Server Host Name"
+
+#: admin/pages/page-debug.php:159
+#, php-format
+msgid "CF GeoPlugin API ver.%s Response"
+msgstr "CF GeoPlugin API ver.%s Response"
+
+#: admin/pages/page-debug.php:160
+msgid "This informations are returned from CF GeoPlugin API after successful request"
+msgstr "This informations are returned from CF GeoPlugin API after successful request"
+
+#: admin/pages/page-debug.php:165
+msgid "Return Code"
+msgstr "Return Code"
+
+#: admin/pages/page-debug.php:182
+#, php-format
+msgid "Google Map can't be displayed because of error: %s"
+msgstr "Google Map can't be displayed because of error: %s"
+
+#: admin/pages/page-debug.php:191
+msgid "Be Always Informed About New Versions & Updates"
+msgstr "Be Always Informed About New Versions & Updates"
+
+#: admin/pages/page-debug.php:195
+msgid "Subscribe"
+msgstr "Subscribe"
+
+#: admin/pages/page-debug.php:196
+msgid "We Will Not Spam You! Your Email Is Safe And We Will Not Give Your Informations To Anyone."
+msgstr "We Will Not Spam You! Your Email Is Safe And We Will Not Give Your Informations To Anyone."
+
+#: admin/pages/page-defender.php:22
+msgid "There is some error!"
+msgstr "There is some error!"
+
+#: admin/pages/page-defender.php:24 admin/pages/page-settings.php:13
+msgid "Settings are saved!"
+msgstr "Settings are saved!"
+
+#: admin/pages/page-defender.php:35
+#, php-format
+msgid "With %s you can block the access from the specific IP, country, state and city to your site. Names of countries, states, regions or cities are not case sensitive, but the name must be entered correctly (in English) to get this feature work correctly. This feature is very safe and does not affect to SEO."
+msgstr "With %s you can block the access from the specific IP, country, state and city to your site. Names of countries, states, regions or cities are not case sensitive, but the name must be entered correctly (in English) to get this feature work correctly. This feature is very safe and does not affect to SEO."
+
+#: admin/pages/page-defender.php:36
+msgid "Please, don't use this like antispam or antivirus, this option is only to prevent access to vebsite from specific locations. This option will remove all your content, template, design and display custom message to your visitors."
+msgstr "Please, don't use this like antispam or antivirus, this option is only to prevent access to vebsite from specific locations. This option will remove all your content, template, design and display custom message to your visitors."
+
+#: admin/pages/page-defender.php:37
+msgid "Note: This option of blocking access to the entire WordPress blog works together with wp-admin access. If you enter your ip, country, state or city you will be unable to access your own website."
+msgstr "Note: This option of blocking access to the entire WordPress blog works together with wp-admin access. If you enter your ip, country, state or city you will be unable to access your own website."
+
+#: admin/pages/page-defender.php:41
+msgid "Activate your CF Geo Defender now!"
+msgstr "Activate your CF Geo Defender now!"
+
+#: admin/pages/page-defender.php:43
+#, php-format
+msgid "If you want to %s from a specific audience and block the complete access to it, you can %s for as low as $%d with the %s."
+msgstr "If you want to %s from a specific audience and block the complete access to it, you can %s for as low as $%d with the %s."
+
+#: admin/pages/page-defender.php:43
+msgid "protect your site"
+msgstr "protect your site"
+
+#: admin/pages/page-defender.php:43
+msgid "enable this fantastic feature"
+msgstr "enable this fantastic feature"
+
+#: admin/pages/page-defender.php:43
+msgid "lifetime license and support"
+msgstr "lifetime license and support"
+
+#: admin/pages/page-defender.php:59
+msgid "Activation KEY"
+msgstr "Activation KEY"
+
+#: admin/pages/page-defender.php:62
+#: admin/pages/page-settings/settings-google-map.php:22
+msgid "Save"
+msgstr "Save"
+
+#: admin/pages/page-defender.php:74 admin/pages/page-defender.php:221
+msgid "Save / Update"
+msgstr "Save / Update"
+
+#: admin/pages/page-defender.php:74 admin/pages/page-defender.php:221
+msgid "Click here for safe test (first save your changes)"
+msgstr "Click here for safe test (first save your changes)"
+
+#: admin/pages/page-defender.php:79
+msgid "IP address separated by comma"
+msgstr "IP address separated by comma"
+
+#: admin/pages/page-defender.php:82 admin/pages/page-defender.php:130
+#: admin/pages/page-defender.php:166
+msgid "PREMIUM ONLY"
+msgstr "PREMIUM ONLY"
+
+#: admin/pages/page-defender.php:87
+msgid "Choose Countries"
+msgstr "Choose Countries"
+
+#: admin/pages/page-defender.php:96
+msgid "Choose a country..."
+msgstr "Choose a country..."
+
+#: admin/pages/page-defender.php:121
+msgid "Choose Regions"
+msgstr "Choose Regions"
+
+#: admin/pages/page-defender.php:130
+msgid "Choose a region..."
+msgstr "Choose a region..."
+
+#: admin/pages/page-defender.php:157
+msgid "Choose Cities"
+msgstr "Choose Cities"
+
+#: admin/pages/page-defender.php:166
+msgid "Choose a city..."
+msgstr "Choose a city..."
+
+#: admin/pages/page-defender.php:193
+msgid "Message that is displayed to a blocked visitor (HTML allowed)"
+msgstr "Message that is displayed to a blocked visitor (HTML allowed)"
+
+#: admin/pages/page-defender.php:199
+msgid "Sorry, you are not allowed access to the content of this website in your country."
+msgstr "Sorry, you are not allowed access to the content of this website in your country."
+
+#: admin/pages/page-geoplugin.php:13
+#, php-format
+msgid "Geo plugin allows you to attach geographic coordinate information to posts by shortcodes. It also lets you specify a default geographic location for your entire WordPress blog. This data is provided by our new API what can locate any user information. The plugin also supports %s, and you can use these shortcodes inside Contact Form 7 builder."
+msgstr "Geo plugin allows you to attach geographic coordinate information to posts by shortcodes. It also lets you specify a default geographic location for your entire WordPress blog. This data is provided by our new API what can locate any user information. The plugin also supports %s, and you can use these shortcodes inside Contact Form 7 builder."
+
+#: admin/pages/page-geoplugin.php:13
+msgid "Contact Form 7"
+msgstr "Contact Form 7"
+
+#: admin/pages/page-geoplugin.php:16
+msgid "Shortcodes"
+msgstr "Shortcodes"
+
+#: admin/pages/page-geoplugin.php:17 admin/pages/page-google-map.php:17
+msgid "Info & Examples"
+msgstr "Info & Examples"
+
+#: admin/pages/page-geoplugin.php:19
+msgid "Register Premium"
+msgstr "Register Premium"
+
+#: admin/pages/page-geoplugin.php:24
+msgid "Shortcode & Example"
+msgstr "Shortcode & Example"
+
+#: admin/pages/page-geoplugin.php:26 admin/pages/page-geoplugin.php:160
+msgid "NOTE: You using CF GeoPlugin on local server and plugin can't return real informations. This data is only for demo like example and are not real. You can place this shortcodes inside content but you will not see results until you place website on the live server."
+msgstr "NOTE: You using CF GeoPlugin on local server and plugin can't return real informations. This data is only for demo like example and are not real. You can place this shortcodes inside content but you will not see results until you place website on the live server."
+
+#: admin/pages/page-geoplugin.php:30 admin/pages/page-geoplugin.php:155
+#: admin/pages/page-geoplugin.php:165 admin/pages/page-geoplugin.php:281
+#: includes/class-cf-geoplugin.php:158
+msgid "Shortcode"
+msgstr "Shortcode"
+
+#: admin/pages/page-geoplugin.php:31 admin/pages/page-geoplugin.php:156
+#: admin/pages/page-geoplugin.php:166 admin/pages/page-geoplugin.php:282
+msgid "Returns"
+msgstr "Returns"
+
+#: admin/pages/page-geoplugin.php:37 admin/pages/page-geoplugin.php:41
+msgid "206.226.73.56"
+msgstr "206.226.73.56"
+
+#: admin/pages/page-geoplugin.php:45
+msgid "IPv4"
+msgstr "IPv4"
+
+#: admin/pages/page-geoplugin.php:53
+msgid "dnsprovider.com"
+msgstr "dnsprovider.com"
+
+#: admin/pages/page-geoplugin.php:57
+msgid "http://dnsprovider.com"
+msgstr "http://dnsprovider.com"
+
+#: admin/pages/page-geoplugin.php:61
+msgid "Aurora, Illinois, United States"
+msgstr "Aurora, Illinois, United States"
+
+#: admin/pages/page-geoplugin.php:65
+msgid "Aurora"
+msgstr "Aurora"
+
+#: admin/pages/page-geoplugin.php:69
+msgid "Illinois"
+msgstr "Illinois"
+
+#: admin/pages/page-geoplugin.php:73
+msgid "United States"
+msgstr "United States"
+
+#: admin/pages/page-geoplugin.php:77
+msgid "US"
+msgstr "US"
+
+#: admin/pages/page-geoplugin.php:81
+msgid "America"
+msgstr "America"
+
+#: admin/pages/page-geoplugin.php:85
+msgid "NA"
+msgstr "NA"
+
+#: admin/pages/page-geoplugin.php:89
+msgid "630"
+msgstr "630"
+
+#: admin/pages/page-geoplugin.php:93
+msgid "602"
+msgstr "602"
+
+#: admin/pages/page-geoplugin.php:97
+msgid "41.7606"
+msgstr "41.7606"
+
+#: admin/pages/page-geoplugin.php:101
+msgid "-88.3201"
+msgstr "-88.3201"
+
+#: admin/pages/page-geoplugin.php:105
+msgid "America/Chicago"
+msgstr "America/Chicago"
+
+#: admin/pages/page-geoplugin.php:109
+msgid "USD"
+msgstr "USD"
+
+#: admin/pages/page-geoplugin.php:113
+msgid "&#36;"
+msgstr "&#36;"
+
+#: admin/pages/page-geoplugin.php:145
+msgid "These geographic information Is provided by "
+msgstr "These geographic information Is provided by "
+
+#: admin/pages/page-geoplugin.php:311
+msgid "Additional attributes and settings"
+msgstr "Additional attributes and settings"
+
+#: admin/pages/page-geoplugin.php:312
+#, php-format
+msgid "If you whant to track some custom IP and return some information from that IP, you can do that by adding one optional attribute %s like on example: %s - what will return area code from that IP address."
+msgstr "If you whant to track some custom IP and return some information from that IP, you can do that by adding one optional attribute %s like on example: %s - what will return area code from that IP address."
+
+#: admin/pages/page-geoplugin.php:314
+#, php-format
+msgid "If you like to ad default values to your shortcode if data is empty you need to add extra attribute in your shortcode like this example: %s - what will return US if geoplugin can't locate country code."
+msgstr "If you like to ad default values to your shortcode if data is empty you need to add extra attribute in your shortcode like this example: %s - what will return US if geoplugin can't locate country code."
+
+#: admin/pages/page-google-map.php:13
+msgid "Google Maps is a desktop web mapping service developed by Google. It offers satellite imagery, street maps, 360° panoramic views of streets (Street View), real-time traffic conditions (Google Traffic), and route planning for traveling by foot, car, bicycle (in beta), or public transportation. CF GeoPlugin allow you to place google map easy in your WordPress blog using simple shortcode."
+msgstr "Google Maps is a desktop web mapping service developed by Google. It offers satellite imagery, street maps, 360° panoramic views of streets (Street View), real-time traffic conditions (Google Traffic), and route planning for traveling by foot, car, bicycle (in beta), or public transportation. CF GeoPlugin allow you to place google map easy in your WordPress blog using simple shortcode."
+
+#: admin/pages/page-google-map.php:16
+msgid "Property List"
+msgstr "Property List"
+
+#: admin/pages/page-google-map.php:32
+msgid "String"
+msgstr "String"
+
+#: admin/pages/page-google-map.php:32
+msgid "Mouse hover title"
+msgstr "Mouse hover title"
+
+#: admin/pages/page-google-map.php:36 admin/pages/page-google-map.php:40
+msgid "Number"
+msgstr "Number"
+
+#: admin/pages/page-google-map.php:36
+msgid "Latitude is an angle (defined below) which ranges from 0° at the Equator to 90° (North or South) at the poles.%s"
+msgstr "Latitude is an angle (defined below) which ranges from 0° at the Equator to 90° (North or South) at the poles.%s"
+
+#: admin/pages/page-google-map.php:36
+msgid "By default is pointed to visitors city or address automaticly."
+msgstr "By default is pointed to visitors city or address automaticly."
+
+#: admin/pages/page-google-map.php:40
+msgid "Longitude (shown as a vertical line) is the angular distance, in degrees, minutes, and seconds, of a point east or west of the Prime (Greenwich) Meridian."
+msgstr "Longitude (shown as a vertical line) is the angular distance, in degrees, minutes, and seconds, of a point east or west of the Prime (Greenwich) Meridian."
+
+#: admin/pages/page-google-map.php:40
+msgid "By default is pointed to visitors city or address automaticly"
+msgstr "By default is pointed to visitors city or address automaticly"
+
+#: admin/pages/page-google-map.php:44
+msgid "Integer"
+msgstr "Integer"
+
+#: admin/pages/page-google-map.php:44
+#: admin/pages/page-settings/settings-google-map.php:71
+msgid "Most roadmap imagery is available from zoom levels 0 to 18."
+msgstr "Most roadmap imagery is available from zoom levels 0 to 18."
+
+#: admin/pages/page-google-map.php:44 admin/pages/page-google-map.php:48
+#: admin/pages/page-google-map.php:52 admin/pages/page-google-map.php:56
+#: admin/pages/page-google-map.php:60 admin/pages/page-google-map.php:64
+#: admin/pages/page-google-map.php:68 admin/pages/page-google-map.php:72
+#: admin/pages/page-google-map.php:76
+msgid "Default is"
+msgstr "Default is"
+
+#: admin/pages/page-google-map.php:48 admin/pages/page-google-map.php:52
+#: admin/pages/page-settings/settings-google-map.php:47
+#: admin/pages/page-settings/settings-google-map.php:56
+#, php-format
+msgid "Accept numeric value in percentage or pixels (% or px)"
+msgstr "Accept numeric value in percentage or pixels (% or px)"
+
+#: admin/pages/page-google-map.php:48
+msgid "Width of your map."
+msgstr "Width of your map."
+
+#: admin/pages/page-google-map.php:52
+msgid "Height of your map."
+msgstr "Height of your map."
+
+#: admin/pages/page-google-map.php:56 admin/pages/page-google-map.php:60
+#: admin/pages/page-google-map.php:64 admin/pages/page-google-map.php:68
+#: admin/pages/page-google-map.php:72
+msgid "Integer 1 or 0"
+msgstr "Integer 1 or 0"
+
+#: admin/pages/page-google-map.php:56 admin/pages/page-google-map.php:60
+#: admin/pages/page-google-map.php:72
+msgid "If"
+msgstr "If"
+
+#: admin/pages/page-google-map.php:56
+msgid "disables scrollwheel zooming on the map."
+msgstr "disables scrollwheel zooming on the map."
+
+#: admin/pages/page-google-map.php:60
+msgid "disables navigation on the map. The initial enabled/disabled state of the Map type control."
+msgstr "disables navigation on the map. The initial enabled/disabled state of the Map type control."
+
+#: admin/pages/page-google-map.php:64
+#: admin/pages/page-settings/settings-google-map.php:116
+msgid "The initial enabled/disabled state of the Map type control."
+msgstr "The initial enabled/disabled state of the Map type control."
+
+#: admin/pages/page-google-map.php:68
+msgid "The initial display options for the Scale control."
+msgstr "The initial display options for the Scale control."
+
+#: admin/pages/page-google-map.php:72
+msgid "the object can be dragged across the map and the underlying feature will have its geometry updated."
+msgstr "the object can be dragged across the map and the underlying feature will have its geometry updated."
+
+#: admin/pages/page-google-map.php:76
+msgid "Integer from 0 to 600"
+msgstr "Integer from 0 to 600"
+
+#: admin/pages/page-google-map.php:76
+msgid "Maximum width of info popup inside map."
+msgstr "Maximum width of info popup inside map."
+
+#: admin/pages/page-google-map.php:82
+msgid "Adding Google Map in wordpress"
+msgstr "Adding Google Map in wordpress"
+
+#: admin/pages/page-google-map.php:84
+#, php-format
+msgid "If you whant to place simple google map in your post or page, you just need to place shortcode %s and your visitor will see own city on google map by default. This shortcode have also own properties what you can use to customize your Google map (look property list)."
+msgstr "If you whant to place simple google map in your post or page, you just need to place shortcode %s and your visitor will see own city on google map by default. This shortcode have also own properties what you can use to customize your Google map (look property list)."
+
+#: admin/pages/page-google-map.php:86
+#, php-format
+msgid "Like example, you can display own company street address inside Google map like this: %s and pointer will show your street and place where you work."
+msgstr "Like example, you can display own company street address inside Google map like this: %s and pointer will show your street and place where you work."
+
+#: admin/pages/page-google-map.php:88
+msgid "Google map also allow you to use HTML inside map and display info bar:"
+msgstr "Google map also allow you to use HTML inside map and display info bar:"
+
+#: admin/pages/page-google-map.php:90 admin/pages/page-google-map.php:91
+msgid "My Company Name"
+msgstr "My Company Name"
+
+#: admin/pages/page-google-map.php:92
+msgid "No Name Street 35, New York, USA"
+msgstr "No Name Street 35, New York, USA"
+
+#: admin/pages/page-google-map.php:93
+msgid "We have what you need"
+msgstr "We have what you need"
+
+#: admin/pages/page-google-map.php:95
+msgid "With this plugin you can easy setup your google map."
+msgstr "With this plugin you can easy setup your google map."
+
+#: admin/pages/page-settings.php:11
+msgid "An error has occurred! Some settings are not saved."
+msgstr "An error has occurred! Some settings are not saved."
+
+#: admin/pages/page-settings.php:15
+msgid "Disabled"
+msgstr "Disabled"
+
+#: admin/pages/page-settings.php:15
+msgid "Enabled"
+msgstr "Enabled"
+
+#: admin/pages/page-settings.php:24
+msgid "Global setup for CF GeoPlugin"
+msgstr "Global setup for CF GeoPlugin"
+
+#: admin/pages/page-settings.php:29
+msgid "Global Settings"
+msgstr "Global Settings"
+
+#: admin/pages/page-settings.php:30
+#: admin/pages/page-settings/settings-google-map.php:11
+msgid "Google Map Settings"
+msgstr "Google Map Settings"
+
+#: admin/pages/page-settings.php:34
+msgid "Donation"
+msgstr "Donation"
+
+#: admin/pages/page-settings/settings-credits.php:1
+#: admin/pages/page-credits.php:12
+msgid "Credits"
+msgstr "Credits"
+
+#: admin/pages/page-settings/settings-credits.php:2
+#, php-format
+msgid "%s, %s, %s and all this functionality is made by %s."
+msgstr "%s, %s, %s and all this functionality is made by %s."
+
+#: admin/pages/page-settings/settings-credits.php:3
+msgid "This plugin have purpose to help business people to reach own goals and made maximal conversions. Plugin is SEO optimized, user friendly, easy for use and very dynamic."
+msgstr "This plugin have purpose to help business people to reach own goals and made maximal conversions. Plugin is SEO optimized, user friendly, easy for use and very dynamic."
+
+#: admin/pages/page-settings/settings-credits.php:5
+#, php-format
+msgid "The WordPress plugin %s is %s plugin which allows you to attach geographic information and Google maps to posts, pages, widgets and custom templates by using shortcodes and user IP address. It also lets you to specify a default geographic location for your entire WordPress blog. Also you can place banners and content realated to user locations."
+msgstr "The WordPress plugin %s is %s plugin which allows you to attach geographic information and Google maps to posts, pages, widgets and custom templates by using shortcodes and user IP address. It also lets you to specify a default geographic location for your entire WordPress blog. Also you can place banners and content realated to user locations."
+
+#: admin/pages/page-settings/settings-credits.php:7
+msgid "Premium Package"
+msgstr "Premium Package"
+
+#: admin/pages/page-settings/settings-credits.php:8
+#, php-format
+msgid "%s functionality enable some additional and special options inside this plugin. This plugin is made for your needs and because of that, by purchasing a premium package you helping the further development and maintaince of this plugin."
+msgstr "%s functionality enable some additional and special options inside this plugin. This plugin is made for your needs and because of that, by purchasing a premium package you helping the further development and maintaince of this plugin."
+
+#: admin/pages/page-settings/settings-credits.php:8
+msgid "Premium"
+msgstr "Premium"
+
+#: admin/pages/page-settings/settings-credits.php:10
+msgid "For Developers and Contributors"
+msgstr "For Developers and Contributors"
+
+#: admin/pages/page-settings/settings-credits.php:11
+msgid "You are welcome to contribute to my plugin and help me in the development. Also you are welcome to use this plugin inside your projects like part of your own plugins and templates. All great new ideas will be taken into consideration and all together we can do something fantastic!"
+msgstr "You are welcome to contribute to my plugin and help me in the development. Also you are welcome to use this plugin inside your projects like part of your own plugins and templates. All great new ideas will be taken into consideration and all together we can do something fantastic!"
+
+#: admin/pages/page-settings/settings-credits.php:13
+msgid "Copyright"
+msgstr "Copyright"
+
+#: admin/pages/page-settings/settings-donation.php:2
+msgid "DONATE"
+msgstr "DONATE"
+
+#: admin/pages/page-settings/settings-donation.php:4
+#, php-format
+msgid "If you really like this plugin, we will continue to develop and update it. You can donate some money to our development team because in the future we plan to improve this plugin and add new functions and better user experience.%s Thank you for your concern.%s Sincerely, your %s"
+msgstr "If you really like this plugin, we will continue to develop and update it. You can donate some money to our development team because in the future we plan to improve this plugin and add new functions and better user experience.%s Thank you for your concern.%s Sincerely, your %s"
+
+#: admin/pages/page-settings/settings-donation.php:4
+msgid "CF GeoPlugin team"
+msgstr "CF GeoPlugin team"
+
+#: admin/pages/page-settings/settings-donation.php:16
+msgid "CF GeoPlugin Donation"
+msgstr "CF GeoPlugin Donation"
+
+#: admin/pages/page-settings/settings-donation.php:17
+msgid "Donation to CF team for the improvement and maintenance of CF GeoPlugin"
+msgstr "Donation to CF team for the improvement and maintenance of CF GeoPlugin"
+
+#: admin/pages/page-settings/settings-global.php:11
+msgid "Global Plugin Settings"
+msgstr "Global Plugin Settings"
+
+#: admin/pages/page-settings/settings-global.php:13
+#: admin/pages/page-settings/settings-google-map.php:13
+msgid "GET PREMIUM!"
+msgstr "GET PREMIUM!"
+
+#: admin/pages/page-settings/settings-global.php:13
+msgid "This functions are only enabled in premium version. Don't worry, we setup for you optimal settings."
+msgstr "This functions are only enabled in premium version. Don't worry, we setup for you optimal settings."
+
+#: admin/pages/page-settings/settings-global.php:19
+msgid "Enable SSL"
+msgstr "Enable SSL"
+
+#: admin/pages/page-settings/settings-global.php:23
+#: admin/pages/page-settings/settings-global.php:52
+msgid "YES"
+msgstr "YES"
+
+#: admin/pages/page-settings/settings-global.php:24
+#: admin/pages/page-settings/settings-global.php:53
+msgid "NO"
+msgstr "NO"
+
+#: admin/pages/page-settings/settings-global.php:30
+msgid "API Connection Timeout"
+msgstr "API Connection Timeout"
+
+#: admin/pages/page-settings/settings-global.php:34
+msgid "Timeout for the API connection phase (Default is 9)"
+msgstr "Timeout for the API connection phase (Default is 9)"
+
+#: admin/pages/page-settings/settings-global.php:39
+msgid "API Timeout"
+msgstr "API Timeout"
+
+#: admin/pages/page-settings/settings-global.php:43
+msgid "Set maximum time of the API request what is allowed to take (Default is 9)"
+msgstr "Set maximum time of the API request what is allowed to take (Default is 9)"
+
+#: admin/pages/page-settings/settings-global.php:48
+msgid "Enable Proxy"
+msgstr "Enable Proxy"
+
+#: admin/pages/page-settings/settings-global.php:56
+msgid "Need Proxy? We have Recommended Service For You."
+msgstr "Need Proxy? We have Recommended Service For You."
+
+#: admin/pages/page-settings/settings-global.php:60
+msgid "NOTE & INFO"
+msgstr "NOTE & INFO"
+
+#: admin/pages/page-settings/settings-global.php:60
+msgid "Some servers not share real IP because of security reasons or IP is blocked from geolocation. Using proxy you can bypass that protocols and enable geoplugin to work properly. Also, this option on individual servers can cause inaccurate geo informations, and because of that this option is disabled by default. You need to test this option on your side and use."
+msgstr "Some servers not share real IP because of security reasons or IP is blocked from geolocation. Using proxy you can bypass that protocols and enable geoplugin to work properly. Also, this option on individual servers can cause inaccurate geo informations, and because of that this option is disabled by default. You need to test this option on your side and use."
+
+#: admin/pages/page-settings/settings-global.php:68
+#: admin/pages/page-settings/settings-google-map.php:162
+msgid "Save Settings"
+msgstr "Save Settings"
+
+#: admin/pages/page-settings/settings-google-map.php:13
+msgid "Some functions are only enabled in premium version. Don't worry, we setup for you optimal settings."
+msgstr "Some functions are only enabled in premium version. Don't worry, we setup for you optimal settings."
+
+#: admin/pages/page-settings/settings-google-map.php:19
+msgid "Google Map JavaScript API Key"
+msgstr "Google Map JavaScript API Key"
+
+#: admin/pages/page-settings/settings-google-map.php:22
+msgid "GET API KEY"
+msgstr "GET API KEY"
+
+#: admin/pages/page-settings/settings-google-map.php:22
+msgid "In some countries Google Maps JavaScript API applications require authentication."
+msgstr "In some countries Google Maps JavaScript API applications require authentication."
+
+#: admin/pages/page-settings/settings-google-map.php:27
+msgid "Default Latitude"
+msgstr "Default Latitude"
+
+#: admin/pages/page-settings/settings-google-map.php:30
+#: admin/pages/page-settings/settings-google-map.php:38
+msgid "Leave blank for CF GeoPlugin default support or place custom value"
+msgstr "Leave blank for CF GeoPlugin default support or place custom value"
+
+#: admin/pages/page-settings/settings-google-map.php:35
+msgid "Default Longitude"
+msgstr "Default Longitude"
+
+#: admin/pages/page-settings/settings-google-map.php:43
+msgid "Default Map Width"
+msgstr "Default Map Width"
+
+#: admin/pages/page-settings/settings-google-map.php:52
+msgid "Default Map Height"
+msgstr "Default Map Height"
+
+#: admin/pages/page-settings/settings-google-map.php:61
+msgid "Default Max Zoom"
+msgstr "Default Max Zoom"
+
+#: admin/pages/page-settings/settings-google-map.php:76
+msgid "Zooming"
+msgstr "Zooming"
+
+#: admin/pages/page-settings/settings-google-map.php:86
+#, php-format
+msgid "If %s, disables scrollwheel zooming on the map."
+msgstr "If %s, disables scrollwheel zooming on the map."
+
+#: admin/pages/page-settings/settings-google-map.php:86
+#: admin/pages/page-settings/settings-google-map.php:101
+#: admin/pages/page-settings/settings-google-map.php:146
+msgid "disabled"
+msgstr "disabled"
+
+#: admin/pages/page-settings/settings-google-map.php:91
+msgid "Navigation"
+msgstr "Navigation"
+
+#: admin/pages/page-settings/settings-google-map.php:101
+#, php-format
+msgid "If %s, disables navigation on the map. The initial enabled/disabled state of the Map type control."
+msgstr "If %s, disables navigation on the map. The initial enabled/disabled state of the Map type control."
+
+#: admin/pages/page-settings/settings-google-map.php:106
+msgid "Map Type Control"
+msgstr "Map Type Control"
+
+#: admin/pages/page-settings/settings-google-map.php:121
+msgid "Scale Control"
+msgstr "Scale Control"
+
+#: admin/pages/page-settings/settings-google-map.php:131
+msgid "The initial display options for the scale control."
+msgstr "The initial display options for the scale control."
+
+#: admin/pages/page-settings/settings-google-map.php:136
+msgid "Draggable"
+msgstr "Draggable"
+
+#: admin/pages/page-settings/settings-google-map.php:146
+#, php-format
+msgid "If %s, the object can be dragged across the map and the underlying feature will have its geometry updated."
+msgstr "If %s, the object can be dragged across the map and the underlying feature will have its geometry updated."
+
+#: admin/pages/page-settings/settings-google-map.php:151
+msgid "Info Box Max Width"
+msgstr "Info Box Max Width"
+
+#: admin/pages/page-settings/settings-google-map.php:155
+msgid "Maximum width of info popup inside map (integer from 0 to 600)."
+msgstr "Maximum width of info popup inside map (integer from 0 to 600)."
+
+#: includes/class-cf-geoplugin-api.php:208
+msgid "dns_get_record(): A temporary server error occurred."
+msgstr "dns_get_record(): A temporary server error occurred."
+
+#: includes/class-cf-geoplugin-filter.php:80
+msgid "Filter"
+msgstr "Filter"
+
+#: includes/class-cf-geoplugin.php:159
+msgid "Locations"
+msgstr "Locations"
+
+#: includes/class-cf-geoplugin.php:181 includes/class-cf-geoplugin.php:256
+#: includes/class-cf-geoplugin.php:258 includes/class-cf-geoplugin.php:270
+msgid "Countries"
+msgstr "Countries"
+
+#: includes/class-cf-geoplugin.php:182 includes/class-cf-geoplugin.php:282
+#: includes/class-cf-geoplugin.php:284 includes/class-cf-geoplugin.php:296
+msgid "Regions"
+msgstr "Regions"
+
+#: includes/class-cf-geoplugin.php:183 includes/class-cf-geoplugin.php:308
+#: includes/class-cf-geoplugin.php:310 includes/class-cf-geoplugin.php:322
+msgid "Cities"
+msgstr "Cities"
+
+#: includes/class-cf-geoplugin.php:220 includes/class-cf-geoplugin.php:221
+msgid "Geo Banner"
+msgstr "Geo Banner"
+
+#: includes/class-cf-geoplugin.php:222 includes/class-cf-geoplugin.php:223
+msgid "Add New Banner"
+msgstr "Add New Banner"
+
+#: includes/class-cf-geoplugin.php:224
+msgid "Edit Banner"
+msgstr "Edit Banner"
+
+#: includes/class-cf-geoplugin.php:225
+msgid "New Banner"
+msgstr "New Banner"
+
+#: includes/class-cf-geoplugin.php:226
+msgid "View Banner"
+msgstr "View Banner"
+
+#: includes/class-cf-geoplugin.php:227
+msgid "Search Banner"
+msgstr "Search Banner"
+
+#: includes/class-cf-geoplugin.php:228
+msgid "No Banner Found"
+msgstr "No Banner Found"
+
+#: includes/class-cf-geoplugin.php:229
+msgid "No Banner Found in Trash"
+msgstr "No Banner Found in Trash"
+
+#: includes/class-cf-geoplugin.php:231
+msgid "Banner Image"
+msgstr "Banner Image"
+
+#: includes/class-cf-geoplugin.php:232
+msgid "Select Banner Image"
+msgstr "Select Banner Image"
+
+#: includes/class-cf-geoplugin.php:233
+msgid "Remove Banner Image"
+msgstr "Remove Banner Image"
+
+#: includes/class-cf-geoplugin.php:234
+msgid "Use Banner Image"
+msgstr "Use Banner Image"
+
+#: includes/class-cf-geoplugin.php:235
+msgid "Insert Into Banner"
+msgstr "Insert Into Banner"
+
+#: includes/class-cf-geoplugin.php:259
+msgid "All Countries"
+msgstr "All Countries"
+
+#: includes/class-cf-geoplugin.php:260
+msgid "Edit Country"
+msgstr "Edit Country"
+
+#: includes/class-cf-geoplugin.php:261
+msgid "View Country"
+msgstr "View Country"
+
+#: includes/class-cf-geoplugin.php:262
+msgid "Update Country"
+msgstr "Update Country"
+
+#: includes/class-cf-geoplugin.php:263
+msgid "Add New Country"
+msgstr "Add New Country"
+
+#: includes/class-cf-geoplugin.php:264
+msgid "New Country Name"
+msgstr "New Country Name"
+
+#: includes/class-cf-geoplugin.php:265 includes/class-cf-geoplugin.php:266
+msgid "Parent Country"
+msgstr "Parent Country"
+
+#: includes/class-cf-geoplugin.php:285
+msgid "All Regions"
+msgstr "All Regions"
+
+#: includes/class-cf-geoplugin.php:286
+msgid "Edit Region"
+msgstr "Edit Region"
+
+#: includes/class-cf-geoplugin.php:287
+msgid "View Region"
+msgstr "View Region"
+
+#: includes/class-cf-geoplugin.php:288
+msgid "Update Region"
+msgstr "Update Region"
+
+#: includes/class-cf-geoplugin.php:289
+msgid "Add New Region"
+msgstr "Add New Region"
+
+#: includes/class-cf-geoplugin.php:290
+msgid "New Region Name"
+msgstr "New Region Name"
+
+#: includes/class-cf-geoplugin.php:291 includes/class-cf-geoplugin.php:292
+msgid "Parent Region"
+msgstr "Parent Region"
+
+#: includes/class-cf-geoplugin.php:311
+msgid "All Cities"
+msgstr "All Cities"
+
+#: includes/class-cf-geoplugin.php:312
+msgid "Edit City"
+msgstr "Edit City"
+
+#: includes/class-cf-geoplugin.php:313
+msgid "View City"
+msgstr "View City"
+
+#: includes/class-cf-geoplugin.php:314
+msgid "Update City"
+msgstr "Update City"
+
+#: includes/class-cf-geoplugin.php:315
+msgid "Add New City"
+msgstr "Add New City"
+
+#: includes/class-cf-geoplugin.php:316
+msgid "New City Name"
+msgstr "New City Name"
+
+#: includes/class-cf-geoplugin.php:317 includes/class-cf-geoplugin.php:318
+msgid "Parent City"
+msgstr "Parent City"
+
+#: admin/pages/page-credits.php:13
+#: admin/pages/page-credits.php:58
+msgid "Development Team"
+msgstr "Development Team"
+
+#: admin/pages/page-credits.php:21
+msgid "Meet our valuable team members who work hard to improve this plugin and its functionality. If you like us you also can be a part of it and support us with new idea and functionality. Let's made miracle together!"
+msgstr "Meet our valuable team members who work hard to improve this plugin and its functionality. If you like us you also can be a part of it and support us with new idea and functionality. Let's made miracle together!"
+
+#: admin/pages/page-credits.php:68
+msgid "Sponsors"
+msgstr "Sponsors"
+
+#: admin/pages/page-credits.php:78
+msgid "Contributors"
+msgstr "Contributors"
+
+#: admin/pages/page-credits.php:90
+msgid "Meet our valuable sponsors who support us and help our development team. If you like to be our sponsor and your logo appears here please contact us %s"
+msgstr "Meet our valuable sponsors who support us and help our development team. If you like to be our sponsor and your logo appears here please contact us %s"
