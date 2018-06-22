@@ -1,4 +1,4 @@
-CF GeoPlugin
+CF GeoPlugin [CF GeoPlugin is WordPress 4.9.6 Compatible](https://plugintests.com/plugins/cf-geoplugin/wp-badge.svg) [CF GeoPlugin is PHP 7 Compatible](https://plugintests.com/plugins/cf-geoplugin/php-badge.svg) [CF GeoPlugin version 6.x](https://img.shields.io/badge/CF%20GeoPlugin-6.X-green.svg)
 ========
 
 The **CF Geo Plugin** is FREE plugin that allows you to attach content, geographic information and Google maps to posts, pages, widgets and custom templates by using simple Shortcodes, PHP code or JavaScript by user IP address. It also lets you to specify a default geographic location for your entire WordPress blog. This plugin is also great for SEO and increasing conversions on your blog or landing pages.
@@ -23,3 +23,5 @@ CONTACT:
 ========
 
 Please contact me anytime regarding anything related to CF GeoPlugin office@cfgeoplugin.com
+
+Copyright &copy; [CF GeoPlugin](https://cfgeoplugin.com)
