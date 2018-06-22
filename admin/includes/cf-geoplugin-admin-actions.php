@@ -102,14 +102,14 @@ function cf_geoplugin_admin_menu(){
 			'cf-geoplugin-settings',
 			'cf_geoplugin_page_settings'
 		);
-		add_submenu_page(
+		/*add_submenu_page(
 			'cf-geoplugin',
 			__('F.A.Q.',CFGP_NAME),
 			__('F.A.Q.',CFGP_NAME),
 			'manage_options',
 			'cf-geoplugin-faq',
 			'cf_geoplugin_page_faq'
-		);
+		);*/
 		
 		if(!CFGP_ACTIVATED)
 		{
