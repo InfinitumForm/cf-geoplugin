@@ -1,9 +1,10 @@
 <div class="postbox-container" id="postbox-container-1">
 	<?php
-		$data = CF_GEO_D::curl_get("http://cfgeoplugin.com/team.json");
-		$data = json_decode($data);
+		//$data = CF_GEO_D::curl_get("http://cfgeoplugin.com/team.json");
+		//$data = json_decode($data);
 		$defender = new CF_Geoplugin_Defender;
 		$enable=$defender->enable;
+		
 	//	var_dump($data);
 	?>
 	<?php if($enable==false): ?>
@@ -29,7 +30,7 @@
 		</div>
 	</div>
 	<?php endif; ?>
-	<?php if(isset($data->sponsors)): ?>
+	<?php /* if(isset($data->sponsors)): ?>
 	<div class="postbox">
 		<h2 class="hndle ui-sortable-handle"><span><span class="fa fa-star-o"></span> <?php _e('Valuable Sponsors',CFGP_NAME); ?></span></h2>
 		<div class="inside">
@@ -42,7 +43,7 @@
 			?>
 		</div>
 	</div>
-	<?php endif; ?>
+	<?php  endif;*/ ?>
 <!--	<div class="postbox">
 		<h2 class="hndle ui-sortable-handle"><span><span class="fa fa-heartbeat"></span> <?php _e('Donate',CFGP_NAME); ?></span></h2>
 		<div class="inside">
@@ -71,17 +72,20 @@
 			</form>
 		</div>
 	</div> -->
-	<?php if(isset($data->info) && count($data->info)>0): ?>
+
 	<div class="postbox">
 		<h2 class="hndle ui-sortable-handle"><span><span class="fa fa-info"></span> <?php _e('Live News & Info',CFGP_NAME); ?></span></h2>
-		<div class="inside">
-			 <?php
-				foreach($data->info as $i)
-				{
-					echo sprintf('<p><h4>%s</h4>%s<br><small>~%s</small></p>',$i->title, $i->text, $i->date);
-				}
-			?>
+		<script>
+        	(function($){
+				$.post('<?php echo admin_url('admin-ajax.php'); ?>', {action:'cf_geo_rss_feed'}).done(function(d){$("#rss").html(d);});
+			}(jQuery || window.jQuery));
+        </script>
+        <div class="inside" id="rss">
+        	 <div style="text-align:center; padding:32px 0">
+                 <i class="fa fa-circle-o-notch fa-spin fa-5x fa-fw"></i>
+                 <span class="sr-only">Loading...</span>
+             </div>
 		</div>
 	</div>
-	<?php endif; ?>
+
 </div>

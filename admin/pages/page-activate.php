@@ -74,20 +74,21 @@ if(isset($_POST['license_key']) && isset($_POST['cf_geo_license'])) :
 	}	
 endif;
 ?><div class="wrap">
-	<h2><span class="fa fa-star-o"></span> <?php _e('Activate Unlimited',CFGP_NAME); ?></h2>
-    <p class="about-description"><?php printf(
-		__('You currently using free version of plugin with a limited number of lookups.<br>Each free version of this plugin is limited to %1$s lookups per day and you have only %2$s lookups available for today. If you want to have unlimited lookup, please enter your license key.<br>If you are unsure and do not understand what this is about, read %3$s.<br><br>Also, before any action don\'t forget to read and agree with %4$s and %5$s.',CFGP_NAME),
-		
-		'<strong>300</strong>',
-		'<strong>'.do_shortcode('[cf_geo return="lookup"]').'</strong>',
-		'<strong><a href="https://cfgeoplugin.com/new-plugin-new-features-new-success/" target="_blank">' . __('this article',CFGP_NAME) . '</a></strong>',
-		'<strong><a href="https://cfgeoplugin.com/privacy-policy/" target="_blank">' . __('Privacy Policy',CFGP_NAME) . '</a></strong>',
-		'<strong><a href="https://cfgeoplugin.com/terms-and-conditions/" target="_blank">' . __('Terms & Conditions',CFGP_NAME) . '</a></strong>'
-	); ?></strong></p><br>
+	
     
     <div id="poststuff">
         <div id="post-body" class="metabox-holder columns-2">
             <div id="post-body-content">
+            	<h2><span class="fa fa-star-o"></span> <?php _e('Activate Unlimited',CFGP_NAME); ?></h2>
+                <p class="about-description"><?php printf(
+                    __('You currently using free version of plugin with a limited number of lookups.<br>Each free version of this plugin is limited to %1$s lookups per day and you have only %2$s lookups available for today. If you want to have unlimited lookup, please enter your license key.<br>If you are unsure and do not understand what this is about, read %3$s.<br><br>Also, before any action don\'t forget to read and agree with %4$s and %5$s.',CFGP_NAME),
+                    
+                    '<strong>300</strong>',
+                    '<strong>'.do_shortcode('[cf_geo return="lookup"]').'</strong>',
+                    '<strong><a href="https://cfgeoplugin.com/information/new-plugin-new-features-new-success/" target="_blank">' . __('this article',CFGP_NAME) . '</a></strong>',
+                    '<strong><a href="https://cfgeoplugin.com/privacy-policy/" target="_blank">' . __('Privacy Policy',CFGP_NAME) . '</a></strong>',
+                    '<strong><a href="https://cfgeoplugin.com/terms-and-conditions/" target="_blank">' . __('Terms & Conditions',CFGP_NAME) . '</a></strong>'
+                ); ?></strong></p><br>
 				<form method="post" enctype="multipart/form-data" action="<?php echo $url->url; ?>" target="_self" id="license-form" autocomplete="off">
                 	<strong><label>License Key (required)</label></strong><br>
                 	<input type="text" name="license_key" value="<?php echo isset($_POST['license_key']) ? $_POST['license_key'] : ''; ?>" placeholder="CF*********************Ge0" autocomplete="off" style="width: 300px;"> 
@@ -120,6 +121,7 @@ endif;
                     <input type="hidden" name="cf_geo_license" value="1">
                 </form>
             </div>
+            <?php require_once plugin_dir_path(__FILE__) . 'include/sidebar.php'; ?> 
         </div>
     </div>
     

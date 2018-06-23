@@ -258,11 +258,7 @@ if($cf_geo_enable_gmap == 'true' && isset($gpReturn['latitude']) && isset($gpRet
     </div>
 </form>
 </div><br><br>
-</div>
-            
-            <?php require_once plugin_dir_path(__FILE__) . 'include/sidebar.php'; ?>  
-                 
-                 
+</div>    <?php require_once plugin_dir_path(__FILE__) . 'include/sidebar.php'; ?>
         </div>
     </div>
 </div>

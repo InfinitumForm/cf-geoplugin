@@ -59,6 +59,10 @@ class CF_Geoplugin_Admin {
 		add_action( 'admin_head', array($this, 'cf_geoplugin_admin_script') );
 		add_action( 'admin_head', array($this, 'cf_geoplugin_public_script') );
 		add_action( 'wp_head', array($this, 'cf_geoplugin_public_script'),1,1);
+		
+		add_action('wp_ajax_cf_geo_rss_feed', array($this, 'cf_geo_rss_feed'));
+		add_action('wp_ajax_nopriv_cf_geo_rss_feed', array($this, 'cf_geo_rss_feed'));
+	
 		$this->cf_geoplugin = $cf_geoplugin;
 		$this->version 		= $version;
 		$this->prefix	 	= $prefix;
@@ -69,6 +73,25 @@ class CF_Geoplugin_Admin {
 		new CF_Geoplugin_TinyMce_Banners;
 		$encrypt = new CF_Geoplugin_Defender;
 		$this->defender = $encrypt->enable;
+	}
+	
+	
+	public function cf_geo_rss_feed()
+	{
+		include CFGP_INCLUDES . '/class-xml-parse.php';
+		$xml= new parseXML('https://cfgeoplugin.com/feed/', true);
+		if(isset($xml->fetch) && isset($xml->fetch->channel) && isset($xml->fetch->channel->item) && count($xml->fetch->channel->item)>0)
+		{
+			$items = $xml->fetch->channel->item;
+			$i = 0;
+			foreach($items as $fetch)
+			{
+				if($i >= 5) continue;
+				printf('<p><a href="%s" target="_blank"><h4>%s</h4></a>%s<br><small>~%s</small></p>',$fetch->link, $fetch->title, $fetch->description, date("F j, Y", strtotime($fetch->pubDate)));
+				++$i;
+			}
+		}
+		exit;
 	}
 	
 	

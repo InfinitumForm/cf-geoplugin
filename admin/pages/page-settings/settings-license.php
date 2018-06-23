@@ -88,7 +88,7 @@ printf(
     
     '<strong>300</strong>',
     '<strong>'.do_shortcode('[cf_geo return="lookup"]').'</strong>',
-    '<strong><a href="https://cfgeoplugin.com/new-plugin-new-features-new-success/" target="_blank">' . __('this article',CFGP_NAME) . '</a></strong>',
+    '<strong><a href="https://cfgeoplugin.com/information/new-plugin-new-features-new-success/" target="_blank">' . __('this article',CFGP_NAME) . '</a></strong>',
     '<strong><a href="https://cfgeoplugin.com/privacy-policy/" target="_blank">' . __('Privacy Policy',CFGP_NAME) . '</a></strong>',
     '<strong><a href="https://cfgeoplugin.com/terms-and-conditions/" target="_blank">' . __('Terms & Conditions',CFGP_NAME) . '</a></strong>'
 ); ?></strong></p><br>

@@ -1,22 +1,41 @@
 ﻿=== CF Geo Plugin ===
 Contributors: ivijanstefan, creativform
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=creativform@gmail.com
-Tags: geo plugin, geo location, geotarget, geo banner, market, conversion, conversion plugin, automatic banner, banner, business, location, google map, gmaps, gmap, seo, seo tool, user experience, ux plugin, contact form, dynamic keyword, ip, ip location, region, position, positioning, marketing, block visitors, defender, block spam, block region, tag, geo, target, local, find ip, ip finder, geo target, geo image, geo content. include content, exclude content, include, exclude, seo redirection, url redirection, country redirection, redirection, flag, country flag, national flag, flags, custom flags, gdpr
+Tags: geo plugin, geo location, geotarget, geo banner, market, conversion, conversion plugin, automatic banner, banner, business, location, google map, gmaps, gmap, seo, seo tool, user experience, ux plugin, contact form, dynamic keyword, ip, ip location, region, position, positioning, marketing, block visitors, defender, block spam, block region, tag, geo, target, local, find ip, ip finder, geo target, geo image, geo content. include content, exclude content, include, exclude, seo redirection, url redirection, country redirection, redirection, flag, country flag, national flag, flags, custom flags, gdpr, localization, ecommerce, legal requiremants, legal, currency
 Requires at least: 3.0
 Tested up to: 4.9
-Stable tag: 6.0.2
+Requires PHP: 5.4.0
+Stable tag: 6.0.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
+The CF GeoPlugin allows you to attach content, geographic information and Google maps to posts, pages, widgets... using shortcodes, PHP or JavaScript.
+
 == Description ==
 
-The **CF Geo Plugin** allows you to attach content, geographic information and Google maps to posts, pages, widgets and custom templates by using simple Shortcodes, PHP code or JavaScript by user IP address. It also lets you to specify a default geographic location for your entire WordPress blog. This plugin is also great for SEO and increasing conversions on your blog or landing pages.
+The **CF Geo Plugin** is **FREE** plugin that allows you to attach content, geographic information and Google maps to posts, pages, widgets and custom templates by using simple Shortcodes, PHP code or JavaScript by user IP address. It also lets you to specify a default geographic location for your entire WordPress blog. This plugin is also great for SEO and increasing conversions on your blog or landing pages.
+
+= BENEFITS =
+
+> <strong>GEO-MARKETING</strong><br>
+> - **Create marketing campaigns** targeted only at certain locations.
+> - **Create landing pages** targeted only at certain locations.
+> - **Create banners, videos and any other content** targeted only at certain locations.
+> 
+> <strong>ECOMMERCE</strong><br>
+> - **Display local currency**, local symbol or converter
+> - **Use currency converter** to calculate price in local currency
+> 
+> <strong>LOCALIZATION</strong><br>
+> - **Redirect incoming traffic** to content in the local language or currency.
+> - Businesses with local branches **can direct customers to a relevant physical location** or local microsite.
+> 
+> <strong>LEGAL REQUIREMENTS</strong></br>
+> - **Filter required legal notices**, text, forms, etc. from countries for whom those content may not be relevant.
 
 = Compatibility =
 
 This plugin is compatible with any Wordpress installation, also compatible with *[Contact Form 7](https://wordpress.org/plugins/contact-form-7/)*, *[WooCommerce](https://woocommerce.com/)*, *[Nord VPN proxy service](https://goo.gl/lWm3e6)* and support *[Cloudflare](https://www.cloudflare.com/)*.
-
-Over the past year, we develop this plugin to be useful to you and from time to time we add new options according to your requirements and our research according to what is now most necessary for geolocation marketing strategy. Therefore, we introduced a new necessary and useful features in one place and have made a significant step in the development of our plugin.
 
 > <strong>All CF Geo Plugin 6.x.x Features</strong><br>
 >
@@ -37,6 +56,7 @@ Over the past year, we develop this plugin to be useful to you and from time to 
 
 `[cf_geo]`
 `[cf_geo return="region"]`
+`We just found shoes in [cf_geo return="city"] that you can buy for 50% discount.`
 `[cf_geo ip="127.0.0.1" return="area_code"]`
 `[cf_geo exclude="Toronto"] This text is seeing by everyone except Toronto people [/cf_geo]`
 `[cf_geo include="New York"] This text seeing only people from New York [/cf_geo]`
@@ -99,9 +119,9 @@ We allow you also full controll of this flags and you can place css, class or id
 
 = Info & Contact =
 
-Please visit our website [www.cfgeoplugin.com](http://cfgeoplugin.com/) and fell free to contact us. We will provide for you all services what you need.
+Please visit our website [www.cfgeoplugin.com](https://cfgeoplugin.com/) and fell free to contact us. We will provide for you all services what you need.
 
-Also please inform us if any errors occure via contact form on our website [http://cfgeoplugin.com/](http://cfgeoplugin.com/) with message subject: **CF Geo Plugin SUPPORT**
+Also please inform us if any errors occure via contact form on our website [http://cfgeoplugin.com/](https://cfgeoplugin.com/contact).
 
 Thank you for your concern!
 
@@ -223,6 +243,12 @@ Please inform us if any of these errors occure via contact form on our website [
 
 == Changelog ==
 
+= 6.0.3 =
+
+* Fixed typo into explanations
+* Created RSS feeds into plugin pages
+* Fixed UI bugs
+
 = 6.0.2 =
 
 * Fixed admin navigation
@@ -240,14 +266,21 @@ Please inform us if any of these errors occure via contact form on our website [
 * Improved Speed
 * Improved Security
 
+== Upgrade Notice ==
+
+= 6.0.0 =
+Please upgrade your plugin to version 6.x because we shut down old version 5.x on Friday, June 22, 2018
+
 
 == Other Notes ==
 
 = Plugin Links =
 
-* [CF Geo Plugin Official Website](http://cfgeoplugin.com/)
-* [CreativForm Development Team](http://creativform.com/)
-* [Drax Host Service Team](https://goo.gl/iRmYE8)
+* [CF Geo Plugin Official Website](https://cfgeoplugin.com/)
+* [CF Geo Plugin Blog](https://cfgeoplugin.com/blog/)
+* [F.A.Q](https://cfgeoplugin.com/faq/)
+* [Contact or Support](https://cfgeoplugin.com/contact/)
+* [Jobs or Opportunity](https://cfgeoplugin.com/get-involved/)
 
 = DONATION =
 
@@ -255,13 +288,13 @@ Enjoy using *CF Geo Plugin*? Please consider [making a small donation](https://w
 
 = TERMS AND CONDITIONS  =
 
-Please read these Terms and Conditions ("Terms", "Terms and Conditions") carefully before using the [www.cfgeoplugin.com](http://cfgeoplugin.com) website and the CF Geo Plugin WordPress application (the "Service") operated by CF Geo Plugin.
+Please read these Terms and Conditions ("Terms", "Terms and Conditions") carefully before using the [www.cfgeoplugin.com](https://cfgeoplugin.com) website and the CF Geo Plugin WordPress application (the "Service") operated by CF Geo Plugin.
 
-[Read about Terms and Conditions](http://cfgeoplugin.com/terms-and-conditions)
+[Read about Terms and Conditions](https://cfgeoplugin.com/terms-and-conditions)
 
 = PRIVACY POLICY =
-We respect your privacy and take protecting it seriously. This Privacy Policy covers our collection, use and disclosure of information we collect through our website and service, [www.cfgeoplugin.com](http://cfgeoplugin.com) owned and operated by CF Geo Plugin. It also describes the choices available to you regarding our use of your personal information and how you can access and update this information. The use of information collected through our service shall be limited to the purpose of providing the service for which our Clients have engaged us. Also we respect and take care about Europe General Data Protection Regulation (GDPR) and your freedom and private choices.
+We respect your privacy and take protecting it seriously. This Privacy Policy covers our collection, use and disclosure of information we collect through our website and service, [www.cfgeoplugin.com](https://cfgeoplugin.com) owned and operated by CF Geo Plugin. It also describes the choices available to you regarding our use of your personal information and how you can access and update this information. The use of information collected through our service shall be limited to the purpose of providing the service for which our Clients have engaged us. Also we respect and take care about Europe General Data Protection Regulation (GDPR) and your freedom and private choices.
 
-[Read about Privacy Policy](http://cfgeoplugin.com/privacy-policy)
+[Read about Privacy Policy](https://cfgeoplugin.com/privacy-policy)
 
 For further questions and clarifications, do not hesitate to contact us and we will reply back to you within 48 hours.

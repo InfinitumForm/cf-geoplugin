@@ -8,7 +8,7 @@
  * Plugin Name:       CF Geo Plugin
  * Plugin URI:        http://cfgeoplugin.com/
  * Description:       Create Dynamic Content, Banners and Images on Your Website Based On Visitor Geo Location By Using Shortcodes With CF GeoPlugin.
- * Version:           6.0.2
+ * Version:           6.0.3
  * Author:            Ivijan-Stefan Stipic
  * Author URI:        https://linkedin.com/in/ivijanstefanstipic
  * License:           GPL-2.0+
@@ -211,17 +211,30 @@ function cf_geoplugin() {
 			){} else add_action( 'plugins_loaded', 'cf_geo_activation' );
 		}
 		function cf_geo_activation() {
-			add_action( 'admin_notices', 'cf_geo_activation_notice__error' );
+			$lookup = do_shortcode('[cf_geo return="lookup"]');
+			if(is_numeric($lookup) && (
+					((int)$lookup) <= 300 && ((int)$lookup) >= 295
+					|| ((int)$lookup) <= 200 && ((int)$lookup) >= 195
+					|| ((int)$lookup) <= 100
+				)
+			){
+				add_action( 'admin_notices', 'cf_geo_activation_notice__error' );
+			}
 		}
 	
 		function cf_geo_activation_notice__error() {
-			$class = 'notice notice-warning is-dismissible';
 			$title = __( 'CF GEO PLUGIN', CFGP_NAME );
+			$lookup = (int)do_shortcode('[cf_geo return="lookup"]');
+			if($lookup && $lookup > 50)
+				$class = 'notice notice-warning is-dismissible';
+			else
+				$class = 'notice notice-error is-dismissible';
+				
 			$message1 = sprintf(
 				__('You currently using free version of plugin with a limited number of lookups.<br>Each free version of this plugin is limited to %1$s lookups per day and you have only %2$s lookups available for today. If you want to have unlimited lookup, please enter your license key.<br>If you are unsure and do not understand what this is about, read %3$s.<br><br>Also, before any action don\'t forget to read and agree with %4$s and %5$s.',CFGP_NAME),
 				
 				'<strong>300</strong>',
-				'<strong>'.do_shortcode('[cf_geo return="lookup"]').'</strong>',
+				'<strong>'.$lookup.'</strong>',
 				'<strong><a href="https://cfgeoplugin.com/new-plugin-new-features-new-success/" target="_blank">' . __('this article',CFGP_NAME) . '</a></strong>',
 				'<strong><a href="https://cfgeoplugin.com/privacy-policy/" target="_blank">' . __('Privacy Policy',CFGP_NAME) . '</a></strong>',
 				'<strong><a href="https://cfgeoplugin.com/terms-and-conditions/" target="_blank">' . __('Terms & Conditions',CFGP_NAME) . '</a></strong>'
@@ -229,7 +242,7 @@ function cf_geoplugin() {
 			$message2 = '<a href="' . admin_url('/admin.php?page=cf-geoplugin-activate') . '" class="button button-primary">' . __('Activate Unlimited',CFGP_NAME) . '</a>';
 
 	
-			printf( '<div class="%1$s"><h3>%2$s</h3><p>%3$s</p><p><strong>%4$s</strong></p><button type="button" class="notice-dismiss"><span class="screen-reader-text">' . __('Dismiss this notice.') . '</span></button></div>', esc_attr( $class ), esc_html( $title ),  $message1, $message2); 
+			printf( '<div class="%1$s"><h3>%2$s</h3><p>%3$s</p><p><strong>%4$s</strong></p></div>', esc_attr( $class ), esc_html( $title ),  $message1, $message2); 
 		}
 		
 		// Global Variable
