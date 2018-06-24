@@ -3,7 +3,6 @@
 if ( ! defined( 'CFGP_ROOT' ) )				define( 'CFGP_ROOT', plugin_dir_path(CFGP_FILE) );
 if ( ! defined( 'CFGP_INCLUDES' ) )			define( 'CFGP_INCLUDES', __DIR__.'/includes' );
 if ( ! defined( 'CFGP_URL' ) )				define( 'CFGP_URL', plugin_dir_url( CFGP_FILE ) );
-if ( ! defined( 'CFGP_VERSION' ) )			define( 'CFGP_VERSION', '6.0.3');
 if ( ! defined( 'CFGP_NAME' ) )				define( 'CFGP_NAME', 'cf-geoplugin');
 if ( ! defined( 'CFGP_METABOX' ) )			define( 'CFGP_METABOX', 'cf_geo_metabox_');
 if ( ! defined( 'CFGP_PREFIX' ) )			define( 'CFGP_PREFIX', 'cf_geo_'.preg_replace("/[^0-9]/Ui",'',CFGP_VERSION).'_');

@@ -416,7 +416,7 @@ class CF_Geoplugin {
 			'supports'          	=> array( 'title', 'editor', /*'thumbnail',*/ 'tags' ),
 			//'menu_icon'         	=> plugin_dir_url( dirname( __FILE__ ) ) . 'admin/images/cf-geo-banner-25x25.png'
 			'menu_icon' 			=> 'dashicons-pressthis',
-			//'show_in_menu'			=> 'admin.php'
+			'show_in_menu'			=> false
 		);
 		register_post_type( 'cf-geoplugin-banner', $projects );
 	}

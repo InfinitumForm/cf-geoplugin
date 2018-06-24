@@ -8,7 +8,7 @@
  * Plugin Name:       CF Geo Plugin
  * Plugin URI:        http://cfgeoplugin.com/
  * Description:       Create Dynamic Content, Banners and Images on Your Website Based On Visitor Geo Location By Using Shortcodes With CF GeoPlugin.
- * Version:           6.0.3
+ * Version:           6.0.4
  * Author:            Ivijan-Stefan Stipic
  * Author URI:        https://linkedin.com/in/ivijanstefanstipic
  * License:           GPL-2.0+
@@ -35,7 +35,8 @@
 if ( ! defined( 'WPINC' ) || ! defined( 'ABSPATH' ) ) die( "Don't mess with us." );
 
 // Define main file
-if ( ! defined( 'CFGP_FILE' ) )	define( 'CFGP_FILE', __FILE__ );
+if ( ! defined( 'CFGP_FILE' ) )		define( 'CFGP_FILE', __FILE__ );
+if ( ! defined( 'CFGP_VERSION' ) )	define( 'CFGP_VERSION', '6.0.4');
 
 /**
  * DEBUG MODE
