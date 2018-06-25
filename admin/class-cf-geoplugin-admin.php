@@ -71,6 +71,7 @@ class CF_Geoplugin_Admin {
 		$this->load_dependencies();
 		new CF_Geoplugin_TinyMce_Shortcodes;
 		new CF_Geoplugin_TinyMce_Banners;
+		new CF_GeoPlugin_Admin_Actions;
 		$encrypt = new CF_Geoplugin_Defender;
 		$this->defender = $encrypt->enable;
 	}
