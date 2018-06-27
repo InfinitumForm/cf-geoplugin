@@ -5,7 +5,7 @@ Tags: geo plugin, geo location, geotarget, geo banner, market, conversion, conve
 Requires at least: 3.0
 Tested up to: 4.9
 Requires PHP: 5.4.0
-Stable tag: 6.0.4
+Stable tag: 6.0.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -242,6 +242,19 @@ Please inform us if any of these errors occure via contact form on our website [
 11. SEO Redirection
 
 == Changelog ==
+
+= 6.0.7 =
+
+* Fixed host detection
+* Fixed API key validation
+
+= 6.0.6 =
+
+* Added better session control
+
+= 6.0.5 =
+
+* Fixed Basic license authentication
 
 = 6.0.4 =
 

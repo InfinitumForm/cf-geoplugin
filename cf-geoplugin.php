@@ -8,7 +8,7 @@
  * Plugin Name:       CF Geo Plugin
  * Plugin URI:        http://cfgeoplugin.com/
  * Description:       Create Dynamic Content, Banners and Images on Your Website Based On Visitor Geo Location By Using Shortcodes With CF GeoPlugin.
- * Version:           6.0.4
+ * Version:           6.0.7
  * Author:            Ivijan-Stefan Stipic
  * Author URI:        https://linkedin.com/in/ivijanstefanstipic
  * License:           GPL-2.0+
@@ -36,7 +36,7 @@ if ( ! defined( 'WPINC' ) || ! defined( 'ABSPATH' ) ) die( "Don't mess with us."
 
 // Define main file
 if ( ! defined( 'CFGP_FILE' ) )		define( 'CFGP_FILE', __FILE__ );
-if ( ! defined( 'CFGP_VERSION' ) )	define( 'CFGP_VERSION', '6.0.4');
+if ( ! defined( 'CFGP_VERSION' ) )	define( 'CFGP_VERSION', '6.0.7');
 
 /**
  * DEBUG MODE
@@ -88,30 +88,70 @@ if(!function_exists('cf_geo_is_ssl')) {
 }
 
 /**
- * Start sessions if not exists
+ * Session controll
  *
  * @author     Ivijan-Stefan Stipic <creativform@gmail.com>
  */
-if (version_compare(PHP_VERSION, '7.0.0') >= 0) {
-    if(function_exists('session_status') && session_status() == PHP_SESSION_NONE) {
-        session_start(array(
-          'cache_limiter' => 'private_no_expire',
-          'read_and_close' => false,
-       ));
-    }
-}
-else if (version_compare(PHP_VERSION, '5.4.0') >= 0)
-{
-    if (function_exists('session_status') && session_status() == PHP_SESSION_NONE) {
-        session_start();
-    }
-}
-else
-{
-    if(session_id() == '') {
-        session_start();
-    }
-}
+if(!function_exists('CF_Geoplugin_Session')) :
+	function CF_Geoplugin_Session()
+	{
+		/**
+		 * Start sessions if not exists
+		 *
+		 * @author     Ivijan-Stefan Stipic <creativform@gmail.com>
+		 */
+		if (version_compare(PHP_VERSION, '7.0.0') >= 0) {
+			if(function_exists('session_status') && session_status() == PHP_SESSION_NONE) {
+				session_start(array(
+				  'cache_limiter' => 'private_no_expire',
+				  'read_and_close' => false,
+			   ));
+			}
+		}
+		else if (version_compare(PHP_VERSION, '5.4.0') >= 0)
+		{
+			if (function_exists('session_status') && session_status() == PHP_SESSION_NONE) {
+				session_cache_limiter('private_no_expire');
+				session_start();
+			}
+		}
+		else
+		{
+			if(session_id() == '') {
+				if(version_compare(PHP_VERSION, '4.0.0') >= 0){
+					session_cache_limiter('private_no_expire');
+				}
+				session_start();
+			}
+		}
+		/**
+		 * Clear session on the certain time
+		 *
+		 * This is importnat to avoid bugs regarding accuracy
+		 *
+		 * @author     Ivijan-Stefan Stipic  <creativform@gmail.com>
+		 */
+		$minutes = 5;
+		if(isset($_SESSION[CFGP_PREFIX . 'session_expire']))
+		{
+			if(time() > $_SESSION[CFGP_PREFIX . 'session_expire'])
+			{
+				foreach($_SESSION as $key => $val)
+				{
+					if(strpos($key, CFGP_PREFIX) !== false)
+					{
+						unset($_SESSION[ $key ]);
+					}
+				}
+				$_SESSION[CFGP_PREFIX . 'session_expire'] = (time() + (60 * $minutes));
+			}
+		}
+		else $_SESSION[CFGP_PREFIX . 'session_expire'] = (time() + (60 * $minutes));
+		
+		return $_SESSION[CFGP_PREFIX . 'session_expire'];
+	}
+endif;
+CF_Geoplugin_Session();
 
 /**
  * Start and define all dependency

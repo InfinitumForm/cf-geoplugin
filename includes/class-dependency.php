@@ -33,7 +33,7 @@ class CF_GEO_D
 			"home_fold"	=>	str_replace($domain,'',home_url()),
 			"url"		=>	$url,
 			"domain"	=>	$domain,
-			"hostname"	=>	trim(preg_replace("/(https?)(:\/\/)?/i","",$domain),'/'),
+			"hostname"	=>	self::get_host_address(),
 		);
 	}
 	
@@ -436,5 +436,11 @@ class CF_GEO_D
 			return true;
 		endif;
 		return false;
+	}
+	
+	private static function get_host_address(){
+		$homeURL = get_home_url();
+		$hostInfo = parse_url($homeURL);
+		return strtolower($hostInfo['host']);
 	}
 }

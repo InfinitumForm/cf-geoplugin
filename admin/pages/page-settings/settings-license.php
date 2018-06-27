@@ -101,7 +101,7 @@ printf(
     <select name="sku">
     <?php
         $options = array(
-            'CFGEO1M'	=> __('UNLIMITED Test License',CFGP_NAME),
+            'CFGEO1M'	=> __('UNLIMITED Basic License (1 month)',CFGP_NAME),
             'CFGEOSWL'	=> __('UNLIMITED Personal License',CFGP_NAME),
             'CFGEO3WL'	=> __('UNLIMITED Freelancer License',CFGP_NAME),
             'CFGEODWL'	=> __('UNLIMITED Business License',CFGP_NAME)
