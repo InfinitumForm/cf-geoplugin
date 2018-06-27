@@ -98,7 +98,7 @@ class CF_GeoPlugin_Admin_Actions
                 );
             }
             $cf_geo_enable_banner=(get_option("cf_geo_enable_banner")=='true' ? true : false);
-            if($cf_geo_enable_banner)
+            if($cf_geo_enable_banner == 'true')
             {
                 add_submenu_page(
                     $this->cf_geoplugin_menu_name,
