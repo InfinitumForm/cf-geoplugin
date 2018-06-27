@@ -3,6 +3,16 @@
 
 	$(document).ready(function () {
 
+		var $currentUrl = window.location.href;
+
+		$("#toplevel_page_cf-geoplugin ul.wp-submenu li a").each( function (){
+			if( $currentUrl.indexOf( $(this).attr('href') ) >= 0)
+			{
+				$(this).parent().toggleClass('current');
+				$(this).toggleClass('current').attr('aria-selected', 'page');
+			}
+		});
+
         var $categoryDivs = $('.categorydiv');
 		$categoryDivs.each(function(){
 			var $categoryID = $(this).parent().parent().attr('id');
