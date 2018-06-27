@@ -8,7 +8,7 @@
 		$("#toplevel_page_cf-geoplugin ul.wp-submenu li a").each( function (){
 			if( $currentUrl.indexOf( $(this).attr('href') ) >= 0)
 			{
-				$(this).parent().toggleClass('current');
+				$(this).parent('li').toggleClass('current');
 				$(this).toggleClass('current').attr('aria-selected', 'page');
 			}
 		});
