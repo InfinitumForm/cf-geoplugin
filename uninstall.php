@@ -63,7 +63,8 @@ $delete = array(
 	'cf_geo_license_sku'			=>	'',
 	'cf_geo_license'				=>	'',
 	'cf_geo_store'					=>	'',
-	'cf_geo_store_code'				=>	''
+	'cf_geo_store_code'				=>	'',
+	'cf_geo_auto_update'			=>	''
 );
 if(function_exists("delete_option"))
 {

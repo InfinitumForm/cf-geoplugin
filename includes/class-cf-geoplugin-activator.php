@@ -58,7 +58,8 @@ class CF_Geoplugin_Activator {
 		'cf_geo_license_status'			=>	'',
 		'cf_geo_license'				=>	'0',
 		'cf_geo_store'					=>	'https://cfgeoplugin.com',
-		'cf_geo_store_code'				=>	'YR5pv3FU8l78v3N'
+		'cf_geo_store_code'				=>	'YR5pv3FU8l78v3N',
+		'cf_geo_auto_update'			=>	'true'
 	);
 	/**
 	 * First setup for plugin

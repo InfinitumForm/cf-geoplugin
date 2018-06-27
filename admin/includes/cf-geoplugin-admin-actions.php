@@ -24,16 +24,7 @@ class CF_GeoPlugin_Admin_Actions
      * @var         bool        $defender       Defender option.
      */
     private $defender = false;
-
-    /**
-     * Custom admin menu name.
-     * 
-     * @since       6.0.4
-     * @access      private
-     * @var         string      $this->cf_geoplugin_menu_name       Name of our admin menu.
-     */
-    private $cf_geoplugin_menu_name = 'cf-geoplugin';
-
+    
     /**
 	 * Initialize the class and set its properties.
 	 *
@@ -52,6 +43,7 @@ class CF_GeoPlugin_Admin_Actions
          * Filters
          */
         add_filter( 'plugin_action_links', array( $this, 'cf_geoplugin_add_action_plugin' ), 10, 5 );
+        add_filter( 'auto_update_plugin', array( $this, 'cf_geoplugin_auto_update' ), 10, 2 );
     }
 
     /**
@@ -65,7 +57,7 @@ class CF_GeoPlugin_Admin_Actions
             __('CF GeoPlugin',CFGP_NAME),
             __('CF GeoPlugin',CFGP_NAME),
             'manage_options',
-            $this->cf_geoplugin_menu_name,
+            CFGP_NAME,
             array( $this, 'cf_geoplugin_page_geoplugin' ),
             //plugin_dir_url( dirname( __FILE__ ) ) . 'images/main-menu.png'
             'dashicons-location-alt'
@@ -74,11 +66,11 @@ class CF_GeoPlugin_Admin_Actions
         if($cf_geo_enable_gmap == 'true')
         {
             add_submenu_page(
-                $this->cf_geoplugin_menu_name,
+                CFGP_NAME,
                 __('Google Map',CFGP_NAME),
                 __('Google Map',CFGP_NAME),
                 'manage_options',
-                $this->cf_geoplugin_menu_name . '-google-map',
+                CFGP_NAME . '-google-map',
                 array( $this, 'cf_geoplugin_page_google_map' )
             );
         }
@@ -89,11 +81,11 @@ class CF_GeoPlugin_Admin_Actions
             if($cf_geo_enable_defender == 'true')
             {
                 add_submenu_page(
-                    $this->cf_geoplugin_menu_name,
+                    CFGP_NAME,
                     __('Geo Defender',CFGP_NAME),
                     __('Geo Defender',CFGP_NAME),
                     'manage_options',
-                    $this->cf_geoplugin_menu_name . '-defender',
+                    CFGP_NAME . '-defender',
                     array( $this, 'cf_geoplugin_page_defender' )
                 );
             }
@@ -101,7 +93,7 @@ class CF_GeoPlugin_Admin_Actions
             if($cf_geo_enable_banner == 'true')
             {
                 add_submenu_page(
-                    $this->cf_geoplugin_menu_name,
+                    CFGP_NAME,
                     __('Geo Banner',CFGP_NAME),
                     __('Geo Banner',CFGP_NAME),
                     'manage_options',
@@ -110,48 +102,48 @@ class CF_GeoPlugin_Admin_Actions
                     
             }
             add_submenu_page(
-                $this->cf_geoplugin_menu_name,
+                CFGP_NAME,
                 __('Countries',CFGP_NAME),
                 __('Countries',CFGP_NAME),
                 'manage_options',
                 'edit-tags.php?taxonomy=cf-geoplugin-country&post_type=cf-geoplugin-banner'
             );
             add_submenu_page(
-                $this->cf_geoplugin_menu_name,
+                CFGP_NAME,
                 __('Regions',CFGP_NAME),
                 __('Regions',CFGP_NAME),
                 'manage_options',
                 'edit-tags.php?taxonomy=cf-geoplugin-region&post_type=cf-geoplugin-banner'
             );
             add_submenu_page(
-                $this->cf_geoplugin_menu_name,
+                CFGP_NAME,
                 __('Cities',CFGP_NAME),
                 __('Cities',CFGP_NAME),
                 'manage_options',
                 'edit-tags.php?taxonomy=cf-geoplugin-city&post_type=cf-geoplugin-banner'
             );
             add_submenu_page(
-                $this->cf_geoplugin_menu_name,
+                CFGP_NAME,
                 __('Debug Mode',CFGP_NAME),
                 __('Debug Mode',CFGP_NAME),
                 'manage_options',
-                $this->cf_geoplugin_menu_name . '-debug',
+                CFGP_NAME . '-debug',
                 array( $this, 'cf_geoplugin_page_debug' )
             );
             add_submenu_page(
-                $this->cf_geoplugin_menu_name,
+                CFGP_NAME,
                 __('Settings',CFGP_NAME),
                 __('Settings',CFGP_NAME),
                 'manage_options',
-                $this->cf_geoplugin_menu_name . '-settings',
+                CFGP_NAME . '-settings',
                 array( $this, 'cf_geoplugin_page_settings' )
             );
             /*add_submenu_page(
-                $this->cf_geoplugin_menu_name,
+                CFGP_NAME,
                 __('F.A.Q.',CFGP_NAME),
                 __('F.A.Q.',CFGP_NAME),
                 'manage_options',
-                $this->cf_geoplugin_menu_name . '-faq',
+                CFGP_NAME . '-faq',
                 array( $this, 'cf_geoplugin_page_faq' )
             );*/
             
@@ -159,11 +151,11 @@ class CF_GeoPlugin_Admin_Actions
             {
                 if(!get_option("cf_geo_defender_api_key")) {
                     add_submenu_page(
-                        $this->cf_geoplugin_menu_name,
+                        CFGP_NAME,
                         __('Activate Unlimited',CFGP_NAME),
                         '<span class="dashicons dashicons-star-filled"></span> '.__('Activate Unlimited',CFGP_NAME),
                         'manage_options',
-                        $this->cf_geoplugin_menu_name . '-activate',
+                        CFGP_NAME . '-activate',
                         array( $this, 'cf_geoplugin_page_activate' )
                     );
                 }
@@ -269,30 +261,30 @@ class CF_GeoPlugin_Admin_Actions
     {
         global $wp_admin_bar;
         $wp_admin_bar->add_node( array(
-            'id' => $this->cf_geoplugin_menu_name,
+            'id' => CFGP_NAME,
             'title' => '<span  style="
         float:left; width:25px !important; height:25px !important;
         margin-left: 5px !important; margin-top: 2px !important; background:url(\''.plugin_dir_url( dirname( __FILE__ ) ).'images/cf-geo-25x25.png\') no-repeat center center / cover;"></span>',
             'href' => '',
-            'meta'  => array( 'class' => $this->cf_geoplugin_menu_name . '-toolbar-page', 'title'=>sprintf(__("CF GeoPlugin ver.%s",CFGP_NAME),do_shortcode("[cf_geo return=version]"))),
+            'meta'  => array( 'class' => CFGP_NAME . '-toolbar-page', 'title'=>sprintf(__("CF GeoPlugin ver.%s",CFGP_NAME),do_shortcode("[cf_geo return=version]"))),
             'parent' => false,
         ) );
         $wp_admin_bar->add_node( array(
-            'id' => $this->cf_geoplugin_menu_name . '-helper',
+            'id' => CFGP_NAME . '-helper',
             'title' => 'CF GeoPlugin',
             'href' => admin_url( 'admin.php?page=cf-geoplugin'),
-            'meta'  => array( 'class' => $this->cf_geoplugin_menu_name . '-toolbar-help-page' ),
-            'parent' => $this->cf_geoplugin_menu_name,
+            'meta'  => array( 'class' => CFGP_NAME . '-toolbar-help-page' ),
+            'parent' => CFGP_NAME,
         ) );
         $cf_geo_enable_gmap=get_option("cf_geo_enable_gmap");
         if($cf_geo_enable_gmap == 'true')
         {
             $wp_admin_bar->add_node( array(
-                'id' => $this->cf_geoplugin_menu_name . '-gmap',
+                'id' => CFGP_NAME . '-gmap',
                 'title' => __('CF Google Map',CFGP_NAME),
                 'href' => admin_url( 'admin.php?page=cf-geoplugin-google-map'),
-                'meta'  => array( 'class' => $this->cf_geoplugin_menu_name . '-gmap-toolbar-page' ),
-                'parent' => $this->cf_geoplugin_menu_name,
+                'meta'  => array( 'class' => CFGP_NAME . '-gmap-toolbar-page' ),
+                'parent' => CFGP_NAME,
             ) );
         }
         if ( current_user_can( 'edit_pages' ) && current_user_can( 'edit_posts' ) ) {
@@ -300,33 +292,33 @@ class CF_GeoPlugin_Admin_Actions
             if($cf_geo_enable_defender == 'true')
             {
                 $wp_admin_bar->add_node( array(
-                    'id' => $this->cf_geoplugin_menu_name . '-defender',
+                    'id' => CFGP_NAME . '-defender',
                     'title' => __('CF Geo Defender',CFGP_NAME),
                     'href' => admin_url( 'admin.php?page=cf-geoplugin-defender'),
-                    'meta'  => array( 'class' => $this->cf_geoplugin_menu_name . '-defender-toolbar-page' ),
-                    'parent' => $this->cf_geoplugin_menu_name,
+                    'meta'  => array( 'class' => CFGP_NAME . '-defender-toolbar-page' ),
+                    'parent' => CFGP_NAME,
                 ) );
             }
             $wp_admin_bar->add_node( array(
-                'id' => $this->cf_geoplugin_menu_name . '-debug',
+                'id' => CFGP_NAME . '-debug',
                 'title' => __('Debug Mode',CFGP_NAME),
                 'href' => admin_url( 'admin.php?page=cf-geoplugin-debug'),
-                'meta'  => array( 'class' => $this->cf_geoplugin_menu_name . '-debug-toolbar-page' ),
-                'parent' => $this->cf_geoplugin_menu_name,
+                'meta'  => array( 'class' => CFGP_NAME . '-debug-toolbar-page' ),
+                'parent' => CFGP_NAME,
             ) );
             $wp_admin_bar->add_node( array(
-                'id' => $this->cf_geoplugin_menu_name . '-setup',
+                'id' => CFGP_NAME . '-setup',
                 'title' => __('Settings',CFGP_NAME),
                 'href' => admin_url( 'admin.php?page=cf-geoplugin-settings'),
-                'meta'  => array( 'class' => $this->cf_geoplugin_menu_name . '-setup-toolbar-page' ),
-                'parent' => $this->cf_geoplugin_menu_name,
+                'meta'  => array( 'class' => CFGP_NAME . '-setup-toolbar-page' ),
+                'parent' => CFGP_NAME,
             ) );
         }
         $wp_admin_bar->add_node( array(
-            'id' => $this->cf_geoplugin_menu_name . '-devider',
+            'id' => CFGP_NAME . '-devider',
             'title' => '<span style="text-align:center; display:block;width:100%;">------------ '.__("Info",CFGP_NAME).' ------------</span>',
             'href' => '',
-            'parent' => $this->cf_geoplugin_menu_name,
+            'parent' => CFGP_NAME,
         ) );
         /* Include CF Geop Init class */
         $init=new CF_GEO_D;
@@ -334,57 +326,57 @@ class CF_GeoPlugin_Admin_Actions
         $ip=$init->IP;
         if(in_array($ip,$init->BLACKLIST_IP))
             $wp_admin_bar->add_node( array(
-                'id' => $this->cf_geoplugin_menu_name . '-info',
+                'id' => CFGP_NAME . '-info',
                 'title' => __("Your IP: 0.0.0.0",CFGP_NAME),
                 'href' => '',
-                'parent' => $this->cf_geoplugin_menu_name,
+                'parent' => CFGP_NAME,
             ) );
         else
             $wp_admin_bar->add_node( array(
-                'id' => $this->cf_geoplugin_menu_name . '-info',
+                'id' => CFGP_NAME . '-info',
                 'title' => '<em>'.__("Your IP",CFGP_NAME).': </em>'.do_shortcode("[cf_geo return=ip]").' ('.do_shortcode("[cf_geo return=ip_version]").')',
                 'href' => '',
-                'parent' => $this->cf_geoplugin_menu_name,
+                'parent' => CFGP_NAME,
             ) );
         $address = do_shortcode("[cf_geo return=address default='']");
         if(!empty($address))
         {
             
             $wp_admin_bar->add_node( array(
-                'id' => $this->cf_geoplugin_menu_name . '-info-city',
+                'id' => CFGP_NAME . '-info-city',
                 'title' => '<em>'.__("City",CFGP_NAME).':</em> '.do_shortcode("[cf_geo return=city default='-']"),
                 'href' => '',
-                'parent' => $this->cf_geoplugin_menu_name . '-info',
+                'parent' => CFGP_NAME . '-info',
             ) );
             $wp_admin_bar->add_node( array(
-                'id' => $this->cf_geoplugin_menu_name . '-info-region',
+                'id' => CFGP_NAME . '-info-region',
                 'title' => '<em>'.__("Region",CFGP_NAME).':</em> '.do_shortcode("[cf_geo return=region default='-']"),
                 'href' => '',
-                'parent' => $this->cf_geoplugin_menu_name . '-info',
+                'parent' => CFGP_NAME . '-info',
             ) );
             $wp_admin_bar->add_node( array(
-                'id' => $this->cf_geoplugin_menu_name . '-info-country',
+                'id' => CFGP_NAME . '-info-country',
                 'title' => '<em>'.__("Country",CFGP_NAME).':</em> '.do_shortcode("[cf_geo return=country default='-']"),
                 'href' => '',
-                'parent' => $this->cf_geoplugin_menu_name . '-info',
+                'parent' => CFGP_NAME . '-info',
             ) );
             $wp_admin_bar->add_node( array(
-                'id' => $this->cf_geoplugin_menu_name . '-info-continent',
+                'id' => CFGP_NAME . '-info-continent',
                 'title' => '<em>'.__("Continent",CFGP_NAME).':</em> '.do_shortcode("[cf_geo return=continent default='-']"),
                 'href' => '',
-                'parent' => $this->cf_geoplugin_menu_name . '-info',
+                'parent' => CFGP_NAME . '-info',
             ) );
             $wp_admin_bar->add_node( array(
-                'id' => $this->cf_geoplugin_menu_name . '-info-timezone',
+                'id' => CFGP_NAME . '-info-timezone',
                 'title' => '<em>'.__("Timezone",CFGP_NAME).':</em> '.do_shortcode("[cf_geo return=timezone default='-']"),
                 'href' => '',
-                'parent' => $this->cf_geoplugin_menu_name . '-info',
+                'parent' => CFGP_NAME . '-info',
             ) );
             $wp_admin_bar->add_node( array(
-                'id' => $this->cf_geoplugin_menu_name . '-info-status',
+                'id' => CFGP_NAME . '-info-status',
                 'title' => '<em>'.__("Status",CFGP_NAME).':</em> '.do_shortcode("[cf_geo return=status]"),
                 'href' => '',
-                'parent' => $this->cf_geoplugin_menu_name . '-info',
+                'parent' => CFGP_NAME . '-info',
             ) );
         }
     }
@@ -418,5 +410,20 @@ class CF_GeoPlugin_Admin_Actions
             $actions = array_merge($settings, $actions);
         }		
         return $actions;
+    }
+
+    /**
+     * Enable our plugin to do auto updates.
+     * 
+     * @since       6.0.7
+     */
+    public function cf_geoplugin_auto_update( $update, $item )
+    {
+        $cf_geoplugin_auto_update = get_option('cf_geo_plugin_update');
+        if( $item->slug == CFGP_NAME && $cf_geoplugin_auto_update == 'true' )
+        {
+            return true;
+        }
+        return $update;
     }
 }

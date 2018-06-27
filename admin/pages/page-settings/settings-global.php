@@ -144,6 +144,18 @@ $enableForm = ($enable==false ? ' disabled':'');
                      </div>
                 </td>
             </tr>
+            <tr>
+                <th scope="row">
+                    <label for="cf_geo_auto_update"><?php _e('Enable Plugin Auto-Update', CFGP_NAME); ?></label>
+                </th>
+                <td>
+                    <select name="cf_geo_auto_update" id="cf_geo_auto_update"<?php echo $enableForm; ?>>
+                        <option value="true"<?php echo ( get_option("cf_geo_auto_update") == "true" ? 'selected' : '' ); ?>><?php _e('YES', CFGP_NAME); ?></option>
+                        <option value="false"<?php echo ( get_option("cf_geo_auto_update") != "true" ? 'selected' : '' ); ?>><?php _e('NO', CFGP_NAME); ?></option>
+                    </select>
+                    <p><?php _e("Enable/disable auto-update of plugin.",CFGP_NAME); ?></p>
+                </td>
+            </tr>
         </tbody>
     </table>
 </form>

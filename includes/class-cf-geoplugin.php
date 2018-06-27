@@ -244,7 +244,8 @@ class CF_Geoplugin {
                             'cf_geo_map_scaleControl',
                             'cf_geo_map_draggable',
                             'cf_geo_map_infoMaxWidth',
-                            'cf_geo_enable_seo_redirection'),true) !== false)
+							'cf_geo_enable_seo_redirection',
+							'cf_geo_auto_update'),true) !== false)
                     )
 							$update = false;
 						else{						

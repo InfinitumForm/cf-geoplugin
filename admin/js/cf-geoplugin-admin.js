@@ -132,7 +132,7 @@
 					data = {};
 				selectFocus = false;
 				// reset admin notice
-				if(name == 'cf_geo_enable_banner' || name == 'cf_geo_enable_gmap' || name == 'cf_geo_enable_defender' )	
+				if(name == 'cf_geo_enable_banner' || name == 'cf_geo_enable_gmap' || name == 'cf_geo_enable_defender' || name == 'cf_geo_auto_update' )	
 					$("#notice-ajax-saved").fadeOut(100,function(){$(this).remove();});
 				
 				$("#notice-ajax-saved-error").fadeOut(100,function(){$(this).remove();});
