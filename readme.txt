@@ -1,19 +1,19 @@
 ﻿=== CF Geo Plugin ===
-Contributors: ivijanstefan, creativform
+Contributors: ivijanstefan, creativform, ej207
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=creativform@gmail.com
 Tags: geo plugin, geo location, geotarget, geo banner, market, conversion, conversion plugin, automatic banner, banner, business, location, google map, gmaps, gmap, seo, seo tool, user experience, ux plugin, contact form, dynamic keyword, ip, ip location, region, position, positioning, marketing, block visitors, defender, block spam, block region, tag, geo, target, local, find ip, ip finder, geo target, geo image, geo content. include content, exclude content, include, exclude, seo redirection, url redirection, country redirection, redirection, flag, country flag, national flag, flags, custom flags, gdpr, localization, ecommerce, legal requiremants, legal, currency
 Requires at least: 3.0
 Tested up to: 4.9
-Requires PHP: 5.4.0
-Stable tag: 6.0.7
+Requires PHP: 5.6.0
+Stable tag: 7.0.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-The CF GeoPlugin allows you to attach content, geographic information and Google maps to posts, pages, widgets... using shortcodes, PHP or JavaScript.
+The CF GeoPlugin allows you to take full control of your WordPress using geographic information with simple finctionality, shortcodes, PHP or JavaScript.
 
 == Description ==
 
-The **CF Geo Plugin** is **FREE** plugin that allows you to attach content, geographic information and Google maps to posts, pages, widgets and custom templates by using simple Shortcodes, PHP code or JavaScript by user IP address. It also lets you to specify a default geographic location for your entire WordPress blog. This plugin is also great for SEO and increasing conversions on your blog or landing pages.
+The **CF Geo Plugin** is **FREE** plugin that allows you to attach content, geographic information and Google maps to posts, pages, widgets and custom templates by using simple Shortcodes, PHP code or JavaScript by user IP address. It also lets you to specify a default geographic location for your entire WordPress blog, do SEO redirection and many more. This plugin is also great for capture leads, SEO and increasing conversions on your blog or landing pages.
 
 = BENEFITS =
 
@@ -37,7 +37,7 @@ The **CF Geo Plugin** is **FREE** plugin that allows you to attach content, geog
 
 This plugin is compatible with any Wordpress installation, also compatible with *[Contact Form 7](https://wordpress.org/plugins/contact-form-7/)*, *[WooCommerce](https://woocommerce.com/)*, *[Nord VPN proxy service](https://goo.gl/lWm3e6)* and support *[Cloudflare](https://www.cloudflare.com/)*.
 
-> <strong>All CF Geo Plugin 6.x.x Features</strong><br>
+> <strong>All CF Geo Plugin 7.x.x Features</strong><br>
 >
 > * **Geo Plugin** - Allows you to attach geographical information inside your content via Shortcodes, PHP and JavaScript objects
 > * **Geo Banner** - Allows you to place dynamic content, images, videos and pages using shortcodes for specfic audience target by geo location
@@ -51,43 +51,45 @@ This plugin is compatible with any Wordpress installation, also compatible with 
 > * **Country Flag Support** - Allows you to attach visitor or custom country flags inside content
 > * **Include Content by Geolocation** - Allows you to include content by geolocation
 > * **Exclude Content by Geolocation** - Allows you to exclude content by geolocation
+> * **Plugin Autoupdate** - Allows you to keep your plugin up to date automaticaly
 
 = Basics usage and example =
 
-`[cf_geo]`
-`[cf_geo return="region"]`
-`We just found shoes in [cf_geo return="city"] that you can buy for 50% discount.`
-`[cf_geo ip="127.0.0.1" return="area_code"]`
-`[cf_geo exclude="Toronto"] This text is seeing by everyone except Toronto people [/cf_geo]`
-`[cf_geo include="New York"] This text seeing only people from New York [/cf_geo]`
+`[cfgeo]`
+`[cfgeo_city]`
+`[cfgeo return="region"]`
+`We just found shoes in [cfgeo_city] that you can buy for 50% discount.`
+`[cfgeo ip="127.0.0.1" return="area_code"]`
+`[cfgeo exclude="Toronto"] This text is seeing by everyone except Toronto people [/cfgeo]`
+`[cfgeo include="New York"] This text seeing only people from New York [/cfgeo]`
 
 = Usage & Example =
 
-**GEO PLUGIN:** Usage is simple. After installation and activation, in your post you just need to insert `[cf_geo]` shortcode and that's it. Enter a shortcode as this and it returns and display IP adress to a visitor. If you like to display region (for example California for users who are from California), you just need to use `return` attribute in your shortcode like this: `[cf_geo return="region"]`. By changing the return settings, you can display any information from list above. Each user who comes to the site will see information related to their area. 
+**GEO PLUGIN:** Usage is simple. After installation and activation, in your post you just need to insert `[cfgeo]` shortcode and that's it. Enter a shortcode as this and it returns and display IP adress to a visitor. If you like to display region (for example California for users who are from California), you just need to use `return` attribute in your shortcode like this: `[cfgeo return="region"]`. By changing the return settings, you can display any information from list above. Each user who comes to the site will see information related to their area. 
 
-If you whant to track some custom IP and return some information from that IP, you can do that by adding one optional attribute ip like on example `[cf_geo ip="127.0.0.1" return="area_code"]` what will return area code from that IP address.
+If you whant to track some custom IP and return some information from that IP, you can do that by adding one optional attribute ip like on example `[cfgeo ip="127.0.0.1" return="area_code"]` what will return area code from that IP address.
 
-If you like to ad default values to your shortcode if data is empty you need to add extra attribute in your shortcode like this example `[cf_geo return="country_code" default="US"]` what will return US if geoplugin can't locate country code.
+If you like to ad default values to your shortcode if data is empty you need to add extra attribute in your shortcode like this example `[cfgeo return="country_code" default="US"]` what will return US if geoplugin can't locate country code.
 
 If you need to exclude some content from your page based on user location, you can do that using the `exclude` attribute like this: 
 
-`[cf_geo exclude="Toronto, Québec"] This text is seeing by everyone except people from Toronto and Québec [/cf_geo]`
+`[cfgeo exclude="Toronto, Québec"] This text is seeing by everyone except people from Toronto and Québec [/cfgeo]`
 
 If you need to display some content in your page based on user location, you can do that using the `include` attribute like this: 
 
-`[cf_geo include="New York, Miami, Germany"] This text seeing only people from New York, Miami and Germany [/cf_geo]`
+`[cfgeo include="New York, Miami, Germany"] This text seeing only people from New York, Miami and Germany [/cfgeo]`
 
-**GOOGLE MAP:** If you whant to place simple google map in your post or page, you just need to place shortcode [cf_geo_map] and your visitor will see own city on google map by default.
+**GOOGLE MAP:** If you whant to place simple google map in your post or page, you just need to place shortcode [cfgeo_map] and your visitor will see own city on google map by default.
 
-Like example, you can display own company street address inside Google map like this: `[cf_geo_map longitude="-74.0059" latitude="40.7128" zoom="15"]` and pointer will show your street and place where you work.
+Like example, you can display own company street address inside Google map like this: `[cfgeo_map longitude="-74.0059" latitude="40.7128" zoom="15"]` and pointer will show your street and place where you work.
 
 Google map also allow you to use HTML inside map and display info bar: 
 
-`[cf_geo_map longitude="-74.0059" latitude="40.7128" zoom="15" title="My Company Name"] 
+`[cfgeo_map longitude="-74.0059" latitude="40.7128" zoom="15" title="My Company Name"] 
    <h3>My Company Name<h3> 
    <p>No Name Street 35, New York, USA</p> 
    <p>We have what you need</p> 
-[/cf_geo_map]`
+[/cfgeo_map]`
 
 With this plugin you can easy setup your google map.
 
@@ -99,23 +101,23 @@ You just need to create a new banner, place your content, select rules (country,
 
 If you like to display country flag in your text like icon, you can do that simple like: 
 
-`[cf_geo_flag]` - and you will see flag in your text.
+`[cfgeo_flag]` - and you will see flag in your text.
 
 If you like to display country flag in your content like image, you can do that also simple using img or image attributes like: 
 
-`[cf_geo_flag img]` - and you will see image flag in your content
+`[cfgeo_flag img]` - and you will see image flag in your content
 
 You also can give custom sizes of flags in %, px, in, pt or em using size attribute like this: 
 
-`[cf_geo_flag size="32px"]` - and you will see your flag in that size. You can use this size in image and normal text mode also.
+`[cfgeo_flag size="32px"]` - and you will see your flag in that size. You can use this size in image and normal text mode also.
 
 You also can display custom flag using country attribute by placing country code simple like: 
 
-`[cf_geo_flag country="ca"]` - and you will see flag in your text or like image.
+`[cfgeo_flag country="ca"]` - and you will see flag in your text or like image.
 
 We allow you also full controll of this flags and you can place css, class or id attributes to be able use this in any kind of work like this: 
 
-`[cf_geo_flag css="padding:10px;" class="your-custom-class custom-class custom" id="top-flag"]`
+`[cfgeo_flag size="50" css="padding:10px;" class="your-custom-class custom-class custom" id="top-flag"]`
 
 = Info & Contact =
 
@@ -152,7 +154,7 @@ NO, CF Geo Plugin uses the asynchronous data reading from API services. After lo
 = Can I set the different value if shortcode shows no results? =
 
 YES, just add the attribute `default` in shortcode and corresponding text like this:
-`[cf_geo return="city" default="Your Default Text"]`
+`[cfgeo return="city" default="Your Default Text"]`
 
 = How to include CF GeopPlugin in PHP? =
 
@@ -162,9 +164,9 @@ In PHP you can use WordPress function `[do_shortcode()](https://developer.wordpr
 // check if plugin exists
 if(class_exists("CF_Geoplugin")){
 	// include plugin class
-	$cf_geo = new CF_Geoplugin;
+	$cfgeo = new CF_Geoplugin;
 	// get data
-	$geo = $cf_geo->get();
+	$geo = $cfgeo->get();
 	// print data
 	echo $geo->city;
 }
@@ -173,8 +175,13 @@ if(class_exists("CF_Geoplugin")){
 or with globals:
 
 `
-global $CF_Geo;
-echo $CF_Geo->city
+// object oriented
+global $CF_GEO;
+echo $CF_GEO->city;
+
+// Array
+global $CFGEO;
+echo $CFGEO['city'];
 `
 
 = How to use CF GeopPlugin inside JavaScript? =
@@ -243,50 +250,41 @@ Please inform us if any of these errors occure via contact form on our website [
 
 == Changelog ==
 
-= 6.0.7 =
+= 7.0.3 =
+* Fixed API communication
 
-* Fixed host detection
-* Fixed API key validation
+= 7.0.2 =
+* Fixed activation bug
+* Added translation functionality
 
-= 6.0.6 =
+= 7.0.1 =
+* Fixed Upgrade
 
-* Added better session control
+= 7.0.0 =
 
-= 6.0.5 =
-
-* Fixed Basic license authentication
-
-= 6.0.4 =
-
-* New improved navigation
-
-= 6.0.3 =
-
-* Fixed typo into explanations
-* Created RSS feeds into plugin pages
-* Fixed UI bugs
-
-= 6.0.2 =
-
-* Fixed admin navigation
-* Fixed license bug
-
-= 6.0.1 =
-
-* Fixed bug in PRO version
-
-= 6.0.0 =
-
-* New API service
-* New Databases
-* Improved Lookup
-* Improved Speed
-* Improved Security
+* New Functionality like multiple SEO redirection, auto update, new shortcode functionality...
+* New GUI - better aproach to all options including easy shortcode access
+* New Shortcodes - simple shortcodes (BETA: you can choose to not use it), new attributes
+* New SEO redirection - now you can setup redirection by region and city as well
+* New optimized PHP code
+* New locale lookup
+* Optimized code
+* Better debbuging
+* Optimized lookup
+* Ability to complete turn off all functionality that you not need
+* Maximum secure data
+* Fixed bugs from the previous versions
+* CSV upload for the SEO redirection
+* CSV backup for the SEO redirection
+* Localization integration
 
 == Upgrade Notice ==
 
-= 6.0.0 =
-Please upgrade your plugin to version 6.x because we shut down old version 5.x on Friday, June 22, 2018
+= 7.0.3 =
+IMPORTANT UPGRADE - API communication fix
+
+= 7.0.0 =
+Please upgrade your plugin to version 7.x
 
 
 == Other Notes ==

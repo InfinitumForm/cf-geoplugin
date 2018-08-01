@@ -1,83 +1,337 @@
-<?php
+<?php if ( ! defined( 'WPINC' ) ) { die( "Don't mess with us." ); }
 /**
- * The file that defines the shortcodes into this plugin
+ * Shortcodes
  *
- * This function create shortcodes inside plugin
- *
- * @link      http://cfgeoplugin.com/
- * @since      5.6.2
- *
+ * @since      7.0.0
  * @package    CF_Geoplugin
- * @subpackage CF_Geoplugin/includes
+ * @author     Ivijan-Stefan Stipic
  */
+if(!class_exists('CF_Geoplugin_Shortcodes')) :
+class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
+{
+	public function run()
+	{
+		global $CF_GEOPLUGIN_OPTIONS;
+		
+		if( $CF_GEOPLUGIN_OPTIONS['enable_beta'] === 1 &&  $CF_GEOPLUGIN_OPTIONS['enable_beta_shortcode'] === 1 ){
+			// EXPERIMENTAL Generate Shortcodes by type
+			$this->add_action( 'wp_loaded', 'shortcode_automat_setup' );
+		}
+		// Deprecated CF GeoPlugin shortcode but supported for now
+		$this->add_shortcode('cf_geo', 'cf_geoplugin');
+		if( $CF_GEOPLUGIN_OPTIONS['enable_beta'] === 1  &&  $CF_GEOPLUGIN_OPTIONS['enable_beta_shortcode'] === 1 ){
+			// EXPERIMENTAL BUT SUPPORTED
+			if ( !shortcode_exists( 'geo' ) ) $this->add_shortcode('geo', 'cf_geoplugin');
+		}
+		// Official CF GeoPlugin shortcode
+		$this->add_shortcode('cfgeo', 'cf_geoplugin');
+		
+		if($CF_GEOPLUGIN_OPTIONS['enable_flag']){
+			// Deprecated flag shortcode
+			$this->add_shortcode('cf_geo_flag', 'generate_flag');
+			if($CF_GEOPLUGIN_OPTIONS['enable_beta'] && $CF_GEOPLUGIN_OPTIONS['enable_beta_shortcode']){
+				// EXPERIMENTAL BUT SUPPORTED
+				if ( !shortcode_exists( 'country_flag' ) ) $this->add_shortcode('country_flag', 'generate_flag');
+			}
+			// Official CF GeoPlugin flag shortcode
+			$this->add_shortcode('cfgeo_flag', 'generate_flag');
+		}
 
-/**
- * The core plugin class.
- *
- * This is used to define internationalization, admin-specific hooks, and
- * public-facing site hooks.
- *
- * Also maintains the unique identifier of this plugin as well as the current
- * version of the plugin.
- *
- * @since      4.0.0
- * @package    CF_Geoplugin
- * @subpackage CF_Geoplugin/includes
- * @author     Ivijan-Stefan Stipic <creativform@gmail.com>
- */
-class CF_Geoplugin_Shortcodes {
+		// Deprecated Google Map shortcode
+		$this->add_shortcode( 'cf_geo_map', 'google_map' );
+		// Official Google Map Shortcode
+		$this->add_shortcode( 'cfgeo_map', 'google_map' );
+		
+		// Deprecated Banner shortcode
+		$this->add_shortcode( 'cf_geo_banner', 'geo_banner' );
+		// Official Banner shortcode
+		$this->add_shortcode( 'cfgeo_banner', 'geo_banner' );
+		
+		// We need CF7 shortcode support
+		$this->add_filter( 'wpcf7_form_elements', 'cf7_support' );
+	}
 	
-	private $reference;
 	
-	function __construct($reference){
+	/**
+	 * Main CF GeoPlugin Shortcode
+	 *
+	 * @since      1.0.0
+	 * @version    7.0.0
+	*/
+	public function cf_geoplugin($atts, $content='')
+	{
+		global $CFGEO;
+		$array = shortcode_atts( array(
+			'return' 	=>  'ip',
+			'ip'		=>	false,
+			'default'	=>	'',
+			'exclude'	=>	false,
+			'include'	=>	false,
+        ), $atts );
 		
-		$this->reference=$reference;
+		$return 	= $array['return'];
+		$ip 		= $array['ip'];
+		$default 	= $array['default'];
+		$exclude 	= $array['exclude'];
+		$include 	= $array['include'];
 		
-		add_shortcode( 'cf_geo', array($this,'cf_geo_shortcode') );
+		if($ip!==false)
+		{
+			$CFGEO_API = new CF_Geoplugin_API;
+			$CFGEO = $CFGEO_API->run(array('ip' => $ip));
+		}
 		
-		if($this->reference->defender===true){
-			if($cf_geo_enable_flag=='true' && !is_admin())
-				add_shortcode( 'cf_geo_flag', array($this,'cf_geo_flag_shortcode') );
-			else if(is_admin())
-				add_shortcode( 'cf_geo_flag', array($this,'cf_geo_flag_shortcode') );
+		if(!empty($content))
+		{			
+			if(!empty($exclude) || !empty($include)) {
+				if($this->recursive_array_search($exclude, $CFGEO)) return '';
+				else if($this->recursive_array_search($include, $CFGEO)) return $content;
+				else return '';
+			}
+				else return __('CF GEOPLUGIN NOTICE: -Please define "include" or "exclude" attributes inside your shortcode on this shortcode mode.', CFGP_NAME);
 		}
 		else
-		{
-			if(is_admin())
-				add_shortcode( 'cf_geo_flag', array($this,'cf_geo_flag_shortcode') );
-		}
-		
-		add_shortcode( 'cf_geo_map', array($this,'cf_geo_map_shortcode') );
-		add_shortcode( 'cf_geo_banner', array($this,'cf_geo_banner_shortcode') );
-		
-		$this->reference->loader->add_filter( 'wpcf7_form_elements', $this, 'cf7_support' );
+			return (isset($CFGEO[$return]) ? $CFGEO[$return] : $default);
 	}
 	
 	/**
-	 * CF Geo Shortcode
+	 * EXPERIMENTAL Generate Shortcodes by type
 	 *
-	 * @since    4.0.0
+	 * @since    7.0.0
 	 */
-	public function cf_geo_banner_shortcode( $atts, $cont )
+	public function shortcode_automat_setup(){
+		global $CFGEO;
+		
+		include_once CFGP_INCLUDES . '/class-cf-geoplugin-shortcode-automat.php';
+		$exclude = array_map('trim', explode(',','state,continentCode,areaCode,dmaCode,timezoneName,currencySymbol,currencyConverter'));
+		
+		$generate=array();
+		foreach($CFGEO as $key => $value )
+		{
+			if(in_array($key, $exclude, true) === false)
+			{
+				$generate['cfgeo_' . $key]=$value;
+			}
+		}
+		
+		$sc = new CF_Geoplugin_Shortcode_Automat( $generate );
+    	$sc->generate();
+	}
+	
+	/**
+	 * CF Geo Flag Shortcode
+	 *
+	 * @since    4.3.0
+	 */
+	public function generate_flag( $atts ){
+		global $CFGEO;
+		wp_enqueue_style( CFGP_NAME . '-flag' );
+		$img_format = ($this->shortcode_has_argument('img', $atts) || $this->shortcode_has_argument('image', $atts) ? true : false);
+		
+		$arg = shortcode_atts( array(
+			'size' 		=>  '128',
+			'type' 		=>  0,
+			'css' 		=>  false,
+			'class'		=>  false,
+			'country' 	=>	$CFGEO['country_code'],
+        ), $atts );
+		
+		$id = mt_rand(11111,99999);
+		
+		if(strpos($arg['size'], '%')!==false || strpos($arg['size'], 'in')!==false || strpos($arg['size'], 'pt')!==false || strpos($arg['size'], 'em')!==false)
+			$size = $arg['size'];
+		else
+			$size = str_replace("px","",$arg['size']).'px';
+		
+		if((int)$arg['type']>0)
+			$type=' flag-icon-squared';
+		else
+			$type='';
+		
+		$flag = trim(strtolower($arg['country']));
+		
+		if($img_format===true){
+			if(strpos($arg['css'], 'max-width') === false) $arg['css'].=' max-width:'.$size;
+		}else{
+			if(strpos($arg['css'], 'font-size') === false) $arg['css'].=' font-size:'.$size;
+		}
+		
+		if($arg['css']!=false){
+			$css = NULL;
+
+			$ss = array();
+			$csss = array_map('trim',explode(";", $arg['css']));
+			foreach($csss as $val){
+				if(!empty($val)){
+					$val = array_map('trim',explode(":", $val));
+					if(isset($val[1])) $ss[$val[0]]=$val[1];
+				}
+			}
+			
+			if(count($ss)>0)
+			{
+				$scss = array();
+				foreach($ss as $key=>$val) $scss[]=sprintf('%s:%s',$key,$val); 
+				$css = join(';',$scss);
+			}
+			
+		}
+		else
+			$css='';
+		
+		if($arg['class']!=false){
+			$classes = explode(" ", $arg['class']);
+			$cc = array();
+			foreach($classes as $val){
+				if(!empty($val)) $cc[]=$val;
+			}
+			if(count($cc)>0)
+				$class=' '.join(" ", $cc);
+			else
+				$class='';
+		}else
+			$class='';
+		
+		if($img_format===true)
+		{
+			$address = $CFGEO['address'];
+			return sprintf('<img src="%s" alt="%s" title="%s" style="max-width:%s !important;%s" class="flag-icon-img%s" id="cf-geo-flag-%s">', CFGP_ASSETS.'/flags/4x3/'.$flag.'.svg', $address, $address, $size, $css, $class, $id);
+		}
+		else
+			return sprintf('<span class="flag-icon flag-icon-%s%s" id="cf-geo-flag-%s"%s></span>', $flag.$type, $class, $id,(!empty($css)?' style="'.$css.'"':''));
+	}
+
+	/**
+	 * Google Map Shortcode
+	 * 
+	 * @since		7.0.0
+	 */
+	public function google_map( $atts, $content = '' )
+	{
+		global $CF_GEOPLUGIN_OPTIONS, $CFGEO;
+
+		$GID = base_convert(mt_rand(1000000000,PHP_INT_MAX), 10, 36); // Let's made this realy hard
+		extract( shortcode_atts( array( 
+			'latitude'				=>	$CF_GEOPLUGIN_OPTIONS['map_latitude'],
+			'longitude'				=> 	$CF_GEOPLUGIN_OPTIONS['map_longitude'],
+			
+			'zoom'					=>	$CF_GEOPLUGIN_OPTIONS['map_zoom'],
+			'width'					=>	$CF_GEOPLUGIN_OPTIONS['map_width'],
+			'height'				=> 	$CF_GEOPLUGIN_OPTIONS['map_height'],
+
+			'scrollwheel'			=>	$CF_GEOPLUGIN_OPTIONS['map_scrollwheel'],
+			'navigationControl'		=>	$CF_GEOPLUGIN_OPTIONS['map_navigationControl'],
+			'mapTypeControl'		=>	$CF_GEOPLUGIN_OPTIONS['map_mapTypeControl'],
+			'scaleControl'			=>	$CF_GEOPLUGIN_OPTIONS['map_scaleControl'],
+			'draggable'				=>	$CF_GEOPLUGIN_OPTIONS['map_draggable'],
+			
+			'infoMaxWidth'			=>	$CF_GEOPLUGIN_OPTIONS['map_infoMaxWidth'],
+
+			'title'					=>	$CFGEO['address'],
+			'address'				=>	$CFGEO['city']
+		), $atts ));
+
+		$key = $CF_GEOPLUGIN_OPTIONS['map_api_key'];
+
+		if( empty( $latitude ) )
+		{
+			$latitude = $CFGEO['latitude'];
+		}
+		if( empty( $longitude ) )
+		{
+			$longitude = $CFGEO['longitude'];
+		}
+		ob_start();
+		?>
+		<div id = "cfgeo_google_map_<?php echo $GID; ?>" style = "width:<?php echo $width; ?>;height:<?php echo $height; ?>"></div>
+		<script>
+			function initMap_<?php echo $GID; ?>()
+			{
+				<?php
+					if( !empty( $content ) )
+					{
+						$content = str_replace(array('"'), array('\\"'), $content);
+						$content = preg_replace(array("/(\n|\r\n)/","/(\t|\t+)/"), array('\n', ''), $content);
+						$content = trim($content,'\n');
+						
+						echo '
+							var contentString = "'. $content .'";
+							var infoWindow = new google.maps.InfoWindow({
+								content: contentString,
+								maxWidth: '. $infoMaxWidth .'
+							});
+						';
+					}
+				?>
+				var mapCanvas = document.getElementById('cfgeo_google_map_<?php echo $GID; ?>');
+				var position = new google.maps.LatLng( <?php echo $latitude; ?>, <?php echo $longitude; ?> ),
+					mapOptions = {
+						center: position,
+						
+						scrollwheel: <?php echo ( (int)$scrollwheel === 1 ? 'true' : 'false' ); ?>,
+						navigationControl: <?php echo ( (int)$navigationControl === 1 ? 'true' : 'false' ); ?>,
+						mapTypeControl: <?php echo ( (int)$mapTypeControl === 1 ? 'true' : 'false' ); ?>,
+						scaleControl: <?php echo ( (int)$scaleControl === 1 ? 'true' : 'false' ); ?>,
+						draggable: <?php echo ( (int)$draggable === 1 ? 'true' : 'false' ); ?>,
+
+						mapTypeId: google.maps.MapTypeId.ROADMAP,
+						zoom: <?php echo (int)$zoom; ?> 
+					},
+					map = new google.maps.Map( mapCanvas, mapOptions ),
+					marker = new google.maps.Marker({
+						position: position,
+						map: map,
+						<?php echo (!empty($title) ? 'title:"'.$title.'",':''); ?>
+					});
+
+					<?php
+						if( !empty( $content ) )
+						{
+							echo '
+							marker.addListener("click", function() {
+								infoWindow.open(map, marker);
+							});
+							';
+						}
+					?>
+			}
+		</script>
+		<script src="https://maps.googleapis.com/maps/api/js?<?php echo (!empty($key) ? 'key='.rawurlencode(trim($key)).'&' : ''); ?>callback=initMap_<?php echo $GID; ?>" async defer></script>
+		<?php
+
+		return ob_get_clean();
+	}
+	
+	
+	/**
+	 * Geo Banner Shortcode
+	 * 
+	 * @since		7.0.0
+	 */
+	public function geo_banner( $atts, $cont )
 	{ 
-       $array = shortcode_atts( array(
-			'id'				=>	0,
+		global $CF_GEOPLUGIN_OPTIONS, $CFGEO;
+
+		$ID = base_convert(mt_rand(1000000000,PHP_INT_MAX), 10, 36); // Let's made this realy hard
+	
+		$array = shortcode_atts( array(
+			'id'				=>	$ID,
 			'posts_per_page'	=>	1,
 			'class'				=>	''
-        ), $atts );
+		), $atts );
 		
 		$id				=	$array['id'];
 		$posts_per_page	=	$array['posts_per_page'];
 		$class			=	$array['class'];
 		
-		$country = sanitize_title(isset($_SESSION[$this->reference->prefix.'country_code']) ? $_SESSION[$this->reference->prefix.'country_code'] : do_shortcode('[cf_geo return="country_code"]'));
-		$country_name = sanitize_title(isset($_SESSION[$this->reference->prefix.'country']) ? $_SESSION[$this->reference->prefix.'country'] : do_shortcode('[cf_geo return="country"]'));
-		$region = sanitize_title(isset($_SESSION[$this->reference->prefix.'region']) ? $_SESSION[$this->reference->prefix.'region'] : do_shortcode('[cf_geo return="region"]'));
-		$city = sanitize_title(isset($_SESSION[$this->reference->prefix.'city']) ? $_SESSION[$this->reference->prefix.'city'] : do_shortcode('[cf_geo return="city"]'));
+		$country 		= sanitize_title(isset($CFGEO['country_code']) 	? $CFGEO['country_code']	: do_shortcode('[cfgeo return="country_code"]'));
+		$country_name 	= sanitize_title(isset($CFGEO['country']) 		? $CFGEO['country']			: do_shortcode('[cfgeo return="country"]'));
+		$region 		= sanitize_title(isset($CFGEO['region']) 		? $CFGEO['region']			: do_shortcode('[cfgeo return="region"]'));
+		$city 			= sanitize_title(isset($CFGEO['city']) 			? $CFGEO['city']			: do_shortcode('[cfgeo return="city"]'));
 		
 		$args = array(
 		  'post_type'		=> 'cf-geoplugin-banner',
-		  'posts_per_page'	=>	$posts_per_page,
+		  'posts_per_page'	=>	(int) $posts_per_page,
 		  'post_status'		=> 'publish',
 		  'force_no_results' => true,
 		  'tax_query'		=> array(
@@ -89,7 +343,7 @@ class CF_Geoplugin_Shortcodes {
 				)
 			)
 		);
-		if($id>0) $args['post__in'] = array($id);
+		if($id > 0) $args['post__in'] = array($id);
 		
 		$queryBanner = new WP_Query( $args );
 		
@@ -114,7 +368,9 @@ class CF_Geoplugin_Shortcodes {
 					'.$content.'
 				</div>
 				';
-			}wp_reset_postdata();
+				$classes	= NULL;
+			}
+			wp_reset_postdata();
 			if(count($save)>0){ return join("\r\n",$save); }
 		}
 		
@@ -129,285 +385,6 @@ class CF_Geoplugin_Shortcodes {
 	}
 	
 	/**
-	 * CF Geo Flag Shortcode
-	 *
-	 * @since    4.3.0
-	 */
-	private function is_flag( $flag, $atts ) {
-		if(is_array($flag))
-		{
-			foreach ( $atts as $key => $value )
-				if ( $value === $flag && is_int( $key ) ) return true;
-		}
-		return false;
-	}
-	public function cf_geo_flag_shortcode( $atts ){
-		
-		$img_format = ($this->is_flag('img', $atts) || $this->is_flag('image', $atts) ? true : false);
-		
-		$arg = shortcode_atts( array(
-			'size' 		=>  '128',
-			'type' 		=>  0,
-			'css' 		=>  false,
-			'class'		=>  false,
-			'country' 	=>	(isset($_SESSION[$this->reference->prefix.'country_code']) ? $_SESSION[$this->reference->prefix.'country_code'] : do_shortcode('[cf_geo return="country_code"]')),
-        ), $atts );
-		
-		$id = mt_rand(11111,99999);
-		
-		if(strpos($arg['size'], '%')!==false || strpos($arg['size'], 'in')!==false || strpos($arg['size'], 'pt')!==false || strpos($arg['size'], 'em')!==false)
-			$size = $arg['size'];
-		else
-			$size = str_replace("px","",$arg['size']).'px';
-		
-		if((int)$arg['type']>0)
-			$type=' flag-icon-squared';
-		else
-			$type='';
-		
-		$flag = trim(strtolower($arg['country']));
-		
-		if($arg['css']!=false)
-			$css = $arg['css'];
-		else
-			$css='';
-		
-		if($arg['class']!=false){
-			$classes = explode(" ", $arg['class']);
-			$cc = array();
-			foreach($classes as $val){
-				if(!empty($val)) $cc[]=$val;
-			}
-			if(count($cc)>0)
-				$class=' '.join(" ", $cc);
-			else
-				$class='';
-		}else
-			$class='';
-		
-		if($img_format===true)
-		{
-			$address = do_shortcode('[cf_geo return="address"]');
-			return sprintf('<img src="%s" alt="%s" title="%s" style="max-width:%s !important;%s" class="flag-icon-img%s" id="cf-geo-flag-%s">', CFGP_URL.'/public/flags/4x3/'.$flag.'.svg', $address, $address, $size, $css, $class, $id);
-		}
-		else
-			return sprintf('<span class="flag-icon flag-icon-%s%s" id="cf-geo-flag-%s"%s></span>', $flag.$type, $class, $id,(!empty($css)?' style="'.$css.'"':''));
-	}
-	
-	/**
-	 * CF Geo Shortcode
-	 *
-	 * @since    4.0.0
-	 */
-	public function cf_geo_shortcode( $atts, $content ){
-       $array = shortcode_atts( array(
-			'return' 	=>  'ip',
-			'ip'		=>	false,
-			'default'	=>	'',
-			'exclude'	=>	false,
-			'include'	=>	false,
-        ), $atts );
-		
-		$return 	= $array['return'];
-		$ip 		= $array['ip'];
-		$default 	= $array['default'];
-		
-		
-		if($this->reference->defender===true)
-		{
-			$exclude 	= $array['exclude'];
-			$include 	= $array['include'];
-		}
-		else
-		{
-			$exclude 	= false;
-			$include 	= false;
-		}
-		
-		if($ip!==false)
-		{
-			$gp=new CF_Geoplugin_API(array(
-				'ip'	=>	$ip,
-			));
-			$gpReturn=$gp->returns;
-			
-			if($exclude!==false && !empty($exclude))
-			{
-				$recursive_exclude = $this->reference->recursive_array_search($exclude,((array)$gpReturn));
-				
-				if($recursive_exclude!==false && !empty($recursive_exclude))
-					return '';
-				else
-				{
-					return $this->reference->the_content($content);
-				}
-			}
-			else if($include!==false && !empty($include))
-			{
-				$recursive_include = $this->recursive_array_search($include,((array)$gpReturn));
-				
-				if($recursive_include!==false && !empty($recursive_include))
-				{
-					return $this->reference->the_content($content);
-				}
-				else
-					return '';
-			}
-			else{
-				return (!empty($gpReturn[$return])?$gpReturn[$return]:$default);
-			}
-		}
-		else
-		{
-			if(
-				isset($return) && !empty($return) && empty($include) && empty($exclude) &&
-				isset($_SESSION[$this->reference->prefix.'ip']) && !empty($_SESSION[$this->reference->prefix.'ip']) &&
-				isset($_SESSION[$this->reference->prefix.'city']) && !empty($_SESSION[$this->reference->prefix.'city']) &&
-				isset($_SESSION[$this->reference->prefix.'state']) && !empty($_SESSION[$this->reference->prefix.'state']) &&
-				isset($_SESSION[$this->reference->prefix.'status']) && in_array($_SESSION[$this->reference->prefix.'status'],array(200,301,302,303)) &&
-				$_SESSION[$this->reference->prefix.'ip'] == CF_Geoplugin::ip()
-			)
-			{
-				if(isset($_SESSION[$this->reference->prefix.$return]) && !empty($_SESSION[$this->reference->prefix.$return])){
-					return $_SESSION[$this->reference->prefix.$return];
-				}else
-					return $default;
-			}
-			else
-			{
-				// INCLUDE CF GEOPLUGIN
-				$gp=new CF_Geoplugin_API(array(
-					'ip' =>	$ip,
-				));
-				$gpReturn=$gp->returns;
-				
-				foreach($gpReturn as $name=>$value){
-					$_SESSION[$this->reference->prefix.$name]=(empty($value)?'':$value);
-				}
-				
-				if($exclude!==false && !empty($exclude))
-				{
-					$recursive_exclude = $this->reference->recursive_array_search($exclude,$gpReturn);
-					if($recursive_exclude!==false && !empty($recursive_exclude))
-						return '';
-					else
-					{
-						return $this->reference->the_content($content);
-					}
-				}
-				else if($include!==false && !empty($include))
-				{
-					$recursive_include = $this->reference->recursive_array_search($include,$gpReturn);
-					
-					// var_dump($recursive_include);
-					
-					if($recursive_include!==false && !empty($recursive_include))
-					{
-						return $this->reference->the_content($content);
-					}
-					else
-						return '';
-				}
-				else
-					return (!empty($gpReturn[$return])?$gpReturn[$return]:$default);
-			}
-		}
-	}
-	
-	/**
-	 * Google Map Shortcode
-	 *
-	 * @since    4.0.0
-	 */
-	public function cf_geo_map_shortcode( $atts ){
-		$GID=mt_rand(99,9999).mt_rand(999,99999);
-		extract(shortcode_atts( array(
-			'latitude'			=>  (isset($_SESSION[$this->reference->prefix.'latitude']) ? $_SESSION[$this->reference->prefix.'latitude'] : do_shortcode('[cf_geo return="latitude"]')),
-			'longitude'			=>	(isset($_SESSION[$this->reference->prefix.'longitude']) ? $_SESSION[$this->reference->prefix.'longitude'] : do_shortcode('[cf_geo return="longitude"]')),
-
-			'zoom'				=>	get_option("cf_geo_map_zoom"),
-			'width' 			=>	get_option("cf_geo_map_width"),
-			'height'			=>	get_option("cf_geo_map_height"),
-			
-			'scrollwheel'		=>	get_option("cf_geo_map_scrollwheel"),
-			'navigationControl'	=>	get_option("cf_geo_map_navigationControl"),
-			'mapTypeControl'	=>	get_option("cf_geo_map_mapTypeControl"),
-			'scaleControl'		=>	get_option("cf_geo_map_scaleControl"),
-			'draggable'			=>	get_option("cf_geo_map_draggable"),
-			
-			'infoMaxWidth'		=>	get_option("cf_geo_map_infoMaxWidth"),
-			
-			'title'				=>	(isset($_SESSION[$this->reference->prefix.'address']) ? $_SESSION[$this->reference->prefix.'address'] : do_shortcode('[cf_geo return="address"]')),
-			'address'			=>	(isset($_SESSION[$this->reference->prefix.'city']) ? $_SESSION[$this->reference->prefix.'city'] : do_shortcode('[cf_geo return="city"]'))
-        ), $atts ));
-		
-		$KEY = get_option("cf_geo_map_api_key");
-		ob_start();
-	?>
-    <div id="cf_geo_gmap_<?php echo $GID; ?>" style="width:<?php echo $width; ?>;height:<?php echo $height; ?>;"></div>
-	<script>
-      function initMap_<?php echo $GID; ?>(){
-        var mapCanvas = document.getElementById("cf_geo_gmap_<?php echo $GID; ?>");
-	<?php
-		if(!empty($content))
-		{
-			$defender = new CF_Geoplugin_Defender;
-			$enable=$defender->enable;
-			echo '
-			var contentString = \''.$content.($enable==false?'<p><small style="font-size:10px;">'.do_shortcode('[cf_geo return="credit"]').'</small></p>':'').'\';
-			var infowindow = new google.maps.InfoWindow({
-				content: contentString,
-				maxWidth: '.$infoMaxWidth.'
-			});
-			';
-		}
-	?>
-		/*	function showLatitude(position) {
-				return position.coords.latitude;
-			}
-			function showLongitude(position) {
-				return position.coords.longitude;
-			}
-			if (navigator.geolocation)
-				var position = new google.maps.LatLng(navigator.geolocation.getCurrentPosition(showLatitude),navigator.geolocation.getCurrentPosition(showLongitude));
-			else*/
-			var position = new google.maps.LatLng(<?php echo $latitude; ?>, <?php echo $longitude; ?>),
-                mapOptions = {
-                    center: position,
-
-                    scrollwheel: <?php echo ((int)$scrollwheel>0?'true':'false'); ?>,
-                    navigationControl: <?php echo ((int)$navigationControl>0?'true':'false'); ?>,
-                    mapTypeControl: <?php echo ((int)$mapTypeControl>0?'true':'false'); ?>,
-                    scaleControl: <?php echo ((int)$scaleControl>0?'true':'false'); ?>,
-                    draggable: <?php echo ((int)$draggable>0?'true':'false'); ?>,
-
-                    mapTypeId: google.maps.MapTypeId.ROADMAP,
-                    zoom: <?php echo (int)$zoom; ?>,
-                },
-                map = new google.maps.Map(mapCanvas, mapOptions),
-                marker = new google.maps.Marker({
-                    position: position,
-                    map: map,
-                    <?php echo (!empty($title)?'title:"'.$title.'",':''); ?>
-                });
-	<?php
-		if(!empty($content))
-		{
-			echo '
-			marker.addListener("click", function() {
-				infowindow.open(map, marker);
-			});
-			';
-		}
-	?>
-	  }
-    </script>
-    <script src="https://maps.googleapis.com/maps/api/js?<?php echo (!empty($KEY) ? 'key='.rawurlencode(trim($KEY)).'&' : ''); ?>callback=initMap_<?php echo $GID; ?>" async defer></script>
-	<?php
-    	return ob_get_clean();
-	}
-	
-	/**
 	 * Add support for Contact Form 7
 	 *
 	 * @since    4.0.0
@@ -416,3 +393,4 @@ class CF_Geoplugin_Shortcodes {
 		return do_shortcode( $form );
 	}
 }
+endif;

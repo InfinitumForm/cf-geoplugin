@@ -1,11 +1,13 @@
 <?php
-
-/*
+/**
  * Find details of the operating system
- * @author Ivijan-Stefan Stipic <creativform@gmail.com>
- * @version 1.0.0 BETA
-*/
-class CF_GEO_OS
+ *
+ * @since      7.0.0
+ * @package    CF_Geoplugin
+ * @author     Ivijan-Stefan Stipic
+ */
+if(!class_exists('CF_Geoplugin_OS')) :
+class CF_Geoplugin_OS
 {
     /*
 	* Get user agent informations
@@ -123,12 +125,6 @@ class CF_GEO_OS
 		if($is_php64)
 			return true;
 
-        // User agent also have hidden informations
-        $arch_regex = '/\b(x86_64|x86-64|Win64|WOW64|x64|ia64|amd64|ppc64|sparc64|IRIX64)\b/ix';
-        $user_agent = self::user_agent();
-        if(preg_match($arch_regex, $user_agent))
-            return true;
-
 		// bit-shifting can help also
 		if((bool)((1<<32)-1))
 			return true;
@@ -163,7 +159,7 @@ class CF_GEO_OS
 			else if(function_exists('shell_exec') && self::is_win())
 				$user_agent = shell_exec('ver');
 			else
-				$user_agent = null;
+				$user_agent = NULL;
 			// Get Windows versions
 			foreach(array(
 				'95',
@@ -358,3 +354,4 @@ class CF_GEO_OS
 		return 'undefined';
 	}
 }
+endif;

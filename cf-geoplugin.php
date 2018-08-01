@@ -8,7 +8,7 @@
  * Plugin Name:       CF Geo Plugin
  * Plugin URI:        http://cfgeoplugin.com/
  * Description:       Create Dynamic Content, Banners and Images on Your Website Based On Visitor Geo Location By Using Shortcodes With CF GeoPlugin.
- * Version:           6.0.7
+ * Version:           7.0.3
  * Author:            Ivijan-Stefan Stipic
  * Author URI:        https://linkedin.com/in/ivijanstefanstipic
  * License:           GPL-2.0+
@@ -30,18 +30,19 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
+ 
+// If someone try to called this file directly via URL, abort.
+if ( ! defined( 'WPINC' ) ) { die( "Don't mess with us." ); }
+if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-// If this file is called directly, abort.
-if ( ! defined( 'WPINC' ) || ! defined( 'ABSPATH' ) ) die( "Don't mess with us." );
-
-// Define main file
-if ( ! defined( 'CFGP_FILE' ) )		define( 'CFGP_FILE', __FILE__ );
-if ( ! defined( 'CFGP_VERSION' ) )	define( 'CFGP_VERSION', '6.0.7');
+// First initialization
+$CFGEO = array();
+$GLOBALS['CFGEO'] = $CFGEO;
 
 /**
  * DEBUG MODE
  *
- * @author     Ivijan-Stefan Stipic <creativform@gmail.com>
+ * This is need for plugin debugging.
  */
 if ( defined( 'WP_DEBUG' ) ){
 	if(WP_DEBUG === true || WP_DEBUG === 1)
@@ -61,31 +62,32 @@ if ( defined( 'WP_CF_GEO_DEBUG' ) ){
 	}
 }
 
-/**
- * Define main constants
- *
- * @author     Ivijan-Stefan Stipic <creativform@gmail.com>
- */
-include_once plugin_dir_path(CFGP_FILE).'define.php';
-
-// Check SSL
-if(!function_exists('cf_geo_is_ssl')) {
-	function cf_geo_is_ssl($url = false)
-    {
-		if($url !== false && is_string($url)) {
-			return (preg_match('/(https|ftps)/Ui', $url) !== false);
-		} else if( is_admin() && defined('FORCE_SSL_ADMIN') && FORCE_SSL_ADMIN ===true ) {
-			return true;
-		} else if( (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ||
-			(isset($_SERVER['HTTP_X_FORWARDED_SSL']) && $_SERVER['HTTP_X_FORWARDED_SSL'] == 'on') ||
-			(isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') ||
-			(isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == 443) )
-		{
-			return true;
-		}
-		return false;
-    }
-}
+// Main plugin file
+if ( ! defined( 'CFGP_FILE' ) )				define( 'CFGP_FILE', __FILE__ );
+// Current plugin version
+if ( ! defined( 'CFGP_VERSION' ) )			define( 'CFGP_VERSION', '7.0.3');
+// Plugin root
+if ( ! defined( 'CFGP_ROOT' ) )				define( 'CFGP_ROOT', rtrim(plugin_dir_path(CFGP_FILE), '/') );
+// Includes directory
+if ( ! defined( 'CFGP_INCLUDES' ) )			define( 'CFGP_INCLUDES', CFGP_ROOT . '/includes' );
+// Includes directory
+if ( ! defined( 'CFGP_ADMIN' ) )			define( 'CFGP_ADMIN', CFGP_ROOT . '/admin' );
+// Plugin URL root
+if ( ! defined( 'CFGP_URL' ) )				define( 'CFGP_URL', rtrim(plugin_dir_url( CFGP_FILE ), '/') );
+// Assets URL
+if ( ! defined( 'CFGP_ASSETS' ) )			define( 'CFGP_ASSETS', CFGP_URL.'/assets' );
+// Plugin name
+if ( ! defined( 'CFGP_NAME' ) )				define( 'CFGP_NAME', 'cf-geoplugin');
+// Plugin metabox prefix
+if ( ! defined( 'CFGP_METABOX' ) )			define( 'CFGP_METABOX', 'cf_geo_metabox_');
+// Plugin session prefix (controlled by version)
+if ( ! defined( 'CFGP_PREFIX' ) )			define( 'CFGP_PREFIX', 'cf_geo_'.preg_replace("/[^0-9]/Ui",'',CFGP_VERSION).'_');
+// Main website
+if ( ! defined( 'CFGP_STORE' ) )			define( 'CFGP_STORE', 'https://cfgeoplugin.com');
+// Limit
+if ( ! defined( 'CFGP_LIMIT' ) )			define( 'CFGP_LIMIT', 300);
+// Developer license
+if( ! defined( 'CFGP_DEV_MODE' ) )			define( 'CFGP_DEV_MODE', false );
 
 /**
  * Session controll
@@ -153,141 +155,89 @@ if(!function_exists('CF_Geoplugin_Session')) :
 endif;
 CF_Geoplugin_Session();
 
-/**
- * Start and define all dependency
- *
- * @author     Ivijan-Stefan Stipic <creativform@gmail.com>
- */
-include_once CFGP_INCLUDES.'/class-dependency.php';
-if(class_exists('CF_GEO_D')) {
-	$cfgeod = new CF_GEO_D;
-	if ( ! defined( 'CFGP_IP' ) ) 					define('CFGP_IP', $cfgeod->IP );
-	if ( ! defined( 'CFGP_SERVER_IP' ) ) 			define('CFGP_SERVER_IP', $cfgeod->SERVER_IP );
-	if ( ! defined( 'CFGP_PROXY' ) ) 				define('CFGP_PROXY', $cfgeod->PROXY );
-	if ( ! defined( 'CFGP_ACTIVATED' ) ) 			define('CFGP_ACTIVATED', $cfgeod->ACTIVATED );
-	if ( ! defined( 'CFGP_DEFENDER_ACTIVATED' ) ) 	define('CFGP_DEFENDER_ACTIVATED', $cfgeod->DEFENDER_ACTIVATED );
-	$cfgeod = NULL;
-	// Update dependency
-	if(!get_option('cf_geo_store'))			 update_option('cf_geo_store', CFGP_STORE, true);
-	if(!get_option('cf_geo_store_code'))	 update_option('cf_geo_store_code', CFGP_STORE_CODE, true);
-}
-/**
- * The code that runs during plugin activation.
- * This action is documented in includes/class-cf-geoplugin-activator.php
- */
-function activate_cf_geoplugin() {
-	require_once plugin_dir_path( CFGP_FILE ) . 'includes/class-cf-geoplugin-activator.php';
-	CF_Geoplugin_Activator::activate();
-}
-register_activation_hook( CFGP_FILE, 'activate_cf_geoplugin' );
-/**
- * The code that runs during plugin deactivation.
- * This action is documented in includes/class-cf-geoplugin-deactivator.php
- */
-function deactivate_cf_geoplugin() {
-	require_once plugin_dir_path( CFGP_FILE ) . 'includes/class-cf-geoplugin-deactivator.php';
-	CF_Geoplugin_Deactivator::deactivate();
-}
-register_deactivation_hook( CFGP_FILE, 'deactivate_cf_geoplugin' );
-/**
-* Get Custom Post Data from forms
-* @autor    Ivijan-Stefan Stipic
-* @since    5.0.0
-* @version  1.0.1
-**/
-if ( ! function_exists( 'CF_Geoplugin_Metabox_GET' ) ) :
-	function CF_Geoplugin_Metabox_GET($name, $id=false, $single=false){
-		global $post_type, $post;
+// Include hook class
+include CFGP_INCLUDES . '/class-cf-geoplugin-admin-notice.php';
+include CFGP_INCLUDES . '/class-cf-geoplugin-locale.php';
+include CFGP_INCLUDES . '/class-cf-geoplugin-global.php';
+// Define important constants
+if(class_exists('CF_Geoplugin_Global')) :
+	// Include hook class
+	$hook = new CF_Geoplugin_Global;
+	// Global variable for geoplugin options
+	$CF_GEOPLUGIN_OPTIONS = $hook->get_option();
+	$GLOBALS['CF_GEOPLUGIN_OPTIONS']=$CF_GEOPLUGIN_OPTIONS;
+	// Client IP address
+	if ( ! defined( 'CFGP_IP' ) ) 					define( 'CFGP_IP', $hook->ip() );
+	// Server IP address
+	if ( ! defined( 'CFGP_SERVER_IP' ) ) 			define( 'CFGP_SERVER_IP', $hook->ip_server() );
+	// Proxy enabled
+	if ( ! defined( 'CFGP_PROXY' ) ) 				define( 'CFGP_PROXY', $hook->proxy() );
+	// License key activation true/false
+	if ( ! defined( 'CFGP_ACTIVATED' ) ) 			define( 'CFGP_ACTIVATED', $hook->check_activation() );
+	// Defender true/false
+	if ( ! defined( 'CFGP_DEFENDER_ACTIVATED' ) ) 	define( 'CFGP_DEFENDER_ACTIVATED', $hook->check_defender_activation() );	
+	$hook = NULL;
+	// Include main class
+	 include CFGP_INCLUDES . '/class-cf-geoplugin.php';
+	/*
+	* Parameter Redirection Loader - Final Class
+	* @since 7.0.0
+	*/
+	if(class_exists('CF_Geoplugin_Init')) :
+		class CF_Geoplugin_Load extends CF_Geoplugin_Init
+		{
+			function __construct(){
+				global $CF_GEOPLUGIN_OPTIONS;
+				$this->register_activation_hook(CFGP_FILE, 'activate');
+				$this->register_deactivation_hook(CFGP_FILE, 'deactivate');
+				
+				if(isset($CF_GEOPLUGIN_OPTIONS['enable_update']) && $CF_GEOPLUGIN_OPTIONS['enable_update']) $this->add_filter('auto_update_plugin', 'auto_update');
+				$this->run();
+			}
+		}
+	endif;
+endif;
+
+/*
+* Allow developers to use plugin data inside PHP 
+* @since 5.0.0
+* @improved 7.0.0
+*/
+if(!class_exists( 'CF_Geoplugin' ) && class_exists( 'CF_Geoplugin_API' )) :
+	class CF_Geoplugin
+	{
+		private $int;
 		
-		$name=trim($name);
-		$prefix=CFGP_METABOX;
-		$data=NULL;
-	
-		if($id!==false && !empty($id) && $id > 0)
-			$getMeta=get_post_meta((int)$id, $prefix.$name, $single);
-		else if(NULL!==get_the_id() && false!==get_the_id() && get_the_id() > 0)
-			$getMeta=get_post_meta(get_the_id(),$prefix.$name, $single);
-		else if(isset($post->ID) && $post->ID > 0)
-			$getMeta=get_post_meta($post->ID,$prefix.$name, $single);
-		else if('page' == get_option( 'show_on_front' ))
-			$getMeta=get_post_meta(get_option( 'page_for_posts' ),$prefix.$name, $single);
-		else if(is_home() || is_front_page() || get_queried_object_id() > 0)
-			$getMeta=get_post_meta(get_queried_object_id(),$prefix.$name, $single);
-		else
-			$getMeta=false;
+		function __construct($options = array()){
+			$api = new CF_Geoplugin_API;
+			$this->int = $api->run($options);
+		}
 		
-		return (!empty($getMeta)?$getMeta:NULL);
+		public function get(){
+			return (object) $this->int;
+		}
 	}
 endif;
 
-/**
- * The core plugin class that is used to define internationalization,
- * admin-specific hooks, and public-facing site hooks.
- */
-if(!class_exists('CF_Geoplugin'))
-{
-	require plugin_dir_path( CFGP_FILE ) . 'includes/class-cf-geoplugin.php';
+/*
+* When everything is constructed and builded, just load plugin properly
+* @since 7.0.0
+*/
+function CF_Geoplugin(){
+	if(class_exists('CF_Geoplugin_Load')) :
+		return new CF_Geoplugin_Load();
+	endif;
 }
-/**
- * Begins execution of the plugin.
- *
- * Since everything within the plugin is registered via hooks,
- * then kicking off the plugin from this point in the file does
- * not affect the page life cycle.
- *
- * @since    4.0.0
- */
-function cf_geoplugin() {
-	if(class_exists('CF_Geoplugin'))
-	{
-		$plugin = new CF_Geoplugin();
-		$plugin->run();
-		if(!CFGP_ACTIVATED)
-		{
-			if(
-				isset($_GET['page']) && (
-					$_GET['page'] == 'cf-geoplugin-activate' ||
-					$_GET['page'] == 'cf-geoplugin-settings'
-				)
-			){} else add_action( 'plugins_loaded', 'cf_geo_activation' );
-		}
-		function cf_geo_activation() {
-			$lookup = do_shortcode('[cf_geo return="lookup"]');
-			if(is_numeric($lookup) && (
-					((int)$lookup) <= 300 && ((int)$lookup) >= 295
-					|| ((int)$lookup) <= 200 && ((int)$lookup) >= 195
-					|| ((int)$lookup) <= 100
-				)
-			){
-				add_action( 'admin_notices', 'cf_geo_activation_notice__error' );
-			}
-		}
-	
-		function cf_geo_activation_notice__error() {
-			$title = __( 'CF GEO PLUGIN', CFGP_NAME );
-			$lookup = (int)do_shortcode('[cf_geo return="lookup"]');
-			if($lookup && $lookup > 50)
-				$class = 'notice notice-warning is-dismissible';
-			else
-				$class = 'notice notice-error is-dismissible';
-				
-			$message1 = sprintf(
-				__('You currently using free version of plugin with a limited number of lookups.<br>Each free version of this plugin is limited to %1$s lookups per day and you have only %2$s lookups available for today. If you want to have unlimited lookup, please enter your license key.<br>If you are unsure and do not understand what this is about, read %3$s.<br><br>Also, before any action don\'t forget to read and agree with %4$s and %5$s.',CFGP_NAME),
-				
-				'<strong>300</strong>',
-				'<strong>'.$lookup.'</strong>',
-				'<strong><a href="https://cfgeoplugin.com/new-plugin-new-features-new-success/" target="_blank">' . __('this article',CFGP_NAME) . '</a></strong>',
-				'<strong><a href="https://cfgeoplugin.com/privacy-policy/" target="_blank">' . __('Privacy Policy',CFGP_NAME) . '</a></strong>',
-				'<strong><a href="https://cfgeoplugin.com/terms-and-conditions/" target="_blank">' . __('Terms & Conditions',CFGP_NAME) . '</a></strong>'
-			);
-			$message2 = '<a href="' . admin_url('/admin.php?page=cf-geoplugin-activate') . '" class="button button-primary">' . __('Activate Unlimited',CFGP_NAME) . '</a>';
+/*
+* Do old function name support (lowercase)
+* @since 6.0.0
+*/
+if(!function_exists('cf_geoplugin')) :
+	function cf_geoplugin(){ return CF_Geoplugin(); }
+endif;
 
-	
-			printf( '<div class="%1$s"><h3>%2$s</h3><p>%3$s</p><p><strong>%4$s</strong></p></div>', esc_attr( $class ), esc_html( $title ),  $message1, $message2); 
-		}
-		
-		// Global Variable
-		$GLOBALS['cf_geo'] = $GLOBALS['CF_Geo'] = $GLOBALS['CF_GEO'] = $CF_GEO = $plugin->get();
-	}
-}
-cf_geoplugin();
+// Plugin is loaded
+CF_Geoplugin();
+
+// Globals for all folks. Why not?
+$CF_GEO = $CF_Geo = $cf_geo = $_GLOBAL['CF_GEO'] = $_GLOBAL['CF_Geo'] = $_GLOBAL['cf_geo'] = (object) $CFGEO;
