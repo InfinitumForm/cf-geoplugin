@@ -4,7 +4,7 @@
  *
  * @since      7.0.0
  * @package    CF_Geoplugin
- * @author     Goran Zivkovic
+ * @author     Ivijan-Stefan Stipic
  */
 if( !class_exists( 'CF_Geoplugin_Woocommerce' ) ):
 class CF_Geoplugin_Woocommerce extends CF_Geoplugin_Global

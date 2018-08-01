@@ -6,7 +6,7 @@
  * @link      http://cfgeoplugin.com/
  * @since     7.0.0
  * @package   CF_Geoplugin
- * @author    Goran Zivkovic 
+ * @author    Ivijan-Stefan Stipic 
  */
 
 // If uninstall not called from WordPress, then exit.
