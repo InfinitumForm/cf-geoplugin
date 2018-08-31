@@ -28,8 +28,8 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
 		'api_alternate' 		=> 'http://159.203.47.151/api6.0/index.php?ip={IP}&sip={SIP}&t={TIME}&r={HOST}&v={VERSION}&m={M}&p={P}&base_convert={CURRENCY}',
 		'dns' 					=> 'https://cdn-cfgeoplugin.com/api6.0/dns.php?ip={IP}&sip={SIP}&r={HOST}&v={VERSION}&p={P}',
 		'dns_alternate' 		=> 'http://159.203.47.151/api6.0/dns.php?ip={IP}&sip={SIP}&r={HOST}&v={VERSION}&p={P}',
-		'activate' 				=> 'https://cdn-cfgeoplugin.com/api6.0/activate.php?action=license_key_validate&store_code={SC}&sku={SKU}&license_key={LC}&domain={D}&activation_id={AI}',
-		'activate_alternate' 	=> 'http://159.203.47.151/api6.0/activate.php?action=license_key_validate&store_code={SC}&sku={SKU}&license_key={LC}&domain={D}&activation_id={AI}'
+//		'activate' 				=> 'https://cdn-cfgeoplugin.com/api6.0/activate.php?action=license_key_validate&store_code={SC}&sku={SKU}&license_key={LC}&domain={D}&activation_id={AI}',
+//		'activate_alternate' 	=> 'http://159.203.47.151/api6.0/activate.php?action=license_key_validate&store_code={SC}&sku={SKU}&license_key={LC}&domain={D}&activation_id={AI}'
 	);
 	
 	/**
@@ -98,7 +98,7 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
 			'base_currency'	=>	false,
 			'debug'			=>	false
 		);
-		$this->validate_license();
+//		$this->validate_license();
 		// replace default options
 		if (version_compare(PHP_VERSION, '7.0.0') >= 0)
 			$this->option=array_replace($option, $options);
@@ -340,6 +340,11 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
 			"error" => true
 		);
 		
+		if(!CFGP_ACTIVATED)
+		{
+			return (object)$return;
+		}
+		
 		if ($CF_GEOPLUGIN_OPTIONS["enable_dns_lookup"] && self::access_level($CF_GEOPLUGIN_OPTIONS['license_sku']) >= 1)
 		{
 			$ip = ($ip !== false ? $ip : CFGP_IP);
@@ -391,7 +396,7 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
 		
 		return (object)$return;
 	}
-	
+	/**
 	protected function validate_license()
 	{
 		global $CF_GEOPLUGIN_OPTIONS;
@@ -430,7 +435,11 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
 					$CF_GEOPLUGIN_OPTIONS['license_sku'] = '';
 					$CF_GEOPLUGIN_OPTIONS['license'] = 0;
 					
-					update_option('cf_geoplugin', $CF_GEOPLUGIN_OPTIONS, true);
+					if( !CFGP_MULTISITE )
+						update_option('cf_geoplugin', $CF_GEOPLUGIN_OPTIONS, true);
+					else
+						update_site_option('cf_geoplugin', $CF_GEOPLUGIN_OPTIONS);
+						
 					$GLOBALS['CF_GEOPLUGIN_OPTIONS']=$CF_GEOPLUGIN_OPTIONS;
 				}
 				else
@@ -463,7 +472,11 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
 						$CF_GEOPLUGIN_OPTIONS['license_sku'] = '';
 						$CF_GEOPLUGIN_OPTIONS['license'] = 0;
 						
-						update_option('cf_geoplugin', $CF_GEOPLUGIN_OPTIONS, true);
+						if( !CFGP_MULTISITE )
+							update_option('cf_geoplugin', $CF_GEOPLUGIN_OPTIONS, true);
+						else
+							update_site_option('cf_geoplugin', $CF_GEOPLUGIN_OPTIONS);
+							
 						$GLOBALS['CF_GEOPLUGIN_OPTIONS']=$CF_GEOPLUGIN_OPTIONS;
 					}
 					else
@@ -481,7 +494,7 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
 			}
 		endif;
 	}	
-	
+	**/
 	private function check_validations()
 	{
 		global $CF_GEOPLUGIN_OPTIONS;
@@ -501,7 +514,11 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
 				$CF_GEOPLUGIN_OPTIONS['license_sku'] = '';
 				$CF_GEOPLUGIN_OPTIONS['license'] = 0;
 				
-				update_option('cf_geoplugin', $CF_GEOPLUGIN_OPTIONS, true);
+				if( !CFGP_MULTISITE )
+					update_option('cf_geoplugin', $CF_GEOPLUGIN_OPTIONS, true);
+				else
+					update_site_option('cf_geoplugin', $CF_GEOPLUGIN_OPTIONS);
+
 				$GLOBALS['CF_GEOPLUGIN_OPTIONS']=$CF_GEOPLUGIN_OPTIONS;
 			}
 		}

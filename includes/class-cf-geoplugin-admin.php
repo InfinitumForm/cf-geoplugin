@@ -675,7 +675,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 		$result = array(
 			'success'		=> 0,
 			'fail'			=> 0,
-			'fail_data'		=> '', // Ovde sam mislio da se puni HTML sa neuspjesnim importima i da se doda u tabelu #failed-import-table
+			'fail_data'		=> '', 
 			'message'		=> '',
 		);
 
@@ -685,12 +685,12 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 
 		if( $query_data === false )
 		{
-			$result['message'] = 'Could not open or read file';
+			$result['message'] = 'Failed to open or read file';
 			wp_send_json( $result );
 		}
-		if( count( $query_data ) == 0 )
+		if( empty( $query_data ) )
 		{
-			$result['message'] = 'Could not extract data from file';
+			$result['message'] = 'Failed to extract data from file';
 			wp_send_json( $result );
 		}
 
@@ -720,10 +720,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 	{
 		// Set chunking offset
 		$offset = 500;
-		
-		// this is an important setting!
-		ini_set('auto_detect_line_endings', true);
-		
+			
 		// List headers
 		$header=get_headers($filename, 1);
 		
@@ -756,6 +753,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 							'active'	=> ( isset( $ceil[5] ) && ( $ceil[5] == 0 || $ceil[5] == 1 ) ) ? (int)$ceil[5] : 1
 						);	
 						
+						$data['url'] = filter_var( $data['url'], FILTER_SANITIZE_URL );
 						if(filter_var($data['url'], FILTER_VALIDATE_URL) && (!empty($data['country']) || !empty($data['region']) || !empty($data['city'])))
 						{
 							$return_data[$i][] = $data;

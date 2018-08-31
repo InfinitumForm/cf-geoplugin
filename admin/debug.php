@@ -4,7 +4,7 @@
  *
  * @since      7.0.0
  * @package    CF_Geoplugin
- * @author     Ivijan-Stefan Stipic
+ * @author     Goran Zivkovic
  *
 **/
 

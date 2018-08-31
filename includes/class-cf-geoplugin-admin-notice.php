@@ -257,7 +257,11 @@ class CF_Geoplugin_Notice {
 			return false;
 		}
 		array_push( $dismissed, $id );
-		return update_option( 'cf_geoplugin_dismissed_notices', $dismissed );
+		
+		if(CFGP_MULTISITE)
+			return update_site_option( 'cf_geoplugin_dismissed_notices', $dismissed );
+		else
+			return update_option( 'cf_geoplugin_dismissed_notices', $dismissed );
 	}
 
 	/**
@@ -325,7 +329,11 @@ class CF_Geoplugin_Notice {
 		$key  = $flip[ $id ];
 
 		unset( $dismissed[ $key ] );
-		return update_option( 'cf_geoplugin_dismissed_notices', $dismissed );
+		
+		if(CFGP_MULTISITE)
+			return update_site_option( 'cf_geoplugin_dismissed_notices', $dismissed );
+		else
+			return update_option( 'cf_geoplugin_dismissed_notices', $dismissed );
 	}
 
 	/**
@@ -359,7 +367,10 @@ class CF_Geoplugin_Notice {
 	 * @return array
 	 */
 	private function dismissed_global() {
-		return get_option( 'cf_geoplugin_dismissed_notices', array() );
+		if(CFGP_MULTISITE)
+			return get_site_option( 'cf_geoplugin_dismissed_notices', array() );
+		else
+			return get_option( 'cf_geoplugin_dismissed_notices', array() );
 	}
 
 	/**

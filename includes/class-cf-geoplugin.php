@@ -14,6 +14,7 @@ class CF_Geoplugin_Init extends CF_Geoplugin_Global
 	*/
 	public function run(){
 		$this->add_action('plugins_loaded', 'load_textdomain');
+		$this->add_filter( 'auto_update_plugin', 'auto_update', 10, 2 );
 		
 		// Include internal library
 		if(file_exists(CFGP_INCLUDES . '/class-cf-geoplugin-library.php'))
@@ -127,6 +128,16 @@ class CF_Geoplugin_Init extends CF_Geoplugin_Global
 					$REST->run();
 				}
 			}
+
+			// Include Defender
+			if( file_exists( CFGP_INCLUDES . '/class-cf-geoplugin-defender.php' ) )
+			{
+				require_once CFGP_INCLUDES . '/class-cf-geoplugin-defender.php';
+				if( class_exists( 'CF_Geoplugin_Defender' ) )
+				{
+					new CF_Geoplugin_Defender;
+				}
+			}
 		}
 	}
 	
@@ -138,6 +149,11 @@ class CF_Geoplugin_Init extends CF_Geoplugin_Global
 
 		// Set default values
 		$check = get_option('cf_geoplugin');
+		
+		if( !CFGP_MULTISITE )
+			$check = get_option('cf_geoplugin');
+		else 
+			$check = get_site_option('cf_geoplugin');
 		
 		if(!is_array($check)) $check = NULL;
 		
@@ -195,10 +211,21 @@ class CF_Geoplugin_Init extends CF_Geoplugin_Global
 			}
 			
 			// Save new data
-			update_option('cf_geoplugin', $collect, true);
+			if( !CFGP_MULTISITE )
+				update_option('cf_geoplugin', $collect, true);
+			else
+				update_site_option('cf_geoplugin', $collect);
 		}
 		else
 		{
+			// Fix missing ID
+			if( isset($check['id']) )
+			{
+				if( empty($check['id']) ) $this->update_option('id', md5($this->generate_token(32)));
+			}
+			else
+				$this->update_option('id', md5($this->generate_token(32)));
+			
 			// Update only activation time
 			$this->update_option('plugin_activated', time());
 			
@@ -272,7 +299,8 @@ class CF_Geoplugin_Init extends CF_Geoplugin_Global
 	 * Update plugin automaticaly
 	*/
 	public function auto_update($update, $item){
-		if ( strpos($item->slug, 'cf-geoplugin') !== false ) {
+		global $CF_GEOPLUGIN_OPTIONS;
+		if ( strpos($item->slug, 'cf-geoplugin') !== false && $CF_GEOPLUGIN_OPTIONS['enable_update'] == 1 ) {
 			return true;
 		}
 		return $update;

@@ -264,7 +264,7 @@ if($this->get('action') == 'activate_license')
 									'label'		=> __('WooCommerce integration'),
 									'name'		=> 'enable_woocommerce',
 									'default'	=> (isset($CF_GEOPLUGIN_OPTIONS['enable_woocommerce']) ? $CF_GEOPLUGIN_OPTIONS['enable_woocommerce'] : 0 ),
-									'html'		=> '<p id="woo_integration_html"' . (!$CF_GEOPLUGIN_OPTIONS['enable_woocommerce'] ? ' style="display: none;"' : '') . '><a href="'. admin_url('admin.php?page=wc-settings#woocommerce_cf_geoplugin_conversion') .'"><u>' . __( 'Set conversion option in Woocommerce General Settings', CFGP_NAME ) . '</u></a></p>',
+									'html'		=> !$CF_GEOPLUGIN_OPTIONS['woocommerce_active'] ? '<p class="text-info">' . __('This function is only enabled when Woocommerce is active.', CFGP_NAME) . '</p>' : '<p id="woo_integration_html"' . (!$CF_GEOPLUGIN_OPTIONS['enable_woocommerce'] ? ' style="display: none;"' : '') . '><a href="'. admin_url('admin.php?page=wc-settings#woocommerce_cf_geoplugin_conversion') .'"><u>' . __( 'Set conversion option in Woocommerce General Settings', CFGP_NAME ) . '</u></a></p>',
 									array(
 										'text'	=> __('Enable', CFGP_NAME),
 										'value'	=> 1,
@@ -627,11 +627,14 @@ if($this->get('action') == 'activate_license')
                 	<div class="row">
     					<div class="col-12 pb-5">
                         	<h5 class="mt-3"><?php _e('REST API Setup',CFGP_NAME) ?></h5>
+                            <?php if(CF_Geoplugin_Global::access_level($CF_GEOPLUGIN_OPTIONS['license_sku']) < 4): ?>
+                            <h5 class="mt-3 text-danger"><?php _e('NOTE: The REST API is only functional for the Business License',CFGP_NAME) ?></h5>
+                            <?php endif; ?>
                             <p><?php _e('The CF GeoPlugin REST API allows external apps to use geo informations and made your WordPress like geo informations provider.',CFGP_NAME) ?></p>
                             <h5><?php _e('API KEY',CFGP_NAME) ?>:</h5>
                             <div><code style="font-size: large;width: 100%;text-align: center;font-weight: 800;padding: 10px"><?php echo $CF_GEOPLUGIN_OPTIONS['id']; ?></code></div>
                             <h5 class="mt-3"><?php _e('Secret API KEY',CFGP_NAME) ?>:</h5>
-                            <div><code id="cf-geoplugin-secret-key" style="font-size: large;width: 100%;text-align: center;font-weight: 800;padding: 10px"><?php echo isset($CF_GEOPLUGIN_OPTIONS['rest_secret']) && !is_array($CF_GEOPLUGIN_OPTIONS['rest_secret']) ? $CF_GEOPLUGIN_OPTIONS['rest_secret'] : ' - ' . __('Generate Secret Key',CFGP_NAME) . ' - '; ?></code> <button type="button" class="btn btn-sm btn-secondary ml-3" id="cf-geoplugin-generate-secret-key"><?php _e('Generate Secret Key',CFGP_NAME) ?></button></div>
+                            <div><code id="cf-geoplugin-secret-key" style="font-size: large;width: 100%;text-align: center;font-weight: 800;padding: 10px"><?php echo isset($CF_GEOPLUGIN_OPTIONS['rest_secret']) && !is_array($CF_GEOPLUGIN_OPTIONS['rest_secret']) && !empty($CF_GEOPLUGIN_OPTIONS['rest_secret']) ? $CF_GEOPLUGIN_OPTIONS['rest_secret'] : ' - ' . __('Generate Secret Key',CFGP_NAME) . ' - '; ?></code> <button type="button" class="btn btn-sm btn-secondary ml-3" id="cf-geoplugin-generate-secret-key"><?php _e('Generate Secret Key',CFGP_NAME) ?></button></div>
                             
                             <h5 class="mt-3"><?php _e('Documentation',CFGP_NAME) ?>:</h5>
                             <p><?php _e('This API is designed to provide easy and secure access to geo information on your site sending simple POST or GET requests and receiving JSON formatted data. Through this API, you can easily connect via any programming language that allows crossdomain communication.',CFGP_NAME) ?></p>

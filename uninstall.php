@@ -6,7 +6,7 @@
  * @link      http://cfgeoplugin.com/
  * @since     7.0.0
  * @package   CF_Geoplugin
- * @author    Ivijan-Stefan Stipic 
+ * @author    Goran Zivkovic 
  */
 
 // If uninstall not called from WordPress, then exit.
@@ -77,16 +77,40 @@ function cf_geo_get_terms( $args = array(), $deprecated = '' )
 }
 
 // Destroy options
-delete_option( 'cf_geoplugin' );
-delete_option( 'cf_geoplugin_dismissed_notices' );
-
-// Geo Banner data
-$posts = get_posts( array( 'post_type'  =>  'cf-geoplugin-banner' ) );
-foreach( $posts as $post )
+if( !is_multisite() )
 {
-	wp_delete_post( $post->ID, true );
+	delete_option( 'cf_geoplugin' );
+	delete_option( 'cf_geoplugin_dismissed_notices' );
+}
+else
+{
+	delete_site_option( 'cf_geoplugin' );
+	delete_site_option( 'cf_geoplugin_dismissed_notices' );
 }
 
+// Geo Banner data
+$args = array(
+	'post_status' => array('publish', 'pending', 'draft', 'auto-draft', 'future', 'private', 'inherit', 'trash'),
+	'post_type'  =>  'cf-geoplugin-banner',
+	'offset' => 0,
+	'posts_per_page' => -1
+);
+$posts = get_posts( $args );
+if( !empty( $posts ) )
+{
+	foreach( $posts as $post )
+	{
+		delete_post_meta( $post->ID, 'cf-geoplugin-country' );
+		delete_post_meta( $post->ID, 'cf-geoplugin-region' );
+		delete_post_meta( $post->ID, 'cf-geoplugin-city' );
+		delete_post_meta( $post->ID, 'cf-geoplugin-redirect_url' );
+		delete_post_meta( $post->ID, 'cf-geoplugin-http_code' );
+		delete_post_meta( $post->ID, 'cf-geoplugin-seo_redirect' );
+		wp_delete_post( $post->ID, true );
+	}
+}
+
+// Taxonomy list
 $taxonomy_list = array(
     'cf-geoplugin-country',
 	'cf-geoplugin-region',
@@ -109,7 +133,7 @@ foreach($taxonomy_list as $taxonomy)
             'hide_empty'	=> false
         ));
     }
-	if ( is_array($terms) && count($terms) > 0 ){
+	if ( is_array($terms) && !empty( $terms ) ){
 		foreach ( $terms as $term ) {
 			wp_delete_term( $term->term_id, $taxonomy );
 		}

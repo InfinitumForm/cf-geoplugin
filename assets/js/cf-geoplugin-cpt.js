@@ -5,23 +5,21 @@
     var $currentUrl = document.URL || window.location.href;
     $currentUrl = $currentUrl.split( '/' );
 	$currentUrl = $currentUrl[ ($currentUrl.length-1) ];
-	if( $currentUrl.indexOf('cf-geoplugin-region') > 0 )
+	if( $currentUrl.indexOf('cf-geoplugin-region') >= 0 )
 	{
 		$currentUrl = 'cf-geoplugin-region';
 	}
-	else if( $currentUrl.indexOf('cf-geoplugin-country') > 0 )
+	else if( $currentUrl.indexOf('cf-geoplugin-country') >= 0 )
 	{
 		$currentUrl = 'cf-geoplugin-country';
 	}
-	else if( $currentUrl.indexOf('cf-geoplugin-city') > 0 )
+	else if( $currentUrl.indexOf('cf-geoplugin-city') >= 0 )
 	{
 		$currentUrl = 'cf-geoplugin-city';
 	}
 
-	if( $currentUrl == 'post-new.php?post_type=cf-geoplugin-banner' )
-	{
-		$currentUrl = 'edit.php?post_type=cf-geoplugin-banner';
-	}
+	$currentUrl = $currentUrl.replace( 'post-new', 'edit' );
+	
 	
     var $cfMenu = $( "#toplevel_page_cf-geoplugin ul.wp-submenu li a[href*='"+ $currentUrl +"']");
 
@@ -32,7 +30,21 @@
     if( !$cfMenu.hasClass('current') )
     {
         $cfMenu.addClass( 'current' ).attr( 'aria-selected', 'page' );
-    }
+	}
+	
+	var postID = CFGP.post_id;
+	if( postID > 0 )
+	{
+		var cfMenu =  $( "#toplevel_page_cf-geoplugin" );
+		if( cfMenu.hasClass('wp-not-current-submenu') )
+		{
+			cfMenu.removeClass('wp-not-current-submenu').addClass('wp-menu-open wp-has-current-submenu');
+		}
+		if( cfMenu.children('a').hasClass('wp-not-current-submenu') )
+		{
+			cfMenu.children('a').removeClass('wp-not-current-submenu').addClass('wp-menu-open wp-has-current-submenu');
+		}
+	}
 
     $(document).ready( function() {
 		// Remove unusefull functions

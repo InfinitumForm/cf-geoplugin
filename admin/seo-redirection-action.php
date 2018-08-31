@@ -4,7 +4,7 @@
  *
  * @since      7.0.0
  * @package    CF_Geoplugin
- * @author     Ivijan-Stefan Stipic
+ * @author     Goran Zivkovic
  *
 **/
 global $wpdb, $wp_version;
@@ -15,9 +15,9 @@ global $wpdb, $wp_version;
     <div class="row">
     	<div class="col-12">
             <h1 class="h5 mt-3"><i class="fa fa-location-arrow"></i> <?php 
-            $title = 'Add new SEO redirection';
-            if( isset( $_GET['id'] ) ) $title = 'Update SEO redirection';
-            _e( $title,CFGP_NAME); ?>
+            $title = __( 'Add new SEO redirection',CFGP_NAME);
+            if( isset( $_GET['id'] ) ) $title = __( 'Update SEO redirection',CFGP_NAME);
+           	echo $title; ?>
             </h1>
             <hr>
         </div>

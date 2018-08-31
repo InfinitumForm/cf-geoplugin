@@ -245,7 +245,7 @@ $.fn.alerts = function(text, type){
 				{
 					country = false;
 				}
-				var region = true;
+				/*var region = true;
 				if( $( '#cf_geo_region', $$ ).length && !$( '#cf_geo_region', $$ ).val() )
 				{
 					region = false;
@@ -254,9 +254,9 @@ $.fn.alerts = function(text, type){
 				if( $('#cf_geo_city', $$).length && !$( '#cf_geo_city', $$ ).val() )
 				{
 					city = false;
-				}
+				}*/
 
-				if( valid_url && country && region && city ) 
+				if( valid_url && country ) 
 				{
 					var $form_data = $($$).serialize();
 					$('.btn', $$).prop('disabled', true);
@@ -290,6 +290,7 @@ $.fn.alerts = function(text, type){
 						$('#alert').alerts(CFGP.label.settings.fail,'danger');
 					});
 				}
+				
 				if( !valid_url )
 				{
 					$( '#cf_geo_redirect_url', $$ ).addClass( 'is-invalid' );
@@ -318,7 +319,7 @@ $.fn.alerts = function(text, type){
 					$( 'div#select-country', $$).attr( 'hidden', true );
 				}
 
-				if( !region )
+				/*if( !region )
 				{
 					$( '#cf_geo_region', $$ ).addClass( 'is-invalid' );
 					$( 'div#select-region', $$).attr( 'hidden', false );
@@ -344,7 +345,7 @@ $.fn.alerts = function(text, type){
 						$( '#cf_geo_city', $$ ).removeClass( 'is-invalid' );
 					}
 					$( 'div#select-city', $$).attr( 'hidden', true );
-				}
+				} */
 				return false;
 			});
 		}
@@ -422,7 +423,7 @@ $.fn.alerts = function(text, type){
 				});
 			});
 		}
-	})('.input-group');
+	})('#csv-import');
 	
 	// Generate Secret Key
 	(function($$) {

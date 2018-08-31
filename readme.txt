@@ -5,7 +5,7 @@ Tags: geo plugin, geo location, geotarget, geo banner, market, conversion, conve
 Requires at least: 3.0
 Tested up to: 4.9
 Requires PHP: 5.6.0
-Stable tag: 7.0.3
+Stable tag: 7.1.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -250,6 +250,33 @@ Please inform us if any of these errors occure via contact form on our website [
 
 == Changelog ==
 
+= 7.1.3 =
+* Added filter for the X_FORWARDED_FOR
+* Fixed previous bugs
+* Fixed Woocommerce bug
+
+= 7.1.2 =
+* Added support for multisite installation
+* Fixed License Key validation problems
+* Fixed bug with debugger
+* Fixed uninstall bug
+
+= 7.1.1 =
+* Fixed popper.js
+* Added woocommerce validation description
+* Fixed problem with CF admin menu
+* Fixed issue with total cart price conversion
+* Validation and unistall upgrades
+
+= 7.1.0 =
+* Woocommerce integration
+* Woocommerce currency converter
+* Integrated REST API for the external apps and integrations
+* Fixed bugs from the prevous version
+
+= 7.0.4 =
+* Fixed Geo Banner shortcode bug
+
 = 7.0.3 =
 * Fixed API communication
 
@@ -279,6 +306,12 @@ Please inform us if any of these errors occure via contact form on our website [
 * Localization integration
 
 == Upgrade Notice ==
+
+= 7.1.2 =
+IMPORTANT UPGRADE - Added support for multisite installation and fixed license key validation
+
+= 7.0.4 =
+IMPORTANT UPGRADE - Fixed Geo Banner shortcode bug
 
 = 7.0.3 =
 IMPORTANT UPGRADE - API communication fix

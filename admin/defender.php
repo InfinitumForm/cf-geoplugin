@@ -4,7 +4,7 @@
  *
  * @since      7.0.0
  * @package    CF_Geoplugin
- * @author     Ivijan-Stefan Stipic
+ * @author     Goran Zivkovic
  *
 **/
 
@@ -31,17 +31,20 @@ global $wp_version, $CF_GEOPLUGIN_OPTIONS;
             <div class="col-12">
                 <?php
                     // Chosen select for empty select does not return anything so I thought this should work
-                    if( array_key_exists( 'block_country', $_POST ) === false )
+                    if( isset( $_GET['setting'] ) && $_GET['setting'] == 'general' )
                     {
-                        $this->update_option( 'block_country', '' );
-                    }
-                    if( array_key_exists( 'block_region', $_POST ) === false )
-                    {
-                        $this->update_option( 'block_region', '' );
-                    }
-                    if( array_key_exists( 'block_city', $_POST ) === false )
-                    {
-                        $this->update_option( 'block_city', '' );
+                        if( array_key_exists( 'block_country', $_POST ) === false )
+                        {
+                            $this->update_option( 'block_country', '' );
+                        }
+                        if( array_key_exists( 'block_region', $_POST ) === false )
+                        {
+                            $this->update_option( 'block_region', '' );
+                        }
+                        if( array_key_exists( 'block_city', $_POST ) === false )
+                        {
+                            $this->update_option( 'block_city', '' );
+                        }
                     }
 
                     $updates = array();

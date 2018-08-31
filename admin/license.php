@@ -24,11 +24,12 @@ if(isset($_POST['license_key']) && isset($_POST['license'])) :
 	
 	if(count($post) === 5)
 	{
-		$ch = curl_init(CFGP_STORE . '/wp-admin/admin-ajax.php');
+//		$ch = curl_init(CFGP_STORE . '/wp-admin/admin-ajax.php');
+		$ch = curl_init('https://cdn-cfgeoplugin.com/api6.0/authenticate.php');
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-			curl_setopt($ch, CURLOPT_TIMEOUT, 5);
-			curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+			curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+			curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
 			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 			curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: application/json'));
 		$response = curl_exec($ch);
@@ -45,12 +46,15 @@ if(isset($_POST['license_key']) && isset($_POST['license'])) :
 				$CF_GEOPLUGIN_OPTIONS['license_url'] = $license->data->url;
 				$CF_GEOPLUGIN_OPTIONS['license_expired'] = $license->data->has_expired;
 				$CF_GEOPLUGIN_OPTIONS['license_status'] = $license->data->status;
-				$CF_GEOPLUGIN_OPTIONS['license_sku'] = $post['sku'];
+				$CF_GEOPLUGIN_OPTIONS['license_sku'] = $license->data->sku;
 				$CF_GEOPLUGIN_OPTIONS['license'] = 1;
 				
-				update_option('cf_geoplugin', $CF_GEOPLUGIN_OPTIONS, true);
+				if( !CFGP_MULTISITE )
+					update_option('cf_geoplugin', $CF_GEOPLUGIN_OPTIONS, true);
+				else
+					update_site_option('cf_geoplugin', $CF_GEOPLUGIN_OPTIONS);
 				
-				exit('<h3 class="mt-5">'.__('Please wait...',CFGP_NAME).'</h3><meta http-equiv="Refresh" content="0.1; url='.admin_url('/admin.php?page=cf-geoplugin-settings&action=activate_license').'">');
+				exit('<h3 class="mt-5"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i><span class="sr-only">Loading...</span> '.__('Please wait...',CFGP_NAME).'</h3><meta http-equiv="Refresh" content="0.1; url='.admin_url('/admin.php?page=cf-geoplugin-settings&action=activate_license').'">');
 			}
 			else
 			{ ob_start();

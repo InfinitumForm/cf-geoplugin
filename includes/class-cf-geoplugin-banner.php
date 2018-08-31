@@ -4,7 +4,7 @@
  * 
  * @since       7.0.0
  * @package    CF_Geoplugin
- * @author     Ivijan-Stefan Stipic
+ * @author     Goran Zivkovic
  */
 if( ! class_exists( 'CF_Geoplugin_Banner' ) ) :
 Class CF_Geoplugin_Banner extends CF_Geoplugin_Global

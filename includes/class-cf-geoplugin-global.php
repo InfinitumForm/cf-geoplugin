@@ -181,7 +181,11 @@ class CF_Geoplugin_Global
 	 * Hook Get Options
 	*/
 	public function get_option($option_name='', $default=false){
-		$options = get_option('cf_geoplugin');
+		if( !CFGP_MULTISITE )
+			$options = get_option('cf_geoplugin');
+		else
+			$options = get_site_option( 'cf_geoplugin' );
+			
 		if($options)
 		{
 			if(!empty($option_name) && isset($options[$option_name])) {
@@ -206,15 +210,36 @@ class CF_Geoplugin_Global
 	 * Hook Update Options
 	*/
 	public function update_option($option_name, $value){
-		$options = get_option('cf_geoplugin');
+		if( !CFGP_MULTISITE )
+			$options = get_option('cf_geoplugin');
+		else
+			$options = get_site_option( 'cf_geoplugin' );
 		if($options)
 		{
 			if(is_array($value))
 				$options[$option_name] = $value;
 			else
 				$options[$option_name] = trim($value);
-			update_option('cf_geoplugin', $options, true);
+		
+			if( !CFGP_MULTISITE )
+				update_option('cf_geoplugin', $options, true);
+			else 
+				update_site_option('cf_geoplugin', $options);
+		
 			return $options;
+		}
+		else // Add options to WP DB if not exists
+		{
+			if( !CFGP_MULTISITE ) 
+			{
+				update_option( 'cf_geoplugin', $this->default_options );
+				return get_option( 'cf_geoplugin' );
+			}
+			else 
+			{
+				update_site_option( 'cf_geoplugin', $this->default_options );
+				return get_site_option( 'cf_geoplugin' );
+			}
 		}
 		return false;
 	}
@@ -223,13 +248,20 @@ class CF_Geoplugin_Global
 	 * Hook Delete Options
 	*/
 	public function delete_option($option_name){
-		$options = get_option('cf_geoplugin');
+		if( !CFGP_MULTISITE )
+			$options = get_option('cf_geoplugin');
+		else
+			$options = get_site_option( 'cf_geoplugin' );
+		
 		if($options)
 		{
 			if(isset($options[$option_name]))
 			{
 				unset($options[$option_name]);
-				update_option('cf_geoplugin', $options, true);
+				if( !CFGP_MULTISITE )
+					update_option('cf_geoplugin', $options, true);
+				else
+					update_site_option('cf_geoplugin', $options);
 				return true;
 			}
 		}
@@ -1007,18 +1039,18 @@ class CF_Geoplugin_Global
 	 */
 	public static function validate()
 	{
-		$G = new CF_Geoplugin_Global;
+		$instance = new CF_Geoplugin_Global;
 		// Validate
-		$options = $G->get_option();
-		if($options['license'] == 1 && $options['license_key'] && $options['license_id']) :
-			$ch = curl_init($options['store'] . '/wp-admin/admin-ajax.php');
+		$CF_GEOPLUGIN_OPTIONS = $instance->get_option();
+		if($CF_GEOPLUGIN_OPTIONS['license'] == 1 && $CF_GEOPLUGIN_OPTIONS['license_key'] && $CF_GEOPLUGIN_OPTIONS['license_id']) :
+			$ch = curl_init($CF_GEOPLUGIN_OPTIONS['store'] . '/wp-admin/admin-ajax.php');
 				curl_setopt($ch, CURLOPT_POSTFIELDS, array(
 					'action' 		=> 'license_key_validate',
-					'license_key' 	=> $options['license_key'],
-					'sku' 			=> $options['license_sku'],
-					'store_code' 	=> $options['store_code'],
+					'license_key' 	=> $CF_GEOPLUGIN_OPTIONS['license_key'],
+					'sku' 			=> $CF_GEOPLUGIN_OPTIONS['license_sku'],
+					'store_code' 	=> $CF_GEOPLUGIN_OPTIONS['store_code'],
 					'domain' 		=> self::get_host(),
-					'activation_id'	=> $options['license_id']
+					'activation_id'	=> $CF_GEOPLUGIN_OPTIONS['license_id']
 				));
 				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 				curl_setopt($ch, CURLOPT_TIMEOUT, 10);
