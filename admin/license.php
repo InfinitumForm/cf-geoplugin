@@ -131,18 +131,9 @@ endif;
                     <strong><label><?php _e('License Type',CFGP_NAME); ?> <?php CFGP_ACTIVATED ? '' : _e('(required)',CFGP_NAME); ?></label></strong><br>
                     <select name="sku" class="form-control" style="width: 300px; display:inline-block;" <?php echo CFGP_ACTIVATED ? ' disabled' : ''; ?>>
                     <?php
-                    	$options = array(
-							CF_Geoplugin_Global::BASIC_LICENSE		=> __('UNLIMITED Basic License (1 month)',CFGP_NAME),
-							CF_Geoplugin_Global::PERSONAL_LICENSE	=> __('UNLIMITED Personal License',CFGP_NAME),
-							CF_Geoplugin_Global::FREELANCER_LICENSE	=> __('UNLIMITED Freelancer License',CFGP_NAME),
-							CF_Geoplugin_Global::BUSINESS_LICENSE	=> __('UNLIMITED Business License',CFGP_NAME)
-						);
-						if( CFGP_DEV_MODE )
-						{
-							$options[CF_Geoplugin_Global::DEVELOPER_LICENSE] = __('UNLIMITED Developer License', CFGP_NAME);
-						}
+                    	$options = CF_Geoplugin_Global::license_name(true);
 						foreach($options as $key=>$val){
-							$active = isset($_POST['sku']) && $_POST['sku'] == $key ? ' selected' : ($CF_GEOPLUGIN_OPTIONS['license_key'] == $key ? ' selected' : '');
+							$active = isset($_POST['sku']) && $_POST['sku'] == $key ? ' selected' : ($CF_GEOPLUGIN_OPTIONS['license_sku'] == $key ? ' selected' : '');
 							printf('<option value="%1$s"%2$s>%3$s</option>', $key, $active, $val);
 						}
 					?>
@@ -157,7 +148,7 @@ endif;
                     <input type="hidden" name="domain" value="<?php	echo CF_Geoplugin_Global::get_host(); ?>">
                     <input type="hidden" name="license" value="1">
                     <button type="submit" class="btn btn-primary btn-lg"><?php _e('Activate Unlimited',CFGP_NAME); ?></button><?php endif; ?>
-                </form>
+                </form>                
             </div>
         </div>
         <?php if($this->get('page') != 'cf-geoplugin-settings') : ?>

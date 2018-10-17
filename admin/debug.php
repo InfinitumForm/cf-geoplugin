@@ -314,6 +314,11 @@ if( $this->get( 'ip-lookup', 'bool', false )  )
 										?></td>
                                         <td><?php _e( 'CF GeoPlugin License Key', CFGP_NAME ); ?></td>
                                     </tr>
+                                    <tr>
+                                        <td><strong><?php _e( 'License Type', CFGP_NAME ); ?></strong></td>
+                                        <td><?php echo ( !empty( $CF_GEOPLUGIN_OPTIONS['license_sku'] ) ? CF_Geoplugin_Global::license_name($CF_GEOPLUGIN_OPTIONS['license_sku']) : '-' ) ?></td>
+                                        <td><?php _e( 'CF GeoPlugin License Type', CFGP_NAME ); ?></td>
+                                    </tr>
                                 </tbody>
                             </table>        
                         </div>

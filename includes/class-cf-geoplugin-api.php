@@ -504,14 +504,14 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
 			$expire = (int)$CF_GEOPLUGIN_OPTIONS['license_expire'];
 			if($expire > 0 && time() > $expire)
 			{
-				$CF_GEOPLUGIN_OPTIONS['license_key'] = '';
-				$CF_GEOPLUGIN_OPTIONS['license_id'] = '';
-				$CF_GEOPLUGIN_OPTIONS['license_expire'] = '';
-				$CF_GEOPLUGIN_OPTIONS['license_expire_date'] = '';
-				$CF_GEOPLUGIN_OPTIONS['license_url'] = '';
-				$CF_GEOPLUGIN_OPTIONS['license_expired'] = '';
-				$CF_GEOPLUGIN_OPTIONS['license_status'] = '';
-				$CF_GEOPLUGIN_OPTIONS['license_sku'] = '';
+			//	$CF_GEOPLUGIN_OPTIONS['license_key'] = '';
+			//	$CF_GEOPLUGIN_OPTIONS['license_id'] = '';
+			//	$CF_GEOPLUGIN_OPTIONS['license_expire'] = '';
+			//	$CF_GEOPLUGIN_OPTIONS['license_expire_date'] = '';
+			//	$CF_GEOPLUGIN_OPTIONS['license_url'] = '';
+			//	$CF_GEOPLUGIN_OPTIONS['license_expired'] = '';
+			//	$CF_GEOPLUGIN_OPTIONS['license_status'] = '';
+			//	$CF_GEOPLUGIN_OPTIONS['license_sku'] = '';
 				$CF_GEOPLUGIN_OPTIONS['license'] = 0;
 				
 				if( !CFGP_MULTISITE )

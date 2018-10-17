@@ -87,7 +87,8 @@ if($this->get('action') == 'activate_license')
 										'text'	=> __('Disable',CFGP_NAME),
 										'value'	=> 0,
 										'id'	=> 'enable_update_false',
-									)
+									),
+									'html'		=> '<small>( ' . __('Allow your plugin to be up to date.',CFGP_NAME) . ' )</small>'
 								));
 								
 								$general->radio(array(
@@ -103,7 +104,8 @@ if($this->get('action') == 'activate_license')
 										'text'	=> __('Disable',CFGP_NAME),
 										'value'	=> 0,
 										'id'	=> 'enable_cloudflare_false',
-									)
+									),
+									'html'		=> '<small>( ' . __('Enable this option only when you use Cloudflare services on your website.',CFGP_NAME) . ' )</small>'
 								));
 								
 								$general->radio(array(
@@ -119,7 +121,25 @@ if($this->get('action') == 'activate_license')
 										'text'	=> __('Disable',CFGP_NAME),
 										'value'	=> 0,
 										'id'	=> 'enable_ssl_false',
-									)
+									),
+									'html'		=> '<small>( ' . __('This option force plugin to use SSL connection',CFGP_NAME) . ' )</small>'
+								));
+								
+								$general->radio(array(
+									'label'		=> __('Enable Caching',CFGP_NAME),
+									'name'		=> 'enable_cache',
+									'default'	=> (isset($CF_GEOPLUGIN_OPTIONS['enable_cache']) ? $CF_GEOPLUGIN_OPTIONS['enable_cache'] : 0),
+									array(
+										'text'	=> __('Enable',CFGP_NAME),
+										'value'	=> 1,
+										'id'	=> 'enable_cache_true',
+									),
+									array(
+										'text'	=> __('Disable',CFGP_NAME),
+										'value'	=> 0,
+										'id'	=> 'enable_cache_false',
+									),
+									'html'		=> '<small>( ' . __('This option allows caching. Usually used in combination with a cache plugin. If you do not want your redirects to be cached, leave this field disabled',CFGP_NAME) . ' )</small>'
 								));
 								
 								$general->select(array(
@@ -174,7 +194,8 @@ if($this->get('action') == 'activate_license')
 										'text'	=> __('Disable',CFGP_NAME),
 										'value'	=> 0,
 										'id'	=> 'enable_dns_lookup_false',
-									)
+									),
+									'html'		=> '<small>( ' . __('DNS lookup allow you to get DNS informations from your visitors.',CFGP_NAME) . ' )</small>'
 								));
 								
 								$general->radio(array(
@@ -190,7 +211,8 @@ if($this->get('action') == 'activate_license')
 										'text'	=> __('Disable',CFGP_NAME),
 										'value'	=> 0,
 										'id'	=> 'enable_flag_false',
-									)
+									),
+									'html'		=> '<small>( ' . __('Display country flag SVG or PNG image on your website.',CFGP_NAME) . ' )</small>'
 								));
 								
 								$general->html('<h5 class="mt-5">'.__('Plugin Features',CFGP_NAME).'</h5>');
@@ -209,7 +231,8 @@ if($this->get('action') == 'activate_license')
 										'text'	=> __('Disable',CFGP_NAME),
 										'value'	=> 0,
 										'id'	=> 'enable_seo_redirection_false',
-									)
+									),
+									'html'		=> '<small>( ' . __('You can redirect your visitors to other locations.',CFGP_NAME) . ' )</small>'
 								));
 								
 								$general->radio(array(
@@ -225,7 +248,8 @@ if($this->get('action') == 'activate_license')
 										'text'	=> __('Disable',CFGP_NAME),
 										'value'	=> 0,
 										'id'	=> 'enable_banner_false',
-									)
+									),
+									'html'		=> '<small>( ' . __('Display content to user by geo location.',CFGP_NAME) . ' )</small>'
 								));
 								
 								$general->radio(array(
@@ -241,7 +265,8 @@ if($this->get('action') == 'activate_license')
 										'text'	=> __('Disable',CFGP_NAME),
 										'value'	=> 0,
 										'id'	=> 'enable_gmap_false',
-									)
+									),
+									'html'		=> '<small>( ' . __('Place simple Google Map to your page.',CFGP_NAME) . ' )</small>'
 								));
 								
 								$general->radio(array(
@@ -257,7 +282,8 @@ if($this->get('action') == 'activate_license')
 										'text'	=> __('Disable',CFGP_NAME),
 										'value'	=> 0,
 										'id'	=> 'enable_defender_false',
-									)
+									),
+									'html'		=> '<small>( ' . __('Protect your website from the unwanted visitors by geo location.',CFGP_NAME) . ' )</small>'
 								));
 
 								$general->radio(array(
@@ -287,7 +313,7 @@ if($this->get('action') == 'activate_license')
 								$general->html('<p>'.sprintf(__('Some servers not share real IP because of security reasons or IP is blocked from geolocation. Using proxy you can bypass that protocols and enable geoplugin to work properly. Also, this option on individual servers can cause inaccurate geo informations, and because of that this option is disabled by default. You need to test this option on your side and use wise. Need proxy service? %1$s.',CFGP_NAME),'<a href="https://go.nordvpn.net/aff_c?offer_id=15&aff_id=14042&url_id=902" target="_blank">'.__('We have Recommended Service For You',CFGP_NAME).'</a>').'</p><hr>');
 								
 								
-							if(CF_Geoplugin_Global::access_level($CF_GEOPLUGIN_OPTIONS['license_sku']) > 1):
+							if(CF_Geoplugin_Global::access_level($CF_GEOPLUGIN_OPTIONS) > 1):
 								$general->radio(array(
 									'label'		=> __('Enable Proxy',CFGP_NAME),
 									'name'		=> 'proxy',
@@ -627,7 +653,7 @@ if($this->get('action') == 'activate_license')
                 	<div class="row">
     					<div class="col-12 pb-5">
                         	<h5 class="mt-3"><?php _e('REST API Setup',CFGP_NAME) ?></h5>
-                            <?php if(CF_Geoplugin_Global::access_level($CF_GEOPLUGIN_OPTIONS['license_sku']) < 4): ?>
+                            <?php if(CF_Geoplugin_Global::access_level($CF_GEOPLUGIN_OPTIONS) < 4): ?>
                             <h5 class="mt-3 text-danger"><?php _e('NOTE: The REST API is only functional for the Business License',CFGP_NAME) ?></h5>
                             <?php endif; ?>
                             <p><?php _e('The CF GeoPlugin REST API allows external apps to use geo informations and made your WordPress like geo informations provider.',CFGP_NAME) ?></p>

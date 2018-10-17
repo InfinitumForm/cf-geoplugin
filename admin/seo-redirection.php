@@ -19,7 +19,7 @@ if( isset( $_GET['action'] ) && ( $_GET['action'] == 'add-new' || $_GET['action'
 }
 elseif( isset( $_GET['action'] ) && $_GET['action'] == 'import_csv' )
 {
-	if(isset($CF_GEOPLUGIN_OPTIONS['enable_beta_seo_csv']) ? ($CF_GEOPLUGIN_OPTIONS['enable_beta'] && $CF_GEOPLUGIN_OPTIONS['enable_beta_seo_csv'] && CF_Geoplugin_Global::access_level($CF_GEOPLUGIN_OPTIONS['license_sku']) > 0) : (1 && CF_Geoplugin_Global::access_level($CF_GEOPLUGIN_OPTIONS['license_sku']) > 0))
+	if(isset($CF_GEOPLUGIN_OPTIONS['enable_beta_seo_csv']) ? ($CF_GEOPLUGIN_OPTIONS['enable_beta'] && $CF_GEOPLUGIN_OPTIONS['enable_beta_seo_csv'] && CF_Geoplugin_Global::access_level($CF_GEOPLUGIN_OPTIONS) > 0) : (1 && CF_Geoplugin_Global::access_level($CF_GEOPLUGIN_OPTIONS) > 0))
 	{
 		if( file_exists( CFGP_ADMIN . '/seo-redirection-import.php' ) )
 		{
@@ -61,7 +61,7 @@ else
     <div class="row">
 		<div class="col-12">
         	<a class="btn btn-primary btn-sm" href="<?php echo get_admin_url(); ?>admin.php?page=<?php echo $_GET['page']; ?>&action=add-new&page_num=<?php echo $page_num; ?>"><span class="fa fa-plus"></span> <?php _e( 'Add new redirection', CFGP_NAME ); ?></a>
-            <?php if(CF_Geoplugin_Global::access_level($CF_GEOPLUGIN_OPTIONS['license_sku']) > 0): ?>
+            <?php if(CF_Geoplugin_Global::access_level($CF_GEOPLUGIN_OPTIONS) > 0): ?>
 				<?php if(isset($CF_GEOPLUGIN_OPTIONS['enable_beta_seo_csv']) ? ($CF_GEOPLUGIN_OPTIONS['enable_beta'] && $CF_GEOPLUGIN_OPTIONS['enable_beta_seo_csv']) : 1) : ?>
                 <a class="btn btn-outline-secondary btn-sm pull-right ml-2 mr-2" href="<?php echo get_admin_url(); ?>admin.php?page=<?php echo $_GET['page']; ?>&action=export_csv"><span class="fa fa-arrow-circle-right"></span> <?php _e( 'Export as CSV' ); ?></a>
                 <a class="btn btn-success btn-sm pull-right" href="<?php echo get_admin_url(); ?>admin.php?page=<?php echo $_GET['page']; ?>&action=import_csv"><span class="fa fa-file"></span> <?php _e( 'Import from CSV' ); ?></a>

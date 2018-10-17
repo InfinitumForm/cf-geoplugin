@@ -333,9 +333,9 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
         </div>
         <div class="card-body">
             <ul class="list-unstyled list-feed">
-                <div class="inside" id="rss">
+                <div class="inside<?php echo (isset($_SESSION[CFGP_PREFIX . 'rss']) ? ' rss-loaded' : ''); ?>" id="rss">
                 	<?php
-                    	if(isset($_SESSION[CFGP_PREFIX . 'rss'])) :
+                    	if( isset($_SESSION[CFGP_PREFIX . 'rss']) ) :
 							echo $_SESSION[CFGP_PREFIX . 'rss'];
 						else :
 					?>
@@ -365,8 +365,14 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 			$print = array();
 			foreach($items as $fetch)
 			{
-				if($i >= 5) continue;
-				$print[]=sprintf('<p><a href="%s" target="_blank" class="text-info"><h4 class="h5">%s</h4></a>%s<br><small>~%s</small></p>',$fetch->link, $fetch->title, $fetch->description, date("F j, Y", strtotime($fetch->pubDate)));
+				if( $i >= 5 ) continue;
+				$print[]=sprintf(
+					'<p><a href="%1$s" target="_blank" class="text-info"><h4 class="h5">%2$s</h4></a>%3$s<small>~%4$s</small></p>',
+					$fetch->link,
+					$fetch->title,
+					$fetch->description,
+					date("F j, Y", strtotime($fetch->pubDate))
+				);
 				++$i;
 			}
 			
@@ -789,7 +795,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 	public function export_seo_csv()
 	{
 		global $CF_GEOPLUGIN_OPTIONS;
-		if( isset( $_GET['action'] ) && $_GET['action'] == 'export_csv' && CF_Geoplugin_Global::access_level($CF_GEOPLUGIN_OPTIONS['license_sku']) > 0 )
+		if( isset( $_GET['action'] ) && $_GET['action'] == 'export_csv' && CF_Geoplugin_Global::access_level($CF_GEOPLUGIN_OPTIONS) > 0 )
 		{
 			if(isset($CF_GEOPLUGIN_OPTIONS['enable_beta_seo_csv']) ? ($CF_GEOPLUGIN_OPTIONS['enable_beta'] && $CF_GEOPLUGIN_OPTIONS['enable_beta_seo_csv']) : 1)
 			{

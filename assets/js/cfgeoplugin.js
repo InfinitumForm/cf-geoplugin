@@ -48,8 +48,8 @@ $.fn.alerts = function(text, type){
 	 * RSS FEED
 	 * @since 7.0.0
 	*/
-	(function($$){ 
-		if( $($$) )
+	(function($$){
+		if( $($$) && !($('.rss-loaded').length) )
 		{
 			$.ajax({
 				method : 'post',
@@ -59,7 +59,7 @@ $.fn.alerts = function(text, type){
 				data : {action:'cf_geo_rss_feed'}
 			}).done(function(d){
 				if(d == '') d = CFGP.label.rss.no_news;
-				$($$).html(d);
+				$($$).html(d.replace(/(^\[)?(.*?)(\]$)?/gi, '$2'));
 			}).fail(function(a){
 				console.log(a);
 				$($$).html(CFGP.label.rss.error);

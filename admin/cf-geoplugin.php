@@ -134,7 +134,7 @@ global $CFGEO, $CF_GEOPLUGIN_OPTIONS;
                                 <td><kbd>[cfgeo return="ip_version"]</kbd></td>
                                 <td><?php echo $CFGEO['ip_version']; ?></td>
                             </tr>
-                            <?php if($CF_GEOPLUGIN_OPTIONS['enable_dns_lookup'] && CF_Geoplugin_Global::access_level($CF_GEOPLUGIN_OPTIONS['license_sku']) >= 1) : ?>
+                            <?php if($CF_GEOPLUGIN_OPTIONS['enable_dns_lookup'] && CF_Geoplugin_Global::access_level($CF_GEOPLUGIN_OPTIONS) >= 1) : ?>
                             <tr>
                                 <td><kbd>[cfgeo return="ip_dns"]</kbd></td>
                                 <td><?php echo $CFGEO['ip_dns']; ?></td>

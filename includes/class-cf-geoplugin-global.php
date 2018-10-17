@@ -6,6 +6,7 @@
  * @package    CF_Geoplugin
  * @author     Ivijan-Stefan Stipic
  */
+
 if(!class_exists('CF_Geoplugin_Global')) :
 class CF_Geoplugin_Global
 {
@@ -18,6 +19,7 @@ class CF_Geoplugin_Global
 		'enable_flag'			=>	1,
 		'enable_defender'		=>	1,
 		'enable_gmap'			=>	0,
+		'enable_cache'			=>	0,
 		'enable_banner'			=>	1,
 		'enable_cloudflare'		=>	0,
 		'enable_dns_lookup'		=>	0,
@@ -115,6 +117,9 @@ class CF_Geoplugin_Global
 		'cf_geo_auto_update'
 	);
 	
+	// Display license names
+	public $license_names = array();
+	
 	// Database tables
 	const TABLE = array(
 		'seo_redirection' 	=> 'cf_geo_seo_redirection',
@@ -133,7 +138,29 @@ class CF_Geoplugin_Global
 	private static $is_proxy = false;
 	
 	function __construct(){
+		$this->license_names = array(
+			self::BASIC_LICENSE		=> __('UNLIMITED Basic License (1 month)',CFGP_NAME),
+			self::PERSONAL_LICENSE	=> __('UNLIMITED Personal License',CFGP_NAME),
+			self::FREELANCER_LICENSE	=> __('UNLIMITED Freelancer License',CFGP_NAME),
+			self::BUSINESS_LICENSE	=> __('UNLIMITED Business License',CFGP_NAME)
+		);
+		if( CFGP_DEV_MODE )
+		{
+			$this->license_names[CF_Geoplugin_Global::DEVELOPER_LICENSE] = __('UNLIMITED Developer License', CFGP_NAME);
+		}
+	}
+	
+	public static function license_name($sku){
+		$G = new CF_Geoplugin_Global;
+		$license = $G->license_names;
 		
+		if($sku === true)
+			return $license;
+		
+		if(isset($license[$sku]))
+			return $license[$sku];
+		
+		return '-';
 	}
 	
 	/*
@@ -149,6 +176,7 @@ class CF_Geoplugin_Global
 		$instance = new CF_Geoplugin_Global;
 		if($instance->check_defender_activation()) return 100;
 		
+		
 		$check = array_flip(array(
 			0,
 			self::BASIC_LICENSE,
@@ -158,9 +186,22 @@ class CF_Geoplugin_Global
 			self::DEVELOPER_LICENSE
 		));
 		
-		if(isset($check[$level]))
-			return $check[$level];
-		
+		if(is_array($level))
+		{
+			if(isset($level['license']) && isset($level['license_sku']))
+			{
+				if($level['license'])
+				{
+					if(isset($check[$level['license_sku']]))
+						return $check[$level['license_sku']];
+				}
+			}
+		}
+		else
+		{			
+			if(isset($check[$level]))
+				return $check[$level];
+		}
 		return 0;
 	} 
 	
