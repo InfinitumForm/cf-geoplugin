@@ -45,12 +45,12 @@ global $wpdb, $wp_version;
                     if( isset( $_GET['id'] ) )
                     {
                         $table_name = self::TABLE['seo_redirection'];
-                        $id = $_GET['id'];
+                        $id = absint( $_GET['id'] );
                         $redirect = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}{$table_name} WHERE id=$id;", ARRAY_A );
                         if( $redirect !== NULL && $wpdb->num_rows > 0 ) $redirect_data = $redirect[0];
                     }
                 ?>
-                    <form action="<?php echo admin_url( 'admin-ajax.php' );?>?action=cf_geo_update_redirect" method="post" id="cf_geo_redirect_form"  class="col-8">
+                    <form action="<?php echo self_admin_url( 'admin-ajax.php' );?>?action=cf_geo_update_redirect" method="post" id="cf_geo_redirect_form"  class="col-8">
                         <div class="form-group" id="cf_geo_redirect_active">
                             <label for="cf_geo_redirect_active"><?php _e( 'Enable or disable global redirection.' ); ?></label><br>
                             <div class="form-check form-check-inline">
@@ -212,7 +212,7 @@ global $wpdb, $wp_version;
                             wp_nonce_field( 'cf_geo_update_redirect', 'cf_geo_update_redirect_nonce' );
                             if( isset( $_GET['id'] ) )
                             {
-                                echo '<input type="hidden" name="cf_geo_redirect_action" value="' . $_GET['id'] . '">';
+                                echo '<input type="hidden" name="cf_geo_redirect_action" value="' . absint( $_GET['id'] ) . '">';
                             }
                             else
                             {
@@ -220,7 +220,7 @@ global $wpdb, $wp_version;
                             }
                         ?>
                         <button type="submit" class="btn btn-primary"><span class="fa fa-check"></span> <?php _e( 'Save', CFGP_NAME ); ?></button>
-                        <a class="btn cf_geo_redirect_cancel" href="<?php echo get_admin_url(); ?>admin.php?page=<?php echo $_GET['page'] ?>&page_num=<?php echo $_GET['page_num']; ?>"><?php _e( 'Cancel', CFGP_NAME ); ?></a>
+                        <a class="btn cf_geo_redirect_cancel" href="<?php echo self_admin_url( 'admin.php?page='. $_GET['page'] .'&page_num='. $_GET['page_num'] ); ?>"><?php _e( 'Cancel', CFGP_NAME ); ?></a>
                     </form>
                 </div>
             </div>

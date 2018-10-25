@@ -8,7 +8,7 @@
  *
 **/
 
-global $CFGEO, $CF_GEOPLUGIN_OPTIONS;
+$CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
 ?>
 <div class="clearfix"></div>
 <div class="container-fluid">
@@ -60,7 +60,7 @@ global $CFGEO, $CF_GEOPLUGIN_OPTIONS;
                             	<?php if($CFGEO['lookup'] == 'unlimited') : ?>
                                 	<?php _e('LIFETIME!',CFGP_NAME); ?>
                                 <?php else : ?>
-									<small><?php _e('Lookup',CFGP_NAME); ?> | <a href="<?php echo admin_url('admin.php?page=cf-geoplugin-activate'); ?>" class="text-white text-strong"><strong><?php _e('GET UNLIMITED',CFGP_NAME); ?></strong></a></small>
+									<small><?php _e('Lookup',CFGP_NAME); ?> | <a href="<?php echo self_admin_url('admin.php?page=cf-geoplugin-activate'); ?>" class="text-white text-strong"><strong><?php _e('GET UNLIMITED',CFGP_NAME); ?></strong></a></small>
                                 <?php endif; ?>
                             <?php endif; ?>
                             </div>

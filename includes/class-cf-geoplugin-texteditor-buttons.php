@@ -18,7 +18,7 @@ class CF_Geoplugin_Texteditor_Buttons extends CF_Geoplugin_Global {
 	 * Add CF Geoplugin Shortcodes
 	*/
 	public function print_geoplugin_shortcodes_in_js(){
-		global $CFGEO;
+		$CFGEO = $GLOBALS['CFGEO'];
 		$exclude = array_map('trim', explode(',','state,continentCode,areaCode,dmaCode,timezoneName,currencySymbol,currencyConverter,error,status,runtime,error_message'));
 		$shortcodes=array(
 			'sc' => array(),
@@ -67,7 +67,7 @@ class CF_Geoplugin_Texteditor_Buttons extends CF_Geoplugin_Global {
 		{
 			foreach($posts as $post)
 			{
-				$shortcodes['sc'][]=sprintf('\'[cf_geo_banner title="%s" id="%u"][/cf_geo_banner]\'', esc_attr($post->post_name), $post->ID);
+				$shortcodes['sc'][]=sprintf('\'[cfgeo_banner title="%s" id="%u"][/cfgeo_banner]\'', esc_attr($post->post_name), $post->ID);
 				$shortcodes['nm'][]='"' . esc_attr($post->post_title) . '"';
 			}
 			wp_reset_postdata();

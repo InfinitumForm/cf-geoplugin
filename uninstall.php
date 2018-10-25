@@ -77,15 +77,26 @@ function cf_geo_get_terms( $args = array(), $deprecated = '' )
 }
 
 // Destroy options
-if( !is_multisite() )
+if( !function_exists( 'is_plugin_active_for_network' ) ) require_once( ABSPATH . '/wp-admin/includes/plugin.php' );
+
+if( !is_plugin_active_for_network( plugins_url( 'cf-geoplugin.php', __FILE__ ) ) )
 {
 	delete_option( 'cf_geoplugin' );
 	delete_option( 'cf_geoplugin_dismissed_notices' );
 }
 else
 {
-	delete_site_option( 'cf_geoplugin' );
-	delete_site_option( 'cf_geoplugin_dismissed_notices' );
+	$blog_ids = get_sites();
+	$current_blog = get_current_blog_id();
+	foreach( $blog_ids as $b )
+	{
+		switch_to_blog( $b->blog_id );
+		delete_site_option( 'cf_geoplugin' );
+		delete_site_option( 'cf_geoplugin_dismissed_notices' );
+		delete_blog_option( $b->blog_id, 'cf_geoplugin' );
+		delete_blog_option( $b->blog_id, 'cf_geoplugin_dismissed_notices' ); 
+	}
+	switch_to_blog( $current_blog );
 }
 
 // Geo Banner data
@@ -96,9 +107,9 @@ $args = array(
 	'posts_per_page' => -1
 );
 $posts = get_posts( $args );
-if( !empty( $posts ) )
+if( !empty( $posts ) && is_array( $posts ) )
 {
-	foreach( $posts as $post )
+	foreach( $posts as $i => $post )
 	{
 		delete_post_meta( $post->ID, 'cf-geoplugin-country' );
 		delete_post_meta( $post->ID, 'cf-geoplugin-region' );
@@ -117,7 +128,7 @@ $taxonomy_list = array(
 	'cf-geoplugin-city'
 );
 
-foreach($taxonomy_list as $taxonomy)
+foreach($taxonomy_list as $i => $taxonomy)
 {
     if ( version_compare( $wp_version, '4.6', '>=' ) )
     {
@@ -134,12 +145,16 @@ foreach($taxonomy_list as $taxonomy)
         ));
     }
 	if ( is_array($terms) && !empty( $terms ) ){
-		foreach ( $terms as $term ) {
+		foreach ( $terms as $i => $term ) {
 			wp_delete_term( $term->term_id, $taxonomy );
 		}
     }
 }
 
 // Delete table from database
-$table_name = $wpdb->prefix . 'cf_geo_seo_redirection';
-$wpdb->query( "DROP TABLE IF EXISTS {$table_name};" );
+$table_names = array(
+	'cf_geo_seo_redirection',
+	'cf_geo_rest_secret',
+	'cf_geo_rest_token',
+);
+foreach( $table_names as $i => $name ) $wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}{$name};" );

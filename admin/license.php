@@ -7,7 +7,8 @@
  * @author     Ivijan-Stefan Stipic
  *
 **/
-global $CFGEO, $CF_GEOPLUGIN_OPTIONS;
+
+$CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
 $global = new CF_Geoplugin_Global;
 $alert='';
 $error_label = array(
@@ -22,18 +23,29 @@ if(isset($_POST['license_key']) && isset($_POST['license'])) :
 		if(in_array($key, array('license_key','sku','action','store_code','domain'), true) !== false) $post[$key]=trim($val);
 	}
 	
-	if(count($post) === 5)
+	if(count($post) === 5 )
 	{
-//		$ch = curl_init(CFGP_STORE . '/wp-admin/admin-ajax.php');
-		$ch = curl_init('https://cdn-cfgeoplugin.com/api6.0/authenticate.php');
+		$response = '';
+		$url = 'https://cdn-cfgeoplugin.com/api6.0/authenticate.php';
+		if( function_exists('curl_init') && function_exists('curl_setopt') && function_exists('curl_exec') )
+		{
+//			$ch = curl_init(CFGP_STORE . '/wp-admin/admin-ajax.php');
+			$ch = curl_init($url);
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 			curl_setopt($ch, CURLOPT_TIMEOUT, 10);
 			curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
 			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 			curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: application/json'));
-		$response = curl_exec($ch);
-		curl_close($ch);
+			$response = curl_exec($ch);
+			curl_close($ch);
+		}
+		else
+		{
+			$context = CF_Geoplugin_Global::set_stream_context( array( 'Accept: application/json' ), 'POST', http_build_query( $post ) );
+			$response = file_get_contents( $url, false, $context );
+		}
+
 		if($response)
 		{
 			$license = json_decode($response);
@@ -54,7 +66,7 @@ if(isset($_POST['license_key']) && isset($_POST['license'])) :
 				else
 					update_site_option('cf_geoplugin', $CF_GEOPLUGIN_OPTIONS);
 				
-				exit('<h3 class="mt-5"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i><span class="sr-only">Loading...</span> '.__('Please wait...',CFGP_NAME).'</h3><meta http-equiv="Refresh" content="0.1; url='.admin_url('/admin.php?page=cf-geoplugin-settings&action=activate_license').'">');
+				exit('<h3 class="mt-5"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i><span class="sr-only">Loading...</span> '.__('Please wait...',CFGP_NAME).'</h3><meta http-equiv="Refresh" content="0.1; url='.self_admin_url('admin.php?page=cf-geoplugin-settings&action=activate_license').'">');
 			}
 			else
 			{ ob_start();
@@ -91,8 +103,8 @@ if(isset($_POST['license_key']) && isset($_POST['license'])) :
                 </div>
 			<?php $alert = ob_get_clean();
 			}
-		}
-	}	
+		}	
+	}
 endif;
 
 
@@ -124,7 +136,7 @@ endif;
                 ); ?></p>
                 <?php endif; ?>
                 <hr class="my-4">
-                <form method="post" action="<?php admin_url('admin.php?page=cf-geoplugin-activate'); ?>" enctype="multipart/form-data" target="_self" id="license-form" autocomplete="off">
+                <form method="post" action="<?php self_admin_url('admin.php?page=cf-geoplugin-activate'); ?>" enctype="multipart/form-data" target="_self" id="license-form" autocomplete="off">
                 	<strong><label><?php _e('License Key',CFGP_NAME); ?> (<?php CFGP_ACTIVATED ? _e('activated',CFGP_NAME) : _e('required',CFGP_NAME); ?>)</label></strong><br>
                 	<input type="text" name="license_key" value="<?php echo isset($_POST['license_key']) ? $_POST['license_key'] : $CF_GEOPLUGIN_OPTIONS['license_key']; ?>" class="form-control" placeholder="<?php _e('Enter Your License Key',CFGP_NAME); ?>" autocomplete="off" style="width: 500px; display:inline-block;" <?php echo CFGP_ACTIVATED ? ' disabled' : ''; ?>> 
                     <?php if(!CFGP_ACTIVATED) : ?><strong><a href="https://cfgeoplugin.com/#price" target="_blank" class="btn btn-info"><?php _e('GET MY LICENSE KEY',CFGP_NAME); ?></a></strong><?php endif; ?><br><br>

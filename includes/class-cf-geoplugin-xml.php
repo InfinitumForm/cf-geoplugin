@@ -153,7 +153,7 @@ class parseXML
 	/* Read XML file */
 	protected function __readXML($document, $custom_url)
 	{
-		if($custom_url)
+		if($custom_url && function_exists('curl_init') && function_exists('curl_setopt') && function_exists('curl_exec') )
 		{
 			$ch = curl_init();
 			

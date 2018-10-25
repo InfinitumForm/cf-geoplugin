@@ -229,8 +229,16 @@ class CF_Geoplugin_Global
 			
 		if($options)
 		{
-			if(!empty($option_name) && isset($options[$option_name])) {
-				 return $options[$option_name];
+			if( !empty($option_name) ) {
+				if(isset($options[$option_name])) {
+					return $options[$option_name];
+				} else {
+					if(isset($this->default_options[$option_name])) {
+						return $this->default_options[$option_name];
+					} else {
+						return $default;
+					}
+				}
 			} else {
 				return $options;
 			}
@@ -392,99 +400,75 @@ class CF_Geoplugin_Global
 			else
 				$is_array=false;
 			
-			$sanitize = array(
-				'email'     =>    FILTER_SANITIZE_STRING,
-				'string'    =>    FILTER_SANITIZE_STRING,
-				'bool'      =>    FILTER_SANITIZE_STRING,
-				'int'       =>    FILTER_SANITIZE_NUMBER_INT,
-				'float'     =>    FILTER_SANITIZE_NUMBER_FLOAT,
-				'html'      =>    FILTER_SANITIZE_SPECIAL_CHARS,
-				'encoded'   =>    FILTER_SANITIZE_ENCODED,
-				'url'       =>    FILTER_SANITIZE_URL,
-				'none'      =>    'none',
-				'false'     =>    'none'
-			);
-			
-			if(is_numeric($option))
-				$sanitize[$option]='none';
-			
-			
-			if($sanitize[$option] == 'none')
-			{
-				if($is_array)
-					$input = array_map("trim",$_POST[$name]);
-				else
-					$input = trim($_POST[$name]);
-			}
-			else
-			{
-				if($is_array)
-				{
-					$input = filter_input(INPUT_POST, $name, $sanitize[$option], FILTER_REQUIRE_ARRAY);
-				}
-				else
-				{
-					$input = filter_input(INPUT_POST, $name, $sanitize[$option]);
-				}
-			}
+			if( is_numeric( $option ) || empty( $option ) ) return $default;
+			else $input = $_POST[$name];
 			
 			switch($option)
 			{
 				default:
 				case 'string':
 				case 'html':
-					$set=array(
-						'options' => array('default' => $default)
-					);
-					if($is_array) $set['flags']=FILTER_REQUIRE_ARRAY;
+					if($is_array) return array_map( 'sanitize_text_field', $input );
 					
-					return filter_var($input, FILTER_SANITIZE_STRING, $set);
+					return sanitize_text_field( $input );
 				break;
 				case 'encoded':
 					return (!empty($input)?$input:$default);
 				break;
 				case 'url':
-					$set=array(
-						'options' => array('default' => $default)
-					);
-					if($is_array) $set['flags']=FILTER_REQUIRE_ARRAY;
-					
-					return filter_var($input, FILTER_VALIDATE_URL, $set);
+					if($is_array) return array_map( 'esc_url', $input );
+			
+					return esc_url( $input );
+				break;
+				case 'url_raw':
+					if($is_array) return array_map( 'esc_url_raw', $input );
+		
+					return esc_url_raw( $input );
 				break;
 				case 'email':
-					$set=array(
-						'options' => array('default' => $default)
-					);
-					if($is_array) $set['flags']=FILTER_REQUIRE_ARRAY;
+					if($is_array) return array_map( 'sanitize_email', $input );
 					
-					return filter_var($input, FILTER_VALIDATE_EMAIL, $set);
+					return sanitize_email( $input );
 				break;
 				case 'int':
-					$set=array(
-						'options' => array('default' => $default, 'min_range' => 0)
-					);
-					if($is_array) $set['flags']=FILTER_FLAG_ALLOW_OCTAL | FILTER_REQUIRE_ARRAY;
+					if($is_array) return array_map( 'absint', $input );
 					
-					return filter_var($input, FILTER_VALIDATE_INT, $set);
+					return absint( $input );
 				break;
 				case 'float':
-					$set=array(
-						'options' => array('default' => $default)
-					);
-					if($is_array) $set['flags']=FILTER_REQUIRE_ARRAY;
+					if($is_array) return array_map( 'floatval', $intput );
 					
-					return filter_var($input, FILTER_VALIDATE_FLOAT, $set);
+					return floatval( $input );
 				break;
 				case 'bool':
-					$set=array(
-						'options' => array('default' => $default)
-					);
-					if($is_array) $set['flags']=FILTER_REQUIRE_ARRAY;
+					if($is_array) return array_map( 'boolval', $input );
 					
-					return filter_var($input, FILTER_VALIDATE_BOOLEAN, $set);
+					return boolval( $input );
 				break;
-				case 'none':
-					return $input;
+				case 'html_class':
+					if( $is_array ) return array_map( 'sanitize_html_class', $input );
+
+					return sanitize_html_class( $input );
+				break;
+				case 'title':
+					if( $is_array ) return array_map( 'sanitize_title', $input );
+
+					return sanitize_title( $input );
+				break;
+				case 'user':
+					if( $is_array ) return array_map( 'sanitize_user', $input );
+
+					return sanitize_user( $input );
+				break;
+				case 'no_html':
+					if( $is_array ) return array_map( 'wp_filter_nohtml_kses', $input );
+
+					return wp_filter_nohtml_kses( $input );
+				break;
+				case 'post':
+					if( $is_array ) return array_map( 'wp_filter_post_kses', $input );
+
+					return wp_filter_post_kses( $input );
 				break;
 			}
 		}
@@ -510,101 +494,76 @@ class CF_Geoplugin_Global
             else
                 $is_array=false;
             
-            $sanitize = array(
-                'email'     =>    FILTER_SANITIZE_STRING,
-                'string'    =>    FILTER_SANITIZE_STRING,
-                'bool'      =>    FILTER_SANITIZE_STRING,
-                'int'       =>    FILTER_SANITIZE_NUMBER_INT,
-                'float'     =>    FILTER_SANITIZE_NUMBER_FLOAT,
-                'html'      =>    FILTER_SANITIZE_SPECIAL_CHARS,
-                'encoded'   =>    FILTER_SANITIZE_ENCODED,
-                'url'       =>    FILTER_SANITIZE_URL,
-                'none'      =>    'none',
-                'false'     =>    'none'
-            );
-            
-            if(is_numeric($option))
-                $sanitize[$option]='none';
-            
-            
-            if($sanitize[$option] == 'none')
-            {
-                if($is_array)
-                    $input = array_map("trim",$_GET[$name]);
-                else
-                    $input = trim($_GET[$name]);
-            }
-            else
-            {
-                if($is_array)
-                {
-                    $input = filter_input(INPUT_GET, $name, $sanitize[$option], FILTER_REQUIRE_ARRAY);
-                }
-                else
-                {
-                    $input = filter_input(INPUT_GET, $name, $sanitize[$option]);
-                }
-            }
+            if( is_numeric( $option ) || empty( $option ) ) return $default;
+            else $input = $_GET[$name];
             
             switch($option)
             {
                 default:
                 case 'string':
                 case 'html':
-                    $set=array(
-                        'options' => array('default' => $default)
-                    );
-                    if($is_array) $set['flags']=FILTER_REQUIRE_ARRAY;
+                    if($is_array) return array_map( 'sanitize_text_field', $input );
                     
-                    return filter_var($input, FILTER_SANITIZE_STRING, $set);
+                    return sanitize_text_field( $input );
                 break;
                 case 'encoded':
                     return (!empty($input)?$input:$default);
                 break;
-                case 'url':
-                    $set=array(
-                        'options' => array('default' => $default)
-                    );
-                    if($is_array) $set['flags']=FILTER_REQUIRE_ARRAY;
-                    
-                    return filter_var($input, FILTER_VALIDATE_URL, $set);
-                break;
+				case 'url':
+					if($is_array) return array_map( 'esc_url', $input );
+			
+					return esc_url( $input );
+				break;
+				case 'url_raw':
+					if($is_array) return array_map( 'esc_url_raw', $input );
+		
+					return esc_url_raw( $input );
+				break;
                 case 'email':
-                    $set=array(
-                        'options' => array('default' => $default)
-                    );
-                    if($is_array) $set['flags']=FILTER_REQUIRE_ARRAY;
+                    if($is_array) return array_map( 'sanitize_email', $input );
                     
-                    return filter_var($input, FILTER_VALIDATE_EMAIL, $set);
+                    return sanitize_email( $input );
                 break;
                 case 'int':
-                    $set=array(
-                        'options' => array('default' => $default, 'min_range' => 0)
-                    );
-                    if($is_array) $set['flags']=FILTER_FLAG_ALLOW_OCTAL | FILTER_REQUIRE_ARRAY;
+                    if($is_array) return array_map( 'absint', $input );
                     
-                    return filter_var($input, FILTER_VALIDATE_INT, $set);
+                    return absint( $input );
                 break;
                 case 'float':
-                    $set=array(
-                        'options' => array('default' => $default)
-
-                    );
-                    if($is_array) $set['flags']=FILTER_REQUIRE_ARRAY;
+					if($is_array) return array_map( 'floatval', $intput );
                     
-                    return filter_var($input, FILTER_VALIDATE_FLOAT, $set);
+                    return floatval( $input );
                 break;
                 case 'bool':
-                    $set=array(
-                        'options' => array('default' => $default)
-                    );
-                    if($is_array) $set['flags']=FILTER_REQUIRE_ARRAY;
+                    if($is_array) return array_map( 'boolval', $input );
                     
-                    return filter_var($input, FILTER_VALIDATE_BOOLEAN, $set);
-                break;
-                case 'none':
-                    return $input;
-                break;
+                    return boolval( $input );
+				break;
+				case 'html_class':
+					if( $is_array ) return array_map( 'sanitize_html_class', $input );
+
+					return sanitize_html_class( $input );
+				break;
+				case 'title':
+					if( $is_array ) return array_map( 'sanitize_title', $input );
+
+					return sanitize_title( $input );
+				break;
+				case 'user':
+					if( $is_array ) return array_map( 'sanitize_user', $input );
+
+					return sanitize_user( $input );
+				break;
+				case 'no_html':
+					if( $is_array ) return array_map( 'wp_filter_nohtml_kses', $input );
+
+					return wp_filter_nohtml_kses( $input );
+				break;
+				case 'post':
+					if( $is_array ) return array_map( 'wp_filter_post_kses', $input );
+
+					return wp_filter_post_kses( $input );
+				break;
             }
         }
         else
@@ -704,7 +663,7 @@ class CF_Geoplugin_Global
 		$options = $G->get_option();
 		// Call cURL
 		$output=false;
-		if(function_exists('curl_version')!==false)
+		if(function_exists('curl_init') && function_exists('curl_setopt') && function_exists('curl_exec'))
 		{
 			$cURL = curl_init();
 				curl_setopt($cURL,CURLOPT_URL, $url);
@@ -728,7 +687,8 @@ class CF_Geoplugin_Global
 		}
 		else
 		{
-			$output=file_get_contents($url);
+			$context = self::set_stream_context( array('Accept: application/json') );
+			$output=file_get_contents($url, false, $context);
 		}
 		return $output;
 	}
@@ -889,7 +849,7 @@ class CF_Geoplugin_Global
 		return $blacklistIP;
 	}
 	
-	/**
+		/**
 	 * Get client IP address (high level lookup)
 	 *
 	 * @since	4.0.0
@@ -898,48 +858,38 @@ class CF_Geoplugin_Global
 	 */
 	public function ip()
 	{
-		if (isset($_SERVER["HTTP_CF_CONNECTING_IP"]) && !empty($_SERVER["HTTP_CF_CONNECTING_IP"])) {
+		if ($this->get_option('enable_cloudflare') && isset($_SERVER["HTTP_CF_CONNECTING_IP"]) && !empty($_SERVER["HTTP_CF_CONNECTING_IP"])) {
 			$_SERVER['REMOTE_ADDR'] = $_SERVER["HTTP_CF_CONNECTING_IP"];
 		}
 		// check any protocols
 		$findIP=array(
-			'HTTP_CF_CONNECTING_IP',
-			'HTTP_CLIENT_IP',
-			'HTTP_X_FORWARDED_FOR',
+			'HTTP_X_FORWARDED_FOR', // X-Forwarded-For: <client>, <proxy1>, <proxy2> client = client ip address; https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-For
+			'HTTP_FORWARDED_FOR', 
+			'HTTP_FORWARDED', // Forwarded: by=<identifier>; for=<identifier>; host=<host>; proto=<http|https>; https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Forwarded
 			'HTTP_X_FORWARDED',
-			'HTTP_X_CLUSTER_CLIENT_IP',
-			'HTTP_FORWARDED_FOR',
-			'HTTP_FORWARDED',
-			'REMOTE_ADDR',
-			'HTTP_PROXY_CONNECTION',
-			'HTTP_FORWARDED_FOR_IP',
-			'FORWARDED_FOR_IP',
-			'CLIENT_IP',
-			'FORWARDED',
-			'X_FORWARDED',
-			'FORWARDED_FOR',
-			'X_FORWARDED_FOR',
-			'VIA',
-			'HTTP_VIA',
-			'BAN_CHECK_IP',
-			'HTTP_X_FORWARDED_HOST',
+			'HTTP_X_CLUSTER_CLIENT_IP', // Private LAN address
+			'REMOTE_ADDR', // Most reliable way, can be tricked by proxy so check it after proxies
+			'HTTP_CLIENT_IP', // Shared Interner services - Very easy to manipulate and most unreliable way
 		);
 		// Stop all special-use addresses and blacklisted addresses
 		// IP => RANGE
 		$blacklistIP=$this->ip_blocked( array( $this->ip_server() ) );
 		$ip = '';
 		// start looping
+		
 		foreach($findIP as $http)
 		{
 			// Check in $_SERVER
 			if (isset($_SERVER[$http]) && !empty($_SERVER[$http])){
 				$ip=$_SERVER[$http];
 			}
+			
 			// check in getenv() for any case
 			if(empty($ip) && function_exists("getenv"))
 			{
 				$ip = getenv($http);
 			}
+			
 			// Check if here is multiple IP's
 			if(!empty($ip))
 			{
@@ -947,23 +897,28 @@ class CF_Geoplugin_Global
 				$ips=explode(",",$ips);
 				$ips=array_map("trim",$ips);
 				
-				$ipMAX=count($ips);
+				$ipf=array();
+				foreach($ips as $ipx)
+				{
+					if($this->filter_ip($ipx, $blacklistIP) !== false)
+					{
+						$ipf[]=$ipx;
+					}
+				}
+				
+				$ipMAX=count($ipf);
 				if($ipMAX>0)
 				{
 					if($ipMAX > 1)
-						$ip=end($ips);
+						return end($ipf);
 					else
-						$ip=$ips[0];
+						return $ipf[0];
 				}
 				
-				$ips = $ipMAX = NULL;
+				$ips = $ipf = $ipx = $ipMAX = NULL;
 			}
 			// Check if IP is real and valid
-			if(function_exists("filter_var") && !empty($ip) && in_array($ip, $blacklistIP,true)===false && filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) !== false)
-			{
-				return $ip;
-			}
-			else if(preg_match('/^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/', $ip) && !empty($ip) && in_array($ip, $blacklistIP,true)===false)
+			if($this->filter_ip($ip, $blacklistIP)!==false)
 			{
 				return $ip;
 			}
@@ -971,50 +926,68 @@ class CF_Geoplugin_Global
 		// let's try hacking into apache?
 		if (function_exists('apache_request_headers')) {
 			$headers = apache_request_headers();
-			if ( array_key_exists( 'X-Forwarded-For', $headers ) && filter_var( $headers['X-Forwarded-For'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4 )  && in_array($headers['X-Forwarded-For'], $blacklistIP,true)===false){
+			if (
+				array_key_exists( 'X-Forwarded-For', $headers ) 
+				&& filter_var( $headers['X-Forwarded-For'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4 )  
+				&& in_array($headers['X-Forwarded-For'], $blacklistIP,true)===false
+			){
 				
 				// Well Somethimes can be tricky to find IP if have more then one
 				$ips=str_replace(";",",",$headers['X-Forwarded-For']);
 				$ips=explode(",",$ips);
 				$ips=array_map("trim",$ips);
 				
-				$ipMAX=count($ips);
+				$ipf=array();
+				foreach($ips as $ipx)
+				{
+					if($this->filter_ip($ipx, $blacklistIP)!==false)
+					{
+						$ipf[]=$ipx;
+					}
+				}
+				
+				$ipMAX=count($ipf);
 				if($ipMAX>0)
 				{
 					if($ipMAX > 1)
-						return end($ips);
+						return end($ipf);
 					else
-						return $ips[0];
+						return $ipf[0];
 				}
-				$ips = $ipMAX = NULL;
+				
+				$ips = $ipf = $ipx = $ipMAX = NULL;
 			}
 		}
 		// let's try the last thing, why not?
-		
-		if(self::is_connected())
+		if( self::is_connected() )
 		{
-			$ch = curl_init();
-			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-			curl_setopt($ch, CURLOPT_POST, false);
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-			curl_setopt($ch, CURLOPT_TIMEOUT, 5);
-			curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
-			curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: application/json'));
-			curl_setopt($ch, CURLOPT_URL, 'https://api.ipify.org?format=json');
-			$result=curl_exec($ch);
-			curl_close($ch);
-			
+			$result = '';
+			if( function_exists('curl_init') && function_exists('curl_setopt') && function_exists('curl_exec') )
+			{
+				$ch = curl_init();
+				curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+				curl_setopt($ch, CURLOPT_POST, false);
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+				curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+				curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+				curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: application/json'));
+				curl_setopt($ch, CURLOPT_URL, 'https://api.ipify.org?format=json');
+				$result=curl_exec($ch);
+				curl_close($ch);
+			}
+			else
+			{
+				$context = self::set_stream_context( array( 'Accept: application/json' ), 'GET' );
+				$result = file_get_contents( 'https://api.ipify.org?format=json', false, $context );
+			}
+
 			if($result)
 			{
 				$result = json_decode($result);
 				if(isset($result->ip))
 				{
 					$ip = $result->ip;
-					if(function_exists("filter_var") && !empty($ip) && in_array($ip, $blacklistIP,true)===false && filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) !== false)
-					{
-						return $ip;
-					}
-					else if(preg_match('/^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/', $ip) && !empty($ip) && in_array($ip, $blacklistIP,true)===false)
+					if($this->filter_ip($ip)!==false)
 					{
 						return $ip;
 					}
@@ -1023,6 +996,37 @@ class CF_Geoplugin_Global
 		}
 		// OK, this is the end :(
 		return '0.0.0.0';
+	}
+	
+	/**
+	 * Check is IP valid or not
+	 *
+	 * @since	7.2.0
+	 * @author  Ivijan-Stefan Stipic <creativform@gmail.com>
+	 * @return  (string) IP address or (bool) false
+	 */
+	public function filter_ip($ip, $blacklistIP=array())
+	{
+		if(empty($blacklistIP)){
+			$blacklistIP=$this->ip_blocked( array( $this->ip_server() ) );
+		}
+		
+		if(
+			function_exists("filter_var") 
+			&& !empty($ip) 
+			&& in_array($ip, $blacklistIP,true)===false 
+			&& filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) !== false
+		) {
+			return $ip;
+		} else if(
+			preg_match('/^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/', $ip) 
+			&& !empty($ip) 
+			&& in_array($ip, $blacklistIP,true)===false
+		) {
+			return $ip;
+		}
+		
+		return false;
 	}
 	
 	/**
@@ -1081,37 +1085,54 @@ class CF_Geoplugin_Global
 	public static function validate()
 	{
 		$instance = new CF_Geoplugin_Global;
+		$debug = $GLOBALS['debug'];
+		$debug->save( '------------ Validation started ------------' );
 		// Validate
 		$CF_GEOPLUGIN_OPTIONS = $instance->get_option();
 		if($CF_GEOPLUGIN_OPTIONS['license'] == 1 && $CF_GEOPLUGIN_OPTIONS['license_key'] && $CF_GEOPLUGIN_OPTIONS['license_id']) :
-			$ch = curl_init($CF_GEOPLUGIN_OPTIONS['store'] . '/wp-admin/admin-ajax.php');
-				curl_setopt($ch, CURLOPT_POSTFIELDS, array(
-					'action' 		=> 'license_key_validate',
-					'license_key' 	=> $CF_GEOPLUGIN_OPTIONS['license_key'],
-					'sku' 			=> $CF_GEOPLUGIN_OPTIONS['license_sku'],
-					'store_code' 	=> $CF_GEOPLUGIN_OPTIONS['store_code'],
-					'domain' 		=> self::get_host(),
-					'activation_id'	=> $CF_GEOPLUGIN_OPTIONS['license_id']
-				));
+			$url = $CF_GEOPLUGIN_OPTIONS['store'] . '/wp-admin/admin-ajax.php';
+			$data = array(
+				'action' 		=> 'license_key_validate',
+				'license_key' 	=> $CF_GEOPLUGIN_OPTIONS['license_key'],
+				'sku' 			=> $CF_GEOPLUGIN_OPTIONS['license_sku'],
+				'store_code' 	=> $CF_GEOPLUGIN_OPTIONS['store_code'],
+				'domain' 		=> self::get_host(),
+				'activation_id'	=> $CF_GEOPLUGIN_OPTIONS['license_id']
+			);
+			if( function_exists('curl_init') && function_exists('curl_setopt') && function_exists('curl_exec') )
+			{
+				$ch = curl_init( $url );
+				curl_setopt($ch, CURLOPT_POSTFIELDS, $data );
 				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 				curl_setopt($ch, CURLOPT_TIMEOUT, 10);
 				curl_setopt($ch, CURLOPT_CONNECTTIMEOUT,10);
 				curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 				curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: application/json'));
-			$response = curl_exec($ch);
-			curl_close($ch);
-		
+				$response = curl_exec($ch);
+				curl_close($ch);
+			}
+			else
+			{
+				$context = self::set_stream_context( array( 'Accept: application/json' ), 'GET', http_build_query( $data ) );
+				$response = file_get_contents( $url, false, $context );
+			}
 			if($response)
 			{
 				$license = json_decode($response);
+				$debug->save( 'cURL license validation returned data:' );
+				$debug->save( json_decode( $response ) );
 				if(isset($license->error) && $license->error === true)
 				{
 					$this->update_option('license', 0, true);
+					$debug->save( 'Validation status: error' );
 					return false;
 				}
 			}
+			$debug->save( 'Validation status: license valid' );
 			return true;
+
 		endif;
+		$debug->save( 'Validation status: license invalid' );
 		return false;
 	}
 	
@@ -1230,7 +1251,7 @@ class CF_Geoplugin_Global
 	 * @since    4.2.0
 	 * @version  1.3.0
 	 */
-	private function recursive_array_search($needle,$haystack) {
+	public function recursive_array_search($needle,$haystack) {
 		if(!empty($needle) && is_array($haystack) && count($haystack)>0)
 		{
 			foreach($haystack as $key=>$value)
@@ -1499,6 +1520,197 @@ class CF_Geoplugin_Global
 		else
 		{
 			return md5(str_replace(array('.',' ','_'),mt_rand(1000,9999),uniqid('t'.microtime())));
+		}
+	}
+
+	/**
+	* Alias of get_terms() functionality for lower versions of wordpress
+	* @link      https://developer.wordpress.org/reference/functions/get_terms/
+	* @version   1.0.0
+	*/
+	public function cf_geo_get_terms( $args = array(), $deprecated = '' ) 
+	{ 
+		$term_query = new WP_Term_Query();
+	
+		/*
+		* Legacy argument format ($taxonomy, $args) takes precedence.
+		*
+		* We detect legacy argument format by checking if
+		* (a) a second non-empty parameter is passed, or
+		* (b) the first parameter shares no keys with the default array (ie, it's a list of taxonomies)
+		*/
+		$_args = wp_parse_args( $args );
+		$key_intersect  = array_intersect_key( $term_query->query_var_defaults, (array) $_args );
+		$do_legacy_args = $deprecated || empty( $key_intersect );
+	
+		if ( $do_legacy_args ) {
+			$taxonomies = (array) $args;
+			$args = wp_parse_args( $deprecated );
+			$args['taxonomy'] = $taxonomies;
+		} else {
+			$args = wp_parse_args( $args );
+			if ( isset( $args['taxonomy'] ) && null !== $args['taxonomy'] ) {
+				$args['taxonomy'] = (array) $args['taxonomy'];
+			}
+		}
+	
+		if ( ! empty( $args['taxonomy'] ) ) {
+			foreach ( $args['taxonomy'] as $taxonomy ) {
+				if ( ! taxonomy_exists( $taxonomy ) ) {
+					return new WP_Error( 'invalid_taxonomy', __( 'Invalid taxonomy.' ) );
+				}
+			}
+		}
+	
+		$terms = $term_query->query( $args );
+	
+		// Count queries are not filtered, for legacy reasons.
+		if ( ! is_array( $terms ) ) {
+			return $terms;
+		}
+	
+		/**
+		 * Filters the found terms.
+		 *
+		 * @since 2.3.0
+		 * @since 4.6.0 Added the `$term_query` parameter.
+		 *
+		 * @param array         $terms      Array of found terms.
+		 * @param array         $taxonomies An array of taxonomies.
+		 * @param array         $args       An array of cf_geo_get_terms() arguments.
+		 * @param WP_Term_Query $term_query The WP_Term_Query object.
+		 */
+		return apply_filters( 'get_terms', $terms, $term_query->query_vars['taxonomy'], $term_query->query_vars, $term_query );
+	}
+
+	/**
+	 * Check user's city for defender or seo redirection
+	 */
+	public function check_user_by_city( $city )
+	{
+		$CFGEO = $GLOBALS['CFGEO'];
+		if( is_array( $city ) )
+		{
+			$city = array_map( 'strtolower', $city );
+			if( !empty( $city ) && isset( $CFGEO['city'] ) && in_array( strtolower( $CFGEO['city'] ), $city ) ) return true;
+		}
+		elseif( is_string( $city ) )
+		{
+			if( !empty( $city ) && isset( $CFGEO['city'] ) && strtolower( $city ) == strtolower( $CFGEO['city'] ) ) return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Check user's region for defender or seo redirection
+	 */
+	public function check_user_by_region( $region )
+	{
+		$CFGEO = $GLOBALS['CFGEO'];
+		if( is_array( $region ) )
+		{
+			if( !empty( $region ) )
+			{
+				$region = array_map( 'strtolower', $region );
+				// Supports region code and region name
+				if( isset( $CFGEO['region_code'] ) && in_array( strtolower( $CFGEO['region_code'] ), $region, true ) ) return true; 
+				if( isset( $CFGEO['region'] ) && in_array( strtolower( $CFGEO['region'] ), $region, true ) ) return true;
+			}
+		}
+		elseif( is_string( $region ) )
+		{
+			if( !empty( $region ) )
+			{
+				// Supports region code and region name
+				if( isset( $CFGEO['region_code'] ) && strtolower( $region ) == strtolower( $CFGEO['region_code'] ) ) return true; 
+				if( isset( $CFGEO['region'] ) && strtolower( $region ) == strtolower( $CFGEO['region'] ) ) return false;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Check user's country for defender or seo redirection
+	 */
+	public function check_user_by_country( $country )
+	{
+		$CFGEO = $GLOBALS['CFGEO'];
+
+		if( is_array( $country ) )
+		{
+			if( !empty( $country ) )
+			{
+				$country = array_map( 'strtolower', $country );
+				// Supports country code and name
+				if( isset( $CFGEO['country_code'] ) && in_array( strtolower( $CFGEO['country_code'] ), $country, true ) ) return true;
+				if( isset( $CFGEO['country'] ) && in_array( strtolower( $CFGEO['country'] ), $country, true ) ) return true;
+			}
+		}
+		elseif( is_string( $country ) )
+		{
+			if( !empty( $country ) )
+			{
+				// Supports country code and name
+				if( isset( $CFGEO['country_code'] ) && strtolower( $country ) == strtolower( $CFGEO['country_code'] ) ) return true;
+				if( isset( $CFGEO['country'] ) && strtolower( $country ) == strtolower( $CFGEO['country'] ) ) return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Set stream context
+	 */
+	public static function set_stream_context( $header = array(), $method = 'POST', $content = '' )
+	{
+		$options = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
+		if( $options['proxy'] )
+		{
+			$proxy_host = $options['proxy_ip'];
+			$proxy_port = $options['proxy_port'];
+			$proxy_username = $options['proxy_username'];
+			$proxy_password = $options['proxy_password'];
+			if( !empty( $proxy_username ) && !empty( $proxy_password ) )
+			{
+				$auth = base64_encode( $proxy_username . ':' . $proxy_password );
+				return stream_context_create(
+					array(
+						'http' => array(
+							'method'  			=> $method,
+							'proxy' 			=> "tcp://$proxy_host:$proxy_port",
+							'request_fulluri' 	=> true,
+							'header' 			=> array_merge( array( "Proxy-Authorization: Basic $auth", 'Content-Type: application/x-www-form-urlencoded' ), $header ),
+							'content'			=> $content
+						)
+					)
+				);
+			}
+			else // Proxy authentication is not required
+			{ 
+				return stream_context_create(
+					array(
+						'http' => array(
+							'method'  			=> $method,
+							'proxy' 			=> "tcp://$proxy_host:$proxy_port",
+							'request_fulluri' 	=> true,
+							'header' 			=> array_merge( array( 'Content-Type: application/x-www-form-urlencoded' ), $header ),
+							'content'			=> $content
+						)
+					)
+				);
+			}
+		}
+		else
+		{
+			return stream_context_create(
+				array(
+					'http' => array(
+						'method'  	=> $method,
+						'header' 	=> array_merge( array( 'Content-Type: application/x-www-form-urlencoded' ), $header ),
+						'content'	=> $content	
+					)
+				)
+			);
 		}
 	}
 }

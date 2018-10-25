@@ -22,10 +22,10 @@ class CF_Geoplugin_Defender extends CF_Geoplugin_Global
     {
         if( $this->check() && !is_admin() )
         {
-            global $CF_GEOPLUGIN_OPTIONS;
+            $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
             header( $this->header );
-            $block_message = $CF_GEOPLUGIN_OPTIONS['block_country_messages'];
-            die( html_entity_decode( stripslashes( $block_message ) ) );
+            if( isset( $CF_GEOPLUGIN_OPTIONS['block_country_messages'] ) ) die( html_entity_decode( stripslashes( $CF_GEOPLUGIN_OPTIONS['block_country_messages'] ) ) );
+            else die();
             exit;
         }
     }
@@ -33,7 +33,7 @@ class CF_Geoplugin_Defender extends CF_Geoplugin_Global
     // Check what to do with user
     public function check()
     {
-        global $CF_GEOPLUGIN_OPTIONS, $CFGEO;
+        $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS']; $CFGEO = $GLOBALS['CFGEO'];
         if( $CF_GEOPLUGIN_OPTIONS['enable_defender'] == 0 ) return false;
         $flag = false;
 
@@ -42,19 +42,18 @@ class CF_Geoplugin_Defender extends CF_Geoplugin_Global
 
         if( $flag === false )
         {
-            $geo_data = array(
-                'country_code'  => $CF_GEOPLUGIN_OPTIONS['block_country'],
-                'region_code'   => $CF_GEOPLUGIN_OPTIONS['block_region'],
-                'city'          => $CF_GEOPLUGIN_OPTIONS['block_city']
+            $geo = array(
+                'country_code'  => array_map( 'trim', explode( "]|[", $CF_GEOPLUGIN_OPTIONS['block_country'] ) ),
+                'region_code'   => array_map( 'trim', explode( "]|[", $CF_GEOPLUGIN_OPTIONS['block_region'] ) ),
+                'city'          => array_map( 'trim', explode( "]|[", $CF_GEOPLUGIN_OPTIONS['block_city'] ) )
             );
-            foreach( $geo_data as $field => $check )
+
+            $country_check = $this->check_user_by_country( $geo['country_code'] );
+            if( $country_check || empty( $geo['country_code'][0] ) )
             {
-                if( !empty( $check ) )
-                {
-                    $geo = array_map( 'trim', explode( "]|[", $check ) );
-                    $geo = array_map( 'strtolower', $geo );
-                    if( !empty( $geo ) && $geo !== false && in_array( strtolower( $CFGEO[$field] ), $geo, true ) !== false ) $flag = true;
-                }
+                if( $this->check_user_by_city( $geo['city'] ) && ( $this->check_user_by_region( $geo['region_code'] ) || empty( $geo['region_code'][0] ) ) ) return true;
+                elseif( empty( $geo['city'][0] ) && $this->check_user_by_region( $geo['region_code'] ) ) return true;
+                elseif( empty( $geo['city'][0] ) && empty( $geo['region_code'][0] ) && $country_check ) return true;
             }
         }
 

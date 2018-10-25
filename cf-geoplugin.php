@@ -8,7 +8,7 @@
  * Plugin Name:       CF Geo Plugin
  * Plugin URI:        http://cfgeoplugin.com/
  * Description:       Create Dynamic Content, Banners and Images on Your Website Based On Visitor Geo Location By Using Shortcodes With CF GeoPlugin.
- * Version:           7.1.4
+ * Version:           7.2.0
  * Author:            Ivijan-Stefan Stipic
  * Author URI:        https://linkedin.com/in/ivijanstefanstipic
  * License:           GPL-2.0+
@@ -36,9 +36,8 @@ if ( ! defined( 'WPINC' ) ) { die( "Don't mess with us." ); }
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
 // First initialization
-$CFGEO = array();
-$GLOBALS['CFGEO'] = $CFGEO;
-
+$GLOBALS['CFGEO'] = array();
+$GLOBALS['CF_GEOPLUGIN_OPTIONS'] = array();
 /**
  * DEBUG MODE
  *
@@ -65,7 +64,7 @@ if ( defined( 'WP_CF_GEO_DEBUG' ) ){
 // Main plugin file
 if ( ! defined( 'CFGP_FILE' ) )				define( 'CFGP_FILE', __FILE__ );
 // Current plugin version
-if ( ! defined( 'CFGP_VERSION' ) )			define( 'CFGP_VERSION', '7.1.4');
+if ( ! defined( 'CFGP_VERSION' ) )			define( 'CFGP_VERSION', '7.2.0');
 // Plugin root
 if ( ! defined( 'CFGP_ROOT' ) )				define( 'CFGP_ROOT', rtrim(plugin_dir_path(CFGP_FILE), '/') );
 // Includes directory
@@ -89,7 +88,19 @@ if ( ! defined( 'CFGP_LIMIT' ) )			define( 'CFGP_LIMIT', 300);
 // Developer license
 if( ! defined( 'CFGP_DEV_MODE' ) )			define( 'CFGP_DEV_MODE', false );
 // Check if is multisite installation
-if( ! defined( 'CFGP_MULTISITE' ) )			define( 'CFGP_MULTISITE', is_multisite() );
+if( ! defined( 'CFGP_MULTISITE' ) )			
+{
+    // New safer approach
+    if( !function_exists( 'is_plugin_active_for_network' ) ) require_once( ABSPATH . '/wp-admin/includes/plugin.php' );
+
+    if( is_plugin_active_for_network( CFGP_ROOT . '/cf-geoplugin.php' ) ) define( 'CFGP_MULTISITE', true );
+    else define( 'CFGP_MULTISITE', false );
+}
+
+// Include debug class
+include CFGP_INCLUDES . '/class-cf-geoplugin-debug.php';
+
+if( !isset( $GLOBALS['debug'] ) ) $GLOBALS['debug'] = new CF_Geoplugin_Debug; // Our debug object to global variables
 
 /**
  * Session controll
@@ -151,11 +162,12 @@ if(!function_exists('CF_Geoplugin_Session')) :
 			}
 		}
 		else $_SESSION[CFGP_PREFIX . 'session_expire'] = (time() + (60 * $minutes));
-		
+
 		return $_SESSION[CFGP_PREFIX . 'session_expire'];
 	}
 endif;
 CF_Geoplugin_Session();
+
 
 // Include hook class
 include CFGP_INCLUDES . '/class-cf-geoplugin-admin-notice.php';
@@ -163,11 +175,12 @@ include CFGP_INCLUDES . '/class-cf-geoplugin-locale.php';
 include CFGP_INCLUDES . '/class-cf-geoplugin-global.php';
 // Define important constants
 if(class_exists('CF_Geoplugin_Global')) :
+	// Lets use debug
+	$debug = $GLOBALS['debug'];
 	// Include hook class
 	$hook = new CF_Geoplugin_Global;
 	// Global variable for geoplugin options
-	$CF_GEOPLUGIN_OPTIONS = $hook->get_option();
-	$GLOBALS['CF_GEOPLUGIN_OPTIONS']=$CF_GEOPLUGIN_OPTIONS;
+	$GLOBALS['CF_GEOPLUGIN_OPTIONS']=$hook->get_option();
 	// Client IP address
 	if ( ! defined( 'CFGP_IP' ) ) 					define( 'CFGP_IP', $hook->ip() );
 	// Server IP address
@@ -179,22 +192,25 @@ if(class_exists('CF_Geoplugin_Global')) :
 	// Defender true/false
 	if ( ! defined( 'CFGP_DEFENDER_ACTIVATED' ) ) 	define( 'CFGP_DEFENDER_ACTIVATED', $hook->check_defender_activation() );
 
+	$debug->save( 'Global Class Loaded' );
+	$debug->save( 'Current options:' );
+	$debug->save( $GLOBALS['CF_GEOPLUGIN_OPTIONS'] );
+
 	$hook = NULL;
 	// Include main class
-	 include CFGP_INCLUDES . '/class-cf-geoplugin.php';
+	include CFGP_INCLUDES . '/class-cf-geoplugin.php';
 	/*
-	* Parameter Redirection Loader - Final Class
+	* CF Geoplugin Loader - Final Class
 	* @since 7.0.0
 	*/
 	if(class_exists('CF_Geoplugin_Init')) :
 		class CF_Geoplugin_Load extends CF_Geoplugin_Init
 		{
 			function __construct(){
-				global $CF_GEOPLUGIN_OPTIONS;
+				$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
 				$this->register_activation_hook(CFGP_FILE, 'activate');
 				$this->register_deactivation_hook(CFGP_FILE, 'deactivate');
-				
-				if(isset($CF_GEOPLUGIN_OPTIONS['enable_update']) && $CF_GEOPLUGIN_OPTIONS['enable_update']) $this->add_filter('auto_update_plugin', 'auto_update');
+				if(isset($CF_GEOPLUGIN_OPTIONS['enable_update']) && $CF_GEOPLUGIN_OPTIONS['enable_update']) $this->add_filter('auto_update_plugin', 'auto_update', 10, 2);
 				$this->run();
 			}
 		}
@@ -243,4 +259,9 @@ endif;
 CF_Geoplugin();
 
 // Globals for all folks and doomies. Why not?
-$CF_GEO = $CF_Geo = $cf_geo = $_GLOBAL['CF_GEO'] = $_GLOBAL['CF_Geo'] = $_GLOBAL['cf_geo'] = (object) $CFGEO;
+$CF_GEO = $CF_Geo = $cf_geo = $GLOBALS['CF_GEO'] = $GLOBALS['CF_Geo'] = $GLOBALS['cf_geo'] = (object) $GLOBALS['CFGEO'];
+
+// Write all debug data to file
+if( !function_exists( 'curl_init' ) ) $GLOBALS['debug']->save( 'cURL Status: Disabled' );
+else $GLOBALS['debug']->save( 'cURL Status: Enabled' );
+$GLOBALS['debug']->write();

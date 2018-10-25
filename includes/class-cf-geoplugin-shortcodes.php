@@ -11,7 +11,7 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 {
 	public function run()
 	{
-		global $CF_GEOPLUGIN_OPTIONS;
+		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
 		
 		if( $CF_GEOPLUGIN_OPTIONS['enable_beta'] === 1 &&  $CF_GEOPLUGIN_OPTIONS['enable_beta_shortcode'] === 1 ){
 			// EXPERIMENTAL Generate Shortcodes by type
@@ -60,7 +60,7 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 	*/
 	public function cf_geoplugin($atts, $content='')
 	{
-		global $CFGEO;
+		$CFGEO = $GLOBALS['CFGEO'];
 		$array = shortcode_atts( array(
 			'return' 	=>  'ip',
 			'ip'		=>	false,
@@ -100,7 +100,7 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 	 * @since    7.0.0
 	 */
 	public function shortcode_automat_setup(){
-		global $CFGEO;
+		$CFGEO = $GLOBALS['CFGEO'];
 		
 		include_once CFGP_INCLUDES . '/class-cf-geoplugin-shortcode-automat.php';
 		$exclude = array_map('trim', explode(',','state,continentCode,areaCode,dmaCode,timezoneName,currencySymbol,currencyConverter'));
@@ -124,7 +124,7 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 	 * @since    4.3.0
 	 */
 	public function generate_flag( $atts ){
-		global $CFGEO;
+		$CFGEO = $GLOBALS['CFGEO'];
 		wp_enqueue_style( CFGP_NAME . '-flag' );
 		$img_format = ($this->shortcode_has_argument('img', $atts) || $this->shortcode_has_argument('image', $atts) ? true : false);
 		
@@ -208,7 +208,7 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 	 */
 	public function google_map( $atts, $content = '' )
 	{
-		global $CF_GEOPLUGIN_OPTIONS, $CFGEO;
+		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS']; $CFGEO = $GLOBALS['CFGEO'];
 
 		$GID = base_convert(mt_rand(1000000000,PHP_INT_MAX), 10, 36); // Let's made this realy hard
 		extract( shortcode_atts( array( 
@@ -310,7 +310,7 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 	 */
 	public function geo_banner( $atts, $cont )
 	{ 
-		global $CF_GEOPLUGIN_OPTIONS, $CFGEO;
+		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS']; $CFGEO = $GLOBALS['CFGEO'];
 
 		$ID = base_convert(mt_rand(1000000000,PHP_INT_MAX), 10, 36); // Let's made this realy hard
 	
@@ -327,6 +327,7 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 		$country 		= sanitize_title(isset($CFGEO['country_code']) 	? $CFGEO['country_code']	: do_shortcode('[cfgeo return="country_code"]'));
 		$country_name 	= sanitize_title(isset($CFGEO['country']) 		? $CFGEO['country']			: do_shortcode('[cfgeo return="country"]'));
 		$region 		= sanitize_title(isset($CFGEO['region']) 		? $CFGEO['region']			: do_shortcode('[cfgeo return="region"]'));
+		$region_code	= sanitize_title(isset($CFGEO['region_code'])) 	? $CFGEO['region_code']		: do_shortcode('[cfgeo return="region_code"]');
 		$city 			= sanitize_title(isset($CFGEO['city']) 			? $CFGEO['city']			: do_shortcode('[cfgeo return="city"]'));
 		
 		$args = array(
@@ -339,7 +340,17 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 				array(
 					'taxonomy'	=> 'cf-geoplugin-country',
 					'field'		=> 'slug',
-					'terms'		=> array($country, $country_name, $region, $city),
+					'terms'		=> array($country, $country_name),
+				),
+				array(
+					'taxonomy'	=> 'cf-geoplugin-region',
+					'field'		=> 'slug',
+					'terms'		=> array($region, $region_code),
+				),
+				array(
+					'taxonomy'	=> 'cf-geoplugin-city',
+					'field'		=> 'slug',
+					'terms'		=> array($city),
 				)
 			)
 		);

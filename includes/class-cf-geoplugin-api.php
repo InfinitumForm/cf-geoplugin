@@ -93,9 +93,10 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
 	 * @since    7.0.0
 	 */
 	public function run($options=array()){
+		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
 		$option=array(
 			'ip'			=>	CFGP_IP,
-			'base_currency'	=>	false,
+			'base_currency'	=>	( isset( $CF_GEOPLUGIN_OPTIONS['base_currency'] ) ? $CF_GEOPLUGIN_OPTIONS['base_currency'] : 'USD' ),
 			'debug'			=>	false
 		);
 //		$this->validate_license();
@@ -115,9 +116,11 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
 	 */
 	private function render()
 	{
-		global $CF_GEOPLUGIN_OPTIONS;
+		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
 		
 		$geodata = $this->get_geodata($this->option['ip']);
+		$debug = $GLOBALS['debug'];
+		$debug->save( 'IP used for lookup: '. $this->option['ip'] );
 		if($geodata!==false)
 		{
 			
@@ -239,7 +242,7 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
 	 */
 	private function get_geodata($ip = false)
 	{
-		global $CF_GEOPLUGIN_OPTIONS;
+		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
 		
 		$this->check_validations();
 		
@@ -330,7 +333,7 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
 	 */
 	private function get_dns($ip=false)
 	{
-		global $CF_GEOPLUGIN_OPTIONS;
+		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
 		
 		$return = array(
 			"ip" => $ip,
@@ -399,7 +402,7 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
 	/**
 	protected function validate_license()
 	{
-		global $CF_GEOPLUGIN_OPTIONS;
+		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
 		
 		if(isset($_GET['page']) && isset($_GET['action']) && $_GET['page'] == 'cf-geoplugin-settings' && $_GET['action'] == 'activate_license'):
 
@@ -497,7 +500,7 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
 	**/
 	private function check_validations()
 	{
-		global $CF_GEOPLUGIN_OPTIONS;
+		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
 		
 		if(CFGP_ACTIVATED)
 		{

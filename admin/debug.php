@@ -8,7 +8,7 @@
  *
 **/
 
-global $CFGEO, $CF_GEOPLUGIN_OPTIONS;
+$CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
 
 include_once CFGP_INCLUDES . '/class-cf-geoplugin-os.php';
 // Buypass debugger. Just keep original data somewhere
@@ -24,6 +24,14 @@ if( $this->get( 'ip-lookup', 'bool', false )  )
             'debug' => true
         ));
     }
+}
+
+$data = 'active show';
+$debug = '';
+if( isset( $_GET['action'] ) && ( $_GET['action'] == 'debugger' || $_GET['action'] == 'download_debug_log' ) )
+{
+    $data = '';
+    $debug = 'active show';
 }
 
 ?>
@@ -50,7 +58,7 @@ if( $this->get( 'ip-lookup', 'bool', false )  )
                                     <input type="text" value="<?php echo $this->get( 'ip_address' ); ?>" placeholder="<?php echo CFGP_IP; ?>" class="form-control" id="ip_address" name="ip_address" autocomplete="off" />
                                     <div class="input-group-append">
 	                                    <button type="submit" class="btn btn-warning text-black"><i class="fa fa-eye"></i> <?php _e( 'Lookup', CFGP_NAME ); ?></button>
-                                        <?php if( $this->get( 'ip-lookup', 'bool', false )  ) : ?><a href="<?php echo admin_url('admin.php?page=cf-geoplugin-debug'); ?>" class="btn btn-light text-black"><i class="fa fa-ban"></i> <?php _e( 'Clean', CFGP_NAME ); ?></a><?php endif; ?>
+                                        <?php if( $this->get( 'ip-lookup', 'bool', false )  ) : ?><a href="<?php echo self_admin_url('admin.php?page=cf-geoplugin-debug'); ?>" class="btn btn-light text-black"><i class="fa fa-ban"></i> <?php _e( 'Clean', CFGP_NAME ); ?></a><?php endif; ?>
                                     </div>
                                 </div>
                             </form>
@@ -80,7 +88,7 @@ if( $this->get( 'ip-lookup', 'bool', false )  )
             <?php do_action('page-cf-geoplugin-debug-before-tab'); ?>
             <ul class="nav nav-tabs mt-3" role="tablist">
                 <li class="nav-item">
-                    <a class="nav-link text-dark active" href="#recived-data" role="tab" data-toggle="tab"><i class="fa fa-database"> <?php _e( 'Recived data', CFGP_NAME ); ?></i></a>
+                    <a class="nav-link text-dark <?php echo $data; ?>" href="#recived-data" role="tab" data-toggle="tab"><i class="fa fa-database"> <?php _e( 'Recived data', CFGP_NAME ); ?></i></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link text-dark" href="#sent-data" role="tab" data-toggle="tab"><i class="fa fa-share-square"> <?php _e( 'Sent data', CFGP_NAME ); ?></i></a>
@@ -91,12 +99,15 @@ if( $this->get( 'ip-lookup', 'bool', false )  )
                 <li class="nav-item">
                     <a class="nav-link text-dark" href="#google-map" role="tab" data-toggle="tab"><i class="fa fa-globe"> <?php _e( 'Google map', CFGP_NAME ); ?></i></a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark <?php echo $debug; ?>" href="#debugger" role="tab" data-toggle="tab"><i class="fa fa-bug"> <?php _e( 'Debugger', CFGP_NAME ); ?></i></a>
+                </li>
                 <?php do_action('page-cf-geoplugin-debug-tab'); ?>
             </ul> 
 
             <!-- Tab panes -->
             <div class="tab-content">
-            	<div role="tabpane" class="tab-pane fade in active show" id="recived-data">
+            	<div role="tabpane" class="tab-pane fade in <?php echo $data; ?>" id="recived-data">
                     <div class="card text-body">
                         <div class="card-header bg-transparent">
                             <h1 class="h5"><?php echo sprintf( __( 'Information that the CF GeoPlugin API ver.%s receives', CFGP_NAME ), CFGP_VERSION ); ?></h1>
@@ -281,7 +292,7 @@ if( $this->get( 'ip-lookup', 'bool', false )  )
                                     </tr>
                                     <tr>
                                         <td><strong><?php _e( 'SIP', CFGP_NAME ); ?></strong></td>
-                                        <td><?php echo CFGP_SERVER_IP . (CFGP_PROXY ?' <strong><a class="text-danger" href="'.get_admin_url().'admin.php?page=cf-geoplugin-settings">('.__('Proxy Enabled',CFGP_NAME).')</a></strong> ' : ''); ?></td>
+                                        <td><?php echo CFGP_SERVER_IP . (CFGP_PROXY ?' <strong><a class="text-danger" href="'.self_admin_url('admin.php?page=cf-geoplugin-settings').'">('.__('Proxy Enabled',CFGP_NAME).')</a></strong> ' : ''); ?></td>
                                         <td><?php _e( 'Server IP Address' ); ?></td>
                                     </tr>
                                     <tr>
@@ -313,11 +324,6 @@ if( $this->get( 'ip-lookup', 'bool', false )  )
 												echo ( !empty( $CF_GEOPLUGIN_OPTIONS['license_key'] ) ? $CF_GEOPLUGIN_OPTIONS['license_key'] : '-' )
 										?></td>
                                         <td><?php _e( 'CF GeoPlugin License Key', CFGP_NAME ); ?></td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong><?php _e( 'License Type', CFGP_NAME ); ?></strong></td>
-                                        <td><?php echo ( !empty( $CF_GEOPLUGIN_OPTIONS['license_sku'] ) ? CF_Geoplugin_Global::license_name($CF_GEOPLUGIN_OPTIONS['license_sku']) : '-' ) ?></td>
-                                        <td><?php _e( 'CF GeoPlugin License Type', CFGP_NAME ); ?></td>
                                     </tr>
                                 </tbody>
                             </table>        
@@ -363,6 +369,27 @@ if( $this->get( 'ip-lookup', 'bool', false )  )
                                 }
                             ?>
                             </div>
+                    </div>
+                </div>
+                <div role="tabpanel" class="tab-pane fade in <?php echo $debug; ?>" id="debugger">
+                    <div class="card text-body">
+                        <div class="card-header bg-transparent">
+                            <h1 class="h5"><?php _e( 'Plugin Debugger', CFGP_NAME ); ?></h1>
+                        </div>
+                        <div class="card-footer bg-transparent">
+                            <?php _e( 'This feature allows you to collect and download all possible plugin data. This is very helpful in some situations. Note: On every debug last log file is deleted and new one is created.' ) ?> 
+                        </div>
+                        <div class="card-body">
+                            <a class="btn btn-warning" href="<?php echo self_admin_url( 'admin.php?page=' . $_GET['page'] . '&action=debugger' ); ?>"><?php _e( 'Debug Plugin', CFGP_NAME ); ?></a>&nbsp;
+                        <?php
+                            if( file_exists( CFGP_ROOT . '/cf-geoplugin-debug.log' ) )
+                            {
+                                ?>
+                                <a class="btn btn-primary" href="<?php echo self_admin_url( 'admin.php?page=' . $_GET['page'] . '&action=download_debug_log' ); ?>"><?php _e( 'Download Last Debug File', CFGP_NAME ); ?></a><br />
+                                <?php
+                            }
+                        ?>
+                        </div>
                     </div>
                 </div>
                 <?php do_action('page-cf-geoplugin-debug-tab-panel'); ?>

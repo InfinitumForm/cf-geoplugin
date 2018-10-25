@@ -15,7 +15,7 @@ class CF_Geoplugin_Form extends CF_Geoplugin_Global
 	public $tabindex = 1;
 
 	function input( $arguments ){
-		global $CF_GEOPLUGIN_OPTIONS;
+		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
 		$attr = array_merge(
 			array(
 				'label'				=> 'Input ' . $this->tabindex,
@@ -82,7 +82,7 @@ class CF_Geoplugin_Form extends CF_Geoplugin_Global
 	}
 	
 	function radio( $arguments ){
-		global $CF_GEOPLUGIN_OPTIONS;
+		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
 		$attr = array_merge(
 			array(
 				'label'				=> 'Input ' . $this->tabindex,
@@ -162,7 +162,7 @@ class CF_Geoplugin_Form extends CF_Geoplugin_Global
 	}
 	
 	function checkbox( $arguments ){
-		global $CF_GEOPLUGIN_OPTIONS;
+		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
 		$attr = array_merge(
 			array(
 				'label'				=> 'Input ' . $this->tabindex,
@@ -243,7 +243,7 @@ class CF_Geoplugin_Form extends CF_Geoplugin_Global
 	}
 	
 	function select( $arguments ){
-		global $CF_GEOPLUGIN_OPTIONS;
+		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
 		$attr = array_merge(
 			array(
 				'label'				=> 'Input ' . $this->tabindex,

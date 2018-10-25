@@ -1,7 +1,8 @@
 #cf-geoplugin-seo-redirection h2.hndle,
+#cf-geoplugin-seo-redirection h2.hndle span,
 #cf-geoplugin-seo-redirection h3.hndle{
 	background: brown;
-	color:#fff;
+	color:#fff !important;
 }
 
 #cf-geoplugin-seo-redirection .button-link{

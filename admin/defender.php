@@ -8,8 +8,8 @@
  *
 **/
 
-global $wp_version, $CF_GEOPLUGIN_OPTIONS;
-
+$CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
+global $wp_version;
 ?>
 <div class="clearfix"></div>
 <div class="container-fluid">
@@ -24,7 +24,7 @@ global $wp_version, $CF_GEOPLUGIN_OPTIONS;
         </div>
     </div>
     <?php
-    if( isset( $_POST ) && count( $_POST ) > 0 )
+    if( isset( $_POST ) && !empty( $_POST ) )
     {
         ?>
         <div class="row mt-3">
@@ -52,7 +52,7 @@ global $wp_version, $CF_GEOPLUGIN_OPTIONS;
                     {
                         if( $key == 'block_country' || $key=='block_region' || $key=='block_city' )
                         {
-                            $value = join( ']|[', $value );
+                            $value = implode( ']|[', $value );
                             $updated = $this->update_option( $key, esc_attr( $value ) );
                             $updates[] = (string) $updated[$key];
                         }
@@ -109,7 +109,7 @@ global $wp_version, $CF_GEOPLUGIN_OPTIONS;
                     <a class="nav-link text-dark <?php echo $active_page; ?>" href="#defender-page" role="tab" data-toggle="tab"><span class="fa fa-file"></span> Defender page</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-dark" href="<?php echo get_admin_url(); ?>admin.php?page=<?php echo $_GET['page']?>&test=true" target="_blank"><span class="fa fa-desktop"></span> Defender test</a>
+                    <a class="nav-link text-dark" href="<?php echo self_admin_url( 'admin.php?page='. $_GET['page'] .'&test=true' ); ?>" target="_blank"><span class="fa fa-desktop"></span> Defender test</a>
                 </li>
                 <?php do_action('page-cf-geoplugin-defender-tab'); ?>
             </ul>
@@ -122,7 +122,7 @@ global $wp_version, $CF_GEOPLUGIN_OPTIONS;
                             <p><?php _e("Please, don't use this like antispam or antivirus, this option is only to prevent access to vebsite from specific locations. This option will remove all your content, template, design and display custom message to your visitors.", CFGP_NAME); ?></p>
                         </div>
                         <div class="col-12">
-                            <form method="post" enctype="multipart/form-data" action="<?php echo  get_admin_url(); ?>admin.php?page=<?php echo $_GET['page']?>&settings-updated=true&setting=general" target="_self" id="template-options-tab">
+                            <form method="post" enctype="multipart/form-data" action="<?php echo self_admin_url( 'admin.php?page='. $_GET['page'] .'&settings-updated=true&setting=general'); ?>" target="_self" id="template-options-tab">
                                 <div class="form-group">
                                     <label for="block_ip"><?php _e('IP address separated by comma',CFGP_NAME); ?>:</label>
                                     <textarea class="form-control" id="block_ip" name="block_ip" rows="1" cols="3" style="min-height:62px"><?php echo $this->get_option('block_ip'); ?></textarea>
@@ -147,7 +147,7 @@ global $wp_version, $CF_GEOPLUGIN_OPTIONS;
                                     ?>
                                     <select class="chosen-select w-100" data-placeholder="<?php _e( 'Choose countries...', CFGP_NAME ); ?>" aria-describedby="countryHelp" id="block_country" name="block_country[]" multiple >
                                     <?php
-                                        if( is_array( $all_countries ) && count( $all_countries ) > 0 )
+                                        if( is_array( $all_countries ) && !empty( $all_countries ) )
                                         {
                                             $find = array_map( "trim", explode( "]|[", $this->get_option('block_country') ) );
                                             foreach( $all_countries as $key => $country )
@@ -187,7 +187,7 @@ global $wp_version, $CF_GEOPLUGIN_OPTIONS;
                                     ?>
                                 <select class="chosen-select w-100" name="block_region[]" id="block_region" data-placeholder="<?php _e( 'Choose regions...', CFGP_NAME ); ?>" aria-describedby="regionHelp" multiple> 
                                 <?php
-                                    if( is_array( $all_regions ) && count( $all_regions ) > 0 )
+                                    if( is_array( $all_regions ) && !empty( $all_regions ) )
                                     {
                                         $find = array_map( "trim", explode( "]|[", $this->get_option('block_region') ) );
 
@@ -227,20 +227,20 @@ global $wp_version, $CF_GEOPLUGIN_OPTIONS;
                                     ?>
                                     <select class="chosen-select w-100" name="block_city[]" id="block_city" data-placeholder="<?php _e( 'Choose cities...', CFGP_NAME ); ?>" aria-describedby="cityHelp"  multiple > 
                                     <?php
-                                    if( is_array( $all_cities ) && count( $all_cities ) > 0 )
+                                    if( is_array( $all_cities ) && !empty( $all_cities ) )
                                     {
                                         $find = array_map( "trim", explode( "]|[", $this->get_option('block_city') ) );
 
-                                        foreach( $all_cities as $key => $region )
+                                        foreach( $all_cities as $key => $city )
                                         {
                                             echo '<option id="'
-                                            .$region->slug
+                                            .$city->slug
                                             .'" value="'
-                                            .$region->slug
+                                            .$city->slug
                                             .'"'
-                                            .(in_array($region->slug, $find)!==false?' selected':'')
+                                            .(in_array($city->slug, $find)!==false?' selected':'')
                                             .'>'
-                                            .$region->name . '</option>';
+                                            .$city->name . '</option>';
                                         }
                                     }
                                     ?>
@@ -257,7 +257,7 @@ global $wp_version, $CF_GEOPLUGIN_OPTIONS;
                 <div role="tabpanel" class="tab-pane fade <?php echo $active_page; ?>" id="defender-page">
                     <div class="row">
                         <div class="col-12">
-                            <form method="post" enctype="multipart/form-data" action="<?php echo  get_admin_url(); ?>admin.php?page=<?php echo $_GET['page']?>&settings-updated=true&setting=page" target="_self" id="template-options-tab">
+                            <form method="post" enctype="multipart/form-data" action="<?php echo self_admin_url( 'admin.php?page='. $_GET['page'] .'&settings-updated=true&setting=page' ); ?>" target="_self" id="template-options-tab">
                                 <div class="form-group">
                                     <label for="block_country_message" ><?php _e('Message that is displayed to a blocked visitor (HTML allowed)',CFGP_NAME); ?>:</label>
                                     <?php

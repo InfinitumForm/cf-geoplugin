@@ -8,7 +8,8 @@
  *
 **/
 
-global $wpdb, $CF_GEOPLUGIN_OPTIONS;
+global $wpdb;
+$CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
 
 if( isset( $_GET['action'] ) && ( $_GET['action'] == 'add-new' || $_GET['action'] == 'edit' ) )
 {
@@ -60,11 +61,11 @@ else
     </div>
     <div class="row">
 		<div class="col-12">
-        	<a class="btn btn-primary btn-sm" href="<?php echo get_admin_url(); ?>admin.php?page=<?php echo $_GET['page']; ?>&action=add-new&page_num=<?php echo $page_num; ?>"><span class="fa fa-plus"></span> <?php _e( 'Add new redirection', CFGP_NAME ); ?></a>
+        	<a class="btn btn-primary btn-sm" href="<?php echo self_admin_url( 'admin.php?page='. $_GET['page'] .'&action=add-new&page_num='. $page_num ); ?>"><span class="fa fa-plus"></span> <?php _e( 'Add new redirection', CFGP_NAME ); ?></a>
             <?php if(CF_Geoplugin_Global::access_level($CF_GEOPLUGIN_OPTIONS) > 0): ?>
 				<?php if(isset($CF_GEOPLUGIN_OPTIONS['enable_beta_seo_csv']) ? ($CF_GEOPLUGIN_OPTIONS['enable_beta'] && $CF_GEOPLUGIN_OPTIONS['enable_beta_seo_csv']) : 1) : ?>
-                <a class="btn btn-outline-secondary btn-sm pull-right ml-2 mr-2" href="<?php echo get_admin_url(); ?>admin.php?page=<?php echo $_GET['page']; ?>&action=export_csv"><span class="fa fa-arrow-circle-right"></span> <?php _e( 'Export as CSV' ); ?></a>
-                <a class="btn btn-success btn-sm pull-right" href="<?php echo get_admin_url(); ?>admin.php?page=<?php echo $_GET['page']; ?>&action=import_csv"><span class="fa fa-file"></span> <?php _e( 'Import from CSV' ); ?></a>
+                <a class="btn btn-outline-secondary btn-sm pull-right ml-2 mr-2" href="<?php echo self_admin_url( 'admin.php?page='. $_GET['page'] .'&action=export_csv' ); ?>"><span class="fa fa-arrow-circle-right"></span> <?php _e( 'Export as CSV' ); ?></a>
+                <a class="btn btn-success btn-sm pull-right" href="<?php echo self_admin_url( 'admin.php?page='. $_GET['page'] .'&action=import_csv' ); ?>"><span class="fa fa-file"></span> <?php _e( 'Import from CSV' ); ?></a>
                 <?php endif; ?>
             <?php else :  ?>
             	<a class="btn btn-outline-secondary btn-sm pull-right ml-2 mr-2" href="javascript:void(0);" data-container="body" data-toggle="popover" data-placement="left" data-trigger="hover" data-content="<?php _e('Export as CSV is enabled only with valid license.',CFGP_NAME); ?>"><span class="fa fa-arrow-circle-right"></span> <?php _e( 'Export as CSV' ); ?></a>
@@ -110,7 +111,7 @@ else
                                         <a class="btn btn-danger btn-sm cf_geo_redirect_delete" href="%3$sadmin.php?page=%4$s&action=delete&id=%10$d&page_num=%13$d"><span class="fa fa-ban"></span> %6$s</a>
                                     </td> 
                                 </tr>
-                            ', $redirect['url'], $redirect['url'], get_admin_url(), $_GET['page'], __('Edit', CFGP_NAME), __('Delete', CFGP_NAME), $country['description'], $region['description'], $city['description'], $redirect['id'],  $redirect['http_code'], $disabled, $page_num );
+                            ', $redirect['url'], $redirect['url'], self_admin_url(), $_GET['page'], __('Edit', CFGP_NAME), __('Delete', CFGP_NAME), $country['description'], $region['description'], $city['description'], $redirect['id'],  $redirect['http_code'], $disabled, $page_num );
                         }
                     }
                     else {
@@ -135,7 +136,7 @@ else
             <nav aria-label="Page navigation">
                 <ul class="pagination justify-content-center">
                 <?php
-                    $base_link = get_admin_url() . 'admin.php?page=' . $_GET['page'];
+                    $base_link = self_admin_url( 'admin.php?page=' . $_GET['page'] );
                 ?>
                     <li class="page-item <?php echo ( $page_num == 1) ? 'disabled' : '' ?>">
                         <a class="page-link" href="<?php echo ( $page_num == 1 ) ? '#' : $base_link . '&page_num=1' ?>"><span class="fa fa-angle-double-left"></span></a>

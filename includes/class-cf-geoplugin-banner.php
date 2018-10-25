@@ -96,7 +96,7 @@ Class CF_Geoplugin_Banner extends CF_Geoplugin_Global
     // Register banner CPT
     public function register_banner()
     {
-		global $CF_GEOPLUGIN_OPTIONS;
+		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
 
 		$enable_banner = $CF_GEOPLUGIN_OPTIONS['enable_banner'];
 

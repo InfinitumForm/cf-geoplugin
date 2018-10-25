@@ -7,7 +7,8 @@
  * @author     Ivijan-Stefan Stipic
  *
 **/
-global $CFGEO, $CF_GEOPLUGIN_OPTIONS;
+
+$CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
 include CFGP_INCLUDES . '/class-cf-geoplugin-forms.php';
 
 $alert = '';
@@ -290,7 +291,7 @@ if($this->get('action') == 'activate_license')
 									'label'		=> __('WooCommerce integration'),
 									'name'		=> 'enable_woocommerce',
 									'default'	=> (isset($CF_GEOPLUGIN_OPTIONS['enable_woocommerce']) ? $CF_GEOPLUGIN_OPTIONS['enable_woocommerce'] : 0 ),
-									'html'		=> !$CF_GEOPLUGIN_OPTIONS['woocommerce_active'] ? '<p class="text-info">' . __('This function is only enabled when Woocommerce is active.', CFGP_NAME) . '</p>' : '<p id="woo_integration_html"' . (!$CF_GEOPLUGIN_OPTIONS['enable_woocommerce'] ? ' style="display: none;"' : '') . '><a href="'. admin_url('admin.php?page=wc-settings#woocommerce_cf_geoplugin_conversion') .'"><u>' . __( 'Set conversion option in Woocommerce General Settings', CFGP_NAME ) . '</u></a></p>',
+									'html'		=> !$CF_GEOPLUGIN_OPTIONS['woocommerce_active'] ? '<p class="text-info">' . __('This function is only enabled when Woocommerce is active.', CFGP_NAME) . '</p>' : '<p id="woo_integration_html"' . (!$CF_GEOPLUGIN_OPTIONS['enable_woocommerce'] ? ' style="display: none;"' : '') . '><a href="'. self_admin_url('admin.php?page=wc-settings#woocommerce_cf_geoplugin_conversion') .'"><u>' . __( 'Set conversion option in Woocommerce General Settings', CFGP_NAME ) . '</u></a></p>',
 									array(
 										'text'	=> __('Enable', CFGP_NAME),
 										'value'	=> 1,
@@ -675,7 +676,7 @@ if($this->get('action') == 'activate_license')
                                     <div class="tab-pane border border-secondary rounded pt-1 pb-1 pl-3 pr-3 fade show active" id="cf-geo-rest-info" role="tabpanel" aria-labelledby="cf-geo-rest-info-tab">
                                     	<h5 class="mt-3"><?php _e('Authentication endpoint',CFGP_NAME) ?>:</h5>
                                         <p><?php _e('Endpoint used to authenticate connection between CF Geo Plugin on your site and your external app.',CFGP_NAME) ?></p>
-                                        <p><code><?php echo admin_url('admin-ajax.php?action=cf_geoplugin_authenticate'); ?></code></p>
+                                        <p><code><?php echo self_admin_url('admin-ajax.php?action=cf_geoplugin_authenticate'); ?></code></p>
                                         <p><?php _e('Expected GET or POST parameters.',CFGP_NAME) ?></p>
                                         <table class="table">
                                         	<tr>
@@ -756,7 +757,7 @@ if($this->get('action') == 'activate_license')
                                     <div class="tab-pane border border-secondary rounded pt-1 pb-1 pl-3 pr-3 fade" id="cf-geo-rest-info-tab-lookup" role="tabpanel" aria-labelledby="cf-geo-rest-info-tab-lookup-tab">
                                     	<h5 class="mt-3"><?php _e('Lookup endpoint',CFGP_NAME) ?>:</h5>
                                         <p><?php _e('Endpoint used to lookup IP address informations. To make this work properly, you must have a valid KEY and Access Token API.',CFGP_NAME) ?></p>
-                                        <p><code><?php echo admin_url('admin-ajax.php?action=cf_geoplugin_lookup'); ?></code></p>
+                                        <p><code><?php echo self_admin_url('admin-ajax.php?action=cf_geoplugin_lookup'); ?></code></p>
                                         <p><?php _e('Expected GET or POST parameters.',CFGP_NAME) ?></p>
                                         <table class="table">
                                         	<tr>

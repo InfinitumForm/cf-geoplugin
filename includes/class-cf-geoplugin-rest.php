@@ -16,7 +16,7 @@ class CF_Geoplugin_REST extends CF_Geoplugin_Global {
 	);
 	
 	function run(){
-		global $CF_GEOPLUGIN_OPTIONS;
+		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
 		if(isset($CF_GEOPLUGIN_OPTIONS['enable_rest']) ? $CF_GEOPLUGIN_OPTIONS['enable_rest'] : 0)
 		{
 			if(self::access_level($CF_GEOPLUGIN_OPTIONS['license_sku']) >= 4)
@@ -76,7 +76,7 @@ class CF_Geoplugin_REST extends CF_Geoplugin_Global {
 	
 	// Delete Access token
 	function delete_access_token(){
-		global $CF_GEOPLUGIN_OPTIONS;
+		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
 		if(isset($_POST['token']) && !empty($_POST['token']))
 		{
 			$token = filter_var($_POST['token'], FILTER_SANITIZE_STRING, array('options' => array('default' => false)));
@@ -126,7 +126,7 @@ class CF_Geoplugin_REST extends CF_Geoplugin_Global {
 	 */
 	public function lookup()
 	{
-		global $CF_GEOPLUGIN_OPTIONS;
+		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
 		
 		//protect REQUEST
 		$allowed = array('api_key', 'access_token', 'ip', 'base_currency');
@@ -218,7 +218,7 @@ class CF_Geoplugin_REST extends CF_Geoplugin_Global {
 	 * Generate access token
 	 */
 	public function authenticate(){
-		global $CF_GEOPLUGIN_OPTIONS;
+		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
 		
 		//protect REQUEST
 		$allowed = array('api_key','secret_key','app_name');

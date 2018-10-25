@@ -11,6 +11,9 @@
 if( !class_exists( 'CF_Geoplugin_Metabox' ) ) :
 class CF_Geoplugin_Metabox extends CF_Geoplugin_Global
 {
+    // CF Metaboxes prefix
+    private $prefix = '';
+
     public function __construct()
     {
         $this->add_action( 'add_meta_boxes', 'create_meta_box' );
@@ -26,7 +29,7 @@ class CF_Geoplugin_Metabox extends CF_Geoplugin_Global
 	
 	// Set custom Javascript
 	public function custom_javascript(){
-		global $CF_GEOPLUGIN_OPTIONS;
+		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
 		if(!$CF_GEOPLUGIN_OPTIONS['enable_seo_redirection']) return;
 		?>
 <script>
@@ -52,7 +55,7 @@ class CF_Geoplugin_Metabox extends CF_Geoplugin_Global
 	// Add custom style to metabox
 	public function metabox_admin_scripts() {
 		global $post_type;
-		global $CF_GEOPLUGIN_OPTIONS;
+		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
 		if(!$CF_GEOPLUGIN_OPTIONS['enable_seo_redirection']) return;
 		if( 'cf-geoplugin-banner' != $post_type)
 		{
@@ -70,7 +73,7 @@ class CF_Geoplugin_Metabox extends CF_Geoplugin_Global
     // Create meta box
     public function create_meta_box()
     {
-		global $CF_GEOPLUGIN_OPTIONS;
+		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
 		if(!$CF_GEOPLUGIN_OPTIONS['enable_seo_redirection']) return;
 		
         $args = array(
@@ -142,7 +145,7 @@ class CF_Geoplugin_Metabox extends CF_Geoplugin_Global
                     .'" value="'
                     .$country->slug
                     .'"'
-                    .( $country->slug === $selected_country ? ' selected':'')
+                    .( strtolower( $country->slug ) == strtolower( $selected_country ) ? ' selected':'')
                     .'>'
                     .$country->name
                     .' - '.$country->description.'</option>';
@@ -180,9 +183,9 @@ class CF_Geoplugin_Metabox extends CF_Geoplugin_Global
 				echo '<option id="'
 				.$region->slug
 				.'" value="'
-				.$country->slug
+				.$region->slug
 				.'"'
-				.( $region->slug === $selected_region ? ' selected':'')
+				.( strtolower( $region->slug ) == strtolower( $selected_region ) ? ' selected':'')
 				.'>'
 				.$region->name
 				.' - '.$region->description.'</option>';
@@ -222,7 +225,7 @@ class CF_Geoplugin_Metabox extends CF_Geoplugin_Global
                     .'" value="'
                     .$city->slug
                     .'"'
-                    .( $city->slug === $selected_city ? ' selected':'')
+                    .( strtolower( $city->slug ) == strtolower( $selected_city ) ? ' selected':'')
                     .'>'
                     .$city->name
                     .' - '.$city->description.'</option>';
@@ -241,7 +244,7 @@ class CF_Geoplugin_Metabox extends CF_Geoplugin_Global
             $selected_code = $this->get_post_meta( 'http_code' );
 			if(empty($selected_code)) $selected_code = 302;
         ?>
-        <select name="<?php echo $this->prefix; ?>http_code" id="<?php echo $this->prefix; ?>http_code" class="postbox">
+        <select name="<?php echo $this->prefix; ?>http_code" id="<?php echo $this->prefix; ?>http_code" class="widefat">
             <option value="301" <?php selected( $selected_code, '301' ); ?>><?php _e( '301 - Moved Permanently', CFGP_NAME ); ?></option>
             <option value="302" <?php selected( $selected_code, '302' ); ?>><?php _e( '302 - Moved Temporary', CFGP_NAME ); ?></option>
             <option value="303" <?php selected( $selected_code, '303' ); ?>><?php _e( '303 - See Other', CFGP_NAME ); ?></option>
@@ -250,12 +253,12 @@ class CF_Geoplugin_Metabox extends CF_Geoplugin_Global
         <span class="description"><?php esc_attr_e( 'Select the desired HTTP redirection. (HTTP Code 302 is recommended)', CFGP_NAME ); ?></span><br>
 
         <br>
-        <label for="<?php echo $this->prefix; ?>seo_redirect"><?php _e( 'Enable SEO Redirect', CFGP_NAME ); ?></label>
+        <label for="<?php echo $this->prefix; ?>seo_redirect"><?php _e( 'Enable SEO Redirect', CFGP_NAME ); ?></label><br />
         <?php
             $checked = $this->get_post_meta( 'seo_redirect' );
             if( empty( $checked ) ) $checked = '0';
         ?>
-        <input type="radio" name="<?php echo $this->prefix; ?>seo_redirect" value="1" <?php checked( $checked, '1' ); ?> /> <?php _e( 'Enable', CFGP_NAME ); ?>
+        <input type="radio" name="<?php echo $this->prefix; ?>seo_redirect" value="1" <?php checked( $checked, '1' ); ?> /> <?php _e( 'Enable', CFGP_NAME ); ?><br />
         <input type="radio" name="<?php echo $this->prefix; ?>seo_redirect" value="0" <?php checked( $checked, '0' ); ?> /> <?php _e( 'Disable', CFGP_NAME ); ?>
         <?php
     }
@@ -263,7 +266,7 @@ class CF_Geoplugin_Metabox extends CF_Geoplugin_Global
     // Save meta box values
     public function meta_box_save( $id )
     {
-		global $CF_GEOPLUGIN_OPTIONS;
+		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
 		if(!$CF_GEOPLUGIN_OPTIONS['enable_seo_redirection']) return;
 		
         update_post_meta( $id, $this->prefix . 'country', $this->post( $this->prefix . 'country' ) );

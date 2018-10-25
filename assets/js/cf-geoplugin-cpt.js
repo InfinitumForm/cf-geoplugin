@@ -1,48 +1,32 @@
 // CPT and taxonomies customatization and actions
 (function ($) {
     'use strict';
+		
+	var cfMenu_main =  $( "#toplevel_page_cf-geoplugin" );
 
-    var $currentUrl = document.URL || window.location.href;
-    $currentUrl = $currentUrl.split( '/' );
-	$currentUrl = $currentUrl[ ($currentUrl.length-1) ];
-	if( $currentUrl.indexOf('cf-geoplugin-region') >= 0 )
+	if( !!cfMenu_main )
 	{
-		$currentUrl = 'cf-geoplugin-region';
-	}
-	else if( $currentUrl.indexOf('cf-geoplugin-country') >= 0 )
-	{
-		$currentUrl = 'cf-geoplugin-country';
-	}
-	else if( $currentUrl.indexOf('cf-geoplugin-city') >= 0 )
-	{
-		$currentUrl = 'cf-geoplugin-city';
-	}
-
-	$currentUrl = $currentUrl.replace( 'post-new', 'edit' );
-	
-	
-    var $cfMenu = $( "#toplevel_page_cf-geoplugin ul.wp-submenu li a[href*='"+ $currentUrl +"']");
-
-    if( !$cfMenu.parent('li').hasClass('current') )
-    {
-        $cfMenu.parent( 'li' ).addClass( 'current' );
-    }
-    if( !$cfMenu.hasClass('current') )
-    {
-        $cfMenu.addClass( 'current' ).attr( 'aria-selected', 'page' );
-	}
-	
-	var postID = CFGP.post_id;
-	if( postID > 0 )
-	{
-		var cfMenu =  $( "#toplevel_page_cf-geoplugin" );
-		if( cfMenu.hasClass('wp-not-current-submenu') )
+		if( cfMenu_main.hasClass('wp-not-current-submenu') )
 		{
-			cfMenu.removeClass('wp-not-current-submenu').addClass('wp-menu-open wp-has-current-submenu');
+			cfMenu_main.removeClass('wp-not-current-submenu').addClass('wp-menu-open wp-has-current-submenu');
 		}
-		if( cfMenu.children('a').hasClass('wp-not-current-submenu') )
+		if( cfMenu_main.children('a').hasClass('wp-not-current-submenu') )
 		{
-			cfMenu.children('a').removeClass('wp-not-current-submenu').addClass('wp-menu-open wp-has-current-submenu');
+			cfMenu_main.children('a').removeClass('wp-not-current-submenu').addClass('wp-menu-open wp-has-current-submenu');
+		}
+	}
+
+    var $cfMenu = $( "#toplevel_page_cf-geoplugin ul.wp-submenu li a[href*='"+ CFGP.current_url +"']");
+
+	if( !!$cfMenu )
+	{
+		if( !$cfMenu.parent('li').hasClass('current') )
+		{
+			$cfMenu.parent( 'li' ).addClass( 'current' );
+		}
+		if( !$cfMenu.hasClass('current') )
+		{
+			$cfMenu.addClass( 'current' ).attr( 'aria-selected', 'page' );
 		}
 	}
 

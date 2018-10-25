@@ -27,7 +27,7 @@ class CF_Geoplugin_Notifications extends CF_Geoplugin_Global
 	
 	// Like Plugin
 	public function like_plugin() {
-		global $CF_GEOPLUGIN_OPTIONS;
+		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
 		
 		if( time() >= ($CF_GEOPLUGIN_OPTIONS['plugin_activated'] + (60 * 60 * 24 * 5)))
 		{
@@ -48,7 +48,7 @@ class CF_Geoplugin_Notifications extends CF_Geoplugin_Global
 
 	// Activation notice
 	public function activation_notice() {
-		global $CFGEO;
+		$CFGEO = $GLOBALS['CFGEO'];
 		
 		if( !current_user_can( 'activate_plugins'  ) ) return;
 		
@@ -68,7 +68,7 @@ class CF_Geoplugin_Notifications extends CF_Geoplugin_Global
 			'<strong><a href="https://cfgeoplugin.com/privacy-policy/" target="_blank">' . __('Privacy Policy',CFGP_NAME) . '</a></strong>',
 			'<strong><a href="https://cfgeoplugin.com/terms-and-conditions/" target="_blank">' . __('Terms & Conditions',CFGP_NAME) . '</a></strong>'
 		);
-		$message2 = '<a href="' . admin_url('/admin.php?page=cf-geoplugin-activate') . '" class="button button-primary">' . __('Activate Unlimited',CFGP_NAME) . '</a>';
+		$message2 = '<a href="' . self_admin_url('/admin.php?page=cf-geoplugin-activate') . '" class="button button-primary">' . __('Activate Unlimited',CFGP_NAME) . '</a>';
 
 		
 		self::notice()->register_notice(

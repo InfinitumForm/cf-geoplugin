@@ -8,7 +8,7 @@
  *
 **/
 
-global $CFGEO, $CF_GEOPLUGIN_OPTIONS;
+$CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
 ?>
 
 <div class = "clearfix"></div>

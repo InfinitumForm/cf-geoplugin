@@ -21,7 +21,7 @@ class CF_Geoplugin_Public extends CF_Geoplugin_Global
 	}
 	
 	public function register_style($page){
-		global $CF_GEOPLUGIN_OPTIONS;
+		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
 		
 		wp_register_style(
 			CFGP_NAME.'-flag',
@@ -46,7 +46,7 @@ class CF_Geoplugin_Public extends CF_Geoplugin_Global
 		
 	}
 	
-	public function initialize_plugin_javascript(){ global $CFGEO; ?>
+	public function initialize_plugin_javascript(){ $CFGEO = $GLOBALS['CFGEO']; ?>
 <!-- <?php _e('CF Geoplugin JavaScript Plugin',CFGP_NAME); ?> -->
 <script>
 /* <![CDATA[ */
