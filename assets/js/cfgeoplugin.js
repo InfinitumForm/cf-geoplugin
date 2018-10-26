@@ -122,12 +122,18 @@ $.fn.alerts = function(text, type){
 					var value = $this.val(),
 						name = $this.attr('name');
 					
+					$('input, select, textarea', $($$)).prop('disabled', true);
+					
+					
 					$.ajax({
 						method : 'post',
 						cache : false,
+						async : true,
 						url : CFGP.ajaxurl,
 						data : {action:'cf_geo_update_option', name : name, value : value}
 					}).done(function(d){
+						$('input, select, textarea', $($$)).prop('disabled', false);
+						$('input.disabled, select.disabled, textarea.disabled', $($$)).prop('disabled', true);
 						if(d == 'true')
 						{
 							$('#alert').alerts(CFGP.label.settings.saved,'success');
@@ -205,6 +211,8 @@ $.fn.alerts = function(text, type){
 						}
 					}).fail(function(a){
 						console.log(a);
+						$('input, select, textarea', $($$)).prop('disabled', false);
+						$('input.disabled, select.disabled, textarea.disabled', $($$)).prop('disabled', true);
 						$('#alert').alerts(CFGP.label.settings.fail,'danger');
 					});
 				},delay);
