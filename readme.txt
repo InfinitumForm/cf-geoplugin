@@ -5,7 +5,7 @@ Tags: geo plugin, geo location, geotarget, geo banner, market, conversion, conve
 Requires at least: 3.0
 Tested up to: 5.9
 Requires PHP: 5.6.0
-Stable tag: 7.2.2
+Stable tag: 7.2.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -250,6 +250,12 @@ Please inform us if any of these errors occure via contact form on our website [
 
 == Changelog ==
 
+= 7.2.3 =
+* Fixed PHP Notices from previous version
+* Fixed GUI and notifications inside Settings page
+* Fixed Defender issue on empty fields
+* Improved initial options
+
 = 7.2.2 =
 * Fixed PHP Notice: Undefined index
 
@@ -331,6 +337,12 @@ Please inform us if any of these errors occure via contact form on our website [
 * Localization integration
 
 == Upgrade Notice ==
+
+= 7.2.3 =
+* Fixed PHP Notices from previous version
+* Fixed GUI and notifications inside Settings page
+* Fixed Defender issue on empty fields
+* Improved initial options
 
 = 7.2.2 =
 * Fixed PHP Notice: Undefined index
