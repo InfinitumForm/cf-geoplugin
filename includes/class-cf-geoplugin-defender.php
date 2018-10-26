@@ -33,6 +33,7 @@ class CF_Geoplugin_Defender extends CF_Geoplugin_Global
     // Check what to do with user
     public function check()
     {
+		return false;
         $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS']; $CFGEO = $GLOBALS['CFGEO'];
         if( $CF_GEOPLUGIN_OPTIONS['enable_defender'] == 0 ) return false;
         $flag = false;

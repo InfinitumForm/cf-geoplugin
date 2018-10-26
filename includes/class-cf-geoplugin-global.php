@@ -222,10 +222,11 @@ class CF_Geoplugin_Global
 	 * Hook Get Options
 	*/
 	public function get_option($option_name='', $default=false){
+		
 		if( !CFGP_MULTISITE )
-			$options = get_option('cf_geoplugin');
+			$options = array_merge($this->default_options, get_option('cf_geoplugin'));
 		else
-			$options = get_site_option( 'cf_geoplugin' );
+			$options = array_merge($this->default_options, get_site_option( 'cf_geoplugin' ));
 			
 		if($options)
 		{
@@ -233,11 +234,7 @@ class CF_Geoplugin_Global
 				if(isset($options[$option_name])) {
 					return $options[$option_name];
 				} else {
-					if(isset($this->default_options[$option_name])) {
-						return $this->default_options[$option_name];
-					} else {
-						return $default;
-					}
+					return $default;
 				}
 			} else {
 				return $options;
