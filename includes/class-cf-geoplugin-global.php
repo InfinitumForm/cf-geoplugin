@@ -222,35 +222,36 @@ class CF_Geoplugin_Global
 	 * Hook Get Options
 	*/
 	public function get_option($option_name='', $default=false){
-		
-		if( !CFGP_MULTISITE )
-			$options = array_merge($this->default_options, get_option('cf_geoplugin'));
-		else
-			$options = array_merge($this->default_options, get_site_option( 'cf_geoplugin' ));
-			
-		if($options)
-		{
-			if( !empty($option_name) ) {
-				if(isset($options[$option_name])) {
-					return $options[$option_name];
-				} else {
-					return $default;
-				}
-			} else {
-				return $options;
-			}
-		}
-		
+		// return default option on default:TRUE
 		if($default===true)
 		{
 			return $this->default_options;
 		}
-		else if(!empty($option_name) && isset($this->default_options[$option_name]))
-		{
-			return $this->default_options[$option_name];
+		
+		// Let's get options
+		if( !CFGP_MULTISITE )
+			$options = get_option('cf_geoplugin');
+		else
+			$options = get_site_option( 'cf_geoplugin' );
+		
+		// If options are empty get default - wee nedd it for normal function or merge new settings
+		if(empty($options)){
+			$options = $this->default_options;
+		} else {
+			$options = array_merge($this->default_options, $options);
 		}
 		
-		return $default;
+		// Get data by option name
+		if( !empty($option_name) ) {
+			if(isset($options[$option_name])) {
+				return $options[$option_name]; // Return single searched value
+			} else {
+				return $default; // Return default if field is not set yet
+			}
+		} else {
+			// Return all options if option name is not defined
+			return $options;
+		}
 	}
 	/*
 	 * Hook Update Options
@@ -1589,12 +1590,13 @@ class CF_Geoplugin_Global
 		if( is_array( $city ) )
 		{
 			$city = array_map( 'strtolower', $city );
-			if( !empty( $city ) && isset( $CFGEO['city'] ) && in_array( strtolower( $CFGEO['city'] ), $city ) ) return true;
+			if( isset( $city[0] ) && !empty( $city[0] ) && isset( $CFGEO['city'] ) && in_array( strtolower( $CFGEO['city'] ), $city, true ) ) return true;
 		}
 		elseif( is_string( $city ) )
 		{
-			if( !empty( $city ) && isset( $CFGEO['city'] ) && strtolower( $city ) == strtolower( $CFGEO['city'] ) ) return true;
+			if( !empty( $city ) && isset( $CFGEO['city'] ) && strtolower( $city ) === strtolower( $CFGEO['city'] ) ) return true;
 		}
+
 		return false;
 	}
 
@@ -1606,7 +1608,7 @@ class CF_Geoplugin_Global
 		$CFGEO = $GLOBALS['CFGEO'];
 		if( is_array( $region ) )
 		{
-			if( !empty( $region ) )
+			if( isset( $region[0] ) && !empty( $region[0] ) )
 			{
 				$region = array_map( 'strtolower', $region );
 				// Supports region code and region name
@@ -1619,10 +1621,11 @@ class CF_Geoplugin_Global
 			if( !empty( $region ) )
 			{
 				// Supports region code and region name
-				if( isset( $CFGEO['region_code'] ) && strtolower( $region ) == strtolower( $CFGEO['region_code'] ) ) return true; 
-				if( isset( $CFGEO['region'] ) && strtolower( $region ) == strtolower( $CFGEO['region'] ) ) return false;
+				if( isset( $CFGEO['region_code'] ) && strtolower( $region ) === strtolower( $CFGEO['region_code'] ) ) return true; 
+				if( isset( $CFGEO['region'] ) && strtolower( $region ) === strtolower( $CFGEO['region'] ) ) return true;
 			}
 		}
+
 		return false;
 	}
 
@@ -1635,7 +1638,7 @@ class CF_Geoplugin_Global
 
 		if( is_array( $country ) )
 		{
-			if( !empty( $country ) )
+			if( isset( $country[0] ) && !empty( $country[0] ) )
 			{
 				$country = array_map( 'strtolower', $country );
 				// Supports country code and name
@@ -1648,10 +1651,11 @@ class CF_Geoplugin_Global
 			if( !empty( $country ) )
 			{
 				// Supports country code and name
-				if( isset( $CFGEO['country_code'] ) && strtolower( $country ) == strtolower( $CFGEO['country_code'] ) ) return true;
-				if( isset( $CFGEO['country'] ) && strtolower( $country ) == strtolower( $CFGEO['country'] ) ) return true;
+				if( isset( $CFGEO['country_code'] ) && strtolower( $country ) === strtolower( $CFGEO['country_code'] ) ) return true;
+				if( isset( $CFGEO['country'] ) && strtolower( $country ) === strtolower( $CFGEO['country'] ) ) return true;
 			}
 		}
+
 		return false;
 	}
 

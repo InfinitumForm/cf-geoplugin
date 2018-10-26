@@ -181,7 +181,6 @@ if(class_exists('CF_Geoplugin_Global')) :
 	$hook = new CF_Geoplugin_Global;
 	// Global variable for geoplugin options
 	$GLOBALS['CF_GEOPLUGIN_OPTIONS']=$hook->get_option();
-	$GLOBALS['CF_GEOPLUGIN_OPTIONS']['enable_defender']=0; // DESABLED
 	// Client IP address
 	if ( ! defined( 'CFGP_IP' ) ) 					define( 'CFGP_IP', $hook->ip() );
 	// Server IP address
