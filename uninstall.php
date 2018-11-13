@@ -144,7 +144,7 @@ foreach($taxonomy_list as $i => $taxonomy)
             'hide_empty'	=> false
         ));
     }
-	if ( is_array($terms) && !empty( $terms ) ){
+	if ( is_array( $terms ) && !empty( $terms ) ){
 		foreach ( $terms as $i => $term ) {
 			wp_delete_term( $term->term_id, $taxonomy );
 		}
@@ -158,3 +158,18 @@ $table_names = array(
 	'cf_geo_rest_token',
 );
 foreach( $table_names as $i => $name ) $wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}{$name};" );
+
+// Delete redirection data
+$meta_keys = array(
+	'cf_geo_metabox_redirection',
+	'cf_geo_metabox_country',
+	'cf_geo_metabox_region',
+	'cf_geo_metabox_city',
+	'cf_geo_metabox_redirect_url',
+	'cf_geo_metabox_http_code',
+	'cf_geo_metabox_seo_redirection'
+);
+foreach( $meta_keys as $i => $key )
+{
+	delete_post_meta_by_key( $key );
+}

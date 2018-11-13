@@ -1590,11 +1590,11 @@ class CF_Geoplugin_Global
 		if( is_array( $city ) )
 		{
 			$city = array_map( 'strtolower', $city );
-			if( isset( $city[0] ) && !empty( $city[0] ) && isset( $CFGEO['city'] ) && in_array( strtolower( $CFGEO['city'] ), $city, true ) ) return true;
+			if( isset( $city[0] ) && !empty( $city[0] ) && isset( $CFGEO['city'] ) && in_array( sanitize_title_with_dashes( $CFGEO['city'] ), $city, true ) ) return true;
 		}
 		elseif( is_string( $city ) )
 		{
-			if( !empty( $city ) && isset( $CFGEO['city'] ) && strtolower( $city ) === strtolower( $CFGEO['city'] ) ) return true;
+			if( !empty( $city ) && isset( $CFGEO['city'] ) && strtolower( $city ) === sanitize_title_with_dashes($CFGEO['city'] ) ) return true;
 		}
 
 		return false;
@@ -1613,7 +1613,7 @@ class CF_Geoplugin_Global
 				$region = array_map( 'strtolower', $region );
 				// Supports region code and region name
 				if( isset( $CFGEO['region_code'] ) && in_array( strtolower( $CFGEO['region_code'] ), $region, true ) ) return true; 
-				if( isset( $CFGEO['region'] ) && in_array( strtolower( $CFGEO['region'] ), $region, true ) ) return true;
+				if( isset( $CFGEO['region'] ) && in_array( sanitize_title_with_dashes( $CFGEO['region'] ), $region, true ) ) return true;
 			}
 		}
 		elseif( is_string( $region ) )
@@ -1622,7 +1622,7 @@ class CF_Geoplugin_Global
 			{
 				// Supports region code and region name
 				if( isset( $CFGEO['region_code'] ) && strtolower( $region ) === strtolower( $CFGEO['region_code'] ) ) return true; 
-				if( isset( $CFGEO['region'] ) && strtolower( $region ) === strtolower( $CFGEO['region'] ) ) return true;
+				if( isset( $CFGEO['region'] ) && strtolower( $region ) === sanitize_title_with_dashes( $CFGEO['region'] ) ) return true;
 			}
 		}
 
@@ -1643,7 +1643,7 @@ class CF_Geoplugin_Global
 				$country = array_map( 'strtolower', $country );
 				// Supports country code and name
 				if( isset( $CFGEO['country_code'] ) && in_array( strtolower( $CFGEO['country_code'] ), $country, true ) ) return true;
-				if( isset( $CFGEO['country'] ) && in_array( strtolower( $CFGEO['country'] ), $country, true ) ) return true;
+				if( isset( $CFGEO['country'] ) && in_array( sanitize_title_with_dashes( $CFGEO['country'] ), $country, true ) ) return true;
 			}
 		}
 		elseif( is_string( $country ) )
@@ -1652,7 +1652,7 @@ class CF_Geoplugin_Global
 			{
 				// Supports country code and name
 				if( isset( $CFGEO['country_code'] ) && strtolower( $country ) === strtolower( $CFGEO['country_code'] ) ) return true;
-				if( isset( $CFGEO['country'] ) && strtolower( $country ) === strtolower( $CFGEO['country'] ) ) return true;
+				if( isset( $CFGEO['country'] ) && strtolower( $country ) === sanitize_title_with_dashes( $CFGEO['country'] ) ) return true;
 			}
 		}
 

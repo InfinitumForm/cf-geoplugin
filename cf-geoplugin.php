@@ -8,7 +8,7 @@
  * Plugin Name:       CF Geo Plugin
  * Plugin URI:        http://cfgeoplugin.com/
  * Description:       Create Dynamic Content, Banners and Images on Your Website Based On Visitor Geo Location By Using Shortcodes With CF GeoPlugin.
- * Version:           7.2.3
+ * Version:           7.3.0
  * Author:            Ivijan-Stefan Stipic
  * Author URI:        https://linkedin.com/in/ivijanstefanstipic
  * License:           GPL-2.0+
@@ -64,7 +64,7 @@ if ( defined( 'WP_CF_GEO_DEBUG' ) ){
 // Main plugin file
 if ( ! defined( 'CFGP_FILE' ) )				define( 'CFGP_FILE', __FILE__ );
 // Current plugin version
-if ( ! defined( 'CFGP_VERSION' ) )			define( 'CFGP_VERSION', '7.2.3');
+if ( ! defined( 'CFGP_VERSION' ) )			define( 'CFGP_VERSION', '7.3.0');
 // Plugin root
 if ( ! defined( 'CFGP_ROOT' ) )				define( 'CFGP_ROOT', rtrim(plugin_dir_path(CFGP_FILE), '/') );
 // Includes directory
@@ -192,9 +192,14 @@ if(class_exists('CF_Geoplugin_Global')) :
 	// Defender true/false
 	if ( ! defined( 'CFGP_DEFENDER_ACTIVATED' ) ) 	define( 'CFGP_DEFENDER_ACTIVATED', $hook->check_defender_activation() );
 
+	$options = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
+	// GDRP - Protect users private data
+	foreach( array( 'map_api_key', 'license_key', 'proxy_ip', 'proxy_port', 'proxy_username', 'proxy_password' ) as $i => $opt ) if( isset( $options[ $opt ] ) ) unset( $options[ $opt ] );
+
 	$debug->save( 'Global Class Loaded' );
 	$debug->save( 'Current options:' );
-	$debug->save( $GLOBALS['CF_GEOPLUGIN_OPTIONS'] );
+	$debug->save( $options );
+	$options = NULL;
 
 	$hook = NULL;
 	// Include main class
@@ -210,7 +215,6 @@ if(class_exists('CF_Geoplugin_Global')) :
 				$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
 				$this->register_activation_hook(CFGP_FILE, 'activate');
 				$this->register_deactivation_hook(CFGP_FILE, 'deactivate');
-				if(isset($CF_GEOPLUGIN_OPTIONS['enable_update']) && $CF_GEOPLUGIN_OPTIONS['enable_update']) $this->add_filter('auto_update_plugin', 'auto_update', 10, 2);
 				$this->run();
 			}
 		}

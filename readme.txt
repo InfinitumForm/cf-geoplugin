@@ -1,15 +1,15 @@
 ﻿=== CF Geo Plugin ===
 Contributors: ivijanstefan, creativform, ej207
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=creativform@gmail.com
-Tags: geo plugin, geo location, geotarget, geo banner, market, conversion, conversion plugin, automatic banner, banner, business, location, google map, gmaps, gmap, seo, seo tool, user experience, ux plugin, contact form, dynamic keyword, ip, ip location, region, position, positioning, marketing, block visitors, defender, block spam, block region, tag, geo, target, local, find ip, ip finder, geo target, geo image, geo content. include content, exclude content, include, exclude, seo redirection, url redirection, country redirection, redirection, flag, country flag, national flag, flags, custom flags, gdpr, localization, ecommerce, legal requiremants, legal, currency
+Tags: geo plugin, geo location, geotarget, geo banner, market, conversion, conversion plugin, automatic banner, banner, business, location, google map, gmaps, gmap, seo, seo tool, user experience, ux plugin, contact form, dynamic keyword, ip, ip location, region, position, positioning, marketing, block visitors, defender, block spam, block region, tag, geo, target, local, find ip, ip finder, geo target, geo image, geo content. include content, exclude content, include, exclude, seo redirection, url redirection, country redirection, redirection, flag, country flag, national flag, flags, custom flags, gdpr, localization, ecommerce, legal requiremants, legal, currency, 
 Requires at least: 3.0
 Tested up to: 5.9
 Requires PHP: 5.6.0
-Stable tag: 7.2.3
+Stable tag: 7.3.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-The CF GeoPlugin allows you to take full control of your WordPress using geographic information with simple finctionality, shortcodes, PHP or JavaScript.
+Full SEO control, SEO redirection, geoinformation, lead capture and more in only one plugin.
 
 == Description ==
 
@@ -17,6 +17,18 @@ The **CF Geo Plugin** is **FREE** plugin that allows you to attach content, geog
 
 = BENEFITS =
 
+> <strong>SERVER & WORDPRESS</strong><br>
+> - **There is no need to buy expensive and heavy databases**
+> - **No affect on the site performances**
+> - **Full support** for the WooCommerce, Contact Form 7, Yoast SEO, WP Super Cache and other most popular plugins
+>
+> <strong>SEO REDIRECTION</strong><br>
+> - **Redirects visitors** to a blog page based on their geo informations
+> - **Redirects visitors** to a predefined URL based on their geo informations
+> - **Allows you to configure multiple redirection** rules as needed for the pages and enthire website
+> - **Supports 301, 302, 303 & 304** HTTP redirection
+> - **Supports IPv4 and IPv6**
+>
 > <strong>GEO-MARKETING</strong><br>
 > - **Create marketing campaigns** targeted only at certain locations.
 > - **Create landing pages** targeted only at certain locations.
@@ -47,7 +59,7 @@ This plugin is compatible with any Wordpress installation, also compatible with 
 > * **DNS Lookup** - Allows you to attach visitor DNS informations
 > * **SSL Support** - Keep you safe
 > * **PROXY Settings** - Allows you to use PROXY for the lookup
-> * **Country SEO Redirection** - Allows you to redirect any page, post or article
+> * **SEO Redirection** - Allows you to redirect any page, post or article
 > * **Country Flag Support** - Allows you to attach visitor or custom country flags inside content
 > * **Include Content by Geolocation** - Allows you to include content by geolocation
 > * **Exclude Content by Geolocation** - Allows you to exclude content by geolocation
@@ -250,6 +262,10 @@ Please inform us if any of these errors occure via contact form on our website [
 
 == Changelog ==
 
+= 7.3.0 =
+* Allows you to configure multiple redirection rules
+* Fixed bugs from previous version
+
 = 7.2.3 =
 * Fixed PHP Notices from previous version
 * Fixed GUI and notifications inside Settings page
@@ -337,6 +353,10 @@ Please inform us if any of these errors occure via contact form on our website [
 * Localization integration
 
 == Upgrade Notice ==
+
+= 7.3.0 =
+* Allows you to configure multiple redirection rules
+* Fixed bugs from previous version
 
 = 7.2.3 =
 * Fixed PHP Notices from previous version

@@ -22,19 +22,44 @@ class CF_Geoplugin_SEO_Redirection extends CF_Geoplugin_Global
 		
 		if(!is_admin() && $CF_GEOPLUGIN_OPTIONS['enable_seo_redirection'])
 		{
-			$enable_seo 	= $this->get_post_meta('seo_redirect');
-			if($enable_seo)
+			$redirect_data 	= $this->get_post_meta( 'redirection' );
+			if( is_array( $redirect_data ) )
 			{
-				$redirect = array(
-					'country'	=> strtolower( $this->get_post_meta('country') ),
-					'region'	=> strtolower( $this->get_post_meta('region') ),
-					'city'		=> strtolower( $this->get_post_meta('city') ),
-					'url'		=> $this->get_post_meta('redirect_url'),
-					'http_code'	=> $this->get_post_meta('http_code')
-				);
-				
-				$this->check_user_redirection( $redirect );
+				foreach( $redirect_data as $i => $value )
+				{
+					if( !isset( $value['seo_redirect'] ) || $value['seo_redirect'] != '1' ) continue;
+
+					if( !isset( $value['country'] ) ) $value['country'] = NULL;
+					if( !isset( $value['region'] ) ) $value['region'] = NULL;
+					if( !isset( $value['city'] ) ) $value['city'] = NULL;
+					$this->check_user_redirection( $value );
+				}
 			}
+
+			$old_redirection = array(
+				'country',
+				'region',
+				'city',
+				'redirect_url',
+				'http_code',
+				'seo_redirect',
+			);
+			$redirection = array();
+
+			foreach( $old_redirection as $i => $meta_key )
+			{
+				$meta_value = $this->get_post_meta( $meta_key );
+
+				if( $meta_key == 'redirect_url' ) $meta_key = 'url';
+				if( $meta_value )
+				{
+					if( in_array( $meta_key, array( 'country', 'region', 'city' ) ) ) $meta_value = array( $meta_value );
+
+					$redirection[ $meta_key ] = $meta_value;
+				}
+				else $redirection[ $meta_key ] = NULL;
+			}
+			if( isset( $redirection['seo_redirect'] ) && $redirection['seo_redirect'] == '1' ) $this->check_user_redirection( $redirection );
 		}
 	}
 	
@@ -71,17 +96,25 @@ class CF_Geoplugin_SEO_Redirection extends CF_Geoplugin_Global
 	{
 		$CFGEO = $GLOBALS['CFGEO'];
 		$country_check = $this->check_user_by_country( $redirect['country'] );
-		if(filter_var($redirect['url'], FILTER_VALIDATE_URL) && ( $country_check || empty( $redirect['country'] ) ) )
+
+		$country_empty = false;
+		$region_empty = false;
+		$city_empty = false;
+		if( ( isset( $redirect['country'][0] ) && empty( $redirect['country'][0] ) ) || ( empty( $redirect['country'] ) ) ) $country_empty = true;
+		if( ( isset( $redirect['region'][0] ) && empty( $redirect['region'][0] ) ) || ( empty( $redirect['region'] ) ) ) $region_empty = true;
+		if( ( isset( $redirect['city'][0] ) && empty( $redirect['city'][0] ) ) || ( empty( $redirect['city'] ) ) ) $city_empty = true;
+
+		if( isset( $redirect['url'] ) && filter_var($redirect['url'], FILTER_VALIDATE_URL) && ( $country_check || $country_empty ) )
 		{
-			if( $this->check_user_by_city( $redirect['city'] ) && ( $this->check_user_by_region( $redirect['region'] ) || empty( $redirect['region'] ) ) )
+			if( $this->check_user_by_city( $redirect['city'] ) && ( $this->check_user_by_region( $redirect['region'] ) || $region_empty ) )
 			{
 				$this->redirect( $redirect['url'], $redirect['http_code'] );
 			}
-			elseif( empty( $redirect['city'] ) && $this->check_user_by_region( $redirect['region'] ) ) 
+			elseif( $city_empty && $this->check_user_by_region( $redirect['region'] ) ) 
 			{
 				$this->redirect( $redirect['url'], $redirect['http_code'] );
 			}
-			elseif( empty( $redirect['city'] ) && empty( $redirect['region'] ) && $country_check ) 
+			elseif( $region_empty && $city_empty && $country_check ) 
 			{
 				$this->redirect( $redirect['url'], $redirect['http_code'] );
 			}

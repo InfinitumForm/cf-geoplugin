@@ -21,7 +21,12 @@ class CF_Geoplugin_Notifications extends CF_Geoplugin_Global
 				$this->add_action( 'plugins_loaded', 'activation_notice' );
 			}
 		}
-		
+
+		/**
+		 * PHP an WP version check
+		 */
+		$this->add_action( 'plugins_loaded', 'version_notice' );
+
 		$this->add_action( 'plugins_loaded', 'like_plugin' );
 	}
 	
@@ -78,5 +83,44 @@ class CF_Geoplugin_Notifications extends CF_Geoplugin_Global
 			array( 'dismissible' => false )
 		);
 	}
+
+	/**
+	 * Versions notice
+	 */
+	public function version_notice()
+	{ 
+		global $wp_version;
+		if( !current_user_can( 'activate_plugins'  ) || ( version_compare( $wp_version, '3.0', '>=' ) && version_compare( PHP_VERSION, '5.6.0', '>=' ) ) ) return;
+		global $wp_version;
+		$title = __( 'CF GEO PLUGIN', CFGP_NAME );
+		$type = 'error';
+
+		$messages = array(
+			'php'		=> '',
+			'wp'		=> '',
+			'curl'		=> '',
+			'plugin'	=> '<strong><p>' . __( 'It\'s possible that plugin will not work properly.', CFGP_NAME ) . '</p></strong>',
+		);
+
+		if( !function_exists( 'curl_init' ) )
+		{
+			$messages['curl'] = '<p>' . __( 'cURL is NOT installed or active in your PHP installation.' ) . '</p>';
+		}
+		if( version_compare(  $wp_version, '3.0', '<' ) )
+		{
+			$messages['wp'] = '<p>' . __( 'Plugin requires at leats WordPress 3.0 version, please consider updating your WordPress site.', CFGP_NAME ) . '</p>';
+		}
+		if( version_compare( PHP_VERSION, '5.6.0', '<' ) )
+		{
+			$messages['php'] = '<p>' . __( 'Plugin requires at leats PHP 5.6.0, please consider to update your PHP version on PHP 5.6 or above.', CFGP_NAME ) . '</p>';
+		}
+		
+		self::notice()->register_notice(
+			'versions',
+			$type,
+			sprintf( '<h3>%s</h3>%s%s%s%s', $title, $messages['php'], $messages['wp'], $messages['curl'], $messages['plugin'] ),
+			array( 'dismissible' => false )
+		);
+	} 
 }
 endif;

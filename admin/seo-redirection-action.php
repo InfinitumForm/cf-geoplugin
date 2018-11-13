@@ -191,7 +191,7 @@ global $wpdb, $wp_version;
                         <?php endif; ?>
                         <div class="form-group">
                             <label for="cf_geo_redirect_url"><?php _e( 'Redirect URL', CFGP_NAME ); ?></label>
-                            <input type="text" id="cf_geo_redirect_url" name="cf_geo_redirect_url" class="form-control" value="<?php echo $redirect_data['url']; ?>" placeholder="http://creativform.com" aria-describedby="redirectHelp">
+                            <input type="text" id="cf_geo_redirect_url" name="cf_geo_redirect_url" class="form-control" value="<?php echo $redirect_data['url']; ?>" placeholder="http://" aria-describedby="redirectHelp">
                             <small id="redirectHelp" class="form-text text-muted" ><?php _e('URL where you want to redirect',CFGP_NAME); ?></small>
                             <div class="invalid-feedback" id="input-url" hidden>
                                 Please enter valid URL

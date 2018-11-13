@@ -62,7 +62,7 @@ class CF_Geoplugin_Debug
         
         CF_Geoplugin_Global::validate(); // Pick up informations about license validation process
 
-        $this->debug[] = '================'. $CFGEO['host'] .' ================'; // End of file
+        $this->debug[] = '================ '. $CFGEO['host'] .' ================'; // End of file
         fwrite( $this->log_file, join( PHP_EOL, $this->debug ) );
         fclose( $this->log_file );
 		chmod( path_join( CFGP_ROOT, $this->log_file_path ), 0644); // Made only readable for the user

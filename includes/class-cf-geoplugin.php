@@ -14,10 +14,35 @@ class CF_Geoplugin_Init extends CF_Geoplugin_Global
 	*/
 	public function run(){
 		$this->add_action('plugins_loaded', 'load_textdomain');
-		$this->add_filter( 'auto_update_plugin', 'auto_update', 10, 2 );
+		$this->add_filter('auto_update_plugin', 'auto_update', 10, 2);
 		
 		$debug = $GLOBALS['debug']; // Easy use of debugger
 		$debug->save( '------------ LOADING ALL CLASSES ------------' );
+		// Include admin pages
+		if(file_exists(CFGP_INCLUDES . '/class-cf-geoplugin-admin.php'))
+		{
+			require_once CFGP_INCLUDES . '/class-cf-geoplugin-admin.php';
+			if(class_exists('CF_Geoplugin_Admin')){
+				new CF_Geoplugin_Admin;
+				$debug->save( 'Admin class loaded' );
+			}
+			else $debug->save( 'Admin class not loaded - Class does not exists' );
+		}
+		else $debug->save( 'Admin class not loaded - File does not exists' );
+		// Include REST
+		if( file_exists( CFGP_INCLUDES . '/class-cf-geoplugin-rest.php' ) )
+		{
+			require_once CFGP_INCLUDES . '/class-cf-geoplugin-rest.php';
+			if( class_exists( 'CF_Geoplugin_REST' ) )
+			{
+				$REST = new CF_Geoplugin_REST;
+				$REST->run();
+				$debug->save( 'REST API class loaded' );
+			}
+			else $debug->save( 'REST API class not loaded - Class does not exists' );
+		}
+		else $debug->save( 'REST API class not loaded - File does not exists' );
+		 
 		// Include internal library
 		if(file_exists(CFGP_INCLUDES . '/class-cf-geoplugin-library.php'))
 		{
@@ -106,17 +131,6 @@ class CF_Geoplugin_Init extends CF_Geoplugin_Global
 				else $debug->save( 'Texteditor buttons class not loaded - Class does not exists' );
 			}
 			else $debug->save( 'Texteditor buttons class not loaded - File does not exists' );
-			// Include admin pages
-			if(file_exists(CFGP_INCLUDES . '/class-cf-geoplugin-admin.php'))
-			{
-				require_once CFGP_INCLUDES . '/class-cf-geoplugin-admin.php';
-				if(class_exists('CF_Geoplugin_Admin')){
-					new CF_Geoplugin_Admin;
-					$debug->save( 'Admin class loaded' );
-				}
-				else $debug->save( 'Admin class not loaded - Class does not exists' );
-			}
-			else $debug->save( 'Admin class not loaded - File does not exists' );
 			// Include Geo Banner
 			if( file_exists( CFGP_INCLUDES . '/class-cf-geoplugin-banner.php' ) )
 			{
@@ -153,19 +167,6 @@ class CF_Geoplugin_Init extends CF_Geoplugin_Global
 				else $debug->save( 'SEO redirection class not loaded - Class does not exists' );
 			}
 			else $debug->save( 'SEO redirection class not loaded - File does not exists' );			
-			// Include REST
-			if( file_exists( CFGP_INCLUDES . '/class-cf-geoplugin-rest.php' ) )
-			{
-				require_once CFGP_INCLUDES . '/class-cf-geoplugin-rest.php';
-				if( class_exists( 'CF_Geoplugin_REST' ) )
-				{
-					$REST = new CF_Geoplugin_REST;
-					$REST->run();
-					$debug->save( 'REST API class loaded' );
-				}
-				else $debug->save( 'REST API class not loaded - Class does not exists' );
-			}
-			else $debug->save( 'REST API class not loaded - File does not exists' );
 
 			// Include Defender
 			if( file_exists( CFGP_INCLUDES . '/class-cf-geoplugin-defender.php' ) )
@@ -346,9 +347,9 @@ class CF_Geoplugin_Init extends CF_Geoplugin_Global
 	*/
 	public function auto_update($update, $item){
 		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
-		if ( strpos($item->slug, 'cf-geoplugin') !== false && $CF_GEOPLUGIN_OPTIONS['enable_update'] == 1 ) {
-			return true;
+		if ( strpos($item->slug, 'cf-geoplugin') !== false && isset( $CF_GEOPLUGIN_OPTIONS['enable_update'] ) && $CF_GEOPLUGIN_OPTIONS['enable_update'] == 1 ) {
 			if( isset( $GLOBALS['debug'] ) ) $GLOBALS['debug']->save( 'Plugin auto-updated' );
+			return true;
 		}
 		return $update;
 	}

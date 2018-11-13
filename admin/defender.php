@@ -33,15 +33,15 @@ global $wp_version;
                     // Chosen select for empty select does not return anything so I thought this should work
                     if( isset( $_GET['setting'] ) && $_GET['setting'] == 'general' )
                     {
-                        if( array_key_exists( 'block_country', $_POST ) === false )
+                        if( !isset( $_POST['block_country'] ) )
                         {
                             $this->update_option( 'block_country', '' );
                         }
-                        if( array_key_exists( 'block_region', $_POST ) === false )
+                        if( !isset( $_POST['block_region'] ) )
                         {
                             $this->update_option( 'block_region', '' );
                         }
-                        if( array_key_exists( 'block_city', $_POST ) === false )
+                        if( !isset( $_POST['block_city'] ) )
                         {
                             $this->update_option( 'block_city', '' );
                         }

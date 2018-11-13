@@ -1,6 +1,6 @@
 <?php if ( ! defined( 'WPINC' ) ) { die( "Don't mess with us." ); }
 /**
- * Metaboxes
+ * Admin Notices
  *
  * @since      7.0.0
  * @package    CF_Geoplugin

@@ -1,8 +1,7 @@
 #cf-geoplugin-seo-redirection h2.hndle,
 #cf-geoplugin-seo-redirection h2.hndle span,
 #cf-geoplugin-seo-redirection h3.hndle{
-	background: brown;
-	color:#fff !important;
+	
 }
 
 #cf-geoplugin-seo-redirection .button-link{
@@ -22,7 +21,7 @@
 	opacity:1;
 }
 #cf-geoplugin-seo-redirection .inside{
-	border-bottom: 3px solid brown;
+
 }
 #cf-geoplugin-seo-redirection .cfgeo_id_cf_geo_metabox_enable_seo .cfgeo_metabox_description{
 	color: #cc0000 !important;
@@ -37,4 +36,20 @@
 	vertical-align: baseline;
     font-weight: 600;
 	margin: 1em 0;
+}
+
+.cfgeo-post-redirect-table{
+	border:none !important;
+}
+.cfgeo-post-redirect-table-form{
+	border: 1px solid #e5e5e5;
+}
+
+.cfgeo-post-redirect-table-form td{
+	padding: 15px 25px;
+}
+
+.cfgp-enable-redirection{
+	display:block;
+	margin-top:6px;
 }

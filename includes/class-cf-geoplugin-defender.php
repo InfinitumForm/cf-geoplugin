@@ -38,7 +38,7 @@ class CF_Geoplugin_Defender extends CF_Geoplugin_Global
         $flag = false;
 
         $ips = explode( ',', $CF_GEOPLUGIN_OPTIONS['block_ip'] );
-        if( !empty( $ips ) && in_array( $CFGEO['ip'], $ips, true ) !== false ) $flag = true;
+        if( !empty( $ips ) && isset( $CFGEO['ip'] ) && in_array( $CFGEO['ip'], $ips, true ) !== false ) $flag = true;
 
         if( $flag === false )
         {

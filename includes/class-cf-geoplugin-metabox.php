@@ -16,15 +16,14 @@ class CF_Geoplugin_Metabox extends CF_Geoplugin_Global
 
     public function __construct()
     {
+        $this->prefix = CFGP_METABOX;
+
         $this->add_action( 'add_meta_boxes', 'create_meta_box' );
         $this->add_action( 'save_post', 'meta_box_save' );
-		$this->add_action( 'admin_print_styles-post-new.php', 'metabox_admin_scripts', 11 );
-		$this->add_action( 'admin_print_styles-post.php', 'metabox_admin_scripts', 11 );
+		$this->add_action( 'admin_enqueue_scripts', 'metabox_admin_scripts' );
 		
 		$this->add_action( 'admin_footer-post-new.php', 'custom_javascript' );
-		$this->add_action( 'admin_footer-post.php', 'custom_javascript' );
-		
-		$this->prefix = CFGP_METABOX;
+        $this->add_action( 'admin_footer-post.php', 'custom_javascript' );
     }
 	
 	// Set custom Javascript
@@ -35,38 +34,43 @@ class CF_Geoplugin_Metabox extends CF_Geoplugin_Global
 <script>
 /* <![CDATA[ */
 (function($){
-	(function($$){
-		if($($$))
-		{
-			$($$).each(function(index, element) {
-				$(this).chosen({
-					no_results_text: "<?php _e('Nothing found!',CFGP_NAME); ?>",
-					width: "100%",
-					search_contains:true
-				});
-			});
-		}
-	}('.chosen-select'));
+
 }(jQuery || window.jQuery));
 /* ]]> */
 </script>
     <?php }
 	
 	// Add custom style to metabox
-	public function metabox_admin_scripts() {
-		global $post_type;
+	public function metabox_admin_scripts( $hook_suffix ) {
+        $screen = get_current_screen();
 		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
 		if(!$CF_GEOPLUGIN_OPTIONS['enable_seo_redirection']) return;
-		if( 'cf-geoplugin-banner' != $post_type)
-		{
-			wp_register_style( CFGP_NAME . '-choosen-style', CFGP_ASSETS . '/js/chosen_v1.8.7/chosen.min.css', 1,  '1.8.7' );
+		if( in_array( $hook_suffix, array( 'post-new.php', 'post.php' ) ) && isset( $screen->post_type ) && $screen->post_type != 'cf-geoplugin-banner' )
+		{            
+            wp_register_style( CFGP_NAME . '-fontawesome', CFGP_ASSETS . '/css/font-awesome.min.css', array(), '4.7.0' );
+            wp_enqueue_style( CFGP_NAME . '-fontawesome' );
+            
+            wp_register_style( CFGP_NAME . '-choosen-style', CFGP_ASSETS . '/js/chosen_v1.8.7/chosen.min.css', 1,  '1.8.7' );
 			wp_enqueue_style( CFGP_NAME . '-choosen-style' );
 			
 			wp_register_style( CFGP_NAME . '-meta-box', CFGP_ASSETS . '/css/cf-geoplugin-meta-box.css', array(CFGP_NAME . '-choosen-style'), CFGP_VERSION );
 			wp_enqueue_style( CFGP_NAME . '-meta-box' );
 			
 			wp_register_script( CFGP_NAME . '-choosen', CFGP_ASSETS . '/js/chosen_v1.8.7/chosen.jquery.min.js', array('jquery'), '1.8.7', true );
-			wp_enqueue_script( CFGP_NAME . '-choosen' );
+            wp_enqueue_script( CFGP_NAME . '-choosen' );
+            
+            wp_register_script( CFGP_NAME . '-meta-box', CFGP_ASSETS . '/js/cf-geoplugin-metabox.js', array( 'jquery' ), CFGP_VERSION, true );
+            wp_localize_script( 
+                CFGP_NAME . '-meta-box', 
+                'CFGP_META',
+                array(
+                    'ajax_url'      		=> self_admin_url( 'admin-ajax.php' ),
+                    'no_result'     		=> __( 'Nothing found!',CFGP_NAME ),
+                    'remove_redirection'	=> __( 'Remove Redirection', CFGP_NAME ),
+                    'add_redirection'       => __( 'Add New Redirection', CFGP_NAME )
+                )
+            );
+            wp_enqueue_script( CFGP_NAME . '-meta-box' );
 		}
 	}
 
@@ -84,197 +88,289 @@ class CF_Geoplugin_Metabox extends CF_Geoplugin_Global
         {
             add_meta_box(
                 CFGP_NAME . '-seo-redirection',
-                'Country SEO Redirection',
+                'SEO Redirections',
                 array( &$this, 'meta_box_seo_redirection' ),
                 $page,
-                'side',
-				'core'
+                'normal',
+				'low'
             );
-			
-			$this->add_filter( "postbox_classes_{$page}_" . CFGP_NAME . '-seo-redirection', 'meta_box_seo_redirection_start_closed' );
         }
     }
-	
-	// Keep closed if is not active
-	function meta_box_seo_redirection_start_closed( $classes ) {	
-		$cfgeo_seo_redirect = $this->get_post_meta( 'seo_redirect' );
-		
-		if ($cfgeo_seo_redirect) {
-			
-		}
-		else
-		{
-			array_push( $classes, 'closed' );
-		}
-		return $classes;
-	}
 
     // Meta box content
     public function meta_box_seo_redirection( $post )
     {
-        global $wp_version;
-        ?>
-        <!-- COUNTRY -->
-        <label for="<?php echo $this->prefix; ?>country"><?php _e( 'Choose Country', CFGP_NAME ); ?></label>
-            <?php
-                if( version_compare( $wp_version, '4.6', '>=' ) )
-                {
-                    $all_countries = get_terms(array(
-                        'taxonomy'      => 'cf-geoplugin-country',
-                        'hide_empty'    => false
-                    ));
-                }
-                else
-                {
-                    $all_countries = $this->cf_geo_get_terms(array(
-                        'taxonomy'      => 'cf-geoplugin-country',
-                        'hide_empty'    => false
-                    ));
-                }
-            ?>
-        <select name="<?php echo $this->prefix; ?>country" id="<?php echo $this->prefix; ?>country" class="postbox chosen-select">
-        <option value=""><?php _e( 'Choose Country...', CFGP_NAME ); ?></option>
-        <?php
-            if( is_array( $all_countries ) && count( $all_countries ) > 0 )
-            {
-                $selected_country = $this->get_post_meta( 'country' );
-                foreach( $all_countries as $key => $country )
-                {
-                    echo '<option id="'
-                    .$country->slug
-                    .'" value="'
-                    .$country->slug
-                    .'"'
-                    .( strtolower( $country->slug ) == strtolower( $selected_country ) ? ' selected':'')
-                    .'>'
-                    .$country->name
-                    .' - '.$country->description.'</option>';
-                }
-            }
-        ?>
-        </select>
-        <span class="description"><?php esc_attr_e( 'Select the country you want to redirect.', CFGP_NAME ); ?></span><br><br>
-
-        <!-- REGION -->
-        <?php
-			if( version_compare( $wp_version, '4.6', '>=' ) )
-			{
-				$all_regions = get_terms(array(
-					'taxonomy'      => 'cf-geoplugin-region',
-					'hide_empty'    => false
-				));
-			}
-			else
-			{
-				$all_regions = $this->cf_geo_get_terms(array(
-					'taxonomy'      => 'cf-geoplugin-region',
-					'hide_empty'    => false
-				));
-			}
-        ?>
-        <label for="<?php echo $this->prefix; ?>region"><?php _e( 'Choose Region', CFGP_NAME ); ?></label>
-        <select name="<?php echo $this->prefix; ?>region" id="<?php echo $this->prefix; ?>region" class="postbox chosen-select">
-        <option value=""><?php _e( 'Choose Region...', CFGP_NAME ); ?></option>
-        <?php
-		if( is_array( $all_regions ) && count( $all_regions ) > 0 ):
-			$selected_region = $this->get_post_meta( 'region' );
-			foreach( $all_regions as $key => $region )
-			{
-				echo '<option id="'
-				.$region->slug
-				.'" value="'
-				.$region->slug
-				.'"'
-				.( strtolower( $region->slug ) == strtolower( $selected_region ) ? ' selected':'')
-				.'>'
-				.$region->name
-				.' - '.$region->description.'</option>';
-			}
-		endif;
-        ?>
-        </select>
-        <span class="description"><?php esc_attr_e( 'Select the region you want to redirect.', CFGP_NAME ); ?></span><br><br>
-
-        <!-- CITY -->
-        <?php
-			if( version_compare( $wp_version, '4.6', '>=' ) )
-			{
-				$all_cities = get_terms(array(
-					'taxonomy'      => 'cf-geoplugin-city',
-					'hide_empty'    => false
-				));
-			}
-			else
-			{
-				$all_cities = $this->cf_geo_get_terms(array(
-					'taxonomy'      => 'cf-geoplugin-city',
-					'hide_empty'    => false
-				));
-			}
-        ?>
-        <label for="<?php echo $this->prefix; ?>city"><?php _e( 'Choose City', CFGP_NAME ); ?></label>
-        <select name="<?php echo $this->prefix; ?>city" id="<?php echo $this->prefix; ?>city" class="postbox chosen-select">
-        <option value=""><?php _e( 'Choose City...', CFGP_NAME ); ?></option>
-        <?php
-			if( is_array( $all_cities ) && count( $all_cities ) > 0 ):
-                $selected_city = $this->get_post_meta( 'city' );
-                foreach( $all_cities as $key => $city )
-                {
-                    echo '<option id="'
-                    .$city->slug
-                    .'" value="'
-                    .$city->slug
-                    .'"'
-                    .( strtolower( $city->slug ) == strtolower( $selected_city ) ? ' selected':'')
-                    .'>'
-                    .$city->name
-                    .' - '.$city->description.'</option>';
-                }
-			endif;
-        ?>
-        </select>
-        <span class="description"><?php esc_attr_e( 'Select the city you want to redirect.', CFGP_NAME ); ?></span><br><br>
-
-        <label for="<?php echo $this->prefix; ?>redirect_url"><?php _e( 'Redirect URL', CFGP_NAME ); ?></label>
-        <input type="text" id="<?php echo $this->prefix; ?>redirect_url" name="<?php echo $this->prefix; ?>redirect_url" class="large-text" value="<?php echo $this->get_post_meta( 'redirect_url' ); ?>"  placeholder="http://" />
-        <span class="description"><?php esc_attr_e( 'URL where you want to redirect.', CFGP_NAME ); ?></span><br><br>
-
-        <label for="<?php echo $this->prefix; ?>http_code"><?php _e( 'HTTP Code' ); ?></label>
-        <?php
-            $selected_code = $this->get_post_meta( 'http_code' );
-			if(empty($selected_code)) $selected_code = 302;
-        ?>
-        <select name="<?php echo $this->prefix; ?>http_code" id="<?php echo $this->prefix; ?>http_code" class="widefat">
-            <option value="301" <?php selected( $selected_code, '301' ); ?>><?php _e( '301 - Moved Permanently', CFGP_NAME ); ?></option>
-            <option value="302" <?php selected( $selected_code, '302' ); ?>><?php _e( '302 - Moved Temporary', CFGP_NAME ); ?></option>
-            <option value="303" <?php selected( $selected_code, '303' ); ?>><?php _e( '303 - See Other', CFGP_NAME ); ?></option>
-            <option value="404" <?php selected( $selected_code, '404' ); ?>><?php _e( '404 - Not Found (not recommended)', CFGP_NAME ); ?></option>
-        </select>
-        <span class="description"><?php esc_attr_e( 'Select the desired HTTP redirection. (HTTP Code 302 is recommended)', CFGP_NAME ); ?></span><br>
-
-        <br>
-        <label for="<?php echo $this->prefix; ?>seo_redirect"><?php _e( 'Enable SEO Redirect', CFGP_NAME ); ?></label><br />
-        <?php
-            $checked = $this->get_post_meta( 'seo_redirect' );
-            if( empty( $checked ) ) $checked = '0';
-        ?>
-        <input type="radio" name="<?php echo $this->prefix; ?>seo_redirect" value="1" <?php checked( $checked, '1' ); ?> /> <?php _e( 'Enable', CFGP_NAME ); ?><br />
-        <input type="radio" name="<?php echo $this->prefix; ?>seo_redirect" value="0" <?php checked( $checked, '0' ); ?> /> <?php _e( 'Disable', CFGP_NAME ); ?>
-        <?php
+        $this->add_redirections();
     }
 
     // Save meta box values
     public function meta_box_save( $id )
     {
 		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
-		if(!$CF_GEOPLUGIN_OPTIONS['enable_seo_redirection']) return;
-		
-        update_post_meta( $id, $this->prefix . 'country', $this->post( $this->prefix . 'country' ) );
-        update_post_meta( $id, $this->prefix . 'region', $this->post( $this->prefix . 'region' ) );
-        update_post_meta( $id, $this->prefix . 'city', $this->post( $this->prefix . 'city' ) );
-        update_post_meta( $id, $this->prefix . 'redirect_url', $this->post( $this->prefix . 'redirect_url', 'url' ) );
-        update_post_meta( $id, $this->prefix . 'http_code', $this->post( $this->prefix . 'http_code', 'int' ) );
-        update_post_meta( $id, $this->prefix . 'seo_redirect', $this->post( $this->prefix . 'seo_redirect' ) );
+        if(!$CF_GEOPLUGIN_OPTIONS['enable_seo_redirection']) return;
+
+        // Delete old data
+        $this->get_old_seo_meta( $id );
+        
+        if( isset( $_POST[ $this->prefix ] ) ) 
+        {
+            foreach( $_POST[ $this->prefix ] as $i => $value )
+            {
+                if( isset( $value['redirect_url'] ) ) 
+                {
+                    $value['redirect_url'] = $this->addhttp( $value['redirect_url'] );
+                    $value['redirect_url'] = esc_url_raw( $value['redirect_url'] );
+                }
+            }
+            update_post_meta( $id, $this->prefix . 'redirection', array_values( $_POST[ $this->prefix ] ) ); // Reindex array beacuse of deleted repeaters. 0 = start
+        }
+        else update_post_meta( $id, $this->prefix . 'redirection', NULL );
+    }
+
+    /**
+     * Add blank redirection form
+     */
+    public function add_redirections()
+    {
+        $redirection_data = $this->get_post_meta( 'redirection' );
+
+        global $wp_version;
+        if( version_compare( $wp_version, '4.6', '>=' ) )
+        {
+            $all_countries = get_terms(array(
+                'taxonomy'      => 'cf-geoplugin-country',
+                'hide_empty'    => false
+            ));
+
+            $all_regions = get_terms(array(
+                'taxonomy'      => 'cf-geoplugin-region',
+                'hide_empty'    => false
+            ));
+
+            $all_cities = get_terms(array(
+                'taxonomy'      => 'cf-geoplugin-city',
+                'hide_empty'    => false
+            ));
+        }
+        else
+        {
+            $all_countries = $this->cf_geo_get_terms(array(
+                'taxonomy'      => 'cf-geoplugin-country',
+                'hide_empty'    => false
+            ));
+
+            $all_regions = $this->cf_geo_get_terms(array(
+                'taxonomy'      => 'cf-geoplugin-region',
+                'hide_empty'    => false
+            ));
+
+            $all_cities = $this->cf_geo_get_terms(array(
+                'taxonomy'      => 'cf-geoplugin-city',
+                'hide_empty'    => false
+            ));
+        }
+        
+        $init = false;
+        if( empty( $redirection_data ) || !is_array( $redirection_data ) ) 
+        {
+            $redirection_data = array( 0 => array( 'country' => array(), 'region' => array(), 'city' => array(), 'http_code' => '302', 'seo_redirect' => '0' ) ); // Make sure to execute system below at least once
+            $init = true;
+        }
+
+        $add_redirection = $this->get_old_seo_meta( false );
+        if( !empty( $add_redirection ) && $init ) $redirection_data[0] = $add_redirection;
+        elseif( !empty( $add_redirection ) ) $redirection_data[] = $add_redirection; // If someone decide to switch to old version and then go back to new prevent data collision
+
+        $end = count( $redirection_data );
+        ob_start();
+        ?>
+        <table class="wp-list-table widefat fixed posts striped cfgeo-post-redirect-table">
+        <?php 
+            foreach( $redirection_data as $i => $value ) 
+            { 
+        ?>
+            <tbody>
+            <tr class="repeating">
+                <td>
+                    <table class="wp-list-table widefat fixed posts cfgeo-post-redirect-table-form">
+                        <tbody>
+                        <tr>
+                            <td>
+                                <!-- COUNTRY -->
+                                <label for="<?php echo $this->prefix; ?>[<?php echo $i; ?>][country]"><?php _e( 'Choose Countries', CFGP_NAME ); ?></label><br>
+                                <select name="<?php echo $this->prefix; ?>[<?php echo $i; ?>][country][]" placeholder="<?php _e( 'Choose countries...', CFGP_NAME ); ?>" data-placeholder="<?php _e( 'Choose countries...', CFGP_NAME ); ?>" id="<?php echo $this->prefix; ?>[<?php echo $i; ?>][country]" class="widefat fixed chosen-select" multiple>
+                                <?php
+                                    if( is_array( $all_countries ) && !empty( $all_countries ) )
+                                    {
+                                        foreach( $all_countries as $key => $country )
+                                        {
+                                            echo '<option id="'
+												.$country->slug
+												.'" value="'
+												.$country->slug
+												.'"'
+												.( isset( $value['country'] ) && in_array( $country->slug, $value['country'] ) ? ' selected':'')
+												.'>'
+												.$country->name
+												.' - '.$country->description.'</option>';
+                                        }
+                                    }
+                                ?>
+                                </select>
+                                <span class="description"><?php esc_attr_e( 'Select the country you want to redirect.', CFGP_NAME ); ?></span>
+                            </td>
+                            <td>
+                                <!-- REGION -->
+                                <label for="<?php echo $this->prefix; ?>[<?php echo $i; ?>][region]"><?php _e( 'Choose Regions', CFGP_NAME ); ?></label>
+                                <select name="<?php echo $this->prefix; ?>[<?php echo $i; ?>][region][]" placeholder="<?php _e( 'Choose regions...', CFGP_NAME ); ?>" data-placeholder="<?php _e( 'Choose regions...', CFGP_NAME ); ?>" id="<?php echo $this->prefix; ?>[<?php echo $i; ?>][region]" class="chosen-select widefat fixed" multiple>
+                                <?php
+                                if( is_array( $all_regions ) &&  !empty( $all_regions ) ):
+                                    foreach( $all_regions as $key => $region )
+                                    {
+                                        echo '<option id="'
+											.$region->slug
+											.'" value="'
+											.$region->slug
+											.'"'
+											.( isset( $value['region'] ) && in_array( $region->slug, $value['region'] ) ? ' selected':'')
+											.'>'
+											.$region->name
+											.' - '.$region->description.'</option>';
+                                    }
+                                endif;
+                                ?>
+                                </select>
+                                <span class="description"><?php esc_attr_e( 'Select the region you want to redirect.', CFGP_NAME ); ?></span>
+                            </td>
+                            <td>
+                                <!-- CITY -->
+                                <label for="<?php echo $this->prefix; ?>[<?php echo $i; ?>][city]"><?php _e( 'Choose City', CFGP_NAME ); ?></label>
+                                <select name="<?php echo $this->prefix; ?>[<?php echo $i; ?>][city][]" placeholder="<?php _e( 'Choose cities...', CFGP_NAME ); ?>" data-placeholder="<?php _e( 'Choose cities...', CFGP_NAME ); ?>" id="<?php echo $this->prefix; ?>[<?php echo $i; ?>][city]" class="chosen-select widefat fixed" multiple>
+                                <?php
+                                    if( is_array( $all_cities ) && !empty( $all_cities ) ):
+                                        foreach( $all_cities as $key => $city )
+                                        {
+                                            echo '<option id="'
+												.$city->slug
+												.'" value="'
+												.$city->slug
+												.'"'
+												.( isset( $value['city'] ) && in_array( $city->slug, $value['city'] ) ? ' selected':'')
+												.'>'
+												.$city->name
+												.' - '.$city->description.'</option>';
+                                        }
+                                    endif;
+                                ?>
+                                </select>
+                                <span class="description"><?php esc_attr_e( 'Select the city you want to redirect.', CFGP_NAME ); ?></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="<?php echo $this->prefix; ?>[<?php echo $i; ?>][url]"><?php _e( 'Redirect URL', CFGP_NAME ); ?></label>
+                                <input type="text" id="<?php echo $this->prefix; ?>[<?php echo $i; ?>][url]" name="<?php echo $this->prefix; ?>[<?php echo $i; ?>][url]" class="large-text" value="<?php echo isset( $value['url'] ) ? $value['url'] : ''; ?>"  placeholder="http://" />
+                                <span class="description"><?php esc_attr_e( 'URL where you want to redirect.', CFGP_NAME ); ?></span>
+                            </td>
+                            <td>
+                                <label for="<?php echo $this->prefix; ?>[<?php echo $i; ?>][http_code]"><?php _e( 'HTTP Code' ); ?></label>
+                                <?php
+                                    if( !isset( $value['http_code'] ) || empty( $value['http_code'] ) ) $value['http_code'] = '302';
+                                ?>
+                                <select name="<?php echo $this->prefix; ?>[<?php echo $i; ?>][http_code]" id="<?php echo $this->prefix; ?>[<?php echo $i; ?>][http_code]" class="cfgp-chosen widefat http_select">
+                                <?php
+                                
+									$redirections = array(
+										301 => __( '301 - Moved Permanently', CFGP_NAME ),
+										302 => __( '302 - Moved Temporary', CFGP_NAME ),
+										303 => __( '303 - See Other', CFGP_NAME ),
+										404 => __( '404 - Not Found (not recommended)', CFGP_NAME )
+									);
+									foreach($redirections as $http_code => $http_name)
+									{
+										echo '<option value="' . $http_code . '" ' . selected( $value['http_code'], $http_code ) .'>' . $http_name . '</option>';
+									}
+								?>
+                                </select>
+                                <span class="description"><?php esc_attr_e( 'Select the desired HTTP redirection. (HTTP Code 302 is recommended)', CFGP_NAME ); ?></span>
+                            </td>
+                            <td>
+                                <label><?php _e( 'Enable SEO Redirect', CFGP_NAME ); ?></label><br />
+                                <?php
+                                    if( !isset( $value['seo_redirect'] ) || empty( $value['seo_redirect'] ) ) $value['seo_redirect'] = '0';
+                                ?>
+                                <div class="cfgp-enable-redirection">
+                                    <label for="seo_redirect_checkbox_<?php echo $i; ?>_1"><input id="seo_redirect_checkbox_<?php echo $i; ?>_1" type="radio" name="<?php echo $this->prefix; ?>[<?php echo $i; ?>][seo_redirect]" value="1" <?php checked( $value['seo_redirect'], '1' ); ?> /> <?php _e( 'Enable', CFGP_NAME ); ?> </label>&nbsp;&nbsp;
+                                    </label for="seo_redirect_checkbox_><?php echo $i; ?>_0"><input id="seo_redirect_checkbox_<?php echo $i; ?>_0" type="radio" name="<?php echo $this->prefix; ?>[<?php echo $i; ?>][seo_redirect]" value="0" <?php checked( $value['seo_redirect'], '0' ); ?> /> <?php _e( 'Disable', CFGP_NAME ); ?></label>
+                                </div>
+                                <div class="cfgp-add-remove-redirection" style="text-align:right">
+                                    <?php
+                                        if( $i+1 == $end ) printf( '<a class="cfgp-repeat cfgp-first-repeater" href="#" title="%s"><i class="fa fa-plus-circle fa-2x" style="color: green;"></i></a>&nbsp;&nbsp;&nbsp', __( 'Add New Redirection', CFGP_NAME ) );
+                                        if( $i == 0 ) printf('<a class="cfgp-reset-fields" href="#" title="%s"><i class="fa fa-repeat fa-2x" style="color: red;"></i></a>', __( 'Reset Redirection', CFGP_NAME ) );
+                                        else  printf( '<a class="cfgp-destroy-repeat" href="#" title="%s"><i class="fa fa-minus-circle fa-2x" style="color: red;"></i></a>', __( 'Remove Redirection', CFGP_NAME ) );
+                                    ?>
+                                </div>
+                            </td>
+                        </tr>
+                        <?php
+                            if( !empty( $add_redirection ) )
+                            {
+                                ?>
+                                <tr>
+                                    <td colspan="3">
+                                        <h4><?php _e( 'Old redirection data is found. If you want to merge update post, after save/update old data will be deleted. Redirection will work normally without save by old data.', CFGP_NAME ); ?></h4>
+                                    </td>
+                                </tr>
+                                <?php
+                            }
+                        ?>
+                    </tbody>
+                    </table>
+                </td>
+            </tr>
+            </tbody>
+        <?php } ?>
+        </table>
+        <?php
+        echo ob_get_clean();
+    }
+
+    /**
+     * Get old seo redirection postmeta
+     */
+    public function get_old_seo_meta( $delete )
+    {
+        $old_redirection = array(
+            'country',
+            'region',
+            'city',
+            'redirect_url',
+            'http_code',
+            'seo_redirect',
+        );
+        $add_redirection = array();
+        
+        foreach( $old_redirection as $i => $meta_key )
+        {
+            if( $delete !== false ) 
+            {
+                delete_post_meta( $delete, $this->prefix . $meta_key );
+                continue;
+            }
+
+            $meta_value = $this->get_post_meta( $meta_key );
+        
+            if( $meta_key == 'redirect_url' ) $meta_key = 'url';
+
+            if( !empty( $meta_value ) ) 
+            {
+                if( in_array( $meta_key, array( 'country', 'region', 'city' ) ) ) $meta_value = array( $meta_value );
+
+                $add_redirection[ $meta_key ] = $meta_value;
+            }
+        }
+
+        if( $delete === false ) return $add_redirection;
     }
 }
 endif;
