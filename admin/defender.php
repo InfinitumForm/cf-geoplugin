@@ -97,7 +97,7 @@ global $wp_version;
                 do_action('page-cf-geoplugin-defender-before-tab'); 
                 if( $this->get( 'test', 'bool' ) === true )
                 {
-                    die( html_entity_decode( stripslashes( $this->get_option('block_country_messages') ) ) );
+                    die( wpautop(html_entity_decode( stripslashes( $this->get_option('block_country_messages') ) ) ));
                     exit;
                 }
             ?>

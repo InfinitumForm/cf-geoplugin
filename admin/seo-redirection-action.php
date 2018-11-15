@@ -94,8 +94,7 @@ global $wpdb, $wp_version;
                                         .'"'
                                         .( strtolower($country->slug) == strtolower($redirect_data['country']) ? ' selected':'')
                                         .'>'
-                                        .$country->name
-                                        .' - '.$country->description.'</option>';
+                                        .join(' - ', array_filter(array($country->name, $country->description))).'</option>';
                                     }
                                 }
                             ?>
@@ -136,8 +135,7 @@ global $wpdb, $wp_version;
 									.'"'
 									.( strtolower($region->slug) == strtolower($redirect_data['region']) ? ' selected':'')
 									.'>'
-									.$region->name
-									.' - '.$region->description.'</option>';
+									.join(' - ', array_filter(array($region->name, $region->description))).'</option>';
 								}
                             ?>
                             </select>
@@ -178,8 +176,7 @@ global $wpdb, $wp_version;
 									.'"'
 									.( strtolower($city->slug) == strtolower($redirect_data['city']) ? ' selected':'')
 									.'>'
-									.$city->name
-									.' - '.$city->description.'</option>';
+									.join(' - ', array_filter(array($city->name, $city->description))).'</option>';
 								}
                             ?>
                             </select>

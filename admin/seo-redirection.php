@@ -111,7 +111,21 @@ else
                                         <a class="btn btn-danger btn-sm cf_geo_redirect_delete" href="%3$sadmin.php?page=%4$s&action=delete&id=%10$d&page_num=%13$d"><span class="fa fa-ban"></span> %6$s</a>
                                     </td> 
                                 </tr>
-                            ', $redirect['url'], $redirect['url'], self_admin_url(), $_GET['page'], __('Edit', CFGP_NAME), __('Delete', CFGP_NAME), $country['description'], $region['description'], $city['description'], $redirect['id'],  $redirect['http_code'], $disabled, $page_num );
+								',
+								$redirect['url'],
+								$redirect['url'],
+								self_admin_url(),
+								$_GET['page'],
+								__('Edit', CFGP_NAME),
+								__('Delete', CFGP_NAME),
+								end(array_filter(array($country['name'], $country['description']))),
+								end(array_filter(array($region['name'], $region['description']))),
+								end(array_filter(array($city['name'], $city['description']))),
+								$redirect['id'], 
+								$redirect['http_code'],
+								$disabled,
+								$page_num 
+							);
                         }
                     }
                     else {
