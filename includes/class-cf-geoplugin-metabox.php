@@ -67,7 +67,8 @@ class CF_Geoplugin_Metabox extends CF_Geoplugin_Global
                     'ajax_url'      		=> self_admin_url( 'admin-ajax.php' ),
                     'no_result'     		=> __( 'Nothing found!',CFGP_NAME ),
                     'remove_redirection'	=> __( 'Remove Redirection', CFGP_NAME ),
-                    'add_redirection'       => __( 'Add New Redirection', CFGP_NAME )
+                    'add_redirection'       => __( 'Add New Redirection', CFGP_NAME ),
+					'reset_redirection'		=> __( 'Reset Redirection', CFGP_NAME )
                 )
             );
             wp_enqueue_script( CFGP_NAME . '-meta-box' );
@@ -88,13 +89,23 @@ class CF_Geoplugin_Metabox extends CF_Geoplugin_Global
         {
             add_meta_box(
                 CFGP_NAME . '-seo-redirection',
-                'SEO Redirections',
+                __( 'SEO Redirections', CFGP_NAME ),
                 array( &$this, 'meta_box_seo_redirection' ),
                 $page,
                 'normal',
 				'low'
             );
         }
+   
+        add_meta_box(
+            CFGP_NAME . '-banner-sc',
+            __( 'CF Geoplugin Shortcode', CFGP_NAME ),
+            array( &$this, 'banner_shortcode' ),
+            CFGP_NAME . '-banner',
+            'side',
+            'high'
+        );   
+            
     }
 
     // Meta box content
@@ -185,9 +196,9 @@ class CF_Geoplugin_Metabox extends CF_Geoplugin_Global
         ob_start();
         ?>
         <table class="wp-list-table widefat fixed posts striped cfgeo-post-redirect-table">
-        <?php 
+        <?php
             foreach( $redirection_data as $i => $value ) 
-            { 
+            {
         ?>
             <tbody>
             <tr class="repeating">
@@ -306,8 +317,9 @@ class CF_Geoplugin_Metabox extends CF_Geoplugin_Global
                                 <div class="cfgp-add-remove-redirection" style="text-align:right">
                                     <?php
                                         if( $i+1 == $end ) printf( '<a class="cfgp-repeat cfgp-first-repeater" href="#" title="%s"><i class="fa fa-plus-circle fa-2x" style="color: green;"></i></a>&nbsp;&nbsp;&nbsp', __( 'Add New Redirection', CFGP_NAME ) );
-                                        if( $i == 0 ) printf('<a class="cfgp-reset-fields" href="#" title="%s"><i class="fa fa-repeat fa-2x" style="color: red;"></i></a>', __( 'Reset Redirection', CFGP_NAME ) );
-                                        else  printf( '<a class="cfgp-destroy-repeat" href="#" title="%s"><i class="fa fa-minus-circle fa-2x" style="color: red;"></i></a>', __( 'Remove Redirection', CFGP_NAME ) );
+                                        
+                                        if( $i == 0 && $end == 1 ) printf('<a class="cfgp-reset-fields" href="#" title="%s"><i class="fa fa-repeat fa-2x" style="color: red;"></i></a>', __( 'Reset Redirection', CFGP_NAME ) );
+                                        else printf( '<a class="cfgp-destroy-repeat" href="#" title="%s"><i class="fa fa-minus-circle fa-2x" style="color: red;"></i></a>', __( 'Remove Redirection', CFGP_NAME ) );
                                     ?>
                                 </div>
                             </td>
@@ -371,6 +383,17 @@ class CF_Geoplugin_Metabox extends CF_Geoplugin_Global
         }
 
         if( $delete === false ) return $add_redirection;
+    }
+
+    /**
+     * Geo banner shortcode metabox
+     */
+    public function banner_shortcode( $post )
+    {
+        echo '<ul>';
+        echo '<li><strong>' . __('Standard',CFGP_NAME) . ':</strong><br><code>[cfgeo_banner id="'.$post->ID.'"]</code></li>';
+        echo '<li><strong>' . __('Advanced',CFGP_NAME) . ':</strong><br><code>[cfgeo_banner id="'.$post->ID.'"]' . __('Default content',CFGP_NAME) . '[/cfgeo_banner]</code></li>';
+        echo '</ul>';
     }
 }
 endif;

@@ -30,8 +30,8 @@ Class CF_Geoplugin_Banner extends CF_Geoplugin_Global
 		$url=strtolower($url->url);
 		if(strpos($url,'post_type=cf-geoplugin-banner')!==false)
 		{
-			$column_name['cf_geo_banner_shortcode'] = __('Shortcode',CFGP_PREFIX);
-			$column_name['cf_geo_banner_locations'] = __('Locations',CFGP_PREFIX);
+			$column_name['cf_geo_banner_shortcode'] = __('Shortcode',CFGP_NAME);
+			$column_name['cf_geo_banner_locations'] = __('Locations',CFGP_NAME);
 		}
 		return $column_name;
 	}
@@ -49,17 +49,17 @@ Class CF_Geoplugin_Banner extends CF_Geoplugin_Global
 			if ($column_name == 'cf_geo_banner_shortcode')
 			{
 				echo '<ul>';
-				echo '<li><strong>' . __('Standard',CFGP_PREFIX) . ':</strong><br><code>[cfgeo_banner id="'.$post_ID.'"]</code></li>';
-				echo '<li><strong>' . __('Advanced',CFGP_PREFIX) . ':</strong><br><code>[cfgeo_banner id="'.$post_ID.'"]' . __('Default content',CFGP_PREFIX) . '[/cfgeo_banner]</code></li>';
+				echo '<li><strong>' . __('Standard',CFGP_NAME) . ':</strong><br><code>[cfgeo_banner id="'.$post_ID.'"]</code></li>';
+				echo '<li><strong>' . __('Advanced',CFGP_NAME) . ':</strong><br><code>[cfgeo_banner id="'.$post_ID.'"]' . __('Default content',CFGP_NAME) . '[/cfgeo_banner]</code></li>';
 				echo '</ul>';
 			}
 			else if ($column_name == 'cf_geo_banner_locations')
 			{
 				// get all taxonomies
 				$taxonomy_list = array(
-					__('Countries',CFGP_PREFIX)	=>	'cf-geoplugin-country',
-					__('Regions',CFGP_PREFIX)	=>	'cf-geoplugin-region',
-					__('Cities',CFGP_PREFIX)	=>	'cf-geoplugin-city'
+					__('Countries',CFGP_NAME)	=>	'cf-geoplugin-country',
+					__('Regions',CFGP_NAME)	=>	'cf-geoplugin-region',
+					__('Cities',CFGP_NAME)	=>	'cf-geoplugin-city'
 				);
 				$print=array();
 				// list taxonomies
@@ -87,7 +87,7 @@ Class CF_Geoplugin_Banner extends CF_Geoplugin_Global
 				}
 				else
 				{
-					echo '( ' . __('undefined',CFGP_PREFIX) . ' )';
+					echo '( ' . __('undefined',CFGP_NAME) . ' )';
 				}
 			}
 		}
@@ -102,22 +102,22 @@ Class CF_Geoplugin_Banner extends CF_Geoplugin_Global
 
 		$projects   = array(
 			'labels'				=> array(
-				'name'               		=> __( 'Geo Banner',CFGP_PREFIX ),
-				'singular_name'      		=> __( 'Geo Banner',CFGP_PREFIX ),
-				'add_new'            		=> __( 'Add New Banner',CFGP_PREFIX),
-				'add_new_item'       		=> __( "Add New Banner",CFGP_PREFIX),
-				'edit_item'          		=> __( "Edit Banner",CFGP_PREFIX),
-				'new_item'           		=> __( "New Banner",CFGP_PREFIX),
-				'view_item'          		=> __( "View Banner",CFGP_PREFIX),
-				'search_items'       		=> __( "Search Banner",CFGP_PREFIX),
-				'not_found'          		=> __( 'No Banner Found',CFGP_PREFIX),
-				'not_found_in_trash' 		=> __( 'No Banner Found in Trash',CFGP_PREFIX),
+				'name'               		=> __( 'Geo Banner',CFGP_NAME ),
+				'singular_name'      		=> __( 'Geo Banner',CFGP_NAME ),
+				'add_new'            		=> __( 'Add New Banner',CFGP_NAME),
+				'add_new_item'       		=> __( "Add New Banner",CFGP_NAME),
+				'edit_item'          		=> __( "Edit Banner",CFGP_NAME),
+				'new_item'           		=> __( "New Banner",CFGP_NAME),
+				'view_item'          		=> __( "View Banner",CFGP_NAME),
+				'search_items'       		=> __( "Search Banner",CFGP_NAME),
+				'not_found'          		=> __( 'No Banner Found',CFGP_NAME),
+				'not_found_in_trash' 		=> __( 'No Banner Found in Trash',CFGP_NAME),
 				'parent_item_colon'  		=> '',
-				'featured_image'	 		=> __('Banner Image',CFGP_PREFIX),
-				'set_featured_image'		=> __('Select Banner Image',CFGP_PREFIX),
-				'remove_featured_image'	=> __('Remove Banner Image',CFGP_PREFIX),
-				'use_featured_image'		=> __('Use Banner Image',CFGP_PREFIX),
-				'insert_into_item'		=> __('Insert Into Banner',CFGP_PREFIX)
+				'featured_image'	 		=> __('Banner Image',CFGP_NAME),
+				'set_featured_image'		=> __('Select Banner Image',CFGP_NAME),
+				'remove_featured_image'	=> __('Remove Banner Image',CFGP_NAME),
+				'use_featured_image'		=> __('Use Banner Image',CFGP_NAME),
+				'insert_into_item'		=> __('Insert Into Banner',CFGP_NAME)
 			),
 			'public'            	=> false,	'exclude_from_search' => true,
 			'publicly_queryable'	=> false, 'show_in_nav_menus'   => false,
@@ -142,23 +142,23 @@ Class CF_Geoplugin_Banner extends CF_Geoplugin_Global
 			'cf-geoplugin-country', 'cf-geoplugin-banner',
 			array(
 				'labels'=>array(
-					'name' 				=> __('Countries',CFGP_PREFIX),
-					'singular_name' 		=> __('Country',CFGP_PREFIX),
-					'menu_name' 			=> __('Countries',CFGP_PREFIX),
-					'all_items' 			=> __('All Countries',CFGP_PREFIX),
-					'edit_item' 			=> __('Edit Country',CFGP_PREFIX),
-					'view_item' 			=> __('View Country',CFGP_PREFIX),
-					'update_item' 		=> __('Update Country',CFGP_PREFIX),
-					'add_new_item' 		=> __('Add New Country',CFGP_PREFIX),
-					'new_item_name' 		=> __('New Country Name',CFGP_PREFIX),
-					'parent_item' 		=> __('Parent Country',CFGP_PREFIX),
-					'parent_item_colon' 	=> __('Parent Country',CFGP_PREFIX),
+					'name' 				=> __('Countries',CFGP_NAME),
+					'singular_name' 		=> __('Country',CFGP_NAME),
+					'menu_name' 			=> __('Countries',CFGP_NAME),
+					'all_items' 			=> __('All Countries',CFGP_NAME),
+					'edit_item' 			=> __('Edit Country',CFGP_NAME),
+					'view_item' 			=> __('View Country',CFGP_NAME),
+					'update_item' 		=> __('Update Country',CFGP_NAME),
+					'add_new_item' 		=> __('Add New Country',CFGP_NAME),
+					'new_item_name' 		=> __('New Country Name',CFGP_NAME),
+					'parent_item' 		=> __('Parent Country',CFGP_NAME),
+					'parent_item_colon' 	=> __('Parent Country',CFGP_NAME),
 				),
 				'hierarchical'	=> true,
 				'show_ui'		=> true,
 				'public'		 => false,
-				'label'          => __('Countries',CFGP_PREFIX),
-				'singular_label' => __('Country',CFGP_PREFIX),
+				'label'          => __('Countries',CFGP_NAME),
+				'singular_label' => __('Country',CFGP_NAME),
 				'rewrite'        => true,
 				'query_var'		=> false,
 				'show_tagcloud'	=>	false,
@@ -169,23 +169,23 @@ Class CF_Geoplugin_Banner extends CF_Geoplugin_Global
 			'cf-geoplugin-region', 'cf-geoplugin-banner',
 			array(
 				'labels'=>array(
-					'name' 					=> __('Regions',CFGP_PREFIX),
-					'singular_name' 		=> __('Region',CFGP_PREFIX),
-					'menu_name' 			=> __('Regions',CFGP_PREFIX),
-					'all_items' 			=> __('All Regions',CFGP_PREFIX),
-					'edit_item' 			=> __('Edit Region',CFGP_PREFIX),
-					'view_item' 			=> __('View Region',CFGP_PREFIX),
-					'update_item' 			=> __('Update Region',CFGP_PREFIX),
-					'add_new_item' 			=> __('Add New Region',CFGP_PREFIX),
-					'new_item_name' 		=> __('New Region Name',CFGP_PREFIX),
-					'parent_item' 			=> __('Parent Region',CFGP_PREFIX),
-					'parent_item_colon' 	=> __('Parent Region',CFGP_PREFIX),
+					'name' 					=> __('Regions',CFGP_NAME),
+					'singular_name' 		=> __('Region',CFGP_NAME),
+					'menu_name' 			=> __('Regions',CFGP_NAME),
+					'all_items' 			=> __('All Regions',CFGP_NAME),
+					'edit_item' 			=> __('Edit Region',CFGP_NAME),
+					'view_item' 			=> __('View Region',CFGP_NAME),
+					'update_item' 			=> __('Update Region',CFGP_NAME),
+					'add_new_item' 			=> __('Add New Region',CFGP_NAME),
+					'new_item_name' 		=> __('New Region Name',CFGP_NAME),
+					'parent_item' 			=> __('Parent Region',CFGP_NAME),
+					'parent_item_colon' 	=> __('Parent Region',CFGP_NAME),
 				),
 				'hierarchical'   => true,
 				'show_ui'		=> true,
 				'public'		 => false,
-				'label'          => __('Regions',CFGP_PREFIX),
-				'singular_label' => __('Region',CFGP_PREFIX),
+				'label'          => __('Regions',CFGP_NAME),
+				'singular_label' => __('Region',CFGP_NAME),
 				'rewrite'        => true,
 				'query_var'		=> false,
 				'show_tagcloud'	=>	false,
@@ -196,23 +196,23 @@ Class CF_Geoplugin_Banner extends CF_Geoplugin_Global
 			'cf-geoplugin-city', 'cf-geoplugin-banner',
 			array(
 				'labels'=>array(
-					'name' 					=> __('Cities',CFGP_PREFIX),
-					'singular_name' 		=> __('City',CFGP_PREFIX),
-					'menu_name' 			=> __('Cities',CFGP_PREFIX),
-					'all_items' 			=> __('All Cities',CFGP_PREFIX),
-					'edit_item' 			=> __('Edit City',CFGP_PREFIX),
-					'view_item' 			=> __('View City',CFGP_PREFIX),
-					'update_item' 			=> __('Update City',CFGP_PREFIX),
-					'add_new_item' 			=> __('Add New City',CFGP_PREFIX),
-					'new_item_name' 		=> __('New City Name',CFGP_PREFIX),
-					'parent_item' 			=> __('Parent City',CFGP_PREFIX),
-					'parent_item_colon' 	=> __('Parent City',CFGP_PREFIX),
+					'name' 					=> __('Cities',CFGP_NAME),
+					'singular_name' 		=> __('City',CFGP_NAME),
+					'menu_name' 			=> __('Cities',CFGP_NAME),
+					'all_items' 			=> __('All Cities',CFGP_NAME),
+					'edit_item' 			=> __('Edit City',CFGP_NAME),
+					'view_item' 			=> __('View City',CFGP_NAME),
+					'update_item' 			=> __('Update City',CFGP_NAME),
+					'add_new_item' 			=> __('Add New City',CFGP_NAME),
+					'new_item_name' 		=> __('New City Name',CFGP_NAME),
+					'parent_item' 			=> __('Parent City',CFGP_NAME),
+					'parent_item_colon' 	=> __('Parent City',CFGP_NAME),
 				),
 				'hierarchical'   => true,
 				'show_ui'		=> true,
 				'public'		 => false,
-				'label'          => __('Cities',CFGP_PREFIX),
-				'singular_label' => __('City',CFGP_PREFIX),
+				'label'          => __('Cities',CFGP_NAME),
+				'singular_label' => __('City',CFGP_NAME),
 				'rewrite'        => true,
 				'query_var'		=> false,
 				'show_tagcloud'	=>	false,
