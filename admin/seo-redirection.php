@@ -96,6 +96,11 @@ else
                             $region = get_term_by( 'slug', $redirect['region'], 'cf-geoplugin-region', ARRAY_A );
                             $city = get_term_by( 'slug', $redirect['city'], 'cf-geoplugin-city', ARRAY_A );
                             $disabled = ( (int)$redirect['active'] == 0 ? '<small class="text-danger">'. __( 'Disabled', CFGP_NAME ) .'</small>' : '' );
+							
+							$c_name = array_filter(array($country['name'], $country['description']));
+							$r_name = array_filter(array($region['name'], $region['description']));
+							$ct_name = array_filter(array($city['name'], $city['description']));
+							
                             printf('
                                 <tr id="cf-geoplugin-seo-redirection-%10$d">
                                     <td>
@@ -118,9 +123,9 @@ else
 								$_GET['page'],
 								__('Edit', CFGP_NAME),
 								__('Delete', CFGP_NAME),
-								end(array_filter(array($country['name'], $country['description']))),
-								end(array_filter(array($region['name'], $region['description']))),
-								end(array_filter(array($city['name'], $city['description']))),
+								end($c_name),
+								end($r_name),
+								end($ct_name),
 								$redirect['id'], 
 								$redirect['http_code'],
 								$disabled,

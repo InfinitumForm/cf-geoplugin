@@ -5,7 +5,7 @@ Tags: geo plugin, geo location, geotarget, geo banner, market, conversion, conve
 Requires at least: 3.0
 Tested up to: 5.9
 Requires PHP: 5.6.0
-Stable tag: 7.3.2
+Stable tag: 7.3.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -262,6 +262,13 @@ Please inform us if any of these errors occure via contact form on our website [
 
 == Changelog ==
 
+= 7.3.3 =
+* Fixed country flag attribute issue
+* Fixed dashboard CSS
+* Fixed PHP error into SEO redirection
+* Added PHP_VERSION_ID support
+* Added WP Admin Dashboard widget
+
 = 7.3.2 =
 * Fixed multi SEO redirection field indexing
 
@@ -360,6 +367,13 @@ Please inform us if any of these errors occure via contact form on our website [
 * Localization integration
 
 == Upgrade Notice ==
+
+= 7.3.3 =
+* Fixed country flag attribute issue
+* Fixed dashboard CSS
+* Fixed PHP error into SEO redirection
+* Added PHP_VERSION_ID support
+* Added WP Admin Dashboard widget
 
 = 7.3.2 =
 * Fixed multi SEO redirection field indexing

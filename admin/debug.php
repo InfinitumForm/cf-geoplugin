@@ -19,7 +19,7 @@ if( $this->get( 'ip-lookup', 'bool', false )  )
     if( class_exists( 'CF_Geoplugin_API' ) && $ip_address = $this->get( 'ip_address' ) )
     {
         $CFGEO_API = new CF_Geoplugin_API;
-        $CFGEO = $CFGEO_API->run(array(
+        $GLOBALS['CFGEO'] = $CFGEO = $CFGEO_API->run(array(
             'ip'    => $ip_address,
             'debug' => true
         ));
@@ -403,4 +403,4 @@ if( isset( $_GET['action'] ) && ( $_GET['action'] == 'debugger' || $_GET['action
 </div>
 <?php
 // For any case
-$CFGEO = $CFGEO_BUYPASS;
+$GLOBALS['CFGEO'] = $CFGEO = $CFGEO_BUYPASS;

@@ -152,7 +152,7 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
 			}
 			
 			$m_unit = 'km';
-			$m_accuracy = $geodata->accuracy;
+			$m_accuracy = isset( $geodata->accuracy ) ? $geodata->accuracy : '';
 			
 			if(isset($CF_GEOPLUGIN_OPTIONS['measurement_unit']))
 			{
@@ -206,8 +206,8 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
                 'current_time' => $geodata->currentTime,
                 'current_date' => $geodata->currentDate,
                 'version' => CFGP_VERSION,
-				'is_vat' => $geodata->isVAT,
-				'in_eu'	=> $geodata->inEU,
+				'is_vat' => isset( $geodata->isVAT ) ? $geodata->isVAT : '',
+				'in_eu'	=> isset( $geodata->inEU ) ? $geodata->inEU : '',
 				'accuracy_radius' => $m_accuracy.$m_unit,
 				'runtime' => abs($geodata->runtime),
                 'status' => empty($geodata->status) ? (!empty($geodata->ipAddress) ? 200 : 404) : $geodata->status,

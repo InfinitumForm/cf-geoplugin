@@ -1,0 +1,25 @@
+#cf-geoplugin-dashboard-wrapper .activity-block ul>li>strong,
+#cf-geoplugin-dashboard-wrapper .activity-block ul>li>span{
+	display:inline-block;
+}
+
+#cf-geoplugin-dashboard-wrapper .activity-block ul>li>strong{
+	width:25%;
+	color:#444;
+}
+#cf-geoplugin-dashboard-wrapper .activity-block ul>li>span{
+	color:#111;
+	width:74%;
+}
+.cf-geoplugin-dashboard-downloaded{
+	color:#999;
+}
+#cf-geoplugin-dashboard-version-info.activity-block ul{
+	list-style:decimal;
+	padding-left:15px;
+	margin-bottom:18px;
+}
+
+cf-geoplugin-dashboard-info.activity-block ul{
+	margin-bottom:18px;
+}
