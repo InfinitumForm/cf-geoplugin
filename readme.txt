@@ -3,9 +3,9 @@ Contributors: ivijanstefan, creativform, ej207
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=creativform@gmail.com
 Tags: geo plugin, geo location, geotarget, geo banner, market, conversion, conversion plugin, automatic banner, banner, business, location, google map, gmaps, gmap, seo, seo tool, user experience, ux plugin, contact form, dynamic keyword, ip, ip location, region, position, positioning, marketing, block visitors, defender, block spam, block region, tag, geo, target, local, find ip, ip finder, geo target, geo image, geo content. include content, exclude content, include, exclude, seo redirection, url redirection, country redirection, redirection, flag, country flag, national flag, flags, custom flags, gdpr, localization, ecommerce, legal requiremants, legal, currency, 
 Requires at least: 3.0
-Tested up to: 5.9
+Tested up to: 5.0
 Requires PHP: 5.6.0
-Stable tag: 7.3.3
+Stable tag: 7.3.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -262,6 +262,15 @@ Please inform us if any of these errors occure via contact form on our website [
 
 == Changelog ==
 
+= 7.3.4 =
+* Fixed "Error downloading" in the flag shortcode
+* Fixed multisite recognation bug
+* Fixed missing arguments into notifications
+* Fixed missing REST ID
+* Added advanced dashboard widget
+* Added dashboard widget switching option
+* Optimized PHP code
+
 = 7.3.3 =
 * Fixed country flag attribute issue
 * Fixed dashboard CSS
@@ -367,6 +376,15 @@ Please inform us if any of these errors occure via contact form on our website [
 * Localization integration
 
 == Upgrade Notice ==
+
+= 7.3.4 =
+* Fixed "Error downloading" in the flag shortcode
+* Fixed multisite recognation bug
+* Fixed missing arguments into notifications
+* Fixed missing REST ID
+* Added advanced dashboard widget
+* Added dashboard widget switching option
+* Optimized PHP code
 
 = 7.3.3 =
 * Fixed country flag attribute issue

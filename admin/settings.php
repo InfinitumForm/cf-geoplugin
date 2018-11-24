@@ -93,6 +93,40 @@ if($this->get('action') == 'activate_license')
 								));
 								
 								$general->radio(array(
+									'label'		=> __('Enable Dashboard Widget',CFGP_NAME),
+									'name'		=> 'enable_dashboard_widget',
+									'default'	=> (isset($CF_GEOPLUGIN_OPTIONS['enable_dashboard_widget']) ? $CF_GEOPLUGIN_OPTIONS['enable_dashboard_widget'] : 0),
+									array(
+										'text'	=> __('Enable',CFGP_NAME),
+										'value'	=> 1,
+										'id'	=> 'enable_dashboard_widget_true',
+									),
+									array(
+										'text'	=> __('Disable',CFGP_NAME),
+										'value'	=> 0,
+										'id'	=> 'enable_dashboard_widget_false',
+									),
+									'html'		=> '<small>( ' . __('Enable CF Geo Plugin widget in the dashboard area.',CFGP_NAME) . ' )</small>'
+								));
+								
+								$general->radio(array(
+									'label'		=> __('Dashboard Widget Type',CFGP_NAME),
+									'name'		=> 'enable_advanced_dashboard_widget',
+									'default'	=> (isset($CF_GEOPLUGIN_OPTIONS['enable_advanced_dashboard_widget']) ? $CF_GEOPLUGIN_OPTIONS['enable_advanced_dashboard_widget'] : 0),
+									array(
+										'text'	=> __('Advanced (recommended)',CFGP_NAME),
+										'value'	=> 1,
+										'id'	=> 'enable_advanced_dashboard_widget_true',
+									),
+									array(
+										'text'	=> __('Basic',CFGP_NAME),
+										'value'	=> 0,
+										'id'	=> 'enable_advanced_dashboard_widget_false',
+									),
+									'html'		=> '<small>( ' . __('Dashboard widget comming in 2 types. You can choose what best fit to you.',CFGP_NAME) . ' )</small>'
+								));
+								
+								$general->radio(array(
 									'label'		=> __('Enable Cloudflare',CFGP_NAME),
 									'name'		=> 'enable_cloudflare',
 									'default'	=> (isset($CF_GEOPLUGIN_OPTIONS['enable_cloudflare']) ? $CF_GEOPLUGIN_OPTIONS['enable_cloudflare'] : 0),

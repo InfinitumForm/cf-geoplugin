@@ -195,7 +195,10 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 		if($img_format===true)
 		{
 			$address = $CFGEO['address'];
-			return sprintf('<img src="%s" alt="%s" title="%s" style="max-width:%s !important;%s" class="flag-icon-img%s" id="cf-geo-flag-%s">', CFGP_ASSETS.'/flags/4x3/'.$flag.'.svg', $address, $address, $size, $css, $class, $id);
+			if(file_exists(CFGP_ROOT.'/assets/flags/4x3/'.$flag.'.svg'))
+				return sprintf('<img src="%s" alt="%s" title="%s" style="max-width:%s !important;%s" class="flag-icon-img%s" id="cf-geo-flag-%s">', CFGP_ASSETS.'/flags/4x3/'.$flag.'.svg', $address, $address, $size, $css, $class, $id);
+			else
+				return '';
 		}
 		else
 			return sprintf('<span class="flag-icon flag-icon-%s%s" id="cf-geo-flag-%s"%s></span>', $flag.$type, $class, $id,(!empty($css)?' style="'.$css.'"':''));

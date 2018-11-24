@@ -8,7 +8,7 @@
  * Plugin Name:       CF Geo Plugin
  * Plugin URI:        http://cfgeoplugin.com/
  * Description:       Create Dynamic Content, Banners and Images on Your Website Based On Visitor Geo Location By Using Shortcodes With CF GeoPlugin.
- * Version:           7.3.3
+ * Version:           7.3.4
  * Author:            Ivijan-Stefan Stipic
  * Author URI:        https://linkedin.com/in/ivijanstefanstipic
  * License:           GPL-2.0+
@@ -72,7 +72,7 @@ if ( defined( 'WP_CF_GEO_DEBUG' ) ){
 // Main plugin file
 if ( ! defined( 'CFGP_FILE' ) )				define( 'CFGP_FILE', __FILE__ );
 // Current plugin version
-if ( ! defined( 'CFGP_VERSION' ) )			define( 'CFGP_VERSION', '7.3.3');
+if ( ! defined( 'CFGP_VERSION' ) )			define( 'CFGP_VERSION', '7.3.4');
 // Plugin root
 if ( ! defined( 'CFGP_ROOT' ) )				define( 'CFGP_ROOT', rtrim(plugin_dir_path(CFGP_FILE), '/') );
 // Includes directory
@@ -96,13 +96,14 @@ if ( ! defined( 'CFGP_LIMIT' ) )			define( 'CFGP_LIMIT', 300);
 // Developer license
 if( ! defined( 'CFGP_DEV_MODE' ) )			define( 'CFGP_DEV_MODE', false );
 // Check if is multisite installation
+
+// Check if is multisite installation
 if( ! defined( 'CFGP_MULTISITE' ) )			
 {
     // New safer approach
     if( !function_exists( 'is_plugin_active_for_network' ) ) require_once( ABSPATH . '/wp-admin/includes/plugin.php' );
 
-    if( is_plugin_active_for_network( CFGP_ROOT . '/cf-geoplugin.php' ) ) define( 'CFGP_MULTISITE', true );
-    else define( 'CFGP_MULTISITE', false );
+	define( 'CFGP_MULTISITE', is_plugin_active_for_network( CFGP_ROOT . '/cf-geoplugin.php' ) );
 }
 
 // Include debug class
@@ -189,6 +190,28 @@ if(class_exists('CF_Geoplugin_Global')) :
 	$hook = new CF_Geoplugin_Global;
 	// Global variable for geoplugin options
 	$GLOBALS['CF_GEOPLUGIN_OPTIONS']=$hook->get_option();
+	// Fix session time
+	if(isset($GLOBALS['CF_GEOPLUGIN_OPTIONS']['plugin_activated']) && empty($GLOBALS['CF_GEOPLUGIN_OPTIONS']['plugin_activated'])){
+		$GLOBALS['CF_GEOPLUGIN_OPTIONS']['plugin_activated'] = time();
+		$hook->update_option('plugin_activated', $GLOBALS['CF_GEOPLUGIN_OPTIONS']['plugin_activated']);
+	} else {
+		if(empty($GLOBALS['CF_GEOPLUGIN_OPTIONS']['plugin_activated']))
+		{
+			$GLOBALS['CF_GEOPLUGIN_OPTIONS']['plugin_activated'] = time();
+			$hook->update_option('plugin_activated', $GLOBALS['CF_GEOPLUGIN_OPTIONS']['plugin_activated']);
+		}
+	}
+	// fix ID if missing
+	if(isset($GLOBALS['CF_GEOPLUGIN_OPTIONS']['id']) && empty($GLOBALS['CF_GEOPLUGIN_OPTIONS']['id'])){
+		$GLOBALS['CF_GEOPLUGIN_OPTIONS']['id'] = md5($hook->generate_token(32));
+		$hook->update_option('id', $GLOBALS['CF_GEOPLUGIN_OPTIONS']['id']);
+	} else {
+		if(empty($GLOBALS['CF_GEOPLUGIN_OPTIONS']['id']))
+		{
+			$GLOBALS['CF_GEOPLUGIN_OPTIONS']['id'] = md5($hook->generate_token(32));
+			$hook->update_option('id', $GLOBALS['CF_GEOPLUGIN_OPTIONS']['id']);
+		}
+	}
 	// Client IP address
 	if ( ! defined( 'CFGP_IP' ) ) 					define( 'CFGP_IP', $hook->ip() );
 	// Server IP address
