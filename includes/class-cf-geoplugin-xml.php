@@ -155,15 +155,16 @@ class parseXML
 	{
 		if($custom_url && function_exists('curl_init') && function_exists('curl_setopt') && function_exists('curl_exec') )
 		{
+			$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
 			$ch = curl_init();
 			
 			curl_setopt($ch, CURLOPT_URL, $document);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 			curl_setopt($ch, CURLOPT_ENCODING, 'UTF-8');
-			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, ((bool) get_option("cf_geo_enable_ssl")));
+			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, (bool)$CF_GEOPLUGIN_OPTIONS['enable_ssl']);
 			curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-			curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, (int)get_option("cf_geo_connection_timeout"));
-			curl_setopt($ch, CURLOPT_TIMEOUT, (int)get_option("cf_geo_timeout"));
+			curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, (int)$CF_GEOPLUGIN_OPTIONS['connection_timeout']);
+			curl_setopt($ch, CURLOPT_TIMEOUT, (int)$CF_GEOPLUGIN_OPTIONS['timeout']);
 			curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: text/xml'));
 			
 			$data = curl_exec($ch);

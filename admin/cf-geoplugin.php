@@ -248,6 +248,10 @@ $CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIO
                                 <td><kbd>[cfgeo return="credit"]</kbd></td>
                                 <td><?php echo $CFGEO['credit']; ?></td>
                             </tr>
+                            <tr>
+                                <td><kbd>[cfgeo_converter from="<?php echo isset( $CF_GEOPLUGIN_OPTIONS['base_currency'] ) ? $CF_GEOPLUGIN_OPTIONS['base_currency'] : ''; ?>"]1[/cfgeo_converter]</kbd></td>
+                                <td><?php echo isset( $CFGEO['currency_converter'] ) && !empty( $CFGEO['currency_converter'] ) ? $CFGEO['currency_converter'] : __( 'Sorry currently we are not able to do conversion.', CFGP_NAME ); echo isset( $CFGEO['currency_symbol'] ) ? ' ' . $CFGEO['currency_symbol'] : ''; ?></td>
+                            </tr>
                         </tbody>
                         <thead>
                             <tr>
@@ -408,6 +412,7 @@ $CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIO
                     	<div class="col-12">
                         	<?php do_action('page-cf-geoplugin-tab-info-start'); ?>
                             <h3><?php _e('Usage, additional attributes and settings',CFGP_NAME); ?></h3>
+                                <p class="manage-menus"><?php printf( __( "If you whant to display live conversion in your posts, you can do that by using shortcode like this: %s - what will return converted value and currency name. <br /><b>Params available</b>: <br />from = From currency example from='USD' ( by default site currency ) <br />to = To currency example to='EUR' ( by defult visitor's currency ) <br />align = L(eft) | R(right) - default <br />separator = Separate currency from currency name ( by default blank space )", CFGP_NAME ), '<code>[cfgeo_converter]300USD[/cfgeo_converter]</code>' ); ?></p>
                                 <p class="manage-menus"><?php printf(__("If you like to display region (for example California for users who are from California), you just need to use return attribute in your shortcode like this: %s - what will return region name by visitors location.",CFGP_NAME),'<br><code>[cfgeo return="region"]</code>'); ?></p>
                                 
                                 <p class="manage-menus"><?php printf(__('If you whant to track some custom IP and return some information from that IP, you can do that by adding one optional attribute %s like on example: %s - what will return area code from that IP address.',CFGP_NAME),'<code>ip</code>','<br><code>[cfgeo ip="127.0.0.1" return="area_code"]</code>'); ?></p>

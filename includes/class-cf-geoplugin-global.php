@@ -10,6 +10,9 @@
 if(!class_exists('CF_Geoplugin_Global')) :
 class CF_Geoplugin_Global
 {
+	// Instance
+	private static $instance = null;
+
 	// All available options
 	public $default_options = array(
 		'id'						=> NULL,
@@ -24,7 +27,7 @@ class CF_Geoplugin_Global
 		'enable_banner'				=>	1,
 		'enable_cloudflare'			=>	0,
 		'enable_dns_lookup'			=>	0,
-		'enable_update'				=>	1,
+		'enable_update'				=>	0,
 		'enable_dashboard_widget'	=>	1,
 		'enable_advanced_dashboard_widget'	=>	1,
 		'enable_rest'				=>	1,
@@ -34,8 +37,8 @@ class CF_Geoplugin_Global
 		'proxy_username'			=>	'',
 		'proxy_password'			=>	'',
 		'enable_ssl'				=>	0,
-		'connection_timeout'		=>	9,
-		'timeout'					=>	9,
+		'connection_timeout'		=>	15,
+		'timeout'					=>	15,
 		'map_api_key'				=>	'',
 		'map_zoom'					=>	8,
 		'map_scrollwheel'			=>	1,
@@ -77,7 +80,10 @@ class CF_Geoplugin_Global
 		'rest_secret'				=>	'',
 		'rest_token'				=>	array(),
 		'rest_token_info'			=>	array(),
-		'plugin_activated'			=>	NULL
+		'plugin_activated'			=>	NULL,
+		'enable_spam_ip'			=> 0,
+		'first_plugin_activation'	=> 1,
+		'enable_seo_posts'			=> array(),
 	);
 
 	// Deprecated options
@@ -684,6 +690,7 @@ class CF_Geoplugin_Global
 				}
 				curl_setopt($cURL, CURLOPT_TIMEOUT, (int)$options["timeout"]);
 				curl_setopt($cURL, CURLOPT_HTTPHEADER, array('Accept: application/json'));
+				curl_setopt($cURL, CURLOPT_FOLLOWLOCATION, true);
 			$output=curl_exec($cURL);
 			curl_close($cURL);
 		}
@@ -966,12 +973,13 @@ class CF_Geoplugin_Global
 			$result = '';
 			if( function_exists('curl_init') && function_exists('curl_setopt') && function_exists('curl_exec') )
 			{
+				$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
 				$ch = curl_init();
 				curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 				curl_setopt($ch, CURLOPT_POST, false);
 				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-				curl_setopt($ch, CURLOPT_TIMEOUT, 5);
-				curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+				curl_setopt($ch, CURLOPT_TIMEOUT, (int)$CF_GEOPLUGIN_OPTIONS['timeout']);
+				curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, (int)$CF_GEOPLUGIN_OPTIONS['connection_timeout']);
 				curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: application/json'));
 				curl_setopt($ch, CURLOPT_URL, 'https://api.ipify.org?format=json');
 				$result=curl_exec($ch);
@@ -1106,8 +1114,8 @@ class CF_Geoplugin_Global
 				$ch = curl_init( $url );
 				curl_setopt($ch, CURLOPT_POSTFIELDS, $data );
 				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-				curl_setopt($ch, CURLOPT_TIMEOUT, 10);
-				curl_setopt($ch, CURLOPT_CONNECTTIMEOUT,10);
+				curl_setopt($ch, CURLOPT_TIMEOUT, (int)$CF_GEOPLUGIN_OPTIONS['timeout']);
+				curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, (int)$CF_GEOPLUGIN_OPTIONS['connection_timeout']);
 				curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 				curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: application/json'));
 				$response = curl_exec($ch);
@@ -1717,6 +1725,45 @@ class CF_Geoplugin_Global
 				)
 			);
 		}
+	}
+
+	/**
+	 * Auto update plugin
+	 */
+	public function plugin_auto_update()
+	{
+		if( !class_exists( 'WP_Upgrader' ) ) require_once( path_join( ABSPATH, 'wp-admin/includes/class-wp-upgrader.php' ) );
+		if( !class_exists( 'Plugin_Upgrader' ) ) require_once( path_join( ABSPATH, 'wp-admin/includes/class-plugin-upgrader.php' ) );
+		if( !class_exists( 'WP_Upgrader_Skin' ) ) require_once( path_join( ABSPATH, 'wp-admin/includes/class-wp-upgrader-skin.php' ) );
+		if( !class_exists( 'Plugin_Upgrader_Skin' ) ) require_once( path_join( ABSPATH, 'wp-admin/includes/class-plugin-upgrader-skin.php' ) );
+		if( !function_exists( 'show_messages' ) ) require_once( path_join( ABSPATH, 'wp-admin/includes/misc.php' ) );
+		if( !function_exists( 'request_filesystem_credentials' ) ) require_once( path_join( ABSPATH, 'wp-admin/includes/file.php' ) );
+
+		$Updater = new Plugin_Upgrader();
+
+		$Updater->upgrade( plugin_basename( CFGP_FILE ) );
+	}
+
+	/**
+	 * Get singleton instance for now just for widget class
+	 */
+	public static function get_instance()
+	{
+		if( self::$instance === null )
+		{ 
+			self::$instance = new self();
+		}
+	
+		return self::$instance;
+	}
+
+	/**
+	 * Generate convert outoput
+	 */
+	public function generate_converter_output( $amount, $symbol, $position = 'L', $separator = '' )
+	{
+		if( strtoupper( $position ) === 'L' || strtoupper( $position ) == 'LEFT' ) return sprintf( '%s%s%s', $symbol, $separator, $amount );
+		else return sprintf( '%s%s%s', $amount, $separator, $symbol );
 	}
 }
 endif;

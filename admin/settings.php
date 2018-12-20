@@ -16,20 +16,26 @@ if($this->get('action') == 'activate_license')
 {
 	if($CF_GEOPLUGIN_OPTIONS['license'])
 	{
-		$alert = '<div class="alert alert-success" role="alert">
+		$alert = '<div class="alert alert-success alert-dismissible fade show" role="alert">
 		  <h4 class="alert-heading">' . __('Well done!',CFGP_NAME) . '</h4>
 		  <p>' . __('License activated successfully!',CFGP_NAME) . '</p>
 		  <hr>
 		  <p>' . sprintf(__('You are now using unlimited lookup and the changes will appear instantly or will be visible in %s.',CFGP_NAME), $this->get_time_ago(isset($_SESSION[CFGP_PREFIX . 'session_expire']) ? $_SESSION[CFGP_PREFIX . 'session_expire'] : 0)) . '</p>
-		</div>';
+		  <button type="button" class="close" data-dismiss="alert" aria-label="'. __( 'Close', CFGP_NAME ) .'">
+			<span aria-hidden="true">&times;</span>
+		  </button>
+		  </div>';
 	}
 	else
 	{
-		$alert = '<div class="alert alert-danger" role="alert">
+		$alert = '<div class="alert alert-danger alert-dismissible fade show" role="alert">
 			<h4 class="alert-heading">' . __('Activation Fail!',CFGP_NAME) . '</h4>
 			<p>' . __('Your activation key not valid and activation is not possible. Please check all parameters.',CFGP_NAME) . '</p>
 			<hr>
 			<p>' . __('If you think that this is an error, please contact technical support.',CFGP_NAME) . '</p>
+			<button type="button" class="close" data-dismiss="alert" aria-label="'. __( 'Close', CFGP_NAME ) .'">
+				<span aria-hidden="true">&times;</span>
+			</button>
 		</div>';
 	}
 }
@@ -72,24 +78,26 @@ if($this->get('action') == 'activate_license')
     					<div class="col-12">
                         	<?php
                             	$general = new CF_Geoplugin_Form;						
-								$general->html('<h5 class="mt-3">'.__('WordPress Settings',CFGP_NAME).'</h5>');
+								$general->html('<h5 class="mt-3" id="WordPress_Settings">'.__('WordPress Settings',CFGP_NAME).'</h5>');
 								$general->html('<p>'.__('This settings only affect on CF Geo Plugin functionality and connection between plugin and WordPress setup. Use it smart and careful.',CFGP_NAME).'</p><hr>');
 								
 								$general->radio(array(
 									'label'		=> __('Enable Plugin Auto Update',CFGP_NAME),
 									'name'		=> 'enable_update',
-									'default'	=> (isset($CF_GEOPLUGIN_OPTIONS['enable_update']) ? $CF_GEOPLUGIN_OPTIONS['enable_update'] : 1),
+									'default'	=> ((isset($CF_GEOPLUGIN_OPTIONS['enable_update']) && CF_Geoplugin_Global::access_level($CF_GEOPLUGIN_OPTIONS) >= 1) ? $CF_GEOPLUGIN_OPTIONS['enable_update'] : 0),
 									array(
-										'text'	=> __('Enable',CFGP_NAME),
-										'value'	=> 1,
-										'id'	=> 'enable_update_true',
+										'text'			=> __('Enable',CFGP_NAME),
+										'value'			=> 1,
+										'id'			=> 'enable_update_true',
+										'disabled'		=> CF_Geoplugin_Global::access_level($CF_GEOPLUGIN_OPTIONS) < 1
 									),
 									array(
-										'text'	=> __('Disable',CFGP_NAME),
-										'value'	=> 0,
-										'id'	=> 'enable_update_false',
+										'text'			=> __('Disable',CFGP_NAME),
+										'value'			=> 0,
+										'id'			=> 'enable_update_false',
+										'disabled'		=> CF_Geoplugin_Global::access_level($CF_GEOPLUGIN_OPTIONS) < 1
 									),
-									'html'		=> '<small>( ' . __('Allow your plugin to be up to date.',CFGP_NAME) . ' )</small>'
+									'html'		=> '<small>( ' . __('Allow your plugin to be up to date.',CFGP_NAME) . ' )</small>'. (CF_Geoplugin_Global::access_level($CF_GEOPLUGIN_OPTIONS) < 1 ? '<br><span class="text-info">' . __('Auto update is only enabled with plugin license.',CFGP_NAME) . '</span>' : ''),
 								));
 								
 								$general->radio(array(
@@ -177,19 +185,19 @@ if($this->get('action') == 'activate_license')
 									'html'		=> '<small>( ' . __('This option allows caching. Usually used in combination with a cache plugin. If you do not want your redirects to be cached, leave this field disabled',CFGP_NAME) . ' )</small>'
 								));
 								
-								$general->select(array(
+								$general->radio(array(
 									'label'		=> __('Measurement Unit',CFGP_NAME),
 									'name'		=> 'measurement_unit',
-									'id'		=> 'measurement_unit',
 									'default'	=> (isset($CF_GEOPLUGIN_OPTIONS['measurement_unit']) ? $CF_GEOPLUGIN_OPTIONS['measurement_unit'] : 'km'),
-									'attr'		=> array('autocomplete'=>'off', 'style'=>'max-width:120px;'),
 									array(
 										'value' => 'km',
 										'text' => __('km',CFGP_NAME),
+										'id'	=> 'measurement_unit_km',
 									),
 									array(
 										'value' => 'mile',
 										'text' => __('mile',CFGP_NAME),
+										'id'	=> 'measurement_unit_mile',
 									)
 								));
 								
@@ -211,7 +219,7 @@ if($this->get('action') == 'activate_license')
 									'disabled'	=> ( $CF_GEOPLUGIN_OPTIONS['woocommerce_active'] && $CF_GEOPLUGIN_OPTIONS['enable_woocommerce'] ? true : false )
 								), $base_currency_options ));
 								
-								$general->html('<h5 class="mt-5">'.__('Plugin Settings',CFGP_NAME).'</h5>');
+								$general->html('<h5 class="mt-5" id="Plugin_Settings">'.__('Plugin Settings',CFGP_NAME).'</h5>');
 								$general->html('<p>'.__('This settings enable advanced lookup and functionality of plugin.',CFGP_NAME).'</p><hr>');
 								
 								$general->radio(array(
@@ -250,25 +258,8 @@ if($this->get('action') == 'activate_license')
 									'html'		=> '<small>( ' . __('Display country flag SVG or PNG image on your website.',CFGP_NAME) . ' )</small>'
 								));
 								
-								$general->html('<h5 class="mt-5">'.__('Plugin Features',CFGP_NAME).'</h5>');
+								$general->html('<h5 class="mt-5" id="Plugin_Features">'.__('Plugin Features',CFGP_NAME).'</h5>');
 								$general->html('<p>'.__('Here you can enable or disable features that you need. This is useful because you can disable functionality what you not need.',CFGP_NAME).'</p><hr>');
-								
-								$general->radio(array(
-									'label'		=> __('Enable SEO Redirection',CFGP_NAME),
-									'name'		=> 'enable_seo_redirection',
-									'default'	=> (isset($CF_GEOPLUGIN_OPTIONS['enable_seo_redirection']) ? $CF_GEOPLUGIN_OPTIONS['enable_seo_redirection'] : 1),
-									array(
-										'text'	=> __('Enable',CFGP_NAME),
-										'value'	=> 1,
-										'id'	=> 'enable_seo_redirection_true',
-									),
-									array(
-										'text'	=> __('Disable',CFGP_NAME),
-										'value'	=> 0,
-										'id'	=> 'enable_seo_redirection_false',
-									),
-									'html'		=> '<small>( ' . __('You can redirect your visitors to other locations.',CFGP_NAME) . ' )</small>'
-								));
 								
 								$general->radio(array(
 									'label'		=> __('Enable Geo Banner',CFGP_NAME),
@@ -305,23 +296,6 @@ if($this->get('action') == 'activate_license')
 								));
 								
 								$general->radio(array(
-									'label'		=> __('Enable Geo Defender',CFGP_NAME),
-									'name'		=> 'enable_defender',
-									'default'	=> (isset($CF_GEOPLUGIN_OPTIONS['enable_defender']) ? $CF_GEOPLUGIN_OPTIONS['enable_defender'] : 1),
-									array(
-										'text'	=> __('Enable',CFGP_NAME),
-										'value'	=> 1,
-										'id'	=> 'enable_defender_true',
-									),
-									array(
-										'text'	=> __('Disable',CFGP_NAME),
-										'value'	=> 0,
-										'id'	=> 'enable_defender_false',
-									),
-									'html'		=> '<small>( ' . __('Protect your website from the unwanted visitors by geo location.',CFGP_NAME) . ' )</small>'
-								));
-
-								$general->radio(array(
 									'label'		=> __('WooCommerce integration'),
 									'name'		=> 'enable_woocommerce',
 									'default'	=> (isset($CF_GEOPLUGIN_OPTIONS['enable_woocommerce']) ? $CF_GEOPLUGIN_OPTIONS['enable_woocommerce'] : 0 ),
@@ -340,12 +314,147 @@ if($this->get('action') == 'activate_license')
 										'disabled'	=> ( $CF_GEOPLUGIN_OPTIONS['woocommerce_active'] ? false : true ),
 										'input_class'	=> 'enable-woocommerce'
 									),
-								)); 
+								));
+
+								$general->radio(array(
+									'label'		=> __('Enable REST API',CFGP_NAME),
+									'name'		=> 'enable_rest',
+									'default'	=> (isset($CF_GEOPLUGIN_OPTIONS['enable_rest']) ? $CF_GEOPLUGIN_OPTIONS['enable_rest'] : 0),
+									'html'		=> '<p>' . __('The CF GeoPlugin REST API allows external apps to use geo informations.',CFGP_NAME) . (CF_Geoplugin_Global::access_level($CF_GEOPLUGIN_OPTIONS) < 4 ? '<br><span class="text-info">' . __('REST API is only functional for the Business License.',CFGP_NAME) . '</span>' : '') . '</p>',
+									array(
+										'text'	=> __('Enable',CFGP_NAME),
+										'value'	=> 1,
+										'id'	=> 'enable_rest_true'
+									),
+									array(
+										'text'	=> __('Disable',CFGP_NAME),
+										'value'	=> 0,
+										'id'	=> 'enable_rest_false'
+									)
+								));
 								
 								$general->html(do_action('page-cf-geoplugin-settings-features'));
 								
-								$general->html('<h5 class="mt-5">'.__('Proxy Settings',CFGP_NAME).'</h5>');
-								$general->html('<p>'.sprintf(__('Some servers not share real IP because of security reasons or IP is blocked from geolocation. Using proxy you can bypass that protocols and enable geoplugin to work properly. Also, this option on individual servers can cause inaccurate geo informations, and because of that this option is disabled by default. You need to test this option on your side and use wise. Need proxy service? %1$s.',CFGP_NAME),'<a href="https://go.nordvpn.net/aff_c?offer_id=15&aff_id=14042&url_id=902" target="_blank">'.__('We have Recommended Service For You',CFGP_NAME).'</a>').'</p><hr>');
+								$general->html('<h5 class="mt-5" id="SEO_Redirect">'.__('SEO Redirection',CFGP_NAME).'</h5>');
+								$general->html('<hr>');
+
+								$general->radio(array(
+									'label'		=> __('Enable Site SEO Redirection',CFGP_NAME),
+									'name'		=> 'enable_seo_redirection',
+									'default'	=> (isset($CF_GEOPLUGIN_OPTIONS['enable_seo_redirection']) ? $CF_GEOPLUGIN_OPTIONS['enable_seo_redirection'] : 1),
+									array(
+										'text'	=> __('Enable',CFGP_NAME),
+										'value'	=> 1,
+										'id'	=> 'enable_seo_redirection_true',
+									),
+									array(
+										'text'	=> __('Disable',CFGP_NAME),
+										'value'	=> 0,
+										'id'	=> 'enable_seo_redirection_false',
+									),
+									'html'		=> '<small>( ' . __('You can redirect your visitors to other locations.',CFGP_NAME) . ' )</small>'
+								));
+								
+								$general->radio(array(
+									'label'		=> __('Enable CSV in Site SEO Redirection',CFGP_NAME),
+									'name'		=> 'enable_beta_seo_csv',
+									'default'	=> (isset($CF_GEOPLUGIN_OPTIONS['enable_beta_seo_csv']) ? $CF_GEOPLUGIN_OPTIONS['enable_beta_seo_csv'] : 1),
+									'html'		=> '<p>' . __('This allow you to upload CSV to your SEO redirection or download/backup SEO redirection list in the CSV.',CFGP_NAME) . '</p>',
+									array(
+										'text'	=> __('Enable',CFGP_NAME),
+										'value'	=> 1,
+										'id'	=> 'enable_beta_seo_csv_true',
+									),
+									array(
+										'text'	=> __('Disable',CFGP_NAME),
+										'value'	=> 0,
+										'id'	=> 'enable_beta_seo_csv_false',
+									)
+								));
+
+								$post_types = get_post_types(
+									array(
+										'public'	=> true,
+									),
+									'objects'
+								);
+
+								$first_seo_options = array();
+									
+								foreach( $post_types as $i => $obj )
+								{
+									if( in_array( $obj->name, array( 'attachment', 'nav_menu_item', 'custom_css', 'customize_changeset', 'user_request' ) ) ) continue;
+
+									if( isset( $CF_GEOPLUGIN_OPTIONS['first_plugin_activation'] ) && (int)$CF_GEOPLUGIN_OPTIONS['first_plugin_activation'] == 1 )
+									{
+										$first_seo_options[] = $obj->name;
+									}
+									
+									$default_value = isset( $CF_GEOPLUGIN_OPTIONS['enable_seo_posts'] ) ? $CF_GEOPLUGIN_OPTIONS['enable_seo_posts'] : '';
+									if( isset( $CF_GEOPLUGIN_OPTIONS['first_plugin_activation'] ) && (int)$CF_GEOPLUGIN_OPTIONS['first_plugin_activation'] == 1 ) $default_value = $obj->name;
+									$seo_redirections[] = array(
+										'text'		=> $obj->label,
+										'name'		=> 'enable_seo_posts[]',
+										'value'		=> $obj->name,
+										'default'	=> $default_value,
+										'id'		=> sprintf( '%s-%s', $obj->name, $i ),
+										'input_class'	=> 'enable_seo_posts'
+									);
+								}
+
+								$seo_redirections['label'] = __( 'Enable Post SEO Redirection In', CFGP_NAME );
+								$seo_redirections['container_class'] = 'container-enable-seo-posts';
+								$general->checkbox(
+									$seo_redirections
+								); 
+
+								if( !empty( $first_seo_options ) ) $this->update_option( 'enable_seo_posts', $first_seo_options );
+
+								$general->html('<h5 class="mt-5" id="Spam_Protection">'.__('Spam Protection',CFGP_NAME).'</h5>');
+								$general->html('<p>'.__( 'With Anti Spam Protection you can enable anti spam filter and block access from the specific IP, country, state and city to your site. This feature is very safe and does not affect to the SEO.' ).'</p><p>'.__( 'By enabling this feature, you get full spam protection from over 30.000 blacklisted IP addresses.' ).'</p><hr>');
+							
+								$general->radio(array(
+									'label'		=> __('Enable Spam Protection',CFGP_NAME),
+									'name'		=> 'enable_defender',
+									'default'	=> (isset($CF_GEOPLUGIN_OPTIONS['enable_defender']) ? $CF_GEOPLUGIN_OPTIONS['enable_defender'] : 1),
+									array(
+										'text'	=> __('Enable',CFGP_NAME),
+										'value'	=> 1,
+										'id'	=> 'enable_defender_true',
+									),
+									array(
+										'text'	=> __('Disable',CFGP_NAME),
+										'value'	=> 0,
+										'id'	=> 'enable_defender_false',
+									),
+									'html'		=> '<small>( ' . __('Protect your website from the unwanted visitors by geo location or ip address.',CFGP_NAME) . ' )</small>'
+								));
+
+								$general->radio(array(
+									'label'		=> __('Enable Automatic IP Address Blacklist Check',CFGP_NAME),
+									'name'		=> 'enable_spam_ip',
+									'default'	=> (isset($CF_GEOPLUGIN_OPTIONS['enable_spam_ip']) ? $CF_GEOPLUGIN_OPTIONS['enable_spam_ip'] : 0),
+									'license'	=> 1,
+									'license_message'	=> __('This option is only available with unlimited lookup license',CFGP_NAME),
+									array(
+										'text'			=> __('Enable',CFGP_NAME),
+										'value'			=> 1,
+										'id'			=> 'enable_spam_ip_true',
+										'input_class'	=> 'enable_spam_ip',
+										'disabled'		=> ( $CF_GEOPLUGIN_OPTIONS['enable_defender'] ? false : true )
+									),
+									array(
+										'text'			=> __('Disable',CFGP_NAME),
+										'value'			=> 0,
+										'id'			=> 'enable_spam_ip_false',
+										'input_class'	=> 'enable_spam_ip',
+										'disabled'		=> ( $CF_GEOPLUGIN_OPTIONS['enable_defender'] ? false : true )
+									),
+									'html'		=> '<small>( ' . __('Protect your website from bots, crawlers and other unwanted visitors that are found in our blacklist.',CFGP_NAME) . ' )</small>'
+								));
+								
+								$general->html('<h5 class="mt-5" id="Proxy_Settings">'.__('Proxy Settings',CFGP_NAME).'</h5>');
+								$general->html('<p>'.sprintf(__('Some servers not share real IP because of security reasons or IP is blocked from geolocation. Using proxy you can bypass that protocols and enable geoplugin to work properly. Also, this option on individual servers can cause inaccurate geo informations, and because of that this option is disabled by default. You need to test this option on your side and use wise. Need proxy service? %1$s.',CFGP_NAME),'<a href="https://go.nordvpn.net/aff_c?offer_id=15&aff_id=14042&url_id=902" target="_blank">'.__('We have Recommended Service For You',CFGP_NAME).'</a>').'</p><p>'.__('This is usually good if you use some Onion domain or you are a general user of the private web and all your websites are in the private networks.',CFGP_NAME).'</p><hr>');
 								
 								
 							if(CF_Geoplugin_Global::access_level($CF_GEOPLUGIN_OPTIONS) > 1):
@@ -409,7 +518,36 @@ if($this->get('action') == 'activate_license')
 								$general->html('<p class="text-danger"><strong>'.__('This option is only available for users with Personal, Freelancer and Business license.',CFGP_NAME).'</strong></p><hr>');
 							endif;
 								
-								$general->html('<h5 class="mt-5">'.__('BETA Testing & Advanced Features',CFGP_NAME).'</h5>');
+								$general->html('<h5 class="mt-5" id="Special_Settings">'.__('Special Settings',CFGP_NAME).'</h5>');
+								$general->html('<p>'.__('Special plugin settings that, in some cases, need to be changed to make some plugin systems to work properly. Many of theese settings depends of your server.', CFGP_NAME).'</p><hr>');
+
+								$general->input(array(
+									'type'		=> 'number',
+									'label'		=> __( 'Set cURL connection timeout in seconds', CFGP_NAME ),
+									'name'		=> 'connection_timeout',
+									'attr'		=> array(
+										'min'	=> 3,
+										'max'	=> 9999
+									),
+									'id'		=> 'connection_timeout',
+									'value'		=> isset( $CF_GEOPLUGIN_OPTIONS['connection_timeout'] ) && (int)$CF_GEOPLUGIN_OPTIONS['connection_timeout'] > 0 ? $CF_GEOPLUGIN_OPTIONS['connection_timeout'] : 15,
+									'html'		=> '<p>' . __( 'Timeout for the cURL connect phase', CFGP_NAME ) . '</p>'
+								));
+
+								$general->input(array(
+									'type'		=> 'number',
+									'label'		=> __( 'Set cURL timeout in seconds', CFGP_NAME ),
+									'name'		=> 'timeout',
+									'attr'		=> array(
+										'min'	=> 3,
+										'max'	=> 9999
+									),
+									'id'		=> 'timeout',
+									'value'		=> isset( $CF_GEOPLUGIN_OPTIONS['timeout'] ) && (int)$CF_GEOPLUGIN_OPTIONS['timeout'] > 0  ? $CF_GEOPLUGIN_OPTIONS['timeout'] : 15,
+									'html'		=> '<p>' . __( 'Set maximum time the request is allowed to take', CFGP_NAME ) . '</p>'
+								));
+
+								$general->html('<h5 class="mt-5" class="BETA_Testing">'.__('BETA Testing & Advanced Features',CFGP_NAME).'</h5>');
 								$general->html('<p>'.__('Here you can enable BETA functionality and test it. In many cases, normaly you should not have any problems but some functionality are new and experimental that mean if any conflict happen, you must be aware of this. If many users find this functionality useful we may keep this functionality and include it as standard functionality of CF GeoPlugin.',CFGP_NAME).'</p><hr>');
 								
 								$general->radio(array(
@@ -445,48 +583,6 @@ if($this->get('action') == 'activate_license')
 										'text'	=> __('Disable',CFGP_NAME),
 										'value'	=> 0,
 										'id'	=> 'enable_beta_shortcode_false',
-										'disabled' 	=> (isset($CF_GEOPLUGIN_OPTIONS['enable_beta']) && $CF_GEOPLUGIN_OPTIONS['enable_beta'] ? false : true),
-										'input_class'	=> 'beta-disable'
-									)
-								));
-								
-								$general->radio(array(
-									'label'		=> __('Enable CSV in SEO Redirection',CFGP_NAME),
-									'name'		=> 'enable_beta_seo_csv',
-									'default'	=> (isset($CF_GEOPLUGIN_OPTIONS['enable_beta_seo_csv']) ? $CF_GEOPLUGIN_OPTIONS['enable_beta_seo_csv'] : 1),
-									'html'		=> '<p>' . __('This allow you to upload CSV to your SEO redirection or download/backup SEO redirection list in the CSV.',CFGP_NAME) . '</p>',
-									array(
-										'text'	=> __('Enable',CFGP_NAME),
-										'value'	=> 1,
-										'id'	=> 'enable_beta_seo_csv_true',
-										'disabled' 	=> (isset($CF_GEOPLUGIN_OPTIONS['enable_beta']) && $CF_GEOPLUGIN_OPTIONS['enable_beta'] ? false : true),
-										'input_class'	=> 'beta-disable'
-									),
-									array(
-										'text'	=> __('Disable',CFGP_NAME),
-										'value'	=> 0,
-										'id'	=> 'enable_beta_seo_csv_false',
-										'disabled' 	=> (isset($CF_GEOPLUGIN_OPTIONS['enable_beta']) && $CF_GEOPLUGIN_OPTIONS['enable_beta'] ? false : true),
-										'input_class'	=> 'beta-disable'
-									)
-								));
-								
-								$general->radio(array(
-									'label'		=> __('Enable REST API',CFGP_NAME),
-									'name'		=> 'enable_rest',
-									'default'	=> (isset($CF_GEOPLUGIN_OPTIONS['enable_rest']) ? $CF_GEOPLUGIN_OPTIONS['enable_rest'] : 0),
-									'html'		=> '<p>' . __('The CF GeoPlugin REST API allows external apps to use geo informations.',CFGP_NAME) . '<br><span class="text-info">' . __('REST API is only functional for the Business License.',CFGP_NAME) . '</span>' . '</p>',
-									array(
-										'text'	=> __('Enable',CFGP_NAME),
-										'value'	=> 1,
-										'id'	=> 'enable_rest_true',
-										'disabled' 	=> (isset($CF_GEOPLUGIN_OPTIONS['enable_beta']) && $CF_GEOPLUGIN_OPTIONS['enable_beta'] ? false : true),
-										'input_class'	=> 'beta-disable'
-									),
-									array(
-										'text'	=> __('Disable',CFGP_NAME),
-										'value'	=> 0,
-										'id'	=> 'enable_rest_false',
 										'disabled' 	=> (isset($CF_GEOPLUGIN_OPTIONS['enable_beta']) && $CF_GEOPLUGIN_OPTIONS['enable_beta'] ? false : true),
 										'input_class'	=> 'beta-disable'
 									)
@@ -835,6 +931,8 @@ if($this->get('action') == 'activate_license')
                                         <h5 class="mt-3"><?php _e('Return standard JSON API response format',CFGP_NAME) ?>:</h5>
                                         <pre class="bg-light">{
 <?php
+if( isset( $CF_GEOPLUGIN_OPTIONS['first_plugin_activation'] ) && (int)$CF_GEOPLUGIN_OPTIONS['first_plugin_activation'] == 1 ) $this->update_option( 'first_plugin_activation', 0 );
+
 $remove = array(
 	'status',
 	'lookup',

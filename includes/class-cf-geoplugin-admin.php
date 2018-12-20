@@ -85,9 +85,9 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
     }
 	
 	// Set custom Javascript
-	public function custom_javascript(){ ?>
-
-<script>
+	public function custom_javascript(){ 
+		?>
+		<script>
 /* <![CDATA[ */
 (function($){
 		
@@ -98,8 +98,11 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 <?php }
 	
 	// Register Scripts
-	public function register_javascripts($page){
+	public function register_javascripts($page){		
+		//$this->add_action('admin_head', 'custom_javascript', 10);
+
 		if(!$this->limit_scripts($page)) return false;
+
 		wp_register_script(  CFGP_NAME . '-popper', CFGP_ASSETS . '/js/popper.min.js', array('jquery'), '4.1.1' );
 		wp_enqueue_script(  CFGP_NAME . '-popper' );
 		
@@ -149,8 +152,6 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 					)
 				)
 			));
-		
-		// $this->add_action('admin_head', 'custom_javascript', 30);
 	}
 
 	// Register CPT and taxonomies scripts
@@ -196,8 +197,8 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 	public function add_cf_geoplugin() {
 		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
 		add_menu_page(
-			'CF Geo Plugin',
-			'CF Geo Plugin',
+			__( 'CF Geo Plugin', CFGP_NAME ),
+			__( 'CF Geo Plugin', CFGP_NAME ),
 			'manage_options',
 			CFGP_NAME,
 			array( &$this, 'page_cf_geoplugin' ),
@@ -222,8 +223,8 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 			{
 				add_submenu_page(
 					CFGP_NAME,
-					__('Geo Defender',CFGP_NAME),
-					__('Geo Defender',CFGP_NAME),
+					__('Spam Protection',CFGP_NAME),
+					__('Spam Protection',CFGP_NAME),
 					'manage_options',
 					CFGP_NAME . '-defender',
 					array( &$this, 'page_cf_geoplugin_defender' )
@@ -248,7 +249,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 					__('SEO Redirection',CFGP_NAME),
 					'manage_options',
 					CFGP_NAME . '-seo-redirection',
-					array( $this, 'page_cf_geoplugin_seo_redirection' )
+					array( &$this, 'page_cf_geoplugin_seo_redirection' )
 				);
 			}
 			add_submenu_page(
@@ -278,7 +279,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 				__('Debug Mode',CFGP_NAME),
 				'manage_options',
 				CFGP_NAME . '-debug',
-				array( $this, 'page_cf_geoplugin_debug' )
+				array( &$this, 'page_cf_geoplugin_debug' )
 			);
 			add_submenu_page(
 				CFGP_NAME,
@@ -286,7 +287,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 				__('Settings',CFGP_NAME),
 				'manage_options',
 				CFGP_NAME . '-settings',
-				array( $this, 'page_cf_geoplugin_settings' )
+				array( &$this, 'page_cf_geoplugin_settings' )
 			);
 			
 			if(!CFGP_ACTIVATED)
@@ -298,7 +299,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 						'<span class="dashicons dashicons-star-filled"></span> '.__('Activate Unlimited',CFGP_NAME),
 						'manage_options',
 						CFGP_NAME . '-activate',
-						array( $this, 'page_cf_geoplugin_license' )
+						array( &$this, 'page_cf_geoplugin_license' )
 					);
 				}
 			}
@@ -307,7 +308,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 	
 	// WP Hidden links by plugin setting page
 	public function plugin_setting_page( $links ) {
-		$mylinks = array( '<a href="' . self_admin_url( 'admin.php?page=' . CFGP_NAME . '-settings' ) . '">Settings</a>', );
+		$mylinks = array( '<a href="' . self_admin_url( 'admin.php?page=' . CFGP_NAME . '-settings' ) . '"><b>Settings</b></a>', );
 		return array_merge( $links, $mylinks );
 	}
 	
@@ -347,7 +348,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
             <ul class="list-unstyled list-feed">
                 <div class="inside<?php echo (isset($_SESSION[CFGP_PREFIX . 'rss']) ? ' rss-loaded' : ''); ?>" id="rss">
                 	<?php
-                    	if( isset($_SESSION[CFGP_PREFIX . 'rss']) ) :
+						if( isset($_SESSION[CFGP_PREFIX . 'rss']) ) :
 							echo $_SESSION[CFGP_PREFIX . 'rss'];
 						else :
 					?>
@@ -388,7 +389,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 				++$i;
 			}
 			
-			$print = join("\r\n", $print);
+			$print = strip_tags( join("\r\n", $print), '<a><img><h1><h2><h3><h4><p><br>' );
 			$_SESSION[CFGP_PREFIX . 'rss'] = $print;
 			echo $print;
 		}
@@ -396,12 +397,16 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 	}
 	
 	/* 
-	 * RSS FEED
+	 * Update plugin options
 	 * @since 7.0.0
 	*/
 	public function cf_geo_update_option()
 	{
 		$name = $this->post('name');
+		$name = explode( '[', $name );
+		$name = $name[0];
+
+
 		if( $name === 'base_currency' )
 		{
 			foreach( $_SESSION as $key => $value )
@@ -413,6 +418,14 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 			}
 		}
 		$value = $this->post('value');
+
+		if( $name === 'connection_timeout' || $name === 'timeout' ) 
+		{
+			if( empty( $value ) || $value < 3 || $value > 9999 ) $value = isset( $this->default_options[ $name ] ) ? $this->default_options[ $name ] : 15;
+			$value = (int)$value;
+		}
+		
+
 		if(isset($this->default_options[$name]))
 		{
 			if($this->update_option($name, $value) !== false)
@@ -546,7 +559,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 			{
 				$wp_admin_bar->add_node( array(
 					'id' => CFGP_NAME . '-defender',
-					'title' => __('CF Geo Defender',CFGP_NAME),
+					'title' => __('Anti Spam Protection',CFGP_NAME),
 					'href' => self_admin_url( 'admin.php?page=' . CFGP_NAME . '-defender'),
 					'meta'  => array( 'class' => CFGP_NAME . '-defender-toolbar-page' ),
 					'parent' => CFGP_NAME,
@@ -555,7 +568,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 				$wp_admin_bar->add_node( array(
 					'id' => CFGP_NAME . '-banner',
 					'title' => __('CF Geo Banner',CFGP_NAME),
-					'href' => get_admin_url() . 'edit.php?post_type=cf-geoplugin-banner',
+					'href' => self_admin_url( 'edit.php?post_type=' . CFGP_NAME . '-banner' ),
 					'meta'  => array( 'class' => CFGP_NAME . '-banner-toolbar-page' ),
 					'parent' => CFGP_NAME,
 				) );
@@ -571,7 +584,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 				$wp_admin_bar->add_node( array(
 					'id' => CFGP_NAME . '-countries',
 					'title' => __('CF Geo Countries',CFGP_NAME),
-					'href' => get_admin_url() . 'edit-tags.php?taxonomy=cf-geoplugin-country&post_type=cf-geoplugin-banner',
+					'href' => self_admin_url( 'edit-tags.php?taxonomy=' . CFGP_NAME . '-country&post_type=cf-geoplugin-banner' ),
 					'meta'  => array( 'class' => CFGP_NAME . '-countries-toolbar-page' ),
 					'parent' => CFGP_NAME,
 				) );
@@ -579,7 +592,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 				$wp_admin_bar->add_node( array(
 					'id' => CFGP_NAME . '-regions',
 					'title' => __('CF Geo Regions',CFGP_NAME),
-					'href' =>  get_admin_url() . 'edit-tags.php?taxonomy=cf-geoplugin-region&post_type=cf-geoplugin-banner',
+					'href' =>  self_admin_url( 'edit-tags.php?taxonomy=' . CFGP_NAME . '-region&post_type=cf-geoplugin-banner' ),
 					'meta'  => array( 'class' => CFGP_NAME . '-regions-toolbar-page' ),
 					'parent' => CFGP_NAME,
 				) );
@@ -587,7 +600,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 				$wp_admin_bar->add_node( array(
 					'id' => CFGP_NAME . '-cities',
 					'title' => __('CF Geo Cities',CFGP_NAME),
-					'href' => get_admin_url() . 'edit-tags.php?taxonomy=cf-geoplugin-city&post_type=cf-geoplugin-banner',
+					'href' => self_admin_url( 'edit-tags.php?taxonomy=' . CFGP_NAME . '-city&post_type=cf-geoplugin-banner' ),
 					'meta'  => array( 'class' => CFGP_NAME . '-city-toolbar-page' ),
 					'parent' => CFGP_NAME,
 				) );
@@ -856,6 +869,8 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 	// Dashboard widgets
 	public function cf_geoplugin_dashboard_widgets()
 	{
+		if( !$this->is_connected() ) return false; // When user doesn't have connection prevent API call errors
+
 		wp_add_dashboard_widget(
 			CFGP_NAME . '-admin-status', 
 			trim(do_shortcode('[cfgeo_flag size="14" image]') . ' ' . __( 'CF Geo Plugin', CFGP_NAME )),
@@ -866,6 +881,8 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 	// Geoplugin admin stats dashboard callback
 	public function cf_geoplugin_dashboard_callback()
 	{
+		if( !$this->is_connected() ) return false; // When user doesn't have connection prevent API call errors
+
 		wp_register_style( CFGP_NAME . '-dashboard-style', CFGP_ASSETS . '/css/cf-geoplugin-dashboard.css', array('dashboard'), CFGP_VERSION );
 		wp_enqueue_style( CFGP_NAME . '-dashboard-style' );
 		
@@ -881,6 +898,8 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 				'version' => true,
 			)
 		));
+
+		if( $plugin === false || is_wp_error( $plugin ) ) return false; // User doesnt't have connection or something is wrong with API so prevent errors
 
 		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS']; $CFGEO = $GLOBALS['CFGEO'];
 		
@@ -959,6 +978,8 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 	}
 	
 	function rv_custom_dashboard_widget() {
+		if( !$this->is_connected() ) return false; // When user doesn't have connection prevent API call errors
+
 		// Bail if not viewing the main dashboard page
 		if ( get_current_screen()->base !== 'dashboard' ) {
 			return;
@@ -979,6 +1000,8 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 				'version' => true,
 			)
 		));
+
+		if( $plugin === false || is_wp_error( $plugin ) ) return false; // User doesnt't have connection or something is wrong with API so prevent errors
 
 		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS']; $CFGEO = $GLOBALS['CFGEO'];
 		
@@ -1024,9 +1047,16 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 							else
 								_e( 'There was error in fetching plugin data.', CFGP_NAME )
 						?>
-						<?php if($plugin_updated && !is_multisite()) : ?>
-							<a href="<?php echo self_admin_url('plugin-install.php?tab=plugin-information&plugin=cf-geoplugin&TB_iframe=true&width=600&height=550'); ?>"  class="button button-primary button-hero">Download new version NOW</a>
-						<?php endif; ?>
+						<?php if($plugin_updated && !is_multisite() && !$this->get( 'cfgp_auto_update', 'bool' ) ) : ?>
+							<a href="<?php echo self_admin_url( 'plugin-install.php?tab=plugin-information&plugin=cf-geoplugin&TB_iframe=true&widht=600&height=550' ); ?>"  class="button button-primary button-hero"><?php _e( 'Download new version NOW', CFGP_NAME ); ?></a>
+						<?php
+							elseif( $plugin_updated && $this->get( 'cfgp_auto_update', 'bool' ) ) :
+								?>
+								<h3><strong><?php _e( 'Plugin Update Process:' ); ?></strong></h3>
+								<?php
+								$this->plugin_auto_update();
+							endif;
+						?>
 						</div>
 					</div>
 					<div class="welcome-panel-column welcome-panel-last">
@@ -1086,7 +1116,17 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 		</script>
 
 <?php }
-		
+
+	/**
+	 * Add async/defer attributes to scripts
+	 */
+	public function add_script_attribute( $tag, $handle )
+	{
+		if( $handle !== CFGP_NAME . '-google-map' ) return $tag;
+
+		return str_replace( ' src', ' async src', $tag );
+	}
+
 	// Construct all
 	function __construct(){
 		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
@@ -1095,14 +1135,16 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 		$this->add_action( 'init', 'load_style' );
 		$this->add_action( 'init', 'export_seo_csv' );
 		$this->add_action( 'admin_init', 'plugin_custom_menu_class' );
-		$this->add_action( 'admin_menu', 'add_cf_geoplugin' );
+		
 		if(CFGP_MULTISITE) $this->add_action( "network_admin_menu", 'add_cf_geoplugin' );
+		else $this->add_action( 'admin_menu', 'add_cf_geoplugin' );
 		
 		$this->add_action( 'page-cf-geoplugin-sidebar', 'add_rss_feed' );
 		$this->add_action( 'page-cf-geoplugin-defender-sidebar', 'add_rss_feed' );
 		$this->add_action( 'page-cf-geoplugin-license-sidebar', 'add_rss_feed' );
 		$this->add_action( 'page-cf-geoplugin-debug-sidebar', 'add_rss_feed' );
 		$this->add_action( 'page-cf-geoplugin-google-map-sidebar', 'add_rss_feed' );
+		$this->add_action( 'page-cf-geoplugin-spam-ip-sidebar', 'add_rss_feed' );
 		
 		$this->add_action( 'wp_ajax_cf_geo_rss_feed', 'cf_geo_rss_feed' );
 		$this->add_action( 'wp_ajax_nopriv_cf_geo_rss_feed', 'cf_geo_rss_feed' );
@@ -1123,7 +1165,8 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 				else $this->add_action( 'wp_dashboard_setup', 'cf_geoplugin_dashboard_widgets' );
 			}
 		}
-		
+
+		//$this->add_filter( 'script_loader_tag', 'add_script_attribute', 10, 2 );
 	}
 }
 endif;

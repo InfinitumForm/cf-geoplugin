@@ -1,11 +1,11 @@
 ﻿=== CF Geo Plugin ===
 Contributors: ivijanstefan, creativform, ej207
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=creativform@gmail.com
-Tags: geo plugin, geo location, geotarget, geo banner, market, conversion, conversion plugin, automatic banner, banner, business, location, google map, gmaps, gmap, seo, seo tool, user experience, ux plugin, contact form, dynamic keyword, ip, ip location, region, position, positioning, marketing, block visitors, defender, block spam, block region, tag, geo, target, local, find ip, ip finder, geo target, geo image, geo content. include content, exclude content, include, exclude, seo redirection, url redirection, country redirection, redirection, flag, country flag, national flag, flags, custom flags, gdpr, localization, ecommerce, legal requiremants, legal, currency, 
+Tags: geoplugin, seo redirection, anti spam, currency converter, google map, content include, content exclude, geo plugin, geolocation, geo target, geo
 Requires at least: 3.0
 Tested up to: 5.0
 Requires PHP: 5.6.0
-Stable tag: 7.3.4
+Stable tag: 7.4.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -38,6 +38,11 @@ The **CF Geo Plugin** is **FREE** plugin that allows you to attach content, geog
 > - **Display local currency**, local symbol or converter
 > - **Use currency converter** to calculate price in local currency
 > 
+> <strong>ANTI SPAM PROTECTION</strong><br>
+> - **Spam protection** from the danger visitors or spammers
+> - **Blocking access** on the website from the specific user defined locations
+> - **Blocking IP Addresses** from accessing on the website
+> 
 > <strong>LOCALIZATION</strong><br>
 > - **Redirect incoming traffic** to content in the local language or currency.
 > - Businesses with local branches **can direct customers to a relevant physical location** or local microsite.
@@ -54,7 +59,7 @@ This plugin is compatible with any Wordpress installation, also compatible with 
 > * **Geo Plugin** - Allows you to attach geographical information inside your content via Shortcodes, PHP and JavaScript objects
 > * **Geo Banner** - Allows you to place dynamic content, images, videos and pages using shortcodes for specfic audience target by geo location
 > * **Google Map** - Allows you to attach Google Map inside content
-> * **Geo Defender** - Allows you to block acces on blog from specific location
+> * **Anti Spam Protection** - Allows you to block acces on blog from spam IP addresses and specific geo locations
 > * **Cloudflare Geolocation Support** - Cloudflare support for visitor geolocation
 > * **DNS Lookup** - Allows you to attach visitor DNS informations
 > * **SSL Support** - Keep you safe
@@ -250,7 +255,7 @@ Please inform us if any of these errors occure via contact form on our website [
 
 1. CF Geo Plugin Available shortcodes and values
 2. CF Google Map shortcodes and setup
-3. CF Geo Defender setup
+3. Anti Spam Protection setup
 4. CF Geo Plugin global setup
 5. Debug Mode for CF Geo Plugin and IP Lookup
 6. Adding shortcode in text editor
@@ -262,191 +267,15 @@ Please inform us if any of these errors occure via contact form on our website [
 
 == Changelog ==
 
-= 7.3.4 =
-* Fixed "Error downloading" in the flag shortcode
-* Fixed multisite recognation bug
-* Fixed missing arguments into notifications
-* Fixed missing REST ID
-* Added advanced dashboard widget
-* Added dashboard widget switching option
-* Optimized PHP code
-
-= 7.3.3 =
-* Fixed country flag attribute issue
-* Fixed dashboard CSS
-* Fixed PHP error into SEO redirection
-* Added PHP_VERSION_ID support
-* Added WP Admin Dashboard widget
-
-= 7.3.2 =
-* Fixed multi SEO redirection field indexing
-
-= 7.3.1 =
-* Fixed visual issue
-* Fixed SEO redirection data display
-
-= 7.3.0 =
-* Allows you to configure multiple redirection rules
-* Fixed bugs from previous version
-
-= 7.2.3 =
-* Fixed PHP Notices from previous version
-* Fixed GUI and notifications inside Settings page
-* Fixed Defender issue on empty fields
-* Improved initial options
-
-= 7.2.2 =
-* Fixed PHP Notice: Undefined index
-
-= 7.2.1 =
-* Added urgent defender fix
-
-= 7.2.0 =
-* Added support for the WordPress version 5.0 and above
-* Added support for the Gutenberg editor
-* Fixed API bugs
-* Added new IP rules for precize localization
-* Added new debugger and error log for the plugin
-* Added full microsite support
-* Fixed cache issue from previous version
-* Fixed REST API bug from previous version
-* Improved load speed
-
-= 7.1.4 =
-* Added cache support for the caching plugins
-* Added descriptions in the settings
-* Fixed license bugs
-* Fixed Live News double calls
-* Removed unnecessary options
-* Better code optimization
-
-= 7.1.3 =
-* Added filter for the X_FORWARDED_FOR
-* Fixed previous bugs
-* Fixed Woocommerce bug
-
-= 7.1.2 =
-* Added support for multisite installation
-* Fixed License Key validation problems
-* Fixed bug with debugger
-* Fixed uninstall bug
-
-= 7.1.1 =
-* Fixed popper.js
-* Added woocommerce validation description
-* Fixed problem with CF admin menu
-* Fixed issue with total cart price conversion
-* Validation and unistall upgrades
-
-= 7.1.0 =
-* Woocommerce integration
-* Woocommerce currency converter
-* Integrated REST API for the external apps and integrations
-* Fixed bugs from the prevous version
-
-= 7.0.4 =
-* Fixed Geo Banner shortcode bug
-
-= 7.0.3 =
-* Fixed API communication
-
-= 7.0.2 =
-* Fixed activation bug
-* Added translation functionality
-
-= 7.0.1 =
-* Fixed Upgrade
-
-= 7.0.0 =
-
-* New Functionality like multiple SEO redirection, auto update, new shortcode functionality...
-* New GUI - better aproach to all options including easy shortcode access
-* New Shortcodes - simple shortcodes (BETA: you can choose to not use it), new attributes
-* New SEO redirection - now you can setup redirection by region and city as well
-* New optimized PHP code
-* New locale lookup
-* Optimized code
-* Better debbuging
-* Optimized lookup
-* Ability to complete turn off all functionality that you not need
-* Maximum secure data
-* Fixed bugs from the previous versions
-* CSV upload for the SEO redirection
-* CSV backup for the SEO redirection
-* Localization integration
+= 7.4.1 =
+* Fixed PHP Fatal error in widget area
+* Fixed Google Map API ver 2 notice
 
 == Upgrade Notice ==
 
-= 7.3.4 =
-* Fixed "Error downloading" in the flag shortcode
-* Fixed multisite recognation bug
-* Fixed missing arguments into notifications
-* Fixed missing REST ID
-* Added advanced dashboard widget
-* Added dashboard widget switching option
-* Optimized PHP code
-
-= 7.3.3 =
-* Fixed country flag attribute issue
-* Fixed dashboard CSS
-* Fixed PHP error into SEO redirection
-* Added PHP_VERSION_ID support
-* Added WP Admin Dashboard widget
-
-= 7.3.2 =
-* Fixed multi SEO redirection field indexing
-
-= 7.3.1 =
-* Fixed visual issue
-* Fixed SEO redirection data display
-
-= 7.3.0 =
-* Allows you to configure multiple redirection rules
-* Fixed bugs from previous version
-
-= 7.2.3 =
-* Fixed PHP Notices from previous version
-* Fixed GUI and notifications inside Settings page
-* Fixed Defender issue on empty fields
-* Improved initial options
-
-= 7.2.2 =
-* Fixed PHP Notice: Undefined index
-
-= 7.2.1 =
-* Added urgent defender fix
-
-= 7.2.0 =
-* Added support for the WordPress version 5.0 and above
-* Added support for the Gutenberg editor
-* Fixed API bugs
-* Added new IP rules for precize localization
-* Added new debugger and error log for the plugin
-* Added full microsite support
-* Fixed cache issue from previous version
-* Fixed REST API bug from previous version
-* Improved load speed
-
-= 7.1.4 =
-* Added cache support for the caching plugins
-* Added descriptions in the settings
-* Fixed license bugs
-* Fixed Live News double calls
-* Removed unnecessary options
-* Better code optimization
-
-= 7.1.2 =
-IMPORTANT UPGRADE - Added support for multisite installation and fixed license key validation
-
-= 7.0.4 =
-IMPORTANT UPGRADE - Fixed Geo Banner shortcode bug
-
-= 7.0.3 =
-IMPORTANT UPGRADE - API communication fix
-
-= 7.0.0 =
-Please upgrade your plugin to version 7.x
-
+= 7.4.1 =
+* Fixed PHP Fatal error in widget area
+* Fixed Google Map API ver 2 notice
 
 == Other Notes ==
 

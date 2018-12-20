@@ -1,6 +1,6 @@
 <?php if ( ! defined( 'WPINC' ) ) { die( "Don't mess with us." ); }
 /**
- * Metaboxes
+ * WooCommerce integration
  *
  * @since      7.0.0
  * @package    CF_Geoplugin
@@ -248,7 +248,7 @@ class CF_Geoplugin_Woocommerce extends CF_Geoplugin_Global
 
         if( $currency_args !== false && $this->cf_conversion !== 'original' )
         {
-            echo '<div class="woocommerce-converted-price">';
+            echo '<div class="woocommerce-original-price">';
             $all_rates = $WC->session->get('shipping_for_package_0')['rates'];
 			foreach($all_rates  as $method_id => $rate ){
                 if( $WC->session->get('chosen_shipping_methods')[0] == $method_id )

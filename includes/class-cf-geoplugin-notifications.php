@@ -10,6 +10,7 @@ if(!class_exists('CF_Geoplugin_Notifications')) :
 class CF_Geoplugin_Notifications extends CF_Geoplugin_Global
 {
 	function __construct(){
+		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
 		if(!CFGP_ACTIVATED)
 		{
 			if(
@@ -28,10 +29,26 @@ class CF_Geoplugin_Notifications extends CF_Geoplugin_Global
 		$this->add_action( 'plugins_loaded', 'version_notice' );
 
 		$this->add_action( 'plugins_loaded', 'like_plugin' );
+
+		/**
+		 * Settings notice
+		 */
+		if(
+			isset($_GET['page']) && (
+				$_GET['page'] == 'cf-geoplugin-activate' ||
+				$_GET['page'] == 'cf-geoplugin-settings'
+			)
+		){} elseif( isset( $CF_GEOPLUGIN_OPTIONS['first_plugin_activation'] ) && (int)$CF_GEOPLUGIN_OPTIONS['first_plugin_activation'] == 1 )
+		{
+			$this->add_action( 'plugins_loaded', 'settings_notice' );
+		}
 	}
 	
 	// Like Plugin
 	public function like_plugin() {
+		global $pagenow;
+		if( $pagenow == 'post.php' || $pagenow == 'post-new.php' ) return false;
+		
 		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
 		
 		if( time() >= ($CF_GEOPLUGIN_OPTIONS['plugin_activated'] + (60 * 60 * 24 * 5)))
@@ -54,6 +71,9 @@ class CF_Geoplugin_Notifications extends CF_Geoplugin_Global
 	// Activation notice
 	public function activation_notice() {
 		$CFGEO = $GLOBALS['CFGEO'];
+		global $pagenow;
+
+		if( $pagenow == 'post.php' || $pagenow == 'post-new.php' ) return false;
 		
 		if( !current_user_can( 'activate_plugins'  ) ) return;
 		
@@ -89,6 +109,9 @@ class CF_Geoplugin_Notifications extends CF_Geoplugin_Global
 	 */
 	public function version_notice()
 	{ 
+		global $pagenow;
+		if( $pagenow == 'post.php' || $pagenow == 'post-new.php' ) return false;
+
 		global $wp_version;
 		if( !current_user_can( 'activate_plugins'  ) || ( version_compare( $wp_version, '3.0', '>=' ) && version_compare( PHP_VERSION, '5.6.0', '>=' ) ) ) return;
 		global $wp_version;
@@ -122,5 +145,22 @@ class CF_Geoplugin_Notifications extends CF_Geoplugin_Global
 			array( 'dismissible' => false )
 		);
 	} 
+
+	/**
+	 * Inform user about settings
+	 */
+	public function settings_notice()
+	{
+		global $pagenow;
+		if( $pagenow == 'post.php' || $pagenow == 'post-new.php' ) return false;
+
+		$title = $title = __( 'CF Geo Plugin Settings', CFGP_NAME );
+		self::notice()->register_notice(
+			'settings',
+			'warning',
+			sprintf( '<h3>%s</h3><p>%s <a href="%s">%s</a></p>', $title, __( 'We recommend after first or fresh plugin activation to check settings page. Please', CFGP_NAME ), self_admin_url( 'admin.php?page=cf-geoplugin-settings' ), __( 'click here to visit settings page.', CFGP_NAME ) ),
+			array( 'dismissible' => false )
+		);
+	}
 }
 endif;

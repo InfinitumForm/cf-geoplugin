@@ -18,7 +18,7 @@ global $wp_version;
         <div class="col-12">
             <h1 class="h5 mt-3">
                 <i class="fa fa-lock text-left"></i>
-                <?php _e( 'CF Geo Defender', CFGP_NAME ); ?>
+                <?php _e( 'Anti Spam Protection', CFGP_NAME ); ?>
             </h1>
             <hr>
         </div>
@@ -97,19 +97,19 @@ global $wp_version;
                 do_action('page-cf-geoplugin-defender-before-tab'); 
                 if( $this->get( 'test', 'bool' ) === true )
                 {
-                    die( wpautop(html_entity_decode( stripslashes( $this->get_option('block_country_messages') ) ) ));
+                    die( wpautop( html_entity_decode( stripslashes( $this->get_option('block_country_messages') ) ) ) );
                     exit;
                 }
             ?>
             <ul class="nav nav-tabs" role="tablist">
                 <li class="nav-item">
-                    <a class="nav-link text-dark <?php echo $active_general; ?>" href="#general-defender" role="tab" data-toggle="tab"><span class="fa fa-wrench"></span> General Defender Settings</a>
+                    <a class="nav-link text-dark <?php echo $active_general; ?>" href="#general-defender" role="tab" data-toggle="tab"><span class="fa fa-wrench"></span> <?php _e( 'General Defender Settings', CFGP_NAME ); ?></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-dark <?php echo $active_page; ?>" href="#defender-page" role="tab" data-toggle="tab"><span class="fa fa-file"></span> Defender page</a>
+                    <a class="nav-link text-dark <?php echo $active_page; ?>" href="#defender-page" role="tab" data-toggle="tab"><span class="fa fa-file"></span> <?php _e( 'Defender page', CFGP_NAME ); ?></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-dark" href="<?php echo self_admin_url( 'admin.php?page='. $_GET['page'] .'&test=true' ); ?>" target="_blank"><span class="fa fa-desktop"></span> Defender test</a>
+                    <a class="nav-link text-dark" href="<?php echo self_admin_url( 'admin.php?page='. $_GET['page'] .'&test=true' ); ?>" target="_blank"><span class="fa fa-desktop"></span> <?php _e( 'Defender test', CFGP_NAME ); ?></a>
                 </li>
                 <?php do_action('page-cf-geoplugin-defender-tab'); ?>
             </ul>
@@ -118,8 +118,19 @@ global $wp_version;
                 <div role="tabpanel" class="tab-pane fade in <?php echo $active_general; ?>" id="general-defender">
                 	<div class="row">
                         <div class="col-12">
-                            <p><?php echo sprintf(__("With %s you can block the access from the specific IP, country, state and city to your site. Names of countries, states, regions or cities are not case sensitive, but the name must be entered correctly (in English) to get this feature work correctly. This feature is very safe and does not affect to SEO.",CFGP_NAME),'<strong>'.__("CF Geo Defender",CFGP_NAME).'</strong>'); ?></p>
-                            <p><?php _e("Please, don't use this like antispam or antivirus, this option is only to prevent access to vebsite from specific locations. This option will remove all your content, template, design and display custom message to your visitors.", CFGP_NAME); ?></p>
+                            <?php
+                                $blacklist_text = '<strong>'
+									.sprintf(__( 'Automatic IP address blacklist check is NOT ENABLED. If you want additional protection %1$s', CFGP_NAME ),
+									'<a href="'.self_admin_url('admin.php?page=cf-geoplugin-settings#Spam_Protection').'">'
+										.__('enable it in settings', CFGP_NAME)
+									.'</a>')
+								.'</strong>';
+                                
+								if( isset( $CF_GEOPLUGIN_OPTIONS['enable_spam_ip'] ) && $CF_GEOPLUGIN_OPTIONS['enable_spam_ip'] ) $blacklist_text = __( '<strong>Automatic IP Address Blacklist Check</strong> is enabled. All of these IPs are from safe source and most of them are bots and crawlers. Blackliested IPs will be automatically recognized and blocked. If you don\'t want this kind of protection disable it in plugin settings', CFGP_NAME );
+                            ?>
+                            <p><?php printf(__("With %s you can block the access from the specific IP, country, state and city to your site. Names of countries, states, regions or cities are not case sensitive, but the name must be entered correctly (in English) to get this feature work correctly. This feature is very safe and does not affect to SEO.",CFGP_NAME),'<strong>'.__("Anti Spam Protection",CFGP_NAME).'</strong>'); ?></p>
+                            <p><?php echo $blacklist_text; ?></p>
+                            <p><?php _e( 'This options will remove all your content, template, design and display custom message to your visitors.', CFGP_NAME ); ?></p>
                         </div>
                         <div class="col-12">
                             <form method="post" enctype="multipart/form-data" action="<?php echo self_admin_url( 'admin.php?page='. $_GET['page'] .'&settings-updated=true&setting=general'); ?>" target="_self" id="template-options-tab">
@@ -261,7 +272,7 @@ global $wp_version;
                                 <div class="form-group">
                                     <label for="block_country_message" ><?php _e('Message that is displayed to a blocked visitor (HTML allowed)',CFGP_NAME); ?>:</label>
                                     <?php
-                                        $settings = array( 'textarea_name'  => 'block_country_messages', 'editor_height' => 450 );
+                                        $settings = array( 'textarea_name'  => 'block_country_messages', 'editor_height' => 450, 'textarea_rows' => 30 );
                                         $block_country_messages = html_entity_decode( trim( $this->get_option('block_country_messages') ) );
                                         if( empty( $block_country_messages ) )
                                         {

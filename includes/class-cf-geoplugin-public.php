@@ -17,6 +17,7 @@ class CF_Geoplugin_Public extends CF_Geoplugin_Global
 	
 	public function run_style(){
 		$this->add_action( 'wp_enqueue_scripts', 'register_style' );
+		$this->add_action( 'wp_enqueue_scripts', 'register_scripts' );
 		$this->add_action( 'admin_enqueue_scripts', 'register_style' );
 	}
 	
@@ -42,8 +43,27 @@ class CF_Geoplugin_Public extends CF_Geoplugin_Global
 				);
 				wp_enqueue_style( CFGP_NAME . '-woocommerce' );
 			}
+
 		}
 		
+	}
+
+	public function register_scripts()
+	{
+		if( !is_admin() )
+		{
+			wp_register_script( CFGP_NAME . '-js-public', CFGP_ASSETS . '/js/cf-geoplugin-public.js', array( 'jquery' ), CFGP_VERSION, true );
+			wp_localize_script(
+				CFGP_NAME . '-js-public',
+				'CFGP_PUBLIC',
+				array(
+					'ajax_url'			=> self_admin_url( 'admin-ajax.php' ),
+					'loading_gif'		=> esc_url( CFGP_ASSETS . '/images/double-ring-loader.gif' )
+				)
+			);
+			wp_enqueue_script( CFGP_NAME . '-js-public' );
+
+		} 
 	}
 	
 	public function initialize_plugin_javascript(){ $CFGEO = $GLOBALS['CFGEO']; ?>
@@ -54,9 +74,12 @@ class CF_Geoplugin_Public extends CF_Geoplugin_Global
 	cf.geoplugin = {url:window.location.href,host:window.location.hostname,protocol:window.location.protocol.replace(/\:/g,''),<?php
 		$exclude = array_map('trim', explode(',','state,continentCode,areaCode,dmaCode,timezoneName,currencySymbol,currencyConverter,error,status,runtime,error_message'));
 		$sprintf = array();
-		$CFGEO = array_merge($CFGEO,array(
-			'flag' => CFGP_ASSETS.'/flags/4x3/'.strtolower($CFGEO['country_code']).'.svg'
-		));
+		if( isset( $CFGEO['country_code'] ) && !empty( $CFGEO['country_code'] ) )
+		{
+			$CFGEO = array_merge($CFGEO,array(
+				'flag' => CFGP_ASSETS.'/flags/4x3/'.strtolower($CFGEO['country_code']).'.svg'
+			));
+		}
 		foreach($CFGEO as $name=>$value)
 		{
 			if(in_array($name, $exclude, true) === false){
@@ -69,6 +92,7 @@ class CF_Geoplugin_Public extends CF_Geoplugin_Global
 /* ]]> */
 </script>
 
-    <?php }
+	<?php }
+
 }
 endif;

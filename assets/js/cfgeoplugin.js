@@ -121,6 +121,14 @@ $.fn.alerts = function(text, type){
 				debounce = setTimeout(function(){
 					var value = $this.val(),
 						name = $this.attr('name');
+
+					if( name == 'enable_seo_posts[]' )
+					{
+						value = [];
+						$( '.enable_seo_posts:checked' ).each( function() {
+							value.push( $(this).val() );
+						});
+					}
 					
 					$('input, select, textarea', $($$)).prop('disabled', true);
 					
@@ -200,7 +208,18 @@ $.fn.alerts = function(text, type){
 									$( '#woo_integration_html' ).hide();
 								}
 							}
-						}
+							else if( name == 'enable_defender' )
+							{
+								if( value == 1 )
+								{
+									$( '.enable_spam_ip' ).prop( 'disabled', false ).removeClass( 'disabled' );
+								}
+								else
+								{
+									$( '.enable_spam_ip' ).prop( 'disabled', true ).addClass( 'disabled' );
+								}
+							}
+						} 
 						else if(d == 'error')
 						{
 							$('#alert').alerts(CFGP.label.settings.error,'danger');
