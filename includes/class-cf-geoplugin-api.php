@@ -28,8 +28,6 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
 		'api_alternate' 		=> 'http://159.203.47.151/api6.0/index.php?ip={IP}&sip={SIP}&t={TIME}&r={HOST}&v={VERSION}&m={M}&p={P}&base_convert={CURRENCY}',
 		'dns' 					=> 'https://cdn-cfgeoplugin.com/api6.0/dns.php?ip={IP}&sip={SIP}&r={HOST}&v={VERSION}&p={P}',
 		'dns_alternate' 		=> 'http://159.203.47.151/api6.0/dns.php?ip={IP}&sip={SIP}&r={HOST}&v={VERSION}&p={P}',
-//		'activate' 				=> 'https://cdn-cfgeoplugin.com/api6.0/activate.php?action=license_key_validate&store_code={SC}&sku={SKU}&license_key={LC}&domain={D}&activation_id={AI}',
-//		'activate_alternate' 	=> 'http://159.203.47.151/api6.0/activate.php?action=license_key_validate&store_code={SC}&sku={SKU}&license_key={LC}&domain={D}&activation_id={AI}'
 	);
 	
 	/**
@@ -99,7 +97,7 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
 			'base_currency'	=>	( isset( $CF_GEOPLUGIN_OPTIONS['base_currency'] ) ? $CF_GEOPLUGIN_OPTIONS['base_currency'] : 'USD' ),
 			'debug'			=>	false
 		);
-//		$this->validate_license();
+
 		// replace default options
 		if (version_compare(PHP_VERSION, '7.0.0') >= 0)
 			$this->option=array_replace($option, $options);
@@ -152,7 +150,7 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
 			}
 			
 			$m_unit = 'km';
-			$m_accuracy = isset( $geodata->accuracy ) ? $geodata->accuracy : '';
+			$m_accuracy = isset( $geodata->accuracy ) ? $geodata->accuracy : 1;
 			
 			if(isset($CF_GEOPLUGIN_OPTIONS['measurement_unit']))
 			{
@@ -399,105 +397,7 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
 		
 		return (object)$return;
 	}
-	/**
-	protected function validate_license()
-	{
-		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
-		
-		if(isset($_GET['page']) && isset($_GET['action']) && $_GET['page'] == 'cf-geoplugin-settings' && $_GET['action'] == 'activate_license'):
-
-			$urlReplace = array(
-				$CF_GEOPLUGIN_OPTIONS['store_code'],
-				$CF_GEOPLUGIN_OPTIONS['license_sku'],
-				$CF_GEOPLUGIN_OPTIONS['license_key'],
-				self::get_host(),
-				$CF_GEOPLUGIN_OPTIONS['license_id'],
-			);
-			$urlPharams = array(
-				'{SC}',
-				'{SKU}',
-				'{LC}',
-				'{D}',
-				'{AI}'
-			);
-			$url = str_replace($urlPharams, $urlReplace, $this->url['activate'] );
-			$data = self::curl_get($url);
-
-			if($data !== false)
-			{
-				$data=json_decode($data);
-				if(isset($data->error) && $data->error === true)
-				{
-					$CF_GEOPLUGIN_OPTIONS['license_key'] = '';
-					$CF_GEOPLUGIN_OPTIONS['license_id'] = '';
-					$CF_GEOPLUGIN_OPTIONS['license_expire'] = '';
-					$CF_GEOPLUGIN_OPTIONS['license_expire_date'] = '';
-					$CF_GEOPLUGIN_OPTIONS['license_url'] = '';
-					$CF_GEOPLUGIN_OPTIONS['license_expired'] = '';
-					$CF_GEOPLUGIN_OPTIONS['license_status'] = '';
-					$CF_GEOPLUGIN_OPTIONS['license_sku'] = '';
-					$CF_GEOPLUGIN_OPTIONS['license'] = 0;
-					
-					if( !CFGP_MULTISITE )
-						update_option('cf_geoplugin', $CF_GEOPLUGIN_OPTIONS, true);
-					else
-						update_site_option('cf_geoplugin', $CF_GEOPLUGIN_OPTIONS);
-						
-					$GLOBALS['CF_GEOPLUGIN_OPTIONS']=$CF_GEOPLUGIN_OPTIONS;
-				}
-				else
-				{
-					foreach($_SESSION as $key => $val)
-					{
-						if(strpos($key, CFGP_PREFIX) !== false && $key !== CFGP_PREFIX . 'session_expire')
-						{
-							unset($_SESSION[ $key ]);
-						}
-					}
-				}
-			}
-			else
-			{
-				$url = str_replace($urlPharams, $urlReplace, $this->url['activate_alternate'] );
-				$data = self::curl_get($url);
-				if($data !== false)
-				{
-					$data=json_decode($data);
-					if(isset($data->error) && $data->error === true)
-					{					
-						$CF_GEOPLUGIN_OPTIONS['license_key'] = '';
-						$CF_GEOPLUGIN_OPTIONS['license_id'] = '';
-						$CF_GEOPLUGIN_OPTIONS['license_expire'] = '';
-						$CF_GEOPLUGIN_OPTIONS['license_expire_date'] = '';
-						$CF_GEOPLUGIN_OPTIONS['license_url'] = '';
-						$CF_GEOPLUGIN_OPTIONS['license_expired'] = '';
-						$CF_GEOPLUGIN_OPTIONS['license_status'] = '';
-						$CF_GEOPLUGIN_OPTIONS['license_sku'] = '';
-						$CF_GEOPLUGIN_OPTIONS['license'] = 0;
-						
-						if( !CFGP_MULTISITE )
-							update_option('cf_geoplugin', $CF_GEOPLUGIN_OPTIONS, true);
-						else
-							update_site_option('cf_geoplugin', $CF_GEOPLUGIN_OPTIONS);
-							
-						$GLOBALS['CF_GEOPLUGIN_OPTIONS']=$CF_GEOPLUGIN_OPTIONS;
-					}
-					else
-					{
-						foreach($_SESSION as $key => $val)
-						{
-							if(strpos($key, CFGP_PREFIX) !== false && $key !== CFGP_PREFIX . 'session_expire')
-							{
-								unset($_SESSION[ $key ]);
-							}
-						}
-						
-					}
-				}
-			}
-		endif;
-	}	
-	**/
+	
 	private function check_validations()
 	{
 		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
@@ -507,14 +407,6 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
 			$expire = (int)$CF_GEOPLUGIN_OPTIONS['license_expire'];
 			if($expire > 0 && time() > $expire)
 			{
-			//	$CF_GEOPLUGIN_OPTIONS['license_key'] = '';
-			//	$CF_GEOPLUGIN_OPTIONS['license_id'] = '';
-			//	$CF_GEOPLUGIN_OPTIONS['license_expire'] = '';
-			//	$CF_GEOPLUGIN_OPTIONS['license_expire_date'] = '';
-			//	$CF_GEOPLUGIN_OPTIONS['license_url'] = '';
-			//	$CF_GEOPLUGIN_OPTIONS['license_expired'] = '';
-			//	$CF_GEOPLUGIN_OPTIONS['license_status'] = '';
-			//	$CF_GEOPLUGIN_OPTIONS['license_sku'] = '';
 				$CF_GEOPLUGIN_OPTIONS['license'] = 0;
 				
 				if( !CFGP_MULTISITE )

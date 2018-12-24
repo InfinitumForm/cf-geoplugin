@@ -8,7 +8,7 @@
  * Plugin Name:       CF Geo Plugin
  * Plugin URI:        http://cfgeoplugin.com/
  * Description:       Create Dynamic Content, Banners and Images on Your Website Based On Visitor Geo Location By Using Shortcodes With CF GeoPlugin.
- * Version:           7.3.4
+ * Version:           7.4.2
  * Author:            Ivijan-Stefan Stipic
  * Author URI:        https://linkedin.com/in/ivijanstefanstipic
  * License:           GPL-2.0+
@@ -35,17 +35,6 @@
 if ( ! defined( 'WPINC' ) ) { die( "Don't mess with us." ); }
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-
-// PHP_VERSION_ID is available as of PHP 5.2.7, if our version is lower than that, then emulate it
-if (!defined('PHP_VERSION_ID')) {
-    $php_version = explode('.', PHP_VERSION);
-    define('PHP_VERSION_ID', ($php_version[0] * 10000 + $php_version[1] * 100 + $php_version[2]));
-	$php_version = NULL;
-}
-
-// First initialization
-$GLOBALS['CFGEO'] = array();
-$GLOBALS['CF_GEOPLUGIN_OPTIONS'] = array();
 /**
  * DEBUG MODE
  *
@@ -69,10 +58,22 @@ if ( defined( 'WP_CF_GEO_DEBUG' ) ){
 	}
 }
 
+// PHP_VERSION_ID is available as of PHP 5.2.7, if our version is lower than that, then emulate it
+if (!defined('PHP_VERSION_ID')) {
+    $php_version = explode('.', PHP_VERSION);
+    define('PHP_VERSION_ID', ($php_version[0] * 10000 + $php_version[1] * 100 + $php_version[2]));
+	$php_version = NULL;
+}
+
+// First initialization
+$GLOBALS['CFGEO'] = array();
+$GLOBALS['CF_GEOPLUGIN_OPTIONS'] = array();
+
+
 // Main plugin file
 if ( ! defined( 'CFGP_FILE' ) )				define( 'CFGP_FILE', __FILE__ );
 // Current plugin version
-if ( ! defined( 'CFGP_VERSION' ) )			define( 'CFGP_VERSION', '7.3.4');
+if ( ! defined( 'CFGP_VERSION' ) )			define( 'CFGP_VERSION', '7.4.2');
 // Plugin root
 if ( ! defined( 'CFGP_ROOT' ) )				define( 'CFGP_ROOT', rtrim(plugin_dir_path(CFGP_FILE), '/') );
 // Includes directory
@@ -95,7 +96,6 @@ if ( ! defined( 'CFGP_STORE' ) )			define( 'CFGP_STORE', 'https://cfgeoplugin.co
 if ( ! defined( 'CFGP_LIMIT' ) )			define( 'CFGP_LIMIT', 300);
 // Developer license
 if( ! defined( 'CFGP_DEV_MODE' ) )			define( 'CFGP_DEV_MODE', false );
-// Check if is multisite installation
 
 // Check if is multisite installation
 if( ! defined( 'CFGP_MULTISITE' ) )			

@@ -20,13 +20,31 @@ class CF_Geoplugin_Defender extends CF_Geoplugin_Global
     // Protect site from visiting
     public function protect()
     {
+        $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
         if( $this->check() && !is_admin() )
         {
-            $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
             header( $this->header );
-            if( isset( $CF_GEOPLUGIN_OPTIONS['block_country_messages'] ) ) die( html_entity_decode( stripslashes( $CF_GEOPLUGIN_OPTIONS['block_country_messages'] ) ) );
+            if( isset( $CF_GEOPLUGIN_OPTIONS['block_country_messages'] ) ) die( wpautop( html_entity_decode( stripslashes( $CF_GEOPLUGIN_OPTIONS['block_country_messages'] ) ) ) );
             else die();
             exit;
+        }
+
+        if( isset( $CF_GEOPLUGIN_OPTIONS['enable_spam_ip'] ) && $CF_GEOPLUGIN_OPTIONS['enable_spam_ip'] && isset( $CF_GEOPLUGIN_OPTIONS['enable_defender'] ) && $CF_GEOPLUGIN_OPTIONS['enable_defender'] && self::access_level( $CF_GEOPLUGIN_OPTIONS['license_sku'] ) > 0 )
+        {
+            $CFGEO = $GLOBALS['CFGEO'];
+            $url = add_query_arg( 'ip', $CFGEO['ip'], 'https://cdn-cfgeoplugin.com/api6.0/spam-checker.php' );
+            $response = $this->curl_get( $url );
+            
+            if( $response !== false )
+            {
+                $response = json_decode( $response, true );
+                if( isset( $response['return'] ) && $response['return'] === true && isset( $response['error'] ) && $response['error'] === false )
+                {
+                    header( $this->header );
+                    die( wpautop( html_entity_decode( stripslashes( $CF_GEOPLUGIN_OPTIONS['block_country_messages'] ) ) ) );
+                    exit;
+                }
+            }
         }
     }
 
@@ -38,7 +56,7 @@ class CF_Geoplugin_Defender extends CF_Geoplugin_Global
         $flag = false;
 
         $ips = explode( ',', $CF_GEOPLUGIN_OPTIONS['block_ip'] );
-        if( !empty( $ips ) && isset( $CFGEO['ip'] ) && in_array( $CFGEO['ip'], $ips, true ) !== false ) $flag = true;
+        if( !empty( $ips ) && isset( $CFGEO['ip'] ) && !empty( $CFGEO['ip'] ) && in_array( $CFGEO['ip'], $ips, true ) !== false ) $flag = true;
 
         if( $flag === false )
         {

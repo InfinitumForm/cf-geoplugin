@@ -87,14 +87,17 @@ class CF_Geoplugin_Metabox extends CF_Geoplugin_Global
         $screens = get_post_types( $args, 'names' );
         foreach( $screens as $page )
         {
-            add_meta_box(
-                CFGP_NAME . '-seo-redirection',
-                __( 'SEO Redirections', CFGP_NAME ),
-                array( &$this, 'meta_box_seo_redirection' ),
-                $page,
-                'normal',
-				'low'
-            );
+            if( isset( $CF_GEOPLUGIN_OPTIONS['enable_seo_posts'] ) && is_array( $CF_GEOPLUGIN_OPTIONS['enable_seo_posts'] ) && in_array( $page, $CF_GEOPLUGIN_OPTIONS['enable_seo_posts'] ) )
+            {
+                add_meta_box(
+                    CFGP_NAME . '-seo-redirection',
+                    __( 'SEO Redirections', CFGP_NAME ),
+                    array( &$this, 'meta_box_seo_redirection' ),
+                    $page,
+                    'normal',
+                    'low'
+                );
+            }
         }
    
         add_meta_box(

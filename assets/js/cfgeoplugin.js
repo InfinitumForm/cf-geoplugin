@@ -42,7 +42,7 @@ $.fn.alerts = function(text, type){
 	 * @since 7.0.0
 	*/
 	var debounce,
-		debounce_delay = 250;
+		debounce_delay = 600;
 		
 	/* 
 	 * RSS FEED
@@ -91,37 +91,17 @@ $.fn.alerts = function(text, type){
 	(function($$){
 		if( $($$) )
 		{
-			$('input, select, textarea', $($$)).on('input keyup change select paste',function(e){
+			$($$).on('submit',function(e){
+				e.preventDefault();
 				clearTimeout(debounce);
-				var $this = $(this),
-					type = undefined,
-					parent = $this.parents($$),
+				var $this = $( $$ ),
+					field_values = $this.serializeArray(),
 					delay = debounce_delay;
 				
 				$('#alert').alerts(CFGP.label.loading,'info');
-				
-				switch(true)
-				{
-					case $this.is('input'):
-						type = $this.attr('type');
-						break;
-					case $this.is('select'):
-						type = 'select';
-						break;
-					case $this.is('textarea'):
-						type = 'textarea';
-						break;
-				}
-				
-				if(['radio','checkbox','slide','select'].indexOf(type) > -1)
-				{
-					delay=1;
-				}
 					
 				debounce = setTimeout(function(){
-					var value = $this.val(),
-						name = $this.attr('name');
-					
+
 					$('input, select, textarea', $($$)).prop('disabled', true);
 					
 					
@@ -130,76 +110,13 @@ $.fn.alerts = function(text, type){
 						cache : false,
 						async : true,
 						url : CFGP.ajaxurl,
-						data : {action:'cf_geo_update_option', name : name, value : value}
+						data : {action:'cf_geo_update_option', name : 'cfgp_options', value : field_values}
 					}).done(function(d){
 						$('input, select, textarea', $($$)).prop('disabled', false);
 						$('input.disabled, select.disabled, textarea.disabled', $($$)).prop('disabled', true);
 						if(d == 'true')
 						{
 							$('#alert').alerts(CFGP.label.settings.saved,'success');
-							if(name == 'proxy')
-							{
-								if(value == 1)
-								{
-									$('.proxy-disable').prop('disabled',false).removeClass('disabled');
-								}
-								else
-								{
-									$('.proxy-disable').prop('disabled',true).addClass('disabled');
-								}
-							}
-							else if(name == 'enable_gmap')
-							{
-								if(value == 1)
-								{
-									$('.nav-item > a[href^="#settings-google-map"]').parent().show();
-									$('#toplevel_page_cf-geoplugin a[href^="admin.php?page=cf-geoplugin-google-map"]').parent().show();
-								}
-								else
-								{
-									$('.nav-item > a[href^="#settings-google-map"]').parent().hide();
-									$('#toplevel_page_cf-geoplugin a[href^="admin.php?page=cf-geoplugin-google-map"]').parent().hide();
-								}
-							}
-							else if(name == 'enable_rest')
-							{
-								if(value == 1)
-								{
-									$('.nav-item > a[href^="#settings-rest-api"]').parent().show();
-								}
-								else
-								{
-									$('.nav-item > a[href^="#settings-rest-api"]').parent().hide();
-								}
-							}
-							else if(name == 'enable_beta')
-							{
-								if(value == 1)
-								{
-									$('.beta-disable').prop('disabled',false).removeClass('disabled');
-									$('.nav-item > a[href^="#settings-rest-api"]').parent().show();
-								}
-								else
-								{
-									$('.beta-disable').prop('disabled',true).addClass('disabled');
-									$('.nav-item > a[href^="#settings-rest-api"]').parent().hide();
-								}
-							}
-							else if(name == 'enable_woocommerce')
-							{
-								if(value == 1)
-								{
-									$('#base_currency').prop('disabled',true).addClass('disabled');
-									$('#base_currency_info').show();
-									$( '#woo_integration_html' ).show();
-								}
-								else
-								{
-									$('#base_currency').prop('disabled',false).removeClass('disabled');
-									$('#base_currency_info').hide();
-									$( '#woo_integration_html' ).hide();
-								}
-							}
 						}
 						else if(d == 'error')
 						{
@@ -218,8 +135,79 @@ $.fn.alerts = function(text, type){
 				},delay);
 			});
 		}
-	}('.cfgp-autosave'));
+	}('.cfgp_options_form'));
 	
+	/**
+	 * Enable or disable some settings fiedls
+	 */
+	(function( $$ ) {
+		if( $( $$ ) )
+		{
+			$( $$ ).on( 'change', function( e ) {
+				if( $( '#proxy_true' ).is( ':checked' ) )
+				{
+					$('.proxy-disable').prop('disabled',false).removeClass('disabled');
+				}
+				else
+				{
+					$('.proxy-disable').prop('disabled',true).addClass('disabled');
+				}
+
+				if( $( '#enable_gmap_true' ).is( ':checked' ) )
+				{
+					
+					$('.nav-item > a[href^="#settings-google-map"]').parent().show();
+					$('#toplevel_page_cf-geoplugin a[href^="admin.php?page=cf-geoplugin-google-map"]').parent().show();
+				}
+				else
+				{
+					$('.nav-item > a[href^="#settings-google-map"]').parent().hide();
+					$('#toplevel_page_cf-geoplugin a[href^="admin.php?page=cf-geoplugin-google-map"]').parent().hide();
+				}
+
+				if( $( '#enable_rest_true' ).is( ':checked' ) )
+				{
+					$('.nav-item > a[href^="#settings-rest-api"]').parent().show();
+				}
+				else
+				{
+					$('.nav-item > a[href^="#settings-rest-api"]').parent().hide();
+				}
+
+				if( $( '#enable_beta_true' ).is( ':checked' ) )
+				{
+					$('.beta-disable').prop('disabled',false).removeClass('disabled');
+				}
+				else
+				{
+					$('.beta-disable').prop('disabled',true).addClass('disabled');
+				}
+
+				if( $( '#enable_woocommerce_true' ).is( ':checked' ) )
+				{
+					$('#base_currency').prop('disabled',true).addClass('disabled');
+					$('#base_currency_info').show();
+					$( '#woo_integration_html' ).show();
+				}
+				else
+				{
+					$('#base_currency').prop('disabled',false).removeClass('disabled');
+					$('#base_currency_info').hide();
+					$( '#woo_integration_html').hide();
+				}
+
+				if( $( '#enable_defender_true' ).is( ':checked' ) )
+				{
+					$( '.enable_spam_ip' ).prop( 'disabled', false ).removeClass( 'disabled' );
+				}
+				else
+				{
+					$( '.enable_spam_ip' ).prop( 'disabled', true ).addClass( 'disabled' );
+				}
+			});
+		}
+	})( 'input[type^="radio"]' );
+
 	/* 
 	 * REMEBER TAB POSSITION IN SETTINGS
 	 * @since 7.0.0

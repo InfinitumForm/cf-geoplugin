@@ -22,12 +22,9 @@ a:active{
 .list-feed > li + li{
 	margin-top:24px;
 }
-.custom-radio .custom-control-input:checked~.custom-control-label::before {
-    background-color: #fd4624;
-}
-.custom-control-input:checked~.custom-control-label::before {
-    background-color: #fd4624;
-}
+.custom-radio .custom-control-input:checked~.custom-control-label::before,
+.custom-control-input:checked~.custom-control-label::before,
+.custom-checkbox .custom-control-input:checked~.custom-control-label::before,
 input[type=radio]:checked:before {
     background-color: #fd4624;
 }

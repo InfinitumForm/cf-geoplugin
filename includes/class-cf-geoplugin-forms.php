@@ -36,7 +36,7 @@ class CF_Geoplugin_Form extends CF_Geoplugin_Global
 			$arguments
 		);
 		ob_start(); ?>
-		<div class="form-group row  align-items-center<?php 
+		<div class="form-group row align-items-center<?php 
 			if( !empty($attr['container_class']) ) echo ' ' . esc_attr($attr['container_class']);
 		?>">
             <label for="<?php 
@@ -63,7 +63,7 @@ class CF_Geoplugin_Form extends CF_Geoplugin_Global
 				?>" id="<?php 
 					echo esc_attr($attr['id']); 
 				?>" value="<?php 
-					echo esc_attr($this->post($attr['name'], 'string', $attr['value'])) 
+					echo esc_attr($this->post($attr['name'], 'string', $attr['value']));
 				?>"<?php 
 					if( isset($attr['attr']) && is_array($attr['attr']) && count($attr['attr']) > 0 ) {
 						foreach($attr['attr'] as $a => $v) printf(' %1$s="%2$s"', $a, esc_attr($v));
@@ -108,7 +108,7 @@ class CF_Geoplugin_Form extends CF_Geoplugin_Global
 			$arguments
 		);
 		ob_start(); ?>
-		<div class="form-group row  align-items-center<?php 
+		<div class="form-group row align-items-center<?php 
 			if( !empty($attr['container_class']) ) echo ' ' . esc_attr($attr['container_class']);
 		?>">
             <label for="<?php 
@@ -188,7 +188,7 @@ class CF_Geoplugin_Form extends CF_Geoplugin_Global
 			$arguments
 		);
 		ob_start(); ?>
-		<div class="form-group row  align-items-center<?php 
+		<div class="form-group row align-items-center<?php 
 			if( !empty($attr['container_class']) ) echo ' ' . esc_attr($attr['container_class']);
 		?>">
             <label for="<?php 
@@ -205,7 +205,7 @@ class CF_Geoplugin_Form extends CF_Geoplugin_Global
 				?></strong>
             <?php else: ?>
             	<?php foreach($attr as $key => $obj) : if(is_numeric($key)) : ?>
-                    <div class="custom-control custom-radio custom-control-inline cfgp-autosave">
+                    <div class="custom-control custom-checkbox custom-control-inline cfgp-autosave">
                     	<input tabindex="<?php echo $this->tabindex; ?>" type="checkbox" class="custom-control-input<?php 
 							if( !empty($obj['input_class']) ) echo ' ' . $obj['input_class'];
 							if( isset($obj['disabled']) && $obj['disabled'] === true ) echo ' disabled';
@@ -220,7 +220,9 @@ class CF_Geoplugin_Form extends CF_Geoplugin_Global
 							if(isset($obj['attr']) && is_array($obj['attr']) && count($obj['attr']) > 0 ) {
 								foreach($obj['attr'] as $a => $v) sprintf(' %1$s="%2$s"', $a, esc_attr($v));
 							};
-							if( $obj['value'] == $this->post($obj['name'], 'string', (string)$obj['default']) ) echo ' checked';
+							if( !is_array( $obj['default'] ) && $obj['value'] == $this->post($obj['name'], 'string', (string)$obj['default']) || $obj['value'] == $obj['default'] ) echo ' checked';
+							elseif( is_array( $obj['default'] ) && in_array( $obj['value'], $obj['default'] ) ) echo ' checked';
+
 							if( isset($obj['disabled']) && $obj['disabled'] === true ) echo ' disabled';
 							if( isset($obj['readonly']) && $obj['readonly'] === true ) echo ' readonly';
 						?>>
@@ -269,7 +271,7 @@ class CF_Geoplugin_Form extends CF_Geoplugin_Global
 			$arguments
 		);
 		ob_start(); ?>
-		<div class="form-group row  align-items-center<?php 
+		<div class="form-group row align-items-center<?php 
 			if( !empty($attr['container_class']) ) echo ' ' . esc_attr($attr['container_class']);
 		?>">
             <label for="<?php 
@@ -319,6 +321,70 @@ class CF_Geoplugin_Form extends CF_Geoplugin_Global
 	}
 	
 	function textarea( $arguments ){
+		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
+		$attr = array_merge(
+			array(
+				'label'				=> 'Textarea ' . $this->tabindex,
+				'name'				=> '',
+				'value'				=> '',
+				'cols'				=> false,
+				'rows'				=> false,
+				'id'				=> 'textarea-field-' . $this->tabindex,
+				'label_class' 		=> '',
+				'input_class' 		=> '',
+				'container_class' 	=> '',
+				'html' 				=> '',
+				'disabled'			=> false,
+				'readonly'			=> false,
+				'attr'				=> array(),
+				'license'			=> false,
+				'license_message'	=> ''
+			),
+			$arguments
+		);
+		ob_start(); ?>
+		<div class="form-group row<?php 
+			if( !empty($attr['container_class']) ) echo ' ' . esc_attr($attr['container_class']);
+		?>">
+        <label for="<?php 
+				echo isset($attr[0]['id']) ? esc_attr($attr[0]['id']) : ''; 
+			?>" class="col-md-4 col-lg-3 col-form-label<?php 
+				if( !empty($attr['label_class']) ) echo ' ' . esc_attr($attr['label_class']);
+			?>"><?php 
+				echo $attr['label']; 
+			?>:</label>
+            <div class="col-md-8 col-lg-9 cfgp-autosave">
+            <?php if($attr['license'] && is_numeric($attr['license']) && self::access_level($CF_GEOPLUGIN_OPTIONS['license_sku']) < $attr['license']): ?>
+            	<strong class="text-danger"><?php 
+					echo esc_attr($attr['license_message']); 
+				?></strong>
+            <?php else: ?>
+            	<textarea tabindex="<?php echo $this->tabindex; ?>" class="form-control<?php 
+					if( !empty($attr['input_class']) ) echo ' ' . esc_attr($attr['input_class']);
+					if( isset($attr['disabled']) && $attr['disabled'] === true ) echo ' disabled';
+					if( isset($attr['readonly']) && $attr['readonly'] === true ) echo ' readonly';
+				?>" name="<?php 
+					echo esc_attr($attr['name']); 
+				?>" id="<?php 
+					echo esc_attr($attr['id']); 
+				?>"<?php
+					if(!empty($attr['cols'])) echo ' cols="'.$attr['cols'].'"';
+					if(!empty($attr['rows'])) echo ' rows="'.$attr['rows'].'"';
+					if( isset($attr['attr']) && is_array($attr['attr']) && count($attr['attr']) > 0 ) {
+						foreach($attr['attr'] as $a => $v) printf(' %1$s="%2$s"', $a, esc_attr($v));
+					}
+					if( isset($attr['disabled']) && $attr['disabled'] === true ) echo ' disabled';
+					if( isset($attr['readonly']) && $attr['readonly'] === true ) echo ' readonly';
+				?>><?php 
+					echo $this->post($attr['name'], 'html', $attr['value']);
+				?></textarea><?php 
+					if( !empty($attr['html'])) echo $attr['html'];
+				?>
+            <?php endif; ?>
+            </div>
+        </div>
+		<?php $this->form_fields[$attr['name']] = ob_get_clean();
+		$attr = NULL;
 	}
 	
 	function html( $html ){
@@ -344,9 +410,6 @@ class CF_Geoplugin_Form extends CF_Geoplugin_Global
 		printf('<form %1$s>%2$s</form>', join(' ', $fields), join("\r\n", $this->form_fields));
 		$this->tabindex = 1;
 		$this->form_fields = array();
-		
-		ob_flush();
-		flush();
 	}
 }
 endif;

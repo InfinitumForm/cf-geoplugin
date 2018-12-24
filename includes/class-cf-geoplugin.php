@@ -13,8 +13,23 @@ class CF_Geoplugin_Init extends CF_Geoplugin_Global
 	 * Run all plugin functions here
 	*/
 	public function run(){
+		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
 		$this->add_action('plugins_loaded', 'load_textdomain');
-		$this->add_filter('auto_update_plugin', 'auto_update', 10, 2);
+
+		if( isset( $CF_GEOPLUGIN_OPTIONS['enable_update'] ) && $CF_GEOPLUGIN_OPTIONS['enable_update'] )
+		{
+			if( self::access_level( $CF_GEOPLUGIN_OPTIONS['license_sku'] ) > 0 )
+			{
+				$this->add_filter( 'cron_schedules', 'custom_cron_intervals' );
+				$this->add_action( 'cfgp_auto_update', 'plugin_auto_update' ); 
+				$this->add_action( 'plugins_loaded', 'cron_jobs' );
+			}
+		}
+		elseif( wp_next_scheduled( 'cfgp_auto_update' ) !== false )
+		{
+			$time = wp_next_scheduled( 'cfgp_auto_update' );
+			wp_unschedule_event( $time, 'cfgp_auto_update' );
+		}
 		
 		$debug = $GLOBALS['debug']; // Easy use of debugger
 		$debug->save( '------------ LOADING ALL CLASSES ------------' );
@@ -180,6 +195,13 @@ class CF_Geoplugin_Init extends CF_Geoplugin_Global
 				else $debug->save( 'Defender class not loaded - Class does not exists' );
 			}
 			else $debug->save( 'Defender class not loaded - File does not exists' );
+
+			// Include Widgets
+			if( file_exists( CFGP_INCLUDES . '/class-cf-geoplugin-widget-converter.php' ) )
+			{
+				require_once CFGP_INCLUDES . '/class-cf-geoplugin-widget-converter.php';
+				//new CF_Geoplugin_Converter;
+			}
 		}
 	}
 	
@@ -216,8 +238,7 @@ class CF_Geoplugin_Init extends CF_Geoplugin_Global
 			$collect['plugin_activated']=time();
 			// Save deactivation time
 			$collect['plugin_deactivated']=0;
-			
-			
+			 
 			// GET DEPRECATED AND REMOVE IT
 			$something_old = get_option('cf_geo_enable_banner');
 			if(!empty($something_old))
@@ -295,7 +316,7 @@ class CF_Geoplugin_Init extends CF_Geoplugin_Global
 		$charset_collate = $wpdb->get_charset_collate();
 
 		$sql1 = "
-			CREATE TABLE IF NOT EXISTS $table_name (
+			CREATE TABLE IF NOT EXISTS {$table_name} (
 			`id` int(11) NOT NULL AUTO_INCREMENT,
 			`country` varchar(100) NOT NULL,
 			`region` varchar(100) NOT NULL,
@@ -309,8 +330,8 @@ class CF_Geoplugin_Init extends CF_Geoplugin_Global
 		";
 
 		// Require dbDelta to create/update table
-		require_once ( ABSPATH . 'wp-admin/includes/upgrade.php'  );
-		dbdelta( $sql1 );
+		if( !function_exists( 'dbDelta' ) ) require_once ( ABSPATH . 'wp-admin/includes/upgrade.php'  );
+		dbDelta( $sql1 );
 		$debug->save( 'Plugin activated and tables created' );
 	}
 	
@@ -340,20 +361,32 @@ class CF_Geoplugin_Init extends CF_Geoplugin_Global
 		wp_clear_scheduled_hook('cf_geo_validate');
 		// Set deactivated time
 		$this->update_option('plugin_deactivated', time());
+		// Clear auto update hook
+		wp_clear_scheduled_hook( 'cfgp_auto_update' );
 	}
 	
 	/*
-	 * Update plugin automaticaly
+	 * Custom cron intervals
 	*/
-	public function auto_update($update, $item){
-		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
-		if ( strpos($item->slug, 'cf-geoplugin') !== false && isset( $CF_GEOPLUGIN_OPTIONS['enable_update'] ) && $CF_GEOPLUGIN_OPTIONS['enable_update'] == 1 ) {
-			if( isset( $GLOBALS['debug'] ) ) $GLOBALS['debug']->save( 'Plugin auto-updated' );
-			return true;
-		}
-		return $update;
+	public function custom_cron_intervals( $intervals )
+	{
+		$intervals['five_minutes'] = array(
+			'interval'		=> 5 * MINUTE_IN_SECONDS,
+			'display'		=> __( 'Five Minutes', CFGP_NAME )
+		);
+
+		return $intervals;
 	}
-	
-	
+
+	/**
+	 * Cron jobs
+	 */
+	public function cron_jobs()
+	{
+		if( !wp_next_scheduled( 'cfgp_auto_update' ) )
+		{
+			wp_schedule_event( time(), 'five_minutes', 'cfgp_auto_update' );
+		}
+	}	
 }
 endif;

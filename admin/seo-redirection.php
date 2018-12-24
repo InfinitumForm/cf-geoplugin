@@ -62,14 +62,17 @@ else
     <div class="row">
 		<div class="col-12">
         	<a class="btn btn-primary btn-sm" href="<?php echo self_admin_url( 'admin.php?page='. $_GET['page'] .'&action=add-new&page_num='. $page_num ); ?>"><span class="fa fa-plus"></span> <?php _e( 'Add new redirection', CFGP_NAME ); ?></a>
-            <?php if(CF_Geoplugin_Global::access_level($CF_GEOPLUGIN_OPTIONS) > 0): ?>
-				<?php if(isset($CF_GEOPLUGIN_OPTIONS['enable_beta_seo_csv']) ? ($CF_GEOPLUGIN_OPTIONS['enable_beta'] && $CF_GEOPLUGIN_OPTIONS['enable_beta_seo_csv']) : 1) : ?>
-                <a class="btn btn-outline-secondary btn-sm pull-right ml-2 mr-2" href="<?php echo self_admin_url( 'admin.php?page='. $_GET['page'] .'&action=export_csv' ); ?>"><span class="fa fa-arrow-circle-right"></span> <?php _e( 'Export as CSV' ); ?></a>
-                <a class="btn btn-success btn-sm pull-right" href="<?php echo self_admin_url( 'admin.php?page='. $_GET['page'] .'&action=import_csv' ); ?>"><span class="fa fa-file"></span> <?php _e( 'Import from CSV' ); ?></a>
+            <?php 
+                if( isset( $CF_GEOPLUGIN_OPTIONS['enable_beta_seo_csv'] ) && $CF_GEOPLUGIN_OPTIONS['enable_beta_seo_csv'] ) :
+                    if(CF_Geoplugin_Global::access_level($CF_GEOPLUGIN_OPTIONS) > 0): ?>
+                    <?php if(isset($CF_GEOPLUGIN_OPTIONS['enable_beta_seo_csv']) ? ($CF_GEOPLUGIN_OPTIONS['enable_beta'] && $CF_GEOPLUGIN_OPTIONS['enable_beta_seo_csv']) : 1) : ?>
+                    <a class="btn btn-outline-secondary btn-sm pull-right ml-2 mr-2" href="<?php echo self_admin_url( 'admin.php?page='. $_GET['page'] .'&action=export_csv' ); ?>"><span class="fa fa-arrow-circle-right"></span> <?php _e( 'Export as CSV' ); ?></a>
+                    <a class="btn btn-success btn-sm pull-right" href="<?php echo self_admin_url( 'admin.php?page='. $_GET['page'] .'&action=import_csv' ); ?>"><span class="fa fa-file"></span> <?php _e( 'Import from CSV' ); ?></a>
+                    <?php endif; ?>
+                <?php else :  ?>
+                    <a class="btn btn-outline-secondary btn-sm pull-right ml-2 mr-2" href="javascript:void(0);" data-container="body" data-toggle="popover" data-placement="left" data-trigger="hover" data-content="<?php _e('Export as CSV is enabled only with valid license.',CFGP_NAME); ?>"><span class="fa fa-arrow-circle-right"></span> <?php _e( 'Export as CSV' ); ?></a>
+                    <a class="btn btn-success btn-sm pull-right" href="javascript:void(0);" data-container="body" data-toggle="popover" data-placement="left" data-trigger="hover" data-content="<?php _e('Import from CSV is enabled only with valid license.',CFGP_NAME); ?>"><span class="fa fa-file"></span> <?php _e( 'Import from CSV' ); ?></a>
                 <?php endif; ?>
-            <?php else :  ?>
-            	<a class="btn btn-outline-secondary btn-sm pull-right ml-2 mr-2" href="javascript:void(0);" data-container="body" data-toggle="popover" data-placement="left" data-trigger="hover" data-content="<?php _e('Export as CSV is enabled only with valid license.',CFGP_NAME); ?>"><span class="fa fa-arrow-circle-right"></span> <?php _e( 'Export as CSV' ); ?></a>
-                <a class="btn btn-success btn-sm pull-right" href="javascript:void(0);" data-container="body" data-toggle="popover" data-placement="left" data-trigger="hover" data-content="<?php _e('Import from CSV is enabled only with valid license.',CFGP_NAME); ?>"><span class="fa fa-file"></span> <?php _e( 'Import from CSV' ); ?></a>
             <?php endif; ?>
         </div>
         <div class="col-12">
@@ -93,8 +96,11 @@ else
                         foreach( $redirects as $redirect )
                         {
                             $country = get_term_by( 'slug', $redirect['country'], 'cf-geoplugin-country', ARRAY_A );
+
                             $region = get_term_by( 'slug', $redirect['region'], 'cf-geoplugin-region', ARRAY_A );
+
                             $city = get_term_by( 'slug', $redirect['city'], 'cf-geoplugin-city', ARRAY_A );
+
                             $disabled = ( (int)$redirect['active'] == 0 ? '<small class="text-danger">'. __( 'Disabled', CFGP_NAME ) .'</small>' : '' );
 							
 							$c_name = array_filter(array($country['name'], $country['description']));
