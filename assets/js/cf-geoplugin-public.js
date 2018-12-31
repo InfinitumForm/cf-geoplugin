@@ -33,7 +33,7 @@
             'method': 'POST',
             'data': formData,
             'cache' : false,
-            'url': CFGP_PUBLIC.ajax_url + '?action=cfgp_currency_converter',
+            'url': CFGP_PUBLIC.ajax_url + '?action=cfgeo_full_currency_converter',
             beforeSend: function()
             {
                 $( $this ).find( 'p.cfgp-currency-converted' ).html( '<div class="card w-100 text-white bg-secondary"><div class="card-body text-center"><img src="'+ CFGP_PUBLIC.loading_gif +'" /></div></div>' );

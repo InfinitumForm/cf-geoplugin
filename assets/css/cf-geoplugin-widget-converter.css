@@ -1,0 +1,57 @@
+.cfgp-currency-form{
+	display:block;
+}
+.cfgp-currency-form > .cfgp-form-group{
+	display:block;
+}
+.cfgp-currency-form > .cfgp-form-group+.cfgp-form-group{
+	margin-top:15px;
+}
+.cfgp-currency-form > .cfgp-form-group .cfgp-form-label{
+	display:block;
+	width:100%;
+}
+.cfgp-currency-form > .cfgp-form-group .cfgp-form-control{
+	display:block;
+	width:100%;
+}
+
+.cfgp-currency-form > .cfgp-form-group.cfgp-form-group-result img{
+	display:block;
+	margin: 0 auto;
+}
+
+.cfgp-currency-form > .cfgp-form-group.cfgp-form-group-result .cfgp-currency-results-amount,
+.cfgp-currency-form > .cfgp-form-group.cfgp-form-group-result .cfgp-currency-results-amount+.cfgp-currency-results-info{
+	margin: 0;
+    padding: 0;
+}
+
+.cfgp-currency-form > .cfgp-form-group.cfgp-form-group-result .cfgp-currency-results-amount > .cfgp-currency-results-amount-current{
+	font-size:80%;
+	display:block;
+}
+.cfgp-currency-form > .cfgp-form-group.cfgp-form-group-result .cfgp-currency-results-amount > .cfgp-currency-results-amount-separator{
+	display:none;
+}
+.cfgp-currency-form > .cfgp-form-group.cfgp-form-group-result .cfgp-currency-results-amount > .cfgp-currency-results-amount-converted{
+	font-size:130%;
+	font-weight:bold;
+	display:block;
+}
+.cfgp-currency-form > .cfgp-form-group.cfgp-form-group-result .cfgp-currency-results-info{
+	font-size:75%;
+}
+
+.cfgp-currency-form > .cfgp-form-group button.cfgp-exchange-currency{
+	background-color: transparent;
+	border: none;
+    color: #cc0000;
+}
+
+.cfgp-currency-form > .cfgp-form-group button.cfgp-exchange-currency:hover,
+.cfgp-currency-form > .cfgp-form-group button.cfgp-exchange-currency:focus{
+	background-color: transparent;
+	border: none;
+	color: #ff0000;
+}

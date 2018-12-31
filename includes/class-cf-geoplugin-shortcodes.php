@@ -17,12 +17,14 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 			// EXPERIMENTAL Generate Shortcodes by type
 			$this->add_action( 'wp_loaded', 'shortcode_automat_setup' );
 		}
+		
 		// Deprecated CF GeoPlugin shortcode but supported for now
 		$this->add_shortcode('cf_geo', 'cf_geoplugin');
 		if( $CF_GEOPLUGIN_OPTIONS['enable_beta'] === 1  &&  $CF_GEOPLUGIN_OPTIONS['enable_beta_shortcode'] === 1 ){
 			// EXPERIMENTAL BUT SUPPORTED
 			if ( !shortcode_exists( 'geo' ) ) $this->add_shortcode('geo', 'cf_geoplugin');
 		}
+		
 		// Official CF GeoPlugin shortcode
 		$this->add_shortcode('cfgeo', 'cf_geoplugin');
 		
@@ -57,6 +59,29 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 
 		// Converter shortcode
 		$this->add_shortcode( 'cfgeo_converter', 'cfgeo_converter' );
+		
+		// Escape shortcodes
+		if ( !shortcode_exists( 'escape_shortcode' ) ) $this->add_shortcode( 'escape_shortcode', 'cfgeo_escape_shortcode' );
+
+		// Full converter shortcode
+		$this->add_shortcode( 'cfgeo_full_converter', 'cfgeo_full_converter' );
+		$this->add_action( 'wp_ajax_cfgeo_full_currency_converter', 'cfgeo_full_currency_converter' );
+	}
+	
+	
+	/**
+	 * Escape shortcodes for the internal docummentation purposes
+	 *
+	 * @since      7.4.3
+	 * @version    7.4.3
+	*/
+	public function cfgeo_escape_shortcode($attr, $content=''){
+		
+		if(!empty($content)){
+			$content = preg_replace('%\[(.*?)\]%i','&lsqb;$1&rsqb;',$content);
+		}
+		
+		return $content;
 	}
 	
 	
@@ -233,9 +258,7 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 				marker : [],
 				infoWindow : []
 			},
-			initMaps = document.getElementsByClassName('CF_GeoPlugin_Google_Map_Shortcode'),
-			i,
-			e;
+			initMaps = document.getElementsByClassName('CF_GeoPlugin_Google_Map_Shortcode'), i, e;
 			
 		for(i=0; i<initMaps.length; i++)
 		{
@@ -425,30 +448,26 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 		
 
 		$content = trim($content);
-	
-		$str='<div class="CF_GeoPlugin_Google_Map_Shortcode" style="width:'.esc_attr($att->width).'; height:'.esc_attr($att->height).'"';
-		$str.=' data-zoom="'.esc_attr($att->zoom).'"';
-		$str.=' data-draggable="'.esc_attr($att->draggable).'"';
-		$str.=' data-scaleControl="'.esc_attr($att->scaleControl).'"';
-		$str.=' data-mapTypeControl="'.esc_attr($att->mapTypeControl).'"';
-		$str.=' data-navigationControl="'.esc_attr($att->navigationControl).'"';
-		$str.=' data-scrollwheel="'.esc_attr($att->scrollwheel).'"';
 		
-		$str.=' data-lat="'.esc_attr(!empty($att->lat)?$att->lat:$att->latitude).'"';
-		$str.=' data-lng="'.esc_attr(!empty($att->lng)?$att->lng:$att->longitude).'"';
-		
-		if(!empty($att->title)) $str.=' data-title="'.esc_attr($att->title).'"';
-		if(!empty($att->address)) $str.=' data-address="'.esc_attr($att->address).'"';
-		if(!empty($att->pointer)) $str.=' data-pointer="'.esc_attr($att->pointer).'"';
-		if(!empty($content)) $str.=' data-infoMaxWidth="'.esc_attr($att->infoMaxWidth).'"';
-		if(!empty($att->locations)) $str.=' data-locations="'.esc_attr($att->locations).'"';
-		
-		$str.= '>'.$content.'</div>';		
+		$attributes = array();
+		$attributes[]='data-zoom="'.esc_attr($att->zoom).'"';
+		$attributes[]='data-draggable="'.esc_attr($att->draggable).'"';
+		$attributes[]='data-scaleControl="'.esc_attr($att->scaleControl).'"';
+		$attributes[]='data-mapTypeControl="'.esc_attr($att->mapTypeControl).'"';
+		$attributes[]='data-navigationControl="'.esc_attr($att->navigationControl).'"';
+		$attributes[]='data-scrollwheel="'.esc_attr($att->scrollwheel).'"';
+		$attributes[]='data-lat="'.esc_attr(!empty($att->lat)?$att->lat:$att->latitude).'"';
+		$attributes[]='data-lng="'.esc_attr(!empty($att->lng)?$att->lng:$att->longitude).'"';
+		if(!empty($att->title))		$attributes[]='data-title="'.esc_attr($att->title).'"';
+		if(!empty($att->address))	$attributes[]='data-address="'.esc_attr($att->address).'"';
+		if(!empty($att->pointer))	$attributes[]='data-pointer="'.esc_attr($att->pointer).'"';
+		if(!empty($content))		$attributes[]='data-infoMaxWidth="'.esc_attr($att->infoMaxWidth).'"';
+		if(!empty($att->locations))	$attributes[]='data-locations="'.esc_attr($att->locations).'"';
 		
 		$this->add_action( 'wp_footer', 'CF_GeoPlugin_Google_Map_Shortcode_Script' );
 		$this->add_action( 'admin_footer', 'CF_GeoPlugin_Google_Map_Shortcode_Script' );
 
-		return trim( $str );
+		return '<div class="CF_GeoPlugin_Google_Map_Shortcode" style="width:'.esc_attr($att->width).'; height:'.esc_attr($att->height).'"'.join(' ', $attributes).'>'.$content.'</div>';
 	}
 		
 	
@@ -592,10 +611,16 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 		$atts['align'] = strtoupper( $atts['align'] );
 		if( !isset( $symbols[ $from ] ) || !isset( $symbols[ $to ] ) ) return $content;
  
-
-		$symbol_from = mb_convert_encoding( $symbols[ $from ], 'UTF-8' );
-		$symbol_to = mb_convert_encoding( $symbols[ $to ], 'UTF-8' );
-
+		if(function_exists('mb_convert_encoding'))
+		{
+			$symbol_from = mb_convert_encoding( $symbols[ $from ], 'UTF-8' );
+			$symbol_to = mb_convert_encoding( $symbols[ $to ], 'UTF-8' );
+		}
+		else
+		{
+			$symbol_from = CF_Geoplugin_Global::mb_convert_encoding( $symbols[ $from ] );
+			$symbol_to = CF_Geoplugin_Global::mb_convert_encoding( $symbols[ $to ] );
+		}
 		$content = filter_var( $content, FILTER_SANITIZE_NUMBER_FLOAT,  FILTER_FLAG_ALLOW_FRACTION );
 
 		if( $from === $to )
@@ -618,6 +643,200 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 		if( !isset( $result['to_amount'] ) || empty( $result['to_amount'] ) ) return $this->generate_converter_output( $content, $symbol_from, $atts['align'], $atts['separator'] );
 
 		return $this->generate_converter_output( $result['to_amount'], $symbol_to, $atts['align'], $atts['separator'] );
+	}
+
+	/**
+	 * Full converter shortcode
+	 * 
+	 * @since 7.4.2
+	 */
+	public function cfgeo_full_converter( $atts, $content = '' )
+	{
+		wp_enqueue_style( CFGP_NAME . '-widget-converter' );
+		$currency_symbols = CF_Geplugin_Library::CURRENCY_SYMBOL;
+
+		$CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
+
+		$instance = shortcode_atts(
+			array(
+				'title'	=> __( 'Currency converter', CFGP_NAME ),
+				'before_title' => '',
+				'after_title'	=> '',
+				'amount'	=> 1,
+				'from'		=> __( 'From', CFGP_NAME ),
+				'to'		=> __( 'To', CFGP_NAME ),
+				'convert'	=> __( 'Convert', CFGP_NAME ),
+			), 
+			$atts, 
+			'cfgeo_full_converter'
+		);
+		?>
+		<div class="cfgp-container-fluid mt-3 w-100">
+			<div class="cfgp-card w-100 text-white bg-info">
+				<div class="cfgp-card-body">
+					<?php 
+						$title = isset( $instance['title'] ) && !empty( $instance['title'] ) ? esc_html( $instance['title'] ) : '';
+						echo $instance['before_title'];
+						printf( '%s', apply_filters( 'widget_title', $title ) ); 
+						echo $instance['after_title'];
+					?>
+					<div class="cfgp-row">
+						<div class="cfgp-col-12">
+						<form action="<?php self_admin_url( 'admin-ajax.php?action=cfgeo_full_currency_converter' ); ?>" class="cfgp-currency-form" method="post">
+							<div class="cfgp-form-group cfgp-form-group-amount">
+								<?php 
+									$label_amount = sprintf( '%s-%s', 'cfgp-currency-amount', $this->generate_token(5) );
+									$amount = ( isset( $instance['amount'] ) && !empty( $instance['amount'] ) ) ? esc_html( $instance['amount'] ) : esc_html__( 'Amount', CFGP_NAME );
+								?>
+								<label class="cfgp-form-label" for="<?php echo $label_amount; ?>"><?php echo $amount ?></label>
+								<input type="text" name="cfgp_currency_amount" class="cfgp-form-control" id="<?php echo $label_amount; ?>" placeholder="<?php echo $amount; ?>">
+							</div>
+							
+							<?php $label_from = sprintf( '%s-%s', 'cfgp-currency-from', $this->generate_token(5) ); ?>
+							<div class="cfgp-form-group cfgp-form-group-from">
+								<label class="cfgp-form-label" for="<?php echo $label_from; ?>"><?php echo ( isset( $instance['from'] ) && !empty( $instance['from'] ) ) ? esc_html( $instance['from'] ) : esc_html__( 'From', CFGP_NAME ); ?></label>
+								<select name="cfgp_currency_from" class="cfgp-form-control cfgp-custom-select cfgp-col-10 cfgp-currency-from" id="<?php echo $label_from; ?>" data-show-subtext="true">
+									<?php
+										foreach( $currency_symbols as $key => $countries )
+										{
+											$selected = '';
+											if( isset( $CF_GEOPLUGIN_OPTIONS['base_currency'] ) && $CF_GEOPLUGIN_OPTIONS['base_currency'] == $key ) $selected = ' selected';
+
+											$symbol = '';
+											if( isset( $currency_symbols[ $key ] ) && !empty( $currency_symbols[ $key ] ) ) $symbol = sprintf( '- %s', $currency_symbols[ $key ] );
+											printf( '<option value="%s" %s>%s %s</option>', $key, $selected, $key, $symbol );
+										}
+									?>
+								</select>
+							</div>
+	
+							<?php $label_to = sprintf( '%s-%s', 'cfgp-currency-to', $this->generate_token(5) ); ?>
+							<div class="cfgp-form-group cfgp-form-group-to">
+								<label class="cfgp-form-label" for="<?php echo $label_to; ?>"><?php echo ( isset( $instance['to'] ) && !empty( $instance['to'] ) ) ? esc_html( $instance['to'] ) : esc_html__( 'To', CFGP_NAME ); ?></label>
+								<select name="cfgp_currency_to" class="cfgp-form-control cfgp-custom-select cfgp-col-10 cfgp-currency-to" id="<?php echo $label_to; ?>" data-show-subtext="true">
+									<?php
+										foreach( $currency_symbols as $key => $countries )
+										{
+											$selected = '';
+											if( isset( $CFGEO['currency'] ) && $CFGEO['currency'] == $key ) $selected = ' selected';
+
+											$symbol = '';
+											if( isset( $currency_symbols[ $key ] ) && !empty( $currency_symbols[ $key ] ) ) $symbol = sprintf( '- %s', $currency_symbols[ $key ] );
+											printf( '<option value="%s" %s>%s %s</option>', $key, $selected, $key, $symbol );
+										}
+									?>
+								</select>
+							</div>
+							<div class="cfgp-form-group cfgp-form-group-result">
+								<?php wp_nonce_field( 'cfgeo_full_currency_converter' ); ?>
+								<p class="cfgp-currency-converted"></p>
+							</div>
+							<div class="cfgp-form-group cfgp-form-group-submit">
+								<button type="submit" class="button submit cfgp-btn cfgp-btn-calculate"><?php esc_html_e( $instance['convert'], CFGP_NAME ); ?></button>
+								<button type="button" class="button submit cfgp-btn cfgp-exchange-currency">&#8646;</button> 
+							</div>
+						</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Ajax call for currency conversion
+	 */
+	public function cfgeo_full_currency_converter()
+	{
+		if( !isset( $_REQUEST['_wpnonce'] ) || !wp_verify_nonce( $_REQUEST['_wpnonce'], 'cfgeo_full_currency_converter' ) )
+		{
+			$this->show_conversion_card_message( 'error_direct' );
+			wp_die();
+		}
+
+		$amount = filter_var( $_REQUEST['cfgp_currency_amount'], FILTER_SANITIZE_NUMBER_FLOAT,  FILTER_FLAG_ALLOW_FRACTION );
+
+		if( empty( $amount ) )
+		{
+			$this->show_conversion_card_message( 'error_user' );
+			wp_die();
+		}
+
+		$amount = str_replace( '-', '', $amount );
+		$api_params = array(
+			'from'		=> strtoupper( $_REQUEST['cfgp_currency_from'] ),
+			'to'		=> strtoupper( $_REQUEST['cfgp_currency_to'] ),
+			'amount'	=> $amount
+		);
+		$api_url = add_query_arg( $api_params, 'http://cdn-cfgeoplugin.com/api6.0/convert.php' );
+
+		$result = $this->curl_get( $api_url );
+		
+		$result = json_decode( $result, true );
+
+		if( isset( $result['return'] ) )
+		{
+			if( $result['return'] == false ) $this->show_conversion_card_message( 'error_api' );
+			else
+			{
+				$this->show_conversion_card_message( 'success', $result );
+			}
+		}
+		else $this->show_conversion_card_message( 'error_api' );
+		wp_die();
+	}
+
+	/**
+	 * Show conversion card message
+	 */
+	public function show_conversion_card_message( $message_type, $result = array() )
+	{
+		$card_type = 'bg-danger';
+
+		switch( $message_type )
+		{
+			case 'error_direct':
+				$message = '<b>' . esc_html__( 'Direct access is forbidden!', CFGP_NAME ) . '</b>';
+			break;
+			case 'error_user': 
+				$message = '<b>' . esc_html__( 'Please enter valid decimal or integer format.', CFGP_NAME ) . '</b>';
+			break;
+			case 'error_api':
+				$message = '<b>' . esc_html__( 'Sorry currently we are not able to do conversion. Please try again later.', CFGP_NAME ) . '</b>';
+			break;
+			case 'success':
+				if( !isset( $result['from_amount'] ) || empty( $result['from_amount'] ) ) 
+				{
+					$result['from_amount'] = '1';
+					$result['to_amount'] = '1';
+				}
+				if( !isset( $result['to_amount'] ) || empty( $result['to_amount'] ) )
+				{
+					$result['from_amount'] = '1';
+					$result['to_amount'] = '1';
+				}
+		
+				if( !isset( $result['from_name'] ) || empty( $result['from_name'] ) ) $result['from_name'] = esc_html__( 'Undefined', CFGP_NAME );
+				if( !isset( $result['to_name'] ) || empty( $result['to_name'] ) ) $result['to_name'] = esc_html__( 'Undefined', CFGP_NAME );;
+		
+				if( !isset( $result['from_code'] ) || empty( $result['from_code'] ) ) $result['from_code'] = 'X';
+				if( !isset( $result['to_code'] ) || empty( $result['to_code'] ) ) $result['to_code'] = 'X';
+
+				$message = sprintf( '<p class="cfgp-currency-results-amount"><span class="cfgp-currency-results-amount-current">%s %s</span><span class="cfgp-currency-results-amount-separator"> = </span><span class="cfgp-currency-results-amount-converted">%s %s</span></p><p class="cfgp-currency-results-info">%s &rarr; %s</p>', $result['from_amount'], $result['from_code'], $result['to_amount'], $result['to_code'], $result['from_name'], $result['to_name'] );
+				$card_type = 'bg-secondary';
+			break;
+			default:
+				$message = '<b>' . esc_html__( 'Sorry currently we are not able to do conversion. Please try again later.', CFGP_NAME ) . '</b>';
+			break;
+		}
+		?>
+		<div class="card w-100 text-white <?php echo esc_attr( $card_type ); ?>">
+			<div class="card-body text-center">
+				<p class="card-text"><?php echo $message; ?></p>
+			</div>
+		</div>
+		<?php
 	}
 }
 endif;

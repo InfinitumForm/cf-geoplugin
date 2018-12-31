@@ -8,7 +8,7 @@
  * Plugin Name:       CF Geo Plugin
  * Plugin URI:        http://cfgeoplugin.com/
  * Description:       Create Dynamic Content, Banners and Images on Your Website Based On Visitor Geo Location By Using Shortcodes With CF GeoPlugin.
- * Version:           7.4.2
+ * Version:           7.4.3
  * Author:            Ivijan-Stefan Stipic
  * Author URI:        https://linkedin.com/in/ivijanstefanstipic
  * License:           GPL-2.0+
@@ -73,7 +73,7 @@ $GLOBALS['CF_GEOPLUGIN_OPTIONS'] = array();
 // Main plugin file
 if ( ! defined( 'CFGP_FILE' ) )				define( 'CFGP_FILE', __FILE__ );
 // Current plugin version
-if ( ! defined( 'CFGP_VERSION' ) )			define( 'CFGP_VERSION', '7.4.2');
+if ( ! defined( 'CFGP_VERSION' ) )			define( 'CFGP_VERSION', '7.4.3');
 // Plugin root
 if ( ! defined( 'CFGP_ROOT' ) )				define( 'CFGP_ROOT', rtrim(plugin_dir_path(CFGP_FILE), '/') );
 // Includes directory
@@ -109,7 +109,11 @@ if( ! defined( 'CFGP_MULTISITE' ) )
 // Include debug class
 include CFGP_INCLUDES . '/class-cf-geoplugin-debug.php';
 
-if( !isset( $GLOBALS['debug'] ) ) $GLOBALS['debug'] = new CF_Geoplugin_Debug; // Our debug object to global variables
+// Our debug object to global variables
+if( !isset( $GLOBALS['debug'] ) ) $GLOBALS['debug'] = new CF_Geoplugin_Debug;
+// Check cURL
+if( !function_exists( 'curl_init' ) ) $GLOBALS['debug']->save( 'cURL Status: Disabled' );
+else $GLOBALS['debug']->save( 'cURL Status: Enabled' );
 
 /**
  * Session controll
@@ -296,7 +300,5 @@ CF_Geoplugin();
 // Globals for all folks and doomies. Why not?
 $CF_GEO = $CF_Geo = $cf_geo = $GLOBALS['CF_GEO'] = $GLOBALS['CF_Geo'] = $GLOBALS['cf_geo'] = (object) $GLOBALS['CFGEO'];
 
-// Write all debug data to file
-if( !function_exists( 'curl_init' ) ) $GLOBALS['debug']->save( 'cURL Status: Disabled' );
-else $GLOBALS['debug']->save( 'cURL Status: Enabled' );
+// Save all on the end
 $GLOBALS['debug']->write();

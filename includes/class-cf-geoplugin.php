@@ -98,9 +98,9 @@ class CF_Geoplugin_Init extends CF_Geoplugin_Global
 		if(isset($_SESSION[CFGP_PREFIX . 'api_session']) && isset($GLOBALS['CFGEO']))
 		{
 			// Include WooCommerce integratin
-			if( file_exists( CFGP_INCLUDES . '/class-cf-geoplugin-woocommerce.php' ) )
+			if( file_exists( CFGP_INCLUDES . '/plugins/woocommerce/woocommerce.php' ) )
 			{
-				require_once CFGP_INCLUDES . '/class-cf-geoplugin-woocommerce.php';
+				require_once CFGP_INCLUDES . '/plugins/woocommerce/woocommerce.php';
 				if( class_exists( 'CF_Geoplugin_Woocommerce' ) )
 				{
 					new CF_Geoplugin_Woocommerce;
@@ -196,12 +196,59 @@ class CF_Geoplugin_Init extends CF_Geoplugin_Global
 			}
 			else $debug->save( 'Defender class not loaded - File does not exists' );
 
-			// Include Widgets
-			if( file_exists( CFGP_INCLUDES . '/class-cf-geoplugin-widget-converter.php' ) )
+			// Include Converter Widget
+			if( file_exists( CFGP_INCLUDES . '/widgets/currency-converter.php' ) )
 			{
-				require_once CFGP_INCLUDES . '/class-cf-geoplugin-widget-converter.php';
-				//new CF_Geoplugin_Converter;
+				require_once CFGP_INCLUDES . '/widgets/currency-converter.php';
+				$debug->save( 'Widget converter class loaded' );
 			}
+			else $debug->save( 'Widget converter class not loaded - File does not exists' );
+
+			// Include Google Map Widget
+			if( file_exists( CFGP_INCLUDES . '/widgets/google-map.php' ) )
+			{
+				require_once CFGP_INCLUDES . '/widgets/google-map.php';
+				$debug->save( 'Widget google map class loaded' );
+			}
+			else $debug->save( 'Widget google map class not loaded - File does not exists' );
+
+			$debug->save( '------------ SERVER INFORMATIONS ------------' );
+			$debug->save( var_export( $_SERVER, 1 ) );
+
+			$debug->save( '------------ SESSION INFORMATIONS ------------' );
+			$session_info = array();
+			foreach( $_SESSION as $key => $val )
+			{
+				if( strpos( $key, CFGP_PREFIX ) !== false )
+				{
+					$session_info[ $key ] = $val;
+				}
+			}
+			$debug->save( $session_info );
+
+			$debug->save( '------------ DEFINED VALUES ------------' );
+			$defines = array(
+				'CFGP_FILE'			=> CFGP_FILE,
+				'CFGP_VERSION'		=> CFGP_VERSION,
+				'CFGP_ROOT'			=> CFGP_ROOT,
+				'CFGP_INCLUDES'		=> CFGP_INCLUDES,
+				'CFGP_ADMIN'		=> CFGP_ADMIN,
+				'CFGP_URL'			=> CFGP_URL,
+				'CFGP_ASSETS'		=> CFGP_ASSETS,
+				'CFGP_NAME'			=> CFGP_NAME,
+				'CFGP_METABOX'		=> CFGP_METABOX,
+				'CFGP_PREFIX'		=> CFGP_PREFIX,
+				'CFGP_STORE'		=> CFGP_STORE,
+				'CFGP_LIMIT'		=> CFGP_LIMIT,
+				'CFGP_DEV_MODE'		=> CFGP_DEV_MODE,
+				'CFGP_MULTISITE'	=> CFGP_MULTISITE,
+				'CFGP_IP'			=> CFGP_IP,
+				'CFGP_SERVER_IP'	=> CFGP_SERVER_IP,
+				'CFGP_PROXY'		=> CFGP_PROXY,
+				'CFGP_ACTIVATED'	=> CFGP_ACTIVATED,
+				'CFGP_DEFENDER_ACTIVATED'	=> CFGP_DEFENDER_ACTIVATED
+			);
+			$debug->save( $defines );
 		}
 	}
 	

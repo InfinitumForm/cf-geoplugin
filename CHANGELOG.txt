@@ -1,5 +1,13 @@
 == Changelog ==
 
+= 7.4.3 =
+* Improved instance calling
+* Improved currency converter widget
+* Optimized Google Map Shortcode
+* Added Google Map Widget
+* Added WooCommerce Country Payment Control
+* Added currency converter into shorcode
+
 = 7.4.2 =
 * Fixed cURL error "Operation timed out"
 * Fixed autocomplete on the settings page

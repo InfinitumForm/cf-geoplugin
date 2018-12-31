@@ -43,6 +43,8 @@ class CF_Geoplugin_Public extends CF_Geoplugin_Global
 				);
 				wp_enqueue_style( CFGP_NAME . '-woocommerce' );
 			}
+			
+			wp_register_style( CFGP_NAME . '-widget-converter', CFGP_ASSETS . '/css/cf-geoplugin-widget-converter.css', array(), CFGP_VERSION );
 
 		}
 		

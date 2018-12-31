@@ -1,11 +1,11 @@
 ﻿=== CF Geo Plugin ===
 Contributors: ivijanstefan, creativform, ej207
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=creativform@gmail.com
-Tags: geoplugin, seo redirection, anti spam, geomarketing, currency converter, google map, content include, content exclude, geo plugin, geolocation, geo target, geo, geotargeting, geofencing
+Tags: geoplugin, seo, store-locator, geolocation, woocommerce, google-maps, content include, content exclude, geo plugin, geomarketing, geo target, geo, geotargeting, geofencing
 Requires at least: 3.0
 Tested up to: 5.0
 Requires PHP: 5.6.0
-Stable tag: 7.4.2
+Stable tag: 7.4.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -13,7 +13,7 @@ Full SEO control, SEO redirection, geoinformation, lead capture and more in only
 
 == Description ==
 
-**CF Geo Plugin** is **FREE** GeoMarketing tool that allows you to have full control of your WordPress. **CF Geo Plugin** gives you ability to attach content, geographic information and Google maps to posts, pages, widgets and custom templates by using simple, options shortcodes, PHP code or JavaScript. It also lets you to specify a default geographic location for your entire WordPress blog, do SEO redirection, spam protection, WooCommerce control and many more. **CF Geo Plugin** help you to increase conversion, do better SEO, capture leads on your blog or landing pages.
+**CF Geo Plugin** is GeoMarketing tool that allows you to have full control of your WordPress. **CF Geo Plugin** gives you ability to attach content, geographic information and Google maps to posts, pages, widgets and custom templates by using simple, options shortcodes, PHP code or JavaScript. It also lets you to specify a default geographic location for your entire WordPress blog, do SEO redirection, spam protection, WooCommerce control and many more. **CF Geo Plugin** help you to increase conversion, do better SEO, capture leads on your blog or landing pages.
 
 = BENEFITS =
 
@@ -34,7 +34,8 @@ Full SEO control, SEO redirection, geoinformation, lead capture and more in only
 > - **Create landing pages** targeted only at certain locations.
 > - **Create banners, videos and any other content** targeted only at certain locations.
 > 
-> <strong>ECOMMERCE</strong><br>
+> <strong>E-COMMERCE | WooCommerce</strong><br>
+> - **Country Payment Control** for your WooCommerce instalation
 > - **Display local currency**, local symbol or converter
 > - **Use currency converter** to calculate price in local currency
 > 
@@ -267,21 +268,23 @@ Please inform us if any of these errors occure via contact form on our website [
 
 == Changelog ==
 
-= 7.4.2 =
-* Fixed cURL error "Operation timed out"
-* Fixed autocomplete on the settings page
-* Improved REST API
-* Added better UX on the settings page
-* Added namual cURL timeout settings
+= 7.4.3 =
+* Improved instance calling
+* Improved currency converter widget
+* Optimized Google Map Shortcode
+* Added Google Map Widget
+* Added WooCommerce Country Payment Control
+* Added currency converter into shorcode
 
 == Upgrade Notice ==
 
-= 7.4.2 =
-* Fixed cURL error "Operation timed out"
-* Fixed autocomplete on the settings page
-* Improved REST API
-* Added better UX on the settings page
-* Added namual cURL timeout settings
+= 7.4.3 =
+* Improved instance calling
+* Improved currency converter widget
+* Optimized Google Map Shortcode
+* Added Google Map Widget
+* Added WooCommerce Country Payment Control
+* Added currency converter into shorcode
 
 == Other Notes ==
 

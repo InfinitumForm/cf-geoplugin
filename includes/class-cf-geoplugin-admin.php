@@ -202,7 +202,8 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 			'manage_options',
 			CFGP_NAME,
 			array( &$this, 'page_cf_geoplugin' ),
-			'dashicons-location-alt'
+			'dashicons-location-alt',
+			59
 		);
 		
 		if($CF_GEOPLUGIN_OPTIONS['enable_gmap'])
@@ -309,11 +310,27 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 	// WP Hidden links by plugin setting page
 	public function plugin_setting_page( $links ) {
 		$mylinks = array( 
-			'settings'	=> sprintf( '<a href="' . self_admin_url( 'admin.php?page=' . CFGP_NAME . '-settings' ) . '"><b>%s</b></a>', __( 'Settings', CFGP_NAME ) ), 
-			'faq' => sprintf( '<i class="fa fa-question-circle-o"></i> <a href="http://cfgeoplugin.com/faq" target="_blank" rel="noopener noreferrer">%s</a>', __( 'FAQ', CFGP_NAME ) ),
-			'donate' => sprintf( '<i class="fa fa-heartbeat"></i> <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=creativform@gmail.com" target="_blank" rel="noopener noreferrer">%s</a>', __( 'Donate', CFGP_NAME ) ),
+			'settings'	=> sprintf( '<a href="' . self_admin_url( 'admin.php?page=' . CFGP_NAME . '-settings' ) . '"><b>%s</b></a>', esc_html__( 'Settings', CFGP_NAME ) ), 
+			'documentation' => sprintf( '<i class="fa fa-book"></i> <a href="%s" target="_blank" rel="noopener noreferrer">%s</a>', esc_url( 'https://cfgeoplugin.com/documentation/' ), esc_html__( 'Documentation', CFGP_NAME ) ),
 		);
+
 		return array_merge( $links, $mylinks );
+	}
+
+	// Plugin action links after details
+	public function cfgp_action_links( $links, $file )
+	{
+		if( plugin_basename( CFGP_FILE ) == $file )
+		{
+			$row_meta = array(
+				'cfgp_faq' => sprintf( '<a href="%s" target="_blank" rel="noopener noreferrer">%s</a>', esc_url( 'https://cfgeoplugin.com/faq/' ), esc_html__( 'FAQ', CFGP_NAME ) ),
+				'cfgp_donate' => sprintf( '<a href="%s" target="_blank" rel="noopener noreferrer">%s</a>', esc_url( 'https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=creativform@gmail.com' ), esc_html__( 'Donate', CFGP_NAME ) ),
+				'cfgp_vote'	=> sprintf( '<a href="%s" target="_blank" rel="noopener noreferrer">%s</a>', esc_url( 'https://wordpress.org/support/plugin/cf-geoplugin/reviews/?filter=5' ), esc_html__( 'Vote', CFGP_NAME ) )
+			);
+
+			$links = array_merge( $links, $row_meta );
+		}
+		return $links;
 	}
 	
 	public function limit_scripts($page){
@@ -1174,6 +1191,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 		$this->add_action( 'wp_ajax_cf_geo_import_csv', 'cf_geo_import_csv' );
 		
 		$this->add_filter( 'plugin_action_links_' . plugin_basename(CFGP_FILE), 'plugin_setting_page' );
+		$this->add_filter( 'plugin_row_meta', 'cfgp_action_links', 10, 2 );
 		
 		$this->add_action( 'admin_bar_menu', 'cf_geoplugin_admin_bar_menu', 900 );
 		

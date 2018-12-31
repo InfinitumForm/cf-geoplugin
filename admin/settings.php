@@ -303,7 +303,7 @@ if($this->get('action') == 'activate_license')
 									'name'		=> 'enable_woocommerce',
 									'class'		=> 'enable_woocommerce',
 									'default'	=> (isset($CF_GEOPLUGIN_OPTIONS['enable_woocommerce']) ? $CF_GEOPLUGIN_OPTIONS['enable_woocommerce'] : 0 ),
-									'html'		=> !$CF_GEOPLUGIN_OPTIONS['woocommerce_active'] ? '<p class="text-info">' . __('This function is only enabled when Woocommerce is active.', CFGP_NAME) . '</p>' : '<p id="woo_integration_html"' . (!$CF_GEOPLUGIN_OPTIONS['enable_woocommerce'] ? ' style="display: none;"' : '') . '><a href="'. self_admin_url('admin.php?page=wc-settings#woocommerce_cf_geoplugin_conversion') .'"><u>' . __( 'Set conversion option in Woocommerce General Settings', CFGP_NAME ) . '</u></a></p>',
+									'html'		=> !$CF_GEOPLUGIN_OPTIONS['woocommerce_active'] ? '<p class="text-info">' . __('This function is only enabled when Woocommerce is active.', CFGP_NAME) . '</p>' : '<p id="woo_integration_html"' . (!$CF_GEOPLUGIN_OPTIONS['enable_woocommerce'] ? ' style="display: none;"' : '') . '><a href="'. self_admin_url('admin.php?page=wc-settings') .'"><u>' . __( 'For more settings visit WooCommerce Settings', CFGP_NAME ) . '</u></a></p>',
 									array(
 										'text'	=> __('Enable', CFGP_NAME),
 										'value'	=> 1,

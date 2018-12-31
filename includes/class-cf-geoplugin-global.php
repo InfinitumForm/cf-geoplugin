@@ -147,7 +147,7 @@ class CF_Geoplugin_Global
 	// PRIVATE - is proxy true/false (internal check)
 	private static $is_proxy = false;
 	
-	function __construct(){
+	function __construct(){		
 		$this->license_names = array(
 			self::BASIC_LICENSE		=> __('UNLIMITED Basic License (1 month)',CFGP_NAME),
 			self::PERSONAL_LICENSE	=> __('UNLIMITED Personal License',CFGP_NAME),
@@ -160,9 +160,27 @@ class CF_Geoplugin_Global
 		}
 	}
 	
+	/**
+	 * Get singleton instance for now just for widget class
+	 * @since     7.4.0
+	 * @version   7.4.0
+	 */
+	public static function get_instance()
+	{
+		if( NULL === self::$instance )
+		{
+			self::$instance = new self();
+		}
+	
+		return self::$instance;
+	}
+	
+	/**
+	 * Get license name
+	 */
 	public static function license_name($sku){
-		$G = new CF_Geoplugin_Global;
-		$license = $G->license_names;
+		$init = self::get_instance();
+		$license = $init->license_names;
 		
 		if($sku === true)
 			return $license;
@@ -183,7 +201,7 @@ class CF_Geoplugin_Global
 	*/
 	public static function access_level($level)
 	{
-		$instance = new CF_Geoplugin_Global;
+		$instance = self::get_instance();
 		if($instance->check_defender_activation()) return 100;
 		
 		
@@ -669,7 +687,7 @@ class CF_Geoplugin_Global
 	 * @since    4.0.4
 	 */
 	public static function curl_get($url){
-		$G = new CF_Geoplugin_Global;
+		$G = self::get_instance();
 		$options = $G->get_option();
 		// Call cURL
 		$output=false;
@@ -1096,7 +1114,7 @@ class CF_Geoplugin_Global
 	 */
 	public static function validate()
 	{
-		$instance = new CF_Geoplugin_Global;
+		$instance = self::get_instance();
 		$debug = $GLOBALS['debug'];
 		$debug->save( '------------ Validation started ------------' );
 		// Validate
@@ -1135,7 +1153,7 @@ class CF_Geoplugin_Global
 				$debug->save( json_decode( $response ) );
 				if(isset($license->error) && $license->error === true)
 				{
-					$this->update_option('license', 0, true);
+					$instance->update_option('license', 0, true);
 					$debug->save( 'Validation status: error' );
 					return false;
 				}
@@ -1747,25 +1765,23 @@ class CF_Geoplugin_Global
 	}
 
 	/**
-	 * Get singleton instance for now just for widget class
-	 */
-	public static function get_instance()
-	{
-		if( self::$instance === null )
-		{ 
-			self::$instance = new self();
-		}
-	
-		return self::$instance;
-	}
-
-	/**
 	 * Generate convert outoput
 	 */
 	public function generate_converter_output( $amount, $symbol, $position = 'L', $separator = '' )
 	{
 		if( strtoupper( $position ) === 'L' || strtoupper( $position ) == 'LEFT' ) return sprintf( '%s%s%s', $symbol, $separator, $amount );
 		else return sprintf( '%s%s%s', $amount, $separator, $symbol );
+	}
+	
+	/**
+	 * Replacemant for the mb_convert_encoding - Setup for the UCS-4
+	 */
+	public static function mb_convert_encoding($string, $from='UTF-8', $to='UCS-4'){
+		return preg_replace_callback('/[\x{80}-\x{10FFFF}]/u', function ($m) {
+			$char = current($m);
+			$utf = iconv( $from, $to, $char);
+			return sprintf("&#x%s;", ltrim(strtoupper(bin2hex($utf)), "0"));
+		}, $string);
 	}
 }
 endif;
