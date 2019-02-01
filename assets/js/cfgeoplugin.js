@@ -23,6 +23,12 @@ function cf_geoplugin_popup(url, title, w, h) {
 };
 
 (function($){
+/**
+ * Display Thank You footer
+**/
+
+$('#footer-left').html('<div>Thank you for using <a href="https://cfgeoplugin.com" target="_blank">CF Geo Plugin</a></div><div class="alignleft"><a href="https://cfgeoplugin.com/documentation" target="_blank">Documentation</a> | <a href="https://cfgeoplugin.com/faq" target="_blank">FAQ</a> | <a href="https://cfgeoplugin.com/contact" target="_blank">Contact</a> | <a href="https://cfgeoplugin.com/blog" target="_blank">Blog</a></div>');
+$('#footer-upgrade').remove();
 /*
  * Display alert
  * @since 7.0.0
@@ -539,13 +545,15 @@ $.fn.alerts = function(text, type){
 			});
 		}
 	})('#import-form');
-
 	
 	// Initialize popover
 	(function ($$) {
 		$( $($$) ).popover({
 			template : '<div class="popover" role="tooltip"><h3 class="popover-header"></h3><div class="popover-body"></div></div>'	
 		});
+		
+		$('[data-toggle="tooltip"]').tooltip({html:true});
+		
 	}('[data-toggle="popover"]'));
 	
 })(jQuery || window.jQuery || Zepto || window.Zepto);

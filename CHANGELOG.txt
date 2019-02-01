@@ -1,5 +1,46 @@
 == Changelog ==
 
+= 7.5.6 =
+* Fixed PHP error: Class CF_Geoplugin does not exist
+* Fixed file including
+* Session initialization moved to enthire WordPress
+* Fixed cache time
+* Extended debugger
+* Added new translations
+
+= 7.5.5 =
+* IMPORTANT UPDATE: Fixed lookup problem for the WordPress version 5.x
+* Fixed WordPress HTTP API calls
+* Improved site loading
+* Changed file orientation
+* Fixed PHP errors
+
+= 7.5.4 =
+* IMPORTANT UPDATE: Fixed session problem
+
+= 7.5.3 =
+* Fixed problems with validation of the "www" subdomain
+* Fixed data formatting
+* Improved debugger
+* Improved session and prevented conflicts
+
+= 7.5.2 =
+* Fixed HTTP API SSL bug
+* Fixed validation error
+* Secure APi response
+
+= 7.5.1 =
+* Fixed include/exclude issue
+* Optimized code
+
+= 7.5.0 =
+* Moved from cURL to official WordPress HTTP API
+* Added Geo Tag generator
+* Fixed Google Map collision
+* Fixed bugs inside Gutenberg editor
+* Improved security
+* Improved documentation and informations
+
 = 7.4.3 =
 * Improved instance calling
 * Improved currency converter widget

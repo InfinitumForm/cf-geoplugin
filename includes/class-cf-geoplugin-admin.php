@@ -293,16 +293,14 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 			
 			if(!CFGP_ACTIVATED)
 			{
-				if(!get_option("cf_geo_defender_api_key")) {
-					add_submenu_page(
-						CFGP_NAME,
-						__('Activate Unlimited',CFGP_NAME),
-						'<span class="dashicons dashicons-star-filled"></span> '.__('Activate Unlimited',CFGP_NAME),
-						'manage_options',
-						CFGP_NAME . '-activate',
-						array( &$this, 'page_cf_geoplugin_license' )
-					);
-				}
+				add_submenu_page(
+					CFGP_NAME,
+					__('Activate Unlimited',CFGP_NAME),
+					'<span class="dashicons dashicons-star-filled"></span> '.__('Activate Unlimited',CFGP_NAME),
+					'manage_options',
+					CFGP_NAME . '-activate',
+					array( &$this, 'page_cf_geoplugin_license' )
+				);
 			}
 		}
 	}
@@ -399,7 +397,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 			$print = array();
 			foreach($items as $fetch)
 			{
-				if( $i >= 5 ) continue;
+				if( $i >= 3 ) continue;
 				$print[]=sprintf(
 					'<p><a href="%1$s" target="_blank" class="text-info"><h4 class="h5">%2$s</h4></a>%3$s<small>~%4$s</small></p>',
 					$fetch->link,
@@ -433,6 +431,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 			 * Checkbox arrays
 			 */
 			$enable_seo_posts = array();
+			$enable_geo_tag = array();
 
 			$updated = 'true';
 			foreach( $value as $i => $array )
@@ -450,6 +449,10 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 				{
 					$enable_seo_posts[] = $option_value;
 				}
+				elseif( $option_name === 'enable_geo_tag[]' )
+				{
+					$enable_geo_tag[] = $option_value;
+				}
 				elseif( isset( $this->default_options[ $option_name ] ) ) 
 				{
 					$this->update_option( $option_name, $option_value );
@@ -460,6 +463,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 			 * Update checkboxes
 			 */
 			$this->update_option( 'enable_seo_posts', $enable_seo_posts );
+			$this->update_option( 'enable_geo_tag', $enable_geo_tag );
 		}
 		else $updated = 'error';
 		
@@ -647,13 +651,16 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 				'parent' => CFGP_NAME,
 			) );
 
-			$wp_admin_bar->add_node( array(
-				'id' => CFGP_NAME . '-activate',
-				'title' => __('Activate Unlimited',CFGP_NAME),
-				'href' => self_admin_url( 'admin.php?page=' . CFGP_NAME . '-activate'),
-				'meta'  => array( 'class' => CFGP_NAME . '-activate-toolbar-page' ),
-				'parent' => CFGP_NAME,
-			) );
+			if(!CFGP_ACTIVATED)
+			{
+				$wp_admin_bar->add_node( array(
+					'id' => CFGP_NAME . '-activate',
+					'title' => __('Activate Unlimited',CFGP_NAME),
+					'href' => self_admin_url( 'admin.php?page=' . CFGP_NAME . '-activate'),
+					'meta'  => array( 'class' => CFGP_NAME . '-activate-toolbar-page' ),
+					'parent' => CFGP_NAME,
+				) );
+			}
 		}
 		
 		$wp_admin_bar->add_node( array(

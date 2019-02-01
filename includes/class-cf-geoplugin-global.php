@@ -37,7 +37,6 @@ class CF_Geoplugin_Global
 		'proxy_username'			=>	'',
 		'proxy_password'			=>	'',
 		'enable_ssl'				=>	0,
-		'connection_timeout'		=>	15,
 		'timeout'					=>	15,
 		'map_api_key'				=>	'',
 		'map_zoom'					=>	8,
@@ -84,6 +83,7 @@ class CF_Geoplugin_Global
 		'enable_spam_ip'			=> 0,
 		'first_plugin_activation'	=> 1,
 		'enable_seo_posts'			=> array(),
+		'enable_geo_tag'			=> array(),
 	);
 
 	// Deprecated options
@@ -161,7 +161,7 @@ class CF_Geoplugin_Global
 	}
 	
 	/**
-	 * Get singleton instance for now just for widget class
+	 * Get singleton instance of global class
 	 * @since     7.4.0
 	 * @version   7.4.0
 	 */
@@ -291,11 +291,34 @@ class CF_Geoplugin_Global
 			$options = get_site_option( 'cf_geoplugin' );
 		if($options)
 		{
-			if(is_array($value))
-				$options[$option_name] = $value;
+			if(empty($value))
+			{
+				$options[$option_name] = NULL;
+			}
 			else
-				$options[$option_name] = trim($value);
-		
+			{
+				if(is_array($value))
+					$options[$option_name] = $value;
+				else
+				{
+					if(is_numeric($value))
+					{
+						if((int)$value == $value)
+							$options[$option_name] = (int)$value;
+						else if((float)$value == $value)
+							$options[$option_name] = (float)$value;
+						else
+							$options[$option_name] = trim($value);
+					}
+					else if(is_string($value) && in_array(strtolower($value), array('true','false')) !== false)
+					{
+						$options[$option_name] = (strtolower($value) == 'true');
+					}
+					else
+						$options[$option_name] = trim($value);
+				}
+			}
+
 			if( !CFGP_MULTISITE )
 				update_option('cf_geoplugin', $options, true);
 			else 
@@ -686,39 +709,61 @@ class CF_Geoplugin_Global
 	 *
 	 * @since    4.0.4
 	 */
-	public static function curl_get($url){
+	public static function curl_get( $url, $headers = '', $new_params = array() )
+	{
 		$G = self::get_instance();
 		$options = $G->get_option();
-		// Call cURL
-		$output=false;
-		if(function_exists('curl_init') && function_exists('curl_setopt') && function_exists('curl_exec'))
+		
+		if( empty( $headers ) )
 		{
-			$cURL = curl_init();
-				curl_setopt($cURL,CURLOPT_URL, $url);
-				curl_setopt($cURL, CURLOPT_RETURNTRANSFER, 1);
-				curl_setopt($cURL, CURLOPT_SSL_VERIFYPEER, ((bool) $options["enable_ssl"]));
-				curl_setopt($cURL, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-				curl_setopt($cURL, CURLOPT_CONNECTTIMEOUT, (int)$options["connection_timeout"]);
-				if($G->proxy()){
-					curl_setopt($cURL, CURLOPT_PROXY, $options["proxy_ip"]);
-					curl_setopt($cURL, CURLOPT_PROXYPORT, $options["proxy_port"]);
-					$username=$options["proxy_username"];
-					$password=$options["proxy_password"];
-					if(!empty($username)){
-						curl_setopt($cURL, CURLOPT_PROXYUSERPWD, $username.":".$password);
-					}
-				}
-				curl_setopt($cURL, CURLOPT_TIMEOUT, (int)$options["timeout"]);
-				curl_setopt($cURL, CURLOPT_HTTPHEADER, array('Accept: application/json'));
-				curl_setopt($cURL, CURLOPT_FOLLOWLOCATION, true);
-			$output=curl_exec($cURL);
-			curl_close($cURL);
+			$headers = array( 'Accept: application/json' );
 		}
-		else
+
+		// Define proxy if set
+		if( isset( $options['proxy_ip'] ) && !empty( $options['proxy_ip'] ) && !defined( 'WP_PROXY_HOST' ) )
 		{
-			$context = self::set_stream_context( array('Accept: application/json') );
-			$output=file_get_contents($url, false, $context);
+			define( 'WP_PROXY_HOST', $options['proxy_ip'] );
 		}
+		if( isset( $options['proxy_port'] ) && !empty( $options['proxy_port'] ) && !defined( 'WP_PROXY_PORT' ) )
+		{
+			define( 'WP_PROXY_PORT', $options['proxy_port'] );
+		}
+		if( isset( $options['proxy_username'] ) && !empty( $options['proxy_username'] ) && !defined( 'WP_PROXY_USERNAME' ) )
+		{
+			define( 'WP_PROXY_USERNAME', $options['proxy_username'] );
+		}
+		if( isset( $options['proxy_password'] ) && !empty( $options['proxy_password'] ) && !defined( 'WP_PROXY_PASSWORD' ) )
+		{
+			define( 'WP_PROXY_PASSWORD', $options['proxy_password'] );
+		}
+
+
+		$output = false;
+
+		$default_params = array(
+			'timeout'	=> (int)$options["timeout"],
+			'headers'	=> $headers,
+		);
+
+		$default_params = wp_parse_args( $new_params, $default_params );
+
+		$request = wp_remote_get( esc_url_raw( $url ), $default_params );
+
+		if( !is_wp_error( $request ) )
+		{
+			$output = wp_remote_retrieve_body( $request );
+			if( is_wp_error( $output ) || empty( $output ) )
+			{
+				$output = false;
+			}
+		}
+
+		if( empty( $output ) )
+		{
+			$context = self::set_stream_context( $headers );
+			$output = @file_get_contents( $url, false, $context );
+		}
+
 		return $output;
 	}
 	
@@ -990,25 +1035,12 @@ class CF_Geoplugin_Global
 		// let's try the last thing, why not?
 		if( self::is_connected() )
 		{
-			$result = '';
-			if( function_exists('curl_init') && function_exists('curl_setopt') && function_exists('curl_exec') )
-			{
-				$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
-				$ch = curl_init();
-				curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-				curl_setopt($ch, CURLOPT_POST, false);
-				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-				curl_setopt($ch, CURLOPT_TIMEOUT, (int)$CF_GEOPLUGIN_OPTIONS['timeout']);
-				curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, (int)$CF_GEOPLUGIN_OPTIONS['connection_timeout']);
-				curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: application/json'));
-				curl_setopt($ch, CURLOPT_URL, 'https://api.ipify.org?format=json');
-				$result=curl_exec($ch);
-				curl_close($ch);
-			}
-			else
+			$result = $this->curl_get( 'https://api.ipify.org?format=json' );
+			
+			if( empty( $result ) )
 			{
 				$context = self::set_stream_context( array( 'Accept: application/json' ), 'GET' );
-				$result = file_get_contents( 'https://api.ipify.org?format=json', false, $context );
+				$result = @file_get_contents( 'https://api.ipify.org?format=json', false, $context );
 			}
 
 			if($result)
@@ -1100,7 +1132,7 @@ class CF_Geoplugin_Global
 	public function check_activation()
 	{
 		$options = $this->get_option();
-		if($options['license'] == 1 && $options['license_key'] && $options['license_id'] || $this->check_defender_activation()) 
+		if(($options['license'] == 1 && $options['license_key'] && $options['license_id']) || $this->check_defender_activation()) 
 			return true;
 		return false;
 	}
@@ -1126,26 +1158,20 @@ class CF_Geoplugin_Global
 				'license_key' 	=> $CF_GEOPLUGIN_OPTIONS['license_key'],
 				'sku' 			=> $CF_GEOPLUGIN_OPTIONS['license_sku'],
 				'store_code' 	=> $CF_GEOPLUGIN_OPTIONS['store_code'],
-				'domain' 		=> self::get_host(),
+				'domain' 		=> self::get_host(true),
 				'activation_id'	=> $CF_GEOPLUGIN_OPTIONS['license_id']
 			);
-			if( function_exists('curl_init') && function_exists('curl_setopt') && function_exists('curl_exec') )
-			{
-				$ch = curl_init( $url );
-				curl_setopt($ch, CURLOPT_POSTFIELDS, $data );
-				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-				curl_setopt($ch, CURLOPT_TIMEOUT, (int)$CF_GEOPLUGIN_OPTIONS['timeout']);
-				curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, (int)$CF_GEOPLUGIN_OPTIONS['connection_timeout']);
-				curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-				curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: application/json'));
-				$response = curl_exec($ch);
-				curl_close($ch);
-			}
-			else
+			$debug->save( 'cURL license validation send data:' );
+			$debug->save( json_encode( $data ) );
+			$url = sprintf( '%s?%s', $url, ltrim( http_build_query( $data ), '?' ) );
+			$response = $instance->curl_get( $url );
+
+			if( empty( $response ) )
 			{
 				$context = self::set_stream_context( array( 'Accept: application/json' ), 'GET', http_build_query( $data ) );
-				$response = file_get_contents( $url, false, $context );
+				$response = @file_get_contents( $url, false, $context );
 			}
+
 			if($response)
 			{
 				$license = json_decode($response);
@@ -1313,10 +1339,13 @@ class CF_Geoplugin_Global
 	 *
 	 * @since    6.0.1
 	 **/
-	public static function get_host(){
+	public static function get_host($clean=false){
 		$homeURL = get_home_url();
 		$hostInfo = parse_url($homeURL);
-		return strtolower($hostInfo['host']);
+		if($clean)
+			return str_replace('www.','',strtolower($hostInfo['host']));
+		else
+			return strtolower($hostInfo['host']);
 	}
 	
 	/**
@@ -1380,7 +1409,7 @@ class CF_Geoplugin_Global
 	
 	public function get_time_ago($time_stamp)
 	{
-		$time = time();
+		$time = CFGP_TIME;
 		$time_difference = $time - $time_stamp;
 	
 		if ($time_difference >= 60 * 60 * 24 * 365.242199)
@@ -1441,7 +1470,7 @@ class CF_Geoplugin_Global
 	
 	private function get_time_ago_string($time_stamp, $divisor, $time_unit)
 	{
-		$time_units      = abs(floor((time() - $time_stamp) / $divisor));
+		$time_units      = abs(floor((CFGP_TIME - $time_stamp) / $divisor));
 	
 		settype($time_units, 'string');
 	
@@ -1697,6 +1726,9 @@ class CF_Geoplugin_Global
 	public static function set_stream_context( $header = array(), $method = 'POST', $content = '' )
 	{
 		$options = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
+
+		$header = array_merge( array( 'Content-Type: application/x-www-form-urlencoded' ), $header );
+		
 		if( $options['proxy'] )
 		{
 			$proxy_host = $options['proxy_ip'];
@@ -1712,7 +1744,7 @@ class CF_Geoplugin_Global
 							'method'  			=> $method,
 							'proxy' 			=> "tcp://$proxy_host:$proxy_port",
 							'request_fulluri' 	=> true,
-							'header' 			=> array_merge( array( "Proxy-Authorization: Basic $auth", 'Content-Type: application/x-www-form-urlencoded' ), $header ),
+							'header' 			=> array_merge( array( "Proxy-Authorization: Basic $auth" ), $header ),
 							'content'			=> $content
 						)
 					)
@@ -1726,7 +1758,7 @@ class CF_Geoplugin_Global
 							'method'  			=> $method,
 							'proxy' 			=> "tcp://$proxy_host:$proxy_port",
 							'request_fulluri' 	=> true,
-							'header' 			=> array_merge( array( 'Content-Type: application/x-www-form-urlencoded' ), $header ),
+							'header' 			=> $header,
 							'content'			=> $content
 						)
 					)
@@ -1739,7 +1771,7 @@ class CF_Geoplugin_Global
 				array(
 					'http' => array(
 						'method'  	=> $method,
-						'header' 	=> array_merge( array( 'Content-Type: application/x-www-form-urlencoded' ), $header ),
+						'header' 	=> $header,
 						'content'	=> $content	
 					)
 				)

@@ -243,11 +243,12 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
 		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
 		
 		$this->check_validations();
-		
 		// Current or custom IP
 		$ip = ($ip !== false ? $ip : CFGP_IP);
 		if (isset($_SESSION[CFGP_PREFIX . 'api_session']) && isset($_SESSION[CFGP_PREFIX . 'api_session']['ipAddress']) && $_SESSION[CFGP_PREFIX . 'api_session']['ipAddress'] == $ip && $this->option['debug'] === false)
 		{
+			$_SESSION[CFGP_PREFIX . 'api_session']['currentTime'] = date('H:i:s', CFGP_TIME);
+			$_SESSION[CFGP_PREFIX . 'api_session']['currentDate'] = date('F j, Y', CFGP_TIME);
 			return (object)$_SESSION[CFGP_PREFIX . 'api_session'];
 		}
 	
@@ -261,10 +262,10 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
 			$urlReplace = array_map("rawurlencode", array(
 				$ip,
 				CFGP_SERVER_IP,
-				time() ,
-				self::get_host() ,
+				CFGP_TIME,
+				self::get_host(true),
 				CFGP_VERSION,
-				get_bloginfo("admin_email") ,
+				get_bloginfo("admin_email"),
 				$api,
 				($this->option['base_currency'] && strlen($this->option['base_currency']) === 3 ? strtoupper($this->option['base_currency']) : $CF_GEOPLUGIN_OPTIONS['base_currency']),
 			));
@@ -283,7 +284,6 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
 			// Get content from URL
 	
 			$return = self::curl_get($url);
-	
 			// Return objects from JSON data
 	
 			if ($return != false)
@@ -359,7 +359,7 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
 			$urlReplace = array_map("rawurlencode", array(
 				$ip,
 				CFGP_SERVER_IP,
-				self::get_host() ,
+				self::get_host(true),
 				CFGP_VERSION,
 				$api
 			));
@@ -373,7 +373,6 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
 			$url = str_replace($urlPharams, $urlReplace, $this->url['dns']);
 			
 			$data = self::curl_get($url);
-			
 			if ($data !== false)
 			{
 				$data = json_decode($data, true);
@@ -404,8 +403,8 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
 		
 		if(CFGP_ACTIVATED)
 		{
-			$expire = (int)$CF_GEOPLUGIN_OPTIONS['license_expire'];
-			if($expire > 0 && time() > $expire)
+			$expire = $CF_GEOPLUGIN_OPTIONS['license_expire'];
+			if($expire > 0 && CFGP_TIME > $expire)
 			{
 				$CF_GEOPLUGIN_OPTIONS['license'] = 0;
 				

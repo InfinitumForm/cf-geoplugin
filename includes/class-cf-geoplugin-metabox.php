@@ -78,25 +78,49 @@ class CF_Geoplugin_Metabox extends CF_Geoplugin_Global
     // Create meta box
     public function create_meta_box()
     {
-		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
-		if(!$CF_GEOPLUGIN_OPTIONS['enable_seo_redirection']) return;
-		
+        $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
+
         $args = array(
             'public'    => true
         );
         $screens = get_post_types( $args, 'names' );
-        foreach( $screens as $page )
+
+        if( $CF_GEOPLUGIN_OPTIONS['enable_seo_redirection'] )
         {
-            if( isset( $CF_GEOPLUGIN_OPTIONS['enable_seo_posts'] ) && is_array( $CF_GEOPLUGIN_OPTIONS['enable_seo_posts'] ) && in_array( $page, $CF_GEOPLUGIN_OPTIONS['enable_seo_posts'] ) )
+            if( isset( $CF_GEOPLUGIN_OPTIONS['enable_seo_posts'] ) && is_array( $CF_GEOPLUGIN_OPTIONS['enable_seo_posts'] ) )
+            {		
+                foreach( $screens as $page )
+                {
+                    if(in_array( $page, $CF_GEOPLUGIN_OPTIONS['enable_seo_posts'] ))
+                    {
+                        add_meta_box(
+                            CFGP_NAME . '-seo-redirection',
+                            __( 'SEO Redirections', CFGP_NAME ),
+                            array( &$this, 'meta_box_seo_redirection' ),
+                            $page,
+                            'normal',
+                            'low'
+                        );
+                    }
+                }
+            }
+        }
+        
+        if( isset( $CF_GEOPLUGIN_OPTIONS['enable_geo_tag'] ) && is_array( $CF_GEOPLUGIN_OPTIONS['enable_geo_tag'] ) )
+        {
+            foreach( $screens as $page )
             {
-                add_meta_box(
-                    CFGP_NAME . '-seo-redirection',
-                    __( 'SEO Redirections', CFGP_NAME ),
-                    array( &$this, 'meta_box_seo_redirection' ),
-                    $page,
-                    'normal',
-                    'low'
-                );
+                if( in_array( $page, $CF_GEOPLUGIN_OPTIONS['enable_geo_tag'] ) )
+                {
+                    add_meta_box(
+                        CFGP_NAME . '-geo-tags',
+                        __( 'Geo Tags', CFGP_NAME ),
+                        array( &$this, 'meta_box_geo_tags' ),
+                        $page,
+                        'normal',
+                        'low'
+                    );
+                }
             }
         }
    
@@ -107,8 +131,306 @@ class CF_Geoplugin_Metabox extends CF_Geoplugin_Global
             CFGP_NAME . '-banner',
             'side',
             'high'
-        );   
+        ); 
             
+    }
+	
+	// Add geo tags
+	public function meta_box_geo_tags( $post ){ 
+    $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS']; $CFGEO = $GLOBALS['CFGEO'];
+
+    $cfgp_enable = get_post_meta( $post->ID, 'cfgp-geotag-enable', true );
+    $cfgp_dc_title = get_post_meta( $post->ID, 'cfgp-dc-title', true );
+    $cfgp_region = get_post_meta( $post->ID, 'cfgp-region', true );
+    $cfgp_placename = get_post_meta( $post->ID, 'cfgp-placename', true );
+    $cfgp_latitude = get_post_meta( $post->ID, 'cfgp-latitude', true );
+    $cfgp_longitude = get_post_meta( $post->ID, 'cfgp-longitude', true );
+
+    if( empty( $cfgp_dc_title ) && isset( $CFGEO['address'] ) ) $cfgp_dc_title = $CFGEO['address'];
+    if( empty( $cfgp_region ) && isset( $CFGEO['country_code'] ) ) $cfgp_region = $CFGEO['country_code'];
+    if( empty( $cfgp_placename ) && isset( $CFGEO['city'] ) ) $cfgp_placename = $CFGEO['city'];
+
+    if( empty( $cfgp_latitude ) && isset( $CFGEO['latitude'] ) ) 
+    {
+        $cfgp_latitude = $CFGEO['latitude'];
+    }
+    elseif( empty( $cfgp_latitude ) && isset( $CF_GEOPLUGIN_OPTIONS['map_latitude'] ) && !empty( $CF_GEOPLUGIN_OPTIONS['map_latitude'] ) )
+    {
+        $cfgp_latitude = $CF_GEOPLUGIN_OPTIONS['map_latitude'];
+    }
+    elseif( empty( $cfgp_latitude ) )
+    {
+        $cfgp_latitude = '51.4825766';
+    }
+
+
+    if( empty( $cfgp_longitude ) && isset( $CFGEO['longitude'] ) ) 
+    {
+        $cfgp_longitude = $CFGEO['longitude'];
+    }
+    elseif( empty( $cfgp_longitude ) && isset( $CF_GEOPLUGIN_OPTIONS['map_longitude'] ) && !empty( $CF_GEOPLUGIN_OPTIONS['map_longitude'] ) )
+    {
+        $cfgp_longitude = $CF_GEOPLUGIN_OPTIONS['map_longitude'];
+    }
+    elseif( empty( $cfgp_longitude ) )
+    {
+        $cfgp_longitude = '-0.0076589';
+    }
+	?>
+   <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #geo-tag-container #CFMetaMap {
+        height: 400px;
+      }
+      #geo-tag-container #description {
+        font-family: Roboto;
+        font-size: 15px;
+        font-weight: 300;
+      }
+
+      #geo-tag-container #infowindow-content .title {
+        font-weight: bold;
+      }
+
+      #geo-tag-container #infowindow-content {
+        display: none;
+      }
+
+      #geo-tag-container #CFMetaMap #infowindow-content {
+        display: inline;
+      }
+
+      #geo-tag-container .pac-card {
+        margin: 10px 10px 0 0;
+        border-radius: 2px 0 0 2px;
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        outline: none;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+        background-color: #fff;
+        font-family: Roboto;
+      }
+
+      #geo-tag-container #pac-container {
+        padding-bottom: 12px;
+        margin-right: 12px;
+      }
+
+      #geo-tag-container .pac-controls {
+        display: inline-block;
+        padding: 5px 11px;
+      }
+      #geo-tag-container .pac-controls label {
+        font-family: Roboto;
+        font-size: 13px;
+        font-weight: 300;
+      }
+      #geo-tag-container #pac-input {
+		font-family: Roboto;
+        background-color: #fff;
+        font-size: 15px;
+        font-weight: 300;
+        margin-left: 12px;
+        padding: 10px 11px 10px 13px;
+        text-overflow: ellipsis;
+        width: 500px;
+      }
+      #geo-tag-container #pac-input:focus {
+        border-color: #4d90fe;
+      }
+      #geo-tag-container #title {
+        color: #fff;
+        background-color: #4d90fe;
+        font-size: 25px;
+        font-weight: 500;
+        padding: 6px 12px;
+      }
+      #geo-tag-container #target {
+        width: 345px;
+      }
+      #geo-tag-container .cfgp-input {
+        width: 300px;
+      }
+    </style>
+<div id="geo-tag-container">
+	<br /><input type="checkbox" name="cfgp-geotag-enable" id="geo-tag-geotag-enable" value="1" <?php checked( $cfgp_enable, 1, true ); ?>>
+    <label for="geo-tag-geotag-enable"><?php esc_html_e( 'Enable Geo Tag on this page', CFGP_NAME ); ?></label><br />
+	<p><?php esc_html_e( 'The easiest way to start is using the address search function inside map. By march 2007 street level search is available for the following countries: Australia, Austria, Canada, France, Germany, Italy, Japan, Netherlands, New Zealand, Portugal, Spain, Sweden, Switzerland and the United States. If there is no result for your complete address, then try the combination: "city, country" or only the country name.', CFGP_NAME ); ?></p>
+	<p><?php esc_html_e( 'After a successful address search many of the fields listed below should already be filled correctly. But you may modify them if you want to in the fields below. Google Map you see here is only for the preview purpose.', CFGP_NAME ); ?></p>
+	
+    <input id="pac-input" class="controls" type="text" placeholder="<?php esc_html_e( 'Search address, place or certain region...', CFGP_NAME ); ?>">
+    <div id="CFMetaMap"></div>
+	
+    <br /><input type="text" name="cfgp-dc-title" id="geo-tag-dc-title" class="cfgp-input" value="<?php echo $cfgp_dc_title; ?>">
+    <label for="geo-tag-dc-title"><?php esc_html_e( 'Address', CFGP_NAME ); ?></label><br />
+    
+    <input type="text" name="cfgp-region" id="geo-tag-region" class="cfgp-input" value="<?php echo $cfgp_region; ?>">
+    <label for="geo-tag-region"><?php esc_html_e( 'Country code', CFGP_NAME ); ?></label><br />
+    
+    <input type="text" name="cfgp-placename" id="geo-tag-placename" class="cfgp-input" value="<?php echo $cfgp_placename; ?>">
+    <label for="geo-tag-placename"><?php esc_html_e( 'Region', CFGP_NAME ); ?></label><br />
+    
+    <input type="text" name="cfgp-latitude" id="geo-tag-latitude" class="cfgp-input" value="<?php echo $cfgp_latitude; ?>">
+    <label for="geo-tag-latitude"><?php esc_html_e( 'Latitude', CFGP_NAME ); ?></label><br />
+    
+    <input type="text" name="cfgp-longitude" id="geo-tag-longitude" class="cfgp-input" value="<?php echo $cfgp_longitude; ?>">
+    <label for="geo-tag-longitude"><?php esc_html_e( 'Longitude', CFGP_NAME ); ?></label><br />
+</div>
+<script>
+  // This example adds a search box to a map, using the Google Place Autocomplete
+  // feature. People can enter geographical searches. The search box will return a
+  // pick list containing a mix of places and predicted search terms.
+
+  // This example requires the Places library. Include the libraries=places
+  // parameter when you first load the API. For example:
+  // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
+
+function CF_GeoPlugin_Google_Map_GeoTag() {
+    var map = new google.maps.Map(document.getElementById('CFMetaMap'), {
+        center: {
+            lat: <?php echo $cfgp_latitude; ?>,
+            lng: <?php echo $cfgp_longitude; ?>
+        },
+        zoom: 13,
+        disableDefaultUI: true,
+        mapTypeId: 'roadmap'
+    });
+
+    var markers = [];
+    // Create a marker for each place.
+    markers.push(new google.maps.Marker({
+        map: map,
+        title: "<?php echo $cfgp_dc_title; ?>",
+        position: {
+            lat: <?php echo $cfgp_latitude; ?>,
+            lng: <?php echo $cfgp_longitude; ?>
+        },
+    }));
+
+    map.setOptions({
+        draggable: false
+    });
+
+    // Create the search box and link it to the UI element.
+    var input = document.getElementById('pac-input');
+    var searchBox = new google.maps.places.SearchBox(input);
+
+    input.style.marginTop = '9px';
+
+    map.controls[google.maps.ControlPosition.TOP_CENTER].push(input);
+
+    // Bias the SearchBox results towards current map's viewport.
+    map.addListener('bounds_changed', function() {
+        searchBox.setBounds(map.getBounds());
+    });
+
+    // Listen for the event fired when the user selects a prediction and retrieve
+    // more details for that place.
+    searchBox.addListener('places_changed', function() {
+        var places = searchBox.getPlaces();
+
+        if (places.length == 0) {
+            return;
+        }
+
+        // Clear out the old markers.
+        markers.forEach(function(marker) {
+            marker.setMap(null);
+        });
+        markers = [];
+
+        // For each place, get the icon, name and location.
+        var bounds = new google.maps.LatLngBounds();
+        places.forEach(function(place) {
+            if (!place.geometry) {
+                return;
+            }
+
+            var countryCode = '';
+            if (typeof place.address_components != 'undefined') {
+                var componentsLength = place.address_components.length;
+                for (var i = 0; i < componentsLength; i++) {
+                    if (place.address_components[i] == 'undefined') continue;
+
+                    if (place.address_components[i].types.indexOf('country') >= 0) {
+                        countryCode = place.address_components[i].short_name;
+                        break;
+                    }
+                }
+            }
+
+            document.getElementById('geo-tag-dc-title').value = place.formatted_address;
+            document.getElementById('geo-tag-region').value = countryCode;
+            document.getElementById('geo-tag-placename').value = (typeof place.address_components[1] != 'undefined' ? place.address_components[1].long_name : '');
+
+            document.getElementById('geo-tag-latitude').value = place.geometry.location.lat();
+            document.getElementById('geo-tag-longitude').value = place.geometry.location.lng();
+
+            var icon = {
+                url: place.icon,
+                size: new google.maps.Size(71, 71),
+                origin: new google.maps.Point(0, 0),
+                anchor: new google.maps.Point(17, 34),
+                scaledSize: new google.maps.Size(25, 25)
+            };
+            // Create a marker for each place.
+            markers.push(new google.maps.Marker({
+                map: map,
+                icon: icon,
+                title: place.name,
+                position: place.geometry.location
+            }));
+
+            if (place.geometry.viewport) {
+                // Only geocodes have viewport.
+                bounds.union(place.geometry.viewport);
+            } else {
+                bounds.extend(place.geometry.location);
+            }
+        });
+        map.fitBounds(bounds);
+    });
+}
+(function(position, callback){
+		
+	if( typeof google != 'undefined' )
+	{
+		if(typeof callback == 'function') {
+			callback(google,{});
+		}
+	}
+	else
+	{
+		var url = '//maps.googleapis.com/maps/api/js?key=<?php echo isset( $CF_GEOPLUGIN_OPTIONS['map_api_key'] ) ? esc_attr($CF_GEOPLUGIN_OPTIONS['map_api_key']) : ''; ?>',
+			head = document.getElementsByTagName('head')[0],
+			script = document.createElement("script");
+		
+		position = position || 0;
+		
+		script.src = url + '&libraries=places';
+		script.type = 'text/javascript';
+		script.charset = 'UTF-8';
+		script.async = true;
+		script.defer = true;
+		head.appendChild(script);
+		head.insertBefore(script,head.childNodes[position]);		
+		script.onload = function(){
+			if(typeof callback == 'function') {
+				callback(google, script);
+			}
+		};
+		script.onerror = function(){
+			if(typeof callback == 'function') {
+				callback(undefined, script);
+			}
+		};
+	}
+}(0, function($this){
+	if( typeof $this != 'undefined' ) $this.maps.event.addDomListener(window, 'load', CF_GeoPlugin_Google_Map_GeoTag);
+}));
+</script>
+	<?php 
     }
 
     // Meta box content
@@ -121,24 +443,51 @@ class CF_Geoplugin_Metabox extends CF_Geoplugin_Global
     public function meta_box_save( $id )
     {
 		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
-        if(!$CF_GEOPLUGIN_OPTIONS['enable_seo_redirection']) return;
+        $post = get_post( $id );
 
-        // Delete old data
-        $this->get_old_seo_meta( $id );
-        
-        if( isset( $_POST[ $this->prefix ] ) ) 
+        if( $CF_GEOPLUGIN_OPTIONS['enable_seo_redirection'] )
         {
-            foreach( $_POST[ $this->prefix ] as $i => $value )
+            // Delete old data
+            $this->get_old_seo_meta( $id );
+            
+            if( isset( $_POST[ $this->prefix ] ) ) 
             {
-                if( isset( $value['redirect_url'] ) ) 
+                foreach( $_POST[ $this->prefix ] as $i => $value )
                 {
-                    $value['redirect_url'] = $this->addhttp( $value['redirect_url'] );
-                    $value['redirect_url'] = esc_url_raw( $value['redirect_url'] );
+                    if( isset( $value['redirect_url'] ) ) 
+                    {
+                        $value['redirect_url'] = $this->addhttp( $value['redirect_url'] );
+                        $value['redirect_url'] = esc_url_raw( $value['redirect_url'] );
+                    }
+                }
+                update_post_meta( $id, $this->prefix . 'redirection', array_values( $_POST[ $this->prefix ] ) ); // Reindex array beacuse of deleted repeaters. 0 = start
+            }
+            else update_post_meta( $id, $this->prefix . 'redirection', NULL );
+        }
+
+        if( isset( $CF_GEOPLUGIN_OPTIONS['enable_geo_tag'] ) && in_array( $post->post_type, $CF_GEOPLUGIN_OPTIONS['enable_geo_tag'] ) )
+        {
+            $cfgp_geotag_enable = 0;
+			
+			if(isset($_POST['cfgp-geotag-enable'])) {
+				$cfgp_geotag_enable = 1;
+			} else {
+				if( isset($_POST['cfgp-dc-title']) )	unset($_POST['cfgp-dc-title']);
+				if( isset($_POST['cfgp-region']) )		unset($_POST['cfgp-region']);
+				if( isset($_POST['cfgp-placename']) )	unset($_POST['cfgp-placename']);
+				if( isset($_POST['cfgp-latitude']) )	unset($_POST['cfgp-latitude']);
+				if( isset($_POST['cfgp-longitude']) )	unset($_POST['cfgp-longitude']);
+			}
+			
+            foreach( $_POST as $key => $val )
+            {
+                if( strpos( $key, 'cfgp-' ) !== false && $key != 'cfgp-geotag-enable' )
+                {
+                    update_post_meta( $id, $key, $val );
                 }
             }
-            update_post_meta( $id, $this->prefix . 'redirection', array_values( $_POST[ $this->prefix ] ) ); // Reindex array beacuse of deleted repeaters. 0 = start
+            update_post_meta( $id, 'cfgp-geotag-enable', $cfgp_geotag_enable );
         }
-        else update_post_meta( $id, $this->prefix . 'redirection', NULL );
     }
 
     /**

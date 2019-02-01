@@ -36,7 +36,7 @@ class CF_Geoplugin_Init extends CF_Geoplugin_Global
 		// Include admin pages
 		if(file_exists(CFGP_INCLUDES . '/class-cf-geoplugin-admin.php'))
 		{
-			require_once CFGP_INCLUDES . '/class-cf-geoplugin-admin.php';
+			include_once CFGP_INCLUDES . '/class-cf-geoplugin-admin.php';
 			if(class_exists('CF_Geoplugin_Admin')){
 				new CF_Geoplugin_Admin;
 				$debug->save( 'Admin class loaded' );
@@ -47,7 +47,7 @@ class CF_Geoplugin_Init extends CF_Geoplugin_Global
 		// Include REST
 		if( file_exists( CFGP_INCLUDES . '/class-cf-geoplugin-rest.php' ) )
 		{
-			require_once CFGP_INCLUDES . '/class-cf-geoplugin-rest.php';
+			include_once CFGP_INCLUDES . '/class-cf-geoplugin-rest.php';
 			if( class_exists( 'CF_Geoplugin_REST' ) )
 			{
 				$REST = new CF_Geoplugin_REST;
@@ -61,14 +61,14 @@ class CF_Geoplugin_Init extends CF_Geoplugin_Global
 		// Include internal library
 		if(file_exists(CFGP_INCLUDES . '/class-cf-geoplugin-library.php'))
 		{
-			require_once CFGP_INCLUDES . '/class-cf-geoplugin-library.php';
+			include_once CFGP_INCLUDES . '/class-cf-geoplugin-library.php';
 			$debug->save( 'Library included' );
 		}
 		else $debug->save( 'Library not included - Files does not exists' );
 		// Include API services for the CF GeoPlugin
 		if(file_exists(CFGP_INCLUDES . '/class-cf-geoplugin-api.php'))
 		{
-			require_once CFGP_INCLUDES . '/class-cf-geoplugin-api.php';
+			include_once CFGP_INCLUDES . '/class-cf-geoplugin-api.php';
 			if(class_exists('CF_Geoplugin_API')){
 				// Do CRON job
 				$this->add_action( 'cf_geo_validate', array('CF_Geoplugin_Global', 'validate'));
@@ -82,10 +82,16 @@ class CF_Geoplugin_Init extends CF_Geoplugin_Global
 			else $debug->save( 'API class not loaded - Class does not exists' );
 		}
 		else $debug->save( 'API class not loaded - File does not exists' );
+		// Allow developers to use plugin data inside PHP
+		if( file_exists( CFGP_ROOT . '/globals/cf-geoplugin-api.php' ) )
+		{
+			include CFGP_ROOT . '/globals/cf-geoplugin-api.php';
+		}
+		else $debug->save( 'CF Geoplugin class not loaded - File does not exists' );
 		// Include Notifications
 		if( file_exists( CFGP_INCLUDES . '/class-cf-geoplugin-notifications.php' ) )
 		{
-			require_once CFGP_INCLUDES . '/class-cf-geoplugin-notifications.php';
+			include_once CFGP_INCLUDES . '/class-cf-geoplugin-notifications.php';
 			if( class_exists( 'CF_Geoplugin_Notifications' ) )
 			{
 				new CF_Geoplugin_Notifications;
@@ -100,7 +106,7 @@ class CF_Geoplugin_Init extends CF_Geoplugin_Global
 			// Include WooCommerce integratin
 			if( file_exists( CFGP_INCLUDES . '/plugins/woocommerce/woocommerce.php' ) )
 			{
-				require_once CFGP_INCLUDES . '/plugins/woocommerce/woocommerce.php';
+				include_once CFGP_INCLUDES . '/plugins/woocommerce/woocommerce.php';
 				if( class_exists( 'CF_Geoplugin_Woocommerce' ) )
 				{
 					new CF_Geoplugin_Woocommerce;
@@ -112,7 +118,7 @@ class CF_Geoplugin_Init extends CF_Geoplugin_Global
 			// Include Public Functions
 			if( file_exists( CFGP_INCLUDES . '/class-cf-geoplugin-public.php' ) )
 			{
-				require_once CFGP_INCLUDES . '/class-cf-geoplugin-public.php';
+				include_once CFGP_INCLUDES . '/class-cf-geoplugin-public.php';
 				if( class_exists( 'CF_Geoplugin_Public' ) )
 				{
 					$public = new CF_Geoplugin_Public;
@@ -125,7 +131,7 @@ class CF_Geoplugin_Init extends CF_Geoplugin_Global
 			// Include Shortcodes
 			if( file_exists( CFGP_INCLUDES . '/class-cf-geoplugin-shortcodes.php' ) )
 			{
-				require_once CFGP_INCLUDES . '/class-cf-geoplugin-shortcodes.php';
+				include_once CFGP_INCLUDES . '/class-cf-geoplugin-shortcodes.php';
 				if( class_exists( 'CF_Geoplugin_Shortcodes' ) )
 				{
 					$shortcodes = new CF_Geoplugin_Shortcodes;
@@ -138,7 +144,7 @@ class CF_Geoplugin_Init extends CF_Geoplugin_Global
 			// Include Texteditor Buttons
 			if(file_exists(CFGP_INCLUDES . '/class-cf-geoplugin-texteditor-buttons.php'))
 			{
-				require_once CFGP_INCLUDES . '/class-cf-geoplugin-texteditor-buttons.php';
+				include_once CFGP_INCLUDES . '/class-cf-geoplugin-texteditor-buttons.php';
 				if(class_exists('CF_Geoplugin_Texteditor_Buttons')){
 					new CF_Geoplugin_Texteditor_Buttons;
 					$debug->save( 'Texteditor buttons class loaded' );
@@ -149,7 +155,7 @@ class CF_Geoplugin_Init extends CF_Geoplugin_Global
 			// Include Geo Banner
 			if( file_exists( CFGP_INCLUDES . '/class-cf-geoplugin-banner.php' ) )
 			{
-				require_once CFGP_INCLUDES . '/class-cf-geoplugin-banner.php';
+				include_once CFGP_INCLUDES . '/class-cf-geoplugin-banner.php';
 				if( class_exists( 'CF_Geoplugin_Banner' ) )
 				{
 					new CF_Geoplugin_Banner;
@@ -161,7 +167,7 @@ class CF_Geoplugin_Init extends CF_Geoplugin_Global
 			// Include Meta Boxes
 			if( file_exists( CFGP_INCLUDES . '/class-cf-geoplugin-metabox.php' ) )
 			{
-				require_once CFGP_INCLUDES . '/class-cf-geoplugin-metabox.php';
+				include_once CFGP_INCLUDES . '/class-cf-geoplugin-metabox.php';
 				if( class_exists( 'CF_Geoplugin_Metabox' ) )
 				{
 					new CF_Geoplugin_Metabox;
@@ -173,7 +179,7 @@ class CF_Geoplugin_Init extends CF_Geoplugin_Global
 			// Include SEO Redirection
 			if( file_exists( CFGP_INCLUDES . '/class-cf-geoplugin-seo-redirection.php' ) )
 			{
-				require_once CFGP_INCLUDES . '/class-cf-geoplugin-seo-redirection.php';
+				include_once CFGP_INCLUDES . '/class-cf-geoplugin-seo-redirection.php';
 				if( class_exists( 'CF_Geoplugin_SEO_Redirection' ) )
 				{
 					new CF_Geoplugin_SEO_Redirection;
@@ -186,7 +192,7 @@ class CF_Geoplugin_Init extends CF_Geoplugin_Global
 			// Include Defender
 			if( file_exists( CFGP_INCLUDES . '/class-cf-geoplugin-defender.php' ) )
 			{
-				require_once CFGP_INCLUDES . '/class-cf-geoplugin-defender.php';
+				include_once CFGP_INCLUDES . '/class-cf-geoplugin-defender.php';
 				if( class_exists( 'CF_Geoplugin_Defender' ) )
 				{
 					new CF_Geoplugin_Defender;
@@ -199,7 +205,7 @@ class CF_Geoplugin_Init extends CF_Geoplugin_Global
 			// Include Converter Widget
 			if( file_exists( CFGP_INCLUDES . '/widgets/currency-converter.php' ) )
 			{
-				require_once CFGP_INCLUDES . '/widgets/currency-converter.php';
+				include_once CFGP_INCLUDES . '/widgets/currency-converter.php';
 				$debug->save( 'Widget converter class loaded' );
 			}
 			else $debug->save( 'Widget converter class not loaded - File does not exists' );
@@ -207,7 +213,7 @@ class CF_Geoplugin_Init extends CF_Geoplugin_Global
 			// Include Google Map Widget
 			if( file_exists( CFGP_INCLUDES . '/widgets/google-map.php' ) )
 			{
-				require_once CFGP_INCLUDES . '/widgets/google-map.php';
+				include_once CFGP_INCLUDES . '/widgets/google-map.php';
 				$debug->save( 'Widget google map class loaded' );
 			}
 			else $debug->save( 'Widget google map class not loaded - File does not exists' );
@@ -250,6 +256,8 @@ class CF_Geoplugin_Init extends CF_Geoplugin_Global
 			);
 			$debug->save( $defines );
 		}
+		
+		return $GLOBALS['CFGEO'];
 	}
 	
 	/*
@@ -355,7 +363,7 @@ class CF_Geoplugin_Init extends CF_Geoplugin_Global
 	
 		// Setup CRON job
 		if (! wp_next_scheduled ( 'cf_geo_validate' )) {
-			wp_schedule_event(time(), 'twicedaily', 'cf_geo_validate');
+			wp_schedule_event(CFGP_TIME, 'twicedaily', 'cf_geo_validate');
 		}
 
 		// Create table for SEO redirections
@@ -377,7 +385,7 @@ class CF_Geoplugin_Init extends CF_Geoplugin_Global
 		";
 
 		// Require dbDelta to create/update table
-		if( !function_exists( 'dbDelta' ) ) require_once ( ABSPATH . 'wp-admin/includes/upgrade.php'  );
+		if( !function_exists( 'dbDelta' ) ) include ABSPATH . 'wp-admin/includes/upgrade.php';
 		dbDelta( $sql1 );
 		$debug->save( 'Plugin activated and tables created' );
 	}
@@ -403,7 +411,23 @@ class CF_Geoplugin_Init extends CF_Geoplugin_Global
 	*/
 	public function deactivate(){
 		// destroy session
-		session_destroy();
+		if (version_compare(PHP_VERSION, '7.0.0') >= 0) {
+			if(function_exists('session_status') && session_status() != PHP_SESSION_NONE) {
+				session_destroy();
+			}
+		}
+		else if (version_compare(PHP_VERSION, '5.4.0') >= 0)
+		{
+			if (function_exists('session_status') && session_status() != PHP_SESSION_NONE) {
+				session_destroy();
+			}
+		}
+		else
+		{
+			if(session_id() != '') {
+				session_destroy();
+			}
+		}		
 		// clear CRON
 		wp_clear_scheduled_hook('cf_geo_validate');
 		// Set deactivated time

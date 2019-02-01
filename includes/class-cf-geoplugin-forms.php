@@ -27,6 +27,7 @@ class CF_Geoplugin_Form extends CF_Geoplugin_Global
 				'input_class' 		=> '',
 				'container_class' 	=> '',
 				'html' 				=> '',
+				'info' 				=> '',
 				'disabled'			=> false,
 				'readonly'			=> false,
 				'attr'				=> array(),
@@ -44,8 +45,9 @@ class CF_Geoplugin_Form extends CF_Geoplugin_Global
 			?>" class="col-md-4 col-lg-3 col-form-label<?php 
 				if( !empty($attr['label_class']) ) echo ' ' . esc_attr($attr['label_class']);
 			?>"><?php 
-				echo $attr['label']; 
-			?>:</label>
+				echo $attr['label'];
+				if( !empty($attr['info'])) echo '<i class="fa fa-question-circle fa-cfgeo-help" data-toggle="tooltip" data-placement="top" title="' . esc_attr($attr['info']) . '"></i>';
+			?></label>
             <div class="col-md-8 col-lg-9 cfgp-autosave">
             <?php if($attr['license'] && is_numeric($attr['license']) && self::access_level($CF_GEOPLUGIN_OPTIONS['license_sku']) < $attr['license']): ?>
             	<strong class="text-danger"><?php 
@@ -70,7 +72,7 @@ class CF_Geoplugin_Form extends CF_Geoplugin_Global
 					}
 					if( isset($attr['disabled']) && $attr['disabled'] === true ) echo ' disabled';
 					if( isset($attr['readonly']) && $attr['readonly'] === true ) echo ' readonly';
-				?>><?php 
+				?>><?php
 					if( !empty($attr['html'])) echo $attr['html'];
 				?>
             <?php endif; ?>
@@ -91,6 +93,7 @@ class CF_Geoplugin_Form extends CF_Geoplugin_Global
 				'name'				=> '',
 				'default'			=> '',
 				'html'				=> '',
+				'info' 				=> '',
 				'license'			=> false,
 				'license_message'	=> ''
 				/* DEMO *
@@ -116,8 +119,9 @@ class CF_Geoplugin_Form extends CF_Geoplugin_Global
 			?>" class="col-md-4 col-lg-3 col-form-label<?php 
 				if( !empty($attr['label_class']) ) echo ' ' . esc_attr($attr['label_class']);
 			?>"><?php 
-				echo $attr['label']; 
-			?>:</label>
+				echo $attr['label'];
+				if( !empty($attr['info'])) echo '<i class="fa fa-question-circle fa-cfgeo-help" data-toggle="tooltip" data-placement="top" title="' . esc_attr($attr['info']) . '"></i>';
+			?></label>
             <div class="col-md-8 col-lg-9">
             <?php if($attr['license'] && is_numeric($attr['license']) && self::access_level($CF_GEOPLUGIN_OPTIONS['license_sku']) < $attr['license']): ?>
             	<strong class="text-danger"><?php 
@@ -169,6 +173,7 @@ class CF_Geoplugin_Form extends CF_Geoplugin_Global
 				'label_class' 		=> '',
 				'container_class' 	=> '',
 				'html'				=> '',
+				'info' 				=> '',
 				'license'			=> false,
 				'license_message'	=> ''
 				/* DEMO *
@@ -196,8 +201,9 @@ class CF_Geoplugin_Form extends CF_Geoplugin_Global
 			?>" class="col-md-4 col-lg-3 col-form-label<?php 
 				if( !empty($attr['label_class']) ) echo ' ' . esc_attr($attr['label_class']);
 			?>"><?php 
-				echo $attr['label']; 
-			?>:</label>
+				echo $attr['label'];
+				if( !empty($attr['info'])) echo '<i class="fa fa-question-circle fa-cfgeo-help" data-toggle="tooltip" data-placement="top" title="' . esc_attr($attr['info']) . '"></i>';
+			?></label>
             <div class="col-md-8 col-lg-9">
            	<?php if($attr['license'] && is_numeric($attr['license']) && self::access_level($CF_GEOPLUGIN_OPTIONS['license_sku']) < $attr['license']): ?>
             	<strong class="text-danger"><?php 
@@ -233,14 +239,13 @@ class CF_Geoplugin_Form extends CF_Geoplugin_Global
 						?></label>
                     </div>
                 <?php ++$this->tabindex; endif; endforeach; ?>
-                <?php 
+                <?php
 					if( !empty($attr['html'])) echo $attr['html'];
 				?>
 			<?php endif; ?>
             </div>
         </div>
 		<?php $this->form_fields[$attr['label']]= ob_get_clean();
-		ob_get_flush();
 		$attr = NULL;
 	}
 	
@@ -254,6 +259,7 @@ class CF_Geoplugin_Form extends CF_Geoplugin_Global
 				'name'				=> '',
 				'default'			=> '',
 				'html'				=> '',
+				'info' 				=> '',
 				'id'				=> 'select-field-' . $this->tabindex,
 				'select_class' 		=> '',
 				'disabled'			=> false,
@@ -279,8 +285,9 @@ class CF_Geoplugin_Form extends CF_Geoplugin_Global
 			?>" class="col-md-4 col-lg-3 col-form-label<?php 
 				if( !empty($attr['label_class']) ) echo ' ' . esc_attr($attr['label_class']);
 			?>"><?php 
-				echo $attr['label']; 
-			?>:</label>
+				echo $attr['label'];
+				if( !empty($attr['info'])) echo '<i class="fa fa-question-circle fa-cfgeo-help" data-toggle="tooltip" data-placement="top" title="' . esc_attr($attr['info']) . '"></i>';
+			?></label>
             <div class="col-md-8 col-lg-9 cfgp-autosave">
             <?php if($attr['license'] && is_numeric($attr['license']) && self::access_level($CF_GEOPLUGIN_OPTIONS['license_sku']) < $attr['license']): ?>
             	<strong class="text-danger"><?php 
@@ -310,7 +317,7 @@ class CF_Geoplugin_Form extends CF_Geoplugin_Global
 					?></option>
                 <?php ++$this->tabindex; endif; endforeach; ?>
                 </select>
-                <?php 
+                <?php
 					if( !empty($attr['html'])) echo $attr['html'];
 				?>
             <?php endif; ?>
@@ -334,6 +341,7 @@ class CF_Geoplugin_Form extends CF_Geoplugin_Global
 				'input_class' 		=> '',
 				'container_class' 	=> '',
 				'html' 				=> '',
+				'info' 				=> '',
 				'disabled'			=> false,
 				'readonly'			=> false,
 				'attr'				=> array(),
@@ -351,8 +359,9 @@ class CF_Geoplugin_Form extends CF_Geoplugin_Global
 			?>" class="col-md-4 col-lg-3 col-form-label<?php 
 				if( !empty($attr['label_class']) ) echo ' ' . esc_attr($attr['label_class']);
 			?>"><?php 
-				echo $attr['label']; 
-			?>:</label>
+				echo $attr['label'];
+				if( !empty($attr['info'])) echo '<i class="fa fa-question-circle fa-cfgeo-help" data-toggle="tooltip" data-placement="top" title="' . esc_attr($attr['info']) . '"></i>';
+			?></label>
             <div class="col-md-8 col-lg-9 cfgp-autosave">
             <?php if($attr['license'] && is_numeric($attr['license']) && self::access_level($CF_GEOPLUGIN_OPTIONS['license_sku']) < $attr['license']): ?>
             	<strong class="text-danger"><?php 
@@ -377,7 +386,7 @@ class CF_Geoplugin_Form extends CF_Geoplugin_Global
 					if( isset($attr['readonly']) && $attr['readonly'] === true ) echo ' readonly';
 				?>><?php 
 					echo $this->post($attr['name'], 'html', $attr['value']);
-				?></textarea><?php 
+				?></textarea><?php
 					if( !empty($attr['html'])) echo $attr['html'];
 				?>
             <?php endif; ?>

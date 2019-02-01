@@ -9,7 +9,7 @@
 **/
 
 $CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
-$global = new CF_Geoplugin_Global;
+$global = CF_Geoplugin_Global::get_instance();
 $alert='';
 $error_label = array(
 	'license_key' 	=> __('License Key',CFGP_NAME),
@@ -26,30 +26,19 @@ if(isset($_POST['license_key']) && isset($_POST['license'])) :
 	if(count($post) === 5 )
 	{
 		$response = '';
-		$url = 'https://cdn-cfgeoplugin.com/api6.0/authenticate.php';
-		if( function_exists('curl_init') && function_exists('curl_setopt') && function_exists('curl_exec') )
-		{
-//			$ch = curl_init(CFGP_STORE . '/wp-admin/admin-ajax.php');
-			$ch = curl_init($url);
-			curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-			curl_setopt($ch, CURLOPT_TIMEOUT, 10);
-			curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
-			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-			curl_setopt($ch, CURLOPT_HTTPHEADER, array('Accept: application/json'));
-			$response = curl_exec($ch);
-			curl_close($ch);
-		}
-		else
+		$url = add_query_arg( $post, 'https://cdn-cfgeoplugin.com/api6.0/authenticate.php' );
+
+		$response = $global->curl_get( $url );
+		if( empty( $response ) )
 		{
 			$context = CF_Geoplugin_Global::set_stream_context( array( 'Accept: application/json' ), 'POST', http_build_query( $post ) );
-			$response = file_get_contents( $url, false, $context );
+			$response = @file_get_contents( $url, false, $context );
 		}
 
 		if($response)
 		{
 			$license = json_decode($response);
-			if($license->error === false)
+			if( isset( $license->error ) && $license->error === false)
 			{
 				$CF_GEOPLUGIN_OPTIONS['license_key'] = $license->data->the_key;
 				$CF_GEOPLUGIN_OPTIONS['license_id'] = $license->data->activation_id;
@@ -106,7 +95,44 @@ if(isset($_POST['license_key']) && isset($_POST['license'])) :
 		}	
 	}
 endif;
+if( $global->get( 'action' ) == 'deactivate_license' && isset( $_GET['cfgp_license_nonce'] ) && wp_verify_nonce( $_GET['cfgp_license_nonce'], 'cfgp_deactivate_license' ) && CFGP_ACTIVATED )
+{
+	$deactive_params = array(
+		'action'		=> 'license_key_deactivate',
+		'license_key' 	=> $CF_GEOPLUGIN_OPTIONS['license_key'],
+		'sku' 			=> $CF_GEOPLUGIN_OPTIONS['license_sku'],
+		'store_code' 	=> $CF_GEOPLUGIN_OPTIONS['store_code'],
+		'domain' 		=> self::get_host(true),
+		'activation_id'	=> $CF_GEOPLUGIN_OPTIONS['license_id']
+	);
+	$deactive_url = add_query_arg( $deactive_params, 'https://cdn-cfgeoplugin.com/api6.0/authenticate.php' );
 
+	$response = $global->curl_get( $deactive_url );
+	if( empty( $response ) )
+	{
+		$context = CF_Geoplugin_Global::set_stream_context( array( 'Accept: application/json' ), 'GET' );
+		$response = @file_get_contents( $deactive_url, false, $context );
+	}
+
+	if($response)
+	{
+		$license = json_decode($response);
+		if( isset( $license->error ) && $license->error === false)
+		{
+			$CF_GEOPLUGIN_OPTIONS['license'] = 0;
+			$CF_GEOPLUGIN_OPTIONS['license_key'] = '';
+			$CF_GEOPLUGIN_OPTIONS['license_sku'] = '';
+			$CF_GEOPLUGIN_OPTIONS['license_id'] = '';
+
+			if( !CFGP_MULTISITE )
+				update_option('cf_geoplugin', $CF_GEOPLUGIN_OPTIONS, true);
+			else
+				update_site_option('cf_geoplugin', $CF_GEOPLUGIN_OPTIONS);
+
+			exit('<h3 class="mt-5"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i><span class="sr-only">Loading...</span> '.__('Please wait...',CFGP_NAME).'</h3><meta http-equiv="Refresh" content="0.1; url='.self_admin_url('admin.php?page=cf-geoplugin-settings&action=deactivate_license').'">');
+		}
+	}
+}
 
 ?>
 <div class="clearfix"></div>
@@ -157,9 +183,10 @@ endif;
 					); ?><br><br>                    
                     <input type="hidden" name="action" value="license_key_activate">
                     <input type="hidden" name="store_code" value="<?php echo $CF_GEOPLUGIN_OPTIONS['store_code']; ?>">
-                    <input type="hidden" name="domain" value="<?php	echo CF_Geoplugin_Global::get_host(); ?>">
+                    <input type="hidden" name="domain" value="<?php	echo CF_Geoplugin_Global::get_host(true); ?>">
                     <input type="hidden" name="license" value="1">
-                    <button type="submit" class="btn btn-primary btn-lg"><?php _e('Activate Unlimited',CFGP_NAME); ?></button><?php endif; ?>
+					<button type="submit" class="btn btn-primary btn-lg"><?php _e('Activate Unlimited',CFGP_NAME); ?></button>
+					<?php else : ?><br><br><strong><a onclick="var deactivate = confirm( 'Are you sure, you want to deactivate your license?' ); if( !deactivate ) return false;" href="<?php echo wp_nonce_url( self_admin_url('admin.php?page=cf-geoplugin-settings&action=deactivate_license'), 'cfgp_deactivate_license', 'cfgp_license_nonce' ); ?>" class="btn btn-danger btn-lg"><?php _e('Deactivate License',CFGP_NAME); ?></a></strong><?php endif; ?>
                 </form>                
             </div>
         </div>

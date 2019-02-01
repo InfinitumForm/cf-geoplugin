@@ -10,7 +10,7 @@
 
 $CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
 include CFGP_INCLUDES . '/class-cf-geoplugin-forms.php';
-
+$global = CF_Geoplugin_Global::get_instance();
 $alert = '';
 if($this->get('action') == 'activate_license')
 {
@@ -34,6 +34,34 @@ if($this->get('action') == 'activate_license')
 			<hr>
 			<p>' . __('If you think that this is an error, please contact technical support.',CFGP_NAME) . '</p>
 			<button type="button" class="close" data-dismiss="alert" aria-label="'. __( 'Close', CFGP_NAME ) .'">
+				<span aria-hidden="true">&times;</span>
+			</button>
+		</div>';
+	}
+}
+
+if( $global->get( 'action' ) == 'deactivate_license' ) 
+{
+	if( $CF_GEOPLUGIN_OPTIONS['license'] )
+	{
+		$alert = '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+			<h4 class="alert-heading">' . __('Deactivation failed!',CFGP_NAME) . '</h4>
+			<p>' . __('Currently we are not able to perform deactivation request please try again later.',CFGP_NAME) . '</p>
+			<hr>
+			<p>' . __('Your license is still valid with all benefits.',CFGP_NAME) . '</p>
+			<button type="button" class="close" data-dismiss="alert" aria-label="'. __( 'Close', CFGP_NAME ) .'">
+				<span aria-hidden="true">&times;</span>
+			</button>
+		</div>';
+	}
+	else
+	{
+		$alert = '<div class="alert alert-success alert-dismissible fade show" role="alert">
+			<h4 class="alert-heading">' . __('Attention!',CFGP_NAME) . '</h4>
+			<p>' . __('License deactivated successfully!',CFGP_NAME) . '</p>
+			<hr>
+			<p>' . __('Due to license deactivation your APi limitation will be 300 requests per day.',CFGP_NAME) . '</p>' .
+			'<button type="button" class="close" data-dismiss="alert" aria-label="'. __( 'Close', CFGP_NAME ) .'">
 				<span aria-hidden="true">&times;</span>
 			</button>
 		</div>';
@@ -97,7 +125,7 @@ if($this->get('action') == 'activate_license')
 										'id'			=> 'enable_update_false',
 										'disabled'		=> CF_Geoplugin_Global::access_level($CF_GEOPLUGIN_OPTIONS) < 1
 									),
-									'html'		=> '<small>( ' . __('Allow your plugin to be up to date.',CFGP_NAME) . ' )</small>'. (CF_Geoplugin_Global::access_level($CF_GEOPLUGIN_OPTIONS) < 1 ? '<br><span class="text-info">' . __('Auto update is only enabled with plugin license.',CFGP_NAME) . '</span>' : ''),
+									'info'		=> __('Allow your plugin to be up to date.',CFGP_NAME) . (CF_Geoplugin_Global::access_level($CF_GEOPLUGIN_OPTIONS) < 1 ? '(' . __('Auto update is only enabled with plugin license.',CFGP_NAME) . ')' : ''),
 								));
 								
 								$general->radio(array(
@@ -114,7 +142,7 @@ if($this->get('action') == 'activate_license')
 										'value'	=> 0,
 										'id'	=> 'enable_dashboard_widget_false',
 									),
-									'html'		=> '<small>( ' . __('Enable CF Geo Plugin widget in the dashboard area.',CFGP_NAME) . ' )</small>'
+									'info'		=> __('Enable CF Geo Plugin widget in the dashboard area.',CFGP_NAME)
 								));
 								
 								$general->radio(array(
@@ -131,7 +159,7 @@ if($this->get('action') == 'activate_license')
 										'value'	=> 0,
 										'id'	=> 'enable_advanced_dashboard_widget_false',
 									),
-									'html'		=> '<small>( ' . __('Dashboard widget comming in 2 types. You can choose what best fit to you.',CFGP_NAME) . ' )</small>'
+									'info'		=> __('Dashboard widget comming in 2 types. You can choose what best fit to you.',CFGP_NAME)
 								));
 								
 								$general->radio(array(
@@ -148,7 +176,7 @@ if($this->get('action') == 'activate_license')
 										'value'	=> 0,
 										'id'	=> 'enable_cloudflare_false',
 									),
-									'html'		=> '<small>( ' . __('Enable this option only when you use Cloudflare services on your website.',CFGP_NAME) . ' )</small>'
+									'info'		=> __('Enable this option only when you use Cloudflare services on your website.',CFGP_NAME)
 								));
 								
 								$general->radio(array(
@@ -165,7 +193,7 @@ if($this->get('action') == 'activate_license')
 										'value'	=> 0,
 										'id'	=> 'enable_ssl_false',
 									),
-									'html'		=> '<small>( ' . __('This option force plugin to use SSL connection',CFGP_NAME) . ' )</small>'
+									'info'		=> __('This option force plugin to use SSL connection',CFGP_NAME)
 								));
 								
 								$general->radio(array(
@@ -182,7 +210,7 @@ if($this->get('action') == 'activate_license')
 										'value'	=> 0,
 										'id'	=> 'enable_cache_false',
 									),
-									'html'		=> '<small>( ' . __('This option allows caching. Usually used in combination with a cache plugin. If you do not want your redirects to be cached, leave this field disabled',CFGP_NAME) . ' )</small>'
+									'info'		=> __('This option allows caching. Usually used in combination with a cache plugin. If you do not want your redirects to be cached, leave this field disabled',CFGP_NAME)
 								));
 								
 								$general->radio(array(
@@ -214,8 +242,8 @@ if($this->get('action') == 'activate_license')
 									'name'		=> 'base_currency',
 									'id'		=> 'base_currency',
 									'default'	=> (isset($CF_GEOPLUGIN_OPTIONS['base_currency']) ? $CF_GEOPLUGIN_OPTIONS['base_currency'] : 'USD'),
-									'attr'		=> array('autocomplete'=>'off', 'style'=>'max-width:120px;'),
-									'html'		=> '<p>' . __('The base currency (transaction currency) - The currency by which conversion is checked by geo location.',CFGP_NAME) . '<span class="text-info" id="base_currency_info"' . (!$CF_GEOPLUGIN_OPTIONS['enable_woocommerce'] ? ' style="display: none;"' : '') . '><br>' . __('Woocommerce take control of this and you can change it inside Woocommerce Settings.',CFGP_NAME) . '</span>' . '</p>',
+									'attr'		=> array('autocomplete'=>'off', 'style'=>'max-width:120px;display: inline-block;'),
+									'info'		=> '<p>' . __('The base currency (transaction currency) - The currency by which conversion is checked by geo location.',CFGP_NAME) . '<span class="text-info" id="base_currency_info"' . ((!$CF_GEOPLUGIN_OPTIONS['woocommerce_active'] || !$CF_GEOPLUGIN_OPTIONS['enable_woocommerce']) ? ' style="display: none;"' : '') . '><br>' . __('Woocommerce take control of this and you can change it inside Woocommerce Settings.',CFGP_NAME) . '</span>' . '</p>',
 									'disabled'	=> ( $CF_GEOPLUGIN_OPTIONS['woocommerce_active'] && $CF_GEOPLUGIN_OPTIONS['enable_woocommerce'] ? true : false )
 								), $base_currency_options ));
 								
@@ -239,7 +267,7 @@ if($this->get('action') == 'activate_license')
 										'value'	=> 0,
 										'id'	=> 'enable_dns_lookup_false',
 									),
-									'html'		=> '<small>( ' . __('DNS lookup allow you to get DNS informations from your visitors.',CFGP_NAME) . ' )</small>'
+									'info'		=> __('DNS lookup allow you to get DNS informations from your visitors.',CFGP_NAME)
 								));
 								
 								$general->radio(array(
@@ -256,7 +284,7 @@ if($this->get('action') == 'activate_license')
 										'value'	=> 0,
 										'id'	=> 'enable_flag_false',
 									),
-									'html'		=> '<small>( ' . __('Display country flag SVG or PNG image on your website.',CFGP_NAME) . ' )</small>'
+									'info'		=> __('Display country flag SVG or PNG image on your website.',CFGP_NAME)
 								));
 								
 								$general->html( sprintf( '<button type="submit" class="btn btn-success pull-right cfgp_save_options">%s</button>', __( 'Update All Options', CFGP_NAME ) ) );
@@ -277,7 +305,7 @@ if($this->get('action') == 'activate_license')
 										'value'	=> 0,
 										'id'	=> 'enable_banner_false',
 									),
-									'html'		=> '<small>( ' . __('Display content to user by geo location.',CFGP_NAME) . ' )</small>'
+									'info'		=> __('Display content to user by geo location.',CFGP_NAME)
 								));
 								
 								$general->radio(array(
@@ -295,15 +323,16 @@ if($this->get('action') == 'activate_license')
 										'value'	=> 0,
 										'id'	=> 'enable_gmap_false',
 									),
-									'html'		=> '<small>( ' . __('Place simple Google Map to your page.',CFGP_NAME) . ' )</small>'
+									'info'		=> __('Place simple Google Map to your page.',CFGP_NAME)
 								));
-								
+							if ( class_exists( 'WooCommerce' ) )
+							{	
 								$general->radio(array(
 									'label'		=> __('WooCommerce integration'),
 									'name'		=> 'enable_woocommerce',
 									'class'		=> 'enable_woocommerce',
 									'default'	=> (isset($CF_GEOPLUGIN_OPTIONS['enable_woocommerce']) ? $CF_GEOPLUGIN_OPTIONS['enable_woocommerce'] : 0 ),
-									'html'		=> !$CF_GEOPLUGIN_OPTIONS['woocommerce_active'] ? '<p class="text-info">' . __('This function is only enabled when Woocommerce is active.', CFGP_NAME) . '</p>' : '<p id="woo_integration_html"' . (!$CF_GEOPLUGIN_OPTIONS['enable_woocommerce'] ? ' style="display: none;"' : '') . '><a href="'. self_admin_url('admin.php?page=wc-settings') .'"><u>' . __( 'For more settings visit WooCommerce Settings', CFGP_NAME ) . '</u></a></p>',
+									'info'		=> !$CF_GEOPLUGIN_OPTIONS['woocommerce_active'] ? __('This function is only enabled when Woocommerce is active.', CFGP_NAME) : '<div id="woo_integration_html"' . (!$CF_GEOPLUGIN_OPTIONS['enable_woocommerce'] ? ' style="display: none;"' : '') . '>' . __( 'For more options visit WooCommerce Settings', CFGP_NAME ) . '</div>',
 									array(
 										'text'	=> __('Enable', CFGP_NAME),
 										'value'	=> 1,
@@ -319,13 +348,13 @@ if($this->get('action') == 'activate_license')
 										'input_class'	=> 'enable-woocommerce'
 									),
 								));
-
+							}
 								$general->radio(array(
 									'label'		=> __('Enable REST API',CFGP_NAME),
 									'name'		=> 'enable_rest',
 									'class'		=> 'enable_rest',
 									'default'	=> (isset($CF_GEOPLUGIN_OPTIONS['enable_rest']) ? $CF_GEOPLUGIN_OPTIONS['enable_rest'] : 0),
-									'html'		=> '<p>' . __('The CF GeoPlugin REST API allows external apps to use geo informations.',CFGP_NAME) . (CF_Geoplugin_Global::access_level($CF_GEOPLUGIN_OPTIONS) < 4 ? '<br><span class="text-info">' . __('REST API is only functional for the Business License.',CFGP_NAME) . '</span>' : '') . '</p>',
+									'info'		=> __('The CF GeoPlugin REST API allows external apps to use geo informations.',CFGP_NAME) . (CF_Geoplugin_Global::access_level($CF_GEOPLUGIN_OPTIONS) < 4 ? '<br><span class="text-info">' . __('REST API is only functional for the Business License.',CFGP_NAME) . '</span>' : ''),
 									array(
 										'text'	=> __('Enable',CFGP_NAME),
 										'value'	=> 1,
@@ -358,14 +387,14 @@ if($this->get('action') == 'activate_license')
 										'value'	=> 0,
 										'id'	=> 'enable_seo_redirection_false',
 									),
-									'html'		=> '<small>( ' . __('You can redirect your visitors to other locations.',CFGP_NAME) . ' )</small>'
+									'info'		=> __('You can redirect your visitors to other locations.',CFGP_NAME)
 								));
 								
 								$general->radio(array(
 									'label'		=> __('Enable CSV in Site SEO Redirection',CFGP_NAME),
 									'name'		=> 'enable_beta_seo_csv',
 									'default'	=> (isset($CF_GEOPLUGIN_OPTIONS['enable_beta_seo_csv']) ? $CF_GEOPLUGIN_OPTIONS['enable_beta_seo_csv'] : 1),
-									'html'		=> '<p>' . __('This allow you to upload CSV to your SEO redirection or download/backup SEO redirection list in the CSV.',CFGP_NAME) . '</p>',
+									'info'		=> __('This allow you to upload CSV to your SEO redirection or download/backup SEO redirection list in the CSV.',CFGP_NAME),
 									array(
 										'text'	=> __('Enable',CFGP_NAME),
 										'value'	=> 1,
@@ -387,6 +416,7 @@ if($this->get('action') == 'activate_license')
 
 								$first_seo_options = array();
 									
+								$default_value_seo = isset( $CF_GEOPLUGIN_OPTIONS['enable_seo_posts'] ) ? $CF_GEOPLUGIN_OPTIONS['enable_seo_posts'] : '';
 								foreach( $post_types as $i => $obj )
 								{
 									if( in_array( $obj->name, array( 'attachment', 'nav_menu_item', 'custom_css', 'customize_changeset', 'user_request' ) ) ) continue;
@@ -396,14 +426,13 @@ if($this->get('action') == 'activate_license')
 										$first_seo_options[] = $obj->name;
 									}
 									
-									$default_value = isset( $CF_GEOPLUGIN_OPTIONS['enable_seo_posts'] ) ? $CF_GEOPLUGIN_OPTIONS['enable_seo_posts'] : '';
-									if( isset( $CF_GEOPLUGIN_OPTIONS['first_plugin_activation'] ) && (int)$CF_GEOPLUGIN_OPTIONS['first_plugin_activation'] == 1 ) $default_value = $obj->name;
+									if( isset( $CF_GEOPLUGIN_OPTIONS['first_plugin_activation'] ) && (int)$CF_GEOPLUGIN_OPTIONS['first_plugin_activation'] == 1 ) $default_value_seo = $obj->name;
 									$seo_redirections[] = array(
 										'text'		=> $obj->label,
 										'name'		=> 'enable_seo_posts[]',
 										'value'		=> $obj->name,
-										'default'	=> $default_value,
-										'id'		=> sprintf( '%s-%s', $obj->name, $i ),
+										'default'	=> $default_value_seo,
+										'id'		=> sprintf( '%s-seo-%s', $obj->name, $i ),
 										'input_class'	=> 'enable_seo_posts'
 									);
 								}
@@ -435,7 +464,7 @@ if($this->get('action') == 'activate_license')
 										'value'	=> 0,
 										'id'	=> 'enable_defender_false',
 									),
-									'html'		=> '<small>( ' . __('Protect your website from the unwanted visitors by geo location or ip address.',CFGP_NAME) . ' )</small>'
+									'info'		=> __('Protect your website from the unwanted visitors by geo location or ip address.',CFGP_NAME)
 								));
 
 								$general->radio(array(
@@ -458,8 +487,43 @@ if($this->get('action') == 'activate_license')
 										'input_class'	=> 'enable_spam_ip',
 										'disabled'		=> ( $CF_GEOPLUGIN_OPTIONS['enable_defender'] ? false : true )
 									),
-									'html'		=> '<small>( ' . __('Protect your website from bots, crawlers and other unwanted visitors that are found in our blacklist.',CFGP_NAME) . ' )</small>'
+									'info'		=>  __('Protect your website from bots, crawlers and other unwanted visitors that are found in our blacklist.',CFGP_NAME)
 								));
+
+								$general->html( sprintf( '<button type="submit" class="btn btn-success pull-right cfgp_save_options">%s</button>', __( 'Update All Options', CFGP_NAME ) ) );
+								$general->html('<h5 class="mt-5" id="Geo_Tag">'.__('Geo Tag',CFGP_NAME).'</h5>');
+								$general->html('<p>'.__( 'The Geo Tag will help you to create your own geo tags in a simple interactive way without having to deal with latitude or longitude degrees or the syntax of meta tags.' ).'</p>');
+								$general->html('<p>'.__( 'Here you can enable Geo Tag generators inside any post type on the your WordPress website.' ).'</p><hr>');
+
+								$post_types_geo = get_post_types(
+									array(
+										'public'	=> true,
+									),
+									'objects'
+								);
+								
+
+								$default_value_geo = isset( $CF_GEOPLUGIN_OPTIONS['enable_geo_tag'] ) ? $CF_GEOPLUGIN_OPTIONS['enable_geo_tag'] : '';
+								foreach( $post_types_geo as $i => $obj )
+								{
+									if( in_array( $obj->name, array( 'attachment', 'nav_menu_item', 'custom_css', 'customize_changeset', 'user_request' ) ) ) continue;
+									
+									//if( isset( $CF_GEOPLUGIN_OPTIONS['first_plugin_activation'] ) && (int)$CF_GEOPLUGIN_OPTIONS['first_plugin_activation'] == 1 ) $default_value_geo = $obj->name;
+									$geo_tag[] = array(
+										'text'		=> $obj->label,
+										'name'		=> 'enable_geo_tag[]',
+										'value'		=> $obj->name,
+										'default'	=> $default_value_geo,
+										'id'		=> sprintf( '%s-geo-%s', $obj->name, $i ),
+										'input_class'	=> 'enable_geo_tag'
+									);
+								}
+
+								$geo_tag['label'] = __( 'Enable Geo Tag In', CFGP_NAME );
+								$geo_tag['container_class'] = 'container-enable-geo-tag';
+								$general->checkbox(
+									$geo_tag
+								);
 								
 								$general->html( sprintf( '<button type="submit" class="btn btn-success pull-right cfgp_save_options">%s</button>', __( 'Update All Options', CFGP_NAME ) ) );
 								$general->html('<h5 class="mt-5" id="Proxy_Settings">'.__('Proxy Settings',CFGP_NAME).'</h5>');
@@ -531,30 +595,19 @@ if($this->get('action') == 'activate_license')
 								$general->html('<h5 class="mt-5" id="Special_Settings">'.__('Special Settings',CFGP_NAME).'</h5>');
 								$general->html('<p>'.__('Special plugin settings that, in some cases, need to be changed to make some plugin systems to work properly. Many of theese settings depends of your server.', CFGP_NAME).'</p><hr>');
 
-								$general->input(array(
-									'type'		=> 'number',
-									'label'		=> __( 'Set cURL connection timeout in seconds', CFGP_NAME ),
-									'name'		=> 'connection_timeout',
-									'attr'		=> array(
-										'min'	=> 3,
-										'max'	=> 9999
-									),
-									'id'		=> 'connection_timeout',
-									'value'		=> isset( $CF_GEOPLUGIN_OPTIONS['connection_timeout'] ) && (int)$CF_GEOPLUGIN_OPTIONS['connection_timeout'] > 0 ? $CF_GEOPLUGIN_OPTIONS['connection_timeout'] : 15,
-									'html'		=> '<p>' . __( 'Timeout for the cURL connect phase', CFGP_NAME ) . '</p>'
-								));
 
 								$general->input(array(
 									'type'		=> 'number',
-									'label'		=> __( 'Set cURL timeout in seconds', CFGP_NAME ),
+									'label'		=> __( 'Set HTTP API timeout in seconds', CFGP_NAME ),
 									'name'		=> 'timeout',
 									'attr'		=> array(
 										'min'	=> 3,
-										'max'	=> 9999
+										'max'	=> 9999,
+										'style'	=> 'max-width:100px; display:inline-block'
 									),
 									'id'		=> 'timeout',
 									'value'		=> isset( $CF_GEOPLUGIN_OPTIONS['timeout'] ) && (int)$CF_GEOPLUGIN_OPTIONS['timeout'] > 0  ? $CF_GEOPLUGIN_OPTIONS['timeout'] : 15,
-									'html'		=> '<p>' . __( 'Set maximum time the request is allowed to take', CFGP_NAME ) . '</p>'
+									'info'		=> __( 'Set maximum time the request is allowed to take', CFGP_NAME )
 								));
 
 								$general->html( sprintf( '<button type="submit" class="btn btn-success pull-right cfgp_save_options">%s</button>', __( 'Update All Options', CFGP_NAME ) ) );
@@ -565,7 +618,7 @@ if($this->get('action') == 'activate_license')
 									'label'		=> __('Enable Advanced Features (BETA)',CFGP_NAME),
 									'name'		=> 'enable_beta',
 									'default'	=> (isset($CF_GEOPLUGIN_OPTIONS['enable_beta']) ? $CF_GEOPLUGIN_OPTIONS['enable_beta'] : 1),
-									'html'		=> '<p>' . __('This enable/disable all BETA functionality by default.',CFGP_NAME) . '</p>',
+									'info'		=> __('This enable/disable all BETA functionality by default.',CFGP_NAME),
 									array(
 										'text'	=> __('Enable',CFGP_NAME),
 										'value'	=> 1,
@@ -582,7 +635,7 @@ if($this->get('action') == 'activate_license')
 									'label'		=> __('Enable Simple Shortcodes',CFGP_NAME),
 									'name'		=> 'enable_beta_shortcode',
 									'default'	=> (isset($CF_GEOPLUGIN_OPTIONS['enable_beta_shortcode']) ? $CF_GEOPLUGIN_OPTIONS['enable_beta_shortcode'] : 1),
-									'html'		=> '<p>' . __('This allow you to use additional simple shortcode formats.',CFGP_NAME) . '</p>',
+									'info'		=> __('This allow you to use additional simple shortcode formats.',CFGP_NAME),
 									array(
 										'text'	=> __('Enable',CFGP_NAME),
 										'value'	=> 1,
@@ -621,7 +674,8 @@ if($this->get('action') == 'activate_license')
 									'id'		=> 'map_api_key',
 									'value'		=> (isset($CF_GEOPLUGIN_OPTIONS['map_api_key']) ? $CF_GEOPLUGIN_OPTIONS['map_api_key'] : ''),
 									'attr'		=> array('autocomplete'=>'off'),
-									'html'		=> '<a onclick="cf_geoplugin_popup(\'https://console.developers.google.com/flows/enableapi?apiid=maps_backend,geocoding_backend,directions_backend,distance_matrix_backend,elevation_backend&amp;keyType=CLIENT_SIDE&amp;reusekey=true\',\''.__('Google Map API Key',CFGP_NAME).'\',\'1024\',\'450\'); " href="javascript:void(0);"><strong>'.__('GET API KEY',CFGP_NAME).'</strong></a> '.__('In some countries Google Maps JavaScript API applications require authentication.',CFGP_NAME)
+									'html'		=> '<a onclick="cf_geoplugin_popup(\'https://console.developers.google.com/flows/enableapi?apiid=maps_backend,geocoding_backend,directions_backend,distance_matrix_backend,elevation_backend&amp;keyType=CLIENT_SIDE&amp;reusekey=true\',\''.__('Google Map API Key',CFGP_NAME).'\',\'1024\',\'450\'); " href="javascript:void(0);"><strong>'.__('GET API KEY',CFGP_NAME).'</strong></a>',
+									'info'		=> __('In some countries Google Maps JavaScript API applications require authentication.',CFGP_NAME)
 								));
 								
 								$gmap->input(array(
@@ -630,7 +684,7 @@ if($this->get('action') == 'activate_license')
 									'id'		=> 'map_latitude',
 									'value'		=> (isset($CF_GEOPLUGIN_OPTIONS['map_latitude']) ? $CF_GEOPLUGIN_OPTIONS['map_latitude'] : ''),
 									'attr'		=> array('autocomplete'=>'off'),
-									'html'		=> __('Leave blank for CF Geo Plugin default support or place custom value.',CFGP_NAME),
+									'info'		=> __('Leave blank for CF Geo Plugin default support or place custom value.',CFGP_NAME),
 									'attr'		=> array('style'=>'max-width:200px;')
 								));
 								
@@ -640,7 +694,7 @@ if($this->get('action') == 'activate_license')
 									'id'		=> 'map_longitude',
 									'value'		=> (isset($CF_GEOPLUGIN_OPTIONS['map_longitude']) ? $CF_GEOPLUGIN_OPTIONS['map_longitude'] : ''),
 									'attr'		=> array('autocomplete'=>'off'),
-									'html'		=> __('Leave blank for CF Geo Plugin default support or place custom value.',CFGP_NAME),
+									'info'		=> __('Leave blank for CF Geo Plugin default support or place custom value.',CFGP_NAME),
 									'attr'		=> array('style'=>'max-width:200px;')
 								));
 								
@@ -650,7 +704,7 @@ if($this->get('action') == 'activate_license')
 									'id'		=> 'map_width',
 									'value'		=> (isset($CF_GEOPLUGIN_OPTIONS['map_width']) ? $CF_GEOPLUGIN_OPTIONS['map_width'] : '100%'),
 									'attr'		=> array('autocomplete'=>'off'),
-									'html'		=> __('Accept numeric value in percentage or pixels (% or px)',CFGP_NAME),
+									'info'		=> __('Accept numeric value in percentage or pixels (% or px)',CFGP_NAME),
 									'attr'		=> array('style'=>'max-width:80px;')
 								));
 								
@@ -660,7 +714,7 @@ if($this->get('action') == 'activate_license')
 									'id'		=> 'map_height',
 									'value'		=> (isset($CF_GEOPLUGIN_OPTIONS['map_height']) ? $CF_GEOPLUGIN_OPTIONS['map_height'] : '400px'),
 									'attr'		=> array('autocomplete'=>'off'),
-									'html'		=> __('Accept numeric value in percentage or pixels (% or px)',CFGP_NAME),
+									'info'		=> __('Accept numeric value in percentage or pixels (% or px)',CFGP_NAME),
 									'attr'		=> array('style'=>'max-width:80px;')
 								));
 								
@@ -676,7 +730,7 @@ if($this->get('action') == 'activate_license')
 									'id'		=> 'map_zoom',
 									'default'		=> (isset($CF_GEOPLUGIN_OPTIONS['map_zoom']) ? $CF_GEOPLUGIN_OPTIONS['map_zoom'] : 8),
 									'attr'		=> array('autocomplete'=>'off'),
-									'html'		=> __('Most roadmap imagery is available from zoom levels 0 to 18.',CFGP_NAME),
+									'info'		=> __('Most roadmap imagery is available from zoom levels 0 to 18.',CFGP_NAME),
 									'attr'		=> array('style'=>'max-width:50px;'),
 								),$map_zoom_options));
 								
@@ -694,7 +748,7 @@ if($this->get('action') == 'activate_license')
 										'value'	=> 0,
 										'id'	=> 'map_scrollwheel_false',
 									),
-									'html'		=> '<br>'.__('If disabled, disables scrollwheel zooming on the map.',CFGP_NAME),
+									'info'		=> __('If disabled, disables scrollwheel zooming on the map.',CFGP_NAME),
 								));
 								
 								$gmap->radio(array(
@@ -711,7 +765,7 @@ if($this->get('action') == 'activate_license')
 										'value'	=> 0,
 										'id'	=> 'map_navigationControl_false',
 									),
-									'html'		=> '<br>'.__('If disabled, disables navigation on the map. The initial enabled/disabled state of the Map type control.',CFGP_NAME),
+									'info'		=> __('If disabled, disables navigation on the map. The initial enabled/disabled state of the Map type control.',CFGP_NAME),
 								));
 								
 								$gmap->radio(array(
@@ -728,7 +782,7 @@ if($this->get('action') == 'activate_license')
 										'value'	=> 0,
 										'id'	=> 'map_mapTypeControl_false',
 									),
-									'html'		=> '<br>'.__('The initial enabled/disabled state of the Map type control.',CFGP_NAME),
+									'info'		=> __('The initial enabled/disabled state of the Map type control.',CFGP_NAME),
 								));
 								
 								$gmap->radio(array(
@@ -745,7 +799,7 @@ if($this->get('action') == 'activate_license')
 										'value'	=> 0,
 										'id'	=> 'map_scaleControl_false',
 									),
-									'html'		=> '<br>'.__('The initial display options for the scale control.',CFGP_NAME),
+									'info'		=> __('The initial display options for the scale control.',CFGP_NAME),
 								));
 								
 								$gmap->radio(array(
@@ -762,7 +816,7 @@ if($this->get('action') == 'activate_license')
 										'value'	=> 0,
 										'id'	=> 'map_draggable_false',
 									),
-									'html'		=> '<br>'.__('If disabled, the object can be dragged across the map and the underlying feature will have its geometry updated.',CFGP_NAME),
+									'info'		=> __('If disabled, the object can be dragged across the map and the underlying feature will have its geometry updated.',CFGP_NAME),
 								));
 								
 								$gmap->input(array(
@@ -772,7 +826,7 @@ if($this->get('action') == 'activate_license')
 									'id'		=> 'map_infoMaxWidth',
 									'value'		=> (isset($CF_GEOPLUGIN_OPTIONS['map_infoMaxWidth']) ? $CF_GEOPLUGIN_OPTIONS['map_infoMaxWidth'] : 200),
 									'attr'		=> array('autocomplete'=>'off'),
-									'html'		=> __('Maximum width of info popup inside map (integer from 0 to 600).',CFGP_NAME),
+									'info'		=> __('Maximum width of info popup inside map (integer from 0 to 600).',CFGP_NAME),
 									'attr'		=> array('style'=>'max-width:80px;','min'=>0, 'max'=>600)
 								));
 								

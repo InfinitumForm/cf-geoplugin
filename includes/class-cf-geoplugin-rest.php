@@ -259,7 +259,7 @@ class CF_Geoplugin_REST extends CF_Geoplugin_Global {
 				
 				array_push($rest_token, $token);
 				$rest_token_info[$token] = array(
-					'time' => time(),
+					'time' => CFGP_TIME,
 					'app_name' => $GET['app_name'],
 				);
 				

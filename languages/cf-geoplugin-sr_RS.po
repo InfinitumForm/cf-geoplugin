@@ -1,17 +1,18 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: CF Geo Plugin\n"
-"POT-Creation-Date: 2019-02-01 22:16+0100\n"
-"PO-Revision-Date: 2019-02-01 22:17+0100\n"
+"POT-Creation-Date: 2019-02-01 22:25+0100\n"
+"PO-Revision-Date: 2019-02-01 22:27+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
-"Language: en_US\n"
+"Language: sr_RS\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 2.2.1\n"
 "X-Poedit-Basepath: ..\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
 "X-Poedit-Flags-xgettext: --add-comments=translators:\n"
 "X-Poedit-WPHeader: cf-geoplugin.php\n"
 "X-Poedit-SourceCharset: UTF-8\n"
@@ -23,75 +24,74 @@ msgstr ""
 
 #: admin/cf-geoplugin.php:17
 msgid "CF GeoPlugin"
-msgstr "CF GeoPlugin"
+msgstr ""
 
 #: admin/cf-geoplugin.php:45 includes/class-cf-geoplugin-global.php:1383
 msgid "UNLIMITED"
-msgstr "UNLIMITED"
+msgstr "НЕОГРАНИЧЕНО"
 
 #: admin/cf-geoplugin.php:47
 msgid "of"
-msgstr "of"
+msgstr "od"
 
 #: admin/cf-geoplugin.php:53 admin/cf-geoplugin.php:55
 #: admin/cf-geoplugin.php:61
 msgid "LIFETIME!"
-msgstr "LIFETIME!"
+msgstr "ДОЖИВОТНО!"
 
 #: admin/cf-geoplugin.php:57
 #, php-format
 msgid "Expire %s"
-msgstr "Expire %s"
+msgstr "Истиче %s"
 
 #: admin/cf-geoplugin.php:63 admin/debug.php:60 admin/settings.php:869
 #: includes/class-cf-geoplugin-admin.php:949
 #: includes/class-cf-geoplugin-admin.php:1060
 msgid "Lookup"
-msgstr "Lookup"
+msgstr "Преглед"
 
 #: admin/cf-geoplugin.php:63
 msgid "GET UNLIMITED"
-msgstr "GET UNLIMITED"
+msgstr "НЕОГРАНИЧЕНО"
 
 #: admin/cf-geoplugin.php:81 admin/debug.php:79
 msgid "Connection quality"
-msgstr "Connection quality"
+msgstr "Квалитет конекције"
 
 #: admin/cf-geoplugin.php:94
 msgid "Shortcodes"
-msgstr "Shortcodes"
+msgstr "Кратки код"
 
 #: admin/cf-geoplugin.php:98
 msgid "Simple Shortcodes"
-msgstr "Simple Shortcodes"
+msgstr "Једноставан кратки код"
 
 #: admin/cf-geoplugin.php:98
 msgid ""
 "This BETA options you can turn off inside your Settings under General tab"
 msgstr ""
-"This BETA options you can turn off inside your Settings under General tab"
 
 #: admin/cf-geoplugin.php:102 admin/google-map.php:30
 msgid "Info & Examples"
-msgstr "Info & Examples"
+msgstr "Информације и примери"
 
 #: admin/cf-geoplugin.php:113 admin/cf-geoplugin.php:258
 #: admin/cf-geoplugin.php:403 includes/class-cf-geoplugin-banner.php:33
 msgid "Shortcode"
-msgstr "Shortcode"
+msgstr "Kratki kod"
 
 #: admin/cf-geoplugin.php:114 admin/cf-geoplugin.php:259
 #: admin/cf-geoplugin.php:404
 msgid "Returns"
-msgstr "Returns"
+msgstr "Враћа"
 
 #: admin/cf-geoplugin.php:253
 msgid "Sorry currently we are not able to do conversion."
-msgstr "Sorry currently we are not able to do conversion."
+msgstr ""
 
 #: admin/cf-geoplugin.php:266
 msgid "List of experimental shortcodes"
-msgstr "List of experimental shortcodes"
+msgstr "Листа експерименталних кратких кодова"
 
 #: admin/cf-geoplugin.php:267
 msgid ""
@@ -99,13 +99,10 @@ msgid ""
 "can't do include, exclude or add default value. Just display geodata "
 "following with appropriate shortcodes. "
 msgstr ""
-"This shortcodes only have purpose to return available geo-information. You "
-"can't do include, exclude or add default value. Just display geodata "
-"following with appropriate shortcodes. "
 
 #: admin/cf-geoplugin.php:414 admin/google-map.php:107
 msgid "Usage, additional attributes and settings"
-msgstr "Usage, additional attributes and settings"
+msgstr ""
 
 #: admin/cf-geoplugin.php:415
 #, php-format
@@ -118,13 +115,6 @@ msgid ""
 "R(right) - default <br />separator = Separate currency from currency name "
 "( by default blank space )"
 msgstr ""
-"If you whant to display live conversion in your posts, you can do that by "
-"using shortcode like this: %s - what will return converted value and "
-"currency name. <br /><b>Params available</b>: <br />from = From currency "
-"example from='USD' ( by default site currency ) <br />to = To currency "
-"example to='EUR' ( by defult visitor's currency ) <br />align = L(eft) | "
-"R(right) - default <br />separator = Separate currency from currency name "
-"( by default blank space )"
 
 #: admin/cf-geoplugin.php:416
 #, php-format
@@ -133,9 +123,6 @@ msgid ""
 "California), you just need to use return attribute in your shortcode like "
 "this: %s - what will return region name by visitors location."
 msgstr ""
-"If you like to display region (for example California for users who are from "
-"California), you just need to use return attribute in your shortcode like "
-"this: %s - what will return region name by visitors location."
 
 #: admin/cf-geoplugin.php:418
 #, php-format
@@ -144,9 +131,6 @@ msgid ""
 "IP, you can do that by adding one optional attribute %s like on example: %s "
 "- what will return area code from that IP address."
 msgstr ""
-"If you whant to track some custom IP and return some information from that "
-"IP, you can do that by adding one optional attribute %s like on example: %s "
-"- what will return area code from that IP address."
 
 #: admin/cf-geoplugin.php:420
 #, php-format
@@ -155,9 +139,6 @@ msgid ""
 "to add extra attribute in your shortcode like this example: %s - what will "
 "return US if geoplugin can't locate country code."
 msgstr ""
-"If you like to ad default values to your shortcode if data is empty you need "
-"to add extra attribute in your shortcode like this example: %s - what will "
-"return US if geoplugin can't locate country code."
 
 #: admin/cf-geoplugin.php:421
 #, php-format
@@ -168,15 +149,10 @@ msgid ""
 "jQuery: %s This code will auto fill value of CF7 city field when a visitor "
 "visits the contact page."
 msgstr ""
-"Sometimes you need to include other HTML, CSS and JavaScript, and jQuery "
-"codes inside <strong>ContactForm7</strong>. Sometimes you need to insert a "
-"geolocation in input fields. This is not easy but here is one example with "
-"jQuery: %s This code will auto fill value of CF7 city field when a visitor "
-"visits the contact page."
 
 #: admin/cf-geoplugin.php:435
 msgid "Displaying Country Flags in text or like image"
-msgstr "Displaying Country Flags in text or like image"
+msgstr ""
 
 #: admin/cf-geoplugin.php:437
 #, php-format
@@ -184,8 +160,6 @@ msgid ""
 "If you like to display country flag in your text like icon, you can do that "
 "simple like: %s - and you will see flag in your text."
 msgstr ""
-"If you like to display country flag in your text like icon, you can do that "
-"simple like: %s - and you will see flag in your text."
 
 #: admin/cf-geoplugin.php:439
 #, php-format
@@ -194,9 +168,6 @@ msgid ""
 "that also simple using %s or %s attributes like: %s - and you will see image "
 "flag in your content"
 msgstr ""
-"If you like to display country flag in your content like image, you can do "
-"that also simple using %s or %s attributes like: %s - and you will see image "
-"flag in your content"
 
 #: admin/cf-geoplugin.php:441
 #, php-format
@@ -204,12 +175,10 @@ msgid ""
 "You also can give custom sizes of flags in %s, %s, %s, %s or %s using %s "
 "attribute like this: %s - and you will see your flag in that size. %s"
 msgstr ""
-"You also can give custom sizes of flags in %s, %s, %s, %s or %s using %s "
-"attribute like this: %s - and you will see your flag in that size. %s"
 
 #: admin/cf-geoplugin.php:441
 msgid "You can use this size in image and normal text mode also."
-msgstr "You can use this size in image and normal text mode also."
+msgstr ""
 
 #: admin/cf-geoplugin.php:443
 #, php-format
@@ -217,8 +186,6 @@ msgid ""
 "You also can display custom flag using %s attribute by placing country code "
 "simple like: %s - and you will see flag in your text or like image."
 msgstr ""
-"You also can display custom flag using %s attribute by placing country code "
-"simple like: %s - and you will see flag in your text or like image."
 
 #: admin/cf-geoplugin.php:445
 #, php-format
@@ -226,16 +193,14 @@ msgid ""
 "We allow you also full controll of this flags and you can place %s, %s or %s "
 "attributes to be able use this in any kind of work like this: %s"
 msgstr ""
-"We allow you also full controll of this flags and you can place %s, %s or %s "
-"attributes to be able use this in any kind of work like this: %s"
 
 #: admin/cf-geoplugin.php:447
 msgid "Experimental & Deprecate Shortcodes"
-msgstr "Experimental & Deprecate Shortcodes"
+msgstr ""
 
 #: admin/cf-geoplugin.php:449
 msgid "Deprecate Shortcodes"
-msgstr "Deprecate Shortcodes"
+msgstr ""
 
 #: admin/cf-geoplugin.php:452
 #, php-format
@@ -244,9 +209,6 @@ msgid ""
 "old <strong>deprecated</strong> shortcode name %s what you still can use but "
 "we strongly recommended to use new one %s."
 msgstr ""
-"Like you notice, this plugin have changed shortcode names but still support "
-"old <strong>deprecated</strong> shortcode name %s what you still can use but "
-"we strongly recommended to use new one %s."
 
 #: admin/cf-geoplugin.php:454
 #, php-format
@@ -256,117 +218,113 @@ msgid ""
 "insteand of %s like %s but if you have similar geo plugin installed beside "
 "CF GeoPlugin you can have a problems and interference."
 msgstr ""
-"Also we trying to made all works faster and more understandable and we also "
-"add <strong>experimental</strong> shortcode called %s that you can use "
-"insteand of %s like %s but if you have similar geo plugin installed beside "
-"CF GeoPlugin you can have a problems and interference."
 
 #: admin/debug.php:42 includes/class-cf-geoplugin-admin.php:279
 #: includes/class-cf-geoplugin-admin.php:280
 #: includes/class-cf-geoplugin-admin.php:641
 msgid "Debug Mode"
-msgstr "Debug Mode"
+msgstr ""
 
 #: admin/debug.php:53
 msgid "Enter custom IP address for the lookup."
-msgstr "Enter custom IP address for the lookup."
+msgstr ""
 
 #: admin/debug.php:61
 msgid "Clean"
-msgstr "Clean"
+msgstr "Очисти"
 
 #: admin/debug.php:91
 msgid "Recived data"
-msgstr "Recived data"
+msgstr "Примљени податци"
 
 #: admin/debug.php:94
 msgid "Sent data"
-msgstr "Sent data"
+msgstr "Послати податци"
 
 #: admin/debug.php:97
 msgid "Server statistics"
-msgstr "Server statistics"
+msgstr "Статистика сервера"
 
 #: admin/debug.php:100
 msgid "Google map"
-msgstr "Google map"
+msgstr "Гугле Мапа"
 
 #: admin/debug.php:103
 msgid "Debugger"
-msgstr "Debugger"
+msgstr "Откривање грешака"
 
 #: admin/debug.php:113
 #, php-format
 msgid "Information that the CF GeoPlugin API ver.%s receives"
-msgstr "Information that the CF GeoPlugin API ver.%s receives"
+msgstr ""
 
 #: admin/debug.php:116
 msgid "This informations are from CF GEoPlugin API services."
-msgstr "This informations are from CF GEoPlugin API services."
+msgstr ""
 
 #: admin/debug.php:120
 msgid "Return Code"
-msgstr "Return Code"
+msgstr "Враћена вредност"
 
 #: admin/debug.php:121 admin/debug.php:194 admin/debug.php:277
 msgid "Value"
-msgstr "Value"
+msgstr "Вредност"
 
 #: admin/debug.php:186
 msgid "Information of your WordPress installation, server and browser"
-msgstr "Information of your WordPress installation, server and browser"
+msgstr ""
 
 #: admin/debug.php:189
 msgid "This information is only visible to you"
-msgstr "This information is only visible to you"
+msgstr "Ове информације су само вама видљиве"
 
 #: admin/debug.php:193 admin/debug.php:276
 msgid "Name"
-msgstr "Name"
+msgstr "Ime"
 
 #: admin/debug.php:200
 msgid "Site Title"
-msgstr "Site Title"
+msgstr "Наслов сајта"
 
 #: admin/debug.php:204
 msgid "Tagline"
-msgstr "Tagline"
+msgstr "Поднаслов"
 
 #: admin/debug.php:208
 msgid "WordPress address (URL)"
-msgstr "WordPress address (URL)"
+msgstr "WordPress адреса (URL)"
 
 #: admin/debug.php:212
 msgid "WordPress Host"
-msgstr "WordPress Host"
+msgstr "WordPress хост"
 
 #: admin/debug.php:216
 msgid "Admin Email"
-msgstr "Admin Email"
+msgstr "Администраторки е-маил"
 
 #: admin/debug.php:220
 msgid "Encoding for pages and feeds"
-msgstr "Encoding for pages and feeds"
+msgstr ""
 
 #: admin/debug.php:224
 msgid "WordPress Version"
-msgstr "WordPress Version"
+msgstr ""
 
 #: admin/debug.php:228
 msgid "Content-Type"
-msgstr "Content-Type"
+msgstr ""
 
 #: admin/debug.php:232
 msgid "Language"
-msgstr "Language"
+msgstr "Jezik"
 
 #: admin/debug.php:236
 msgid "Server Time"
-msgstr "Server Time"
+msgstr ""
 
 #: admin/debug.php:240
 msgid "WordPress Folder Path"
-msgstr "WordPress Folder Path"
+msgstr ""
 
 #: admin/debug.php:245
 msgid "PHP Version"
@@ -374,28 +332,28 @@ msgstr "PHP Version"
 
 #: admin/debug.php:250
 msgid "Operting System"
-msgstr "Operting System"
+msgstr ""
 
 #: admin/debug.php:254
 msgid "User Agent"
-msgstr "User Agent"
+msgstr "Кориснички агент"
 
 #: admin/debug.php:258
 msgid "WordPress Debug"
-msgstr "WordPress Debug"
+msgstr ""
 
 #: admin/debug.php:259
 msgid "On"
-msgstr "On"
+msgstr "Укључено"
 
 #: admin/debug.php:259
 msgid "Off"
-msgstr "Off"
+msgstr "искључено"
 
 #: admin/debug.php:269
 #, php-format
 msgid "Information that the plugin CF GeoPlugin API ver.%s sends"
-msgstr "Information that the plugin CF GeoPlugin API ver.%s sends"
+msgstr ""
 
 #: admin/debug.php:272
 msgid ""
@@ -406,12 +364,6 @@ msgid ""
 "address. Your IP and email address is also a guarantee that you're not a "
 "robot or some spamming software."
 msgstr ""
-"This information are sent to CF GeoPlugin API. All of this informations "
-"(hostname, IP and timezone) are available for general public, world wide and "
-"we only use them for API purpose which helps plugin to determine the exact "
-"location of the visitors and prevent accidental collapse between the IP "
-"address. Your IP and email address is also a guarantee that you're not a "
-"robot or some spamming software."
 
 #: admin/debug.php:272
 msgid ""
@@ -419,14 +371,11 @@ msgid ""
 "href=\"http://cfgeoplugin.com/privacy-policy\" target=\"_blank\">Privacy "
 "Policy</a>"
 msgstr ""
-"If you are concerned about your private informations, please read the <a "
-"href=\"http://cfgeoplugin.com/privacy-policy\" target=\"_blank\">Privacy "
-"Policy</a>"
 
 #: admin/debug.php:278 admin/google-map.php:47
 #: includes/class-cf-geoplugin-admin.php:668
 msgid "Info"
-msgstr "Info"
+msgstr "Informacija"
 
 #: admin/debug.php:284
 msgid "IP"
@@ -434,43 +383,43 @@ msgstr "IP"
 
 #: admin/debug.php:286
 msgid "Your or Visitor's IP Address"
-msgstr "Your or Visitor's IP Address"
+msgstr "Ваша IP адреса или од посетиоца"
 
 #: admin/debug.php:289
 msgid "Timestamp"
-msgstr "Timestamp"
+msgstr "Vreme"
 
 #: admin/debug.php:291
 msgid "Server Current Unix Timestamp"
-msgstr "Server Current Unix Timestamp"
+msgstr ""
 
 #: admin/debug.php:294
 msgid "SIP"
-msgstr "SIP"
+msgstr ""
 
 #: admin/debug.php:295
 msgid "Proxy Enabled"
-msgstr "Proxy Enabled"
+msgstr ""
 
 #: admin/debug.php:296
 msgid "Server IP Address"
-msgstr "Server IP Address"
+msgstr ""
 
 #: admin/debug.php:299
 msgid "Host"
-msgstr "Host"
+msgstr "Хост"
 
 #: admin/debug.php:303
 msgid "Server Host Name"
-msgstr "Server Host Name"
+msgstr "Хост име сервера"
 
 #: admin/debug.php:306
 msgid "Version"
-msgstr "Version"
+msgstr "Verzija"
 
 #: admin/debug.php:308
 msgid "CF GeoPlugin Version"
-msgstr "CF GeoPlugin Version"
+msgstr ""
 
 #: admin/debug.php:311
 msgid "Email"
@@ -478,7 +427,7 @@ msgstr "Email"
 
 #: admin/debug.php:313
 msgid "Admin e-mail address."
-msgstr "Admin e-mail address."
+msgstr ""
 
 #: admin/debug.php:313
 msgid ""
@@ -488,52 +437,46 @@ msgid ""
 "\"mailto:support@cfgeoplugin.com\">support@cfgeoplugin.com</a> to remove "
 "your all personal data from our system by GDPR rules."
 msgstr ""
-"Only reason why we collect your email address is because plugin support and "
-"robot prevention. Your email address will NOT be spammed or shared with 3rd "
-"party in any case and you can any time request from us on email <a href="
-"\"mailto:support@cfgeoplugin.com\">support@cfgeoplugin.com</a> to remove "
-"your all personal data from our system by GDPR rules."
 
 #: admin/debug.php:316 admin/settings.php:95
 msgid "License"
-msgstr "License"
+msgstr "Лиценца"
 
 #: admin/debug.php:324
 msgid "CF GeoPlugin License Key"
-msgstr "CF GeoPlugin License Key"
+msgstr ""
 
 #: admin/debug.php:327
 msgid "Lifetime"
-msgstr "Lifetime"
+msgstr ""
 
 #: admin/debug.php:329
 msgid "License Expire"
-msgstr "License Expire"
+msgstr ""
 
 #: admin/debug.php:341 admin/google-map.php:18 admin/google-map.php:129
 #: admin/settings.php:88 includes/class-cf-geoplugin-admin.php:213
 #: includes/class-cf-geoplugin-admin.php:214 includes/widgets/google-map.php:26
 msgid "Google Map"
-msgstr "Google Map"
+msgstr "Гугле мапа"
 
 #: admin/debug.php:349 admin/google-map.php:137
 #, php-format
 msgid "Google Map can't be displayed because of error: %s"
-msgstr "Google Map can't be displayed because of error: %s"
+msgstr ""
 
 #: admin/debug.php:355 admin/google-map.php:143
 msgid ""
 "Google Map API key is not set! Please go to Settings > Google Map to set it."
 msgstr ""
-"Google Map API key is not set! Please go to Settings > Google Map to set it."
 
 #: admin/debug.php:373 admin/google-map.php:161
 msgid "Google Map is not enabled! Please go to Settings to enable it."
-msgstr "Google Map is not enabled! Please go to Settings to enable it."
+msgstr ""
 
 #: admin/debug.php:382
 msgid "Plugin Debugger"
-msgstr "Plugin Debugger"
+msgstr ""
 
 #: admin/debug.php:385
 msgid ""
@@ -541,42 +484,39 @@ msgid ""
 "This is very helpful in some situations. Note: On every debug last log file "
 "is deleted and new one is created."
 msgstr ""
-"This feature allows you to collect and download all possible plugin data. "
-"This is very helpful in some situations. Note: On every debug last log file "
-"is deleted and new one is created."
 
 #: admin/debug.php:388
 msgid "Debug Plugin"
-msgstr "Debug Plugin"
+msgstr ""
 
 #: admin/debug.php:393
 msgid "Download Last Debug File"
-msgstr "Download Last Debug File"
+msgstr ""
 
 #: admin/defender.php:21 admin/defender.php:131
 #: includes/class-cf-geoplugin-admin.php:593
 msgid "Anti Spam Protection"
-msgstr "Anti Spam Protection"
+msgstr ""
 
 #: admin/defender.php:69
 msgid "There is some error!"
-msgstr "There is some error!"
+msgstr ""
 
 #: admin/defender.php:77
 msgid "Settings are saved!"
-msgstr "Settings are saved!"
+msgstr ""
 
 #: admin/defender.php:106
 msgid "General Defender Settings"
-msgstr "General Defender Settings"
+msgstr ""
 
 #: admin/defender.php:109
 msgid "Defender page"
-msgstr "Defender page"
+msgstr ""
 
 #: admin/defender.php:112
 msgid "Defender test"
-msgstr "Defender test"
+msgstr ""
 
 #: admin/defender.php:123
 #, php-format
@@ -584,12 +524,10 @@ msgid ""
 "Automatic IP address blacklist check is NOT ENABLED. If you want additional "
 "protection %1$s"
 msgstr ""
-"Automatic IP address blacklist check is NOT ENABLED. If you want additional "
-"protection %1$s"
 
 #: admin/defender.php:125
 msgid "enable it in settings"
-msgstr "enable it in settings"
+msgstr ""
 
 #: admin/defender.php:129
 msgid ""
@@ -598,10 +536,6 @@ msgid ""
 "Blackliested IPs will be automatically recognized and blocked. If you don't "
 "want this kind of protection disable it in plugin settings"
 msgstr ""
-"<strong>Automatic IP Address Blacklist Check</strong> is enabled. All of "
-"these IPs are from safe source and most of them are bots and crawlers. "
-"Blackliested IPs will be automatically recognized and blocked. If you don't "
-"want this kind of protection disable it in plugin settings"
 
 #: admin/defender.php:131
 #, php-format
@@ -612,75 +546,68 @@ msgid ""
 "this feature work correctly. This feature is very safe and does not affect "
 "to SEO."
 msgstr ""
-"With %s you can block the access from the specific IP, country, state and "
-"city to your site. Names of countries, states, regions or cities are not "
-"case sensitive, but the name must be entered correctly (in English) to get "
-"this feature work correctly. This feature is very safe and does not affect "
-"to SEO."
 
 #: admin/defender.php:133
 msgid ""
 "This options will remove all your content, template, design and display "
 "custom message to your visitors."
 msgstr ""
-"This options will remove all your content, template, design and display "
-"custom message to your visitors."
 
 #: admin/defender.php:138
 msgid "IP address separated by comma"
-msgstr "IP address separated by comma"
+msgstr ""
 
 #: admin/defender.php:142 includes/class-cf-geoplugin-metabox.php:563
 msgid "Choose Countries"
-msgstr "Choose Countries"
+msgstr ""
 
 #: admin/defender.php:159 includes/class-cf-geoplugin-metabox.php:564
 msgid "Choose countries..."
-msgstr "Choose countries..."
+msgstr ""
 
 #: admin/defender.php:179 admin/seo-redirection-action.php:102
 msgid "To setup list of countries, you need to go in Geo Banner -> Countries"
-msgstr "To setup list of countries, you need to go in Geo Banner -> Countries"
+msgstr ""
 
 #: admin/defender.php:182 includes/class-cf-geoplugin-metabox.php:587
 msgid "Choose Regions"
-msgstr "Choose Regions"
+msgstr ""
 
 #: admin/defender.php:199 includes/class-cf-geoplugin-metabox.php:588
 msgid "Choose regions..."
-msgstr "Choose regions..."
+msgstr ""
 
 #: admin/defender.php:219 admin/seo-redirection-action.php:142
 msgid "To setup list of regions, you need to go in Geo Banner -> Regions"
-msgstr "To setup list of regions, you need to go in Geo Banner -> Regions"
+msgstr ""
 
 #: admin/defender.php:222
 msgid "Choose Cities"
-msgstr "Choose Cities"
+msgstr ""
 
 #: admin/defender.php:239 includes/class-cf-geoplugin-metabox.php:611
 msgid "Choose cities..."
-msgstr "Choose cities..."
+msgstr ""
 
 #: admin/defender.php:259 admin/seo-redirection-action.php:183
 msgid "To setup list of cities, you need to go in Geo Banner -> Cities"
-msgstr "To setup list of cities, you need to go in Geo Banner -> Cities"
+msgstr ""
 
 #: admin/defender.php:262 admin/defender.php:294
 msgid "Save / Update"
-msgstr "Save / Update"
+msgstr ""
 
 #: admin/defender.php:273
 msgid "Message that is displayed to a blocked visitor (HTML allowed)"
-msgstr "Message that is displayed to a blocked visitor (HTML allowed)"
+msgstr ""
 
 #: admin/google-map.php:27
 msgid "Property List"
-msgstr "Property List"
+msgstr ""
 
 #: admin/google-map.php:33
 msgid "Preview"
-msgstr "Preview"
+msgstr "Pregled"
 
 #: admin/google-map.php:41
 msgid ""
@@ -691,34 +618,27 @@ msgid ""
 "GeoPlugin allow you to place google map easy in your WordPress blog using "
 "simple shortcode <code>[cfgeo_map]</code>."
 msgstr ""
-"Google Maps is a desktop web mapping service developed by Google. It offers "
-"satellite imagery, street maps, 360° panoramic views of streets (Street "
-"View), real-time traffic conditions (Google Traffic), and route planning for "
-"traveling by foot, car, bicycle (in beta), or public transportation. CF "
-"GeoPlugin allow you to place google map easy in your WordPress blog using "
-"simple shortcode <code>[cfgeo_map]</code>."
 
 #: admin/google-map.php:42
 msgid ""
 "In the list below is all settings for the <code>[cfgeo_map]</code> shortcode."
 msgstr ""
-"In the list below is all settings for the <code>[cfgeo_map]</code> shortcode."
 
 #: admin/google-map.php:46
 msgid "Shortcode settings"
-msgstr "Shortcode settings"
+msgstr ""
 
 #: admin/google-map.php:54
 msgid "String"
-msgstr "String"
+msgstr "Стринг"
 
 #: admin/google-map.php:54
 msgid "Mouse hover title"
-msgstr "Mouse hover title"
+msgstr ""
 
 #: admin/google-map.php:58 admin/google-map.php:62
 msgid "Number"
-msgstr "Number"
+msgstr "Broj"
 
 #: admin/google-map.php:58
 #, php-format
@@ -726,12 +646,10 @@ msgid ""
 "Latitude is an angle (defined below) which ranges from 0° at the Equator to "
 "90° (North or South) at the poles.%s"
 msgstr ""
-"Latitude is an angle (defined below) which ranges from 0° at the Equator to "
-"90° (North or South) at the poles.%s"
 
 #: admin/google-map.php:58
 msgid "By default is pointed to visitors city or address automaticly."
-msgstr "By default is pointed to visitors city or address automaticly."
+msgstr ""
 
 #: admin/google-map.php:62
 msgid ""
@@ -739,86 +657,79 @@ msgid ""
 "minutes, and seconds, of a point east or west of the Prime (Greenwich) "
 "Meridian."
 msgstr ""
-"Longitude (shown as a vertical line) is the angular distance, in degrees, "
-"minutes, and seconds, of a point east or west of the Prime (Greenwich) "
-"Meridian."
 
 #: admin/google-map.php:62
 msgid "By default is pointed to visitors city or address automaticly"
-msgstr "By default is pointed to visitors city or address automaticly"
+msgstr ""
 
 #: admin/google-map.php:66
 msgid "Integer"
-msgstr "Integer"
+msgstr "Цео број"
 
 #: admin/google-map.php:66 admin/settings.php:733
 msgid "Most roadmap imagery is available from zoom levels 0 to 18."
-msgstr "Most roadmap imagery is available from zoom levels 0 to 18."
+msgstr ""
 
 #: admin/google-map.php:66 admin/google-map.php:70 admin/google-map.php:74
 #: admin/google-map.php:78 admin/google-map.php:82 admin/google-map.php:86
 #: admin/google-map.php:90 admin/google-map.php:94 admin/google-map.php:98
 msgid "Default is"
-msgstr "Default is"
+msgstr ""
 
 #: admin/google-map.php:70 admin/google-map.php:74 admin/settings.php:707
 #: admin/settings.php:717
 #, php-format
 msgid "Accept numeric value in percentage or pixels (% or px)"
-msgstr "Accept numeric value in percentage or pixels (% or px)"
+msgstr ""
 
 #: admin/google-map.php:70
 msgid "Width of your map."
-msgstr "Width of your map."
+msgstr ""
 
 #: admin/google-map.php:74
 msgid "Height of your map."
-msgstr "Height of your map."
+msgstr ""
 
 #: admin/google-map.php:78 admin/google-map.php:82 admin/google-map.php:86
 #: admin/google-map.php:90 admin/google-map.php:94
 msgid "Integer 1 or 0"
-msgstr "Integer 1 or 0"
+msgstr ""
 
 #: admin/google-map.php:78 admin/google-map.php:82 admin/google-map.php:94
 msgid "If"
-msgstr "If"
+msgstr ""
 
 #: admin/google-map.php:78
 msgid "disables scrollwheel zooming on the map."
-msgstr "disables scrollwheel zooming on the map."
+msgstr ""
 
 #: admin/google-map.php:82
 msgid ""
 "disables navigation on the map. The initial enabled/disabled state of the "
 "Map type control."
 msgstr ""
-"disables navigation on the map. The initial enabled/disabled state of the "
-"Map type control."
 
 #: admin/google-map.php:86 admin/settings.php:785
 msgid "The initial enabled/disabled state of the Map type control."
-msgstr "The initial enabled/disabled state of the Map type control."
+msgstr ""
 
 #: admin/google-map.php:90
 msgid "The initial display options for the Scale control."
-msgstr "The initial display options for the Scale control."
+msgstr ""
 
 #: admin/google-map.php:94
 msgid ""
 "the object can be dragged across the map and the underlying feature will "
 "have its geometry updated."
 msgstr ""
-"the object can be dragged across the map and the underlying feature will "
-"have its geometry updated."
 
 #: admin/google-map.php:98
 msgid "Integer from 0 to 600"
-msgstr "Integer from 0 to 600"
+msgstr ""
 
 #: admin/google-map.php:98
 msgid "Maximum width of info popup inside map."
-msgstr "Maximum width of info popup inside map."
+msgstr ""
 
 #: admin/google-map.php:108
 #, php-format
@@ -827,9 +738,6 @@ msgid ""
 "to place shortcode like this: %s - what will show place on Google map by "
 "visitors location."
 msgstr ""
-"If you whant to place simple google map in your post or page, you just need "
-"to place shortcode like this: %s - what will show place on Google map by "
-"visitors location."
 
 #: admin/google-map.php:110
 #, php-format
@@ -838,38 +746,35 @@ msgid ""
 "do that by adding optional atributes %s like on example: %s - what will show "
 "your company on Google map."
 msgstr ""
-"If you want to display own company street address inside Google map, you can "
-"do that by adding optional atributes %s like on example: %s - what will show "
-"your company on Google map."
 
 #: admin/google-map.php:122
 #, php-format
 msgid "If you want to use HTML inside map and display info bar: <br>%s"
-msgstr "If you want to use HTML inside map and display info bar: <br>%s"
+msgstr ""
 
 #: admin/license.php:15 admin/license.php:166
 msgid "License Key"
-msgstr "License Key"
+msgstr ""
 
 #: admin/license.php:16
 msgid "Activation ID"
-msgstr "Activation ID"
+msgstr ""
 
 #: admin/license.php:17
 msgid "Domain"
-msgstr "Domain"
+msgstr "Домен"
 
 #: admin/license.php:18
 msgid "SKU"
-msgstr "SKU"
+msgstr "Šifra"
 
 #: admin/license.php:58 admin/license.php:132
 msgid "Please wait..."
-msgstr "Please wait..."
+msgstr "Молимо сачекајте..."
 
 #: admin/license.php:64
 msgid "Activation failed!"
-msgstr "Activation failed!"
+msgstr ""
 
 #: admin/license.php:80
 msgid ""
@@ -878,18 +783,12 @@ msgid ""
 "you must enter that license key and choose license type to validate your "
 "key. If key not match to your type you are not able to finish activation."
 msgstr ""
-"One of the Reasons why this happen can be that you must choose valid "
-"\"License Type\". If you purchase \"Personal License\" and get license key, "
-"you must enter that license key and choose license type to validate your "
-"key. If key not match to your type you are not able to finish activation."
 
 #: admin/license.php:82
 msgid ""
 "You must enter license key in order to continue with licensing your plugin "
 "installation."
 msgstr ""
-"You must enter license key in order to continue with licensing your plugin "
-"installation."
 
 #: admin/license.php:150
 #, php-format
@@ -899,22 +798,18 @@ msgid ""
 "you will experience plugin limitations.<br><br>To review or deactivate your "
 "license, please go to your %2$s."
 msgstr ""
-"Thank you for using unlimited license. You license is active until %1$s. It "
-"would be great to expand your license by that date. After expiration date "
-"you will experience plugin limitations.<br><br>To review or deactivate your "
-"license, please go to your %2$s."
 
 #: admin/license.php:151
 msgid "never"
-msgstr "never"
+msgstr ""
 
 #: admin/license.php:152
 msgid "CF GeoPlugin account"
-msgstr "CF GeoPlugin account"
+msgstr ""
 
 #: admin/license.php:155
 msgid "Activate Unlimited!"
-msgstr "Activate Unlimited!"
+msgstr ""
 
 #: admin/license.php:157
 #, php-format
@@ -925,185 +820,178 @@ msgid ""
 "unlimited lookup, please enter your license key.<br>If you are unsure and do "
 "not understand what this is about, read %3$s."
 msgstr ""
-"You currently using free version of plugin with a limited number of lookups."
-"<br>Each free version of this plugin is limited to %1$s lookups per day and "
-"you have only %2$s lookups available for today. If you want to have "
-"unlimited lookup, please enter your license key.<br>If you are unsure and do "
-"not understand what this is about, read %3$s."
 
 #: admin/license.php:161 includes/class-cf-geoplugin-notifications.php:92
 msgid "this article"
-msgstr "this article"
+msgstr "овај артикал"
 
 #: admin/license.php:166
 msgid "activated"
-msgstr "activated"
+msgstr "активирано"
 
 #: admin/license.php:166 admin/settings.php:888 admin/settings.php:894
 #: admin/settings.php:900 admin/settings.php:906 admin/settings.php:969
 #: admin/settings.php:975 admin/settings.php:981 admin/settings.php:987
 msgid "required"
-msgstr "required"
+msgstr "obavezno"
 
 #: admin/license.php:167
 msgid "Enter Your License Key"
-msgstr "Enter Your License Key"
+msgstr ""
 
 #: admin/license.php:168
 msgid "GET MY LICENSE KEY"
-msgstr "GET MY LICENSE KEY"
+msgstr ""
 
 #: admin/license.php:169
 msgid "License Type"
-msgstr "License Type"
+msgstr ""
 
 #: admin/license.php:169
 msgid "(required)"
-msgstr "(required)"
+msgstr "(обавезно)"
 
 #: admin/license.php:178
 msgid "License type must match to your license key that you ordered."
-msgstr "License type must match to your license key that you ordered."
+msgstr ""
 
 #: admin/license.php:180
 #, php-format
 msgid "Before any action don't forget to read and agree with %1$s and %2$s."
-msgstr "Before any action don't forget to read and agree with %1$s and %2$s."
+msgstr ""
 
 #: admin/license.php:181 includes/class-cf-geoplugin-admin.php:1141
 #: includes/class-cf-geoplugin-notifications.php:93
 msgid "Privacy Policy"
-msgstr "Privacy Policy"
+msgstr "Политика приватности"
 
 #: admin/license.php:182 includes/class-cf-geoplugin-notifications.php:94
 msgid "Terms & Conditions"
-msgstr "Terms & Conditions"
+msgstr "Услови и правила"
 
 #: admin/license.php:188 includes/class-cf-geoplugin-admin.php:298
 #: includes/class-cf-geoplugin-admin.php:299
 #: includes/class-cf-geoplugin-admin.php:658
 #: includes/class-cf-geoplugin-notifications.php:96
 msgid "Activate Unlimited"
-msgstr "Activate Unlimited"
+msgstr ""
 
 #: admin/license.php:189
 msgid "Deactivate License"
-msgstr "Deactivate License"
+msgstr ""
 
 #: admin/seo-redirection-action.php:18
 msgid "Add new SEO redirection"
-msgstr "Add new SEO redirection"
+msgstr ""
 
 #: admin/seo-redirection-action.php:19
 msgid "Update SEO redirection"
-msgstr "Update SEO redirection"
+msgstr ""
 
 #: admin/seo-redirection-action.php:30
 msgid "SEO Redirection Global Params"
-msgstr "SEO Redirection Global Params"
+msgstr ""
 
 #: admin/seo-redirection-action.php:33
 msgid ""
 "Here you can set global params for SEO Redirection. If you want you can also "
 "set them individually in posts or pages."
 msgstr ""
-"Here you can set global params for SEO Redirection. If you want you can also "
-"set them individually in posts or pages."
 
 #: admin/seo-redirection-action.php:55
 msgid "Enable or disable global redirection."
-msgstr "Enable or disable global redirection."
+msgstr ""
 
 #: admin/seo-redirection-action.php:66
 msgid "Select Country"
-msgstr "Select Country"
+msgstr "Izaberi državu"
 
 #: admin/seo-redirection-action.php:83
 msgid "Choose country..."
-msgstr "Choose country..."
+msgstr ""
 
 #: admin/seo-redirection-action.php:84
 msgid "Choose Country..."
-msgstr "Choose Country..."
+msgstr ""
 
 #: admin/seo-redirection-action.php:125
 msgid "Select Region"
-msgstr "Select Region"
+msgstr ""
 
 #: admin/seo-redirection-action.php:126
 msgid "Choose region..."
-msgstr "Choose region..."
+msgstr ""
 
 #: admin/seo-redirection-action.php:127
 msgid "Choose Region..."
-msgstr "Choose Region..."
+msgstr ""
 
 #: admin/seo-redirection-action.php:166
 msgid "Select City"
-msgstr "Select City"
+msgstr "Изаберите град"
 
 #: admin/seo-redirection-action.php:167
 msgid "Choose city..."
-msgstr "Choose city..."
+msgstr ""
 
 #: admin/seo-redirection-action.php:168
 msgid "Choose City..."
-msgstr "Choose City..."
+msgstr ""
 
 #: admin/seo-redirection-action.php:190
 #: includes/class-cf-geoplugin-metabox.php:634
 msgid "Redirect URL"
-msgstr "Redirect URL"
+msgstr ""
 
 #: admin/seo-redirection-action.php:192
 msgid "URL where you want to redirect"
-msgstr "URL where you want to redirect"
+msgstr ""
 
 #: admin/seo-redirection-action.php:198
 #: includes/class-cf-geoplugin-metabox.php:639
 msgid "HTTP Code"
-msgstr "HTTP Code"
+msgstr ""
 
 #: admin/seo-redirection-action.php:200
 #: includes/class-cf-geoplugin-metabox.php:647
 msgid "301 - Moved Permanently"
-msgstr "301 - Moved Permanently"
+msgstr ""
 
 #: admin/seo-redirection-action.php:201
 #: includes/class-cf-geoplugin-metabox.php:648
 msgid "302 - Moved Temporary"
-msgstr "302 - Moved Temporary"
+msgstr ""
 
 #: admin/seo-redirection-action.php:202
 #: includes/class-cf-geoplugin-metabox.php:649
 msgid "303 - See Other"
-msgstr "303 - See Other"
+msgstr ""
 
 #: admin/seo-redirection-action.php:203
 #: includes/class-cf-geoplugin-metabox.php:650
 msgid "404 - Not Found (not recommended)"
-msgstr "404 - Not Found (not recommended)"
+msgstr ""
 
 #: admin/seo-redirection-action.php:205
 #: includes/class-cf-geoplugin-metabox.php:658
 msgid "Select the desired HTTP redirection. (HTTP Code 302 is recommended)"
-msgstr "Select the desired HTTP redirection. (HTTP Code 302 is recommended)"
+msgstr ""
 
 #: admin/seo-redirection-action.php:219
 msgid "Save"
-msgstr "Save"
+msgstr "Sačuvaj"
 
 #: admin/seo-redirection-action.php:220
 msgid "Cancel"
-msgstr "Cancel"
+msgstr "Odustani"
 
 #: admin/seo-redirection-import.php:19
 msgid "SEO Redirection Upload"
-msgstr "SEO Redirection Upload"
+msgstr ""
 
 #: admin/seo-redirection-import.php:20
 msgid "Backup Prevous Settings"
-msgstr "Backup Prevous Settings"
+msgstr ""
 
 #: admin/seo-redirection-import.php:23
 msgid ""
@@ -1112,18 +1000,12 @@ msgid ""
 "define in your CSV file with just a few clicks. Before proceeding with this, "
 "you need to be informed about the structure of the CSV file that we expect."
 msgstr ""
-"If you want to make large amounts of redirects easier, we give you this "
-"option. Here you can easily enter a thousand redirects by the rules you "
-"define in your CSV file with just a few clicks. Before proceeding with this, "
-"you need to be informed about the structure of the CSV file that we expect."
 
 #: admin/seo-redirection-import.php:24
 msgid ""
 "Please carefully follow this manual to avoid unnecessary problems and waste "
 "of time."
 msgstr ""
-"Please carefully follow this manual to avoid unnecessary problems and waste "
-"of time."
 
 #: admin/seo-redirection-import.php:25
 msgid ""
@@ -1131,79 +1013,76 @@ msgid ""
 "The order of the column is extremely important and its content is strict. If "
 "you do not follow the format and column order, CSV will be rejected."
 msgstr ""
-"The file must be a standard comma separated CSV with a maximum of 6 columns. "
-"The order of the column is extremely important and its content is strict. If "
-"you do not follow the format and column order, CSV will be rejected."
 
 #: admin/seo-redirection-import.php:27
 msgid "Column 1"
-msgstr "Column 1"
+msgstr ""
 
 #: admin/seo-redirection-import.php:28
 msgid "Country Code - standard 2 letter country code"
-msgstr "Country Code - standard 2 letter country code"
+msgstr ""
 
 #: admin/seo-redirection-import.php:28 admin/seo-redirection-import.php:30
 #: admin/seo-redirection-import.php:32
 #, php-format
 msgid "example: %s"
-msgstr "example: %s"
+msgstr ""
 
 #: admin/seo-redirection-import.php:29
 msgid "Column 2"
-msgstr "Column 2"
+msgstr ""
 
 #: admin/seo-redirection-import.php:30
 msgid "Region Name"
-msgstr "Region Name"
+msgstr ""
 
 #: admin/seo-redirection-import.php:31
 msgid "Column 3"
-msgstr "Column 3"
+msgstr ""
 
 #: admin/seo-redirection-import.php:32
 msgid "City Name"
-msgstr "City Name"
+msgstr ""
 
 #: admin/seo-redirection-import.php:33
 msgid "Column 4"
-msgstr "Column 4"
+msgstr ""
 
 #: admin/seo-redirection-import.php:34
 msgid "Redirect URL - valid URL format"
-msgstr "Redirect URL - valid URL format"
+msgstr ""
 
 #: admin/seo-redirection-import.php:35
 msgid "Column 5"
-msgstr "Column 5"
+msgstr ""
 
 #: admin/seo-redirection-import.php:36
 msgid "HTTP Status Code - Accept 301, 302, 303 and 404"
-msgstr "HTTP Status Code - Accept 301, 302, 303 and 404"
+msgstr ""
 
 #: admin/seo-redirection-import.php:37
 msgid "Column 6"
-msgstr "Column 6"
+msgstr ""
 
 #: admin/seo-redirection-import.php:38
 msgid "Active - Optional, accept integer (1-Enable, 0-Disable)"
-msgstr "Active - Optional, accept integer (1-Enable, 0-Disable)"
+msgstr ""
 
 #: admin/seo-redirection-import.php:43
 msgid ""
 "This properly prepared CSV can either upload or place direct URL through the "
 "form below:"
 msgstr ""
-"This properly prepared CSV can either upload or place direct URL through the "
-"form below:"
 
 #: admin/seo-redirection-import.php:47
 msgid "Choose File"
-msgstr "Choose File"
+msgstr ""
+"Izaberi fajltext to display in file button used in HTML forms when no file "
+"is selected"
 
 #: admin/seo-redirection-import.php:48
 msgid "Import"
-msgstr "Import"
+msgstr "Uvezi"
 
 #: admin/seo-redirection-import.php:51
 msgid ""
@@ -1212,17 +1091,13 @@ msgid ""
 "important to make a preliminary backup. Please use backup button at top of "
 "this page for that action."
 msgstr ""
-"PLEASE NOTE: After upload, all previous records will be deleted and new data "
-"will be placed. This process is impossible to avoid and, therefore, it is "
-"important to make a preliminary backup. Please use backup button at top of "
-"this page for that action."
 
 #: admin/seo-redirection.php:56 admin/settings.php:373
 #: includes/class-cf-geoplugin-admin.php:249
 #: includes/class-cf-geoplugin-admin.php:250
 #: includes/class-cf-geoplugin-admin.php:609
 msgid "SEO Redirection"
-msgstr "SEO Redirection"
+msgstr ""
 
 #: admin/seo-redirection.php:58
 msgid ""
@@ -1230,29 +1105,26 @@ msgid ""
 "your visitors. This functionality allow you to redirect your visitors on the "
 "any custom location. Please use this carefuly and wise."
 msgstr ""
-"Here you can setup default site redirection based on the geo-location of "
-"your visitors. This functionality allow you to redirect your visitors on the "
-"any custom location. Please use this carefuly and wise."
 
 #: admin/seo-redirection.php:64
 msgid "Add new redirection"
-msgstr "Add new redirection"
+msgstr ""
 
 #: admin/seo-redirection.php:69 admin/seo-redirection.php:73
 msgid "Export as CSV"
-msgstr "Export as CSV"
+msgstr ""
 
 #: admin/seo-redirection.php:70 admin/seo-redirection.php:74
 msgid "Import from CSV"
-msgstr "Import from CSV"
+msgstr ""
 
 #: admin/seo-redirection.php:73
 msgid "Export as CSV is enabled only with valid license."
-msgstr "Export as CSV is enabled only with valid license."
+msgstr ""
 
 #: admin/seo-redirection.php:74
 msgid "Import from CSV is enabled only with valid license."
-msgstr "Import from CSV is enabled only with valid license."
+msgstr ""
 
 #: admin/seo-redirection.php:82 admin/seo-redirection.php:151
 msgid "URL"
@@ -1263,7 +1135,7 @@ msgstr "URL"
 #: includes/class-cf-geoplugin-banner.php:146
 #: includes/class-cf-geoplugin-banner.php:161
 msgid "Country"
-msgstr "Country"
+msgstr "Država"
 
 #: admin/seo-redirection.php:84 admin/seo-redirection.php:153
 #: includes/class-cf-geoplugin-admin.php:692
@@ -1271,46 +1143,46 @@ msgstr "Country"
 #: includes/class-cf-geoplugin-banner.php:188
 #: includes/class-cf-geoplugin-metabox.php:272
 msgid "Region"
-msgstr "Region"
+msgstr "Regija"
 
 #: admin/seo-redirection.php:85 admin/seo-redirection.php:154
 #: includes/class-cf-geoplugin-admin.php:686
 #: includes/class-cf-geoplugin-banner.php:200
 #: includes/class-cf-geoplugin-banner.php:215
 msgid "City"
-msgstr "City"
+msgstr "Grad"
 
 #: admin/seo-redirection.php:86 admin/seo-redirection.php:155
 msgid "Status Code"
-msgstr "Status Code"
+msgstr ""
 
 #: admin/seo-redirection.php:87 admin/seo-redirection.php:156
 msgid "Action"
-msgstr "Action"
+msgstr "Akcija"
 
 #: admin/seo-redirection.php:104
 msgid "Disabled"
-msgstr "Disabled"
+msgstr "Isključeno"
 
 #: admin/seo-redirection.php:130
 msgid "Edit"
-msgstr "Edit"
+msgstr "Uredi"
 
 #: admin/seo-redirection.php:131
 msgid "Delete"
-msgstr "Delete"
+msgstr "Obriši"
 
 #: admin/seo-redirection.php:145
 msgid "There is not yet SEO redirections."
-msgstr "There is not yet SEO redirections."
+msgstr ""
 
 #: admin/settings.php:20
 msgid "Well done!"
-msgstr "Well done!"
+msgstr "Bravo!"
 
 #: admin/settings.php:21
 msgid "License activated successfully!"
-msgstr "License activated successfully!"
+msgstr ""
 
 #: admin/settings.php:23
 #, php-format
@@ -1318,91 +1190,82 @@ msgid ""
 "You are now using unlimited lookup and the changes will appear instantly or "
 "will be visible in %s."
 msgstr ""
-"You are now using unlimited lookup and the changes will appear instantly or "
-"will be visible in %s."
 
 #: admin/settings.php:24 admin/settings.php:36 admin/settings.php:52
 #: admin/settings.php:64 includes/class-cf-geoplugin-admin.php:125
 msgid "Close"
-msgstr "Close"
+msgstr "Zatvori"
 
 #: admin/settings.php:32
 msgid "Activation Fail!"
-msgstr "Activation Fail!"
+msgstr ""
 
 #: admin/settings.php:33
 msgid ""
 "Your activation key not valid and activation is not possible. Please check "
 "all parameters."
 msgstr ""
-"Your activation key not valid and activation is not possible. Please check "
-"all parameters."
 
 #: admin/settings.php:35
 msgid "If you think that this is an error, please contact technical support."
-msgstr "If you think that this is an error, please contact technical support."
+msgstr ""
 
 #: admin/settings.php:48
 msgid "Deactivation failed!"
-msgstr "Deactivation failed!"
+msgstr ""
 
 #: admin/settings.php:49
 msgid ""
 "Currently we are not able to perform deactivation request please try again "
 "later."
 msgstr ""
-"Currently we are not able to perform deactivation request please try again "
-"later."
 
 #: admin/settings.php:51
 msgid "Your license is still valid with all benefits."
-msgstr "Your license is still valid with all benefits."
+msgstr ""
 
 #: admin/settings.php:60
 msgid "Attention!"
-msgstr "Attention!"
+msgstr ""
 
 #: admin/settings.php:61
 msgid "License deactivated successfully!"
-msgstr "License deactivated successfully!"
+msgstr ""
 
 #: admin/settings.php:63
 msgid ""
 "Due to license deactivation your APi limitation will be 300 requests per day."
 msgstr ""
-"Due to license deactivation your APi limitation will be 300 requests per day."
 
 #: admin/settings.php:75
 msgid "CF GeoPlugin Settings"
-msgstr "CF GeoPlugin Settings"
+msgstr ""
 
 #: admin/settings.php:85
 msgid "General Settings"
-msgstr "General Settings"
+msgstr "Glavne opsije"
 
 #: admin/settings.php:91
 msgid "REST API"
-msgstr "REST API"
+msgstr ""
 
 #: admin/settings.php:100
 msgid "Credits & Info"
-msgstr "Credits & Info"
+msgstr ""
 
 #: admin/settings.php:109
 msgid "WordPress Settings"
-msgstr "WordPress Settings"
+msgstr ""
 
 #: admin/settings.php:110
 msgid ""
 "This settings only affect on CF Geo Plugin functionality and connection "
 "between plugin and WordPress setup. Use it smart and careful."
 msgstr ""
-"This settings only affect on CF Geo Plugin functionality and connection "
-"between plugin and WordPress setup. Use it smart and careful."
 
 #: admin/settings.php:113
 msgid "Enable Plugin Auto Update"
-msgstr "Enable Plugin Auto Update"
+msgstr ""
 
 #: admin/settings.php:117 admin/settings.php:136 admin/settings.php:170
 #: admin/settings.php:187 admin/settings.php:204 admin/settings.php:261
@@ -1417,7 +1280,7 @@ msgstr "Enable Plugin Auto Update"
 #: includes/widgets/google-map.php:197 includes/widgets/google-map.php:202
 #: includes/widgets/google-map.php:207
 msgid "Enable"
-msgstr "Enable"
+msgstr "Uključi"
 
 #: admin/settings.php:123 admin/settings.php:141 admin/settings.php:175
 #: admin/settings.php:192 admin/settings.php:209 admin/settings.php:266
@@ -1432,220 +1295,207 @@ msgstr "Enable"
 #: includes/widgets/google-map.php:198 includes/widgets/google-map.php:203
 #: includes/widgets/google-map.php:208
 msgid "Disable"
-msgstr "Disable"
+msgstr "Onemogući"
 
 #: admin/settings.php:128
 msgid "Allow your plugin to be up to date."
-msgstr "Allow your plugin to be up to date."
+msgstr ""
 
 #: admin/settings.php:128
 msgid "Auto update is only enabled with plugin license."
-msgstr "Auto update is only enabled with plugin license."
+msgstr ""
 
 #: admin/settings.php:132
 msgid "Enable Dashboard Widget"
-msgstr "Enable Dashboard Widget"
+msgstr ""
 
 #: admin/settings.php:145
 msgid "Enable CF Geo Plugin widget in the dashboard area."
-msgstr "Enable CF Geo Plugin widget in the dashboard area."
+msgstr ""
 
 #: admin/settings.php:149
 msgid "Dashboard Widget Type"
-msgstr "Dashboard Widget Type"
+msgstr ""
 
 #: admin/settings.php:153
 msgid "Advanced (recommended)"
-msgstr "Advanced (recommended)"
+msgstr ""
 
 #: admin/settings.php:158
 msgid "Basic"
-msgstr "Basic"
+msgstr "Основни"
 
 #: admin/settings.php:162
 msgid ""
 "Dashboard widget comming in 2 types. You can choose what best fit to you."
 msgstr ""
-"Dashboard widget comming in 2 types. You can choose what best fit to you."
 
 #: admin/settings.php:166
 msgid "Enable Cloudflare"
-msgstr "Enable Cloudflare"
+msgstr ""
 
 #: admin/settings.php:179
 msgid ""
 "Enable this option only when you use Cloudflare services on your website."
 msgstr ""
-"Enable this option only when you use Cloudflare services on your website."
 
 #: admin/settings.php:183
 msgid "Enable SSL"
-msgstr "Enable SSL"
+msgstr "& Укључи ССЛ"
 
 #: admin/settings.php:196
 msgid "This option force plugin to use SSL connection"
-msgstr "This option force plugin to use SSL connection"
+msgstr ""
 
 #: admin/settings.php:200
 msgid "Enable Caching"
-msgstr "Enable Caching"
+msgstr ""
 
 #: admin/settings.php:213
 msgid ""
 "This option allows caching. Usually used in combination with a cache plugin. "
 "If you do not want your redirects to be cached, leave this field disabled"
 msgstr ""
-"This option allows caching. Usually used in combination with a cache plugin. "
-"If you do not want your redirects to be cached, leave this field disabled"
 
 #: admin/settings.php:217
 msgid "Measurement Unit"
-msgstr "Measurement Unit"
+msgstr ""
 
 #: admin/settings.php:222 includes/class-cf-geoplugin-api.php:160
 msgid "km"
-msgstr "km"
+msgstr ""
 
 #: admin/settings.php:227 includes/class-cf-geoplugin-api.php:163
 msgid "mile"
-msgstr "mile"
+msgstr ""
 
 #: admin/settings.php:241
 msgid "Base currency"
-msgstr "Base currency"
+msgstr ""
 
 #: admin/settings.php:246
 msgid ""
 "The base currency (transaction currency) - The currency by which conversion "
 "is checked by geo location."
 msgstr ""
-"The base currency (transaction currency) - The currency by which conversion "
-"is checked by geo location."
 
 #: admin/settings.php:246
 msgid ""
 "Woocommerce take control of this and you can change it inside Woocommerce "
 "Settings."
 msgstr ""
-"Woocommerce take control of this and you can change it inside Woocommerce "
-"Settings."
 
 #: admin/settings.php:250 admin/settings.php:290 admin/settings.php:372
 #: admin/settings.php:448 admin/settings.php:493 admin/settings.php:528
 #: admin/settings.php:594 admin/settings.php:613 admin/settings.php:656
 #: admin/settings.php:834
 msgid "Update All Options"
-msgstr "Update All Options"
+msgstr ""
 
 #: admin/settings.php:251
 msgid "Plugin Settings"
-msgstr "Plugin Settings"
+msgstr "Поставке додатка"
 
 #: admin/settings.php:252
 msgid "This settings enable advanced lookup and functionality of plugin."
-msgstr "This settings enable advanced lookup and functionality of plugin."
+msgstr ""
 
 #: admin/settings.php:255
 msgid "Enable DNS Lookup"
-msgstr "Enable DNS Lookup"
+msgstr ""
 
 #: admin/settings.php:259 admin/settings.php:475
 msgid "This option is only available with unlimited lookup license"
-msgstr "This option is only available with unlimited lookup license"
+msgstr ""
 
 #: admin/settings.php:270
 msgid "DNS lookup allow you to get DNS informations from your visitors."
-msgstr "DNS lookup allow you to get DNS informations from your visitors."
+msgstr ""
 
 #: admin/settings.php:274
 msgid "Enable Country Flags"
-msgstr "Enable Country Flags"
+msgstr ""
 
 #: admin/settings.php:287
 msgid "Display country flag SVG or PNG image on your website."
-msgstr "Display country flag SVG or PNG image on your website."
+msgstr ""
 
 #: admin/settings.php:291
 msgid "Plugin Features"
-msgstr "Plugin Features"
+msgstr ""
 
 #: admin/settings.php:292
 msgid ""
 "Here you can enable or disable features that you need. This is useful "
 "because you can disable functionality what you not need."
 msgstr ""
-"Here you can enable or disable features that you need. This is useful "
-"because you can disable functionality what you not need."
 
 #: admin/settings.php:295
 msgid "Enable Geo Banner"
-msgstr "Enable Geo Banner"
+msgstr ""
 
 #: admin/settings.php:308
 msgid "Display content to user by geo location."
-msgstr "Display content to user by geo location."
+msgstr ""
 
 #: admin/settings.php:312
 msgid "Enable Google Map"
-msgstr "Enable Google Map"
+msgstr ""
 
 #: admin/settings.php:326
 msgid "Place simple Google Map to your page."
-msgstr "Place simple Google Map to your page."
+msgstr ""
 
 #: admin/settings.php:331
 msgid "WooCommerce integration"
-msgstr "WooCommerce integration"
+msgstr ""
 
 #: admin/settings.php:335
 msgid "This function is only enabled when Woocommerce is active."
-msgstr "This function is only enabled when Woocommerce is active."
+msgstr ""
 
 #: admin/settings.php:335
 msgid "For more options visit WooCommerce Settings"
-msgstr "For more options visit WooCommerce Settings"
+msgstr ""
 
 #: admin/settings.php:353
 msgid "Enable REST API"
-msgstr "Enable REST API"
+msgstr ""
 
 #: admin/settings.php:357
 msgid "The CF GeoPlugin REST API allows external apps to use geo informations."
 msgstr ""
-"The CF GeoPlugin REST API allows external apps to use geo informations."
 
 #: admin/settings.php:357
 msgid "REST API is only functional for the Business License."
-msgstr "REST API is only functional for the Business License."
+msgstr ""
 
 #: admin/settings.php:377
 msgid "Enable Site SEO Redirection"
-msgstr "Enable Site SEO Redirection"
+msgstr ""
 
 #: admin/settings.php:390
 msgid "You can redirect your visitors to other locations."
-msgstr "You can redirect your visitors to other locations."
+msgstr ""
 
 #: admin/settings.php:394
 msgid "Enable CSV in Site SEO Redirection"
-msgstr "Enable CSV in Site SEO Redirection"
+msgstr ""
 
 #: admin/settings.php:397
 msgid ""
 "This allow you to upload CSV to your SEO redirection or download/backup SEO "
 "redirection list in the CSV."
 msgstr ""
-"This allow you to upload CSV to your SEO redirection or download/backup SEO "
-"redirection list in the CSV."
 
 #: admin/settings.php:440
 msgid "Enable Post SEO Redirection In"
-msgstr "Enable Post SEO Redirection In"
+msgstr ""
 
 #: admin/settings.php:449 includes/class-cf-geoplugin-admin.php:227
 #: includes/class-cf-geoplugin-admin.php:228
 msgid "Spam Protection"
-msgstr "Spam Protection"
+msgstr ""
 
 #: admin/settings.php:450
 msgid ""
@@ -1653,45 +1503,36 @@ msgid ""
 "from the specific IP, country, state and city to your site. This feature is "
 "very safe and does not affect to the SEO."
 msgstr ""
-"With Anti Spam Protection you can enable anti spam filter and block access "
-"from the specific IP, country, state and city to your site. This feature is "
-"very safe and does not affect to the SEO."
 
 #: admin/settings.php:450
 msgid ""
 "By enabling this feature, you get full spam protection from over 30.000 "
 "blacklisted IP addresses."
 msgstr ""
-"By enabling this feature, you get full spam protection from over 30.000 "
-"blacklisted IP addresses."
 
 #: admin/settings.php:453
 msgid "Enable Spam Protection"
-msgstr "Enable Spam Protection"
+msgstr ""
 
 #: admin/settings.php:467
 msgid ""
 "Protect your website from the unwanted visitors by geo location or ip "
 "address."
 msgstr ""
-"Protect your website from the unwanted visitors by geo location or ip "
-"address."
 
 #: admin/settings.php:471
 msgid "Enable Automatic IP Address Blacklist Check"
-msgstr "Enable Automatic IP Address Blacklist Check"
+msgstr ""
 
 #: admin/settings.php:490
 msgid ""
 "Protect your website from bots, crawlers and other unwanted visitors that "
 "are found in our blacklist."
 msgstr ""
-"Protect your website from bots, crawlers and other unwanted visitors that "
-"are found in our blacklist."
 
 #: admin/settings.php:494
 msgid "Geo Tag"
-msgstr "Geo Tag"
+msgstr ""
 
 #: admin/settings.php:495
 msgid ""
@@ -1699,25 +1540,20 @@ msgid ""
 "interactive way without having to deal with latitude or longitude degrees or "
 "the syntax of meta tags."
 msgstr ""
-"The Geo Tag will help you to create your own geo tags in a simple "
-"interactive way without having to deal with latitude or longitude degrees or "
-"the syntax of meta tags."
 
 #: admin/settings.php:496
 msgid ""
 "Here you can enable Geo Tag generators inside any post type on the your "
 "WordPress website."
 msgstr ""
-"Here you can enable Geo Tag generators inside any post type on the your "
-"WordPress website."
 
 #: admin/settings.php:522
 msgid "Enable Geo Tag In"
-msgstr "Enable Geo Tag In"
+msgstr ""
 
 #: admin/settings.php:529
 msgid "Proxy Settings"
-msgstr "Proxy Settings"
+msgstr "Поставке проксија"
 
 #: admin/settings.php:530
 #, php-format
@@ -1729,56 +1565,46 @@ msgid ""
 "disabled by default. You need to test this option on your side and use wise. "
 "Need proxy service? %1$s."
 msgstr ""
-"Some servers not share real IP because of security reasons or IP is blocked "
-"from geolocation. Using proxy you can bypass that protocols and enable "
-"geoplugin to work properly. Also, this option on individual servers can "
-"cause inaccurate geo informations, and because of that this option is "
-"disabled by default. You need to test this option on your side and use wise. "
-"Need proxy service? %1$s."
 
 #: admin/settings.php:530
 msgid "We have Recommended Service For You"
-msgstr "We have Recommended Service For You"
+msgstr ""
 
 #: admin/settings.php:530
 msgid ""
 "This is usually good if you use some Onion domain or you are a general user "
 "of the private web and all your websites are in the private networks."
 msgstr ""
-"This is usually good if you use some Onion domain or you are a general user "
-"of the private web and all your websites are in the private networks."
 
 #: admin/settings.php:535
 msgid "Enable Proxy"
-msgstr "Enable Proxy"
+msgstr "Укључи прокси"
 
 #: admin/settings.php:551
 msgid "Proxy IP/Host"
-msgstr "Proxy IP/Host"
+msgstr ""
 
 #: admin/settings.php:561
 msgid "Proxy Port"
-msgstr "Proxy Port"
+msgstr ""
 
 #: admin/settings.php:571
 msgid "Proxy Username"
-msgstr "Proxy Username"
+msgstr ""
 
 #: admin/settings.php:581
 msgid "Proxy Password"
-msgstr "Proxy Password"
+msgstr ""
 
 #: admin/settings.php:591
 msgid ""
 "This option is only available for users with Personal, Freelancer and "
 "Business license."
 msgstr ""
-"This option is only available for users with Personal, Freelancer and "
-"Business license."
 
 #: admin/settings.php:595
 msgid "Special Settings"
-msgstr "Special Settings"
+msgstr ""
 
 #: admin/settings.php:596
 msgid ""
@@ -1786,21 +1612,18 @@ msgid ""
 "plugin systems to work properly. Many of theese settings depends of your "
 "server."
 msgstr ""
-"Special plugin settings that, in some cases, need to be changed to make some "
-"plugin systems to work properly. Many of theese settings depends of your "
-"server."
 
 #: admin/settings.php:601
 msgid "Set HTTP API timeout in seconds"
-msgstr "Set HTTP API timeout in seconds"
+msgstr ""
 
 #: admin/settings.php:610
 msgid "Set maximum time the request is allowed to take"
-msgstr "Set maximum time the request is allowed to take"
+msgstr ""
 
 #: admin/settings.php:614
 msgid "BETA Testing & Advanced Features"
-msgstr "BETA Testing & Advanced Features"
+msgstr ""
 
 #: admin/settings.php:615
 msgid ""
@@ -1810,107 +1633,98 @@ msgid ""
 "many users find this functionality useful we may keep this functionality and "
 "include it as standard functionality of CF GeoPlugin."
 msgstr ""
-"Here you can enable BETA functionality and test it. In many cases, normaly "
-"you should not have any problems but some functionality are new and "
-"experimental that mean if any conflict happen, you must be aware of this. If "
-"many users find this functionality useful we may keep this functionality and "
-"include it as standard functionality of CF GeoPlugin."
 
 #: admin/settings.php:618
 msgid "Enable Advanced Features (BETA)"
-msgstr "Enable Advanced Features (BETA)"
+msgstr ""
 
 #: admin/settings.php:621
 msgid "This enable/disable all BETA functionality by default."
-msgstr "This enable/disable all BETA functionality by default."
+msgstr ""
 
 #: admin/settings.php:635
 msgid "Enable Simple Shortcodes"
-msgstr "Enable Simple Shortcodes"
+msgstr ""
 
 #: admin/settings.php:638
 msgid "This allow you to use additional simple shortcode formats."
-msgstr "This allow you to use additional simple shortcode formats."
+msgstr ""
 
 #: admin/settings.php:668
 msgid "Google Map Settings"
-msgstr "Google Map Settings"
+msgstr "Подешавања Гугл мапе"
 
 #: admin/settings.php:669
 msgid "This settings is for Google Map API services."
-msgstr "This settings is for Google Map API services."
+msgstr ""
 
 #: admin/settings.php:672 admin/settings.php:677
 msgid "Google Map API Key"
-msgstr "Google Map API Key"
+msgstr ""
 
 #: admin/settings.php:677
 msgid "GET API KEY"
-msgstr "GET API KEY"
+msgstr ""
 
 #: admin/settings.php:678
 msgid ""
 "In some countries Google Maps JavaScript API applications require "
 "authentication."
 msgstr ""
-"In some countries Google Maps JavaScript API applications require "
-"authentication."
 
 #: admin/settings.php:682
 msgid "Default Latitude"
-msgstr "Default Latitude"
+msgstr "Подразумевана Латитуде"
 
 #: admin/settings.php:687 admin/settings.php:697
 msgid "Leave blank for CF Geo Plugin default support or place custom value."
-msgstr "Leave blank for CF Geo Plugin default support or place custom value."
+msgstr ""
 
 #: admin/settings.php:692
 msgid "Default Longitude"
-msgstr "Default Longitude"
+msgstr "Дефаулт Лонгитуде"
 
 #: admin/settings.php:702
 msgid "Default Map Width"
-msgstr "Default Map Width"
+msgstr ""
 
 #: admin/settings.php:712
 msgid "Default Map Height"
-msgstr "Default Map Height"
+msgstr ""
 
 #: admin/settings.php:728
 msgid "Default Max Zoom"
-msgstr "Default Max Zoom"
+msgstr ""
 
 #: admin/settings.php:738
 msgid "Zooming"
-msgstr "Zooming"
+msgstr ""
 
 #: admin/settings.php:751
 msgid "If disabled, disables scrollwheel zooming on the map."
-msgstr "If disabled, disables scrollwheel zooming on the map."
+msgstr ""
 
 #: admin/settings.php:755
 msgid "Navigation"
-msgstr "Navigation"
+msgstr "Навигатор"
 
 #: admin/settings.php:768
 msgid ""
 "If disabled, disables navigation on the map. The initial enabled/disabled "
 "state of the Map type control."
 msgstr ""
-"If disabled, disables navigation on the map. The initial enabled/disabled "
-"state of the Map type control."
 
 #: admin/settings.php:772
 msgid "Map Type Control"
-msgstr "Map Type Control"
+msgstr ""
 
 #: admin/settings.php:789
 msgid "Scale Control"
-msgstr "Scale Control"
+msgstr ""
 
 #: admin/settings.php:802
 msgid "The initial display options for the scale control."
-msgstr "The initial display options for the scale control."
+msgstr ""
 
 #: admin/settings.php:806
 msgid "Draggable"
@@ -1921,49 +1735,45 @@ msgid ""
 "If disabled, the object can be dragged across the map and the underlying "
 "feature will have its geometry updated."
 msgstr ""
-"If disabled, the object can be dragged across the map and the underlying "
-"feature will have its geometry updated."
 
 #: admin/settings.php:823
 msgid "Info Box Max Width"
-msgstr "Info Box Max Width"
+msgstr ""
 
 #: admin/settings.php:829 includes/widgets/google-map.php:212
 msgid "Maximum width of info popup inside map (integer from 0 to 600)."
-msgstr "Maximum width of info popup inside map (integer from 0 to 600)."
+msgstr ""
 
 #: admin/settings.php:853
 msgid "REST API Setup"
-msgstr "REST API Setup"
+msgstr ""
 
 #: admin/settings.php:855
 msgid "NOTE: The REST API is only functional for the Business License"
-msgstr "NOTE: The REST API is only functional for the Business License"
+msgstr ""
 
 #: admin/settings.php:857
 msgid ""
 "The CF GeoPlugin REST API allows external apps to use geo informations and "
 "made your WordPress like geo informations provider."
 msgstr ""
-"The CF GeoPlugin REST API allows external apps to use geo informations and "
-"made your WordPress like geo informations provider."
 
 #: admin/settings.php:858 admin/settings.php:895 admin/settings.php:976
 msgid "API KEY"
-msgstr "API KEY"
+msgstr ""
 
 #: admin/settings.php:860 admin/settings.php:901
 msgid "Secret API KEY"
-msgstr "Secret API KEY"
+msgstr ""
 
 #: admin/settings.php:861
 msgid "Generate Secret Key"
-msgstr "Generate Secret Key"
+msgstr ""
 
 #: admin/settings.php:863 includes/class-cf-geoplugin-admin.php:312
 #: includes/class-cf-geoplugin-admin.php:1141
 msgid "Documentation"
-msgstr "Documentation"
+msgstr "Dokumentacija"
 
 #: admin/settings.php:864
 msgid ""
@@ -1972,80 +1782,73 @@ msgid ""
 "data. Through this API, you can easily connect via any programming language "
 "that allows crossdomain communication."
 msgstr ""
-"This API is designed to provide easy and secure access to geo information on "
-"your site sending simple POST or GET requests and receiving JSON formatted "
-"data. Through this API, you can easily connect via any programming language "
-"that allows crossdomain communication."
 
 #: admin/settings.php:868
 msgid "Authentication"
-msgstr "Authentication"
+msgstr "Аутентичност"
 
 #: admin/settings.php:870 admin/settings.php:1028
 msgid "Available Tokens"
-msgstr "Available Tokens"
+msgstr ""
 
 #: admin/settings.php:874
 msgid "Authentication endpoint"
-msgstr "Authentication endpoint"
+msgstr ""
 
 #: admin/settings.php:875
 msgid ""
 "Endpoint used to authenticate connection between CF Geo Plugin on your site "
 "and your external app."
 msgstr ""
-"Endpoint used to authenticate connection between CF Geo Plugin on your site "
-"and your external app."
 
 #: admin/settings.php:877 admin/settings.php:958
 msgid "Expected GET or POST parameters."
-msgstr "Expected GET or POST parameters."
+msgstr ""
 
 #: admin/settings.php:880 admin/settings.php:921 admin/settings.php:961
 msgid "Parameter"
-msgstr "Parameter"
+msgstr "Parametar"
 
 #: admin/settings.php:881 admin/settings.php:922 admin/settings.php:962
 msgid "Type"
-msgstr "Type"
+msgstr "Tip"
 
 #: admin/settings.php:882 admin/settings.php:963
 msgid "Obligation"
-msgstr "Obligation"
+msgstr ""
 
 #: admin/settings.php:883 admin/settings.php:923 admin/settings.php:964
 msgid "Description"
-msgstr "Description"
+msgstr "Opis"
 
 #: admin/settings.php:889
 msgid ""
 "Endpoint action. Should always be: <strong>cf_geoplugin_authenticate</strong>"
 msgstr ""
-"Endpoint action. Should always be: <strong>cf_geoplugin_authenticate</strong>"
 
 #: admin/settings.php:907
 msgid "Your external application name."
-msgstr "Your external application name."
+msgstr ""
 
 #: admin/settings.php:911 admin/settings.php:998
 msgid "Return standard JSON API response format"
-msgstr "Return standard JSON API response format"
+msgstr ""
 
 #: admin/settings.php:933
 msgid "Return only when error exists"
-msgstr "Return only when error exists"
+msgstr ""
 
 #: admin/settings.php:938
 msgid "HTTP status code"
-msgstr "HTTP status code"
+msgstr ""
 
 #: admin/settings.php:943
 msgid "Return access token only when authentication is successful"
-msgstr "Return access token only when authentication is successful"
+msgstr ""
 
 #: admin/settings.php:948
 msgid "Return only when authentication is successful"
-msgstr "Return only when authentication is successful"
+msgstr ""
 
 #: admin/settings.php:952
 msgid ""
@@ -2053,46 +1856,38 @@ msgid ""
 "integrate it within the code in your external app and it serves for further "
 "linking to your site."
 msgstr ""
-"When you receive your access token, you need to save it in a database or "
-"integrate it within the code in your external app and it serves for further "
-"linking to your site."
 
 #: admin/settings.php:955
 msgid "Lookup endpoint"
-msgstr "Lookup endpoint"
+msgstr ""
 
 #: admin/settings.php:956
 msgid ""
 "Endpoint used to lookup IP address informations. To make this work properly, "
 "you must have a valid KEY and Access Token API."
 msgstr ""
-"Endpoint used to lookup IP address informations. To make this work properly, "
-"you must have a valid KEY and Access Token API."
 
 #: admin/settings.php:970
 msgid "Endpoint action. Should always be: <strong>cf_geoplugin_lookup</strong>"
 msgstr ""
-"Endpoint action. Should always be: <strong>cf_geoplugin_lookup</strong>"
 
 #: admin/settings.php:982
 msgid "Generated access token"
-msgstr "Generated access token"
+msgstr ""
 
 #: admin/settings.php:988
 msgid "Client IP address"
-msgstr "Client IP address"
+msgstr ""
 
 #: admin/settings.php:993
 msgid "optional"
-msgstr "optional"
+msgstr "opciono"
 
 #: admin/settings.php:994
 msgid ""
 "The base currency (transaction currency) - The currency by which conversion "
 "is checked by geo location. Default: <strong>USD</strong>"
 msgstr ""
-"The base currency (transaction currency) - The currency by which conversion "
-"is checked by geo location. Default: <strong>USD</strong>"
 
 #: admin/settings.php:1025
 msgid ""
@@ -2100,46 +1895,41 @@ msgid ""
 "order for your external app to be fast, it would be good to make this call "
 "once and record in a temporary session that will expire after few minutes."
 msgstr ""
-"You can use these JSON information in your external app anywhere. TIP: In "
-"order for your external app to be fast, it would be good to make this call "
-"once and record in a temporary session that will expire after few minutes."
 
 #: admin/settings.php:1029
 msgid ""
 "Here is a list of registered access tokens that are active on your site. You "
 "can also disable any active access token."
 msgstr ""
-"Here is a list of registered access tokens that are active on your site. You "
-"can also disable any active access token."
 
 #: admin/settings.php:1033
 msgid "Access Token"
-msgstr "Access Token"
+msgstr ""
 
 #: admin/settings.php:1034
 msgid "App name"
-msgstr "App name"
+msgstr ""
 
 #: admin/settings.php:1035
 msgid "Date"
-msgstr "Date"
+msgstr "Datum"
 
 #: admin/settings.php:1048
 msgid "Delete Token"
-msgstr "Delete Token"
+msgstr ""
 
 #: admin/settings.php:1055
 msgid "There are no registered applications yet."
-msgstr "There are no registered applications yet."
+msgstr ""
 
 #: admin/settings/credits.php:1
 msgid "Credits"
-msgstr "Credits"
+msgstr "Saradnja"
 
 #: admin/settings/credits.php:2
 #, php-format
 msgid "%s, %s, %s and all this functionality is made by %s."
-msgstr "%s, %s, %s and all this functionality is made by %s."
+msgstr ""
 
 #: admin/settings/credits.php:3
 msgid ""
@@ -2147,9 +1937,6 @@ msgid ""
 "maximal conversions. Plugin is SEO optimized, user friendly, easy for use "
 "and very dynamic."
 msgstr ""
-"This plugin have purpose to help business people to reach own goals and made "
-"maximal conversions. Plugin is SEO optimized, user friendly, easy for use "
-"and very dynamic."
 
 #: admin/settings/credits.php:5
 #, php-format
@@ -2160,15 +1947,10 @@ msgid ""
 "WordPress blog. Also you can place banners and content realated to user "
 "locations."
 msgstr ""
-"The %s allows you to attach geographic information and Google maps to posts, "
-"pages, widgets and custom templates by using shortcodes and user IP address. "
-"It also lets you to specify a default geographic location for your entire "
-"WordPress blog. Also you can place banners and content realated to user "
-"locations."
 
 #: admin/settings/credits.php:7
 msgid "For Developers and Contributors"
-msgstr "For Developers and Contributors"
+msgstr ""
 
 #: admin/settings/credits.php:8
 msgid ""
@@ -2177,104 +1959,96 @@ msgid ""
 "your own plugins and templates. All great new ideas will be taken into "
 "consideration and all together we can do something fantastic!"
 msgstr ""
-"You are welcome to contribute to my plugin and help me in the development. "
-"Also you are welcome to use this plugin inside your projects like part of "
-"your own plugins and templates. All great new ideas will be taken into "
-"consideration and all together we can do something fantastic!"
 
 #: admin/settings/credits.php:10
 msgid "Copyright"
-msgstr "Copyright"
+msgstr "Autorsko pravo"
 
 #: includes/class-cf-geoplugin-admin.php:122
 #: includes/class-cf-geoplugin-admin.php:181
 #: includes/class-cf-geoplugin-admin.php:376
 msgid "Loading..."
-msgstr "Loading..."
+msgstr "Учитава се…"
 
 #: includes/class-cf-geoplugin-admin.php:123
 #: includes/class-cf-geoplugin-admin.php:182
 msgid "Not Found!"
-msgstr "Not Found!"
+msgstr "Није пронађено"
 
 #: includes/class-cf-geoplugin-admin.php:128
 msgid "There are no news at the moment."
-msgstr "There are no news at the moment."
+msgstr ""
 
 #: includes/class-cf-geoplugin-admin.php:129
 msgid "ERROR! Can't load news feed."
-msgstr "ERROR! Can't load news feed."
+msgstr ""
 
 #: includes/class-cf-geoplugin-admin.php:132
 #: includes/class-cf-geoplugin-metabox.php:68
 msgid "Nothing found!"
-msgstr "Nothing found!"
+msgstr ""
 
 #: includes/class-cf-geoplugin-admin.php:135
 msgid "Option saved successfuly!"
-msgstr "Option saved successfuly!"
+msgstr ""
 
 #: includes/class-cf-geoplugin-admin.php:136
 msgid "There was some unexpected system error. Changes not saved!"
-msgstr "There was some unexpected system error. Changes not saved!"
+msgstr ""
 
 #: includes/class-cf-geoplugin-admin.php:137
 msgid "Changes not saved for unexpected reasons. Try again!"
-msgstr "Changes not saved for unexpected reasons. Try again!"
+msgstr ""
 
 #: includes/class-cf-geoplugin-admin.php:138
 msgid "Option you provide not match to global variables. Permission denied!"
-msgstr "Option you provide not match to global variables. Permission denied!"
+msgstr ""
 
 #: includes/class-cf-geoplugin-admin.php:141
 #, php-format
 msgid "Successfuly saved %d records."
-msgstr "Successfuly saved %d records."
+msgstr ""
 
 #: includes/class-cf-geoplugin-admin.php:142
 #, php-format
 msgid "Failed to add %d rows."
-msgstr "Failed to add %d rows."
+msgstr ""
 
 #: includes/class-cf-geoplugin-admin.php:143
 msgid "Upload CSV file."
-msgstr "Upload CSV file."
+msgstr ""
 
 #: includes/class-cf-geoplugin-admin.php:144
 msgid "The file must be comma separated CSV type"
-msgstr "The file must be comma separated CSV type"
+msgstr ""
 
 #: includes/class-cf-geoplugin-admin.php:145
 msgid ""
 "Are you sure, you want to exit?\n"
 "Changes wont be saved!"
 msgstr ""
-"Are you sure, you want to exit?\n"
-"Changes wont be saved!"
 
 #: includes/class-cf-geoplugin-admin.php:146
 msgid "Are you sure, you want to delete this redirection?"
-msgstr "Are you sure, you want to delete this redirection?"
+msgstr ""
 
 #: includes/class-cf-geoplugin-admin.php:147
 msgid ""
 "URL Missing. Please insert URL from your CSV file or choose file from the "
 "library."
 msgstr ""
-"URL Missing. Please insert URL from your CSV file or choose file from the "
-"library."
 
 #: includes/class-cf-geoplugin-admin.php:150
 msgid "Are you sure, you want to delete this access token?"
-msgstr "Are you sure, you want to delete this access token?"
+msgstr ""
 
 #: includes/class-cf-geoplugin-admin.php:151
 msgid "Can't delete access token because unexpected reasons."
-msgstr "Can't delete access token because unexpected reasons."
+msgstr ""
 
 #: includes/class-cf-geoplugin-admin.php:183
 msgid "Search"
-msgstr "Search"
+msgstr "Pretraga"
 
 #. Plugin Name of the plugin/theme
 #: includes/class-cf-geoplugin-admin.php:200
@@ -2282,14 +2056,14 @@ msgstr "Search"
 #: includes/class-cf-geoplugin-admin.php:910
 #: includes/class-cf-geoplugin-admin.php:1048
 msgid "CF Geo Plugin"
-msgstr "CF Geo Plugin"
+msgstr ""
 
 #: includes/class-cf-geoplugin-admin.php:238
 #: includes/class-cf-geoplugin-admin.php:239
 #: includes/class-cf-geoplugin-banner.php:105
 #: includes/class-cf-geoplugin-banner.php:106
 msgid "Geo Banner"
-msgstr "Geo Banner"
+msgstr ""
 
 #: includes/class-cf-geoplugin-admin.php:258
 #: includes/class-cf-geoplugin-admin.php:259
@@ -2298,7 +2072,7 @@ msgstr "Geo Banner"
 #: includes/class-cf-geoplugin-banner.php:147
 #: includes/class-cf-geoplugin-banner.php:160
 msgid "Countries"
-msgstr "Countries"
+msgstr "Земља"
 
 #: includes/class-cf-geoplugin-admin.php:265
 #: includes/class-cf-geoplugin-admin.php:266
@@ -2307,7 +2081,7 @@ msgstr "Countries"
 #: includes/class-cf-geoplugin-banner.php:174
 #: includes/class-cf-geoplugin-banner.php:187
 msgid "Regions"
-msgstr "Regions"
+msgstr "Regioni"
 
 #: includes/class-cf-geoplugin-admin.php:272
 #: includes/class-cf-geoplugin-admin.php:273
@@ -2316,7 +2090,7 @@ msgstr "Regions"
 #: includes/class-cf-geoplugin-banner.php:201
 #: includes/class-cf-geoplugin-banner.php:214
 msgid "Cities"
-msgstr "Cities"
+msgstr "Gradovi"
 
 #: includes/class-cf-geoplugin-admin.php:287
 #: includes/class-cf-geoplugin-admin.php:288
@@ -2324,61 +2098,61 @@ msgstr "Cities"
 #: includes/class-cf-geoplugin-admin.php:648
 #: includes/class-cf-geoplugin-admin.php:1141
 msgid "Settings"
-msgstr "Settings"
+msgstr "Podešavanja"
 
 #: includes/class-cf-geoplugin-admin.php:324
 #: includes/class-cf-geoplugin-admin.php:1141
 msgid "FAQ"
-msgstr "FAQ"
+msgstr "Често постављана питања"
 
 #: includes/class-cf-geoplugin-admin.php:325
 msgid "Donate"
-msgstr "Donate"
+msgstr "Donacija"
 
 #: includes/class-cf-geoplugin-admin.php:326
 msgid "Vote"
-msgstr "Vote"
+msgstr "Глас"
 
 #: includes/class-cf-geoplugin-admin.php:364
 msgid "Live News & info"
-msgstr "Live News & info"
+msgstr ""
 
 #: includes/class-cf-geoplugin-admin.php:565
 #, php-format
 msgid "CF GeoPlugin ver.%s"
-msgstr "CF GeoPlugin ver.%s"
+msgstr ""
 
 #: includes/class-cf-geoplugin-admin.php:580
 msgid "CF Google Map"
-msgstr "CF Google Map"
+msgstr ""
 
 #: includes/class-cf-geoplugin-admin.php:601
 msgid "CF Geo Banner"
-msgstr "CF Geo Banner"
+msgstr ""
 
 #: includes/class-cf-geoplugin-admin.php:617
 msgid "CF Geo Countries"
-msgstr "CF Geo Countries"
+msgstr ""
 
 #: includes/class-cf-geoplugin-admin.php:625
 msgid "CF Geo Regions"
-msgstr "CF Geo Regions"
+msgstr ""
 
 #: includes/class-cf-geoplugin-admin.php:633
 msgid "CF Geo Cities"
-msgstr "CF Geo Cities"
+msgstr ""
 
 #: includes/class-cf-geoplugin-admin.php:675
 msgid "Your IP"
-msgstr "Your IP"
+msgstr ""
 
 #: includes/class-cf-geoplugin-admin.php:704
 msgid "Continent"
-msgstr "Continent"
+msgstr "Континент"
 
 #: includes/class-cf-geoplugin-admin.php:710
 msgid "Timezone"
-msgstr "Timezone"
+msgstr "Vrjemenska zona"
 
 #: includes/class-cf-geoplugin-admin.php:716
 msgid "Status"
@@ -2386,103 +2160,103 @@ msgstr "Status"
 
 #: includes/class-cf-geoplugin-admin.php:725
 msgid "Today's course"
-msgstr "Today's course"
+msgstr ""
 
 #: includes/class-cf-geoplugin-admin.php:944
 #: includes/class-cf-geoplugin-admin.php:1053
 msgid "Informations"
-msgstr "Informations"
+msgstr ""
 
 #: includes/class-cf-geoplugin-admin.php:947
 #: includes/class-cf-geoplugin-admin.php:1058
 #: includes/class-cf-geoplugin-metabox.php:266
 msgid "Address"
-msgstr "Address"
+msgstr "Adresa"
 
 #: includes/class-cf-geoplugin-admin.php:948
 #: includes/class-cf-geoplugin-admin.php:1059
 msgid "Currency"
-msgstr "Currency"
+msgstr "Valuta"
 
 #: includes/class-cf-geoplugin-admin.php:950
 #: includes/class-cf-geoplugin-admin.php:1061
 msgid "Runtime"
-msgstr "Runtime"
+msgstr ""
 
 #: includes/class-cf-geoplugin-admin.php:956
 #: includes/class-cf-geoplugin-admin.php:1068
 #, php-format
 msgid "What is new on CF Geo Plugin version %s"
-msgstr "What is new on CF Geo Plugin version %s"
+msgstr ""
 
 #: includes/class-cf-geoplugin-admin.php:958
 #: includes/class-cf-geoplugin-admin.php:1070
 #, php-format
 msgid "NEW version is available - CF Geo Plugin ver.%s"
-msgstr "NEW version is available - CF Geo Plugin ver.%s"
+msgstr ""
 
 #: includes/class-cf-geoplugin-admin.php:963
 #: includes/class-cf-geoplugin-admin.php:1075
 msgid "Update CF Geo Plugin and get:"
-msgstr "Update CF Geo Plugin and get:"
+msgstr ""
 
 #: includes/class-cf-geoplugin-admin.php:970
 #: includes/class-cf-geoplugin-admin.php:1082
 msgid "There was error in fetching plugin data."
-msgstr "There was error in fetching plugin data."
+msgstr ""
 
 #: includes/class-cf-geoplugin-admin.php:977
 #: includes/class-cf-geoplugin-admin.php:1098
 msgid "CF Geo Plugin details"
-msgstr "CF Geo Plugin details"
+msgstr ""
 
 #: includes/class-cf-geoplugin-admin.php:981
 #: includes/class-cf-geoplugin-admin.php:1102
 msgid "Last Update"
-msgstr "Last Update"
+msgstr "Последње ажурирање"
 
 #: includes/class-cf-geoplugin-admin.php:982
 #: includes/class-cf-geoplugin-admin.php:1103
 msgid "Homepage"
-msgstr "Homepage"
+msgstr "Početna stranica"
 
 #: includes/class-cf-geoplugin-admin.php:983
 #: includes/class-cf-geoplugin-admin.php:1104
 msgid "Donation"
-msgstr "Donation"
+msgstr "Донација"
 
 #: includes/class-cf-geoplugin-admin.php:983
 #: includes/class-cf-geoplugin-admin.php:1104
 msgid "Make Donation via PayPal"
-msgstr "Make Donation via PayPal"
+msgstr ""
 
 #: includes/class-cf-geoplugin-admin.php:984
 #: includes/class-cf-geoplugin-admin.php:1105
 msgid "WP Support"
-msgstr "WP Support"
+msgstr ""
 
 #: includes/class-cf-geoplugin-admin.php:987
 #: includes/class-cf-geoplugin-admin.php:1108
 #, php-format
 msgid "Supported on WP version %s"
-msgstr "Supported on WP version %s"
+msgstr ""
 
 #: includes/class-cf-geoplugin-admin.php:992
 #: includes/class-cf-geoplugin-admin.php:1113
 #, php-format
 msgid "Plugin require WordPress version %s or above!"
-msgstr "Plugin require WordPress version %s or above!"
+msgstr ""
 
 #: includes/class-cf-geoplugin-admin.php:995
 #: includes/class-cf-geoplugin-admin.php:1116
 msgid "PHP Support"
-msgstr "PHP Support"
+msgstr ""
 
 #: includes/class-cf-geoplugin-admin.php:999
 #: includes/class-cf-geoplugin-admin.php:1120
 #, php-format
 msgid "Supported on PHP version %s"
-msgstr "Supported on PHP version %s"
+msgstr ""
 
 #: includes/class-cf-geoplugin-admin.php:1004
 #: includes/class-cf-geoplugin-admin.php:1125
@@ -2490,33 +2264,32 @@ msgstr "Supported on PHP version %s"
 msgid ""
 "Plugin not support PHP version %1$s. Please use PHP vesion %2$s or above."
 msgstr ""
-"Plugin not support PHP version %1$s. Please use PHP vesion %2$s or above."
 
 #: includes/class-cf-geoplugin-admin.php:1008
 #: includes/class-cf-geoplugin-admin.php:1129
 #, php-format
 msgid "Total downloaded %d times"
-msgstr "Total downloaded %d times"
+msgstr ""
 
 #: includes/class-cf-geoplugin-admin.php:1049
 msgid "CF GeoPlugin is fully active and ready to use"
-msgstr "CF GeoPlugin is fully active and ready to use"
+msgstr ""
 
 #: includes/class-cf-geoplugin-admin.php:1085
 msgid "Download new version NOW"
-msgstr "Download new version NOW"
+msgstr ""
 
 #: includes/class-cf-geoplugin-admin.php:1089
 msgid "Plugin Update Process:"
-msgstr "Plugin Update Process:"
+msgstr ""
 
 #: includes/class-cf-geoplugin-admin.php:1141
 msgid "Pricing"
-msgstr "Pricing"
+msgstr "Plaćanje"
 
 #: includes/class-cf-geoplugin-banner.php:34
 msgid "Locations"
-msgstr "Locations"
+msgstr "Lokacije"
 
 #: includes/class-cf-geoplugin-banner.php:52
 #: includes/class-cf-geoplugin-metabox.php:746
@@ -2526,270 +2299,276 @@ msgstr "Standard"
 #: includes/class-cf-geoplugin-banner.php:53
 #: includes/class-cf-geoplugin-metabox.php:747
 msgid "Advanced"
-msgstr "Advanced"
+msgstr "Napredno"
 
 #: includes/class-cf-geoplugin-banner.php:53
 #: includes/class-cf-geoplugin-metabox.php:747
 msgid "Default content"
-msgstr "Default content"
+msgstr ""
 
 #: includes/class-cf-geoplugin-banner.php:90
 msgid "undefined"
-msgstr "undefined"
+msgstr ""
 
 #: includes/class-cf-geoplugin-banner.php:107
 #: includes/class-cf-geoplugin-banner.php:108
 msgid "Add New Banner"
-msgstr "Add New Banner"
+msgstr ""
 
 #: includes/class-cf-geoplugin-banner.php:109
 msgid "Edit Banner"
-msgstr "Edit Banner"
+msgstr ""
 
 #: includes/class-cf-geoplugin-banner.php:110
 msgid "New Banner"
-msgstr "New Banner"
+msgstr "Novi baner"
 
 #: includes/class-cf-geoplugin-banner.php:111
 msgid "View Banner"
-msgstr "View Banner"
+msgstr ""
 
 #: includes/class-cf-geoplugin-banner.php:112
 msgid "Search Banner"
-msgstr "Search Banner"
+msgstr "Pretraga banera"
 
 #: includes/class-cf-geoplugin-banner.php:113
 msgid "No Banner Found"
-msgstr "No Banner Found"
+msgstr ""
 
 #: includes/class-cf-geoplugin-banner.php:114
 msgid "No Banner Found in Trash"
-msgstr "No Banner Found in Trash"
+msgstr ""
 
 #: includes/class-cf-geoplugin-banner.php:116
 msgid "Banner Image"
-msgstr "Banner Image"
+msgstr ""
 
 #: includes/class-cf-geoplugin-banner.php:117
 msgid "Select Banner Image"
-msgstr "Select Banner Image"
+msgstr ""
 
 #: includes/class-cf-geoplugin-banner.php:118
 msgid "Remove Banner Image"
-msgstr "Remove Banner Image"
+msgstr ""
 
 #: includes/class-cf-geoplugin-banner.php:119
 msgid "Use Banner Image"
-msgstr "Use Banner Image"
+msgstr ""
 
 #: includes/class-cf-geoplugin-banner.php:120
 msgid "Insert Into Banner"
-msgstr "Insert Into Banner"
+msgstr ""
 
 #: includes/class-cf-geoplugin-banner.php:148
 msgid "All Countries"
-msgstr "All Countries"
+msgstr ""
 
 #: includes/class-cf-geoplugin-banner.php:149
 msgid "Edit Country"
-msgstr "Edit Country"
+msgstr ""
 
 #: includes/class-cf-geoplugin-banner.php:150
 msgid "View Country"
-msgstr "View Country"
+msgstr ""
 
 #: includes/class-cf-geoplugin-banner.php:151
 msgid "Update Country"
-msgstr "Update Country"
+msgstr ""
 
 #: includes/class-cf-geoplugin-banner.php:152
 msgid "Add New Country"
-msgstr "Add New Country"
+msgstr ""
 
 #: includes/class-cf-geoplugin-banner.php:153
 msgid "New Country Name"
-msgstr "New Country Name"
+msgstr ""
 
 #: includes/class-cf-geoplugin-banner.php:154
 #: includes/class-cf-geoplugin-banner.php:155
 msgid "Parent Country"
-msgstr "Parent Country"
+msgstr ""
 
 #: includes/class-cf-geoplugin-banner.php:175
 msgid "All Regions"
-msgstr "All Regions"
+msgstr "Svi regioni"
 
 #: includes/class-cf-geoplugin-banner.php:176
 msgid "Edit Region"
-msgstr "Edit Region"
+msgstr ""
 
 #: includes/class-cf-geoplugin-banner.php:177
 msgid "View Region"
-msgstr "View Region"
+msgstr ""
 
 #: includes/class-cf-geoplugin-banner.php:178
 msgid "Update Region"
-msgstr "Update Region"
+msgstr ""
 
 #: includes/class-cf-geoplugin-banner.php:179
 msgid "Add New Region"
-msgstr "Add New Region"
+msgstr ""
 
 #: includes/class-cf-geoplugin-banner.php:180
 msgid "New Region Name"
-msgstr "New Region Name"
+msgstr ""
 
 #: includes/class-cf-geoplugin-banner.php:181
 #: includes/class-cf-geoplugin-banner.php:182
 msgid "Parent Region"
-msgstr "Parent Region"
+msgstr ""
 
 #: includes/class-cf-geoplugin-banner.php:202
 msgid "All Cities"
-msgstr "All Cities"
+msgstr "Svi gradovi"
 
 #: includes/class-cf-geoplugin-banner.php:203
 msgid "Edit City"
-msgstr "Edit City"
+msgstr ""
 
 #: includes/class-cf-geoplugin-banner.php:204
 msgid "View City"
-msgstr "View City"
+msgstr ""
 
 #: includes/class-cf-geoplugin-banner.php:205
 msgid "Update City"
-msgstr "Update City"
+msgstr ""
 
 #: includes/class-cf-geoplugin-banner.php:206
 msgid "Add New City"
-msgstr "Add New City"
+msgstr "Dodaj novi grad"
 
 #: includes/class-cf-geoplugin-banner.php:207
 msgid "New City Name"
-msgstr "New City Name"
+msgstr ""
 
 #: includes/class-cf-geoplugin-banner.php:208
 #: includes/class-cf-geoplugin-banner.php:209
 msgid "Parent City"
-msgstr "Parent City"
+msgstr ""
 
 #: includes/class-cf-geoplugin-banner.php:338
 #: includes/class-cf-geoplugin-global.php:1619 uninstall.php:53
 msgid "Invalid taxonomy."
-msgstr "Invalid taxonomy."
+msgstr ""
 
 #: includes/class-cf-geoplugin-global.php:152
 msgid "UNLIMITED Basic License (1 month)"
-msgstr "UNLIMITED Basic License (1 month)"
+msgstr ""
 
 #: includes/class-cf-geoplugin-global.php:153
 msgid "UNLIMITED Personal License"
-msgstr "UNLIMITED Personal License"
+msgstr ""
 
 #: includes/class-cf-geoplugin-global.php:154
 msgid "UNLIMITED Freelancer License"
-msgstr "UNLIMITED Freelancer License"
+msgstr ""
 
 #: includes/class-cf-geoplugin-global.php:155
 msgid "UNLIMITED Business License"
-msgstr "UNLIMITED Business License"
+msgstr ""
 
 #: includes/class-cf-geoplugin-global.php:159
 msgid "UNLIMITED Developer License"
-msgstr "UNLIMITED Developer License"
+msgstr ""
 
 #: includes/class-cf-geoplugin-global.php:1359
 msgid "Exellent"
-msgstr "Exellent"
+msgstr ""
 
 #: includes/class-cf-geoplugin-global.php:1362
 msgid "Perfect"
-msgstr "Perfect"
+msgstr "Savršeno"
 
 #: includes/class-cf-geoplugin-global.php:1365
 msgid "Good"
-msgstr "Good"
+msgstr "Dobro"
 
 #: includes/class-cf-geoplugin-global.php:1368
 msgid "Week"
-msgstr "Week"
+msgstr "Nedelja"
 
 #: includes/class-cf-geoplugin-global.php:1371
 msgid "Bad"
-msgstr "Bad"
+msgstr "Лоше"
 
 #: includes/class-cf-geoplugin-global.php:1386
 #: includes/class-cf-geoplugin-global.php:1389
 #: includes/class-cf-geoplugin-global.php:1392
 msgid "Available"
-msgstr "Available"
+msgstr "Dostupno"
 
 #: includes/class-cf-geoplugin-global.php:1422
 msgid "year"
 msgid_plural "years"
-msgstr[0] "year"
-msgstr[1] "years"
+msgstr[0] "година"
+msgstr[1] ""
+msgstr[2] ""
 
 #: includes/class-cf-geoplugin-global.php:1431
 msgid "month"
 msgid_plural "months"
-msgstr[0] "month"
-msgstr[1] "months"
+msgstr[0] "mesec"
+msgstr[1] ""
+msgstr[2] ""
 
 #: includes/class-cf-geoplugin-global.php:1440
 msgid "week"
 msgid_plural "weeks"
-msgstr[0] "week"
-msgstr[1] "weeks"
+msgstr[0] "sedmica"
+msgstr[1] ""
+msgstr[2] ""
 
 #: includes/class-cf-geoplugin-global.php:1449
 msgid "day"
 msgid_plural "days"
-msgstr[0] "day"
-msgstr[1] "days"
+msgstr[0] "дан(и)"
+msgstr[1] ""
+msgstr[2] ""
 
 #: includes/class-cf-geoplugin-global.php:1458
 msgid "hour"
 msgid_plural "hours"
-msgstr[0] "hour"
-msgstr[1] "hours"
+msgstr[0] "sat"
+msgstr[1] ""
+msgstr[2] ""
 
 #: includes/class-cf-geoplugin-global.php:1467
 msgid "minute"
 msgid_plural "minutes"
-msgstr[0] "minute"
-msgstr[1] "minutes"
+msgstr[0] "минут"
+msgstr[1] ""
+msgstr[2] ""
 
 #: includes/class-cf-geoplugin-metabox.php:69
 #: includes/class-cf-geoplugin-metabox.php:674
 msgid "Remove Redirection"
-msgstr "Remove Redirection"
+msgstr ""
 
 #: includes/class-cf-geoplugin-metabox.php:70
 #: includes/class-cf-geoplugin-metabox.php:671
 msgid "Add New Redirection"
-msgstr "Add New Redirection"
+msgstr ""
 
 #: includes/class-cf-geoplugin-metabox.php:71
 #: includes/class-cf-geoplugin-metabox.php:673
 msgid "Reset Redirection"
-msgstr "Reset Redirection"
+msgstr ""
 
 #: includes/class-cf-geoplugin-metabox.php:98
 msgid "SEO Redirections"
-msgstr "SEO Redirections"
+msgstr ""
 
 #: includes/class-cf-geoplugin-metabox.php:117
 msgid "Geo Tags"
-msgstr "Geo Tags"
+msgstr ""
 
 #: includes/class-cf-geoplugin-metabox.php:129
 msgid "CF Geoplugin Shortcode"
-msgstr "CF Geoplugin Shortcode"
+msgstr ""
 
 #: includes/class-cf-geoplugin-metabox.php:258
 msgid "Enable Geo Tag on this page"
-msgstr "Enable Geo Tag on this page"
+msgstr ""
 
 #: includes/class-cf-geoplugin-metabox.php:259
 msgid ""
@@ -2800,12 +2579,6 @@ msgid ""
 "there is no result for your complete address, then try the combination: "
 "\"city, country\" or only the country name."
 msgstr ""
-"The easiest way to start is using the address search function inside map. By "
-"march 2007 street level search is available for the following countries: "
-"Australia, Austria, Canada, France, Germany, Italy, Japan, Netherlands, New "
-"Zealand, Portugal, Spain, Sweden, Switzerland and the United States. If "
-"there is no result for your complete address, then try the combination: "
-"\"city, country\" or only the country name."
 
 #: includes/class-cf-geoplugin-metabox.php:260
 msgid ""
@@ -2813,49 +2586,46 @@ msgid ""
 "already be filled correctly. But you may modify them if you want to in the "
 "fields below. Google Map you see here is only for the preview purpose."
 msgstr ""
-"After a successful address search many of the fields listed below should "
-"already be filled correctly. But you may modify them if you want to in the "
-"fields below. Google Map you see here is only for the preview purpose."
 
 #: includes/class-cf-geoplugin-metabox.php:262
 msgid "Search address, place or certain region..."
-msgstr "Search address, place or certain region..."
+msgstr ""
 
 #: includes/class-cf-geoplugin-metabox.php:269
 msgid "Country code"
-msgstr "Country code"
+msgstr "Kod zemlje"
 
 #: includes/class-cf-geoplugin-metabox.php:275
 msgid "Latitude"
-msgstr "Latitude"
+msgstr "Географска дужина"
 
 #: includes/class-cf-geoplugin-metabox.php:278
 msgid "Longitude"
-msgstr "Longitude"
+msgstr "Географска ширина"
 
 #: includes/class-cf-geoplugin-metabox.php:583
 msgid "Select the country you want to redirect."
-msgstr "Select the country you want to redirect."
+msgstr ""
 
 #: includes/class-cf-geoplugin-metabox.php:606
 msgid "Select the region you want to redirect."
-msgstr "Select the region you want to redirect."
+msgstr ""
 
 #: includes/class-cf-geoplugin-metabox.php:610
 msgid "Choose City"
-msgstr "Choose City"
+msgstr "Izaberite grad"
 
 #: includes/class-cf-geoplugin-metabox.php:629
 msgid "Select the city you want to redirect."
-msgstr "Select the city you want to redirect."
+msgstr ""
 
 #: includes/class-cf-geoplugin-metabox.php:636
 msgid "URL where you want to redirect."
-msgstr "URL where you want to redirect."
+msgstr ""
 
 #: includes/class-cf-geoplugin-metabox.php:661
 msgid "Enable SEO Redirect"
-msgstr "Enable SEO Redirect"
+msgstr ""
 
 #: includes/class-cf-geoplugin-metabox.php:685
 msgid ""
@@ -2863,27 +2633,24 @@ msgid ""
 "update old data will be deleted. Redirection will work normally without save "
 "by old data."
 msgstr ""
-"Old redirection data is found. If you want to merge update post, after save/"
-"update old data will be deleted. Redirection will work normally without save "
-"by old data."
 
 #: includes/class-cf-geoplugin-notifications.php:56
 msgid "Do you like CF GeoPlugin?"
-msgstr "Do you like CF GeoPlugin?"
+msgstr ""
 
 #: includes/class-cf-geoplugin-notifications.php:58
 #, php-format
 msgid "If you do, please give us review with the %s "
-msgstr "If you do, please give us review with the %s "
+msgstr ""
 
 #: includes/class-cf-geoplugin-notifications.php:59
 msgid "5 stars"
-msgstr "5 stars"
+msgstr ""
 
 #: includes/class-cf-geoplugin-notifications.php:80
 #: includes/class-cf-geoplugin-notifications.php:118
 msgid "CF GEO PLUGIN"
-msgstr "CF GEO PLUGIN"
+msgstr ""
 
 #: includes/class-cf-geoplugin-notifications.php:88
 #, php-format
@@ -2895,286 +2662,264 @@ msgid ""
 "not understand what this is about, please read %3$s.<br><br>Also, before any "
 "action don't forget to read and agree with %4$s and %5$s."
 msgstr ""
-"You currently using free version of plugin with a limited number of lookups."
-"<br>Each free version of this plugin is limited to %1$s lookups per day and "
-"you have only %2$s lookups available for today. If you want to have "
-"unlimited lookup, please enter your license key.<br>If you are unsure and do "
-"not understand what this is about, please read %3$s.<br><br>Also, before any "
-"action don't forget to read and agree with %4$s and %5$s."
 
 #: includes/class-cf-geoplugin-notifications.php:125
 msgid "It's possible that plugin will not work properly."
-msgstr "It's possible that plugin will not work properly."
+msgstr ""
 
 #: includes/class-cf-geoplugin-notifications.php:130
 msgid "cURL is NOT installed or active in your PHP installation."
-msgstr "cURL is NOT installed or active in your PHP installation."
+msgstr ""
 
 #: includes/class-cf-geoplugin-notifications.php:134
 msgid ""
 "Plugin requires at leats WordPress 3.0 version, please consider updating "
 "your WordPress site."
 msgstr ""
-"Plugin requires at leats WordPress 3.0 version, please consider updating "
-"your WordPress site."
 
 #: includes/class-cf-geoplugin-notifications.php:138
 msgid ""
 "Plugin requires at leats PHP 5.6.0, please consider to update your PHP "
 "version on PHP 5.6 or above."
 msgstr ""
-"Plugin requires at leats PHP 5.6.0, please consider to update your PHP "
-"version on PHP 5.6 or above."
 
 #: includes/class-cf-geoplugin-notifications.php:157
 msgid "CF Geo Plugin Settings"
-msgstr "CF Geo Plugin Settings"
+msgstr ""
 
 #: includes/class-cf-geoplugin-notifications.php:161
 msgid ""
 "We recommend after first or fresh plugin activation to check settings page. "
 "Please"
 msgstr ""
-"We recommend after first or fresh plugin activation to check settings page. "
-"Please"
 
 #: includes/class-cf-geoplugin-notifications.php:161
 msgid "click here to visit settings page."
-msgstr "click here to visit settings page."
+msgstr ""
 
 #: includes/class-cf-geoplugin-public.php:73
 msgid "CF Geoplugin JavaScript Plugin"
-msgstr "CF Geoplugin JavaScript Plugin"
+msgstr ""
 
 #: includes/class-cf-geoplugin-shortcodes.php:131
 msgid ""
 "CF GEOPLUGIN NOTICE: -Please define \"include\" or \"exclude\" attributes "
 "inside your shortcode on this shortcode mode."
 msgstr ""
-"CF GEOPLUGIN NOTICE: -Please define \"include\" or \"exclude\" attributes "
-"inside your shortcode on this shortcode mode."
 
 #: includes/class-cf-geoplugin-shortcodes.php:672
 msgid "Currency converter"
-msgstr "Currency converter"
+msgstr ""
 
 #: includes/class-cf-geoplugin-shortcodes.php:676
 #: includes/class-cf-geoplugin-shortcodes.php:707
 #: includes/widgets/currency-converter.php:57
 #: includes/widgets/currency-converter.php:93
 msgid "From"
-msgstr "From"
+msgstr "Iz"
 
 #: includes/class-cf-geoplugin-shortcodes.php:677
 #: includes/class-cf-geoplugin-shortcodes.php:725
 #: includes/widgets/currency-converter.php:58
 #: includes/widgets/currency-converter.php:94
 msgid "To"
-msgstr "To"
+msgstr "За"
 
 #: includes/class-cf-geoplugin-shortcodes.php:678
 msgid "Convert"
-msgstr "Convert"
+msgstr "Пребаци"
 
 #: includes/class-cf-geoplugin-shortcodes.php:699
 #: includes/widgets/currency-converter.php:56
 #: includes/widgets/currency-converter.php:92
 msgid "Amount"
-msgstr "Amount"
+msgstr "Износ"
 
 #: includes/class-cf-geoplugin-shortcodes.php:810
 msgid "Direct access is forbidden!"
-msgstr "Direct access is forbidden!"
+msgstr ""
 
 #: includes/class-cf-geoplugin-shortcodes.php:813
 msgid "Please enter valid decimal or integer format."
-msgstr "Please enter valid decimal or integer format."
+msgstr ""
 
 #: includes/class-cf-geoplugin-shortcodes.php:816
 #: includes/class-cf-geoplugin-shortcodes.php:840
 msgid ""
 "Sorry currently we are not able to do conversion. Please try again later."
 msgstr ""
-"Sorry currently we are not able to do conversion. Please try again later."
 
 #: includes/class-cf-geoplugin-shortcodes.php:830
 #: includes/class-cf-geoplugin-shortcodes.php:831
 msgid "Undefined"
-msgstr "Undefined"
+msgstr "Nedefinisano"
 
 #: includes/class-cf-geoplugin.php:446
 msgid "Five Minutes"
-msgstr "Five Minutes"
+msgstr ""
 
 #: includes/plugins/woocommerce/woocommerce.php:194
 #: includes/plugins/woocommerce/woocommerce.php:195
 #: includes/plugins/woocommerce/woocommerce.php:196
 msgid "[Remove]"
-msgstr "[Remove]"
+msgstr "[ukloni]"
 
 #: includes/plugins/woocommerce/woocommerce.php:232
 msgid "Currency conversion options"
-msgstr "Currency conversion options"
+msgstr ""
 
 #: includes/plugins/woocommerce/woocommerce.php:233
 msgid "This controls CF GeoPlugin conversion system"
-msgstr "This controls CF GeoPlugin conversion system"
+msgstr ""
 
 #: includes/plugins/woocommerce/woocommerce.php:240
 msgid "Show original price only"
-msgstr "Show original price only"
+msgstr ""
 
 #: includes/plugins/woocommerce/woocommerce.php:241
 msgid "Show converted price only"
-msgstr "Show converted price only"
+msgstr ""
 
 #: includes/plugins/woocommerce/woocommerce.php:242
 msgid "Show original and converted price"
-msgstr "Show original and converted price"
+msgstr ""
 
 #: includes/plugins/woocommerce/woocommerce.php:243
 msgid "Show converted and original price"
-msgstr "Show converted and original price"
+msgstr ""
 
 #: includes/plugins/woocommerce/woocommerce.php:304
 msgid "Payments Control"
-msgstr "Payments Control"
+msgstr ""
 
 #: includes/plugins/woocommerce/woocommerce.php:369
 #: includes/plugins/woocommerce/woocommerce.php:409
 #: includes/plugins/woocommerce/woocommerce.php:416
 msgid "CF Geoplugin Payments Control"
-msgstr "CF Geoplugin Payments Control"
+msgstr ""
 
 #: includes/plugins/woocommerce/woocommerce.php:369
 msgid "Configure payment methods for countries"
-msgstr "Configure payment methods for countries"
+msgstr ""
 
 #: includes/plugins/woocommerce/woocommerce.php:376
 msgid "Choose desired method"
-msgstr "Choose desired method"
+msgstr ""
 
 #: includes/plugins/woocommerce/woocommerce.php:384
 msgid "Woocommerce Default"
-msgstr "Woocommerce Default"
+msgstr ""
 
 #: includes/plugins/woocommerce/woocommerce.php:385
 msgid "Enable only in selected countries"
-msgstr "Enable only in selected countries"
+msgstr ""
 
 #: includes/plugins/woocommerce/woocommerce.php:386
 msgid "Disable only for selected countries"
-msgstr "Disable only for selected countries"
+msgstr ""
 
 #: includes/plugins/woocommerce/woocommerce.php:409
 msgid ""
 "Currently we are not able to show desired options. Please try again later."
 msgstr ""
-"Currently we are not able to show desired options. Please try again later."
 
 #: includes/plugins/woocommerce/woocommerce.php:416
 msgid "No enabled woocommerce payments yet."
-msgstr "No enabled woocommerce payments yet."
+msgstr ""
 
 #: includes/widgets/currency-converter.php:30
 #: includes/widgets/currency-converter.php:55
 #: includes/widgets/currency-converter.php:91
 msgid "Currency Converter"
-msgstr "Currency Converter"
+msgstr ""
 
 #: includes/widgets/currency-converter.php:62
 msgid "Title:"
-msgstr "Title:"
+msgstr "Naslov:"
 
 #: includes/widgets/currency-converter.php:66
 msgid "Amount Label:"
-msgstr "Amount Label:"
+msgstr ""
 
 #: includes/widgets/currency-converter.php:70
 msgid "From Label:"
-msgstr "From Label:"
+msgstr ""
 
 #: includes/widgets/currency-converter.php:74
 msgid "To Label:"
-msgstr "To Label:"
+msgstr ""
 
 #: includes/widgets/google-map.php:41 includes/widgets/google-map.php:106
 #: includes/widgets/google-map.php:230
 msgid "Our location"
-msgstr "Our location"
+msgstr ""
 
 #: includes/widgets/google-map.php:153
 msgid "Map pointer text:"
-msgstr "Map pointer text:"
+msgstr ""
 
 #: includes/widgets/google-map.php:157
 msgid "Latitude:"
-msgstr "Latitude:"
+msgstr "Širina:"
 
 #: includes/widgets/google-map.php:161
 msgid "Longitude:"
-msgstr "Longitude:"
+msgstr "Dužina:"
 
 #: includes/widgets/google-map.php:165
 msgid "Width:"
-msgstr "Width:"
+msgstr ""
 
 #: includes/widgets/google-map.php:169
 msgid "Height:"
-msgstr "Height:"
+msgstr ""
 
 #: includes/widgets/google-map.php:173
 msgid "Max zoom:"
-msgstr "Max zoom:"
+msgstr ""
 
 #: includes/widgets/google-map.php:186
 msgid "Disables scrollwheel zooming on the map:"
-msgstr "Disables scrollwheel zooming on the map:"
+msgstr ""
 
 #: includes/widgets/google-map.php:191
 msgid ""
 "Disables navigation on the map. The initial enabled/disabled state of the "
 "Map type control:"
 msgstr ""
-"Disables navigation on the map. The initial enabled/disabled state of the "
-"Map type control:"
 
 #: includes/widgets/google-map.php:196
 msgid "The initial state of the Map type control:"
-msgstr "The initial state of the Map type control:"
+msgstr ""
 
 #: includes/widgets/google-map.php:201
 msgid "The initial display options for the Scale control:"
-msgstr "The initial display options for the Scale control:"
+msgstr ""
 
 #: includes/widgets/google-map.php:206
 msgid ""
 "Dragable - If disabled, the object can be dragged across the map and the "
 "underlying feature will have its geometry updated:"
 msgstr ""
-"Dragable - If disabled, the object can be dragged across the map and the "
-"underlying feature will have its geometry updated:"
 
 #: includes/widgets/google-map.php:211
 msgid "Info box max width:"
-msgstr "Info box max width:"
+msgstr ""
 
 #. Plugin URI of the plugin/theme
 msgid "http://cfgeoplugin.com/"
-msgstr "http://cfgeoplugin.com/"
+msgstr ""
 
 #. Description of the plugin/theme
 msgid ""
 "Create Dynamic Content, Banners and Images on Your Website Based On Visitor "
 "Geo Location By Using Shortcodes With CF GeoPlugin."
 msgstr ""
-"Create Dynamic Content, Banners and Images on Your Website Based On Visitor "
-"Geo Location By Using Shortcodes With CF GeoPlugin."
 
 #. Author of the plugin/theme
 msgid "Ivijan-Stefan Stipic"
-msgstr "Ivijan-Stefan Stipic"
+msgstr ""
 
 #. Author URI of the plugin/theme
 msgid "https://linkedin.com/in/ivijanstefanstipic"
-msgstr "https://linkedin.com/in/ivijanstefanstipic"
+msgstr ""

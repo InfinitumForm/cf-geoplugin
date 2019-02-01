@@ -101,14 +101,14 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 			'exclude'	=>	false,
 			'include'	=>	false,
         ), $atts );
-		
+
 		$return 	= $array['return'];
 		$ip 		= $array['ip'];
 		$default 	= $array['default'];
 		$exclude 	= $array['exclude'];
 		$include 	= $array['include'];
 		
-		if($ip!==false)
+		if( !empty($ip) )
 		{
 			$CFGEO_API = new CF_Geoplugin_API;
 			$CFGEO = $CFGEO_API->run(array('ip' => $ip));
@@ -117,11 +117,18 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 		if(!empty($content))
 		{			
 			if(!empty($exclude) || !empty($include)) {
-				if($this->recursive_array_search($exclude, $CFGEO)) return '';
-				else if($this->recursive_array_search($include, $CFGEO)) return $content;
-				else return '';
-			}
-				else return __('CF GEOPLUGIN NOTICE: -Please define "include" or "exclude" attributes inside your shortcode on this shortcode mode.', CFGP_NAME);
+				if(!empty($include))
+				{
+					if($this->recursive_array_search($include, $CFGEO)) return $content;
+					else return '';
+				}
+				
+				if(!empty($exclude))
+				{
+					if($this->recursive_array_search($exclude, $CFGEO)) return '';
+					else return $content;
+				}
+			} else return __('CF GEOPLUGIN NOTICE: -Please define "include" or "exclude" attributes inside your shortcode on this shortcode mode.', CFGP_NAME);
 		}
 		else
 			return (isset($CFGEO[$return]) ? $CFGEO[$return] : $default);
@@ -189,7 +196,7 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 			if(strpos($arg['css'], 'font-size') === false) $arg['css'].=' font-size:'.$size;
 		}
 		
-		if($arg['css']!=false){
+		if( !empty($arg['css']) ){
 			$css = NULL;
 
 			$ss = array();
@@ -212,7 +219,7 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 		else
 			$css='';
 		
-		if($arg['class']!=false){
+		if( !empty($arg['class']) ){
 			$classes = explode(" ", $arg['class']);
 			$cc = array();
 			foreach($classes as $val){
@@ -222,8 +229,7 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 				$class=' '.join(" ", $cc);
 			else
 				$class='';
-		}else
-			$class='';
+		} else $class='';
 		
 		if($img_format===true)
 		{
@@ -384,13 +390,13 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 		}
 		else
 		{
-			var url = 'https://maps.googleapis.com/maps/api/js?key=<?php echo isset( $CF_GEOPLUGIN_OPTIONS['map_api_key'] ) ? esc_attr($CF_GEOPLUGIN_OPTIONS['map_api_key']) : ''; ?>',
+			var url = '//maps.googleapis.com/maps/api/js?key=<?php echo isset( $CF_GEOPLUGIN_OPTIONS['map_api_key'] ) ? esc_attr($CF_GEOPLUGIN_OPTIONS['map_api_key']) : ''; ?>',
 				head = document.getElementsByTagName('head')[0],
 				script = document.createElement("script");
 			
 			position = position || 0;
 			
-			script.src = url;
+			script.src = url + (typeof CF_GeoPlugin_Google_Map_GeoTag != 'undefined' ? '&libraries=places' : ''); /* One of the Gutenberg BUG fixing */
 			script.type = 'text/javascript';
 			script.charset = 'UTF-8';
 			script.async = true;
@@ -409,7 +415,11 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 			};
 		}
 	}(0, function($this){
-		if( typeof $this != 'undefined' ) $this.maps.event.addDomListener(window, 'load', CF_GeoPlugin_Google_Map_Shortcode);
+		if( typeof $this != 'undefined' ){
+			$this.maps.event.addDomListener(window, 'load', CF_GeoPlugin_Google_Map_Shortcode);
+			/* One of the Gutenberg BUG fixing */
+			if(typeof CF_GeoPlugin_Google_Map_GeoTag != 'undefined') $this.maps.event.addDomListener(window, 'load', CF_GeoPlugin_Google_Map_GeoTag);
+		}
 	}));
 	</script>
 	<?php
@@ -621,7 +631,7 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 			$symbol_from = CF_Geoplugin_Global::mb_convert_encoding( $symbols[ $from ] );
 			$symbol_to = CF_Geoplugin_Global::mb_convert_encoding( $symbols[ $to ] );
 		}
-		$content = filter_var( $content, FILTER_SANITIZE_NUMBER_FLOAT,  FILTER_FLAG_ALLOW_FRACTION );
+		$content = filter_var( $content, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION );
 
 		if( $from === $to )
 		{

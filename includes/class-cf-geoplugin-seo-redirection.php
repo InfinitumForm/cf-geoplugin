@@ -12,8 +12,8 @@ class CF_Geoplugin_SEO_Redirection extends CF_Geoplugin_Global
 {
     public function __construct()
     {
-		$this->add_action( 'template_redirect', 'page_seo_redirection');
-		$this->add_action( 'template_redirect', 'wp_seo_redirection');
+		$this->add_action( 'template_redirect', 'page_seo_redirection', 1);
+		$this->add_action( 'template_redirect', 'wp_seo_redirection', 1);
 	}
 	
 	// Page SEO Redirection

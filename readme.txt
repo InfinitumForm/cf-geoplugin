@@ -1,19 +1,27 @@
 ﻿=== CF Geo Plugin ===
 Contributors: ivijanstefan, creativform, ej207
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=creativform@gmail.com
-Tags: geoplugin, seo, store-locator, geolocation, woocommerce, google-maps, content include, content exclude, geo plugin, geomarketing, geo target, geo, geotargeting, geofencing
+Tags: geolocation, woocommerce, store-locator, seo, google-maps, geomarketing, content include, content exclude, geo plugin, geo target, geo, geotargeting, geofencing, geotag
 Requires at least: 3.0
 Tested up to: 5.0
 Requires PHP: 5.6.0
-Stable tag: 7.4.3
+Stable tag: 7.5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Full SEO control, SEO redirection, geoinformation, lead capture and more in only one plugin.
+The only geolocation plugin that provides all geomarketing integrations for the WordPress.
 
 == Description ==
 
-**CF Geo Plugin** is GeoMarketing tool that allows you to have full control of your WordPress. **CF Geo Plugin** gives you ability to attach content, geographic information and Google maps to posts, pages, widgets and custom templates by using simple, options shortcodes, PHP code or JavaScript. It also lets you to specify a default geographic location for your entire WordPress blog, do SEO redirection, spam protection, WooCommerce control and many more. **CF Geo Plugin** help you to increase conversion, do better SEO, capture leads on your blog or landing pages.
+**[CF Geo Plugin](https://cfgeoplugin.com/)** is GeoMarketing tool that allows you to have full geo control of your WordPress. **CF Geo Plugin** gives you ability to attach content, geographic informations, geo tags, Google maps to posts, pages, widgets and custom templates by using simple, options shortcodes, PHP code or JavaScript. It also lets you to specify a default geographic location for your entire WordPress blog, do SEO redirection, spam protection, WooCommerce control and many more. **CF Geo Plugin** help you to increase conversion, do better SEO, capture leads on your blog or landing pages.
+
+= FREE AND PAID SERVICES =
+
+CF Geo Plugin uses a combination of **free and payed services** that return information about the locations.
+
+CF Geo Plugin is free by itself but API lookup is limited to **300 lookups per day** for the free users. If you like to have **UNLIMITED** lookup, **please visit [official website](https://cfgeoplugin.com/pricing/) for the more informations**.
+
+**NOTE:** We not place prices on this page because we reserve the right to change these prices and often have monthly promotions and discounts. Please, for the more informations **[look our prices](https://cfgeoplugin.com/pricing/)** on the [official website](https://cfgeoplugin.com/).
 
 = BENEFITS =
 
@@ -22,14 +30,16 @@ Full SEO control, SEO redirection, geoinformation, lead capture and more in only
 > - **No affect on the site performances**
 > - **Full support** for the WooCommerce, Contact Form 7, Yoast SEO, WP Super Cache and other most popular plugins
 >
-> <strong>SEO REDIRECTION</strong><br>
-> - **Redirects visitors** to a blog page based on their geo informations
-> - **Redirects visitors** to a predefined URL based on their geo informations
+> <strong>SEO INTEGRATIONS</strong><br>
+> - **Redirects visitors** to a blog page based on their geo informations by SEO rules
+> - **Redirects visitors** to a predefined URL based on their geo informations by SEO rules
 > - **Allows you to configure multiple redirection** rules as needed for the pages and enthire website
 > - **Supports 301, 302, 303 & 304** HTTP redirection
 > - **Supports IPv4 and IPv6**
+> - **Geo Tag Generator** attach Geo Tags in the head of your website for the specific pages
+> - **Cache support***
 >
-> <strong>GEO-MARKETING</strong><br>
+> <strong>GEOMARKETING</strong><br>
 > - **Create marketing campaigns** targeted only at certain locations.
 > - **Create landing pages** targeted only at certain locations.
 > - **Create banners, videos and any other content** targeted only at certain locations.
@@ -60,16 +70,19 @@ This plugin is compatible with any Wordpress installation, also compatible with 
 > * **Geo Plugin** - Allows you to attach geographical information inside your content via Shortcodes, PHP and JavaScript objects
 > * **Geo Banner** - Allows you to place dynamic content, images, videos and pages using shortcodes for specfic audience target by geo location
 > * **Google Map** - Allows you to attach Google Map inside content
+> * **Get Tag** - Allows you to generate precise Geo Tags for your pages and custom posts
 > * **Anti Spam Protection** - Allows you to block acces on blog from spam IP addresses and specific geo locations
 > * **Cloudflare Geolocation Support** - Cloudflare support for visitor geolocation
 > * **DNS Lookup** - Allows you to attach visitor DNS informations
 > * **SSL Support** - Keep you safe
+> * **Cache Support** - Allow other cache plugins to be integrated and supported
 > * **PROXY Settings** - Allows you to use PROXY for the lookup
 > * **SEO Redirection** - Allows you to redirect any page, post or article
 > * **Country Flag Support** - Allows you to attach visitor or custom country flags inside content
 > * **Include Content by Geolocation** - Allows you to include content by geolocation
 > * **Exclude Content by Geolocation** - Allows you to exclude content by geolocation
 > * **Plugin Autoupdate** - Allows you to keep your plugin up to date automaticaly
+> * **REST API** - Allows you to become geo information provider
 
 = Basics usage and example =
 
@@ -153,7 +166,29 @@ You only need to install the  **CF Geo Plugin** through the WordPress plugins sc
 
 Afterwards, activate the plugin through the 'Plugins' screen in WordPress, go to your `http://siteexample.com/wp-admin/` area and use the `Settings->CF Geo Plugin` to see all available shortcodes and settings.
 
+= On uninstall =
+
+You must know when you uninstall CF Geo Plugin you will lost complete setup, license and any other changes you have inside your WordPress installation. On uninstall we clean everything from your database what our plugin generate and you can not return that informations back.
+
 == Frequently Asked Questions ==
+
+= Is CF Geo Plugin free? Is there some license or restrictions? =
+
+CF Geo Plugin uses a combination of free and payed services that return information about the locations.
+
+CF Geo Plugin is free by itself but API lookup is limited to 300 lookups per day for the free users. If you need to have UNLIMITED lookup with NO RESTRICTIONS, please visit [official website](https://cfgeoplugin.com/pricing/) for the more informations regarding prices.
+
+The reason for the payment of the license is obvious: -We have to pay the server we use to provide you informations via API, development requires hours and hours of work at the daily level, the availability of the service must be 24/7 with no stop and for a lot coffee.
+
+Also you must know that few options like REST API, WooCommerce Payment Options, Spam Protection, Currency Converter are locked for the unlicensed usage because that options relay on the unlimited lookups and can broke website or stop working when you reach limits.
+
+= Do CF Geo Plugin use 3rd party services? =
+
+CF Geo Plugin is geo information provider and we provide own geo informations via API services builded on the CF Geo Plugin servers. CF Geo Plugin have own databases of IP addresses and geo locations related to that IP addresses. CF Geo Plugin may use inside own API service and 3rd party API services like [MaxMind](https://www.maxmind.com/en/home), [GeoIP](http://php.net/manual/en/intro.geoip.php) and [Geo Plugin](https://www.geoplugin.com/) like additional support for the certain informations for the more precise location or currency information.
+
+Note that CF Geo Plugin DO NOT STORE any personal information without your knowledge and approval and not provide personal informations to 3rd party. CF Geo Plugin not selling and not providing own databases to 3rd party in any case. We handling only with world wide public informations what are visible to anyone (client IP, server IP, hostname) and using simple proccess we return geo informations and following services.
+
+For more informations you visit [Terms and Conditions](https://cfgeoplugin.com/terms-and-conditions) and [Privacy Policy](https://cfgeoplugin.com/privacy-policy) pages on our [official website](https://cfgeoplugin.com).
 
 = How I can test CF Geo Plugin is work on certain country, region or city? =
 
@@ -268,39 +303,43 @@ Please inform us if any of these errors occure via contact form on our website [
 
 == Changelog ==
 
-= 7.4.3 =
-* Improved instance calling
-* Improved currency converter widget
-* Optimized Google Map Shortcode
-* Added Google Map Widget
-* Added WooCommerce Country Payment Control
-* Added currency converter into shorcode
+= 7.5.6 =
+* Fixed PHP error: Class CF_Geoplugin does not exist
+* Fixed file including
+* Session initialization moved to enthire WordPress
+* Fixed cache time
+* Extended debugger
+* Added new translations
 
 == Upgrade Notice ==
 
-= 7.4.3 =
-* Improved instance calling
-* Improved currency converter widget
-* Optimized Google Map Shortcode
-* Added Google Map Widget
-* Added WooCommerce Country Payment Control
-* Added currency converter into shorcode
+= 7.5.6 =
+* Fixed PHP error: Class CF_Geoplugin does not exist
+* Fixed file including
+* Session initialization moved to enthire WordPress
+* Fixed cache time
+* Extended debugger
+* Added new translations
 
 == Other Notes ==
 
 = Plugin Links =
 
-* [CF Geo Plugin Official Website](https://cfgeoplugin.com/)
-* [CF Geo Plugin Blog](https://cfgeoplugin.com/blog/)
+* [CF Geo Plugin Website](https://cfgeoplugin.com/)
+* [Documentation](https://cfgeoplugin.com/documentation/)
 * [F.A.Q](https://cfgeoplugin.com/faq/)
+* [Blog](https://cfgeoplugin.com/blog/)
 * [Contact or Support](https://cfgeoplugin.com/contact/)
-* [Jobs or Opportunity](https://cfgeoplugin.com/get-involved/)
+* [Terms and Conditions](https://cfgeoplugin.com/terms-and-conditions)
+* [Privacy Policy](https://cfgeoplugin.com/privacy-policy)
 
 = DONATION =
 
 Enjoy using *CF Geo Plugin*? Please consider [making a small donation](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=creativform@gmail.com) to support the project's continued development.
 
-= TERMS AND CONDITIONS  =
+= TERMS AND CONDITIONS =
+
+BY INSTALLING THIS PLUGIN WE CONSIDER THAT YOU ARE AUTOMATICALY ACCEPT TEARMS AND CONDITIONS OF OUR SERVICES AND AGREE WITH THE PRIVACY POLICY.
 
 Please read these Terms and Conditions ("Terms", "Terms and Conditions") carefully before using the [www.cfgeoplugin.com](https://cfgeoplugin.com) website and the CF Geo Plugin WordPress application (the "Service") operated by CF Geo Plugin.
 

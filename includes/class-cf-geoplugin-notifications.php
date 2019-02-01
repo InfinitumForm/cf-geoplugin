@@ -51,7 +51,7 @@ class CF_Geoplugin_Notifications extends CF_Geoplugin_Global
 		
 		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
 		
-		if( time() >= ($CF_GEOPLUGIN_OPTIONS['plugin_activated'] + (60 * 60 * 24 * 5)))
+		if( CFGP_TIME >= ($CF_GEOPLUGIN_OPTIONS['plugin_activated'] + (60 * 60 * 24 * 5)))
 		{
 			$title = __( 'Do you like CF GeoPlugin?', CFGP_NAME );
 			$message = sprintf(
@@ -62,7 +62,7 @@ class CF_Geoplugin_Notifications extends CF_Geoplugin_Global
 			self::notice()->register_notice(
 				'like',
 				'info',
-				sprintf( '<strong>%1$s</strong> <span>%2$s</span>', esc_html( $title ),  $message),
+				sprintf( '<h4>%1$s</h4> <span>%2$s</span>', esc_html( $title ),  $message),
 				array( 'dismissible' => true, 'scope' => 'user' )
 			);
 		}

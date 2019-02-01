@@ -287,7 +287,7 @@ if( isset( $_GET['action'] ) && ( $_GET['action'] == 'debugger' || $_GET['action
                                     </tr>
                                     <tr>
                                         <td><strong><?php _e( 'Timestamp', CFGP_NAME ); ?></strong></td>
-                                        <td><?php echo time(); ?></td>
+                                        <td><?php echo CFGP_TIME; ?></td>
                                         <td><?php _e( 'Server Current Unix Timestamp', CFGP_NAME ); ?></td>
                                     </tr>
                                     <tr>
@@ -298,10 +298,7 @@ if( isset( $_GET['action'] ) && ( $_GET['action'] == 'debugger' || $_GET['action
                                     <tr>
                                         <td><strong><?php _e( 'Host', CFGP_NAME ); ?></strong></td>
                                         <td>
-                                        <?php
-                                            $url = parse_url( get_bloginfo( 'wpurl' ) );
-                                            echo str_replace( 'www', "", $url['host'] );
-                                        ?>
+                                        <?php echo CF_Geoplugin_Global::get_host(true); ?>
                                         </td>
                                         <td><?php _e( 'Server Host Name', CFGP_NAME ); ?></td>
                                     </tr>
@@ -323,7 +320,15 @@ if( isset( $_GET['action'] ) && ( $_GET['action'] == 'debugger' || $_GET['action
 											else
 												echo ( !empty( $CF_GEOPLUGIN_OPTIONS['license_key'] ) ? $CF_GEOPLUGIN_OPTIONS['license_key'] : '-' )
 										?></td>
-                                        <td><?php _e( 'CF GeoPlugin License Key', CFGP_NAME ); ?></td>
+                                        <td>
+											<?php _e( 'CF GeoPlugin License Key', CFGP_NAME ); ?>
+											<?php
+											if(CFGP_DEFENDER_ACTIVATED)
+												_e( 'Lifetime', CFGP_NAME );
+											else
+												echo ( !empty( $CF_GEOPLUGIN_OPTIONS['license_expire'] ) ? '<br><small>('.__( 'License Expire', CFGP_NAME ) . ': <b>' . date("r",$CF_GEOPLUGIN_OPTIONS['license_expire']).'</b>)</small>' : '' )
+										?>
+										</td>
                                     </tr>
                                 </tbody>
                             </table>        

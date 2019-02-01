@@ -13,6 +13,7 @@ class CF_Geoplugin_Public extends CF_Geoplugin_Global
 		$this->add_action( 'init', 'run_style' );
 		$this->add_action( 'wp_head', 'initialize_plugin_javascript', 1 );
 		$this->add_action( 'admin_head', 'initialize_plugin_javascript', 1 );
+		$this->add_action( 'wp_head', 'cfgp_geo_tag' );
 	}
 	
 	public function run_style(){
@@ -96,5 +97,39 @@ class CF_Geoplugin_Public extends CF_Geoplugin_Global
 
 	<?php }
 
+	public function cfgp_geo_tag()
+	{
+		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
+		$post = get_post();
+		
+		if( isset( $CF_GEOPLUGIN_OPTIONS['enable_geo_tag'] ) && in_array( $post->post_type, $CF_GEOPLUGIN_OPTIONS['enable_geo_tag'] ) )
+		{
+			$geo_data = array(
+				'geo.enable'	=> get_post_meta( $post->ID, 'cfgp-geotag-enable', true ),
+				'geo.address' 	=> get_post_meta( $post->ID, 'cfgp-dc-title', true ),
+				'geo.region'	=> get_post_meta( $post->ID, 'cfgp-region', true ),
+				'geo.placename'	=> get_post_meta( $post->ID, 'cfgp-placename', true ),
+				'geo.latitude'	=> get_post_meta( $post->ID, 'cfgp-latitude', true ),
+				'geo.longitude'	=> get_post_meta( $post->ID, 'cfgp-longitude', true ),
+			);
+
+			if( $geo_data['geo.enable'] )
+			{
+				if( !empty( $geo_data['geo.region'] ) && !empty( $geo_data['geo.placename'] ) )
+				{
+					printf( '<meta name="geo.region" content="%s-%s" />', $geo_data['geo.region'], $geo_data['geo.placename'] );
+				}
+				if( !empty( $geo_data['geo.address'] ) )
+				{
+					printf( '<meta name="geo.placename" content="%s" />', $geo_data['geo.address'] );
+				}
+				if( !empty( $geo_data['geo.longitude'] ) && !empty( $geo_data['geo.latitude'] ) )
+				{
+					printf( '<meta name="geo.position" content="%s;%s" />', $geo_data['geo.latitude'], $geo_data['geo.longitude'] );
+					printf( '<meta name="ICBM" content="%s;%s" />', $geo_data['geo.latitude'], $geo_data['geo.longitude'] );
+				}
+			}
+		}
+	}
 }
 endif;

@@ -8,13 +8,14 @@
  * Plugin Name:       CF Geo Plugin
  * Plugin URI:        http://cfgeoplugin.com/
  * Description:       Create Dynamic Content, Banners and Images on Your Website Based On Visitor Geo Location By Using Shortcodes With CF GeoPlugin.
- * Version:           7.4.3
+ * Version:           7.5.6
  * Author:            Ivijan-Stefan Stipic
  * Author URI:        https://linkedin.com/in/ivijanstefanstipic
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       cf-geoplugin
  * Domain Path:       /languages
+ * Network:           true
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,6 +35,18 @@
 // If someone try to called this file directly via URL, abort.
 if ( ! defined( 'WPINC' ) ) { die( "Don't mess with us." ); }
 if ( ! defined( 'ABSPATH' ) ) { exit; }
+
+// Find is localhost or not
+if ( ! defined( 'CFGP_LOCAL' ) ) {
+	if(isset($_SERVER['REMOTE_ADDR'])) {
+		define('CFGP_LOCAL', in_array($_SERVER['REMOTE_ADDR'], array(
+			'127.0.0.1',
+			'::1'
+		)));
+	} else {
+		define('CFGP_LOCAL', false);
+	}
+}
 
 /**
  * DEBUG MODE
@@ -58,225 +71,68 @@ if ( defined( 'WP_CF_GEO_DEBUG' ) ){
 	}
 }
 
+// First initialization
+$GLOBALS['CFGEO'] = array();
+$GLOBALS['CF_GEOPLUGIN_OPTIONS'] = array();
+// Main plugin file
+if ( ! defined( 'CFGP_FILE' ) )			define( 'CFGP_FILE', __FILE__ );
+// Plugin root
+if ( ! defined( 'CFGP_ROOT' ) )			define( 'CFGP_ROOT', rtrim(plugin_dir_path(CFGP_FILE), '/') );
+// Require plugin general setup
+include_once CFGP_ROOT.'/globals/cf-geoplugin-setup.php';
+// Includes directory
+if ( ! defined( 'CFGP_INCLUDES' ) )		define( 'CFGP_INCLUDES', CFGP_ROOT . '/includes' );
+// Includes directory
+if ( ! defined( 'CFGP_ADMIN' ) )		define( 'CFGP_ADMIN', CFGP_ROOT . '/admin' );
+// Plugin URL root
+if ( ! defined( 'CFGP_URL' ) )			define( 'CFGP_URL', rtrim(plugin_dir_url( CFGP_FILE ), '/') );
+// Assets URL
+if ( ! defined( 'CFGP_ASSETS' ) )		define( 'CFGP_ASSETS', CFGP_URL.'/assets' );
+// Plugin name
+if ( ! defined( 'CFGP_NAME' ) )			define( 'CFGP_NAME', 'cf-geoplugin');
+// Plugin metabox prefix
+if ( ! defined( 'CFGP_METABOX' ) )		define( 'CFGP_METABOX', 'cf_geo_metabox_');
+// Plugin session prefix (controlled by version)
+if ( ! defined( 'CFGP_PREFIX' ) )		define( 'CFGP_PREFIX', 'cf_geo_'.preg_replace("/[^0-9]/Ui",'',CFGP_VERSION).'_');
+// Main website
+if ( ! defined( 'CFGP_STORE' ) )		define( 'CFGP_STORE', 'https://cfgeoplugin.com');
+// Timestamp
+if( ! defined( 'CFGP_TIME' ) )			define( 'CFGP_TIME', time() );
 // PHP_VERSION_ID is available as of PHP 5.2.7, if our version is lower than that, then emulate it
 if (!defined('PHP_VERSION_ID')) {
     $php_version = explode('.', PHP_VERSION);
     define('PHP_VERSION_ID', ($php_version[0] * 10000 + $php_version[1] * 100 + $php_version[2]));
 	$php_version = NULL;
 }
-
-// First initialization
-$GLOBALS['CFGEO'] = array();
-$GLOBALS['CF_GEOPLUGIN_OPTIONS'] = array();
-
-
-// Main plugin file
-if ( ! defined( 'CFGP_FILE' ) )				define( 'CFGP_FILE', __FILE__ );
-// Current plugin version
-if ( ! defined( 'CFGP_VERSION' ) )			define( 'CFGP_VERSION', '7.4.3');
-// Plugin root
-if ( ! defined( 'CFGP_ROOT' ) )				define( 'CFGP_ROOT', rtrim(plugin_dir_path(CFGP_FILE), '/') );
-// Includes directory
-if ( ! defined( 'CFGP_INCLUDES' ) )			define( 'CFGP_INCLUDES', CFGP_ROOT . '/includes' );
-// Includes directory
-if ( ! defined( 'CFGP_ADMIN' ) )			define( 'CFGP_ADMIN', CFGP_ROOT . '/admin' );
-// Plugin URL root
-if ( ! defined( 'CFGP_URL' ) )				define( 'CFGP_URL', rtrim(plugin_dir_url( CFGP_FILE ), '/') );
-// Assets URL
-if ( ! defined( 'CFGP_ASSETS' ) )			define( 'CFGP_ASSETS', CFGP_URL.'/assets' );
-// Plugin name
-if ( ! defined( 'CFGP_NAME' ) )				define( 'CFGP_NAME', 'cf-geoplugin');
-// Plugin metabox prefix
-if ( ! defined( 'CFGP_METABOX' ) )			define( 'CFGP_METABOX', 'cf_geo_metabox_');
-// Plugin session prefix (controlled by version)
-if ( ! defined( 'CFGP_PREFIX' ) )			define( 'CFGP_PREFIX', 'cf_geo_'.preg_replace("/[^0-9]/Ui",'',CFGP_VERSION).'_');
-// Main website
-if ( ! defined( 'CFGP_STORE' ) )			define( 'CFGP_STORE', 'https://cfgeoplugin.com');
-// Limit
-if ( ! defined( 'CFGP_LIMIT' ) )			define( 'CFGP_LIMIT', 300);
-// Developer license
-if( ! defined( 'CFGP_DEV_MODE' ) )			define( 'CFGP_DEV_MODE', false );
-
+// Fix missing PHP SESSION constant PHP_SESSION_NONE (this is bug on the some Nginx servers)
+if (!defined('PHP_SESSION_NONE')) {
+	define('PHP_SESSION_NONE', -1);
+}
 // Check if is multisite installation
 if( ! defined( 'CFGP_MULTISITE' ) )			
 {
     // New safer approach
-    if( !function_exists( 'is_plugin_active_for_network' ) ) require_once( ABSPATH . '/wp-admin/includes/plugin.php' );
+    if( !function_exists( 'is_plugin_active_for_network' ) ) include ABSPATH . '/wp-admin/includes/plugin.php';
 
 	define( 'CFGP_MULTISITE', is_plugin_active_for_network( CFGP_ROOT . '/cf-geoplugin.php' ) );
 }
-
 // Include debug class
-include CFGP_INCLUDES . '/class-cf-geoplugin-debug.php';
-
+include_once CFGP_INCLUDES . '/class-cf-geoplugin-debug.php';
 // Our debug object to global variables
 if( !isset( $GLOBALS['debug'] ) ) $GLOBALS['debug'] = new CF_Geoplugin_Debug;
 // Check cURL
 if( !function_exists( 'curl_init' ) ) $GLOBALS['debug']->save( 'cURL Status: Disabled' );
 else $GLOBALS['debug']->save( 'cURL Status: Enabled' );
-
-/**
- * Session controll
- *
- * @author     Ivijan-Stefan Stipic <creativform@gmail.com>
- */
-if(!function_exists('CF_Geoplugin_Session')) :
-	function CF_Geoplugin_Session()
-	{
-		/**
-		 * Start sessions if not exists
-		 *
-		 * @author     Ivijan-Stefan Stipic <creativform@gmail.com>
-		 */
-		if (version_compare(PHP_VERSION, '7.0.0') >= 0) {
-			if(function_exists('session_status') && session_status() == PHP_SESSION_NONE) {
-				session_start(array(
-				  'cache_limiter' => 'private_no_expire',
-				  'read_and_close' => false,
-			   ));
-			}
-		}
-		else if (version_compare(PHP_VERSION, '5.4.0') >= 0)
-		{
-			if (function_exists('session_status') && session_status() == PHP_SESSION_NONE) {
-				session_cache_limiter('private_no_expire');
-				session_start();
-			}
-		}
-		else
-		{
-			if(session_id() == '') {
-				if(version_compare(PHP_VERSION, '4.0.0') >= 0){
-					session_cache_limiter('private_no_expire');
-				}
-				session_start();
-			}
-		}
-		/**
-		 * Clear session on the certain time
-		 *
-		 * This is importnat to avoid bugs regarding accuracy
-		 *
-		 * @author     Ivijan-Stefan Stipic  <creativform@gmail.com>
-		 */
-		$minutes = 5;
-		if(isset($_SESSION[CFGP_PREFIX . 'session_expire']))
-		{
-			if(time() > $_SESSION[CFGP_PREFIX . 'session_expire'])
-			{
-				foreach($_SESSION as $key => $val)
-				{
-					if(strpos($key, CFGP_PREFIX) !== false)
-					{
-						unset($_SESSION[ $key ]);
-					}
-				}
-				$_SESSION[CFGP_PREFIX . 'session_expire'] = (time() + (60 * $minutes));
-			}
-		}
-		else $_SESSION[CFGP_PREFIX . 'session_expire'] = (time() + (60 * $minutes));
-
-		return $_SESSION[CFGP_PREFIX . 'session_expire'];
-	}
-endif;
-CF_Geoplugin_Session();
-
-
+// Activate session
+include_once CFGP_ROOT . '/globals/cf-geoplugin-session.php';
 // Include hook class
-include CFGP_INCLUDES . '/class-cf-geoplugin-admin-notice.php';
-include CFGP_INCLUDES . '/class-cf-geoplugin-locale.php';
-include CFGP_INCLUDES . '/class-cf-geoplugin-global.php';
+include_once CFGP_INCLUDES . '/class-cf-geoplugin-admin-notice.php';
+// Get locale setup
+include_once CFGP_INCLUDES . '/class-cf-geoplugin-locale.php';
+// Get globals
+include_once CFGP_INCLUDES . '/class-cf-geoplugin-global.php';
 // Define important constants
-if(class_exists('CF_Geoplugin_Global')) :
-	// Lets use debug
-	$debug = $GLOBALS['debug'];
-	// Include hook class
-	$hook = new CF_Geoplugin_Global;
-	// Global variable for geoplugin options
-	$GLOBALS['CF_GEOPLUGIN_OPTIONS']=$hook->get_option();
-	// Fix session time
-	if(isset($GLOBALS['CF_GEOPLUGIN_OPTIONS']['plugin_activated']) && empty($GLOBALS['CF_GEOPLUGIN_OPTIONS']['plugin_activated'])){
-		$GLOBALS['CF_GEOPLUGIN_OPTIONS']['plugin_activated'] = time();
-		$hook->update_option('plugin_activated', $GLOBALS['CF_GEOPLUGIN_OPTIONS']['plugin_activated']);
-	} else {
-		if(empty($GLOBALS['CF_GEOPLUGIN_OPTIONS']['plugin_activated']))
-		{
-			$GLOBALS['CF_GEOPLUGIN_OPTIONS']['plugin_activated'] = time();
-			$hook->update_option('plugin_activated', $GLOBALS['CF_GEOPLUGIN_OPTIONS']['plugin_activated']);
-		}
-	}
-	// fix ID if missing
-	if(isset($GLOBALS['CF_GEOPLUGIN_OPTIONS']['id']) && empty($GLOBALS['CF_GEOPLUGIN_OPTIONS']['id'])){
-		$GLOBALS['CF_GEOPLUGIN_OPTIONS']['id'] = md5($hook->generate_token(32));
-		$hook->update_option('id', $GLOBALS['CF_GEOPLUGIN_OPTIONS']['id']);
-	} else {
-		if(empty($GLOBALS['CF_GEOPLUGIN_OPTIONS']['id']))
-		{
-			$GLOBALS['CF_GEOPLUGIN_OPTIONS']['id'] = md5($hook->generate_token(32));
-			$hook->update_option('id', $GLOBALS['CF_GEOPLUGIN_OPTIONS']['id']);
-		}
-	}
-	// Client IP address
-	if ( ! defined( 'CFGP_IP' ) ) 					define( 'CFGP_IP', $hook->ip() );
-	// Server IP address
-	if ( ! defined( 'CFGP_SERVER_IP' ) ) 			define( 'CFGP_SERVER_IP', $hook->ip_server() );
-	// Proxy enabled
-	if ( ! defined( 'CFGP_PROXY' ) ) 				define( 'CFGP_PROXY', $hook->proxy() );
-	// License key activation true/false
-	if ( ! defined( 'CFGP_ACTIVATED' ) ) 			define( 'CFGP_ACTIVATED', $hook->check_activation() );
-	// Defender true/false
-	if ( ! defined( 'CFGP_DEFENDER_ACTIVATED' ) ) 	define( 'CFGP_DEFENDER_ACTIVATED', $hook->check_defender_activation() );
-
-	$options = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
-	// GDRP - Protect users private data
-	foreach( array( 'map_api_key', 'license_key', 'proxy_ip', 'proxy_port', 'proxy_username', 'proxy_password' ) as $i => $opt ) if( isset( $options[ $opt ] ) ) unset( $options[ $opt ] );
-
-	$debug->save( 'Global Class Loaded' );
-	$debug->save( 'Current options:' );
-	$debug->save( $options );
-	$options = NULL;
-
-	$hook = NULL;
-	// Include main class
-	include CFGP_INCLUDES . '/class-cf-geoplugin.php';
-	/*
-	* CF Geoplugin Loader - Final Class
-	* @since 7.0.0
-	*/
-	if(class_exists('CF_Geoplugin_Init')) :
-		class CF_Geoplugin_Load extends CF_Geoplugin_Init
-		{
-			function __construct(){
-				$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
-				$this->register_activation_hook(CFGP_FILE, 'activate');
-				$this->register_deactivation_hook(CFGP_FILE, 'deactivate');
-				$this->run();
-			}
-		}
-	endif;
-endif;
-
-/*
-* Allow developers to use plugin data inside PHP 
-* @since 5.0.0
-* @improved 7.0.0
-*/
-if(!class_exists( 'CF_Geoplugin' ) && class_exists( 'CF_Geoplugin_API' )) :
-	final class CF_Geoplugin
-	{
-		private $int;
-		
-		function __construct($options = array()){
-			$api = new CF_Geoplugin_API;
-			$this->int = $api->run($options);
-		}
-		
-		public function get(){
-			return (object) $this->int;
-		}
-	}
-endif;
-
+include_once CFGP_ROOT . '/globals/cf-geoplugin-global.php';
 /*
 * When everything is constructed and builded, just load plugin properly
 * @since 7.0.0
@@ -295,10 +151,9 @@ if(!function_exists('cf_geoplugin')) :
 endif;
 
 // Plugin is loaded
-CF_Geoplugin();
-
-// Globals for all folks and doomies. Why not?
-$CF_GEO = $CF_Geo = $cf_geo = $GLOBALS['CF_GEO'] = $GLOBALS['CF_Geo'] = $GLOBALS['cf_geo'] = (object) $GLOBALS['CFGEO'];
+if(add_action('init', 'CF_Geoplugin', 2, 0)){
+	$GLOBALS['debug']->save( 'Function "CF_Geoplugin()" is loaded.' );
+} else $GLOBALS['debug']->save( 'Function "CF_Geoplugin()" is not loaded and plugin can\'t start.' );
 
 // Save all on the end
 $GLOBALS['debug']->write();
