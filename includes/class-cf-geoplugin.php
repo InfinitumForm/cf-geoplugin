@@ -202,21 +202,6 @@ class CF_Geoplugin_Init extends CF_Geoplugin_Global
 			}
 			else $debug->save( 'Defender class not loaded - File does not exists' );
 
-			// Include Converter Widget
-			if( file_exists( CFGP_INCLUDES . '/widgets/currency-converter.php' ) )
-			{
-				include_once CFGP_INCLUDES . '/widgets/currency-converter.php';
-				$debug->save( 'Widget converter class loaded' );
-			}
-			else $debug->save( 'Widget converter class not loaded - File does not exists' );
-
-			// Include Google Map Widget
-			if( file_exists( CFGP_INCLUDES . '/widgets/google-map.php' ) )
-			{
-				include_once CFGP_INCLUDES . '/widgets/google-map.php';
-				$debug->save( 'Widget google map class loaded' );
-			}
-			else $debug->save( 'Widget google map class not loaded - File does not exists' );
 
 			$debug->save( '------------ SERVER INFORMATIONS ------------' );
 			$debug->save( var_export( $_SERVER, 1 ) );

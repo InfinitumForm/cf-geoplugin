@@ -75,20 +75,25 @@ if(class_exists('CF_Geoplugin_Global')) :
 	if( !class_exists( 'CF_Geoplugin_Load' ) && class_exists('CF_Geoplugin_Init')) :
 		class CF_Geoplugin_Load extends CF_Geoplugin_Init
 		{
-			private $init = NULL;
 			// Instance
 			private static $instance = null;
+			private $CF_GEOPLUGIN_OPTIONS;
 			
 			function __construct(){
-				$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
-				$this->register_activation_hook(CFGP_FILE, 'activate');
-				$this->register_deactivation_hook(CFGP_FILE, 'deactivate');
-				$this->init = $this->run();
+				$this->CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
 			}
 			
-			public static function cfgp($a){
-				$cfg = self::get_instance();
-				return $cfg->init;
+			public static function cf_geoplugin(){
+				$instance = self::get_instance();
+				$CF_GEOPLUGIN_OPTIONS = $instance->CF_GEOPLUGIN_OPTIONS;
+				return $instance->run();
+			}
+			
+			public static function load_plugin(){
+				$instance = self::get_instance();
+				$CF_GEOPLUGIN_OPTIONS = $instance->CF_GEOPLUGIN_OPTIONS;
+				$instance->register_activation_hook(CFGP_FILE, 'activate');
+				$instance->register_deactivation_hook(CFGP_FILE, 'deactivate');
 			}
 			
 			/**
@@ -107,53 +112,4 @@ if(class_exists('CF_Geoplugin_Global')) :
 			}
 		}
 	endif;
-endif;
-
-/* Let's allow PHP integrations */
-if(!class_exists('CF_Geoplugin')) :
-	class CF_Geoplugin{
-		
-		private $init = NULL;
-		function __construct($options=array()){
-			if(isset($_SESSION[CFGP_PREFIX . 'php_api_session']) && !(isset($options['ip']) && $_SESSION[CFGP_PREFIX . 'php_api_session']['ip'] !== $options['ip']))
-			{
-				$_SESSION[CFGP_PREFIX . 'php_api_session']['current_time'] = date('H:i:s', CFGP_TIME);
-				$_SESSION[CFGP_PREFIX . 'php_api_session']['current_date'] = date('F j, Y', CFGP_TIME);
-				$this->init = $_SESSION[CFGP_PREFIX . 'php_api_session'];
-				$GLOBALS['debug']->save( 'Run from custom PHP API session:' );
-				$GLOBALS['debug']->save( $_SESSION[CFGP_PREFIX . 'php_api_session'] );
-			}
-			else
-			{
-				// Include internal library
-				if(file_exists(CFGP_INCLUDES . '/class-cf-geoplugin-library.php'))
-				{
-					include_once CFGP_INCLUDES . '/class-cf-geoplugin-library.php';
-				}
-				else $GLOBALS['debug']->save( 'Library not included - Files does not exists' );
-				
-				if(file_exists(CFGP_INCLUDES . '/class-cf-geoplugin-api.php'))
-				{
-					include_once CFGP_INCLUDES . '/class-cf-geoplugin-api.php';
-					if(class_exists('CF_Geoplugin_API')){
-						// Run API
-						$CFGEO_API = new CF_Geoplugin_API();
-						$GLOBALS['debug']->save( 'Custom API class loaded' );
-						$this->init = $CFGEO_API->run($options);
-						$GLOBALS['debug']->save( 'Custom API returned data:' );
-						$GLOBALS['debug']->save( $this->init );
-						$_SESSION[CFGP_PREFIX . 'php_api_session'] = $this->init;
-						$GLOBALS['debug']->save( 'Saved into custom PHP API session:' );
-						$GLOBALS['debug']->save( $_SESSION[CFGP_PREFIX . 'php_api_session'] );
-					}
-					else $GLOBALS['debug']->save( 'Custom API class not loaded - Class does not exists' );
-				}
-				else $GLOBALS['debug']->save( 'Custom API class not loaded - File does not exists' );
-			}
-		}
-		
-		public function get(){			
-			return (object) $this->init;
-		}
-	}
 endif;

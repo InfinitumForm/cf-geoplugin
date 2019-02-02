@@ -1,5 +1,10 @@
 == Changelog ==
 
+= 7.5.7 =
+* IMPORTANT UPDATE: Fixed WordPress database error Table
+* IMPORTANT UPDATE: Fixed widget displaying
+* Optimized PHP code
+
 = 7.5.6 =
 * Fixed PHP error: Class CF_Geoplugin does not exist
 * Fixed file including

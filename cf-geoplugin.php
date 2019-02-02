@@ -8,7 +8,7 @@
  * Plugin Name:       CF Geo Plugin
  * Plugin URI:        http://cfgeoplugin.com/
  * Description:       Create Dynamic Content, Banners and Images on Your Website Based On Visitor Geo Location By Using Shortcodes With CF GeoPlugin.
- * Version:           7.5.6
+ * Version:           7.5.7
  * Author:            Ivijan-Stefan Stipic
  * Author URI:        https://linkedin.com/in/ivijanstefanstipic
  * License:           GPL-2.0+
@@ -133,13 +133,17 @@ include_once CFGP_INCLUDES . '/class-cf-geoplugin-locale.php';
 include_once CFGP_INCLUDES . '/class-cf-geoplugin-global.php';
 // Define important constants
 include_once CFGP_ROOT . '/globals/cf-geoplugin-global.php';
+// Define API services
+include_once CFGP_ROOT . '/globals/cf-geoplugin-api.php';
+// Include Converter Widget
+include_once CFGP_ROOT . '/globals/cf-geoplugin-includes.php';
 /*
 * When everything is constructed and builded, just load plugin properly
 * @since 7.0.0
 */
 function CF_Geoplugin(){
 	if(class_exists('CF_Geoplugin_Load')) :
-		return new CF_Geoplugin_Load();
+		return CF_Geoplugin_Load::cf_geoplugin();
 	endif;
 }
 /*
@@ -149,6 +153,10 @@ function CF_Geoplugin(){
 if(!function_exists('cf_geoplugin')) :
 	function cf_geoplugin(){ return CF_Geoplugin(); }
 endif;
+
+// Load plugin properly
+CF_Geoplugin_Load::load_plugin();
+$GLOBALS['debug']->save( 'Function "CF_Geoplugin_Load::load_plugin()" is loaded.' );
 
 // Plugin is loaded
 if(add_action('init', 'CF_Geoplugin', 2, 0)){

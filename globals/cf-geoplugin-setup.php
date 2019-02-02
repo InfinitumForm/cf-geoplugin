@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
 
 
 // Current plugin version ( if change, clear also session cache )
-if ( ! defined( 'CFGP_VERSION' ) )			define( 'CFGP_VERSION', '7.5.6');
+if ( ! defined( 'CFGP_VERSION' ) )			define( 'CFGP_VERSION', '7.5.7');
 // Limit ( for the information purposes )
 if ( ! defined( 'CFGP_LIMIT' ) )			define( 'CFGP_LIMIT', 300);
 // Developer license ( enable developer license support )

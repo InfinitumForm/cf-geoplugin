@@ -6,6 +6,7 @@
  * @package    CF_Geoplugin
  * @author     Goran Zivkovic
  */
+
 add_action( 'widgets_init', 'cfgp_widget_converter' );
 
 function cfgp_widget_converter()
