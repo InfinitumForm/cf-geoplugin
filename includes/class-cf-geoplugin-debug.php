@@ -9,9 +9,6 @@
 if( !class_exists( 'CF_Geoplugin_Debug' ) ) :
 class CF_Geoplugin_Debug
 {
-    // Text for log file
-    private $debug = array();
-
     // Log file path
     private $log_file_path = 'cf-geoplugin-debug.log';
 
@@ -23,6 +20,7 @@ class CF_Geoplugin_Debug
 
     function __construct()
     {
+		$_SESSION[CFGP_NAME . '-debug'] = array();
         add_action( 'init', array(&$this, 'download_debug_file') );
 
         if( !isset( $_GET['action'] ) || $_GET['action'] !== 'debugger' ) return false;
@@ -33,10 +31,14 @@ class CF_Geoplugin_Debug
         
         $this->log_file = fopen( path_join( CFGP_ROOT, $this->log_file_path ), 'w' );
 
-        $this->debug[] = '============ ' . date( 'd:M:Y' ) . ' - ' . date('H:i:s') . ' ============';
+        $this->save('============ ' . date( 'd:M:Y' ) . ' - ' . date('H:i:s') . ' ============');
         $this->microtime = microtime(true);
+		$_SESSION[CFGP_NAME . '-debug-microtime'] = $this->microtime;
+		
+		add_action('shutdown', array($this, 'write'));
 
     }
+	
     // Saves data into array for later writing into file
     public function save( $text )
     {
@@ -46,12 +48,23 @@ class CF_Geoplugin_Debug
         elseif( is_string( $text ) ) $text = trim( $text );
 
         $calculated_time = round( microtime(true) - $this->microtime, 4 );
-        $this->debug[] = '[ ' . $calculated_time  . 's ] - ' . $text;
+		$_SESSION[CFGP_NAME . '-debug'][] = '[ ' . $calculated_time  . 's ] - ' . $text;
+    }
+	
+	public static function log( $text )
+    {
+        if( !isset( $_GET['action'] ) || $_GET['action'] !== 'debugger' ) return false;
+        
+        if( is_array( $text ) || is_object( $text ) ) $text = json_encode( $text, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES );
+        elseif( is_string( $text ) ) $text = trim( $text );
+
+        $calculated_time = round( microtime(true) - $_SESSION[CFGP_NAME . '-debug-microtime'], 4 );
+		$_SESSION[CFGP_NAME . '-debug'][] = '[ ' . $calculated_time  . 's ] - ' . $text;
     }
 	
 	public function check()
     {
-        return $this->debug;
+        return $_SESSION[CFGP_NAME . '-debug'];
     }
     // Writes collected data into file
     public function write()
@@ -62,12 +75,14 @@ class CF_Geoplugin_Debug
         
         CF_Geoplugin_Global::validate(); // Pick up informations about license validation process
 
-        $this->debug[] = '================ '. $CFGEO['host'] .' ================'; // End of file
-        fwrite( $this->log_file, join( PHP_EOL, $this->debug ) );
+        $_SESSION[CFGP_NAME . '-debug'][] = '================ '. $CFGEO['host'] .' ================'; // End of file
+        fwrite( $this->log_file, join( PHP_EOL, $_SESSION[CFGP_NAME . '-debug'] ) );
         fclose( $this->log_file );
 		chmod( path_join( CFGP_ROOT, $this->log_file_path ), 0644); // Made only readable for the user
+		$_SESSION[CFGP_NAME . '-debug'] = NULL;
         clearstatcache();
     }
+
 
     // Start download for debug file
 	public function download_debug_file()

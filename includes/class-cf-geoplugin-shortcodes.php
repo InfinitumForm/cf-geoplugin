@@ -598,7 +598,8 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 				'from'	=> isset( $CF_GEOPLUGIN_OPTIONS['base_currency'] ) && !empty( $CF_GEOPLUGIN_OPTIONS['base_currency'] ) ? strtoupper( $CF_GEOPLUGIN_OPTIONS['base_currency'] ) : 'USD',
 				'to'	=> isset( $CFGEO['currency'] ) && !empty( $CFGEO['currency'] ) ? strtoupper( $CFGEO['currency'] ) : 'USD',
 				'align'	=> 'R',
-				'separator'	=> ''
+				'separator'	=> '',
+				'no-symbol' => 0
 			), 
 			$atts, 
 			'cfgeo_converter'
@@ -650,8 +651,17 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 		$result = json_decode( $result, true );
 		if( ( isset( $result['error'] ) && $result['error'] == true ) || ( !isset( $result['return'] ) || $result['return'] == false ) ) return $this->generate_converter_output( $content, $symbol_from, $atts['align'], $atts['separator'] );
 
-		if( !isset( $result['to_amount'] ) || empty( $result['to_amount'] ) ) return $this->generate_converter_output( $content, $symbol_from, $atts['align'], $atts['separator'] );
-
+		if( !isset( $result['to_amount'] ) || empty( $result['to_amount'] ) ){
+			if($atts['no-symbol'] == 1)
+			{
+				return $result['to_amount'];
+			}
+			return $this->generate_converter_output( $content, $symbol_from, $atts['align'], $atts['separator'] );
+		}
+		if($atts['no-symbol'] == 1)
+		{
+			return $result['to_amount'];
+		}
 		return $this->generate_converter_output( $result['to_amount'], $symbol_to, $atts['align'], $atts['separator'] );
 	}
 

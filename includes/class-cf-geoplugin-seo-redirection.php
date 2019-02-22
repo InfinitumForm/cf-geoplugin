@@ -95,6 +95,13 @@ class CF_Geoplugin_SEO_Redirection extends CF_Geoplugin_Global
 	private function check_user_redirection( $redirect )
 	{
 		$CFGEO = $GLOBALS['CFGEO'];
+		
+		if(
+			isset($redirect['country'])		=== false
+			&& isset($redirect['region']) 	=== false
+			&& isset($redirect['city']) 	=== false
+		) return;
+		
 		$country_check = $this->check_user_by_country( $redirect['country'] );
 
 		$country_empty = false;

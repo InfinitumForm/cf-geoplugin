@@ -8,7 +8,7 @@
  * Plugin Name:       CF Geo Plugin
  * Plugin URI:        http://cfgeoplugin.com/
  * Description:       Create Dynamic Content, Banners and Images on Your Website Based On Visitor Geo Location By Using Shortcodes With CF GeoPlugin.
- * Version:           7.5.7
+ * Version:           7.5.12
  * Author:            Ivijan-Stefan Stipic
  * Author URI:        https://linkedin.com/in/ivijanstefanstipic
  * License:           GPL-2.0+
@@ -118,13 +118,13 @@ if( ! defined( 'CFGP_MULTISITE' ) )
 }
 // Include debug class
 include_once CFGP_INCLUDES . '/class-cf-geoplugin-debug.php';
+// Activate session
+include_once CFGP_ROOT . '/globals/cf-geoplugin-session.php';
 // Our debug object to global variables
 if( !isset( $GLOBALS['debug'] ) ) $GLOBALS['debug'] = new CF_Geoplugin_Debug;
 // Check cURL
-if( !function_exists( 'curl_init' ) ) $GLOBALS['debug']->save( 'cURL Status: Disabled' );
-else $GLOBALS['debug']->save( 'cURL Status: Enabled' );
-// Activate session
-include_once CFGP_ROOT . '/globals/cf-geoplugin-session.php';
+if( !function_exists( 'curl_init' ) ) CF_Geoplugin_Debug::log( 'cURL Status: Disabled' );
+else CF_Geoplugin_Debug::log( 'cURL Status: Enabled' );
 // Include hook class
 include_once CFGP_INCLUDES . '/class-cf-geoplugin-admin-notice.php';
 // Get locale setup
@@ -137,6 +137,8 @@ include_once CFGP_ROOT . '/globals/cf-geoplugin-global.php';
 include_once CFGP_ROOT . '/globals/cf-geoplugin-api.php';
 // Include Converter Widget
 include_once CFGP_ROOT . '/globals/cf-geoplugin-includes.php';
+// Include Plugin integrations
+include_once CFGP_ROOT . '/globals/cf-geoplugin-plugins.php';
 /*
 * When everything is constructed and builded, just load plugin properly
 * @since 7.0.0
@@ -156,12 +158,12 @@ endif;
 
 // Load plugin properly
 CF_Geoplugin_Load::load_plugin();
-$GLOBALS['debug']->save( 'Function "CF_Geoplugin_Load::load_plugin()" is loaded.' );
+CF_Geoplugin_Debug::log( 'Function "CF_Geoplugin_Load::load_plugin()" is loaded.' );
 
 // Plugin is loaded
 if(add_action('init', 'CF_Geoplugin', 2, 0)){
-	$GLOBALS['debug']->save( 'Function "CF_Geoplugin()" is loaded.' );
-} else $GLOBALS['debug']->save( 'Function "CF_Geoplugin()" is not loaded and plugin can\'t start.' );
+	CF_Geoplugin_Debug::log( 'Function "CF_Geoplugin()" is loaded.' );
+} else CF_Geoplugin_Debug::log( 'Function "CF_Geoplugin()" is not loaded and plugin can\'t start.' );
 
-// Save all on the end
-$GLOBALS['debug']->write();
+// Add privacy policy
+add_action( 'admin_init', 'cf_geoplugin_privacy_policy' );

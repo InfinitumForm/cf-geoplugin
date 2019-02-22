@@ -16,7 +16,7 @@ class CF_Geoplugin_Woocommerce extends CF_Geoplugin_Global
 
     function __construct()
     {
-        $this->add_action( 'plugins_loaded', 'check_woocommerce_instalation' );
+        $this->add_action( 'init', 'check_woocommerce_instalation', 10 );
         $this->cf_conversion = get_option( 'woocommerce_cf_geoplugin_conversion' );
     }
 
@@ -366,12 +366,12 @@ class CF_Geoplugin_Woocommerce extends CF_Geoplugin_Global
                     $custom_attributes['disabled'] = true;
                 }
                 
-                $settings[] = array( 'name' => __( 'CF Geoplugin Payments Control', CFGP_NAME ), 'type' => 'title', 'desc' => __( 'Configure payment methods for countries', CFGP_NAME ), 'id' => 'cf_geoplugin_payment_restriction' );
+                $settings[] = array( 'name' => __( 'CF Geoplugin Payments Control', CFGP_NAME ), 'type' => 'title', 'desc' => __( 'Configure payment methods for each country. Show or hide payment methods by country to prevent unwanted transactions.', CFGP_NAME ), 'id' => 'cf_geoplugin_payment_restriction' );
                 foreach( $enabled_gateways as $i => $gateway )
                 {
                     $select_setting_id = sprintf( '%s_select', $gateway->id );
                     $method_setting_id = sprintf( '%s', $gateway->id );
-
+					
                     $settings[ $method_setting_id ] = array(
                         'name'     => __( 'Choose desired method', CFGP_NAME ),
                         'id'       => sprintf( 'woocommerce_cfgp_method_%s', $method_setting_id ),

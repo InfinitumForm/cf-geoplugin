@@ -444,8 +444,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 					if( empty( $option_value ) || (int)$option_value < 3 || (int)$option_value > 9999 ) $option_value = isset( $this->default_options[ $option_name ] ) ? $this->default_options[ $option_name ] : 15;
 					$option_value = (int)$option_value;
 				}
-				
-				if( $option_name === 'enable_seo_posts[]' )
+				elseif( $option_name === 'enable_seo_posts[]' )
 				{
 					$enable_seo_posts[] = $option_value;
 				}

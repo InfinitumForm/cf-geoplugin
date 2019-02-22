@@ -55,6 +55,8 @@ if(isset($_POST['license_key']) && isset($_POST['license'])) :
 				else
 					update_site_option('cf_geoplugin', $CF_GEOPLUGIN_OPTIONS);
 				
+				if(function_exists('clear_cf_geoplugin_session')) clear_cf_geoplugin_session();
+				
 				exit('<h3 class="mt-5"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i><span class="sr-only">Loading...</span> '.__('Please wait...',CFGP_NAME).'</h3><meta http-equiv="Refresh" content="0.1; url='.self_admin_url('admin.php?page=cf-geoplugin-settings&action=activate_license').'">');
 			}
 			else
@@ -129,6 +131,8 @@ if( $global->get( 'action' ) == 'deactivate_license' && isset( $_GET['cfgp_licen
 			else
 				update_site_option('cf_geoplugin', $CF_GEOPLUGIN_OPTIONS);
 
+			if(function_exists('clear_cf_geoplugin_session')) clear_cf_geoplugin_session();
+			
 			exit('<h3 class="mt-5"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i><span class="sr-only">Loading...</span> '.__('Please wait...',CFGP_NAME).'</h3><meta http-equiv="Refresh" content="0.1; url='.self_admin_url('admin.php?page=cf-geoplugin-settings&action=deactivate_license').'">');
 		}
 	}

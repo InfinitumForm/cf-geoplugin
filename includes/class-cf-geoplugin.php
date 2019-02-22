@@ -31,19 +31,18 @@ class CF_Geoplugin_Init extends CF_Geoplugin_Global
 			wp_unschedule_event( $time, 'cfgp_auto_update' );
 		}
 		
-		$debug = $GLOBALS['debug']; // Easy use of debugger
-		$debug->save( '------------ LOADING ALL CLASSES ------------' );
+		CF_Geoplugin_Debug::log( '------------ LOADING ALL CLASSES ------------' );
 		// Include admin pages
 		if(file_exists(CFGP_INCLUDES . '/class-cf-geoplugin-admin.php'))
 		{
 			include_once CFGP_INCLUDES . '/class-cf-geoplugin-admin.php';
 			if(class_exists('CF_Geoplugin_Admin')){
 				new CF_Geoplugin_Admin;
-				$debug->save( 'Admin class loaded' );
+				CF_Geoplugin_Debug::log( 'Admin class loaded' );
 			}
-			else $debug->save( 'Admin class not loaded - Class does not exists' );
+			else CF_Geoplugin_Debug::log( 'Admin class not loaded - Class does not exists' );
 		}
-		else $debug->save( 'Admin class not loaded - File does not exists' );
+		else CF_Geoplugin_Debug::log( 'Admin class not loaded - File does not exists' );
 		// Include REST
 		if( file_exists( CFGP_INCLUDES . '/class-cf-geoplugin-rest.php' ) )
 		{
@@ -52,19 +51,19 @@ class CF_Geoplugin_Init extends CF_Geoplugin_Global
 			{
 				$REST = new CF_Geoplugin_REST;
 				$REST->run();
-				$debug->save( 'REST API class loaded' );
+				CF_Geoplugin_Debug::log( 'REST API class loaded' );
 			}
-			else $debug->save( 'REST API class not loaded - Class does not exists' );
+			else CF_Geoplugin_Debug::log( 'REST API class not loaded - Class does not exists' );
 		}
-		else $debug->save( 'REST API class not loaded - File does not exists' );
+		else CF_Geoplugin_Debug::log( 'REST API class not loaded - File does not exists' );
 		 
 		// Include internal library
 		if(file_exists(CFGP_INCLUDES . '/class-cf-geoplugin-library.php'))
 		{
 			include_once CFGP_INCLUDES . '/class-cf-geoplugin-library.php';
-			$debug->save( 'Library included' );
+			CF_Geoplugin_Debug::log( 'Library included' );
 		}
-		else $debug->save( 'Library not included - Files does not exists' );
+		else CF_Geoplugin_Debug::log( 'Library not included - Files does not exists' );
 		// Include API services for the CF GeoPlugin
 		if(file_exists(CFGP_INCLUDES . '/class-cf-geoplugin-api.php'))
 		{
@@ -74,20 +73,20 @@ class CF_Geoplugin_Init extends CF_Geoplugin_Global
 				$this->add_action( 'cf_geo_validate', array('CF_Geoplugin_Global', 'validate'));
 				// Run API
 				$CFGEO_API = new CF_Geoplugin_API;
-				$debug->save( 'API class loaded' );
+				CF_Geoplugin_Debug::log( 'API class loaded' );
 				$GLOBALS['CFGEO'] = $CFGEO_API->run();
-				$debug->save( 'API returned data:' );
-				$debug->save( $GLOBALS['CFGEO'] );
+				CF_Geoplugin_Debug::log( 'API returned data:' );
+				CF_Geoplugin_Debug::log( $GLOBALS['CFGEO'] );
 			}
-			else $debug->save( 'API class not loaded - Class does not exists' );
+			else CF_Geoplugin_Debug::log( 'API class not loaded - Class does not exists' );
 		}
-		else $debug->save( 'API class not loaded - File does not exists' );
+		else CF_Geoplugin_Debug::log( 'API class not loaded - File does not exists' );
 		// Allow developers to use plugin data inside PHP
 		if( file_exists( CFGP_ROOT . '/globals/cf-geoplugin-api.php' ) )
 		{
 			include CFGP_ROOT . '/globals/cf-geoplugin-api.php';
 		}
-		else $debug->save( 'CF Geoplugin class not loaded - File does not exists' );
+		else CF_Geoplugin_Debug::log( 'CF Geoplugin class not loaded - File does not exists' );
 		// Include Notifications
 		if( file_exists( CFGP_INCLUDES . '/class-cf-geoplugin-notifications.php' ) )
 		{
@@ -95,26 +94,14 @@ class CF_Geoplugin_Init extends CF_Geoplugin_Global
 			if( class_exists( 'CF_Geoplugin_Notifications' ) )
 			{
 				new CF_Geoplugin_Notifications;
-				$debug->save( 'Notifications class loaded' );
+				CF_Geoplugin_Debug::log( 'Notifications class loaded' );
 			}
-			else $debug->save( 'Notification class not loaded - Class does not exists' );
+			else CF_Geoplugin_Debug::log( 'Notification class not loaded - Class does not exists' );
 		}
-		else $debug->save( 'Notifications class not loaded - File does not exists' );
+		else CF_Geoplugin_Debug::log( 'Notifications class not loaded - File does not exists' );
 
 		if(isset($_SESSION[CFGP_PREFIX . 'api_session']) && isset($GLOBALS['CFGEO']))
-		{
-			// Include WooCommerce integratin
-			if( file_exists( CFGP_INCLUDES . '/plugins/woocommerce/woocommerce.php' ) )
-			{
-				include_once CFGP_INCLUDES . '/plugins/woocommerce/woocommerce.php';
-				if( class_exists( 'CF_Geoplugin_Woocommerce' ) )
-				{
-					new CF_Geoplugin_Woocommerce;
-					$debug->save( 'WooCommerce integration loaded' );
-				}
-				else $debug->save( 'WooCommerce integration not loaded - Class does not exists' );
-			}
-			else $debug->save(  'WooCommerce integration not loaded - File does not exists' );
+		{			
 			// Include Public Functions
 			if( file_exists( CFGP_INCLUDES . '/class-cf-geoplugin-public.php' ) )
 			{
@@ -123,11 +110,11 @@ class CF_Geoplugin_Init extends CF_Geoplugin_Global
 				{
 					$public = new CF_Geoplugin_Public;
 					$public->run();
-					$debug->save( 'Public class loaded' );
+					CF_Geoplugin_Debug::log( 'Public class loaded' );
 				}
-				else $debug->save( 'Public class not loaded - Class does not exists' );
+				else CF_Geoplugin_Debug::log( 'Public class not loaded - Class does not exists' );
 			}
-			else $debug->save( 'Public class not loaded - File does not exists' );
+			else CF_Geoplugin_Debug::log( 'Public class not loaded - File does not exists' );
 			// Include Shortcodes
 			if( file_exists( CFGP_INCLUDES . '/class-cf-geoplugin-shortcodes.php' ) )
 			{
@@ -136,22 +123,22 @@ class CF_Geoplugin_Init extends CF_Geoplugin_Global
 				{
 					$shortcodes = new CF_Geoplugin_Shortcodes;
 					$shortcodes->run();
-					$debug->save( 'Shortcodes class loaded' );
+					CF_Geoplugin_Debug::log( 'Shortcodes class loaded' );
 				}
-				else $debug->save( 'Shortcodes class not loaded - Class does not exists' );
+				else CF_Geoplugin_Debug::log( 'Shortcodes class not loaded - Class does not exists' );
 			}
-			else $debug->save( 'Shortcodes class not loaded - File does not exists' );
+			else CF_Geoplugin_Debug::log( 'Shortcodes class not loaded - File does not exists' );
 			// Include Texteditor Buttons
 			if(file_exists(CFGP_INCLUDES . '/class-cf-geoplugin-texteditor-buttons.php'))
 			{
 				include_once CFGP_INCLUDES . '/class-cf-geoplugin-texteditor-buttons.php';
 				if(class_exists('CF_Geoplugin_Texteditor_Buttons')){
 					new CF_Geoplugin_Texteditor_Buttons;
-					$debug->save( 'Texteditor buttons class loaded' );
+					CF_Geoplugin_Debug::log( 'Texteditor buttons class loaded' );
 				}
-				else $debug->save( 'Texteditor buttons class not loaded - Class does not exists' );
+				else CF_Geoplugin_Debug::log( 'Texteditor buttons class not loaded - Class does not exists' );
 			}
-			else $debug->save( 'Texteditor buttons class not loaded - File does not exists' );
+			else CF_Geoplugin_Debug::log( 'Texteditor buttons class not loaded - File does not exists' );
 			// Include Geo Banner
 			if( file_exists( CFGP_INCLUDES . '/class-cf-geoplugin-banner.php' ) )
 			{
@@ -159,11 +146,11 @@ class CF_Geoplugin_Init extends CF_Geoplugin_Global
 				if( class_exists( 'CF_Geoplugin_Banner' ) )
 				{
 					new CF_Geoplugin_Banner;
-					$debug->save( 'Banner class loaded' );
+					CF_Geoplugin_Debug::log( 'Banner class loaded' );
 				}
-				else $debug->save( 'Banner class not loaded - Class does not exists' );
+				else CF_Geoplugin_Debug::log( 'Banner class not loaded - Class does not exists' );
 			}
-			else $debug->save( 'Banner class not loaded - File does not exists' );
+			else CF_Geoplugin_Debug::log( 'Banner class not loaded - File does not exists' );
 			// Include Meta Boxes
 			if( file_exists( CFGP_INCLUDES . '/class-cf-geoplugin-metabox.php' ) )
 			{
@@ -171,11 +158,11 @@ class CF_Geoplugin_Init extends CF_Geoplugin_Global
 				if( class_exists( 'CF_Geoplugin_Metabox' ) )
 				{
 					new CF_Geoplugin_Metabox;
-					$debug->save( 'Metabox class loaded' );
+					CF_Geoplugin_Debug::log( 'Metabox class loaded' );
 				}
-				else $debug->save( 'Metabox class not loaded - Class does not exists' );
+				else CF_Geoplugin_Debug::log( 'Metabox class not loaded - Class does not exists' );
 			}
-			else $debug->save( 'Metabox class not loaded - File does not exists' );
+			else CF_Geoplugin_Debug::log( 'Metabox class not loaded - File does not exists' );
 			// Include SEO Redirection
 			if( file_exists( CFGP_INCLUDES . '/class-cf-geoplugin-seo-redirection.php' ) )
 			{
@@ -183,11 +170,11 @@ class CF_Geoplugin_Init extends CF_Geoplugin_Global
 				if( class_exists( 'CF_Geoplugin_SEO_Redirection' ) )
 				{
 					new CF_Geoplugin_SEO_Redirection;
-					$debug->save( 'SEO redirection class loaded' );
+					CF_Geoplugin_Debug::log( 'SEO redirection class loaded' );
 				}
-				else $debug->save( 'SEO redirection class not loaded - Class does not exists' );
+				else CF_Geoplugin_Debug::log( 'SEO redirection class not loaded - Class does not exists' );
 			}
-			else $debug->save( 'SEO redirection class not loaded - File does not exists' );			
+			else CF_Geoplugin_Debug::log( 'SEO redirection class not loaded - File does not exists' );			
 
 			// Include Defender
 			if( file_exists( CFGP_INCLUDES . '/class-cf-geoplugin-defender.php' ) )
@@ -196,17 +183,17 @@ class CF_Geoplugin_Init extends CF_Geoplugin_Global
 				if( class_exists( 'CF_Geoplugin_Defender' ) )
 				{
 					new CF_Geoplugin_Defender;
-					$debug->save( 'Defender class loaded' );
+					CF_Geoplugin_Debug::log( 'Defender class loaded' );
 				}
-				else $debug->save( 'Defender class not loaded - Class does not exists' );
+				else CF_Geoplugin_Debug::log( 'Defender class not loaded - Class does not exists' );
 			}
-			else $debug->save( 'Defender class not loaded - File does not exists' );
+			else CF_Geoplugin_Debug::log( 'Defender class not loaded - File does not exists' );
 
 
-			$debug->save( '------------ SERVER INFORMATIONS ------------' );
-			$debug->save( var_export( $_SERVER, 1 ) );
+			CF_Geoplugin_Debug::log( '------------ SERVER INFORMATIONS ------------' );
+			CF_Geoplugin_Debug::log( var_export( $_SERVER, 1 ) );
 
-			$debug->save( '------------ SESSION INFORMATIONS ------------' );
+			CF_Geoplugin_Debug::log( '------------ SESSION INFORMATIONS ------------' );
 			$session_info = array();
 			foreach( $_SESSION as $key => $val )
 			{
@@ -215,9 +202,9 @@ class CF_Geoplugin_Init extends CF_Geoplugin_Global
 					$session_info[ $key ] = $val;
 				}
 			}
-			$debug->save( $session_info );
+			CF_Geoplugin_Debug::log( $session_info );
 
-			$debug->save( '------------ DEFINED VALUES ------------' );
+			CF_Geoplugin_Debug::log( '------------ DEFINED VALUES ------------' );
 			$defines = array(
 				'CFGP_FILE'			=> CFGP_FILE,
 				'CFGP_VERSION'		=> CFGP_VERSION,
@@ -239,7 +226,7 @@ class CF_Geoplugin_Init extends CF_Geoplugin_Global
 				'CFGP_ACTIVATED'	=> CFGP_ACTIVATED,
 				'CFGP_DEFENDER_ACTIVATED'	=> CFGP_DEFENDER_ACTIVATED
 			);
-			$debug->save( $defines );
+			CF_Geoplugin_Debug::log( $defines );
 		}
 		
 		return $GLOBALS['CFGEO'];
@@ -283,7 +270,7 @@ class CF_Geoplugin_Init extends CF_Geoplugin_Global
 			$something_old = get_option('cf_geo_enable_banner');
 			if(!empty($something_old))
 			{
-				$debug->save( 'Old options found. Merged:' );
+				CF_Geoplugin_Debug::log( 'Old options found. Merged:' );
 				foreach( $this->deprecated_options as $key )
 				{
 					$check_deprecated = get_option($key);
@@ -311,7 +298,7 @@ class CF_Geoplugin_Init extends CF_Geoplugin_Global
 						}
 						
 					}
-					$debug->save( $key );
+					CF_Geoplugin_Debug::log( $key );
 					if( !CFGP_MULTISITE ) delete_option( $key );
 					else delete_site_option( $key );
 				}
@@ -372,7 +359,7 @@ class CF_Geoplugin_Init extends CF_Geoplugin_Global
 		// Require dbDelta to create/update table
 		if( !function_exists( 'dbDelta' ) ) include ABSPATH . 'wp-admin/includes/upgrade.php';
 		dbDelta( $sql1 );
-		$debug->save( 'Plugin activated and tables created' );
+		CF_Geoplugin_Debug::log( 'Plugin activated and tables created' );
 	}
 	
 	/**

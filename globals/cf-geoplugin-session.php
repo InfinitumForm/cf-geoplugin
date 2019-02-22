@@ -11,6 +11,26 @@
 if ( ! defined( 'WPINC' ) ) { die( "Don't mess with us." ); }
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
+/* Clear CF Geo Plugin Session */
+if(!function_exists('clear_cf_geoplugin_session')) :
+	function clear_cf_geoplugin_session(){
+		if(isset($_SESSION[CFGP_PREFIX . 'session_expire']))
+		{
+			foreach($_SESSION as $key => $val)
+			{
+				if(strpos($key, CFGP_PREFIX) !== false)
+				{
+					unset($_SESSION[ $key ]);
+				}
+			}
+			$_SESSION[CFGP_PREFIX . 'session_expire'] = (CFGP_TIME + (60 * CFGP_SESSION));
+			return true;
+		}
+		return false;
+	}
+endif;
+
+/* Start CF Geo Plugin Session */
 if(!function_exists('CF_Geoplugin_Session')) :
 	function CF_Geoplugin_Session()
 	{
@@ -54,14 +74,7 @@ if(!function_exists('CF_Geoplugin_Session')) :
 		{
 			if(CFGP_TIME > $_SESSION[CFGP_PREFIX . 'session_expire'])
 			{
-				foreach($_SESSION as $key => $val)
-				{
-					if(strpos($key, CFGP_PREFIX) !== false)
-					{
-						unset($_SESSION[ $key ]);
-					}
-				}
-				$_SESSION[CFGP_PREFIX . 'session_expire'] = (CFGP_TIME + (60 * CFGP_SESSION));
+				clear_cf_geoplugin_session();
 			}
 		}
 		else $_SESSION[CFGP_PREFIX . 'session_expire'] = (CFGP_TIME + (60 * CFGP_SESSION));

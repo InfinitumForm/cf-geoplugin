@@ -291,7 +291,7 @@ class CF_Geoplugin_Global
 			$options = get_site_option( 'cf_geoplugin' );
 		if($options)
 		{
-			if(empty($value))
+			if($value != 0 && empty($value))
 			{
 				$options[$option_name] = NULL;
 			}
@@ -1147,8 +1147,7 @@ class CF_Geoplugin_Global
 	public static function validate()
 	{
 		$instance = self::get_instance();
-		$debug = $GLOBALS['debug'];
-		$debug->save( '------------ Validation started ------------' );
+		CF_Geoplugin_Debug::log( '------------ Validation started ------------' );
 		// Validate
 		$CF_GEOPLUGIN_OPTIONS = $instance->get_option();
 		if($CF_GEOPLUGIN_OPTIONS['license'] == 1 && $CF_GEOPLUGIN_OPTIONS['license_key'] && $CF_GEOPLUGIN_OPTIONS['license_id']) :
@@ -1161,8 +1160,8 @@ class CF_Geoplugin_Global
 				'domain' 		=> self::get_host(true),
 				'activation_id'	=> $CF_GEOPLUGIN_OPTIONS['license_id']
 			);
-			$debug->save( 'cURL license validation send data:' );
-			$debug->save( json_encode( $data ) );
+			CF_Geoplugin_Debug::log( 'cURL license validation send data:' );
+			CF_Geoplugin_Debug::log( json_encode( $data ) );
 			$url = sprintf( '%s?%s', $url, ltrim( http_build_query( $data ), '?' ) );
 			$response = $instance->curl_get( $url );
 
@@ -1175,20 +1174,20 @@ class CF_Geoplugin_Global
 			if($response)
 			{
 				$license = json_decode($response);
-				$debug->save( 'cURL license validation returned data:' );
-				$debug->save( json_decode( $response ) );
+				CF_Geoplugin_Debug::log( 'cURL license validation returned data:' );
+				CF_Geoplugin_Debug::log( json_decode( $response ) );
 				if(isset($license->error) && $license->error === true)
 				{
 					$instance->update_option('license', 0, true);
-					$debug->save( 'Validation status: error' );
+					CF_Geoplugin_Debug::log( 'Validation status: error' );
 					return false;
 				}
 			}
-			$debug->save( 'Validation status: license valid' );
+			CF_Geoplugin_Debug::log( 'Validation status: license valid' );
 			return true;
 
 		endif;
-		$debug->save( 'Validation status: license invalid' );
+		CF_Geoplugin_Debug::log( 'Validation status: license invalid' );
 		return false;
 	}
 	

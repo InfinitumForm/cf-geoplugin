@@ -117,8 +117,7 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
 		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
 		
 		$geodata = $this->get_geodata($this->option['ip']);
-		$debug = $GLOBALS['debug'];
-		$debug->save( 'IP used for lookup: '. $this->option['ip'] );
+		CF_Geoplugin_Debug::log( 'IP used for lookup: '. $this->option['ip'] );
 		if($geodata!==false)
 		{
 			

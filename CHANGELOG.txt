@@ -1,5 +1,27 @@
 == Changelog ==
 
+= 7.5.12 =
+* Added WordPress 5.1 support
+* New PHP function clear_cf_geoplugin_session() for the developers
+* Improved session functionality
+* Fixed bug in the settings options
+
+= 7.5.11 =
+* Improved debugger
+* Fixed redirection infinity loop
+
+= 7.5.10 =
+* PRIVACY POLICY UPDATE
+
+= 7.5.9 =
+* Fixed a flaw in the plugin integration
+* Changed calls for the Wooplatnica Plugin
+* Prepared background for future CF Geo Plugin version 5.6.0
+
+= 7.5.8 =
+* Fixed Woocommerce integrations
+* Added Wooplatnica plugin support
+
 = 7.5.7 =
 * IMPORTANT UPDATE: Fixed WordPress database error Table
 * IMPORTANT UPDATE: Fixed widget displaying

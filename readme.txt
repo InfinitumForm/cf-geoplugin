@@ -5,7 +5,7 @@ Tags: geolocation, woocommerce, store-locator, seo, google-maps, geomarketing, c
 Requires at least: 3.0
 Tested up to: 5.0
 Requires PHP: 5.6.0
-Stable tag: 7.5.7
+Stable tag: 7.5.11
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -303,17 +303,19 @@ Please inform us if any of these errors occure via contact form on our website [
 
 == Changelog ==
 
-= 7.5.7 =
-* IMPORTANT UPDATE: Fixed WordPress database error Table
-* IMPORTANT UPDATE: Fixed widget displaying
-* Optimized PHP code
+= 7.5.12 =
+* Added WordPress 5.1 support
+* New PHP function clear_cf_geoplugin_session() for the developers
+* Improved session functionality
+* Fixed bug in the settings options
 
 == Upgrade Notice ==
 
-= 7.5.7 =
-* IMPORTANT UPDATE: Fixed WordPress database error Table
-* IMPORTANT UPDATE: Fixed widget displaying
-* Optimized PHP code
+= 7.5.12 =
+* Added WordPress 5.1 support
+* New PHP function clear_cf_geoplugin_session() for the developers
+* Improved session functionality
+* Fixed bug in the settings options
 
 == Other Notes ==
 
