@@ -1004,7 +1004,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 						}
 					?></span></li>
                 </ul>
-                <?php if(CFGP_DEV_MODE === true) : ?><strong style="cf-geoplugin-dashboard-downloaded"><?php printf(__( 'Total downloaded %d times', CFGP_NAME ),$plugin->downloaded); ?>.</strong><?php endif; ?>
+                <?php if(CFGP_DEV_MODE === true && isset( $plugin->downloaded )) : ?><strong style="cf-geoplugin-dashboard-downloaded"><?php printf(__( 'Total downloaded %d times', CFGP_NAME ),$plugin->downloaded); ?>.</strong><?php endif; ?>
         	</div>
 		</div>
 		<?php
@@ -1125,7 +1125,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 									}
 								?></span></li>
 							</ul>
-							<?php if(CFGP_DEV_MODE === true) : ?><strong style="cf-geoplugin-dashboard-downloaded"><?php printf(__( 'Total downloaded %d times', CFGP_NAME ),$plugin->downloaded); ?>.</strong><?php endif; ?>
+							<?php if(CFGP_DEV_MODE === true && isset( $plugin->downloaded ) ) : ?><strong style="cf-geoplugin-dashboard-downloaded"><?php printf(__( 'Total downloaded %d times', CFGP_NAME ),$plugin->downloaded); ?>.</strong><?php endif; ?>
 						</div>
 					</div>
 				</div>

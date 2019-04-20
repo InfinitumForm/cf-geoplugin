@@ -1,5 +1,31 @@
 == Changelog ==
 
+= 7.6.0 = 
+* Added attribute "cache" in the shortcodes to fix cache errors in HTML indexing
+* Added new JavaScript cahce API
+* Optimized JavaScript code
+* Optimized PHP code and fixed minior bugs
+* Fixed SEO redirection bug
+* Removed old codes
+
+= 7.5.16 = 
+* Removed support for PHP4.0- in order to prevent errors on PHP7.2+
+
+= 7.5.15 =
+* Adding support for the Classic Editor plugin
+* Fixing undefinned index in geo banner
+
+= 7.5.14 =
+* Combined include/exclude attributes to return cfgeo shortcodes
+* Added shortcode support inside cfgeo shortcodes
+* Added "base_currency_symbol" to API and shortcodes
+
+= 7.5.13 =
+* Fixed currency shortcode loading time
+* Fixed currency shortcode PHP error
+* Updated currency library
+* Added base currency shortcode
+
 = 7.5.12 =
 * Added WordPress 5.1 support
 * New PHP function clear_cf_geoplugin_session() for the developers

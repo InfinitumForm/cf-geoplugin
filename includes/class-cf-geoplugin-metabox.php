@@ -461,8 +461,9 @@ function CF_GeoPlugin_Google_Map_GeoTag() {
                     }
                 }
                 update_post_meta( $id, $this->prefix . 'redirection', array_values( $_POST[ $this->prefix ] ) ); // Reindex array beacuse of deleted repeaters. 0 = start
-            }
-            else update_post_meta( $id, $this->prefix . 'redirection', NULL );
+            }/*
+			else
+				update_post_meta( $id, $this->prefix . 'redirection', NULL );*/
         }
 
         if( isset( $CF_GEOPLUGIN_OPTIONS['enable_geo_tag'] ) && in_array( $post->post_type, $CF_GEOPLUGIN_OPTIONS['enable_geo_tag'] ) )

@@ -247,16 +247,6 @@ $.fn.alerts = function(text, type){
 				{
 					country = false;
 				}
-				/*var region = true;
-				if( $( '#cf_geo_region', $$ ).length && !$( '#cf_geo_region', $$ ).val() )
-				{
-					region = false;
-				}
-				var city = true;
-				if( $('#cf_geo_city', $$).length && !$( '#cf_geo_city', $$ ).val() )
-				{
-					city = false;
-				}*/
 
 				if( valid_url && country ) 
 				{
@@ -320,34 +310,6 @@ $.fn.alerts = function(text, type){
 					}
 					$( 'div#select-country', $$).attr( 'hidden', true );
 				}
-
-				/*if( !region )
-				{
-					$( '#cf_geo_region', $$ ).addClass( 'is-invalid' );
-					$( 'div#select-region', $$).attr( 'hidden', false );
-				}
-				else
-				{
-					if( $( '#cf_geo_region', $$ ).hasClass('is-invalid') )
-					{
-						$( '#cf_geo_region', $$ ).removeClass( 'is-invalid' );
-					}
-					$( 'div#select-region', $$).attr( 'hidden', true );
-				}
-
-				if( !city )
-				{
-					$( '#cf_geo_city', $$ ).addClass( 'is-invalid' );
-					$( 'div#select-city', $$).attr( 'hidden', false );
-				}
-				else
-				{
-					if( $( '#cf_geo_city', $$ ).hasClass('is-invalid') )
-					{
-						$( '#cf_geo_city', $$ ).removeClass( 'is-invalid' );
-					}
-					$( 'div#select-city', $$).attr( 'hidden', true );
-				} */
 				return false;
 			});
 		}
@@ -555,5 +517,20 @@ $.fn.alerts = function(text, type){
 		$('[data-toggle="tooltip"]').tooltip({html:true});
 		
 	}('[data-toggle="popover"]'));
+	
+	/**
+	 * Fix cache
+	 * @since	7.6.0
+	 */
+	(function (data) {
+		if(data) {
+			for(key in data) {
+				var tag = $('.cfgeo-replace-' + key);
+				if(tag.length > 0) {
+					tag.text(data[key]);
+				}
+			}
+		}
+	}(window.cfgeo));
 	
 })(jQuery || window.jQuery || Zepto || window.Zepto);

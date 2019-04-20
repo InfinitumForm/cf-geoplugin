@@ -30,10 +30,10 @@ class parseXML
 	
 	function __construct($document=false, $custom_url=false, $get_attributes = 1, $priority = 'tag')
 	{
-		$this->fetch=$this->__generateObjects($this->__fetchData($document, $custom_url, $get_attributes, $priority), $custom_url);
+		$this->fetch=$this->generateObjects($this->fetchData($document, $custom_url, $get_attributes, $priority), $custom_url);
 	}
 
-	protected function __generateObjects($array, $custom_url)
+	protected function generateObjects($array, $custom_url)
 	{
 		if($custom_url)
 		{
@@ -42,9 +42,9 @@ class parseXML
 		$json=json_encode($array);
 		return json_decode($json);
 	}
-	protected function __fetchData($document, $custom_url, $get_attributes, $priority)
+	protected function fetchData($document, $custom_url, $get_attributes, $priority)
 	{
-		$xml_values=$this->__readXML($document, $custom_url);
+		$xml_values=$this->readXML($document, $custom_url);
 		if($custom_url)
 		{
 			return $xml_values;
@@ -151,7 +151,7 @@ class parseXML
 		return false;
 	}
 	/* Read XML file */
-	protected function __readXML($document, $custom_url)
+	protected function readXML($document, $custom_url)
 	{
 		if($custom_url && function_exists('curl_init') && function_exists('curl_setopt') && function_exists('curl_exec') )
 		{

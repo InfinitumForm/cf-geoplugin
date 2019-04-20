@@ -27,12 +27,14 @@ class CF_Geoplugin_SEO_Redirection extends CF_Geoplugin_Global
 			{
 				foreach( $redirect_data as $i => $value )
 				{
-					if( !isset( $value['seo_redirect'] ) || $value['seo_redirect'] != '1' ) continue;
+					if( !isset( $value['seo_redirect'] )) continue;
+					if( !$value['seo_redirect'] || $value['seo_redirect'] == 0 ) continue;
 
 					if( !isset( $value['country'] ) ) $value['country'] = NULL;
 					if( !isset( $value['region'] ) ) $value['region'] = NULL;
 					if( !isset( $value['city'] ) ) $value['city'] = NULL;
-					$this->check_user_redirection( $value );
+					
+					$this->do_redirection( $value );
 				}
 			}
 
@@ -59,7 +61,7 @@ class CF_Geoplugin_SEO_Redirection extends CF_Geoplugin_Global
 				}
 				else $redirection[ $meta_key ] = NULL;
 			}
-			if( isset( $redirection['seo_redirect'] ) && $redirection['seo_redirect'] == '1' ) $this->check_user_redirection( $redirection );
+			if( isset( $redirection['seo_redirect'] ) && $redirection['seo_redirect'] == '1' ) $this->do_redirection( $redirection );
 		}
 	}
 	
@@ -75,7 +77,7 @@ class CF_Geoplugin_SEO_Redirection extends CF_Geoplugin_Global
 			{
 				foreach( $redirects as $redirect )
 				{
-					$this->check_user_redirection( $redirect );
+					$this->do_redirection( $redirect );
 				}
 			}
 		}
@@ -88,11 +90,10 @@ class CF_Geoplugin_SEO_Redirection extends CF_Geoplugin_Global
 			header('Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0');
 			header('Expires: Sat, 26 Jul 1997 05:00:00 GMT');
 		}
-		wp_redirect( $url, $http_code );
-		exit;
+		if (wp_redirect( $url, $http_code )) exit;
 	}
 
-	private function check_user_redirection( $redirect )
+	private function do_redirection( $redirect )
 	{
 		$CFGEO = $GLOBALS['CFGEO'];
 		
@@ -107,9 +108,10 @@ class CF_Geoplugin_SEO_Redirection extends CF_Geoplugin_Global
 		$country_empty = false;
 		$region_empty = false;
 		$city_empty = false;
-		if( ( isset( $redirect['country'][0] ) && empty( $redirect['country'][0] ) ) || ( empty( $redirect['country'] ) ) ) $country_empty = true;
-		if( ( isset( $redirect['region'][0] ) && empty( $redirect['region'][0] ) ) || ( empty( $redirect['region'] ) ) ) $region_empty = true;
-		if( ( isset( $redirect['city'][0] ) && empty( $redirect['city'][0] ) ) || ( empty( $redirect['city'] ) ) ) $city_empty = true;
+		
+		if( $this->is_object_empty($redirect, 'country') ) $country_empty = true;
+		if( $this->is_object_empty($redirect, 'region') ) $region_empty = true;
+		if( $this->is_object_empty($redirect, 'city') ) $city_empty = true;
 
 		if( isset( $redirect['url'] ) && filter_var($redirect['url'], FILTER_VALIDATE_URL) && ( $country_check || $country_empty ) )
 		{
@@ -126,6 +128,10 @@ class CF_Geoplugin_SEO_Redirection extends CF_Geoplugin_Global
 				$this->redirect( $redirect['url'], $redirect['http_code'] );
 			}
 		}
+	}
+	
+	private function is_object_empty($obj,$name){
+		return ( ( isset( $obj[$name][0] ) && empty( $obj[$name][0] ) ) || ( empty( $obj[$name] ) ) );
 	}
 }
 endif;

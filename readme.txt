@@ -1,11 +1,11 @@
 ﻿=== CF Geo Plugin ===
 Contributors: ivijanstefan, creativform, ej207
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=creativform@gmail.com
-Tags: geolocation, woocommerce, store-locator, seo, google-maps, geomarketing, content include, content exclude, geo plugin, geo target, geo, geotargeting, geofencing, geotag
+Tags: geolocation, woocommerce, store-locator, seo, google-maps, geomarketing, content include, content exclude, geo plugin, geo target, geo, geotargeting, geofencing, geotag, cache, rocket
 Requires at least: 3.0
-Tested up to: 5.0
+Tested up to: 5.1
 Requires PHP: 5.6.0
-Stable tag: 7.5.11
+Stable tag: 7.6.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -303,19 +303,23 @@ Please inform us if any of these errors occure via contact form on our website [
 
 == Changelog ==
 
-= 7.5.12 =
-* Added WordPress 5.1 support
-* New PHP function clear_cf_geoplugin_session() for the developers
-* Improved session functionality
-* Fixed bug in the settings options
+= 7.6.0 = 
+* Added attribute "cache" in the shortcodes to fix cache errors in HTML indexing
+* Added new JavaScript cahce API
+* Optimized JavaScript code
+* Optimized PHP code and fixed minior bugs
+* Fixed SEO redirection bug
+* Removed old codes
 
 == Upgrade Notice ==
 
-= 7.5.12 =
-* Added WordPress 5.1 support
-* New PHP function clear_cf_geoplugin_session() for the developers
-* Improved session functionality
-* Fixed bug in the settings options
+= 7.6.0 = 
+* Added attribute "cache" in the shortcodes to fix cache errors in HTML indexing
+* Added new JavaScript cahce API
+* Optimized JavaScript code
+* Optimized PHP code and fixed minior bugs
+* Fixed SEO redirection bug
+* Removed old codes
 
 == Other Notes ==
 

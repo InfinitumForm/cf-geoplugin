@@ -204,6 +204,14 @@ $CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIO
                                 <td><kbd>[cfgeo return="currency_symbol"]</kbd></td>
                                 <td><?php echo $CFGEO['currency_symbol']; ?></td>
                             </tr>
+							<tr>
+                                <td><kbd>[cfgeo return="base_currency"]</kbd></td>
+                                <td><?php echo $CFGEO['base_currency']; ?></td>
+                            </tr>
+							<tr>
+                                <td><kbd>[cfgeo return="base_currency_symbol"]</kbd></td>
+                                <td><?php echo $CFGEO['base_currency_symbol']; ?></td>
+                            </tr>
                             <tr>
                                 <td><kbd>[cfgeo return="currency_converter"]</kbd></td>
                                 <td><?php echo $CFGEO['currency_converter']; ?></td>
@@ -352,9 +360,13 @@ $CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIO
                                 <td><kbd>[cfgeo_currency_symbol]</kbd></td>
                                 <td><?php echo $CFGEO['currency_symbol']; ?></td>
                             </tr>
+							<tr>
+                                <td><kbd>[cfgeo_base_currency]</kbd></td>
+                                <td><?php echo $CFGEO['base_currency']; ?></td>
+                            </tr>
                             <tr>
-                                <td><kbd>[cfgeo_currency_converter]</kbd></td>
-                                <td><?php echo $CFGEO['currency_converter']; ?></td>
+                                <td><kbd>[cfgeo_base_currency_symbol]</kbd></td>
+                                <td><?php echo $CFGEO['base_currency_symbol']; ?></td>
                             </tr>
                             <tr>
                                 <td><kbd>[cfgeo_host]</kbd></td>

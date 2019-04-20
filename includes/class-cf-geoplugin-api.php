@@ -56,10 +56,12 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
 		'timezone' 				=> '',
 		'locale'				=> '',
 		'currency' 				=> '',
+		'base_currency'			=> '',
 		'currencySymbol' 		=> '',
 		'currencyConverter' 	=> '',
 		'currency_symbol' 		=> '',
 		'currency_converter' 	=> '',
+		'base_currency_symbol' 	=> '',
 		'referer' 				=> '',
 		'refererIP' 			=> '',
 		'timestamp' 			=> '',
@@ -193,6 +195,8 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
                 'timezoneName' => $geodata->timezone, // deprecated
                 'currency' => $currency,
                 'currency_symbol' => $currency_symbol,
+				'base_currency' => $CF_GEOPLUGIN_OPTIONS['base_currency'],
+				'base_currency_symbol' => CF_Geplugin_Library::CURRENCY_SYMBOL[$CF_GEOPLUGIN_OPTIONS['base_currency']],
                 'currencySymbol' => $currency_symbol, // deprecated
                 'currency_converter' => $geodata->currencyConverter,
                 'currencyConverter' => $geodata->currencyConverter, // deprecated

@@ -20,26 +20,8 @@ class CF_Geoplugin_OS
         {
             return $_SERVER['HTTP_USER_AGENT'];
         }
-        else
-        {
-            global $HTTP_SERVER_VARS;
-            if (isset($HTTP_SERVER_VARS))
-            {
-                return $HTTP_SERVER_VARS['HTTP_USER_AGENT'];
-            }
-            else
-            {
-                global $HTTP_USER_AGENT;
-                if (isset($HTTP_SERVER_VARS))
-                {
-                    return $HTTP_SERVER_VARS;
-                }
-                else
-                {
-                    return 'undefined';
-                }
-            }
-        }
+
+		return 'undefined';
     }
 
     /*

@@ -138,21 +138,21 @@ class CF_Geoplugin_Global
 	);
 	
 	// Define license codes
-	const BASIC_LICENSE = 'CFGEO1M';
-	const PERSONAL_LICENSE = 'CFGEOSWL';
-	const FREELANCER_LICENSE = 'CFGEO3WL';
-	const BUSINESS_LICENSE = 'CFGEODWL';
-	const DEVELOPER_LICENSE = 'CFGEODEV';
+	const BASIC_LICENSE 		= 'CFGEO1M';
+	const PERSONAL_LICENSE 		= 'CFGEOSWL';
+	const FREELANCER_LICENSE 	= 'CFGEO3WL';
+	const BUSINESS_LICENSE 		= 'CFGEODWL';
+	const DEVELOPER_LICENSE 	= 'CFGEODEV';
 	
 	// PRIVATE - is proxy true/false (internal check)
 	private static $is_proxy = false;
 	
 	function __construct(){		
 		$this->license_names = array(
-			self::BASIC_LICENSE		=> __('UNLIMITED Basic License (1 month)',CFGP_NAME),
-			self::PERSONAL_LICENSE	=> __('UNLIMITED Personal License',CFGP_NAME),
+			self::BASIC_LICENSE			=> __('UNLIMITED Basic License (1 month)',CFGP_NAME),
+			self::PERSONAL_LICENSE		=> __('UNLIMITED Personal License',CFGP_NAME),
 			self::FREELANCER_LICENSE	=> __('UNLIMITED Freelancer License',CFGP_NAME),
-			self::BUSINESS_LICENSE	=> __('UNLIMITED Business License',CFGP_NAME)
+			self::BUSINESS_LICENSE		=> __('UNLIMITED Business License',CFGP_NAME)
 		);
 		if( CFGP_DEV_MODE )
 		{
@@ -198,6 +198,7 @@ class CF_Geoplugin_Global
 	 * 2 - Personal
 	 * 3 - Freelancer
 	 * 4 - Business
+	 * 5 - Developer
 	*/
 	public static function access_level($level)
 	{
@@ -232,7 +233,7 @@ class CF_Geoplugin_Global
 		}
 		return 0;
 	} 
-	
+
 	/*
 	 * Start Admin notice
 	*/
@@ -372,6 +373,7 @@ class CF_Geoplugin_Global
 	public function register_uninstall_hook($file, $function){		
 		if(!is_array($function))
 			$function = array(&$this, $function);	
+		
 		register_uninstall_hook( $file, $function );
 	}
 	
@@ -381,6 +383,7 @@ class CF_Geoplugin_Global
 	public function register_deactivation_hook($file, $function){	
 		if(!is_array($function))
 			$function = array(&$this, $function);		
+		
 		register_deactivation_hook( $file, $function );
 	}
 	
@@ -485,7 +488,7 @@ class CF_Geoplugin_Global
 					return absint( $input );
 				break;
 				case 'float':
-					if($is_array) return array_map( 'floatval', $intput );
+					if($is_array) return array_map( 'floatval', $input );
 					
 					return floatval( $input );
 				break;
@@ -579,7 +582,7 @@ class CF_Geoplugin_Global
                     return absint( $input );
                 break;
                 case 'float':
-					if($is_array) return array_map( 'floatval', $intput );
+					if($is_array) return array_map( 'floatval', $input );
                     
                     return floatval( $input );
                 break;
@@ -880,7 +883,7 @@ class CF_Geoplugin_Global
 			'240.0.0.0'		=>	4,
 			'255.255.255.0'	=>	255,
 		);
-		if(is_array($list) && count($list)>0)
+		if(!empty($list) && is_array($list))
 		{
 			foreach($list as $k => $v){
 				$blacklist[$k]=$v;
@@ -918,7 +921,7 @@ class CF_Geoplugin_Global
 				$breakIP = $lastNum = $connectIP = NULL;
 			}
 		}
-		if(count($blacklistIP)>0) $blacklistIP=array_map("trim",$blacklistIP);
+		if(!empty($blacklistIP)) $blacklistIP=array_map("trim",$blacklistIP);
 		
 		return $blacklistIP;
 	}
@@ -1092,7 +1095,7 @@ class CF_Geoplugin_Global
 	}
 	
 	/**
-	 * Check is activated (this is deprecated and once removed)
+	 * Check is activated (this is deprecated and once will be removed)
 	 *
 	 * @since	6.0.0
 	 * @author  Ivijan-Stefan Stipic <creativform@gmail.com>
@@ -1220,7 +1223,7 @@ class CF_Geoplugin_Global
 	public static function is_connected()
 	{
 		// If Google fail, we are in big trouble
-		$connected = @fsockopen("www.google.com", 443);
+		$connected = fsockopen("www.google.com", 443);
 		
 		if ($connected){
 			fclose($connected);
@@ -1228,7 +1231,7 @@ class CF_Geoplugin_Global
 		}
 		
 		// Maby Google have SSL problem
-		$connected = @fsockopen("www.google.com", 80);
+		$connected = fsockopen("www.google.com", 80);
 		
 		if ($connected){
 			fclose($connected);
@@ -1236,7 +1239,7 @@ class CF_Geoplugin_Global
 		}
 		
 		// Facebook can be a backup plan
-		$connected = @fsockopen("www.facebook.com", 443);
+		$connected = fsockopen("www.facebook.com", 443);
 		
 		if ($connected){
 			fclose($connected);
@@ -1244,7 +1247,7 @@ class CF_Geoplugin_Global
 		}
 		
 		// ...and maby SSL fail
-		$connected = @fsockopen("www.facebook.com", 80);
+		$connected = fsockopen("www.facebook.com", 80);
 		
 		if ($connected){
 			fclose($connected);
@@ -1304,10 +1307,10 @@ class CF_Geoplugin_Global
 	 * Recursive Array Search
 	 *
 	 * @since    4.2.0
-	 * @version  1.3.0
+	 * @version  1.3.1
 	 */
 	public function recursive_array_search($needle,$haystack) {
-		if(!empty($needle) && is_array($haystack) && count($haystack)>0)
+		if(!empty($needle) && !empty($haystack) && is_array($haystack))
 		{
 			foreach($haystack as $key=>$value)
 			{
@@ -1741,9 +1744,9 @@ class CF_Geoplugin_Global
 					array(
 						'http' => array(
 							'method'  			=> $method,
-							'proxy' 			=> "tcp://$proxy_host:$proxy_port",
+							'proxy' 			=> "tcp://{$proxy_host}:{$proxy_port}",
 							'request_fulluri' 	=> true,
-							'header' 			=> array_merge( array( "Proxy-Authorization: Basic $auth" ), $header ),
+							'header' 			=> array_merge( array( "Proxy-Authorization: Basic {$auth}" ), $header ),
 							'content'			=> $content
 						)
 					)
@@ -1755,7 +1758,7 @@ class CF_Geoplugin_Global
 					array(
 						'http' => array(
 							'method'  			=> $method,
-							'proxy' 			=> "tcp://$proxy_host:$proxy_port",
+							'proxy' 			=> "tcp://{$proxy_host}:{$proxy_port}",
 							'request_fulluri' 	=> true,
 							'header' 			=> $header,
 							'content'			=> $content

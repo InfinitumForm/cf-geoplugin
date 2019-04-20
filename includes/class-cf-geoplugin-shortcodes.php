@@ -93,6 +93,8 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 	*/
 	public function cf_geoplugin($atts, $content='')
 	{
+		$cache = isset($atts['cache']);
+		
 		$CFGEO = $GLOBALS['CFGEO'];
 		$array = shortcode_atts( array(
 			'return' 	=>  'ip',
@@ -119,19 +121,35 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 			if(!empty($exclude) || !empty($include)) {
 				if(!empty($include))
 				{
-					if($this->recursive_array_search($include, $CFGEO)) return $content;
+					if($this->recursive_array_search($include, $CFGEO)) return do_shortcode($content);
 					else return '';
 				}
 				
 				if(!empty($exclude))
 				{
 					if($this->recursive_array_search($exclude, $CFGEO)) return '';
-					else return $content;
+					else return do_shortcode($content);
 				}
 			} else return __('CF GEOPLUGIN NOTICE: -Please define "include" or "exclude" attributes inside your shortcode on this shortcode mode.', CFGP_NAME);
 		}
 		else
-			return (isset($CFGEO[$return]) ? $CFGEO[$return] : $default);
+		{
+			if(!empty($exclude) || !empty($include)) {
+				if(!empty($include))
+				{
+					if($this->recursive_array_search($include, $CFGEO)) return (isset($CFGEO[$return]) ? ($cache ? '<span class="cfgeo-replace-'.$return.'">' . $CFGEO[$return] . '</span>' : $CFGEO[$return]) : $default);
+					else return '';
+				}
+				
+				if(!empty($exclude))
+				{
+					if($this->recursive_array_search($exclude, $CFGEO)) return '';
+					else return (isset($CFGEO[$return]) ? ($cache ? '<span class="cfgeo-replace-'.$return.'">' . $CFGEO[$return] . '</span>' : $CFGEO[$return]) : $default);
+				}
+			}
+		}
+		
+		return (isset($CFGEO[$return]) ? ($cache ? '<span class="cfgeo-replace-'.$return.'">' . $CFGEO[$return] . '</span>' : $CFGEO[$return]) : $default);
 	}
 	
 	/**
@@ -599,7 +617,8 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 				'to'	=> isset( $CFGEO['currency'] ) && !empty( $CFGEO['currency'] ) ? strtoupper( $CFGEO['currency'] ) : 'USD',
 				'align'	=> 'R',
 				'separator'	=> '',
-				'no-symbol' => 0
+				'no-symbol' => 0,
+				'auto' => 0
 			), 
 			$atts, 
 			'cfgeo_converter'
@@ -639,30 +658,67 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 			return $this->generate_converter_output( $content, $symbol_to, $atts['align'], $atts['separator'] );
 		}
 
-		$api_params = array(
-			'from'		=> $from,
-			'to'		=> $to,
-			'amount'	=> $content
-		);
-		$api_url = add_query_arg( $api_params, 'http://cdn-cfgeoplugin.com/api6.0/convert.php' );
+		if( isset( $CF_GEOPLUGIN_OPTIONS['base_currency'] ) && isset( $CFGEO['currency_converter'] ) && strtoupper( $CF_GEOPLUGIN_OPTIONS['base_currency'] ) == $from && $CFGEO['currency'] == $to )
+		{
+			if(preg_match('/([0-9\.\,]+)/i',$content, $match))
+			{
+				$match[0] = strtr($match[0],',','.');
+				$amount = floatval($match[0]);
+				$currency_converter = $CFGEO['currency_converter'];
+				
+				if(empty($currency_converter) || !is_numeric($currency_converter)){
+					$content = number_format($content, 2);
+					if($atts['no-symbol'] == 1)
+					{
+						return $this->generate_converter_output( $content, '', $atts['align'], $atts['separator'] );
+					}
+					return $this->generate_converter_output( $content, $symbols[$CFGEO['base_currency']], $atts['align'], $atts['separator'] );
+				}
+				
+				$total = number_format(($currency_converter * $amount), 2);
+				if($atts['no-symbol'] == 1)
+				{
+					return $total;
+				}
+				return $this->generate_converter_output( $total, $symbol_to, $atts['align'], $atts['separator'] );
+			}
+			else
+			{
+				$content = number_format($content, 2);
+				if($atts['no-symbol'] == 1)
+				{
+					return $this->generate_converter_output( $content, '', $atts['align'], $atts['separator'] );
+				}
+				return $this->generate_converter_output( $content, $symbols[$CFGEO['base_currency']], $atts['align'], $atts['separator'] );
+			}
+		}
+		else
+		{
+			$api_params = array(
+				'from'		=> $from,
+				'to'		=> $to,
+				'amount'	=> $content
+			);
+			$api_url = add_query_arg( $api_params, 'http://cdn-cfgeoplugin.com/api6.0/convert.php' );
 
-		$result = $this->curl_get( $api_url );
+			$result = $this->curl_get( $api_url );
 
-		$result = json_decode( $result, true );
-		if( ( isset( $result['error'] ) && $result['error'] == true ) || ( !isset( $result['return'] ) || $result['return'] == false ) ) return $this->generate_converter_output( $content, $symbol_from, $atts['align'], $atts['separator'] );
+			$result = json_decode( $result, true );
+			if( ( isset( $result['error'] ) && $result['error'] == true ) || ( !isset( $result['return'] ) || $result['return'] == false ) ) return $this->generate_converter_output( $content, $symbol_from, $atts['align'], $atts['separator'] );
 
-		if( !isset( $result['to_amount'] ) || empty( $result['to_amount'] ) ){
+			if( !isset( $result['to_amount'] ) || empty( $result['to_amount'] ) ){
+				if($atts['no-symbol'] == 1)
+				{
+					return $result['to_amount'];
+				}
+				return $this->generate_converter_output( $content, $symbol_from, $atts['align'], $atts['separator'] );
+			}
 			if($atts['no-symbol'] == 1)
 			{
 				return $result['to_amount'];
 			}
-			return $this->generate_converter_output( $content, $symbol_from, $atts['align'], $atts['separator'] );
+			return $this->generate_converter_output( $result['to_amount'], $symbol_to, $atts['align'], $atts['separator'] );
 		}
-		if($atts['no-symbol'] == 1)
-		{
-			return $result['to_amount'];
-		}
-		return $this->generate_converter_output( $result['to_amount'], $symbol_to, $atts['align'], $atts['separator'] );
 	}
 
 	/**
