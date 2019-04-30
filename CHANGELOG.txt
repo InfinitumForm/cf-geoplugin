@@ -1,5 +1,10 @@
 == Changelog ==
 
+= 7.6.1 = 
+* Added "Redirect Only Once" in page SEO redirection
+* Improved page ID finder
+* Optimized code
+
 = 7.6.0 = 
 * Added attribute "cache" in the shortcodes to fix cache errors in HTML indexing
 * Added new JavaScript cahce API

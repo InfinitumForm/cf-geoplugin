@@ -303,6 +303,11 @@ Please inform us if any of these errors occure via contact form on our website [
 
 == Changelog ==
 
+= 7.6.1 = 
+* Added "Redirect Only Once" in page SEO redirection
+* Improved page ID finder
+* Optimized code
+
 = 7.6.0 = 
 * Added attribute "cache" in the shortcodes to fix cache errors in HTML indexing
 * Added new JavaScript cahce API
@@ -312,6 +317,11 @@ Please inform us if any of these errors occure via contact form on our website [
 * Removed old codes
 
 == Upgrade Notice ==
+
+= 7.6.1 = 
+* Added "Redirect Only Once" in page SEO redirection
+* Improved page ID finder
+* Optimized code
 
 = 7.6.0 = 
 * Added attribute "cache" in the shortcodes to fix cache errors in HTML indexing
