@@ -650,35 +650,50 @@ class CF_Geoplugin_Global
 	}
 	
 	/**
+	* Get current page ID
+	* @autor    Ivijan-Stefan Stipic
+	* @since    7.6.0
+	* @version  1.0.0
+	**/
+	function get_current_page_ID(){
+		global $post, $wp_query;
+		
+		if(!is_null($wp_query) && isset($wp_query->post) && isset($wp_query->post->ID) && !empty($wp_query->post->ID))
+			return $wp_query->post->ID;
+		else if(!empty(get_the_id()))
+			return get_the_id();
+		else if(!is_null($post) && isset($post->ID) && !empty($post->ID))
+			return $post->ID;
+		else if('page' == get_option( 'show_on_front' ))
+			return get_option( 'page_for_posts' );
+		else if((is_home() || is_front_page()) && !empty(get_queried_object_id()))
+			return get_queried_object_id();
+		else if(isset($_GET['post']) && !empty($_GET['post']) && isset($_GET['action']) && $_GET['action'] == 'edit' && intval($_GET['post']) == $_GET['post'])
+			return (int)$_GET['post'];
+		else if(!is_admin() && isset($_GET['p']) && !empty($_GET['p']) && intval($_GET['p']) == $_GET['p'])
+			return (int)$_GET['p'];
+		
+		return false;
+	}
+	
+	/**
 	* Get Custom Post Data from forms
 	* @autor    Ivijan-Stefan Stipic
 	* @since    5.0.0
-	* @version  7.0.0
+	* @version  8.0.0
 	**/
 	function get_post_meta($name, $id=false, $single=true){
-		global $post_type, $post, $wp_query;
+		global $post, $wp_query;
 		
 		$name=trim($name);
 		$prefix=CFGP_METABOX;
 		$data=NULL;
+		
+		$id = ((!empty($id) && intval($id) == $id) ? intval($id) : $this->get_current_page_ID());
 	
 		
-		if($id!==false && !empty($id) && $id > 0)
-			$getMeta=get_post_meta((int)$id, $prefix.$name, $single);
-		else if(isset($wp_query->post) && isset($wp_query->post->ID))
-			$getMeta=get_post_meta((int)$wp_query->post->ID, $prefix.$name, $single);
-		else if(NULL!==get_the_id() && false!==get_the_id() && get_the_id() > 0)
-			$getMeta=get_post_meta(get_the_id(),$prefix.$name, $single);
-		else if(isset($post->ID) && $post->ID > 0)
-			$getMeta=get_post_meta($post->ID,$prefix.$name, $single);
-		else if(isset($wp_query->post) && isset($wp_query->post->ID))
-			$getMeta=get_post_meta((int)$wp_query->post->ID, $prefix.$name, $single);
-		else if('page' == get_option( 'show_on_front' ))
-			$getMeta=get_post_meta(get_option( 'page_for_posts' ),$prefix.$name, $single);
-		else if(is_home() || is_front_page() || get_queried_object_id() > 0)
-			$getMeta=get_post_meta(get_queried_object_id(),$prefix.$name, $single);
-		else if(isset($_GET['post']) && isset($_GET['action']) && $_GET['action'] == 'edit')
-			$getMeta=get_post_meta((int)$_GET['post'], $prefix.$name, $single);
+		if( $id )
+			$getMeta=get_post_meta($id, $prefix.$name, $single);
 		else
 			$getMeta=false;
 		

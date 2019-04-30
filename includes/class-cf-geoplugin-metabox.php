@@ -659,24 +659,46 @@ function CF_GeoPlugin_Google_Map_GeoTag() {
                                 <span class="description"><?php esc_attr_e( 'Select the desired HTTP redirection. (HTTP Code 302 is recommended)', CFGP_NAME ); ?></span>
                             </td>
                             <td>
-                                <label><?php _e( 'Enable SEO Redirect', CFGP_NAME ); ?></label><br />
-                                <?php
-                                    if( !isset( $value['seo_redirect'] ) || empty( $value['seo_redirect'] ) ) $value['seo_redirect'] = '0';
-                                ?>
-                                <div class="cfgp-enable-redirection">
-                                    <label for="seo_redirect_checkbox_<?php echo $i; ?>_1"><input id="seo_redirect_checkbox_<?php echo $i; ?>_1" type="radio" name="<?php echo $this->prefix; ?>[<?php echo $i; ?>][seo_redirect]" value="1" <?php checked( $value['seo_redirect'], '1' ); ?> /> <?php _e( 'Enable', CFGP_NAME ); ?> </label>&nbsp;&nbsp;
-                                    </label for="seo_redirect_checkbox_><?php echo $i; ?>_0"><input id="seo_redirect_checkbox_<?php echo $i; ?>_0" type="radio" name="<?php echo $this->prefix; ?>[<?php echo $i; ?>][seo_redirect]" value="0" <?php checked( $value['seo_redirect'], '0' ); ?> /> <?php _e( 'Disable', CFGP_NAME ); ?></label>
-                                </div>
-                                <div class="cfgp-add-remove-redirection" style="text-align:right">
-                                    <?php
-                                        if( $i+1 == $end ) printf( '<a class="cfgp-repeat cfgp-first-repeater" href="#" title="%s"><i class="fa fa-plus-circle fa-2x" style="color: green;"></i></a>&nbsp;&nbsp;&nbsp', __( 'Add New Redirection', CFGP_NAME ) );
-                                        
-                                        if( $i == 0 && $end == 1 ) printf('<a class="cfgp-reset-fields" href="#" title="%s"><i class="fa fa-repeat fa-2x" style="color: red;"></i></a>', __( 'Reset Redirection', CFGP_NAME ) );
-                                        else printf( '<a class="cfgp-destroy-repeat" href="#" title="%s"><i class="fa fa-minus-circle fa-2x" style="color: red;"></i></a>', __( 'Remove Redirection', CFGP_NAME ) );
-                                    ?>
-                                </div>
+
+								<table width="100%">
+									<tr>
+										<td width="50%">
+											<label><?php _e( 'Redirect Only Once', CFGP_NAME ); ?></label><br />
+											<?php
+												if( !isset( $value['only_once'] ) || empty( $value['only_once'] ) ) $value['only_once'] = '0';
+											?>
+											<div class="cfgp-enable-redirection">
+												<label for="only_once_checkbox_<?php echo $i; ?>_1"><input id="only_once_checkbox_<?php echo $i; ?>_1" type="radio" name="<?php echo $this->prefix; ?>[<?php echo $i; ?>][only_once]" value="1" <?php checked( $value['only_once'], '1' ); ?> /> <?php _e( 'Enable', CFGP_NAME ); ?> </label>&nbsp;&nbsp;
+												</label for="only_once_checkbox_><?php echo $i; ?>_0"><input id="only_once_checkbox_<?php echo $i; ?>_0" type="radio" name="<?php echo $this->prefix; ?>[<?php echo $i; ?>][only_once]" value="0" <?php checked( $value['only_once'], '0' ); ?> /> <?php _e( 'Disable', CFGP_NAME ); ?></label>
+											</div>
+										</td>
+										<td width="50%">
+											<label><?php _e( 'Enable SEO Redirect', CFGP_NAME ); ?></label><br />
+											<?php
+												if( !isset( $value['seo_redirect'] ) || empty( $value['seo_redirect'] ) ) $value['seo_redirect'] = '0';
+											?>
+											<div class="cfgp-enable-redirection">
+												<label for="seo_redirect_checkbox_<?php echo $i; ?>_1"><input id="seo_redirect_checkbox_<?php echo $i; ?>_1" type="radio" name="<?php echo $this->prefix; ?>[<?php echo $i; ?>][seo_redirect]" value="1" <?php checked( $value['seo_redirect'], '1' ); ?> /> <?php _e( 'Enable', CFGP_NAME ); ?> </label>&nbsp;&nbsp;
+												</label for="seo_redirect_checkbox_><?php echo $i; ?>_0"><input id="seo_redirect_checkbox_<?php echo $i; ?>_0" type="radio" name="<?php echo $this->prefix; ?>[<?php echo $i; ?>][seo_redirect]" value="0" <?php checked( $value['seo_redirect'], '0' ); ?> /> <?php _e( 'Disable', CFGP_NAME ); ?></label>
+											</div>
+										</td>
+									</tr>
+								</table>
+
                             </td>
                         </tr>
+						<tr>
+							<td colspan="3">
+								<div class="cfgp-add-remove-redirection" style="text-align:right">
+									<?php
+										if( $i+1 == $end ) printf( '<a class="cfgp-repeat cfgp-first-repeater" href="#" title="%s"><i class="fa fa-plus-circle fa-2x" style="color: green;"></i></a>&nbsp;&nbsp;&nbsp', __( 'Add New Redirection', CFGP_NAME ) );
+										
+										if( $i == 0 && $end == 1 ) printf('<a class="cfgp-reset-fields" href="#" title="%s"><i class="fa fa-repeat fa-2x" style="color: red;"></i></a>', __( 'Reset Redirection', CFGP_NAME ) );
+										else printf( '<a class="cfgp-destroy-repeat" href="#" title="%s"><i class="fa fa-minus-circle fa-2x" style="color: red;"></i></a>', __( 'Remove Redirection', CFGP_NAME ) );
+									?>
+								</div>
+							</td>
+						</tr>
                         <?php
                             if( !empty( $add_redirection ) )
                             {

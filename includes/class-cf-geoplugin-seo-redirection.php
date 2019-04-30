@@ -19,7 +19,7 @@ class CF_Geoplugin_SEO_Redirection extends CF_Geoplugin_Global
 	// Page SEO Redirection
 	public function page_seo_redirection(){
 		$CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
-		
+		$page_id = $this->get_current_page_ID();
 		if(!is_admin() && $CF_GEOPLUGIN_OPTIONS['enable_seo_redirection'])
 		{
 			$redirect_data 	= $this->get_post_meta( 'redirection' );
@@ -34,6 +34,9 @@ class CF_Geoplugin_SEO_Redirection extends CF_Geoplugin_Global
 					if( !isset( $value['region'] ) ) $value['region'] = NULL;
 					if( !isset( $value['city'] ) ) $value['city'] = NULL;
 					
+					$value['ID'] = $i;
+					$value['page_id'] = $page_id;
+					
 					$this->do_redirection( $value );
 				}
 			}
@@ -45,6 +48,8 @@ class CF_Geoplugin_SEO_Redirection extends CF_Geoplugin_Global
 				'redirect_url',
 				'http_code',
 				'seo_redirect',
+				'page_id',
+				'ID'
 			);
 			$redirection = array();
 
@@ -61,6 +66,8 @@ class CF_Geoplugin_SEO_Redirection extends CF_Geoplugin_Global
 				}
 				else $redirection[ $meta_key ] = NULL;
 			}
+			$redirection['ID'] = 0;
+			$redirection['page_id'] = $page_id;
 			if( isset( $redirection['seo_redirect'] ) && $redirection['seo_redirect'] == '1' ) $this->do_redirection( $redirection );
 		}
 	}
@@ -114,20 +121,35 @@ class CF_Geoplugin_SEO_Redirection extends CF_Geoplugin_Global
 		if( $this->is_object_empty($redirect, 'city') ) $city_empty = true;
 
 		if( isset( $redirect['url'] ) && filter_var($redirect['url'], FILTER_VALIDATE_URL) && ( $country_check || $country_empty ) )
-		{
-			if( $this->check_user_by_city( $redirect['city'] ) && ( $this->check_user_by_region( $redirect['region'] ) || $region_empty ) )
+		{			
+			if($this->check_user_by_city( $redirect['city'] ) && ( $this->check_user_by_region( $redirect['region'] ) || $region_empty ) )
 			{
-				$this->redirect( $redirect['url'], $redirect['http_code'] );
+				if($this->control_redirection( $redirect )) $this->redirect( $redirect['url'], $redirect['http_code'] );
 			}
-			elseif( $city_empty && $this->check_user_by_region( $redirect['region'] ) ) 
+			elseif($city_empty && $this->check_user_by_region( $redirect['region'] ) ) 
 			{
-				$this->redirect( $redirect['url'], $redirect['http_code'] );
+				if($this->control_redirection( $redirect )) $this->redirect( $redirect['url'], $redirect['http_code'] );
 			}
-			elseif( $region_empty && $city_empty && $country_check ) 
+			elseif($region_empty && $city_empty && $country_check ) 
 			{
-				$this->redirect( $redirect['url'], $redirect['http_code'] );
+				if($this->control_redirection( $redirect )) $this->redirect( $redirect['url'], $redirect['http_code'] );
 			}
 		}
+	}
+	
+	private function control_redirection( $redirect )
+	{
+		if(isset( $redirect['only_once'] ) && $redirect['only_once'] == '1'){
+			$cookie_name = '__cfgp_seo_' . $redirect['page_id'] . '_once_' . $redirect['ID'];
+			
+			if(isset($_COOKIE[$cookie_name]) && !empty($_COOKIE[$cookie_name])){
+				return false;
+			} else {
+				setcookie( $cookie_name, time() . '_' . (time()+((365 * DAY_IN_SECONDS) * 2)), (time()+((365 * DAY_IN_SECONDS) * 2)), COOKIEPATH, COOKIE_DOMAIN );
+			}
+		}
+		
+		return true;
 	}
 	
 	private function is_object_empty($obj,$name){

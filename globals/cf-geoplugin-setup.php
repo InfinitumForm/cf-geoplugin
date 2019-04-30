@@ -11,10 +11,14 @@
 if ( ! defined( 'WPINC' ) ) { die( "Don't mess with us." ); }
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-preg_match('/\*[\s\t]+?version:[\s\t]+?([0-9.]+)/i',file_get_contents(CFGP_FILE), $cfgp_version);
+$cfgp_version = NULL;
+if(function_exists('get_file_data') && $plugin_data = get_file_data( CFGP_FILE, array('Version' => 'Version'), false ))
+	$cfgp_version = $plugin_data['Version'];
+else if(preg_match('/\*[\s\t]+?version:[\s\t]+?([0-9.]+)/i',file_get_contents( CFGP_FILE ), $v))
+	$cfgp_version = $v[1];
 
 // Current plugin version ( if change, clear also session cache )
-if ( ! defined( 'CFGP_VERSION' ) )			define( 'CFGP_VERSION', $cfgp_version[1]);
+if ( ! defined( 'CFGP_VERSION' ) )			define( 'CFGP_VERSION', $cfgp_version);
 // Limit ( for the information purposes )
 if ( ! defined( 'CFGP_LIMIT' ) )			define( 'CFGP_LIMIT', 300);
 // Developer license ( enable developer license support )
