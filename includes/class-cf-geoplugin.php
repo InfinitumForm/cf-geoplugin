@@ -383,12 +383,7 @@ class CF_Geoplugin_Init extends CF_Geoplugin_Global
 	*/
 	public function deactivate(){
 		// destroy session
-		if (version_compare(PHP_VERSION, '7.0.0') >= 0) {
-			if(function_exists('session_status') && session_status() != PHP_SESSION_NONE) {
-				session_destroy();
-			}
-		}
-		else if (version_compare(PHP_VERSION, '5.4.0') >= 0)
+		if (version_compare(PHP_VERSION, '5.4.0', '>='))
 		{
 			if (function_exists('session_status') && session_status() != PHP_SESSION_NONE) {
 				session_destroy();

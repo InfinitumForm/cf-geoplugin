@@ -80,6 +80,7 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
 		'available_lookup' 		=> 0,
 		'is_eu'					=> 0,
 		'is_vat'				=> 0,
+		'gps'					=> 0,
 		'accuracy_radius'		=> 0,
 	);
 	// PRIVATE OPTION
@@ -101,12 +102,12 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
 		);
 
 		// replace default options
-		if (version_compare(PHP_VERSION, '7.0.0') >= 0)
+		if (version_compare(PHP_VERSION, '7.0.0', '>='))
 			$this->option=array_replace($option, $options);
 		else
 			$this->option=array_merge($option, $options);
 		
-		return $this->render();
+		return apply_filters( 'cf_geeoplugin_api_response', $this->render(), $this->fields );
 	}
 	
 	/**
@@ -167,7 +168,7 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
 				}
 			}
 			
-			return array(
+			return apply_filters( 'cf_geeoplugin_api_render_response', array(
                 'ip' => $geodata->ipAddress,
                 'ip_version' => $ipv,
                 'ip_dns' => $provider->dns,
@@ -209,6 +210,7 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
                 'version' => CFGP_VERSION,
 				'is_vat' => isset( $geodata->isVAT ) ? $geodata->isVAT : '',
 				'in_eu'	=> isset( $geodata->inEU ) ? $geodata->inEU : '',
+				'gps'	=> isset( $geodata->gps ) ? ($geodata->gps ? 1 : 0) : 0,
 				'accuracy_radius' => $m_accuracy.$m_unit,
 				'runtime' => abs($geodata->runtime),
                 'status' => empty($geodata->status) ? (!empty($geodata->ipAddress) ? 200 : 404) : $geodata->status,
@@ -216,7 +218,7 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
 				'error' => $geodata->error,
                 'error_message' => $geodata->message,
 				'credit' => $geodata->credit,
-            );
+            ), $this->fields);
 		}
 		
 		return $this->fields;
@@ -252,7 +254,7 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
 		{
 			$_SESSION[CFGP_PREFIX . 'api_session']['currentTime'] = date('H:i:s', CFGP_TIME);
 			$_SESSION[CFGP_PREFIX . 'api_session']['currentDate'] = date('F j, Y', CFGP_TIME);
-			return (object)$_SESSION[CFGP_PREFIX . 'api_session'];
+			return (object)apply_filters('cf_geeoplugin_api_get_geodata', $_SESSION[CFGP_PREFIX . 'api_session']);
 		}
 	
 		$api = get_option('cf_geo_defender_api_key');
@@ -293,6 +295,9 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
 			{
 				$return = json_decode($return, true);
 				if (is_array($return)) $result = array_merge($result, $return);
+				
+				$result = apply_filters('cf_geeoplugin_api_get_geodata', $result);
+				
 				if (isset($_SERVER["HTTP_CF_IPCOUNTRY"]) && $CF_GEOPLUGIN_OPTIONS['enable_cloudflare']) {
 					$result['countryCode'] = $_SERVER["HTTP_CF_IPCOUNTRY"];
 				}
@@ -313,6 +318,9 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
 				{
 					$return = json_decode($return, true);
 					if (is_array($return)) $result = array_merge($result, $return);
+					
+					$result = apply_filters('cf_geeoplugin_api_get_geodata', $result);
+					
 					if (isset($_SERVER["HTTP_CF_IPCOUNTRY"]) && $CF_GEOPLUGIN_OPTIONS['enable_cloudflare']) {
 						$result['countryCode'] = $_SERVER["HTTP_CF_IPCOUNTRY"];
 					}
@@ -356,7 +364,7 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
 			
 			if (isset($_SESSION[CFGP_PREFIX . 'api_dns_session']) && isset($_SESSION[CFGP_PREFIX . 'api_dns_session']['ip']) && $_SESSION[CFGP_PREFIX . 'api_dns_session']['ip'] == $ip && $this->option['debug'] === false)
 			{
-				return (object)$_SESSION[CFGP_PREFIX . 'api_dns_session'];
+				return (object)apply_filters('cf_geeoplugin_api_get_dns', $_SESSION[CFGP_PREFIX . 'api_dns_session']);
 			}
 
 			$urlReplace = array_map("rawurlencode", array(
@@ -393,6 +401,8 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
 					$return = array_merge($return, $data);
 				}
 			}
+			
+			$return = apply_filters('cf_geeoplugin_api_get_dns', $return);
 
 			if($this->option['debug'] === false) $_SESSION[CFGP_PREFIX . 'api_dns_session'] = $return;
 		}

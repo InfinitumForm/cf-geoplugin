@@ -50,7 +50,7 @@ class CF_Geoplugin_OS
 	public static function is_php64()
 	{
 		// Check is PHP 64bit (PHP 64bit only running on 64bit OS version)
-		if (version_compare(PHP_VERSION, '5.0.5') >= 0)
+		if (version_compare(PHP_VERSION, '5.0.5', '>='))
 		{
 			if(defined('PHP_INT_SIZE') && PHP_INT_SIZE === 8)
 				return true;

@@ -16,7 +16,7 @@ class CF_Geoplugin_Form extends CF_Geoplugin_Global
 
 	function input( $arguments ){
 		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
-		$attr = array_merge(
+		$attr = apply_filters( 'cf_geeoplugin_form_input_arguments', array_merge(
 			array(
 				'label'				=> 'Input ' . $this->tabindex,
 				'name'				=> '',
@@ -35,7 +35,7 @@ class CF_Geoplugin_Form extends CF_Geoplugin_Global
 				'license_message'	=> ''
 			),
 			$arguments
-		);
+		), $arguments, $this);
 		ob_start(); ?>
 		<div class="form-group row align-items-center<?php 
 			if( !empty($attr['container_class']) ) echo ' ' . esc_attr($attr['container_class']);
@@ -85,7 +85,7 @@ class CF_Geoplugin_Form extends CF_Geoplugin_Global
 	
 	function radio( $arguments ){
 		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
-		$attr = array_merge(
+		$attr = apply_filters( 'cf_geeoplugin_form_radio_arguments', array_merge(
 			array(
 				'label'				=> 'Input ' . $this->tabindex,
 				'label_class' 		=> '',
@@ -109,7 +109,7 @@ class CF_Geoplugin_Form extends CF_Geoplugin_Global
 				*/
 			),
 			$arguments
-		);
+		), $arguments, $this);
 		ob_start(); ?>
 		<div class="form-group row align-items-center<?php 
 			if( !empty($attr['container_class']) ) echo ' ' . esc_attr($attr['container_class']);
@@ -167,7 +167,7 @@ class CF_Geoplugin_Form extends CF_Geoplugin_Global
 	
 	function checkbox( $arguments ){
 		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
-		$attr = array_merge(
+		$attr = apply_filters( 'cf_geeoplugin_form_checkbox_arguments', array_merge(
 			array(
 				'label'				=> 'Input ' . $this->tabindex,
 				'label_class' 		=> '',
@@ -191,7 +191,7 @@ class CF_Geoplugin_Form extends CF_Geoplugin_Global
 				*/
 			),
 			$arguments
-		);
+		), $arguments, $this);
 		ob_start(); ?>
 		<div class="form-group row align-items-center<?php 
 			if( !empty($attr['container_class']) ) echo ' ' . esc_attr($attr['container_class']);
@@ -251,7 +251,7 @@ class CF_Geoplugin_Form extends CF_Geoplugin_Global
 	
 	function select( $arguments ){
 		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
-		$attr = array_merge(
+		$attr = apply_filters( 'cf_geeoplugin_form_select_arguments', array_merge(
 			array(
 				'label'				=> 'Input ' . $this->tabindex,
 				'label_class' 		=> '',
@@ -275,7 +275,7 @@ class CF_Geoplugin_Form extends CF_Geoplugin_Global
 				*/
 			),
 			$arguments
-		);
+		), $arguments, $this);
 		ob_start(); ?>
 		<div class="form-group row align-items-center<?php 
 			if( !empty($attr['container_class']) ) echo ' ' . esc_attr($attr['container_class']);
@@ -329,7 +329,7 @@ class CF_Geoplugin_Form extends CF_Geoplugin_Global
 	
 	function textarea( $arguments ){
 		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
-		$attr = array_merge(
+		$attr = apply_filters( 'cf_geeoplugin_form_textarea_arguments', array_merge(
 			array(
 				'label'				=> 'Textarea ' . $this->tabindex,
 				'name'				=> '',
@@ -349,7 +349,7 @@ class CF_Geoplugin_Form extends CF_Geoplugin_Global
 				'license_message'	=> ''
 			),
 			$arguments
-		);
+		), $arguments, $this);
 		ob_start(); ?>
 		<div class="form-group row<?php 
 			if( !empty($attr['container_class']) ) echo ' ' . esc_attr($attr['container_class']);
@@ -409,14 +409,22 @@ class CF_Geoplugin_Form extends CF_Geoplugin_Global
 			),
 			$arguments
 		);
-		$attr = array_filter($attr);
+		$attr = apply_filters( 'cf_geeoplugin_form_attributes', array_filter($attr), $this);
 		
 		$fields = array();
 		foreach($attr as $a => $v){
 			if(!is_numeric($a)) $fields[]= sprintf('%1$s="%2$s"', $a, esc_attr($v));
 		}
 		
-		printf('<form %1$s>%2$s</form>', join(' ', $fields), join("\r\n", $this->form_fields));
+		printf(
+			'<form %1$s>%2$s</form>',
+			join(' ', $fields),
+			join("\r\n", apply_filters(
+				'cf_geeoplugin_form_items',
+				$this->form_fields,
+				$this
+			))
+		);
 		$this->tabindex = 1;
 		$this->form_fields = array();
 	}

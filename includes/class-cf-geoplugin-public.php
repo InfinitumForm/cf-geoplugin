@@ -102,16 +102,16 @@ class CF_Geoplugin_Public extends CF_Geoplugin_Global
 		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
 		$post = get_post();
 		
-		if( isset( $CF_GEOPLUGIN_OPTIONS['enable_geo_tag'] ) && in_array( $post->post_type, $CF_GEOPLUGIN_OPTIONS['enable_geo_tag'] ) )
+		if( isset( $CF_GEOPLUGIN_OPTIONS['enable_geo_tag'] ) && in_array( (property_exists($post, 'post_type') ? $post->post_type : NULL), $CF_GEOPLUGIN_OPTIONS['enable_geo_tag'] ) )
 		{
-			$geo_data = array(
+			$geo_data = apply_filters( 'cf_geeoplugin_geo_tag_data', array(
 				'geo.enable'	=> get_post_meta( $post->ID, 'cfgp-geotag-enable', true ),
 				'geo.address' 	=> get_post_meta( $post->ID, 'cfgp-dc-title', true ),
 				'geo.region'	=> get_post_meta( $post->ID, 'cfgp-region', true ),
 				'geo.placename'	=> get_post_meta( $post->ID, 'cfgp-placename', true ),
 				'geo.latitude'	=> get_post_meta( $post->ID, 'cfgp-latitude', true ),
 				'geo.longitude'	=> get_post_meta( $post->ID, 'cfgp-longitude', true ),
-			);
+			));
 
 			if( $geo_data['geo.enable'] )
 			{

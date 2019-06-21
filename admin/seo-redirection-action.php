@@ -197,12 +197,16 @@ global $wpdb, $wp_version;
                         <div class="form-group">
                             <label for="cf_geo_http_code"><?php _e( 'HTTP Code', CFGP_NAME ); ?></label>
                             <select name="cf_geo_http_code" id="cf_geo_http_code" class="form-control" aria-describedby="httpHelp">
-                                <option value="301" <?php selected( $redirect_data['http_code'], 301 ); ?>><?php _e( '301 - Moved Permanently', CFGP_NAME ); ?></option>
-                                <option value="302" <?php selected( $redirect_data['http_code'], 302 ); ?>><?php _e( '302 - Moved Temporary', CFGP_NAME ); ?></option>
-                                <option value="303" <?php selected( $redirect_data['http_code'], 303 ); ?>><?php _e( '303 - See Other', CFGP_NAME ); ?></option>
-                                <option value="404" <?php selected( $redirect_data['http_code'], 404 ); ?>><?php _e( '404 - Not Found (not recommended)', CFGP_NAME ); ?></option>
+                            	<?php
+								foreach(CF_Geoplugin_Global::get_http_codes() as $http_code => $http_name)
+								{
+									echo '<option value="' . $http_code . '" ' . selected( $redirect_data['http_code'], $http_code ) .'>' . $http_name . '</option>';
+								}
+								?>
                             </select>
-                            <small id="httpHelp" class="form-text text-muted" ><?php esc_attr_e( 'Select the desired HTTP redirection. (HTTP Code 302 is recommended)', CFGP_NAME ); ?></small>
+                            <small id="httpHelp" class="form-text text-muted" ><?php _e( 'Select the desired HTTP redirection. (HTTP Code 302 is recommended)', CFGP_NAME ); ?>
+                            <br>
+							<?php printf(__( 'If you are not sure which redirect code to use, <a href=\'%1$s\' target=\'_blank\'>check out this article</a>.', CFGP_NAME ), CFGP_STORE.'/information/seo-redirection-in-wordpress/'); ?></small>
                         </div>
                         <?php 
                             do_action( 'page-cf-geoplugin-seo-global-params' ); 

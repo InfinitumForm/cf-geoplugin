@@ -34,7 +34,7 @@ class CF_Geoplugin_Texteditor_Buttons extends CF_Geoplugin_Global {
 		}
 		
 		$shortcodes['sc'][]='"[cfgeo_flag]"';
-		$shortcodes['nm'][]='"COUNTRY FLAG"';
+		$shortcodes['nm'][]='"'.__('COUNTRY FLAG', CFGP_NAME).'"';
 		
 		?>
 <script type="text/javascript">

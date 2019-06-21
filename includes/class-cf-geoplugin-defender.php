@@ -23,7 +23,12 @@ class CF_Geoplugin_Defender extends CF_Geoplugin_Global
         $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
         if( $this->check() && !is_admin() )
         {
-            header( $this->header );
+			if( function_exists('http_response_code') && version_compare(PHP_VERSION, '5.4', '>=') ) {
+				http_response_code(403);
+			} else {
+				header( $this->header, true, 403 );
+			}
+			
             if( isset( $CF_GEOPLUGIN_OPTIONS['block_country_messages'] ) ) die( wpautop( html_entity_decode( stripslashes( $CF_GEOPLUGIN_OPTIONS['block_country_messages'] ) ) ) );
             else die();
             exit;
@@ -40,7 +45,12 @@ class CF_Geoplugin_Defender extends CF_Geoplugin_Global
                 $response = json_decode( $response, true );
                 if( isset( $response['return'] ) && $response['return'] === true && isset( $response['error'] ) && $response['error'] === false )
                 {
-                    header( $this->header );
+					if( function_exists('http_response_code') && version_compare(PHP_VERSION, '5.4', '>=') ) {
+						http_response_code(403);
+					} else {
+						header( $this->header, true, 403 );
+					}
+                    
                     die( wpautop( html_entity_decode( stripslashes( $CF_GEOPLUGIN_OPTIONS['block_country_messages'] ) ) ) );
                     exit;
                 }

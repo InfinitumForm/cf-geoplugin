@@ -13,7 +13,7 @@ class CF_Geoplugin_Wooplatnica extends CF_Geoplugin_Global
 {
 	function __construct()
     {
-        $this->add_action( 'init', 'wooplatnica', 100 );
+        $this->add_action( 'init', 'wooplatnica', 999 );
     }
 	
 	function wooplatnica(){

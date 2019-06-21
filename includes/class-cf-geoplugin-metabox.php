@@ -643,20 +643,15 @@ function CF_GeoPlugin_Google_Map_GeoTag() {
                                 ?>
                                 <select name="<?php echo $this->prefix; ?>[<?php echo $i; ?>][http_code]" id="<?php echo $this->prefix; ?>[<?php echo $i; ?>][http_code]" class="cfgp-chosen widefat http_select">
                                 <?php
-                                
-									$redirections = array(
-										301 => __( '301 - Moved Permanently', CFGP_NAME ),
-										302 => __( '302 - Moved Temporary', CFGP_NAME ),
-										303 => __( '303 - See Other', CFGP_NAME ),
-										404 => __( '404 - Not Found (not recommended)', CFGP_NAME )
-									);
-									foreach($redirections as $http_code => $http_name)
+									foreach(CF_Geoplugin_Global::get_http_codes() as $http_code => $http_name)
 									{
 										echo '<option value="' . $http_code . '" ' . selected( $value['http_code'], $http_code ) .'>' . $http_name . '</option>';
 									}
 								?>
                                 </select>
-                                <span class="description"><?php esc_attr_e( 'Select the desired HTTP redirection. (HTTP Code 302 is recommended)', CFGP_NAME ); ?></span>
+                                <span class="description"><?php esc_attr_e( 'Select the desired HTTP redirection. (HTTP Code 302 is recommended)', CFGP_NAME ); ?>
+                                <br>
+								<?php printf(__( 'If you are not sure which redirect code to use, <a href=\'%1$s\' target=\'_blank\'>check out this article</a>.', CFGP_NAME ), CFGP_STORE.'/information/seo-redirection-in-wordpress/'); ?></span>
                             </td>
                             <td>
 

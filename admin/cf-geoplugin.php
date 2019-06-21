@@ -115,7 +115,7 @@ $CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIO
                             </tr>
                         </thead>
                         <tbody>
-                        	<?php do_action('page-cf-geoplugin-shortcode-table'); ?>
+							<?php do_action('page-cf-geoplugin-shortcode-table-start'); ?>
                             <tr>
                                 <td><kbd>[cfgeo]</kbd></td>
                                 <td><?php echo $CFGEO['ip']; ?></td>
@@ -148,16 +148,17 @@ $CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIO
                                 <td><?php echo $CFGEO['ip_dns_provider']; ?></td>
                             </tr>
                             <?php endif; ?>
+							<?php do_action('page-cf-geoplugin-shortcode-table-address'); ?>
                             <tr>
-                                <td><kbd>[cfgeo return="address"]</kbd></td>
+                                <td><kbd>[cfgeo return="address"]</kbd><?php if($CFGEO['gps']): ?> <i class="badge">(GPS)</i><?php endif; ?></td>
                                 <td><?php echo $CFGEO['address']; ?></td>
                             </tr>
                             <tr>
-                                <td><kbd>[cfgeo return="city"]</kbd></td>
+                                <td><kbd>[cfgeo return="city"]</kbd><?php if($CFGEO['gps']): ?> <i class="badge">(GPS)</i><?php endif; ?></td>
                                 <td><?php echo $CFGEO['city']; ?></td>
                             </tr>
                             <tr>
-                                <td><kbd>[cfgeo return="region"]</kbd></td>
+                                <td><kbd>[cfgeo return="region"]</kbd><?php if($CFGEO['gps']): ?> <i class="badge">(GPS)</i><?php endif; ?></td>
                                 <td><?php echo $CFGEO['region']; ?></td>
                             </tr>
                             <tr>
@@ -165,11 +166,11 @@ $CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIO
                                 <td><?php echo $CFGEO['region_code']; ?></td>
                             </tr>
                             <tr>
-                                <td><kbd>[cfgeo return="country"]</kbd></td>
+                                <td><kbd>[cfgeo return="country"]</kbd><?php if($CFGEO['gps']): ?> <i class="badge">(GPS)</i><?php endif; ?></td>
                                 <td><?php echo $CFGEO['country']; ?></td>
                             </tr>
                             <tr>
-                                <td><kbd>[cfgeo return="country_code"]</kbd></td>
+                                <td><kbd>[cfgeo return="country_code"]</kbd><?php if($CFGEO['gps']): ?> <i class="badge">(GPS)</i><?php endif; ?></td>
                                 <td><?php echo $CFGEO['country_code']; ?></td>
                             </tr>
                             <tr>
@@ -181,11 +182,11 @@ $CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIO
                                 <td><?php echo $CFGEO['continent_code']; ?></td>
                             </tr>
                             <tr>
-                                <td><kbd>[cfgeo return="latitude"]</kbd></td>
+                                <td><kbd>[cfgeo return="latitude"]</kbd><?php if($CFGEO['gps']): ?> <i class="badge">(GPS)</i><?php endif; ?></td>
                                 <td><?php echo $CFGEO['latitude']; ?></td>
                             </tr>
                             <tr>
-                                <td><kbd>[cfgeo return="longitude"]</kbd></td>
+                                <td><kbd>[cfgeo return="longitude"]</kbd><?php if($CFGEO['gps']): ?> <i class="badge">(GPS)</i><?php endif; ?></td>
                                 <td><?php echo $CFGEO['longitude']; ?></td>
                             </tr>
                             <tr>
@@ -215,6 +216,18 @@ $CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIO
                             <tr>
                                 <td><kbd>[cfgeo return="currency_converter"]</kbd></td>
                                 <td><?php echo $CFGEO['currency_converter']; ?></td>
+                            </tr>
+							<tr>
+                                <td><kbd>[cfgeo return="is_vat"]</kbd></td>
+                                <td><?php echo $CFGEO['is_vat']; ?></td>
+                            </tr>
+							<tr>
+                                <td><kbd>[cfgeo return="in_eu"]</kbd></td>
+                                <td><?php echo $CFGEO['in_eu']; ?></td>
+                            </tr>
+							<tr>
+                                <td><kbd>[cfgeo return="gps"]</kbd></td>
+                                <td><?php echo $CFGEO['gps']; ?></td>
                             </tr>
                             <tr>
                                 <td><kbd>[cfgeo return="host"]</kbd></td>
@@ -260,6 +273,7 @@ $CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIO
                                 <td><kbd>[cfgeo_converter from="<?php echo isset( $CF_GEOPLUGIN_OPTIONS['base_currency'] ) ? $CF_GEOPLUGIN_OPTIONS['base_currency'] : ''; ?>"]1[/cfgeo_converter]</kbd></td>
                                 <td><?php echo isset( $CFGEO['currency_converter'] ) && !empty( $CFGEO['currency_converter'] ) ? $CFGEO['currency_converter'] : __( 'Sorry currently we are not able to do conversion.', CFGP_NAME ); echo isset( $CFGEO['currency_symbol'] ) ? ' ' . $CFGEO['currency_symbol'] : ''; ?></td>
                             </tr>
+							<?php do_action('page-cf-geoplugin-shortcode-table-end'); ?>
                         </tbody>
                         <thead>
                             <tr>
@@ -275,6 +289,7 @@ $CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIO
                     <p class="ml-3 mr-3"><?php _e('This shortcodes only have purpose to return available geo-information. You can\'t do include, exclude or add default value. Just display geodata following with appropriate shortcodes. ',CFGP_NAME); ?></p>
                     <table width="100%" class="table table-striped table-sm">
                         <tbody>
+							<?php do_action('page-cf-geoplugin-beta-shortcode-table-start'); ?>
                         	<?php if($CF_GEOPLUGIN_OPTIONS['enable_flag']) : ?>
                             <tr>
                                 <td><kbd>[country_flag]</kbd></td>
@@ -303,16 +318,17 @@ $CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIO
                                 <td><?php echo $CFGEO['ip_dns_provider']; ?></td>
                             </tr>
                             <?php endif; ?>
+							<?php do_action('page-cf-geoplugin-beta-shortcode-table-address'); ?>
                             <tr>
-                                <td><kbd>[cfgeo_address]</kbd></td>
+                                <td><kbd>[cfgeo_address]</kbd><?php if($CFGEO['gps']): ?> <i class="badge">(GPS)</i><?php endif; ?></td>
                                 <td><?php echo $CFGEO['address']; ?></td>
                             </tr>
                             <tr>
-                                <td><kbd>[cfgeo_city]</kbd></td>
+                                <td><kbd>[cfgeo_city]</kbd><?php if($CFGEO['gps']): ?> <i class="badge">(GPS)</i><?php endif; ?></td>
                                 <td><?php echo $CFGEO['city']; ?></td>
                             </tr>
                             <tr>
-                                <td><kbd>[cfgeo_region]</kbd></td>
+                                <td><kbd>[cfgeo_region]</kbd><?php if($CFGEO['gps']): ?> <i class="badge">(GPS)</i><?php endif; ?></td>
                                 <td><?php echo $CFGEO['region']; ?></td>
                             </tr>
                             <tr>
@@ -336,11 +352,11 @@ $CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIO
                                 <td><?php echo $CFGEO['continent_code']; ?></td>
                             </tr>
                             <tr>
-                                <td><kbd>[cfgeo_latitude]</kbd></td>
+                                <td><kbd>[cfgeo_latitude]</kbd><?php if($CFGEO['gps']): ?> <i class="badge">(GPS)</i><?php endif; ?></td>
                                 <td><?php echo $CFGEO['latitude']; ?></td>
                             </tr>
                             <tr>
-                                <td><kbd>[cfgeo_longitude]</kbd></td>
+                                <td><kbd>[cfgeo_longitude]</kbd><?php if($CFGEO['gps']): ?> <i class="badge">(GPS)</i><?php endif; ?></td>
 
                                 <td><?php echo $CFGEO['longitude']; ?></td>
                             </tr>
@@ -367,6 +383,18 @@ $CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIO
                             <tr>
                                 <td><kbd>[cfgeo_base_currency_symbol]</kbd></td>
                                 <td><?php echo $CFGEO['base_currency_symbol']; ?></td>
+                            </tr>
+							<tr>
+                                <td><kbd>[cfgeo_is_vat]</kbd></td>
+                                <td><?php echo $CFGEO['is_vat']; ?></td>
+                            </tr>
+							<tr>
+                                <td><kbd>[cfgeo_in_eu]</kbd></td>
+                                <td><?php echo $CFGEO['in_eu']; ?></td>
+                            </tr>
+							<tr>
+                                <td><kbd>[cfgeo_gps]</kbd></td>
+                                <td><?php echo $CFGEO['gps']; ?></td>
                             </tr>
                             <tr>
                                 <td><kbd>[cfgeo_host]</kbd></td>
@@ -408,7 +436,7 @@ $CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIO
                                 <td><kbd>[cfgeo_credit]</kbd></td>
                                 <td><?php echo $CFGEO['credit']; ?></td>
                             </tr>
-                            
+                            <?php do_action('page-cf-geoplugin-beta-shortcode-table-end'); ?>
                         </tbody>
                         <tfoot>
                             <tr>

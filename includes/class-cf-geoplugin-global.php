@@ -130,6 +130,9 @@ class CF_Geoplugin_Global
 	// Display license names
 	public $license_names = array();
 	
+	// Available HTTP codes
+	public $http_codes = array();
+	
 	// Database tables
 	const TABLE = array(
 		'seo_redirection' 	=> 'cf_geo_seo_redirection',
@@ -154,6 +157,18 @@ class CF_Geoplugin_Global
 			self::FREELANCER_LICENSE	=> __('UNLIMITED Freelancer License',CFGP_NAME),
 			self::BUSINESS_LICENSE		=> __('UNLIMITED Business License',CFGP_NAME)
 		);
+		
+		$this->default_options = apply_filters( 'cf_geeoplugin_default_settings', $this->default_options);
+		
+		$this->http_codes = apply_filters( 'cf_geeoplugin_http_codes', array(
+			301 => __( '301 - Moved Permanently', CFGP_NAME ),
+			302 => __( '302 - Found (Moved temporarily)', CFGP_NAME ),
+			303 => __( '303 - See Other', CFGP_NAME ),
+			307 => __( '307 - Temporary Redirect (since HTTP/1.1)', CFGP_NAME ),
+			308 => __( '308 - Permanent Redirect', CFGP_NAME ),
+			404 => __( '404 - Not Found (not recommended)', CFGP_NAME )
+		));
+		
 		if( CFGP_DEV_MODE )
 		{
 			$this->license_names[CF_Geoplugin_Global::DEVELOPER_LICENSE] = __('UNLIMITED Developer License', CFGP_NAME);
@@ -173,6 +188,16 @@ class CF_Geoplugin_Global
 		}
 	
 		return self::$instance;
+	}
+	
+	/**
+	 * Get singleton instance of global class
+	 * @since     7.6.3
+	 */
+	public static function get_http_codes()
+	{
+		$inst = self::get_instance();
+		return $inst->http_codes;
 	}
 	
 	/**
@@ -279,7 +304,7 @@ class CF_Geoplugin_Global
 			}
 		} else {
 			// Return all options if option name is not defined
-			return $options;
+			return apply_filters( 'cf_geeoplugin_settings', $options);
 		}
 	}
 	/*
@@ -624,6 +649,99 @@ class CF_Geoplugin_Global
         }
     }
 	
+	/* 
+	* Generate and clean $_REQUEST
+	* @name          $_REQUEST name
+	* @option        string, int, float, bool, html, encoded, url, email
+	* @default       default value
+	*/
+	public function request($name, $option="string", $default=''){
+        $option = trim((string)$option);
+        if(isset($_REQUEST[$name]) && !empty($_REQUEST[$name]))
+        {           
+            if(is_array($_REQUEST[$name]))
+                $is_array=true;
+            else
+                $is_array=false;
+            
+            if( is_numeric( $option ) || empty( $option ) ) return $default;
+            else $input = $_REQUEST[$name];
+            
+            switch($option)
+            {
+                default:
+                case 'string':
+                case 'html':
+                    if($is_array) return array_map( 'sanitize_text_field', $input );
+                    
+                    return sanitize_text_field( $input );
+                break;
+                case 'encoded':
+                    return (!empty($input)?$input:$default);
+                break;
+				case 'url':
+					if($is_array) return array_map( 'esc_url', $input );
+			
+					return esc_url( $input );
+				break;
+				case 'url_raw':
+					if($is_array) return array_map( 'esc_url_raw', $input );
+		
+					return esc_url_raw( $input );
+				break;
+                case 'email':
+                    if($is_array) return array_map( 'sanitize_email', $input );
+                    
+                    return sanitize_email( $input );
+                break;
+                case 'int':
+                    if($is_array) return array_map( 'absint', $input );
+                    
+                    return absint( $input );
+                break;
+                case 'float':
+					if($is_array) return array_map( 'floatval', $input );
+                    
+                    return floatval( $input );
+                break;
+                case 'bool':
+                    if($is_array) return array_map( 'boolval', $input );
+                    
+                    return boolval( $input );
+				break;
+				case 'html_class':
+					if( $is_array ) return array_map( 'sanitize_html_class', $input );
+
+					return sanitize_html_class( $input );
+				break;
+				case 'title':
+					if( $is_array ) return array_map( 'sanitize_title', $input );
+
+					return sanitize_title( $input );
+				break;
+				case 'user':
+					if( $is_array ) return array_map( 'sanitize_user', $input );
+
+					return sanitize_user( $input );
+				break;
+				case 'no_html':
+					if( $is_array ) return array_map( 'wp_filter_nohtml_kses', $input );
+
+					return wp_filter_nohtml_kses( $input );
+				break;
+				case 'post':
+					if( $is_array ) return array_map( 'wp_filter_post_kses', $input );
+
+					return wp_filter_post_kses( $input );
+				break;
+            }
+        }
+        else
+        {
+            return $default;
+        }
+    }
+	
 	// Get full URL
 	public function full_url($s, $use_forwarded_host = false) {
 		return $this->url_origin($s, $use_forwarded_host) . $s['REQUEST_URI'];
@@ -846,9 +964,9 @@ class CF_Geoplugin_Global
 		{
 			if(stristr(PHP_OS, 'WIN'))
 			{
-				if (version_compare(PHP_VERSION, '5.3.0') >= 0 && function_exists('gethostname'))
+				if (version_compare(PHP_VERSION, '5.3.0', '>=') && function_exists('gethostname'))
 					return gethostbyname(gethostname());
-				else if(version_compare(PHP_VERSION, '5.3.0') < 0 && function_exists('php_uname'))
+				else if(version_compare(PHP_VERSION, '5.3.0', '<') && function_exists('php_uname'))
 					return gethostbyname(php_uname("n"));
 				else
 					return gethostbyname(trim(`hostname`));
@@ -859,9 +977,9 @@ class CF_Geoplugin_Global
 					$ip = shell_exec("/sbin/ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}'");
 					return $ip;
 				}
-				else if (version_compare(PHP_VERSION, '5.3.0') >= 0 && function_exists('gethostname'))
+				else if (version_compare(PHP_VERSION, '5.3.0', '>=') && function_exists('gethostname'))
 					return gethostbyname(gethostname());
-				else if(version_compare(PHP_VERSION, '5.3.0') < 0 && function_exists('php_uname'))
+				else if(version_compare(PHP_VERSION, '5.3.0', '<') && function_exists('php_uname'))
 					return gethostbyname(php_uname("n"));
 				else
 					return gethostbyname(trim(`hostname`));
@@ -954,7 +1072,11 @@ class CF_Geoplugin_Global
 			$_SERVER['REMOTE_ADDR'] = $_SERVER["HTTP_CF_CONNECTING_IP"];
 		}
 		// check any protocols
-		$findIP=array(
+		$findIP=array();
+		if ($this->get_option('enable_cloudflare') && isset($_SERVER["HTTP_CF_CONNECTING_IP"]) && !empty($_SERVER["HTTP_CF_CONNECTING_IP"])) {
+			$findIP[]='HTTP_CF_CONNECTING_IP';
+		}
+		$findIP=array_merge($findIP, array(
 			'HTTP_X_FORWARDED_FOR', // X-Forwarded-For: <client>, <proxy1>, <proxy2> client = client ip address; https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-For
 			'HTTP_FORWARDED_FOR', 
 			'HTTP_FORWARDED', // Forwarded: by=<identifier>; for=<identifier>; host=<host>; proto=<http|https>; https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Forwarded
@@ -962,7 +1084,7 @@ class CF_Geoplugin_Global
 			'HTTP_X_CLUSTER_CLIENT_IP', // Private LAN address
 			'REMOTE_ADDR', // Most reliable way, can be tricked by proxy so check it after proxies
 			'HTTP_CLIENT_IP', // Shared Interner services - Very easy to manipulate and most unreliable way
-		);
+		));
 		// Stop all special-use addresses and blacklisted addresses
 		// IP => RANGE
 		$blacklistIP=$this->ip_blocked( array( $this->ip_server() ) );
@@ -971,6 +1093,8 @@ class CF_Geoplugin_Global
 		
 		foreach($findIP as $http)
 		{
+			if(empty($http)) continue;
+			
 			// Check in $_SERVER
 			if (isset($_SERVER[$http]) && !empty($_SERVER[$http])){
 				$ip=$_SERVER[$http];
@@ -1220,12 +1344,19 @@ class CF_Geoplugin_Global
 			return (preg_match('/(https|ftps)/Ui', $url) !== false);
 		} else if( is_admin() && defined('FORCE_SSL_ADMIN') && FORCE_SSL_ADMIN ===true ) {
 			return true;
-		} else if( (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ||
-			(isset($_SERVER['HTTP_X_FORWARDED_SSL']) && $_SERVER['HTTP_X_FORWARDED_SSL'] == 'on') ||
-			(isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') ||
-			(isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == 443) )
-		{
-			return true;
+		} else {
+			if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on')
+				return true;
+			else if(!empty($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https')
+				return true;
+			else if(!empty($_SERVER['HTTP_X_FORWARDED_SSL']) && $_SERVER['HTTP_X_FORWARDED_SSL'] == 'on')
+				return true;
+			else if(isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == 443)
+				return true;
+			else if(isset($_SERVER['HTTP_X_FORWARDED_PORT']) && $_SERVER['HTTP_X_FORWARDED_PORT'] == 443)
+				return true;
+			else if(isset($_SERVER['REQUEST_SCHEME']) && $_SERVER['REQUEST_SCHEME'] == 'https')
+				return true;
 		}
 		return false;
 	}
@@ -1588,7 +1719,7 @@ class CF_Geoplugin_Global
 	public function generate_token($length=16){
 		if(function_exists('openssl_random_pseudo_bytes') || function_exists('random_bytes'))
 		{
-			if (version_compare(PHP_VERSION, '7.0.0') >= 0)
+			if (version_compare(PHP_VERSION, '7.0.0', '>='))
 				return str_rot13(bin2hex(random_bytes($length)));
 			else
 				return str_rot13(bin2hex(openssl_random_pseudo_bytes($length)));

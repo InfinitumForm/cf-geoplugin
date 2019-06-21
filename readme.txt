@@ -1,11 +1,11 @@
-﻿=== CF Geo Plugin ===
+﻿=== WordPress Geo Plugin ===
 Contributors: ivijanstefan, creativform, ej207
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=creativform@gmail.com
 Tags: geolocation, woocommerce, store-locator, seo, google-maps, geomarketing, content include, content exclude, geo plugin, geo target, geo, geotargeting, geofencing, geotag, cache, rocket
 Requires at least: 3.0
-Tested up to: 5.1
+Tested up to: 5.2
 Requires PHP: 5.6.0
-Stable tag: 7.6.0
+Stable tag: 7.6.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -13,7 +13,7 @@ The only geolocation plugin that provides all geomarketing integrations for the 
 
 == Description ==
 
-**[CF Geo Plugin](https://cfgeoplugin.com/)** is GeoMarketing tool that allows you to have full geo control of your WordPress. **CF Geo Plugin** gives you ability to attach content, geographic informations, geo tags, Google maps to posts, pages, widgets and custom templates by using simple, options shortcodes, PHP code or JavaScript. It also lets you to specify a default geographic location for your entire WordPress blog, do SEO redirection, spam protection, WooCommerce control and many more. **CF Geo Plugin** help you to increase conversion, do better SEO, capture leads on your blog or landing pages.
+**WordPress Geo Plugin** ([CF Geo Plugin](https://cfgeoplugin.com/)) is GeoMarketing tool that allows you to have full geo control of your WordPress. **CF Geo Plugin** gives you ability to attach content, geographic informations, geo tags, Google maps to posts, pages, widgets and custom templates by using simple, options shortcodes, PHP code or JavaScript. It also lets you to specify a default geographic location for your entire WordPress blog, do SEO redirection, spam protection, WooCommerce control and many more. **CF Geo Plugin** help you to increase conversion, do better SEO, capture leads on your blog or landing pages.
 
 = FREE AND PAID SERVICES =
 
@@ -48,6 +48,7 @@ CF Geo Plugin is free by itself but API lookup is limited to **300 lookups per d
 > - **Country Payment Control** for your WooCommerce instalation
 > - **Display local currency**, local symbol or converter
 > - **Use currency converter** to calculate price in local currency
+> - **Use VAT** to check is current country under tax rate
 > 
 > <strong>ANTI SPAM PROTECTION</strong><br>
 > - **Spam protection** from the danger visitors or spammers
@@ -303,20 +304,46 @@ Please inform us if any of these errors occure via contact form on our website [
 
 == Changelog ==
 
-= 7.6.1 = 
-* Added "Redirect Only Once" in page SEO redirection
-* Improved page ID finder
-* Optimized code
-
-= 7.6.0 = 
-* Added attribute "cache" in the shortcodes to fix cache errors in HTML indexing
-* Added new JavaScript cahce API
-* Optimized JavaScript code
-* Optimized PHP code and fixed minior bugs
-* Fixed SEO redirection bug
-* Removed old codes
+= 7.6.6 =
+* Added new plugin filters in teh API
+* Added VAT check
+* Added EU check
+* Added GPS check
+* Removed old filters
+* Fixed small bugs
 
 == Upgrade Notice ==
+
+= 7.6.6 =
+* Added new plugin filters in teh API
+* Added VAT check
+* Added EU check
+* Added GPS check
+* Removed old filters
+* Fixed small bugs
+
+= 7.6.5 =
+* Added new plugin filters
+* Fixed debugging
+* Added support for the featured GPS addon 
+
+= 7.6.4 =
+* Fixed HTTP codes in the SEO redirection
+* Improved PHP and WordPress version comparing
+* Improved lower WP version support
+* Code optimization
+* Improved SSL check
+* Improved CDN call
+* Improved page speed impact
+* Reduced memory usage
+* Improved HTTP response code for the SEO
+
+= 7.6.3 = 
+* Fixed bug in SEO redirection
+* Improved IP filter
+
+= 7.6.2 = 
+* Added new HTTP codes into SEO redirection
 
 = 7.6.1 = 
 * Added "Redirect Only Once" in page SEO redirection

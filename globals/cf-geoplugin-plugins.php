@@ -24,11 +24,11 @@ if( file_exists( CFGP_INCLUDES . '/plugins/woocommerce/woocommerce.php' ) )
 }
 else $debug->save(  'WooCommerce integration not loaded - File does not exists' );
 
-// Include CF_Geoplugin_Wooplatnica integratin
+// Include CF_Geoplugin_Wooplatnica integration
 if( file_exists( CFGP_INCLUDES . '/plugins/wooplatnica/wooplatnica.php' ) )
 {
 	include_once CFGP_INCLUDES . '/plugins/wooplatnica/wooplatnica.php';
-	if( class_exists( 'CF_Geoplugin_Wooplatnica' ) )
+	if( class_exists( 'CF_Geoplugin_Woocommerce' ) && class_exists( 'CF_Geoplugin_Wooplatnica' ) )
 	{
 		new CF_Geoplugin_Wooplatnica;
 		$debug->save( 'Wooplatnica integration loaded' );

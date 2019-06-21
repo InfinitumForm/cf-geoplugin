@@ -5,10 +5,10 @@
  * @package           CF_Geoplugin
  *
  * @wordpress-plugin
- * Plugin Name:       CF Geo Plugin
+ * Plugin Name:       WordPress Geo Plugin
  * Plugin URI:        http://cfgeoplugin.com/
- * Description:       Create Dynamic Content, Banners and Images on Your Website Based On Visitor Geo Location By Using Shortcodes With CF GeoPlugin.
- * Version:           7.6.1
+ * Description:       Create Dynamic Content, Banners and Images on Your Website Based On Visitor Geo Location By Using Shortcodes With CF Geo Plugin.
+ * Version:           7.6.6
  * Author:            Ivijan-Stefan Stipic
  * Author URI:        https://linkedin.com/in/ivijanstefanstipic
  * License:           GPL-2.0+
@@ -56,7 +56,7 @@ if ( ! defined( 'CFGP_LOCAL' ) ) {
 if ( defined( 'WP_DEBUG' ) ){
 	if(WP_DEBUG === true || WP_DEBUG === 1)
 	{
-		define( 'WP_CF_GEO_DEBUG', true );
+		if ( ! defined( 'WP_CF_GEO_DEBUG' ) ) define( 'WP_CF_GEO_DEBUG', true );
 	}
 }
 if ( defined( 'WP_CF_GEO_DEBUG' ) ){
@@ -74,6 +74,8 @@ if ( defined( 'WP_CF_GEO_DEBUG' ) ){
 // First initialization
 $GLOBALS['CFGEO'] = array();
 $GLOBALS['CF_GEOPLUGIN_OPTIONS'] = array();
+// Main website
+if ( ! defined( 'CFGP_STORE' ) )		define( 'CFGP_STORE', 'https://cfgeoplugin.com');
 // Main plugin file
 if ( ! defined( 'CFGP_FILE' ) )			define( 'CFGP_FILE', __FILE__ );
 // Plugin root
@@ -94,8 +96,6 @@ if ( ! defined( 'CFGP_NAME' ) )			define( 'CFGP_NAME', 'cf-geoplugin');
 if ( ! defined( 'CFGP_METABOX' ) )		define( 'CFGP_METABOX', 'cf_geo_metabox_');
 // Plugin session prefix (controlled by version)
 if ( ! defined( 'CFGP_PREFIX' ) )		define( 'CFGP_PREFIX', 'cf_geo_'.preg_replace("/[^0-9]/Ui",'',CFGP_VERSION).'_');
-// Main website
-if ( ! defined( 'CFGP_STORE' ) )		define( 'CFGP_STORE', 'https://cfgeoplugin.com');
 // Timestamp
 if( ! defined( 'CFGP_TIME' ) )			define( 'CFGP_TIME', time() );
 // PHP_VERSION_ID is available as of PHP 5.2.7, if our version is lower than that, then emulate it

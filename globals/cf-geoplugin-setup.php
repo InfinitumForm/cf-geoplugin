@@ -39,7 +39,7 @@ function cf_geoplugin_privacy_policy() {
 		
 		<a href="%s" target="_blank">Learn more about how this works, including what you may want to include in your privacy policy and what is your right</a>.',
         CFGP_NAME ),
-        'https://cfgeoplugin.com/privacy-policy/'
+        CFGP_STORE . '/privacy-policy/'
     );
  
     wp_add_privacy_policy_content(

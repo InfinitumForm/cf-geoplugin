@@ -39,7 +39,7 @@ if(!function_exists('CF_Geoplugin_Session')) :
 		 *
 		 * @author     Ivijan-Stefan Stipic <creativform@gmail.com>
 		 */
-		if (version_compare(PHP_VERSION, '7.0.0') >= 0) {
+		if (version_compare(PHP_VERSION, '7.0.0', '>=')) {
 			if(function_exists('session_status') && session_status() == PHP_SESSION_NONE) {
 				session_start(array(
 				  'cache_limiter' => 'private_no_expire',
@@ -47,7 +47,7 @@ if(!function_exists('CF_Geoplugin_Session')) :
 			   ));
 			}
 		}
-		else if (version_compare(PHP_VERSION, '5.4.0') >= 0)
+		else if (version_compare(PHP_VERSION, '5.4.0', '>=') && version_compare(PHP_VERSION, '7.0.0', '<'))
 		{
 			if (function_exists('session_status') && session_status() == PHP_SESSION_NONE) {
 				session_cache_limiter('private_no_expire');
@@ -57,7 +57,7 @@ if(!function_exists('CF_Geoplugin_Session')) :
 		else
 		{
 			if(session_id() == '') {
-				if(version_compare(PHP_VERSION, '4.0.0') >= 0){
+				if(version_compare(PHP_VERSION, '4.0.0', '>=')){
 					session_cache_limiter('private_no_expire');
 				}
 				session_start();

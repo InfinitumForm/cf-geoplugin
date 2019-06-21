@@ -9,6 +9,8 @@
 if(!class_exists('CF_Geoplugin_Admin')) :
 class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 {
+	private $is_connected = false;
+	
 	// Main CF GeoPlugin Page
 	function page_cf_geoplugin(){
 		if(file_exists(CFGP_ADMIN . '/cf-geoplugin.php'))
@@ -67,10 +69,21 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 		wp_register_style( CFGP_NAME . '-bootstrap', CFGP_ASSETS . '/css/bootstrap.min.css', array(CFGP_NAME . '-bootstrap-reboot'), '4.1.1' );
 		wp_enqueue_style( CFGP_NAME . '-bootstrap' );
 		
-		wp_register_style( CFGP_NAME . '-fontawesome', CFGP_ASSETS . '/css/font-awesome.min.css', array(CFGP_NAME . '-bootstrap-reboot', CFGP_NAME . '-bootstrap'), '4.7.0' );
-		wp_enqueue_style( CFGP_NAME . '-fontawesome' );
+		if(!$this->is_connected)
+			$this->is_connected = parent::is_connected();
 		
-		wp_register_style( CFGP_NAME . '-choosen-style', CFGP_ASSETS . '/js/chosen_v1.8.7/chosen.min.css', array(CFGP_NAME . '-bootstrap-reboot', CFGP_NAME . '-bootstrap',  CFGP_NAME . '-fontawesome'),  '1.8.7' );
+		if($this->is_connected)
+		{
+			wp_register_style( CFGP_NAME . '-fontawesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css', array(CFGP_NAME . '-bootstrap-reboot', CFGP_NAME . '-bootstrap'), '4.7.0' );
+			wp_register_style( CFGP_NAME . '-choosen-style', 'https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.min.css', array(CFGP_NAME . '-bootstrap-reboot', CFGP_NAME . '-bootstrap',  CFGP_NAME . '-fontawesome'),  '1.8.7' );
+		}
+		else
+		{
+			wp_register_style( CFGP_NAME . '-fontawesome', CFGP_ASSETS . '/css/font-awesome.min.css', array(CFGP_NAME . '-bootstrap-reboot', CFGP_NAME . '-bootstrap'), '4.7.0' );
+			wp_register_style( CFGP_NAME . '-choosen-style', CFGP_ASSETS . '/js/chosen_v1.8.7/chosen.min.css', array(CFGP_NAME . '-bootstrap-reboot', CFGP_NAME . '-bootstrap',  CFGP_NAME . '-fontawesome'),  '1.8.7' );
+		}
+		
+		wp_enqueue_style( CFGP_NAME . '-fontawesome' );
 		wp_enqueue_style( CFGP_NAME . '-choosen-style' );
 		
 		wp_register_style( CFGP_NAME . '-style', CFGP_ASSETS . '/css/cf-geoplugin.css', array(CFGP_NAME . '-bootstrap-reboot', CFGP_NAME . '-bootstrap',  CFGP_NAME . '-fontawesome', CFGP_NAME . '-choosen-style'), CFGP_VERSION );
@@ -102,14 +115,25 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 		//$this->add_action('admin_head', 'custom_javascript', 10);
 
 		if(!$this->limit_scripts($page)) return false;
+		
+		if(!$this->is_connected)
+			$this->is_connected = parent::is_connected();
+		
+		if($this->is_connected)
+		{
+			wp_register_script(  CFGP_NAME . '-popper', 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js', array('jquery'), '1.14.7' );
+			wp_register_script( CFGP_NAME . '-choosen', 'https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.jquery.min.js', array('jquery', CFGP_NAME . '-popper', CFGP_NAME . '-bootstrap'), '1.8.7', true );
+			wp_register_script(  CFGP_NAME . '-bootstrap', 'https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js', array('jquery', CFGP_NAME . '-popper'), '4.1.1' );
+		}
+		else
+		{
+			wp_register_script(  CFGP_NAME . '-popper', CFGP_ASSETS . '/js/popper.min.js', array('jquery'), '4.1.1' );
+			wp_register_script( CFGP_NAME . '-choosen', CFGP_ASSETS . '/js/chosen_v1.8.7/chosen.jquery.min.js', array('jquery', CFGP_NAME . '-popper', CFGP_NAME . '-bootstrap'), '1.8.7', true );
+			wp_register_script(  CFGP_NAME . '-bootstrap', CFGP_ASSETS . '/js/bootstrap.min.js', array('jquery', CFGP_NAME . '-popper'), '4.1.1' );
+		}
 
-		wp_register_script(  CFGP_NAME . '-popper', CFGP_ASSETS . '/js/popper.min.js', array('jquery'), '4.1.1' );
 		wp_enqueue_script(  CFGP_NAME . '-popper' );
-		
-		wp_register_script(  CFGP_NAME . '-bootstrap', CFGP_ASSETS . '/js/bootstrap.min.js', array('jquery', CFGP_NAME . '-popper'), '4.1.1' );
 		wp_enqueue_script(  CFGP_NAME . '-bootstrap' );
-		
-		wp_register_script( CFGP_NAME . '-choosen', CFGP_ASSETS . '/js/chosen_v1.8.7/chosen.jquery.min.js', array('jquery', CFGP_NAME . '-popper', CFGP_NAME . '-bootstrap'), '1.8.7', true );
 		wp_enqueue_script( CFGP_NAME . '-choosen' );
 		
 		wp_register_script(  CFGP_NAME . '-admin', CFGP_ASSETS . '/js/cfgeoplugin.js', array('jquery', CFGP_NAME . '-popper', CFGP_NAME . '-bootstrap',  CFGP_NAME . '-choosen'), CFGP_VERSION, true );
@@ -309,7 +333,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 	public function plugin_setting_page( $links ) {
 		$mylinks = array( 
 			'settings'	=> sprintf( '<a href="' . self_admin_url( 'admin.php?page=' . CFGP_NAME . '-settings' ) . '"><b>%s</b></a>', esc_html__( 'Settings', CFGP_NAME ) ), 
-			'documentation' => sprintf( '<i class="fa fa-book"></i> <a href="%s" target="_blank" rel="noopener noreferrer">%s</a>', esc_url( 'https://cfgeoplugin.com/documentation/' ), esc_html__( 'Documentation', CFGP_NAME ) ),
+			'documentation' => sprintf( '<i class="fa fa-book"></i> <a href="%s" target="_blank" rel="noopener noreferrer">%s</a>', esc_url( CFGP_STORE . '/documentation/' ), esc_html__( 'Documentation', CFGP_NAME ) ),
 		);
 
 		return array_merge( $links, $mylinks );
@@ -321,7 +345,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 		if( plugin_basename( CFGP_FILE ) == $file )
 		{
 			$row_meta = array(
-				'cfgp_faq' => sprintf( '<a href="%s" target="_blank" rel="noopener noreferrer">%s</a>', esc_url( 'https://cfgeoplugin.com/faq/' ), esc_html__( 'FAQ', CFGP_NAME ) ),
+				'cfgp_faq' => sprintf( '<a href="%s" target="_blank" rel="noopener noreferrer">%s</a>', esc_url( CFGP_STORE . '/faq/' ), esc_html__( 'FAQ', CFGP_NAME ) ),
 				'cfgp_donate' => sprintf( '<a href="%s" target="_blank" rel="noopener noreferrer">%s</a>', esc_url( 'https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=creativform@gmail.com' ), esc_html__( 'Donate', CFGP_NAME ) ),
 				'cfgp_vote'	=> sprintf( '<a href="%s" target="_blank" rel="noopener noreferrer">%s</a>', esc_url( 'https://wordpress.org/support/plugin/cf-geoplugin/reviews/?filter=5' ), esc_html__( 'Vote', CFGP_NAME ) )
 			);
@@ -389,7 +413,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 	public function cf_geo_rss_feed()
 	{		
 		include CFGP_INCLUDES . '/class-cf-geoplugin-xml.php';
-		$xml= new parseXML('https://cfgeoplugin.com/feed/', true);
+		$xml= new parseXML(CFGP_STORE . '/feed/', true);
 		if(isset($xml->fetch) && isset($xml->fetch->channel) && isset($xml->fetch->channel->item) && count($xml->fetch->channel->item)>0)
 		{
 			$items = $xml->fetch->channel->item;
@@ -492,7 +516,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 			'action'		=> $this->post( 'cf_geo_redirect_action' )
 		);
 
-		$table_name = self::TABLE['seo_redirection'];
+		$table_name = parent::TABLE['seo_redirection'];
 		if( $data['action'] === 'add-new' )
 		{
 			$result = $wpdb->insert(
@@ -760,7 +784,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 			wp_send_json( $result );
 		}
 
-		$table_name = $wpdb->prefix . self::TABLE['seo_redirection'];
+		$table_name = $wpdb->prefix . parent::TABLE['seo_redirection'];
 		$wpdb->query( "TRUNCATE TABLE {$table_name};");
 
 		foreach( $query_data as $queries )
@@ -802,7 +826,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 			// IF we can open and read the file
 			if (($handle = fopen($filename, "r")) !== FALSE) {
 				global $wpdb;
-				$table_name = $wpdb->prefix . self::TABLE['seo_redirection'];
+				$table_name = $wpdb->prefix . parent::TABLE['seo_redirection'];
 				$i = 0;
 				$chunk = $offset;
 				
@@ -861,7 +885,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 			{
 				global $wpdb;
 
-				$table_name = $wpdb->prefix . self::TABLE['seo_redirection'];
+				$table_name = $wpdb->prefix . parent::TABLE['seo_redirection'];
 				$results = $wpdb->get_results(
 					"
 						SELECT country, region, city, url, http_code, active
@@ -877,19 +901,25 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 					}
 					$content = ob_get_clean();
 					$file = 'cfgeo_seo_export_' . date('d-m-Y') . '-' . date('h:i:sa') . '.csv';
-					header('Content-Description: File Transfer');
-					header('Content-Encoding: UTF-8');
-					header('Content-type: text/csv; charset=UTF-8');
-					header('Content-Disposition: attachment; filename='.$file);
-					header('Content-Transfer-Encoding: binary');
-					header('Expires: 0');
+					
 					if(!$CF_GEOPLUGIN_OPTIONS['enable_cache'])
 					{
-						header('Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0');
-						header('Expires: Sat, 26 Jul 1997 05:00:00 GMT');
+						// disable caching
+						$now = gmdate("D, d M Y H:i:s");
+						header("Expires: Tue, 03 Jul 2001 06:00:00 GMT");
+						header("Cache-Control: max-age=0, post-check=0, pre-check=0, no-cache, must-revalidate, proxy-revalidate");
+						header("Last-Modified: {$now} GMT");
+						header('Pragma: public');
 					}
-					else header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-					header('Pragma: public');
+				
+					// force download 
+					header('Content-Description: File Transfer');
+					header('Content-Encoding: UTF-8');
+					header('Content-Type: text/csv; charset=UTF-8');
+					
+					header('Content-Disposition: attachment; filename='.$file);
+					header('Content-Transfer-Encoding: binary');
+
 					$content = mb_convert_encoding($content, 'UTF-16LE', 'UTF-8');
 					$content = stripcslashes($content);
 					echo $content;
@@ -902,7 +932,10 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 	// Dashboard widgets
 	public function cf_geoplugin_dashboard_widgets()
 	{
-		if( !$this->is_connected() ) return false; // When user doesn't have connection prevent API call errors
+		if(!$this->is_connected)
+			$this->is_connected = parent::is_connected();
+		
+		if(!$this->is_connected) return false; // When user doesn't have connection prevent API call errors
 
 		wp_add_dashboard_widget(
 			CFGP_NAME . '-admin-status', 
@@ -914,7 +947,10 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 	// Geoplugin admin stats dashboard callback
 	public function cf_geoplugin_dashboard_callback()
 	{
-		if( !$this->is_connected() ) return false; // When user doesn't have connection prevent API call errors
+		if(!$this->is_connected)
+			$this->is_connected = parent::is_connected();
+		
+		if(!$this->is_connected) return false; // When user doesn't have connection prevent API call errors
 
 		wp_register_style( CFGP_NAME . '-dashboard-style', CFGP_ASSETS . '/css/cf-geoplugin-dashboard.css', array('dashboard'), CFGP_VERSION );
 		wp_enqueue_style( CFGP_NAME . '-dashboard-style' );
@@ -1010,8 +1046,11 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 		<?php
 	}
 	
-	function rv_custom_dashboard_widget() {
-		if( !$this->is_connected() ) return false; // When user doesn't have connection prevent API call errors
+	public function rv_custom_dashboard_widget() {
+		if(!$this->is_connected)
+			$this->is_connected = parent::is_connected();
+		
+		if(!$this->is_connected) return false; // When user doesn't have connection prevent API call errors
 
 		// Bail if not viewing the main dashboard page
 		if ( get_current_screen()->base !== 'dashboard' ) {
@@ -1137,7 +1176,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 						<a href="https://infinitumform.com" target="_blank" title="INFINITUM FORM - Specialized agency for web development, graphic design, marketing and PR" rel="author">Created by INFINITUM FORM®</a>
 					</div>
 					<div class="welcome-panel-column" style="text-align:right">
-						<a href="https://cfgeoplugin.com/#price" target="_blank"><?php _e( 'Pricing', CFGP_NAME ); ?></a> | <a href="https://cfgeoplugin.com/documentation/" target="_blank"><?php _e( 'Documentation', CFGP_NAME ); ?></a> | <a href="https://cfgeoplugin.com/faq/" target="_blank"><?php _e( 'FAQ', CFGP_NAME ); ?></a> | <a href="https://cfgeoplugin.com/privacy-policy/" target="_blank"><?php _e( 'Privacy Policy', CFGP_NAME ); ?></a> | <a href="<?php echo self_admin_url( 'admin.php?page=' . CFGP_NAME . '-settings'); ?>"><?php _e( 'Settings', CFGP_NAME ); ?></a>
+						<a href="<?php echo CFGP_STORE; ?>/pricing/" target="_blank"><?php _e( 'Pricing', CFGP_NAME ); ?></a> | <a href="<?php echo CFGP_STORE; ?>/documentation/" target="_blank"><?php _e( 'Documentation', CFGP_NAME ); ?></a> | <a href="<?php echo CFGP_STORE; ?>/faq/" target="_blank"><?php _e( 'FAQ', CFGP_NAME ); ?></a> | <a href="<?php echo CFGP_STORE; ?>/privacy-policy/" target="_blank"><?php _e( 'Privacy Policy', CFGP_NAME ); ?></a> | <a href="<?php echo self_admin_url( 'admin.php?page=' . CFGP_NAME . '-settings'); ?>"><?php _e( 'Settings', CFGP_NAME ); ?></a>
 					</div>
 				</div>
 			</div>

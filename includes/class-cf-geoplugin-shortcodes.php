@@ -486,6 +486,7 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 		$attributes[]='data-scrollwheel="'.esc_attr($att->scrollwheel).'"';
 		$attributes[]='data-lat="'.esc_attr(!empty($att->lat)?$att->lat:$att->latitude).'"';
 		$attributes[]='data-lng="'.esc_attr(!empty($att->lng)?$att->lng:$att->longitude).'"';
+		
 		if(!empty($att->title))		$attributes[]='data-title="'.esc_attr($att->title).'"';
 		if(!empty($att->address))	$attributes[]='data-address="'.esc_attr($att->address).'"';
 		if(!empty($att->pointer))	$attributes[]='data-pointer="'.esc_attr($att->pointer).'"';
