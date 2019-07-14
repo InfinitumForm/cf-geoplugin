@@ -16,7 +16,7 @@ class CF_Geoplugin_Locale {
 
   public static function country2locale($code) {
     # http://wiki.openstreetmap.org/wiki/Nominatim/Country_Codes
-    $arr = apply_filters( 'cf_geeoplugin_country_to_locale', array(
+    $arr = apply_filters( 'cf_geoplugin_country_to_locale', array(
       'ad' => 'ca',
       'ae' => 'ar',
       'af' => 'fa,ps',

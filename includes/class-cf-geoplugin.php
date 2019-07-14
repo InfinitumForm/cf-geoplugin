@@ -25,13 +25,14 @@ class CF_Geoplugin_Init extends CF_Geoplugin_Global
 				$this->add_action( 'plugins_loaded', 'cron_jobs' );
 			}
 		}
-		elseif( wp_next_scheduled( 'cfgp_auto_update' ) !== false )
+		else if( wp_next_scheduled( 'cfgp_auto_update' ) !== false )
 		{
 			$time = wp_next_scheduled( 'cfgp_auto_update' );
 			wp_unschedule_event( $time, 'cfgp_auto_update' );
 		}
 		
 		CF_Geoplugin_Debug::log( '------------ LOADING ALL CLASSES ------------' );
+		
 		// Include admin pages
 		if(file_exists(CFGP_INCLUDES . '/class-cf-geoplugin-admin.php'))
 		{
@@ -43,6 +44,7 @@ class CF_Geoplugin_Init extends CF_Geoplugin_Global
 			else CF_Geoplugin_Debug::log( 'Admin class not loaded - Class does not exists' );
 		}
 		else CF_Geoplugin_Debug::log( 'Admin class not loaded - File does not exists' );
+		
 		// Include REST
 		if( file_exists( CFGP_INCLUDES . '/class-cf-geoplugin-rest.php' ) )
 		{
@@ -64,6 +66,7 @@ class CF_Geoplugin_Init extends CF_Geoplugin_Global
 			CF_Geoplugin_Debug::log( 'Library included' );
 		}
 		else CF_Geoplugin_Debug::log( 'Library not included - Files does not exists' );
+		
 		// Include API services for the CF GeoPlugin
 		if(file_exists(CFGP_INCLUDES . '/class-cf-geoplugin-api.php'))
 		{
@@ -81,12 +84,14 @@ class CF_Geoplugin_Init extends CF_Geoplugin_Global
 			else CF_Geoplugin_Debug::log( 'API class not loaded - Class does not exists' );
 		}
 		else CF_Geoplugin_Debug::log( 'API class not loaded - File does not exists' );
+		
 		// Allow developers to use plugin data inside PHP
 		if( file_exists( CFGP_ROOT . '/globals/cf-geoplugin-api.php' ) )
 		{
 			include CFGP_ROOT . '/globals/cf-geoplugin-api.php';
 		}
 		else CF_Geoplugin_Debug::log( 'CF Geoplugin class not loaded - File does not exists' );
+		
 		// Include Notifications
 		if( file_exists( CFGP_INCLUDES . '/class-cf-geoplugin-notifications.php' ) )
 		{
@@ -115,6 +120,7 @@ class CF_Geoplugin_Init extends CF_Geoplugin_Global
 				else CF_Geoplugin_Debug::log( 'Public class not loaded - Class does not exists' );
 			}
 			else CF_Geoplugin_Debug::log( 'Public class not loaded - File does not exists' );
+			
 			// Include Shortcodes
 			if( file_exists( CFGP_INCLUDES . '/class-cf-geoplugin-shortcodes.php' ) )
 			{
@@ -128,6 +134,7 @@ class CF_Geoplugin_Init extends CF_Geoplugin_Global
 				else CF_Geoplugin_Debug::log( 'Shortcodes class not loaded - Class does not exists' );
 			}
 			else CF_Geoplugin_Debug::log( 'Shortcodes class not loaded - File does not exists' );
+			
 			// Include Texteditor Buttons
 			if(file_exists(CFGP_INCLUDES . '/class-cf-geoplugin-texteditor-buttons.php'))
 			{
@@ -139,6 +146,7 @@ class CF_Geoplugin_Init extends CF_Geoplugin_Global
 				else CF_Geoplugin_Debug::log( 'Texteditor buttons class not loaded - Class does not exists' );
 			}
 			else CF_Geoplugin_Debug::log( 'Texteditor buttons class not loaded - File does not exists' );
+			
 			// Include Geo Banner
 			if( file_exists( CFGP_INCLUDES . '/class-cf-geoplugin-banner.php' ) )
 			{
@@ -151,6 +159,7 @@ class CF_Geoplugin_Init extends CF_Geoplugin_Global
 				else CF_Geoplugin_Debug::log( 'Banner class not loaded - Class does not exists' );
 			}
 			else CF_Geoplugin_Debug::log( 'Banner class not loaded - File does not exists' );
+			
 			// Include Meta Boxes
 			if( file_exists( CFGP_INCLUDES . '/class-cf-geoplugin-metabox.php' ) )
 			{
@@ -163,6 +172,7 @@ class CF_Geoplugin_Init extends CF_Geoplugin_Global
 				else CF_Geoplugin_Debug::log( 'Metabox class not loaded - Class does not exists' );
 			}
 			else CF_Geoplugin_Debug::log( 'Metabox class not loaded - File does not exists' );
+			
 			// Include SEO Redirection
 			if( file_exists( CFGP_INCLUDES . '/class-cf-geoplugin-seo-redirection.php' ) )
 			{

@@ -107,7 +107,7 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
 		else
 			$this->option=array_merge($option, $options);
 		
-		return apply_filters( 'cf_geeoplugin_api_response', $this->render(), $this->fields );
+		return apply_filters( 'cf_geoplugin_api_response', $this->render(), $this->fields );
 	}
 	
 	/**
@@ -168,7 +168,7 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
 				}
 			}
 			
-			return apply_filters( 'cf_geeoplugin_api_render_response', array(
+			return apply_filters( 'cf_geoplugin_api_render_response', array(
                 'ip' => $geodata->ipAddress,
                 'ip_version' => $ipv,
                 'ip_dns' => $provider->dns,
@@ -254,7 +254,7 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
 		{
 			$_SESSION[CFGP_PREFIX . 'api_session']['currentTime'] = date('H:i:s', CFGP_TIME);
 			$_SESSION[CFGP_PREFIX . 'api_session']['currentDate'] = date('F j, Y', CFGP_TIME);
-			return (object)apply_filters('cf_geeoplugin_api_get_geodata', $_SESSION[CFGP_PREFIX . 'api_session']);
+			return (object)apply_filters('cf_geoplugin_api_get_geodata', $_SESSION[CFGP_PREFIX . 'api_session']);
 		}
 	
 		$api = get_option('cf_geo_defender_api_key');
@@ -296,7 +296,7 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
 				$return = json_decode($return, true);
 				if (is_array($return)) $result = array_merge($result, $return);
 				
-				$result = apply_filters('cf_geeoplugin_api_get_geodata', $result);
+				$result = apply_filters('cf_geoplugin_api_get_geodata', $result);
 				
 				if (isset($_SERVER["HTTP_CF_IPCOUNTRY"]) && $CF_GEOPLUGIN_OPTIONS['enable_cloudflare']) {
 					$result['countryCode'] = $_SERVER["HTTP_CF_IPCOUNTRY"];
@@ -319,7 +319,7 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
 					$return = json_decode($return, true);
 					if (is_array($return)) $result = array_merge($result, $return);
 					
-					$result = apply_filters('cf_geeoplugin_api_get_geodata', $result);
+					$result = apply_filters('cf_geoplugin_api_get_geodata', $result);
 					
 					if (isset($_SERVER["HTTP_CF_IPCOUNTRY"]) && $CF_GEOPLUGIN_OPTIONS['enable_cloudflare']) {
 						$result['countryCode'] = $_SERVER["HTTP_CF_IPCOUNTRY"];
@@ -364,7 +364,7 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
 			
 			if (isset($_SESSION[CFGP_PREFIX . 'api_dns_session']) && isset($_SESSION[CFGP_PREFIX . 'api_dns_session']['ip']) && $_SESSION[CFGP_PREFIX . 'api_dns_session']['ip'] == $ip && $this->option['debug'] === false)
 			{
-				return (object)apply_filters('cf_geeoplugin_api_get_dns', $_SESSION[CFGP_PREFIX . 'api_dns_session']);
+				return (object)apply_filters('cf_geoplugin_api_get_dns', $_SESSION[CFGP_PREFIX . 'api_dns_session']);
 			}
 
 			$urlReplace = array_map("rawurlencode", array(
@@ -402,7 +402,7 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
 				}
 			}
 			
-			$return = apply_filters('cf_geeoplugin_api_get_dns', $return);
+			$return = apply_filters('cf_geoplugin_api_get_dns', $return);
 
 			if($this->option['debug'] === false) $_SESSION[CFGP_PREFIX . 'api_dns_session'] = $return;
 		}

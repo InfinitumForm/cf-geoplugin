@@ -407,12 +407,13 @@ if( $global->get( 'action' ) == 'deactivate_license' )
 									)
 								));
 
-								$post_types = get_post_types(
+								$post_types = apply_filters( 'cf_geoplugin_post_types', get_post_types(
 									array(
 										'public'	=> true,
 									),
 									'objects'
-								);
+								));
+								$post_types = apply_filters( 'cf_geoplugin_seo_redirection_post_types', $post_types);
 
 								$first_seo_options = array();
 									
@@ -495,13 +496,13 @@ if( $global->get( 'action' ) == 'deactivate_license' )
 								$general->html('<p>'.__( 'The Geo Tag will help you to create your own geo tags in a simple interactive way without having to deal with latitude or longitude degrees or the syntax of meta tags.' ).'</p>');
 								$general->html('<p>'.__( 'Here you can enable Geo Tag generators inside any post type on the your WordPress website.' ).'</p><hr>');
 
-								$post_types_geo = get_post_types(
+								$post_types_geo = apply_filters( 'cf_geoplugin_post_types', get_post_types(
 									array(
 										'public'	=> true,
 									),
 									'objects'
-								);
-								
+								));
+								$post_types_geo = apply_filters( 'cf_geoplugin_geo_tag_post_types', $post_types_geo);
 
 								$default_value_geo = isset( $CF_GEOPLUGIN_OPTIONS['enable_geo_tag'] ) ? $CF_GEOPLUGIN_OPTIONS['enable_geo_tag'] : '';
 								foreach( $post_types_geo as $i => $obj )

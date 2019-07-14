@@ -163,7 +163,7 @@ class CF_Geoplugin_REST extends CF_Geoplugin_Global {
 						
 						$CFGEO = $GP->run($pharam);
 						
-						$remove = apply_filters( 'cf_geeoplugin_rest_remove_values', array(
+						$remove = apply_filters( 'cf_geoplugin_rest_remove_values', array(
 							'status',
 							'lookup',
 							'version',

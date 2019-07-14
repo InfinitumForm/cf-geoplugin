@@ -158,9 +158,9 @@ class CF_Geoplugin_Global
 			self::BUSINESS_LICENSE		=> __('UNLIMITED Business License',CFGP_NAME)
 		);
 		
-		$this->default_options = apply_filters( 'cf_geeoplugin_default_settings', $this->default_options);
+		$this->default_options = apply_filters( 'cf_geoplugin_default_settings', $this->default_options);
 		
-		$this->http_codes = apply_filters( 'cf_geeoplugin_http_codes', array(
+		$this->http_codes = apply_filters( 'cf_geoplugin_http_codes', array(
 			301 => __( '301 - Moved Permanently', CFGP_NAME ),
 			302 => __( '302 - Found (Moved temporarily)', CFGP_NAME ),
 			303 => __( '303 - See Other', CFGP_NAME ),
@@ -304,7 +304,7 @@ class CF_Geoplugin_Global
 			}
 		} else {
 			// Return all options if option name is not defined
-			return apply_filters( 'cf_geeoplugin_settings', $options);
+			return apply_filters( 'cf_geoplugin_settings', $options);
 		}
 	}
 	/*

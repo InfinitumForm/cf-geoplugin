@@ -119,8 +119,10 @@ Class CF_Geoplugin_Banner extends CF_Geoplugin_Global
 				'use_featured_image'		=> __('Use Banner Image',CFGP_NAME),
 				'insert_into_item'		=> __('Insert Into Banner',CFGP_NAME)
 			),
-			'public'            	=> false,	'exclude_from_search' => true,
-			'publicly_queryable'	=> false, 'show_in_nav_menus'   => false,
+			'public'            	=> true,
+			'exclude_from_search' => true,
+			'publicly_queryable'	=> false, 
+			'show_in_nav_menus'   => false,
 			'show_ui'           	=> $enable_banner ? true : false,
 			'query_var'         	=> true,
 			'rewrite'           	=> array( 'slug' => 'banner' ),
@@ -128,7 +130,7 @@ Class CF_Geoplugin_Banner extends CF_Geoplugin_Global
 			'menu_position'     	=> 100,
 			'capability_type'   	=> "post",
 			'supports'          	=> array( 'title', 'editor', /*'thumbnail',*/ 'tags' ),
-			//'menu_icon'         	=> plugin_dir_url( dirname( __FILE__ ) ) . 'admin/images/cf-geo-banner-25x25.png'
+		//	'menu_icon'         	=> plugin_dir_url( dirname( __FILE__ ) ) . 'admin/images/cf-geo-banner-25x25.png',
 			'menu_icon' 			=> 'dashicons-pressthis',
 			'show_in_menu'			=> false
 		);

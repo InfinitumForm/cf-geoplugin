@@ -1,5 +1,11 @@
 == Changelog ==
 
+= 7.6.7 =
+* Added Monarch plugin support
+* Fixed plugin support includings
+* Optimized code
+* Improved session
+
 = 7.6.6 =
 * Added new plugin filters in teh API
 * Added VAT check

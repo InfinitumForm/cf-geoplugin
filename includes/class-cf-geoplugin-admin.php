@@ -1213,9 +1213,9 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 	function __construct(){
 		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
 		
-		$this->add_action( 'init', 'load_javascripts' );
-		$this->add_action( 'init', 'load_style' );
-		$this->add_action( 'init', 'export_seo_csv' );
+		$this->add_action( 'admin_init', 'load_javascripts' );
+		$this->add_action( 'admin_init', 'load_style' );
+		$this->add_action( 'admin_init', 'export_seo_csv' );
 		$this->add_action( 'admin_init', 'plugin_custom_menu_class' );
 		
 		if(CFGP_MULTISITE) $this->add_action( "network_admin_menu", 'add_cf_geoplugin' );

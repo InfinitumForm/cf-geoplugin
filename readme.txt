@@ -5,7 +5,7 @@ Tags: geolocation, woocommerce, store-locator, seo, google-maps, geomarketing, c
 Requires at least: 3.0
 Tested up to: 5.2
 Requires PHP: 5.6.0
-Stable tag: 7.6.6
+Stable tag: 7.6.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -64,7 +64,14 @@ CF Geo Plugin is free by itself but API lookup is limited to **300 lookups per d
 
 = Compatibility =
 
-This plugin is compatible with any Wordpress installation, also compatible with *[Contact Form 7](https://wordpress.org/plugins/contact-form-7/)*, *[WooCommerce](https://woocommerce.com/)*, *[Nord VPN proxy service](https://goo.gl/lWm3e6)* and support *[Cloudflare](https://www.cloudflare.com/)*.
+This plugin is compatible with any Wordpress installation and many available plugins. We also do special compatible functions with:
+
+* [WooCommerce](https://woocommerce.com/) (payment controlls & currency converter)
+* [Wooplatnica](https://wordpress.org/plugins/wooplatnica/) (currency converter)
+* [Monarch](https://www.elegantthemes.com/plugins/monarch/) (Geo Banner support)
+* [Cloudflare](https://www.cloudflare.com/) (Cache and deep IP recognations)
+* [Contact Form 7](https://wordpress.org/plugins/contact-form-7/) (JavaScript objects and shortcode support)
+* [Nord VPN proxy service](https://goo.gl/lWm3e6) (PROXY settings)
 
 > <strong>All CF Geo Plugin 7.x.x Features</strong><br>
 >
@@ -304,15 +311,19 @@ Please inform us if any of these errors occure via contact form on our website [
 
 == Changelog ==
 
-= 7.6.6 =
-* Added new plugin filters in teh API
-* Added VAT check
-* Added EU check
-* Added GPS check
-* Removed old filters
-* Fixed small bugs
+= 7.6.7 =
+* Added Monarch plugin support
+* Fixed plugin support includings
+* Optimized code
+* Improved session
 
 == Upgrade Notice ==
+
+= 7.6.7 =
+* Added Monarch plugin support
+* Fixed plugin support includings
+* Optimized code
+* Improved session
 
 = 7.6.6 =
 * Added new plugin filters in teh API

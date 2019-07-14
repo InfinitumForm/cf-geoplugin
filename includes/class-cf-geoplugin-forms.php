@@ -16,7 +16,7 @@ class CF_Geoplugin_Form extends CF_Geoplugin_Global
 
 	function input( $arguments ){
 		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
-		$attr = apply_filters( 'cf_geeoplugin_form_input_arguments', array_merge(
+		$attr = apply_filters( 'cf_geoplugin_form_input_arguments', array_merge(
 			array(
 				'label'				=> 'Input ' . $this->tabindex,
 				'name'				=> '',
@@ -85,7 +85,7 @@ class CF_Geoplugin_Form extends CF_Geoplugin_Global
 	
 	function radio( $arguments ){
 		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
-		$attr = apply_filters( 'cf_geeoplugin_form_radio_arguments', array_merge(
+		$attr = apply_filters( 'cf_geoplugin_form_radio_arguments', array_merge(
 			array(
 				'label'				=> 'Input ' . $this->tabindex,
 				'label_class' 		=> '',
@@ -167,7 +167,7 @@ class CF_Geoplugin_Form extends CF_Geoplugin_Global
 	
 	function checkbox( $arguments ){
 		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
-		$attr = apply_filters( 'cf_geeoplugin_form_checkbox_arguments', array_merge(
+		$attr = apply_filters( 'cf_geoplugin_form_checkbox_arguments', array_merge(
 			array(
 				'label'				=> 'Input ' . $this->tabindex,
 				'label_class' 		=> '',
@@ -251,7 +251,7 @@ class CF_Geoplugin_Form extends CF_Geoplugin_Global
 	
 	function select( $arguments ){
 		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
-		$attr = apply_filters( 'cf_geeoplugin_form_select_arguments', array_merge(
+		$attr = apply_filters( 'cf_geoplugin_form_select_arguments', array_merge(
 			array(
 				'label'				=> 'Input ' . $this->tabindex,
 				'label_class' 		=> '',
@@ -329,7 +329,7 @@ class CF_Geoplugin_Form extends CF_Geoplugin_Global
 	
 	function textarea( $arguments ){
 		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
-		$attr = apply_filters( 'cf_geeoplugin_form_textarea_arguments', array_merge(
+		$attr = apply_filters( 'cf_geoplugin_form_textarea_arguments', array_merge(
 			array(
 				'label'				=> 'Textarea ' . $this->tabindex,
 				'name'				=> '',
@@ -409,7 +409,7 @@ class CF_Geoplugin_Form extends CF_Geoplugin_Global
 			),
 			$arguments
 		);
-		$attr = apply_filters( 'cf_geeoplugin_form_attributes', array_filter($attr), $this);
+		$attr = apply_filters( 'cf_geoplugin_form_attributes', array_filter($attr), $this);
 		
 		$fields = array();
 		foreach($attr as $a => $v){
@@ -420,7 +420,7 @@ class CF_Geoplugin_Form extends CF_Geoplugin_Global
 			'<form %1$s>%2$s</form>',
 			join(' ', $fields),
 			join("\r\n", apply_filters(
-				'cf_geeoplugin_form_items',
+				'cf_geoplugin_form_items',
 				$this->form_fields,
 				$this
 			))
