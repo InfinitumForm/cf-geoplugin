@@ -5,7 +5,7 @@ Tags: geolocation, woocommerce, store-locator, seo, google-maps, geomarketing, c
 Requires at least: 3.0
 Tested up to: 5.2
 Requires PHP: 5.6.0
-Stable tag: 7.6.9
+Stable tag: 7.7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -311,14 +311,13 @@ Please inform us if any of these errors occure via contact form on our website [
 
 == Changelog ==
 
-= 7.6.9 =
-* Added "only once" redirection to globl SEO redirection
-* Fixed CSV file upload and reading
-* Added Microsoft Excell CSV support
-* Fixed bugs
-* Improved code orientation
+= 7.7.0 =
+* Fixed database error on the plugin activation
 
 == Upgrade Notice ==
+
+= 7.7.0 =
+* Fixed database error on the plugin activation
 
 = 7.6.9 =
 * Added "only once" redirection to globl SEO redirection

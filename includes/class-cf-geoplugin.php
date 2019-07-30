@@ -351,6 +351,20 @@ class CF_Geoplugin_Init extends CF_Geoplugin_Global
 		// Create table for SEO redirections
 		$table_name = $wpdb->prefix . self::TABLE['seo_redirection'];
 		$charset_collate = $wpdb->get_charset_collate();
+		
+		// Add new column to database IF NOT EXISTS
+		if($wpdb->query("
+			   SELECT 1 FROM information_schema.tables 
+			   WHERE table_schema = '{$wpdb->dbname}' 
+			   AND table_name = '{$table_name}'
+		;"))
+		{
+			$list_columns = $wpdb->get_col("SHOW COLUMNS FROM {$table_name}");
+			if(!in_array('only_once', $list_columns))
+			{
+				$wpdb->query( "ALTER TABLE {$table_name} ADD only_once TINYINT(1) NOT NULL DEFAULT 0" );
+			}
+		}
 
 		$sql1 = "
 			CREATE TABLE IF NOT EXISTS {$table_name} (
@@ -369,14 +383,8 @@ class CF_Geoplugin_Init extends CF_Geoplugin_Global
 
 		// Require dbDelta to create/update table
 		if( !function_exists( 'dbDelta' ) ) include ABSPATH . 'wp-admin/includes/upgrade.php';
-		dbDelta( $sql1 );
 		
-		// Add new column to database IF NOT EXISTS
-		$list_columns = $wpdb->get_col("SHOW COLUMNS FROM {$table_name}");
-		if(!isset($list_columns['only_once']))
-		{
-			$wpdb->query( "ALTER TABLE {$table_name} ADD only_once TINYINT(1) NOT NULL DEFAULT 0" );
-		}
+		dbDelta( $sql1 );
 		
 		CF_Geoplugin_Debug::log( 'Plugin activated and tables created' );
 	}

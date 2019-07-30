@@ -1,5 +1,8 @@
 == Changelog ==
 
+= 7.7.0 =
+* Fixed database error on the plugin activation
+
 = 7.6.9 =
 * Added "only once" redirection to globl SEO redirection
 * Fixed CSV file upload and reading
