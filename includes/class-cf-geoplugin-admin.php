@@ -513,6 +513,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 			'city'			=> $this->post( 'cf_geo_city' ),
 			'url'			=> $this->post( 'cf_geo_redirect_url', 'url' ),
 			'http_code'		=> $this->post( 'cf_geo_http_code', 'int' ),
+			'only_once'		=> $this->post( 'cf_geo_only_once', 'int', 0 ),
 			'action'		=> $this->post( 'cf_geo_redirect_action' )
 		);
 
@@ -527,6 +528,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 					'city'			=> $data['city'],
 					'url'			=> $data['url'],
 					'http_code'		=> $data['http_code'],
+					'only_once'		=> $data['only_once'],
 					'active'		=> $data['active']
 				),
 				array(
@@ -536,6 +538,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 					'%s',
 					'%d',
 					'%d',
+					'%d'
 				)	
 			);
 			if( $result === false ) $message = 'false';
@@ -550,6 +553,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 					'city'			=> $data['city'],
 					'url'			=> $data['url'],
 					'http_code'		=> $data['http_code'],
+					'only_once'		=> $data['only_once'],
 					'active'		=> $data['active']
 				),
 				array(
@@ -560,6 +564,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 					'%s',
 					'%s',
 					'%s',
+					'%d',
 					'%d',
 					'%d',
 				),
@@ -769,18 +774,24 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 			'message'		=> '',
 		);
 
-		$attachment_url = ( isset( $_POST['import_file_url'] ) ) ? $this->post('import_file_url') : false;
+		$attachment_url = ( isset( $_POST['import_file_url'] ) ) ? $_POST['import_file_url'] : false;
+		
+		if( empty($attachment_url) )
+		{
+			$result['message'] = __('Failed to open file path', CFGP_NAME) . ' (' . $attachment_url . ')';
+			wp_send_json( $result );
+		}
 
 		$query_data = $this->csv_to_array( $attachment_url );
 
 		if( $query_data === false )
 		{
-			$result['message'] = 'Failed to open or read file';
+			$result['message'] = __('Failed to open or read file', CFGP_NAME);
 			wp_send_json( $result );
 		}
 		if( empty( $query_data ) )
 		{
-			$result['message'] = 'Failed to extract data from file';
+			$result['message'] = __('Failed to extract data from file', CFGP_NAME);
 			wp_send_json( $result );
 		}
 
@@ -789,11 +800,11 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 
 		foreach( $query_data as $queries )
 		{
-			$sql = "INSERT INTO {$table_name} ( country, region, city, url, http_code, active ) VALUES ";
+			$sql = "INSERT INTO {$table_name} ( country, region, city, url, http_code, active, only_once ) VALUES ";
 			$value = array();
 			foreach( $queries as $query )
 			{
-				$value[] = sprintf("( '%s', '%s', '%s', '%s', %d, %d )", $query['country'], $query['region'], $query['city'], $query['url'], $query['http_code'], (int)$query['active']);
+				$value[] = sprintf("( '%s', '%s', '%s', '%s', %d, %d, %d )", $query['country'], $query['region'], $query['city'], $query['url'], $query['http_code'], (int)$query['active'], (int)$query['only_once']);
 			}	
 			$sql .= join( ',', $value );
 			$sql .= ';';
@@ -820,7 +831,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 		// setup our return data  
 		$return_data = array();
 		
-		if(isset($header['Content-Type']) && $header['Content-Type'] == 'text/csv')
+		if(isset($header['Content-Type']) && ($header['Content-Type'] == 'text/csv' || $header['Content-Type'] == 'application/vnd.ms-excel'))
 		{
 			
 			// IF we can open and read the file
@@ -832,15 +843,16 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 				
 				// while data exists loop over data
 				while ( ( $ceil = fgetcsv($handle, (isset($header['Content-Length']) ? $header['Content-Length'] : 2000), $analyse['delimiter']['value']) ) !== FALSE ) {
-					if( count( $ceil ) <= 6 )
+					if( count( $ceil ) <= 7 )
 					{
 						$data = array(
 							'country'	=> isset( $ceil[0]) ? $ceil[0] : '',
 							'region'	=> isset( $ceil[1] ) ? $ceil[1] : '',
 							'city'		=> isset( $ceil[2] ) ? $ceil[2] : '',
 							'url'		=> isset( $ceil[3] ) ? $ceil[3] : '',
-							'http_code'	=> ( isset( $ceil[4] ) && in_array( $ceil[4], array('301', '302', '303', '404'), true ) !== false ) ? (int)$ceil[4] : 302,
-							'active'	=> ( isset( $ceil[5] ) && ( (int)$ceil[5] == 0 || (int)$ceil[5] == 1 ) ) ? (int)$ceil[5] : 1
+							'http_code'	=> ( isset( $ceil[4] ) && in_array( $ceil[4], array_keys($this->http_codes) ) !== false ) ? (int)$ceil[4] : 302,
+							'active'	=> ( isset( $ceil[5] ) && ( (int)$ceil[5] == 0 || (int)$ceil[5] == 1 ) ) ? (int)$ceil[5] : 1,
+							'only_once'	=> ( isset( $ceil[6] ) && ( (int)$ceil[6] == 0 || (int)$ceil[6] == 1 ) ) ? (int)$ceil[6] : 0
 						);	
 						
 						$data['url'] = filter_var( $data['url'], FILTER_SANITIZE_URL );
@@ -888,7 +900,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 				$table_name = $wpdb->prefix . parent::TABLE['seo_redirection'];
 				$results = $wpdb->get_results(
 					"
-						SELECT country, region, city, url, http_code, active
+						SELECT country, region, city, url, http_code, active, only_once
 						FROM {$table_name};
 					", ARRAY_A
 				);
@@ -1208,19 +1220,72 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 		
 		return $use_block_editor;
 	}
+	
+	/**
+	 * Hook for the post delete
+	 */
+	public function delete_post($id){
+		// Remove cookie if they exists
+		if(isset($_COOKIE) && !empty($_COOKIE))
+		{
+			$cookie_name = '__cfgp_seo_' . $id . '_once_';
+			foreach($_COOKIE as $key => $value)
+			{
+				if(strpos($key, $cookie_name) !== false)
+				{
+					setcookie($key, time() . '', (time()-((365 * DAY_IN_SECONDS) * 2)), COOKIEPATH, COOKIE_DOMAIN );
+					unset($_COOKIE[$key]);
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Allow .csv uploads
+	 */
+	public function upload_mimes($mimes = array()) {
+		$mimes['csv'] = "text/csv";
+		return $mimes;
+	}
+	
+	function upload_multi_mimes( $check, $file, $filename, $mimes ) {
+		if ( empty( $check['ext'] ) && empty( $check['type'] ) ) {
+			// Adjust to your needs!
+			$multi_mimes = array( array( 'csv' => 'text/csv' ), array( 'csv' => 'application/vnd.ms-excel' ) );
+
+			// Run new checks for our custom mime types and not on core mime types.
+			foreach( $multi_mimes as $mime ) {
+				$this->remove_filter( 'wp_check_filetype_and_ext', 'upload_multi_mimes', 99, 4 );
+				$check = wp_check_filetype_and_ext( $file, $filename, $mime );
+				$this->add_filter( 'wp_check_filetype_and_ext', 'upload_multi_mimes', 99, 4 );
+				if ( ! empty( $check['ext'] ) ||  ! empty( $check['type'] ) ) {
+					return $check;
+				}
+			}
+		}
+		return $check;
+	}
+
+	/**
+	 * All initialized functions
+	 */
+	public function admin_init(){
+		$this->load_javascripts();
+		$this->load_style();
+		$this->export_seo_csv();
+		$this->plugin_custom_menu_class();
+		$this->add_action( 'delete_post', 'delete_post', 10 );
+	}
 
 	// Construct all
 	function __construct(){
 		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
 		
-		$this->add_action( 'admin_init', 'load_javascripts' );
-		$this->add_action( 'admin_init', 'load_style' );
-		$this->add_action( 'admin_init', 'export_seo_csv' );
-		$this->add_action( 'admin_init', 'plugin_custom_menu_class' );
+		$this->add_action( 'admin_init', 'admin_init' );
 		
 		if(CFGP_MULTISITE) $this->add_action( "network_admin_menu", 'add_cf_geoplugin' );
 		else $this->add_action( 'admin_menu', 'add_cf_geoplugin' );
-		
+
 		$this->add_action( 'page-cf-geoplugin-sidebar', 'add_rss_feed' );
 		$this->add_action( 'page-cf-geoplugin-defender-sidebar', 'add_rss_feed' );
 		$this->add_action( 'page-cf-geoplugin-license-sidebar', 'add_rss_feed' );
@@ -1237,9 +1302,12 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 		
 		$this->add_filter( 'plugin_action_links_' . plugin_basename(CFGP_FILE), 'plugin_setting_page' );
 		$this->add_filter( 'plugin_row_meta', 'cfgp_action_links', 10, 2 );
-		
+		$this->add_filter( 'upload_mimes', 'upload_mimes', 99 );
+		$this->add_filter( 'mime_types', 'upload_mimes', 99 );
+		$this->add_filter( 'wp_check_filetype_and_ext', 'upload_multi_mimes', 99, 4 );
+
 		$this->add_action( 'admin_bar_menu', 'cf_geoplugin_admin_bar_menu', 900 );
-		
+
 		if($CF_GEOPLUGIN_OPTIONS['enable_dashboard_widget']){
 			if($CF_GEOPLUGIN_OPTIONS['enable_advanced_dashboard_widget']){
 				$this->add_action( 'admin_footer', 'rv_custom_dashboard_widget' );

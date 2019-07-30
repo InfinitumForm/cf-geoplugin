@@ -5,7 +5,7 @@ Tags: geolocation, woocommerce, store-locator, seo, google-maps, geomarketing, c
 Requires at least: 3.0
 Tested up to: 5.2
 Requires PHP: 5.6.0
-Stable tag: 7.6.7
+Stable tag: 7.6.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -13,13 +13,13 @@ The only geolocation plugin that provides all geomarketing integrations for the 
 
 == Description ==
 
-**WordPress Geo Plugin** ([CF Geo Plugin](https://cfgeoplugin.com/)) is GeoMarketing tool that allows you to have full geo control of your WordPress. **CF Geo Plugin** gives you ability to attach content, geographic informations, geo tags, Google maps to posts, pages, widgets and custom templates by using simple, options shortcodes, PHP code or JavaScript. It also lets you to specify a default geographic location for your entire WordPress blog, do SEO redirection, spam protection, WooCommerce control and many more. **CF Geo Plugin** help you to increase conversion, do better SEO, capture leads on your blog or landing pages.
+**WordPress Geo Plugin** ([WordPress Geo Plugin](https://cfgeoplugin.com/)) is GeoMarketing tool that allows you to have full geo control of your WordPress. **WordPress Geo Plugin** gives you ability to attach content, geographic informations, geo tags, Google maps to posts, pages, widgets and custom templates by using simple, options shortcodes, PHP code or JavaScript. It also lets you to specify a default geographic location for your entire WordPress blog, do SEO redirection, spam protection, WooCommerce control and many more. **WordPress Geo Plugin** help you to increase conversion, do better SEO, capture leads on your blog or landing pages.
 
 = FREE AND PAID SERVICES =
 
-CF Geo Plugin uses a combination of **free and payed services** that return information about the locations.
+WordPress Geo Plugin uses a combination of **free and payed services** that return information about the locations.
 
-CF Geo Plugin is free by itself but API lookup is limited to **300 lookups per day** for the free users. If you like to have **UNLIMITED** lookup, **please visit [official website](https://cfgeoplugin.com/pricing/) for the more informations**.
+WordPress Geo Plugin is free by itself but API lookup is limited to **300 lookups per day** for the free users. If you like to have **UNLIMITED** lookup, **please visit [official website](https://cfgeoplugin.com/pricing/) for the more informations**.
 
 **NOTE:** We not place prices on this page because we reserve the right to change these prices and often have monthly promotions and discounts. Please, for the more informations **[look our prices](https://cfgeoplugin.com/pricing/)** on the [official website](https://cfgeoplugin.com/).
 
@@ -73,7 +73,7 @@ This plugin is compatible with any Wordpress installation and many available plu
 * [Contact Form 7](https://wordpress.org/plugins/contact-form-7/) (JavaScript objects and shortcode support)
 * [Nord VPN proxy service](https://goo.gl/lWm3e6) (PROXY settings)
 
-> <strong>All CF Geo Plugin 7.x.x Features</strong><br>
+> <strong>All WordPress Geo Plugin 7.x.x Features</strong><br>
 >
 > * **Geo Plugin** - Allows you to attach geographical information inside your content via Shortcodes, PHP and JavaScript objects
 > * **Geo Banner** - Allows you to place dynamic content, images, videos and pages using shortcodes for specfic audience target by geo location
@@ -132,7 +132,7 @@ Google map also allow you to use HTML inside map and display info bar:
 
 With this plugin you can easy setup your google map.
 
-**GEO BANNER:** With this plugin you have also ability to make a dynamic content (text, images, banners, videos...) and target your messages to people from certain regions, track IP address, setup WordPress to work on user's timezone, etc. The possibilities are huge, you can increase conversions, use this plugin like support for your custom template, build your own plugin and use CF Geo Plugin like additional option, etc.
+**GEO BANNER:** With this plugin you have also ability to make a dynamic content (text, images, banners, videos...) and target your messages to people from certain regions, track IP address, setup WordPress to work on user's timezone, etc. The possibilities are huge, you can increase conversions, use this plugin like support for your custom template, build your own plugin and use WordPress Geo Plugin like additional option, etc.
 
 You just need to create a new banner, place your content, select rules (country, region, city) save your banner, after that in your page pickup banner shortcode and place inside content.
 
@@ -166,51 +166,51 @@ Also please inform us if any errors occure via contact form on our website [http
 
 Thank you for your concern!
 
-~ Your CF Geo Plugin Team
+~ Your WordPress Geo Plugin Team
 
 == Installation ==
 
-You only need to install the  **CF Geo Plugin** through the WordPress plugins screen directly or download ZIP file, unpack and upload plugin folder to the `/wp-content/plugins/` directory.
+You only need to install the  **WordPress Geo Plugin** through the WordPress plugins screen directly or download ZIP file, unpack and upload plugin folder to the `/wp-content/plugins/` directory.
 
-Afterwards, activate the plugin through the 'Plugins' screen in WordPress, go to your `http://siteexample.com/wp-admin/` area and use the `Settings->CF Geo Plugin` to see all available shortcodes and settings.
+Afterwards, activate the plugin through the 'Plugins' screen in WordPress, go to your `http://siteexample.com/wp-admin/` area and use the `Settings->WordPress Geo Plugin` to see all available shortcodes and settings.
 
 = On uninstall =
 
-You must know when you uninstall CF Geo Plugin you will lost complete setup, license and any other changes you have inside your WordPress installation. On uninstall we clean everything from your database what our plugin generate and you can not return that informations back.
+You must know when you uninstall WordPress Geo Plugin you will lost complete setup, license and any other changes you have inside your WordPress installation. On uninstall we clean everything from your database what our plugin generate and you can not return that informations back.
 
 == Frequently Asked Questions ==
 
-= Is CF Geo Plugin free? Is there some license or restrictions? =
+= Is WordPress Geo Plugin free? Is there some license or restrictions? =
 
-CF Geo Plugin uses a combination of free and payed services that return information about the locations.
+WordPress Geo Plugin uses a combination of free and payed services that return information about the locations.
 
-CF Geo Plugin is free by itself but API lookup is limited to 300 lookups per day for the free users. If you need to have UNLIMITED lookup with NO RESTRICTIONS, please visit [official website](https://cfgeoplugin.com/pricing/) for the more informations regarding prices.
+WordPress Geo Plugin is free by itself but API lookup is limited to 300 lookups per day for the free users. If you need to have UNLIMITED lookup with NO RESTRICTIONS, please visit [official website](https://cfgeoplugin.com/pricing/) for the more informations regarding prices.
 
 The reason for the payment of the license is obvious: -We have to pay the server we use to provide you informations via API, development requires hours and hours of work at the daily level, the availability of the service must be 24/7 with no stop and for a lot coffee.
 
 Also you must know that few options like REST API, WooCommerce Payment Options, Spam Protection, Currency Converter are locked for the unlicensed usage because that options relay on the unlimited lookups and can broke website or stop working when you reach limits.
 
-= Do CF Geo Plugin use 3rd party services? =
+= Do WordPress Geo Plugin use 3rd party services? =
 
-CF Geo Plugin is geo information provider and we provide own geo informations via API services builded on the CF Geo Plugin servers. CF Geo Plugin have own databases of IP addresses and geo locations related to that IP addresses. CF Geo Plugin may use inside own API service and 3rd party API services like [MaxMind](https://www.maxmind.com/en/home), [GeoIP](http://php.net/manual/en/intro.geoip.php) and [Geo Plugin](https://www.geoplugin.com/) like additional support for the certain informations for the more precise location or currency information.
+WordPress Geo Plugin is geo information provider and we provide own geo informations via API services builded on the WordPress Geo Plugin servers. WordPress Geo Plugin have own databases of IP addresses and geo locations related to that IP addresses. WordPress Geo Plugin may use inside own API service and 3rd party API services like [MaxMind](https://www.maxmind.com/en/home), [GeoIP](http://php.net/manual/en/intro.geoip.php) and [Geo Plugin](https://www.geoplugin.com/) like additional support for the certain informations for the more precise location or currency information.
 
-Note that CF Geo Plugin DO NOT STORE any personal information without your knowledge and approval and not provide personal informations to 3rd party. CF Geo Plugin not selling and not providing own databases to 3rd party in any case. We handling only with world wide public informations what are visible to anyone (client IP, server IP, hostname) and using simple proccess we return geo informations and following services.
+Note that WordPress Geo Plugin DO NOT STORE any personal information without your knowledge and approval and not provide personal informations to 3rd party. WordPress Geo Plugin not selling and not providing own databases to 3rd party in any case. We handling only with world wide public informations what are visible to anyone (client IP, server IP, hostname) and using simple proccess we return geo informations and following services.
 
 For more informations you visit [Terms and Conditions](https://cfgeoplugin.com/terms-and-conditions) and [Privacy Policy](https://cfgeoplugin.com/privacy-policy) pages on our [official website](https://cfgeoplugin.com).
 
-= How I can test CF Geo Plugin is work on certain country, region or city? =
+= How I can test WordPress Geo Plugin is work on certain country, region or city? =
 
 That part is little bit hard but you can use great VPN service - [NordVPN](https://goo.gl/AEd82e)
-With this service you can change your current location and test CF Geo Plugin and its functionality.
+With this service you can change your current location and test WordPress Geo Plugin and its functionality.
 
 = Can I use CF GeopPlugin inside custom template? =
 
-Yes! You can! You just need to follow instructions from your admin panel `http://siteexample.com/wp-admin/` area and use the `Settings->CF Geo Plugin` to see all available shortcodes and settings.
-NOTE: Some templates not support WordPress PHP function `[do_shortcode()](https://developer.wordpress.org/reference/functions/do_shortcode/)` and data from CF Geo Plugin will not be visible.
+Yes! You can! You just need to follow instructions from your admin panel `http://siteexample.com/wp-admin/` area and use the `Settings->WordPress Geo Plugin` to see all available shortcodes and settings.
+NOTE: Some templates not support WordPress PHP function `[do_shortcode()](https://developer.wordpress.org/reference/functions/do_shortcode/)` and data from WordPress Geo Plugin will not be visible.
 
 = Can GeoPlugin slow down my site? =
 
-NO, CF Geo Plugin uses the asynchronous data reading from API services. After loading, all data is stored in a session. That session is stored until IP is changed. When user's IP changes, the plugin reads new data and stores in the new session.
+NO, WordPress Geo Plugin uses the asynchronous data reading from API services. After loading, all data is stored in a session. That session is stored until IP is changed. When user's IP changes, the plugin reads new data and stores in the new session.
 
 = Can I set the different value if shortcode shows no results? =
 
@@ -262,7 +262,7 @@ JavaScript is enabled from version 5.2.0. In JavaScript you have 2 ways to get g
 </script>
 `
 
-= How to use CF Geo Plugin inside ContactForm7? =
+= How to use WordPress Geo Plugin inside ContactForm7? =
 
 Sometimes you need to include other HTML, CSS and JavaScript, and jQuery codes inside ContactForm7. Sometimes you need to insert a geolocation in input fields. This is not easy but here is one example with jQuery:
 
@@ -282,26 +282,26 @@ This code will auto fill value of CF7 city field when a visitor visits the conta
 
 * All geo informations you can find inside global `window.cfgeo` object.
 
-= CF Geo Plugin don't display information =
+= WordPress Geo Plugin don't display information =
 
-* It might be an error with the provider's [geoPlugin](http://www.geoplugin.com/) network or API and CF Geo Plugin can't display information by own.
-* Look inside `CF Geo Plugin` for all available shortcodes and settings,
-* Look inside `CF Geo Plugin->Settings` and enable/disable and check all options (SSL, proxy, etc),
+* It might be an error with the provider's [geoPlugin](http://www.geoplugin.com/) network or API and WordPress Geo Plugin can't display information by own.
+* Look inside `WordPress Geo Plugin` for all available shortcodes and settings,
+* Look inside `WordPress Geo Plugin->Settings` and enable/disable and check all options (SSL, proxy, etc),
 * Maby you have PHP error, you can see that if you enable plugin debug in `wp-config.php` inserting on first lines code: `define('WP_CF_GEO_DEBUG', true);`
 * Some people use a special software to hide IP address via proxy and geoplugin can't look deeper to get accurate location,
-* Look into error.log file to see if a problem is in CF Geo Plugin
+* Look into error.log file to see if a problem is in WordPress Geo Plugin
 * Some servers not allow access to geoplugin sites and maby you need to use proxy setings inside plugin to enable tracking
 * You reach some API limitations
 
-Please inform us if any of these errors occure via contact form on our website [http://creativform.com](http://creativform.com/contact/) with message subject: **CF Geo Plugin SUPPORT**
+Please inform us if any of these errors occure via contact form on our website [http://creativform.com](http://creativform.com/contact/) with message subject: **WordPress Geo Plugin SUPPORT**
 
 == Screenshots ==
 
-1. CF Geo Plugin Available shortcodes and values
+1. WordPress Geo Plugin Available shortcodes and values
 2. CF Google Map shortcodes and setup
 3. Anti Spam Protection setup
-4. CF Geo Plugin global setup
-5. Debug Mode for CF Geo Plugin and IP Lookup
+4. WordPress Geo Plugin global setup
+5. Debug Mode for WordPress Geo Plugin and IP Lookup
 6. Adding shortcode in text editor
 7. Admin bar quick links
 8. Example 1
@@ -311,13 +311,25 @@ Please inform us if any of these errors occure via contact form on our website [
 
 == Changelog ==
 
-= 7.6.7 =
-* Added Monarch plugin support
-* Fixed plugin support includings
-* Optimized code
-* Improved session
+= 7.6.9 =
+* Added "only once" redirection to globl SEO redirection
+* Fixed CSV file upload and reading
+* Added Microsoft Excell CSV support
+* Fixed bugs
+* Improved code orientation
 
 == Upgrade Notice ==
+
+= 7.6.9 =
+* Added "only once" redirection to globl SEO redirection
+* Fixed CSV file upload and reading
+* Added Microsoft Excell CSV support
+* Fixed bugs
+* Improved code orientation
+
+= 7.6.8 =
+* Fixed PHP error during activation
+* Fixed debugging
 
 = 7.6.7 =
 * Added Monarch plugin support
@@ -373,7 +385,7 @@ Please inform us if any of these errors occure via contact form on our website [
 
 = Plugin Links =
 
-* [CF Geo Plugin Website](https://cfgeoplugin.com/)
+* [WordPress Geo Plugin Website](https://cfgeoplugin.com/)
 * [Documentation](https://cfgeoplugin.com/documentation/)
 * [F.A.Q](https://cfgeoplugin.com/faq/)
 * [Blog](https://cfgeoplugin.com/blog/)
@@ -383,18 +395,18 @@ Please inform us if any of these errors occure via contact form on our website [
 
 = DONATION =
 
-Enjoy using *CF Geo Plugin*? Please consider [making a small donation](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=creativform@gmail.com) to support the project's continued development.
+Enjoy using *WordPress Geo Plugin*? Please consider [making a small donation](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=creativform@gmail.com) to support the project's continued development.
 
 = TERMS AND CONDITIONS =
 
 BY INSTALLING THIS PLUGIN WE CONSIDER THAT YOU ARE AUTOMATICALY ACCEPT TEARMS AND CONDITIONS OF OUR SERVICES AND AGREE WITH THE PRIVACY POLICY.
 
-Please read these Terms and Conditions ("Terms", "Terms and Conditions") carefully before using the [www.cfgeoplugin.com](https://cfgeoplugin.com) website and the CF Geo Plugin WordPress application (the "Service") operated by CF Geo Plugin.
+Please read these Terms and Conditions ("Terms", "Terms and Conditions") carefully before using the [www.cfgeoplugin.com](https://cfgeoplugin.com) website and the WordPress Geo Plugin WordPress application (the "Service") operated by WordPress Geo Plugin.
 
 [Read about Terms and Conditions](https://cfgeoplugin.com/terms-and-conditions)
 
 = PRIVACY POLICY =
-We respect your privacy and take protecting it seriously. This Privacy Policy covers our collection, use and disclosure of information we collect through our website and service, [www.cfgeoplugin.com](https://cfgeoplugin.com) owned and operated by CF Geo Plugin. It also describes the choices available to you regarding our use of your personal information and how you can access and update this information. The use of information collected through our service shall be limited to the purpose of providing the service for which our Clients have engaged us. Also we respect and take care about Europe General Data Protection Regulation (GDPR) and your freedom and private choices.
+We respect your privacy and take protecting it seriously. This Privacy Policy covers our collection, use and disclosure of information we collect through our website and service, [www.cfgeoplugin.com](https://cfgeoplugin.com) owned and operated by WordPress Geo Plugin. It also describes the choices available to you regarding our use of your personal information and how you can access and update this information. The use of information collected through our service shall be limited to the purpose of providing the service for which our Clients have engaged us. Also we respect and take care about Europe General Data Protection Regulation (GDPR) and your freedom and private choices.
 
 [Read about Privacy Policy](https://cfgeoplugin.com/privacy-policy)
 

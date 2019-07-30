@@ -1,5 +1,16 @@
 == Changelog ==
 
+= 7.6.9 =
+* Added "only once" redirection to globl SEO redirection
+* Fixed CSV file upload and reading
+* Added Microsoft Excell CSV support
+* Fixed bugs
+* Improved code orientation
+
+= 7.6.8 =
+* Fixed PHP error during activation
+* Fixed debugging
+
 = 7.6.7 =
 * Added Monarch plugin support
 * Fixed plugin support includings

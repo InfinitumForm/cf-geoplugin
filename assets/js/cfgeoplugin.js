@@ -373,7 +373,8 @@ $.fn.alerts = function(text, type){
 						if( $('.file-url', $uploader ).attr('accept') !== undefined )
 						{
 							var filetype = $('.file-url',$uploader).attr('accept');
-							if( filetype !== uploaded_file.attributes.subtype )
+							
+							if( [filetype, 'vnd.ms-excel'].indexOf(uploaded_file.attributes.subtype) < 0 )
 							{
 								$( '#alert-fail' ).alerts(CFGP.label.csv.filetype, 'danger');
 							}

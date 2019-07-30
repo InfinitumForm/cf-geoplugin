@@ -40,6 +40,7 @@ global $wpdb, $wp_version;
                         'region'    => '',
                         'city'      => '',
                         'url'       => '',
+						'only_once'	=> 0,
                         'http_code' => 302
                     );
                     if( isset( $_GET['id'] ) )
@@ -207,6 +208,17 @@ global $wpdb, $wp_version;
                             <small id="httpHelp" class="form-text text-muted" ><?php _e( 'Select the desired HTTP redirection. (HTTP Code 302 is recommended)', CFGP_NAME ); ?>
                             <br>
 							<?php printf(__( 'If you are not sure which redirect code to use, <a href=\'%1$s\' target=\'_blank\'>check out this article</a>.', CFGP_NAME ), CFGP_STORE.'/information/seo-redirection-in-wordpress/'); ?></small>
+                        </div>
+                        <div class="form-group" id="cf_geo_redirect_active">
+                            <label for="cf_geo_redirect_active"><?php _e( 'Redirect only once.' ); ?></label><br>
+                            <div class="form-check form-check-inline">
+                                <input type="radio" class="form-check-input" name="cf_geo_only_once" id="cf_geo_only_once_enable" value="1" <?php checked( $redirect_data['only_once'], 1 ); ?>>
+                                <label class="form-check-label" for="cf_geo_only_once_enable">Enable</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input type="radio" class="form-check-input" name="cf_geo_only_once" id="cf_geo_only_once_disable" value="0" <?php checked( $redirect_data['only_once'], 0 ); ?>>
+                                <label class="form-check-label" for="cf_geo_only_once_disable">Disable</label>
+                            </div>
                         </div>
                         <?php 
                             do_action( 'page-cf-geoplugin-seo-global-params' ); 

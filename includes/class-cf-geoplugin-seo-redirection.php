@@ -33,6 +33,8 @@ class CF_Geoplugin_SEO_Redirection extends CF_Geoplugin_Global
 					if( !isset( $value['country'] ) ) $value['country'] = NULL;
 					if( !isset( $value['region'] ) ) $value['region'] = NULL;
 					if( !isset( $value['city'] ) ) $value['city'] = NULL;
+
+					if( !isset( $value['only_once'] ) ) $value['only_once'] = 0;
 					
 					$value['ID'] = $i;
 					$value['page_id'] = $page_id;
@@ -79,7 +81,16 @@ class CF_Geoplugin_SEO_Redirection extends CF_Geoplugin_Global
 		if(!is_admin() && $CF_GEOPLUGIN_OPTIONS['enable_seo_redirection'])
 		{
 			$table_name = self::TABLE['seo_redirection'];
-            $redirects = $wpdb->get_results( "SELECT url, LOWER(country) AS country, LOWER(region) AS region, LOWER(city) AS city, http_code FROM {$wpdb->prefix}{$table_name};", ARRAY_A );
+            $redirects = $wpdb->get_results( "
+			SELECT 
+				TRIM(url),
+				TRIM(LOWER(country)) AS country, 
+				TRIM(LOWER(region)) AS region, 
+				TRIM(LOWER(city)) AS city, 
+				TRIM(http_code), 
+				only_once
+			FROM 
+				{$wpdb->prefix}{$table_name};", ARRAY_A );
 			if( $redirects !== NULL && $wpdb->num_rows > 0 && ( isset( $CFGEO['country'] ) || isset( $CFGEO['country_code'] ) ) )
 			{
 				foreach( $redirects as $redirect )
@@ -139,7 +150,7 @@ class CF_Geoplugin_SEO_Redirection extends CF_Geoplugin_Global
 	
 	private function control_redirection( $redirect )
 	{
-		if(isset( $redirect['only_once'] ) && $redirect['only_once'] == '1'){
+		if(isset( $redirect['only_once'] ) && $redirect['only_once'] == 1){
 			$cookie_name = '__cfgp_seo_' . $redirect['page_id'] . '_once_' . $redirect['ID'];
 			
 			if(isset($_COOKIE[$cookie_name]) && !empty($_COOKIE[$cookie_name])){

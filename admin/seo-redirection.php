@@ -84,12 +84,13 @@ else
                         <th scope="col"><?php _e('Region',CFGP_NAME); ?></th>
                         <th scope="col"><?php _e('City',CFGP_NAME); ?></th>
                         <th class="text-center" scope="col"><?php _e('Status Code',CFGP_NAME); ?></th>
+                        <th class="text-center" scope="col"><?php _e('Only Once',CFGP_NAME); ?></th>
                         <th class="text-right" scope="col"><?php _e('Action',CFGP_NAME); ?></th>
                     </tr>
                 </thead>
                 <tbody>
                 <?php
-                    $redirects = $wpdb->get_results( "SELECT id, url, country, region, city, http_code, active FROM {$wpdb->prefix}{$table_name} LIMIT {$offset}, $records_per_page;", ARRAY_A );
+                    $redirects = $wpdb->get_results( "SELECT id, url, country, region, city, http_code, active, only_once FROM {$wpdb->prefix}{$table_name} LIMIT {$offset}, $records_per_page;", ARRAY_A );
                     if( $redirects !== NULL && $wpdb->num_rows > 0 )
                     {
 
@@ -117,6 +118,7 @@ else
                                     <td>%8$s</td>
                                     <td>%9$s</td>
 									<td class="text-center">%11$s</td>
+									<td class="text-center">%14$s</td>
                                     <td class="text-right">
                                         <a class="btn btn-info btn-sm" href="%3$sadmin.php?page=%4$s&action=edit&id=%10$d&page_num=%13$d"><span class="fa fa-pencil"></span> %5$s</a>
                                         <a class="btn btn-danger btn-sm cf_geo_redirect_delete" href="%3$sadmin.php?page=%4$s&action=delete&id=%10$d&page_num=%13$d"><span class="fa fa-ban"></span> %6$s</a>
@@ -135,14 +137,15 @@ else
 								$redirect['id'], 
 								$redirect['http_code'],
 								$disabled,
-								$page_num 
+								$page_num,
+								($redirect['only_once'] ? __('Yes') : __('No'))
 							);
                         }
                     }
                     else {
                     ?>
 					<tr>
-                        <td scope="col" colspan="6"><?php _e('There is not yet SEO redirections.',CFGP_NAME); ?></td>
+                        <td scope="col" colspan="7"><?php _e('There is not yet SEO redirections.',CFGP_NAME); ?></td>
                     </tr>	
 					<?php } ?>
                 </tbody>
@@ -153,6 +156,7 @@ else
                         <th scope="col"><?php _e('Region',CFGP_NAME); ?></th>
                         <th scope="col"><?php _e('City',CFGP_NAME); ?></th>
                         <th class="text-center" scope="col"><?php _e('Status Code',CFGP_NAME); ?></th>
+                        <th class="text-center" scope="col"><?php _e('Only Once',CFGP_NAME); ?></th>
                         <th class="text-right" scope="col"><?php _e('Action',CFGP_NAME); ?></th>
                     </tr>
                 </thead>

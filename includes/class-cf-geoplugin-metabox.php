@@ -394,9 +394,9 @@ function CF_GeoPlugin_Google_Map_GeoTag() {
 }
 (function(position, callback){
 		
-	if( typeof google != 'undefined' )
+	if( typeof google !== 'undefined' )
 	{
-		if(typeof callback == 'function') {
+		if(typeof callback === 'function') {
 			callback(google,{});
 		}
 	}

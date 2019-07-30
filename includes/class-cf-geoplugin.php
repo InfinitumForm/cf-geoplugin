@@ -355,20 +355,29 @@ class CF_Geoplugin_Init extends CF_Geoplugin_Global
 		$sql1 = "
 			CREATE TABLE IF NOT EXISTS {$table_name} (
 			`id` int(11) NOT NULL AUTO_INCREMENT,
+			`only_once` TINYINT(1) NOT NULL DEFAULT 0,
 			`country` varchar(100) NOT NULL,
 			`region` varchar(100) NOT NULL,
 			`city` varchar(100) NOT NULL,
 			`url` varchar(100) NOT NULL,
-			`http_code` int(3) NOT NULL DEFAULT 302,
-			`active` int(1) NOT NULL DEFAULT 1,
+			`http_code` SMALLINT(3) NOT NULL DEFAULT 302,
+			`active` TINYINT(1) NOT NULL DEFAULT 1,
 			`date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-			PRIMARY KEY (`id`)
+			PRIMARY KEY  (`id`)
 		  ) {$charset_collate};
 		";
 
 		// Require dbDelta to create/update table
 		if( !function_exists( 'dbDelta' ) ) include ABSPATH . 'wp-admin/includes/upgrade.php';
 		dbDelta( $sql1 );
+		
+		// Add new column to database IF NOT EXISTS
+		$list_columns = $wpdb->get_col("SHOW COLUMNS FROM {$table_name}");
+		if(!isset($list_columns['only_once']))
+		{
+			$wpdb->query( "ALTER TABLE {$table_name} ADD only_once TINYINT(1) NOT NULL DEFAULT 0" );
+		}
+		
 		CF_Geoplugin_Debug::log( 'Plugin activated and tables created' );
 	}
 	

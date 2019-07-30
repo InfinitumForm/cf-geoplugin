@@ -12,11 +12,11 @@
 if ( ! defined( 'WPINC' ) ) { die( "Don't mess with us." ); }
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
+// Lets use debug
+$debug = $GLOBALS['debug'];
 
 /* Register important constants */
 if(class_exists('CF_Geoplugin_Global')) :
-	// Lets use debug
-	$debug = $GLOBALS['debug'];
 	// Include hook class
 	$hook = new CF_Geoplugin_Global;
 	// Global variable for geoplugin options
@@ -60,11 +60,13 @@ if(class_exists('CF_Geoplugin_Global')) :
 	// GDRP - Protect users private data
 	foreach( array( 'map_api_key', 'proxy_ip', 'proxy_port', 'proxy_username', 'proxy_password' ) as $i => $opt ) if( isset( $options[ $opt ] ) ) unset( $options[ $opt ] );
 
+if($debug && property_exists($debug, 'save'))
+{
 	$debug->save( 'Global Class Loaded' );
 	$debug->save( 'Current options:' );
 	$debug->save( $options );
 	$options = NULL;
-
+}
 	$hook = NULL;
 	// Include main class
 	include CFGP_INCLUDES . '/class-cf-geoplugin.php';
