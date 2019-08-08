@@ -1,7 +1,7 @@
-CF GeoPlugin [<img class="aligncenter" src="https://plugintests.com/plugins/cf-geoplugin/wp-badge.svg" alt="CF GeoPlugin is WordPress 5.0.x Compatible">](https://plugintests.com/plugins/cf-geoplugin/latest) [<img class="aligncenter" src="https://plugintests.com/plugins/cf-geoplugin/php-badge.svg" alt="CF GeoPlugin is PHP7 Compatible">](https://plugintests.com/plugins/cf-geoplugin/latest) [<img class="aligncenter" src="https://img.shields.io/badge/CF%20GeoPlugin-7.X-green.svg" alt="CF GeoPlugin version 7.x">](https://cfgeoplugin.com)
+WordPress Geo Plugin [<img class="aligncenter" src="https://plugintests.com/plugins/cf-geoplugin/wp-badge.svg" alt="WordPress Geo Plugin is WordPress 5.0.x Compatible">](https://plugintests.com/plugins/cf-geoplugin/latest) [<img class="aligncenter" src="https://plugintests.com/plugins/cf-geoplugin/php-badge.svg" alt="WordPress Geo Plugin is PHP7 Compatible">](https://plugintests.com/plugins/cf-geoplugin/latest) [<img class="aligncenter" src="https://img.shields.io/badge/CF%20GeoPlugin-7.X-green.svg" alt="WordPress Geo Plugin version 7.x">](https://cfgeoplugin.com)
 ========
 
-The **CF Geo Plugin** is FREE plugin that allows you to attach content, geographic information and Google maps to posts, pages, widgets and custom templates by using simple Shortcodes, PHP code or JavaScript by user IP address. It also lets you to specify a default geographic location for your entire WordPress blog. This plugin is also great for SEO and increasing conversions on your blog or landing pages.
+The **WordPress Geo Plugin** is FREE plugin that allows you to attach content, geographic information and Google maps to posts, pages, widgets and custom templates by using simple Shortcodes, PHP code or JavaScript by user IP address. It also lets you to specify a default geographic location for your entire WordPress blog. This plugin is also great for SEO and increasing conversions on your blog or landing pages.
 
 GAMEPLAY:
 ========
@@ -11,6 +11,6 @@ This repository is made for anyone who want to contribute and improve this plugi
 CONTACT:
 ========
 
-Please contact me anytime regarding anything related to CF GeoPlugin office@cfgeoplugin.com
+Please contact me anytime regarding anything related to WordPress Geo Plugin office@cfgeoplugin.com
 
-Copyright &copy; [CF GeoPlugin](https://cfgeoplugin.com)
+Copyright &copy; [WordPress Geo Plugin](https://cfgeoplugin.com)
