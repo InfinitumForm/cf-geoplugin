@@ -3,6 +3,8 @@ WordPress Geo Plugin [<img class="aligncenter" src="https://plugintests.com/plug
 
 The **WordPress Geo Plugin** is FREE plugin that allows you to attach content, geographic information and Google maps to posts, pages, widgets and custom templates by using simple Shortcodes, PHP code or JavaScript by user IP address. It also lets you to specify a default geographic location for your entire WordPress blog. This plugin is also great for SEO and increasing conversions on your blog or landing pages.
 
+If you need GPS support for our plugin, you can test our new **[GPS addon](https://github.com/CreativForm/wordpress-geoplugin-gps)** what you can download **[here](https://github.com/CreativForm/wordpress-geoplugin-gps)**.
+
 GAMEPLAY:
 ========
 
@@ -14,3 +16,4 @@ CONTACT:
 Please contact me anytime regarding anything related to WordPress Geo Plugin office@cfgeoplugin.com
 
 Copyright &copy; [WordPress Geo Plugin](https://cfgeoplugin.com)
+Created by [INFINITUM FORM](https://infinitumform.com)
