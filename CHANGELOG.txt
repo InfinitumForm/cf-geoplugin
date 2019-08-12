@@ -1,5 +1,13 @@
 == Changelog ==
 
+= 7.7.1 =
+* Fixed SEO redirection bug
+* Fixed plugin order includes
+* Fixed wp-admin redirections
+* Fixed settings bug
+* Fixed typo in the descriptions
+* Improved plugin cache
+
 = 7.7.0 =
 * Fixed database error on the plugin activation
 

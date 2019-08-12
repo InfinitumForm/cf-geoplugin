@@ -332,7 +332,7 @@ if( $global->get( 'action' ) == 'deactivate_license' )
 									'name'		=> 'enable_woocommerce',
 									'class'		=> 'enable_woocommerce',
 									'default'	=> (isset($CF_GEOPLUGIN_OPTIONS['enable_woocommerce']) ? $CF_GEOPLUGIN_OPTIONS['enable_woocommerce'] : 0 ),
-									'info'		=> !$CF_GEOPLUGIN_OPTIONS['woocommerce_active'] ? __('This function is only enabled when Woocommerce is active.', CFGP_NAME) : '<div id="woo_integration_html"' . (!$CF_GEOPLUGIN_OPTIONS['enable_woocommerce'] ? ' style="display: none;"' : '') . '>' . __( 'For more options visit WooCommerce Settings', CFGP_NAME ) . '</div>',
+									'info'		=> !$CF_GEOPLUGIN_OPTIONS['woocommerce_active'] ? __('This function is only enabled when Woocommerce is active.', CFGP_NAME) : ($CF_GEOPLUGIN_OPTIONS['enable_woocommerce'] ? __( 'For more options visit WooCommerce Settings', CFGP_NAME ) : __( 'If you want to WordPress Geo Plugin add new options to your WooCommerce, activate this option.', CFGP_NAME )),
 									array(
 										'text'	=> __('Enable', CFGP_NAME),
 										'value'	=> 1,
@@ -417,7 +417,7 @@ if( $global->get( 'action' ) == 'deactivate_license' )
 
 								$first_seo_options = array();
 									
-								$default_value_seo = isset( $CF_GEOPLUGIN_OPTIONS['enable_seo_posts'] ) ? $CF_GEOPLUGIN_OPTIONS['enable_seo_posts'] : '';
+								$default_value_seo = isset( $CF_GEOPLUGIN_OPTIONS['enable_seo_posts'] ) && !empty( $CF_GEOPLUGIN_OPTIONS['enable_seo_posts'] ) ? $CF_GEOPLUGIN_OPTIONS['enable_seo_posts'] : array('post', 'page');
 								foreach( $post_types as $i => $obj )
 								{
 									if( in_array( $obj->name, array( 'attachment', 'nav_menu_item', 'custom_css', 'customize_changeset', 'user_request' ) ) ) continue;
@@ -427,7 +427,7 @@ if( $global->get( 'action' ) == 'deactivate_license' )
 										$first_seo_options[] = $obj->name;
 									}
 									
-									if( isset( $CF_GEOPLUGIN_OPTIONS['first_plugin_activation'] ) && (int)$CF_GEOPLUGIN_OPTIONS['first_plugin_activation'] == 1 ) $default_value_seo = $obj->name;
+						//			if( isset( $CF_GEOPLUGIN_OPTIONS['first_plugin_activation'] ) && (int)$CF_GEOPLUGIN_OPTIONS['first_plugin_activation'] == 1 ) $default_value_seo = $obj->name;
 									$seo_redirections[] = array(
 										'text'		=> $obj->label,
 										'name'		=> 'enable_seo_posts[]',
@@ -504,7 +504,7 @@ if( $global->get( 'action' ) == 'deactivate_license' )
 								));
 								$post_types_geo = apply_filters( 'cf_geoplugin_geo_tag_post_types', $post_types_geo);
 
-								$default_value_geo = isset( $CF_GEOPLUGIN_OPTIONS['enable_geo_tag'] ) ? $CF_GEOPLUGIN_OPTIONS['enable_geo_tag'] : '';
+								$default_value_geo = isset( $CF_GEOPLUGIN_OPTIONS['enable_geo_tag'] ) && !empty( $CF_GEOPLUGIN_OPTIONS['enable_geo_tag'] ) ? $CF_GEOPLUGIN_OPTIONS['enable_geo_tag'] : array('post', 'page');
 								foreach( $post_types_geo as $i => $obj )
 								{
 									if( in_array( $obj->name, array( 'attachment', 'nav_menu_item', 'custom_css', 'customize_changeset', 'user_request' ) ) ) continue;

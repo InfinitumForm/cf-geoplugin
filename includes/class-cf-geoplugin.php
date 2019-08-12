@@ -349,7 +349,7 @@ class CF_Geoplugin_Init extends CF_Geoplugin_Global
 		}
 
 		// Create table for SEO redirections
-		$table_name = $wpdb->prefix . self::TABLE['seo_redirection'];
+		$table_name = $wpdb->prefix . parent::TABLE['seo_redirection'];
 		$charset_collate = $wpdb->get_charset_collate();
 		
 		// Add new column to database IF NOT EXISTS

@@ -73,7 +73,9 @@ class CF_Geoplugin_Public extends CF_Geoplugin_Global
 <!-- <?php _e('CF Geoplugin JavaScript Plugin',CFGP_NAME); ?> -->
 <script>
 /* <![CDATA[ */
-	if(typeof cf == 'undefined') var cf = {};	
+	window.wp = window.wp || {};
+	window.wp.geo = window.wp.geo || {};
+	if(typeof cf == 'undefined') var cf = {};
 	cf.geoplugin = {url:window.location.href,host:window.location.hostname,protocol:window.location.protocol.replace(/\:/g,''),<?php
 		$exclude = array_map('trim', explode(',','state,continentCode,areaCode,dmaCode,timezoneName,currencySymbol,currencyConverter,error,status,runtime,error_message'));
 		$sprintf = array();
@@ -92,6 +94,10 @@ class CF_Geoplugin_Public extends CF_Geoplugin_Global
 		echo join(',',$sprintf);
 	?>}
 	window.cfgeo = cf.geoplugin;
+	window.wp.geo = window.cfgeo;
+<?php if(WP_CF_GEO_DEBUG) : ?>
+	console.log({'Geoplugin Header Load':window.wp.geo});
+<?php endif; ?>
 /* ]]> */
 </script>
 

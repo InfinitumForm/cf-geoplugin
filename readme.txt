@@ -5,7 +5,7 @@ Tags: geolocation, woocommerce, store-locator, seo, google-maps, geomarketing, c
 Requires at least: 3.0
 Tested up to: 5.2
 Requires PHP: 5.6.0
-Stable tag: 7.7.0
+Stable tag: 7.7.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -13,11 +13,11 @@ The only geolocation plugin that provides all geomarketing integrations for the 
 
 == Description ==
 
-**WordPress Geo Plugin** ([WordPress Geo Plugin](https://cfgeoplugin.com/)) is GeoMarketing tool that allows you to have full geo control of your WordPress. **WordPress Geo Plugin** gives you ability to attach content, geographic informations, geo tags, Google maps to posts, pages, widgets and custom templates by using simple, options shortcodes, PHP code or JavaScript. It also lets you to specify a default geographic location for your entire WordPress blog, do SEO redirection, spam protection, WooCommerce control and many more. **WordPress Geo Plugin** help you to increase conversion, do better SEO, capture leads on your blog or landing pages.
+**[WordPress Geo Plugin](https://cfgeoplugin.com/)** (formerly: CF Geo Plugin) is GeoMarketing tool that allows you to have full geo control of your WordPress. **WordPress Geo Plugin** gives you ability to attach content, geographic informations, geo tags, Google maps to posts, pages, widgets and custom templates by using simple, options shortcodes, PHP code or JavaScript. It also lets you to specify a default geographic location for your entire WordPress blog, do SEO redirection, spam protection, WooCommerce control and many more. **WordPress Geo Plugin** help you to increase conversion, do better SEO, capture leads on your blog or landing pages.
 
 = FREE AND PAID SERVICES =
 
-WordPress Geo Plugin uses a combination of **free and payed services** that return information about the locations.
+WordPress Geo Plugin uses a combination of **[free and payed services](https://cfgeoplugin.com/information/new-plugin-new-features-new-success/)** that return information about the locations.
 
 WordPress Geo Plugin is free by itself but API lookup is limited to **300 lookups per day** for the free users. If you like to have **UNLIMITED** lookup, **please visit [official website](https://cfgeoplugin.com/pricing/) for the more informations**.
 
@@ -311,74 +311,26 @@ Please inform us if any of these errors occure via contact form on our website [
 
 == Changelog ==
 
-= 7.7.0 =
-* Fixed database error on the plugin activation
+= 7.7.1 =
+* Fixed SE redirection bug
+* Fixed plugin order includes
+* Fixed wp-admin redirections
+* Fixed settings bug
+* Fixed typo in the descriptions
+* Improved plugin cache
 
 == Upgrade Notice ==
 
+= 7.7.1 =
+* Fixed SEO redirection bug
+* Fixed plugin order includes
+* Fixed wp-admin redirections
+* Fixed settings bug
+* Fixed typo in the descriptions
+* Improved plugin cache
+
 = 7.7.0 =
 * Fixed database error on the plugin activation
-
-= 7.6.9 =
-* Added "only once" redirection to globl SEO redirection
-* Fixed CSV file upload and reading
-* Added Microsoft Excell CSV support
-* Fixed bugs
-* Improved code orientation
-
-= 7.6.8 =
-* Fixed PHP error during activation
-* Fixed debugging
-
-= 7.6.7 =
-* Added Monarch plugin support
-* Fixed plugin support includings
-* Optimized code
-* Improved session
-
-= 7.6.6 =
-* Added new plugin filters in teh API
-* Added VAT check
-* Added EU check
-* Added GPS check
-* Removed old filters
-* Fixed small bugs
-
-= 7.6.5 =
-* Added new plugin filters
-* Fixed debugging
-* Added support for the featured GPS addon 
-
-= 7.6.4 =
-* Fixed HTTP codes in the SEO redirection
-* Improved PHP and WordPress version comparing
-* Improved lower WP version support
-* Code optimization
-* Improved SSL check
-* Improved CDN call
-* Improved page speed impact
-* Reduced memory usage
-* Improved HTTP response code for the SEO
-
-= 7.6.3 = 
-* Fixed bug in SEO redirection
-* Improved IP filter
-
-= 7.6.2 = 
-* Added new HTTP codes into SEO redirection
-
-= 7.6.1 = 
-* Added "Redirect Only Once" in page SEO redirection
-* Improved page ID finder
-* Optimized code
-
-= 7.6.0 = 
-* Added attribute "cache" in the shortcodes to fix cache errors in HTML indexing
-* Added new JavaScript cahce API
-* Optimized JavaScript code
-* Optimized PHP code and fixed minior bugs
-* Fixed SEO redirection bug
-* Removed old codes
 
 == Other Notes ==
 

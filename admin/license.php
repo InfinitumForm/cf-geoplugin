@@ -169,7 +169,7 @@ if( $global->get( 'action' ) == 'deactivate_license' && isset( $_GET['cfgp_licen
                 <form method="post" action="<?php self_admin_url('admin.php?page=cf-geoplugin-activate'); ?>" enctype="multipart/form-data" target="_self" id="license-form" autocomplete="off">
                 	<strong><label><?php _e('License Key',CFGP_NAME); ?> (<?php CFGP_ACTIVATED ? _e('activated',CFGP_NAME) : _e('required',CFGP_NAME); ?>)</label></strong><br>
                 	<input type="text" name="license_key" value="<?php echo isset($_POST['license_key']) ? $_POST['license_key'] : $CF_GEOPLUGIN_OPTIONS['license_key']; ?>" class="form-control" placeholder="<?php _e('Enter Your License Key',CFGP_NAME); ?>" autocomplete="off" style="width: 500px; display:inline-block;" <?php echo CFGP_ACTIVATED ? ' disabled' : ''; ?>> 
-                    <?php if(!CFGP_ACTIVATED) : ?><strong><a href="https://cfgeoplugin.com/#price" target="_blank" class="btn btn-info"><?php _e('GET MY LICENSE KEY',CFGP_NAME); ?></a></strong><?php endif; ?><br><br>
+                    <?php if(!CFGP_ACTIVATED) : ?><strong><a href="https://cfgeoplugin.com/#price" target="_blank"><?php _e('GET MY LICENSE KEY',CFGP_NAME); ?></a></strong><?php endif; ?><br><br>
                     <strong><label><?php _e('License Type',CFGP_NAME); ?> <?php CFGP_ACTIVATED ? '' : _e('(required)',CFGP_NAME); ?></label></strong><br>
                     <select name="sku" class="form-control" style="width: 300px; display:inline-block;" <?php echo CFGP_ACTIVATED ? ' disabled' : ''; ?>>
                     <?php

@@ -366,7 +366,11 @@ class CF_Geoplugin_Woocommerce extends CF_Geoplugin_Global
                     $custom_attributes['disabled'] = true;
                 }
                 
-                $settings[] = array( 'name' => __( 'CF Geoplugin Payments Control', CFGP_NAME ), 'type' => 'title', 'desc' => __( 'Configure payment methods for each country. Show or hide payment methods by country to prevent unwanted transactions.', CFGP_NAME ), 'id' => 'cf_geoplugin_payment_restriction' );
+                $settings[] = array( 'name' => __( 'CF Geoplugin Payments Control', CFGP_NAME ), 'type' => 'title', 'desc' => __( 'Configure payment methods for each country. Show or hide payment methods by country to prevent unwanted transactions.', CFGP_NAME ) . (
+				isset($custom_attributes['disabled']) && $custom_attributes['disabled']
+				? ' <br><span style="color:#dc3545;">' . sprintf(__('This option is only enabled with the licensed version of the %s. You must use 1 year license or above.', CFGP_NAME), '<a href="' . admin_url('admin.php?page=cf-geoplugin-activate') . '">WordPress Geo Plugin</a>') . '</span>'
+				: ''
+				), 'id' => 'cf_geoplugin_payment_restriction' );
                 foreach( $enabled_gateways as $i => $gateway )
                 {
                     $select_setting_id = sprintf( '%s_select', $gateway->id );

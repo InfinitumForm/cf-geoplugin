@@ -96,25 +96,25 @@ class CF_Geoplugin_Debug
 
         
         $filesize = filesize($path);
-        
-        $handle = fopen( $path, 'r' );
-            
-            header('Content-Description: File Transfer');
-            header('Content-Encoding: UTF-8');
-            header('Content-type: application/octet-stream; charset=UTF-8');
-            header('Content-Disposition: attachment; filename=' . $filename );
-            header('Content-Transfer-Encoding: binary');
-            header('Expires: 0');
-            header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-            header('Pragma: public');
-            header('Content-Length: ' . $filesize);
-
-            echo fread( $handle, $filesize );
-
+        $content = NULL;
+        $handle = fopen( $path, 'r' );    
+        $content = fread( $handle, $filesize );
         fclose( $handle );
         flush();
 
         if( file_exists( $path ) && is_readable( $path ) ) unlink($path);
+		
+		header('Content-Description: File Transfer');
+		header('Content-Encoding: UTF-8');
+		header('Content-type: application/octet-stream; charset=UTF-8');
+		header('Content-Disposition: attachment; filename=' . $filename );
+		header('Content-Transfer-Encoding: binary');
+		header('Expires: 0');
+		header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+		header('Pragma: public');
+		header('Content-Length: ' . strlen($content));
+		
+		echo $content;
 
 		exit;
 	}

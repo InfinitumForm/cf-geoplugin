@@ -82,8 +82,8 @@ class CF_Geoplugin_Global
 		'plugin_activated'			=>	NULL,
 		'enable_spam_ip'			=> 0,
 		'first_plugin_activation'	=> 1,
-		'enable_seo_posts'			=> array(),
-		'enable_geo_tag'			=> array(),
+		'enable_seo_posts'			=> array('post', 'page'),
+		'enable_geo_tag'			=> array('post', 'page'),
 	);
 
 	// Deprecated options
