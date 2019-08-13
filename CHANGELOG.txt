@@ -1,5 +1,11 @@
 == Changelog ==
 
+= 7.7.2 =
+* Fixed Wooplatnica integration
+* Fixed Geo Tag generator
+* Improved and changed privacy policy
+* Optimized PHP code
+
 = 7.7.1 =
 * Fixed SEO redirection bug
 * Fixed plugin order includes

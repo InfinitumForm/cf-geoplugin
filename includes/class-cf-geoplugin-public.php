@@ -95,7 +95,7 @@ class CF_Geoplugin_Public extends CF_Geoplugin_Global
 	?>}
 	window.cfgeo = cf.geoplugin;
 	window.wp.geo = window.cfgeo;
-<?php if(WP_CF_GEO_DEBUG) : ?>
+<?php if(defined('WP_CF_GEO_DEBUG') && WP_CF_GEO_DEBUG === true) : ?>
 	console.log({'Geoplugin Header Load':window.wp.geo});
 <?php endif; ?>
 /* ]]> */
@@ -127,7 +127,11 @@ class CF_Geoplugin_Public extends CF_Geoplugin_Global
 				}
 				if( !empty( $geo_data['geo.address'] ) )
 				{
-					printf( '<meta name="geo.placename" content="%s" />', $geo_data['geo.address'] );
+					printf( '<meta name="DC.title" content="%s" />', $geo_data['geo.address'] );
+				}
+				if( !empty( $geo_data['geo.placename'] ) )
+				{
+					printf( '<meta name="geo.placename" content="%s" />', $geo_data['geo.placename'] );
 				}
 				if( !empty( $geo_data['geo.longitude'] ) && !empty( $geo_data['geo.latitude'] ) )
 				{

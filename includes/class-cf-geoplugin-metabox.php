@@ -360,9 +360,16 @@ function CF_GeoPlugin_Google_Map_GeoTag() {
                 }
             }
 
+			var city = (typeof place.address_components[0] != 'undefined' ? place.address_components[0].long_name : ''),
+				region = (typeof place.address_components[2] != 'undefined' ? place.address_components[2].long_name : ''),
+				country = place.address_components[place.address_components.length-1].long_name || '';
+				
+			if((place.address_components.length-1) === 2)
+				region = '';
+
             document.getElementById('geo-tag-dc-title').value = place.formatted_address;
             document.getElementById('geo-tag-region').value = countryCode;
-            document.getElementById('geo-tag-placename').value = (typeof place.address_components[1] != 'undefined' ? place.address_components[1].long_name : '');
+            document.getElementById('geo-tag-placename').value = city;
 
             document.getElementById('geo-tag-latitude').value = place.geometry.location.lat();
             document.getElementById('geo-tag-longitude').value = place.geometry.location.lng();

@@ -3,7 +3,7 @@
  * Plugin setup
  *
  * @author     Ivijan-Stefan Stipic <creativform@gmail.com>
- * @since 7.5.4
+ * @since      7.5.4
 */
 
 
@@ -25,26 +25,3 @@ if ( ! defined( 'CFGP_LIMIT' ) )			define( 'CFGP_LIMIT', 300);
 if( ! defined( 'CFGP_DEV_MODE' ) )			define( 'CFGP_DEV_MODE', false );
 // Session expire in % minutes
 if( ! defined( 'CFGP_SESSION' ) )			define( 'CFGP_SESSION', 5 ); // 5 minutes
-
-
-// Privacy Policy
-if(!function_exists('cf_geoplugin_privacy_policy')) :
-function cf_geoplugin_privacy_policy() {
-    if ( ! function_exists( 'wp_add_privacy_policy_content' ) ) {
-        return;
-    }
- 
-    $content = sprintf(
-        __( 'This site uses the CF Geo Plugin to display public visitor information based on IP address that can then be collected or used for various purposes depending on the settings of the plugin. 
-		
-		<a href="%s" target="_blank">Learn more about how this works, including what you may want to include in your privacy policy and what is your right</a>.',
-        CFGP_NAME ),
-        CFGP_STORE . '/privacy-policy/'
-    );
- 
-    wp_add_privacy_policy_content(
-        'CF Geo Plugin',
-        wp_kses_post( wpautop( $content, false ) )
-    );
-}
-endif;
