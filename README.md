@@ -1,7 +1,7 @@
-WordPress Geo Plugin [<img class="aligncenter" src="https://plugintests.com/plugins/cf-geoplugin/wp-badge.svg" alt="WordPress Geo Plugin is WordPress 5.2.x Compatible">](https://plugintests.com/plugins/cf-geoplugin/latest) [<img class="aligncenter" src="https://plugintests.com/plugins/cf-geoplugin/php-badge.svg" alt="WordPress Geo Plugin is PHP7 Compatible">](https://plugintests.com/plugins/cf-geoplugin/latest) [<img class="aligncenter" src="https://img.shields.io/badge/CF%20GeoPlugin-7.X-green.svg" alt="WordPress Geo Plugin version 7.x">](https://cfgeoplugin.com)
+CF Geo Plugin [<img class="aligncenter" src="https://plugintests.com/plugins/cf-geoplugin/wp-badge.svg" alt="CF Geo Plugin is WordPress 5.2.x Compatible">](https://plugintests.com/plugins/cf-geoplugin/latest) [<img class="aligncenter" src="https://plugintests.com/plugins/cf-geoplugin/php-badge.svg" alt="CF Geo Plugin is PHP7 Compatible">](https://plugintests.com/plugins/cf-geoplugin/latest) [<img class="aligncenter" src="https://img.shields.io/badge/CF%20GeoPlugin-7.X-green.svg" alt="CF Geo Plugin version 7.x">](https://cfgeoplugin.com)
 ========
 
-The **WordPress Geo Plugin** is FREE plugin that allows you to attach content, geographic information and Google maps to posts, pages, widgets and custom templates by using simple Shortcodes, PHP code or JavaScript by user IP address. It also lets you to specify a default geographic location for your entire WordPress blog. This plugin is also great for SEO and increasing conversions on your blog or landing pages.
+The **CF Geo Plugin** is FREE plugin that allows you to attach content, geographic information and Google maps to posts, pages, widgets and custom templates by using simple Shortcodes, PHP code or JavaScript by user IP address. It also lets you to specify a default geographic location for your entire WordPress blog. This plugin is also great for SEO and increasing conversions on your blog or landing pages.
 
 If you need GPS support for our plugin, you can test our new **[GPS addon](https://github.com/CreativForm/wordpress-geoplugin-gps)** what you can download **[here](https://github.com/CreativForm/wordpress-geoplugin-gps)**.
 
@@ -19,7 +19,7 @@ OPEN PROBLEMS:
 CONTACT:
 ========
 
-Please contact us anytime regarding anything related to WordPress Geo Plugin office@cfgeoplugin.com
+Please contact us anytime regarding anything related to CF Geo Plugin office@cfgeoplugin.com
 
-Copyright &copy; [WordPress Geo Plugin](https://cfgeoplugin.com)
+Copyright &copy; [CF Geo Plugin](https://cfgeoplugin.com)
 Created by [INFINITUM FORM](https://infinitumform.com)
