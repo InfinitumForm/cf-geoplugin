@@ -15,24 +15,27 @@ if(is_admin())
 		$path = plugin_basename(__FILE__);
 		if($plugin == $path)
 		{
-			global $wpdb;
-			
-			add_option('cf_geoplugin_do_activation_redirect', true);
-			
-			$table_name = $wpdb->prefix . CF_Geoplugin_Global::TABLE['seo_redirection'];
-			if($wpdb->query("
-				   SELECT 1 FROM information_schema.tables 
-				   WHERE table_schema = '{$wpdb->dbname}' 
-				   AND table_name = '{$table_name}'
-			;"))
+			if(class_exists('CF_Geoplugin_Global'))
 			{
-				$list_columns = $wpdb->get_col("SHOW COLUMNS FROM {$table_name}");
-				if(!in_array('only_once', $list_columns))
+				global $wpdb;
+				
+		//		add_option('cf_geoplugin_do_activation_redirect', true);
+				
+				$table_name = $wpdb->prefix . CF_Geoplugin_Global::TABLE['seo_redirection'];
+				if($wpdb->query("
+					   SELECT 1 FROM information_schema.tables 
+					   WHERE table_schema = '{$wpdb->dbname}' 
+					   AND table_name = '{$table_name}'
+				;"))
 				{
-					$wpdb->query( "ALTER TABLE {$table_name} ADD only_once TINYINT(1) NOT NULL DEFAULT 0" );
+					$list_columns = $wpdb->get_col("SHOW COLUMNS FROM {$table_name}");
+					if(!in_array('only_once', $list_columns))
+					{
+						$wpdb->query( "ALTER TABLE {$table_name} ADD only_once TINYINT(1) NOT NULL DEFAULT 0" );
+					}
 				}
 			}
-			
+			/**
 			if ( $plugins = get_option( 'active_plugins' ) ) {
 				if ( $key = array_search( $path, $plugins ) ) {
 					array_splice( $plugins, $key, 1 );
@@ -40,6 +43,7 @@ if(is_admin())
 					update_option( 'active_plugins', $plugins );
 				}
 			}
+			**/
 		}
 	}, 1, 1);
 }
@@ -53,7 +57,7 @@ if(is_admin())
  * @version       7.7.2
  *
  */
-add_action('admin_init', function () {
+/*add_action('admin_init', function () {
 	if (get_option('cf_geoplugin_do_activation_redirect', false)) {
 		$CF_GEOPLUGIN_OPTIONS = (isset($GLOBALS['CF_GEOPLUGIN_OPTIONS']) ? $GLOBALS['CF_GEOPLUGIN_OPTIONS'] : array());
 		
@@ -69,4 +73,4 @@ add_action('admin_init', function () {
 			}
 		}
 	}
-}, 1, 0);
+}, 1, 0);*/

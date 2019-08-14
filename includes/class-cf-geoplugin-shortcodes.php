@@ -160,20 +160,27 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 	public function shortcode_automat_setup(){
 		$CFGEO = $GLOBALS['CFGEO'];
 		
-		include_once CFGP_INCLUDES . '/class-cf-geoplugin-shortcode-automat.php';
-		$exclude = array_map('trim', explode(',','state,continentCode,areaCode,dmaCode,timezoneName,currencySymbol,currencyConverter'));
-		
-		$generate=array();
-		foreach($CFGEO as $key => $value )
+		if(file_exists(CFGP_INCLUDES . '/class-cf-geoplugin-shortcode-automat.php'))
 		{
-			if(in_array($key, $exclude, true) === false)
+			include_once CFGP_INCLUDES . '/class-cf-geoplugin-shortcode-automat.php';
+			
+			if(class_exists('CF_Geoplugin_Shortcode_Automat'))
 			{
-				$generate['cfgeo_' . $key]=$value;
+				$exclude = array_map('trim', explode(',','state,continentCode,areaCode,dmaCode,timezoneName,currencySymbol,currencyConverter'));
+				
+				$generate=array();
+				foreach($CFGEO as $key => $value )
+				{
+					if(in_array($key, $exclude, true) === false)
+					{
+						$generate['cfgeo_' . $key]=$value;
+					}
+				}
+				
+				$sc = new CF_Geoplugin_Shortcode_Automat( $generate );
+				$sc->generate();
 			}
 		}
-		
-		$sc = new CF_Geoplugin_Shortcode_Automat( $generate );
-    	$sc->generate();
 	}
 	
 	/**

@@ -1,5 +1,8 @@
 == Changelog ==
 
+= 7.7.4 =
+* Fixed unexpected update and activation error
+
 = 7.7.3 =
 * Fixed XML error on previous version
 * Updated settings
