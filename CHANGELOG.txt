@@ -1,5 +1,9 @@
 == Changelog ==
 
+= 7.7.3 =
+* Fixed XML error on previous version
+* Updated settings
+
 = 7.7.2 =
 * Fixed Wooplatnica integration
 * Fixed Geo Tag generator

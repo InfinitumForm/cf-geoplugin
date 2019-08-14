@@ -199,7 +199,7 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 		if(strpos($arg['size'], '%')!==false || strpos($arg['size'], 'in')!==false || strpos($arg['size'], 'pt')!==false || strpos($arg['size'], 'em')!==false)
 			$size = $arg['size'];
 		else
-			$size = str_replace("px","",$arg['size']).'px';
+			$size = str_replace('px','',$arg['size']).'px';
 		
 		if((int)$arg['type']>0)
 			$type=' flag-icon-squared';
@@ -218,10 +218,10 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 			$css = NULL;
 
 			$ss = array();
-			$csss = array_map('trim',explode(";", $arg['css']));
+			$csss = array_map('trim',explode(';', $arg['css']));
 			foreach($csss as $val){
 				if(!empty($val)){
-					$val = array_map('trim',explode(":", $val));
+					$val = array_map('trim',explode(':', $val));
 					if(isset($val[1])) $ss[$val[0]]=$val[1];
 				}
 			}

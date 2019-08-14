@@ -161,6 +161,32 @@ class parseXML
 
 			$data = $G->curl_get( $document, array( 'Accept: text/xml' ) );
 			
+			if(!$data) return false;
+			
+			if(isset($http_response_header) && is_array($http_response_header))
+			{
+				foreach ($http_response_header as $header)
+				{   
+					if (preg_match('#^Content-Type: text/xml; charset=(.*)#i', $header, $m))
+					{   
+						switch (strtolower($m[1]))
+						{   
+							case 'utf-8':
+								// do nothing
+								break;
+
+							case 'iso-8859-1':
+								$data = utf8_encode($data);
+								break;
+
+							default:
+								$data = iconv($m[1], 'utf-8', $data);
+						}
+						break;
+					}
+				}
+			}
+			
 			$xml = simplexml_load_string($data);
 			return $xml;
 		}

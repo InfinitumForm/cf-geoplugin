@@ -468,7 +468,7 @@ class CF_Geoplugin_Global
 	* @option        string, int, float, bool, html, encoded, url, email
 	* @default       default value
 	*/
-	public function post($name, $option="string", $default=''){
+	public function post($name, $option='string', $default=''){
 		$option = trim((string)$option);
 		if(isset($_POST[$name]) && !empty($_POST[$name]))
 		{        
@@ -562,7 +562,7 @@ class CF_Geoplugin_Global
 	* @option        string, int, float, bool, html, encoded, url, email
 	* @default       default value
 	*/
-	public function get($name, $option="string", $default=''){
+	public function get($name, $option='string', $default=''){
         $option = trim((string)$option);
         if(isset($_GET[$name]) && !empty($_GET[$name]))
         {           
@@ -655,7 +655,7 @@ class CF_Geoplugin_Global
 	* @option        string, int, float, bool, html, encoded, url, email
 	* @default       default value
 	*/
-	public function request($name, $option="string", $default=''){
+	public function request($name, $option='string', $default=''){
         $option = trim((string)$option);
         if(isset($_REQUEST[$name]) && !empty($_REQUEST[$name]))
         {           
@@ -762,7 +762,7 @@ class CF_Geoplugin_Global
 	// Link plugin simple link default set http
 	public function addhttp($url) {
 		if (!preg_match("~^(?:f|ht)tps?://~i", $url)) {
-			$url = "http://" . $url;
+			$url = "http://{$url}";
 		}
 		return $url;
 	}
@@ -896,9 +896,14 @@ class CF_Geoplugin_Global
 
 		if( empty( $output ) )
 		{
-			$context = self::set_stream_context( $headers );
-			$output = @file_get_contents( $url, false, $context );
+			if(function_exists('file_get_contents'))
+			{
+				$context = self::set_stream_context( $headers );
+				$output = @file_get_contents( $url, false, $context );
+			}
 		}
+		
+		if( empty( $output ) ) return false;
 
 		return $output;
 	}
@@ -1035,10 +1040,10 @@ class CF_Geoplugin_Global
 			else
 			{
 				// Parse IP and extract last number for mathing
-				$breakIP = explode(".",$key);
+				$breakIP = explode(".", $key);
 				$lastNum = ((int)end($breakIP));
 				array_pop($breakIP);
-				$connectIP=join(".",$breakIP).'.';
+				$connectIP=join(".", $breakIP).'.';
 				
 				if($lastNum>=$num)
 				{
@@ -1054,7 +1059,7 @@ class CF_Geoplugin_Global
 				$breakIP = $lastNum = $connectIP = NULL;
 			}
 		}
-		if(!empty($blacklistIP)) $blacklistIP=array_map("trim",$blacklistIP);
+		if(!empty($blacklistIP)) $blacklistIP=array_map("trim", $blacklistIP);
 		
 		return $blacklistIP;
 	}
@@ -1101,7 +1106,7 @@ class CF_Geoplugin_Global
 			}
 			
 			// check in getenv() for any case
-			if(empty($ip) && function_exists("getenv"))
+			if(empty($ip) && function_exists('getenv'))
 			{
 				$ip = getenv($http);
 			}
@@ -1109,9 +1114,9 @@ class CF_Geoplugin_Global
 			// Check if here is multiple IP's
 			if(!empty($ip))
 			{
-				$ips=str_replace(";",",",$ip);
-				$ips=explode(",",$ips);
-				$ips=array_map("trim",$ips);
+				$ips=str_replace(';',',',$ip);
+				$ips=explode(',',$ips);
+				$ips=array_map('trim',$ips);
 				
 				$ipf=array();
 				foreach($ips as $ipx)
@@ -1149,9 +1154,9 @@ class CF_Geoplugin_Global
 			){
 				
 				// Well Somethimes can be tricky to find IP if have more then one
-				$ips=str_replace(";",",",$headers['X-Forwarded-For']);
-				$ips=explode(",",$ips);
-				$ips=array_map("trim",$ips);
+				$ips=str_replace(';',',',$headers['X-Forwarded-For']);
+				$ips=explode(',',$ips);
+				$ips=array_map('trim',$ips);
 				
 				$ipf=array();
 				foreach($ips as $ipx)
@@ -1216,7 +1221,7 @@ class CF_Geoplugin_Global
 		}
 		
 		if(
-			function_exists("filter_var") 
+			function_exists('filter_var') 
 			&& !empty($ip) 
 			&& in_array($ip, $blacklistIP,true)===false 
 			&& filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) !== false
@@ -1242,14 +1247,14 @@ class CF_Geoplugin_Global
 	 */
 	public function check_defender_activation()
 	{
-		$data=get_option("cf_geo_defender_api_key");
+		$data=get_option('cf_geo_defender_api_key');
 		$data=trim($data);
 		if(!empty($data) && strlen($data)>2){
-			$parse=explode("-", $data);
-			$parse=array_map("trim",$parse);
+			$parse=explode('-', $data);
+			$parse=array_map('trim',$parse);
 			if(
-				$parse[0]==str_rot13("PS") && 
-				$parse[3]==str_rot13("TRB") && 
+				$parse[0]==str_rot13('PS') && 
+				$parse[3]==str_rot13('TRB') && 
 				is_numeric($parse[1]) && 
 				is_numeric($parse[2]) && 
 				(int)$parse[2]>(int)$parse[1] && 
@@ -1369,7 +1374,7 @@ class CF_Geoplugin_Global
 	public static function is_connected()
 	{
 		// If Google fail, we are in big trouble
-		$connected = fsockopen("www.google.com", 443);
+		$connected = fsockopen('www.google.com', 443);
 		
 		if ($connected){
 			fclose($connected);
@@ -1377,7 +1382,7 @@ class CF_Geoplugin_Global
 		}
 		
 		// Maby Google have SSL problem
-		$connected = fsockopen("www.google.com", 80);
+		$connected = fsockopen('www.google.com', 80);
 		
 		if ($connected){
 			fclose($connected);
@@ -1385,7 +1390,7 @@ class CF_Geoplugin_Global
 		}
 		
 		// Facebook can be a backup plan
-		$connected = fsockopen("www.facebook.com", 443);
+		$connected = fsockopen('www.facebook.com', 443);
 		
 		if ($connected){
 			fclose($connected);
@@ -1393,7 +1398,7 @@ class CF_Geoplugin_Global
 		}
 		
 		// ...and maby SSL fail
-		$connected = fsockopen("www.facebook.com", 80);
+		$connected = fsockopen('www.facebook.com', 80);
 		
 		if ($connected){
 			fclose($connected);
@@ -1960,7 +1965,7 @@ class CF_Geoplugin_Global
 		return preg_replace_callback('/[\x{80}-\x{10FFFF}]/u', function ($m) {
 			$char = current($m);
 			$utf = iconv( $from, $to, $char);
-			return sprintf("&#x%s;", ltrim(strtoupper(bin2hex($utf)), "0"));
+			return sprintf('&#x%s;', ltrim(strtoupper(bin2hex($utf)), '0'));
 		}, $string);
 	}
 }

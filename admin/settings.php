@@ -417,7 +417,7 @@ if( $global->get( 'action' ) == 'deactivate_license' )
 
 								$first_seo_options = array();
 									
-								$default_value_seo = isset( $CF_GEOPLUGIN_OPTIONS['enable_seo_posts'] ) && !empty( $CF_GEOPLUGIN_OPTIONS['enable_seo_posts'] ) ? $CF_GEOPLUGIN_OPTIONS['enable_seo_posts'] : array('post', 'page');
+								$default_value_seo = isset( $CF_GEOPLUGIN_OPTIONS['enable_seo_posts'] ) && !empty( $CF_GEOPLUGIN_OPTIONS['enable_seo_posts'] ) ? $CF_GEOPLUGIN_OPTIONS['enable_seo_posts'] : '';
 								foreach( $post_types as $i => $obj )
 								{
 									if( in_array( $obj->name, array( 'attachment', 'nav_menu_item', 'custom_css', 'customize_changeset', 'user_request' ) ) ) continue;
@@ -504,7 +504,7 @@ if( $global->get( 'action' ) == 'deactivate_license' )
 								));
 								$post_types_geo = apply_filters( 'cf_geoplugin_geo_tag_post_types', $post_types_geo);
 
-								$default_value_geo = isset( $CF_GEOPLUGIN_OPTIONS['enable_geo_tag'] ) && !empty( $CF_GEOPLUGIN_OPTIONS['enable_geo_tag'] ) ? $CF_GEOPLUGIN_OPTIONS['enable_geo_tag'] : array('post', 'page');
+								$default_value_geo = isset( $CF_GEOPLUGIN_OPTIONS['enable_geo_tag'] ) && !empty( $CF_GEOPLUGIN_OPTIONS['enable_geo_tag'] ) ? $CF_GEOPLUGIN_OPTIONS['enable_geo_tag'] : '';
 								foreach( $post_types_geo as $i => $obj )
 								{
 									if( in_array( $obj->name, array( 'attachment', 'nav_menu_item', 'custom_css', 'customize_changeset', 'user_request' ) ) ) continue;
