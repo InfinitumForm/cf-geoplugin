@@ -101,7 +101,7 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 			'ip'		=>	false,
 			'default'	=>	'',
 			'exclude'	=>	false,
-			'include'	=>	false,
+			'include'	=>	false
         ), $atts );
 
 		$return 	= $array['return'];
@@ -196,12 +196,33 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 		$arg = shortcode_atts( array(
 			'size' 		=>  '128',
 			'type' 		=>  0,
+			'id' 		=>  false,
 			'css' 		=>  false,
 			'class'		=>  false,
 			'country' 	=>	isset( $CFGEO['country_code'] ) ? $CFGEO['country_code'] : '',
+			'exclude'	=>	false,
+			'include'	=>	false,
         ), $atts );
 		
-		$id = mt_rand(11111,99999);
+		$exclude 	= $arg['exclude'];
+		$include 	= $arg['include'];
+		
+		if(!empty($exclude) || !empty($include)) {
+			if(!empty($include))
+			{
+				if(!$this->recursive_array_search($include, $CFGEO)) return '';
+			}
+			
+			if(!empty($exclude))
+			{
+				if($this->recursive_array_search($exclude, $CFGEO)) return '';
+			}
+		}
+		
+		if(empty($arg['id']))
+			$id = 'cf-geo-flag-' . parent::generate_token(10);
+		else
+			$id = $arg['id'];
 		
 		if(strpos($arg['size'], '%')!==false || strpos($arg['size'], 'in')!==false || strpos($arg['size'], 'pt')!==false || strpos($arg['size'], 'em')!==false)
 			$size = $arg['size'];
@@ -260,12 +281,12 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 		{
 			$address = $CFGEO['address'];
 			if(file_exists(CFGP_ROOT.'/assets/flags/4x3/'.$flag.'.svg'))
-				return sprintf('<img src="%s" alt="%s" title="%s" style="max-width:%s !important;%s" class="flag-icon-img%s" id="cf-geo-flag-%s">', CFGP_ASSETS.'/flags/4x3/'.$flag.'.svg', $address, $address, $size, $css, $class, $id);
+				return sprintf('<img src="%s" alt="%s" title="%s" style="max-width:%s !important;%s" class="flag-icon-img%s" id="%s">', CFGP_ASSETS.'/flags/4x3/'.$flag.'.svg', $address, $address, $size, $css, $class, $id);
 			else
 				return '';
 		}
 		else
-			return sprintf('<span class="flag-icon flag-icon-%s%s" id="cf-geo-flag-%s"%s></span>', $flag.$type, $class, $id,(!empty($css)?' style="'.$css.'"':''));
+			return sprintf('<span class="flag-icon flag-icon-%s%s" id="%s"%s></span>', $flag.$type, $class, $id,(!empty($css)?' style="'.$css.'"':''));
 	}
 
 	/*
@@ -517,7 +538,7 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS']; $CFGEO = $GLOBALS['CFGEO'];
 
 		if( !isset( $CF_GEOPLUGIN_OPTIONS['enable_banner'] ) || !$CF_GEOPLUGIN_OPTIONS['enable_banner'] ) return '';
-		$ID = base_convert(mt_rand(1000000000,PHP_INT_MAX), 10, 36); // Let's made this realy hard
+		$ID = parent::generate_token(16); // Let's made this realy hard
 	
 		$array = shortcode_atts( array(
 			'id'				=>	$ID,

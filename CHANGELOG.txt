@@ -1,5 +1,10 @@
 == Changelog ==
 
+= 7.7.5 =
+* Added include/exclude attributes to `cfgeo_flag` shortcode for the display/hide flag
+* Fixed ID's on the missing attributes
+* Fixed PHP 7.3 error
+
 = 7.7.4 =
 * Fixed unexpected update and activation error
 

@@ -1725,13 +1725,13 @@ class CF_Geoplugin_Global
 		if(function_exists('openssl_random_pseudo_bytes') || function_exists('random_bytes'))
 		{
 			if (version_compare(PHP_VERSION, '7.0.0', '>='))
-				return str_rot13(bin2hex(random_bytes($length)));
+				return substr(str_rot13(bin2hex(random_bytes(ceil($length * 2)))), 0, $length);
 			else
-				return str_rot13(bin2hex(openssl_random_pseudo_bytes($length)));
+				return substr(str_rot13(bin2hex(openssl_random_pseudo_bytes(ceil($length * 2)))), 0, $length);
 		}
 		else
 		{
-			return md5(str_replace(array('.',' ','_'),mt_rand(1000,9999),uniqid('t'.microtime())));
+			return substr(str_replace(array('.',' ','_'),mt_rand(1000,9999),uniqid('t'.microtime())), 0, $length);
 		}
 	}
 
