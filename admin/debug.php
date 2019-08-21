@@ -110,10 +110,10 @@ if( isset( $_GET['action'] ) && ( $_GET['action'] == 'debugger' || $_GET['action
             	<div role="tabpane" class="tab-pane fade in <?php echo $data; ?>" id="recived-data">
                     <div class="card text-body">
                         <div class="card-header bg-transparent">
-                            <h1 class="h5"><?php echo sprintf( __( 'Information that the CF GeoPlugin API ver.%s receives', CFGP_NAME ), CFGP_VERSION ); ?></h1>
+                            <h1 class="h5"><?php echo sprintf( __( 'Information that the WordPress Geo Plugin API ver.%s receives', CFGP_NAME ), CFGP_VERSION ); ?></h1>
                         </div>  
                         <div class="card-body">
-                        	<p><?php _e( 'This informations are from CF GEoPlugin API services.', CFGP_NAME ); ?></p>
+                        	<p><?php _e( 'This informations are from WordPress Geo Plugin API services.', CFGP_NAME ); ?></p>
                             <table class="table table-sm table-striped w-100"> 
                                 <thead>
                                     <tr>
@@ -266,10 +266,10 @@ if( isset( $_GET['action'] ) && ( $_GET['action'] == 'debugger' || $_GET['action
                 <div role="tabpanel" class="tab-pane fade in" id="sent-data">
                     <div class="card text-body">
                         <div class="card-header bg-transparent">
-                            <h1 class="h5"><?php echo sprintf( __( 'Information that the plugin CF GeoPlugin API ver.%s sends', CFGP_NAME ), CFGP_VERSION ); ?></h1>
+                            <h1 class="h5"><?php echo sprintf( __( 'Information that the plugin WordPress Geo Plugin API ver.%s sends', CFGP_NAME ), CFGP_VERSION ); ?></h1>
                         </div>
                         <div class="card-body">
-                        	<p><?php _e('This information are sent to CF GeoPlugin API. All of this informations (hostname, IP and timezone) are available for general public, world wide and we only use them for API purpose which helps plugin to determine the exact location of the visitors and prevent accidental collapse between the IP address. Your IP and email address is also a guarantee that you\'re not a robot or some spamming software.',CFGP_NAME); ?><br><?php _e('If you are concerned about your private informations, please read the <a href="http://cfgeoplugin.com/privacy-policy" target="_blank">Privacy Policy</a>',CFGP_NAME); ?></p>
+                        	<p><?php _e('This information are sent to WordPress Geo Plugin API. All of this informations (hostname, IP and timezone) are available for general public, world wide and we only use them for API purpose which helps plugin to determine the exact location of the visitors and prevent accidental collapse between the IP address. Your IP and email address is also a guarantee that you\'re not a robot or some spamming software.',CFGP_NAME); ?><br><?php _e('If you are concerned about your private informations, please read the <a href="http://cfgeoplugin.com/privacy-policy" target="_blank">Privacy Policy</a>',CFGP_NAME); ?></p>
                             <table class="table table-sm table-striped w-100"> 
                                 <thead>
                                     <tr>
@@ -305,7 +305,7 @@ if( isset( $_GET['action'] ) && ( $_GET['action'] == 'debugger' || $_GET['action
                                     <tr>
                                         <td><strong><?php _e( 'Version', CFGP_NAME ); ?></strong></td>
                                         <td><?php echo CFGP_VERSION; ?></td>
-                                        <td><?php _e( 'CF GeoPlugin Version', CFGP_NAME ); ?></td>
+                                        <td><?php _e( 'WordPress Geo Plugin Version', CFGP_NAME ); ?></td>
                                     </tr>
                                     <tr>
                                         <td><strong><?php _e( 'Email' ); ?></strong></td>
@@ -321,7 +321,7 @@ if( isset( $_GET['action'] ) && ( $_GET['action'] == 'debugger' || $_GET['action
 												echo ( !empty( $CF_GEOPLUGIN_OPTIONS['license_key'] ) ? $CF_GEOPLUGIN_OPTIONS['license_key'] : '-' )
 										?></td>
                                         <td>
-											<?php _e( 'CF GeoPlugin License Key', CFGP_NAME ); ?>
+											<?php _e( 'WordPress Geo Plugin License Key', CFGP_NAME ); ?>
 											<?php
 											if(CFGP_DEFENDER_ACTIVATED)
 												_e( 'Lifetime', CFGP_NAME );

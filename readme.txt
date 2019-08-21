@@ -5,7 +5,7 @@ Tags: geolocation, woocommerce, store-locator, seo, google-maps, geomarketing, c
 Requires at least: 3.0
 Tested up to: 5.2
 Requires PHP: 5.6.0
-Stable tag: 7.7.5
+Stable tag: 7.7.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -66,7 +66,7 @@ WordPress Geo Plugin is free by itself but API lookup is limited to **300 lookup
 
 This plugin is compatible with any Wordpress installation and many available plugins. We also do special compatible functions with:
 
-* [GPS for WordPress Geo Plugin](https://wordpress.org/plugins/cf-geoplugin-gps/) (Enable GPS lookup for the CF Geo Plugin and collect geodata from the mobile visitors.)
+* [GPS for WordPress Geo Plugin](https://wordpress.org/plugins/cf-geoplugin-gps/) (Enable GPS lookup for the WordPress Geo Plugin and collect geodata from the mobile visitors.)
 * [WooCommerce](https://woocommerce.com/) (payment controlls & currency converter)
 * [Wooplatnica](https://wordpress.org/plugins/wooplatnica/) (currency converter)
 * [Monarch](https://www.elegantthemes.com/plugins/monarch/) (Geo Banner support)
@@ -321,12 +321,10 @@ Please inform us if any of these errors occure via contact form on our website [
 
 == Changelog ==
 
-= 7.7.5 =
-* Added include/exclude attributes to `cfgeo_flag` shortcode for the display/hide flag
-* Fixed ID's on the missing attributes
-* Fixed PHP 7.3 error
-
-== Upgrade Notice ==
+= 7.7.6 =
+* Added bot and search engine support for the SEO redirection
+* Fixed RSS reads
+* Fixed link path
 
 = 7.7.5 =
 * Added include/exclude attributes to `cfgeo_flag` shortcode for the display/hide flag
@@ -354,8 +352,20 @@ Please inform us if any of these errors occure via contact form on our website [
 * Fixed typo in the descriptions
 * Improved plugin cache
 
-= 7.7.0 =
-* Fixed database error on the plugin activation
+== Upgrade Notice ==
+
+= 7.7.6 =
+* Added bot and search engine support for the SEO redirection
+* Fixed RSS reads
+* Fixed link path
+
+= 7.7.5 =
+* Added include/exclude attributes to `cfgeo_flag` shortcode for the display/hide flag
+* Fixed ID's on the missing attributes
+* Fixed PHP 7.3 error
+
+= 7.7.4 =
+* Fixed unexpected update and activation error
 
 == Other Notes ==
 

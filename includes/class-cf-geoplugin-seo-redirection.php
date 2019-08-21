@@ -19,6 +19,9 @@ class CF_Geoplugin_SEO_Redirection extends CF_Geoplugin_Global
 	// Page SEO Redirection
 	public function page_seo_redirection(){
 		$CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
+		
+		if((isset($CF_GEOPLUGIN_OPTIONS['redirect_disable_bots']) ? ($CF_GEOPLUGIN_OPTIONS['redirect_disable_bots'] == 1) : false) && parent::is_bot()) return;
+		
 		$page_id = $this->get_current_page_ID();
 		if(!is_admin() && $CF_GEOPLUGIN_OPTIONS['enable_seo_redirection'])
 		{
@@ -78,6 +81,8 @@ class CF_Geoplugin_SEO_Redirection extends CF_Geoplugin_Global
 	public function wp_seo_redirection(){
 		global $wpdb; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS']; $CFGEO = $GLOBALS['CFGEO'];
 		
+		if((isset($CF_GEOPLUGIN_OPTIONS['redirect_disable_bots']) ? ($CF_GEOPLUGIN_OPTIONS['redirect_disable_bots'] == 1) : false) && parent::is_bot()) return;
+		
 		if(!is_admin() && $CF_GEOPLUGIN_OPTIONS['enable_seo_redirection'])
 		{
 			$table_name = self::TABLE['seo_redirection'];
@@ -112,7 +117,7 @@ class CF_Geoplugin_SEO_Redirection extends CF_Geoplugin_Global
 	}
 
 	private function do_redirection( $redirect )
-	{
+	{		
 		$CFGEO = $GLOBALS['CFGEO'];
 		
 		if(
@@ -149,7 +154,7 @@ class CF_Geoplugin_SEO_Redirection extends CF_Geoplugin_Global
 	}
 	
 	private function control_redirection( $redirect )
-	{
+	{		
 		if(isset( $redirect['only_once'] ) && $redirect['only_once'] == 1){
 			$cookie_name = '__cfgp_seo_' . $redirect['page_id'] . '_once_' . $redirect['ID'];
 			

@@ -1,6 +1,6 @@
 <?php if ( ! defined( 'WPINC' ) ) { die( "Don't mess with us." ); }
 /**
- * Page CF GeoPlugin
+ * Page WordPress Geo Plugin
  *
  * @since      7.0.0
  * @package    CF_Geoplugin
@@ -14,7 +14,7 @@ $CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIO
 <div class="container-fluid">
 	<div class="row">
     	<div class="col-12">
-        	<h1 class="h5 mt-3"><i class="fa fa-map-marker"></i> <?php _e('CF GeoPlugin',CFGP_NAME); ?></h1>
+        	<h1 class="h5 mt-3"><i class="fa fa-map-marker"></i> <?php _e('WordPress Geo Plugin',CFGP_NAME); ?></h1>
             <hr>
         </div>
         <div class="col">
@@ -462,7 +462,7 @@ $CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIO
         &nbsp;&nbsp;[text* country placeholder "* Country"]<br><br>
         &lt;script&gt;<br>
         jQuery(document).ready(function(){<br>
-        &nbsp;&nbsp;// Get CF GeoPlugin Data<br>
+        &nbsp;&nbsp;// Get WordPress Geo Plugin Data<br>
         &nbsp;&nbsp;var city = \'[cfgeo return="city"]\';<br>
         &nbsp;&nbsp;var country = \'[cfgeo return="country"]\';<br><br>
         &nbsp;&nbsp;// Insert values inside input fields<br>
@@ -491,7 +491,7 @@ $CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIO
                                 
                                 <p class="manage-menus"><?php printf(__("Like you notice, this plugin have changed shortcode names but still support old <strong>deprecated</strong> shortcode name %s what you still can use but we strongly recommended to use new one %s.",CFGP_NAME), '<code>cg_geo</code>', '<code>cfgeo</code>'); ?></p>
                             <?php if($CF_GEOPLUGIN_OPTIONS['enable_beta'] && $CF_GEOPLUGIN_OPTIONS['enable_beta_shortcode']) : ?>
-                                <p class="manage-menus"><?php printf(__("Also we trying to made all works faster and more understandable and we also add <strong>experimental</strong> shortcode called %s that you can use insteand of %s like %s but if you have similar geo plugin installed beside CF GeoPlugin you can have a problems and interference.",CFGP_NAME), '<code>geo</code>', '<code>cfgeo</code>', '<code>[geo]</code>'); ?></p>
+                                <p class="manage-menus"><?php printf(__("Also we trying to made all works faster and more understandable and we also add <strong>experimental</strong> shortcode called %s that you can use insteand of %s like %s but if you have similar geo plugin installed beside WordPress Geo Plugin you can have a problems and interference.",CFGP_NAME), '<code>geo</code>', '<code>cfgeo</code>', '<code>[geo]</code>'); ?></p>
                             <?php endif; ?>
                             
                             <?php do_action('page-cf-geoplugin-tab-info-end'); ?>

@@ -67,6 +67,7 @@ class CF_Geoplugin_Global
 		'store'						=>	'https://cfgeoplugin.com',
 		'store_code'				=>	'YR5pv3FU8l78v3N',
 		'redirect_enable'			=>	0,
+		'redirect_disable_bots'		=>	0,
 		'redirect_country'			=>	'',
 		'redirect_region'			=>	'',
 		'redirect_city'				=>	'',
@@ -1486,6 +1487,21 @@ class CF_Geoplugin_Global
 		}
 		return false;
     }
+	
+	/**
+	 * Check is bot, search engine or crawler
+	 *
+	 * @since    7.7.6
+	 **/
+	public static function is_bot() {
+		
+		if(isset($_SERVER['HTTP_USER_AGENT']))
+		{
+			return (preg_match('/rambler|abacho|acoi|accona|aspseek|altavista|estyle|scrubby|lycos|geona|ia_archiver|alexa|sogou|skype|facebook|twitter|pinterest|linkedin|naver|bing|google|yahoo|duckduckgo|yandex|baidu|teoma|xing|java\/1.7.0_45|bot|crawl|slurp|spider|mediapartners|\sask\s|\saol\s/i', $_SERVER['HTTP_USER_AGENT']) ? true : false);
+		}
+		
+		return true;
+	}
 	
 	/**
 	 * Get real Hostname
