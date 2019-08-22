@@ -82,20 +82,51 @@ class CF_Geoplugin_SEO_Redirection extends CF_Geoplugin_Global
 		global $wpdb; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS']; $CFGEO = $GLOBALS['CFGEO'];
 		
 		if((isset($CF_GEOPLUGIN_OPTIONS['redirect_disable_bots']) ? ($CF_GEOPLUGIN_OPTIONS['redirect_disable_bots'] == 1) : false) && parent::is_bot()) return;
-		
+
 		if(!is_admin() && $CF_GEOPLUGIN_OPTIONS['enable_seo_redirection'])
 		{
+			$country = (isset($CFGEO['country']) && !empty($CFGEO['country']) ? strtolower($CFGEO['country']) : NULL);
+			$country_code = (isset($CFGEO['country_code']) && !empty($CFGEO['country_code']) ? strtolower($CFGEO['country_code']) : NULL);
+			
+			$region = (isset($CFGEO['region']) && !empty($CFGEO['region']) ? strtolower($CFGEO['region']) : NULL);
+			$region_code = (isset($CFGEO['region_code']) && !empty($CFGEO['region_code']) ? strtolower($CFGEO['region_code']) : NULL);
+			
+			$city = (isset($CFGEO['city']) && !empty($CFGEO['city']) ? strtolower($CFGEO['city']) : NULL);
+			
+			$where = array();
+			
+			if($country || $country_code)
+			{
+				if($country) $where[]="TRIM(LOWER(country)) = '{$country}'";
+				if($country_code) $where[]="TRIM(LOWER(country)) = '{$country_code}'";
+			}
+			
+			if($region || $region_code)
+			{
+				if($region) $where[]="TRIM(LOWER(region)) = '{$region}'";
+				if($region_code) $where[]="TRIM(LOWER(region)) = '{$region_code}'";
+			}
+			
+			if($city) $where[]="TRIM(LOWER(city)) = '{$city}'";
+			
+			$where = join(' OR ', $where);
+			
 			$table_name = self::TABLE['seo_redirection'];
-            $redirects = $wpdb->get_results( "
+            $redirects = $wpdb->get_results( $query = "
 			SELECT 
-				TRIM(url),
+				TRIM(url) AS url,
 				TRIM(LOWER(country)) AS country, 
 				TRIM(LOWER(region)) AS region, 
-				TRIM(LOWER(city)) AS city, 
-				TRIM(http_code), 
+				TRIM(LOWER(city)) AS city,
+				TRIM(http_code) AS http_code, 
 				only_once
 			FROM 
-				{$wpdb->prefix}{$table_name};", ARRAY_A );
+				{$wpdb->prefix}{$table_name}
+			WHERE
+				active = 1
+			AND
+			({$where});", ARRAY_A );
+
 			if( $redirects !== NULL && $wpdb->num_rows > 0 && ( isset( $CFGEO['country'] ) || isset( $CFGEO['country_code'] ) ) )
 			{
 				foreach( $redirects as $redirect )

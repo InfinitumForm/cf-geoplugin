@@ -5,7 +5,7 @@ Tags: geolocation, woocommerce, store-locator, seo, google-maps, geomarketing, c
 Requires at least: 3.0
 Tested up to: 5.2
 Requires PHP: 5.6.0
-Stable tag: 7.7.6
+Stable tag: 7.7.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -321,6 +321,10 @@ Please inform us if any of these errors occure via contact form on our website [
 
 == Changelog ==
 
+= 7.7.7 =
+* IMPORTANT UPDATE: Fixed global SEO redirection bug
+* Improved page impact on the SEO redirection
+
 = 7.7.6 =
 * Added bot and search engine support for the SEO redirection
 * Fixed RSS reads
@@ -354,18 +358,9 @@ Please inform us if any of these errors occure via contact form on our website [
 
 == Upgrade Notice ==
 
-= 7.7.6 =
-* Added bot and search engine support for the SEO redirection
-* Fixed RSS reads
-* Fixed link path
-
-= 7.7.5 =
-* Added include/exclude attributes to `cfgeo_flag` shortcode for the display/hide flag
-* Fixed ID's on the missing attributes
-* Fixed PHP 7.3 error
-
-= 7.7.4 =
-* Fixed unexpected update and activation error
+= 7.7.7 =
+* IMPORTANT UPDATE: Fixed global SEO redirection bug
+* Improved page impact on the SEO redirection
 
 == Other Notes ==
 
