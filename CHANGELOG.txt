@@ -1,5 +1,9 @@
 == Changelog ==
 
+= 7.7.8 =
+* Fixed cache problems on the content pages
+* Added AJAX calls for the cached pages
+
 = 7.7.7 =
 * IMPORTANT UPDATE: Fixed global SEO redirection bug
 * Improved page impact on the SEO redirection

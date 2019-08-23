@@ -93,7 +93,10 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 	*/
 	public function cf_geoplugin($atts, $content='')
 	{
-		$cache = isset($atts['cache']);
+		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
+		
+		$cache = isset($atts['cache']) || in_array('cache',$atts);
+		if(isset($atts['no_cache']) || in_array('no_cache',$atts)) $cache = false;
 		
 		$CFGEO = $GLOBALS['CFGEO'];
 		$array = shortcode_atts( array(
@@ -137,19 +140,19 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 			if(!empty($exclude) || !empty($include)) {
 				if(!empty($include))
 				{
-					if($this->recursive_array_search($include, $CFGEO)) return (isset($CFGEO[$return]) ? ($cache ? '<span class="cfgeo-replace-'.$return.'">' . $CFGEO[$return] . '</span>' : $CFGEO[$return]) : $default);
+					if($this->recursive_array_search($include, $CFGEO)) return (isset($CFGEO[$return]) ? ($cache ? '<span class="cfgeo-replace" data-key="'.$return.'">' . $CFGEO[$return] . '</span>' : $CFGEO[$return]) : $default);
 					else return '';
 				}
 				
 				if(!empty($exclude))
 				{
 					if($this->recursive_array_search($exclude, $CFGEO)) return '';
-					else return (isset($CFGEO[$return]) ? ($cache ? '<span class="cfgeo-replace-'.$return.'">' . $CFGEO[$return] . '</span>' : $CFGEO[$return]) : $default);
+					else return (isset($CFGEO[$return]) ? ($cache ? '<span class="cfgeo-replace" data-key="'.$return.'">' . $CFGEO[$return] . '</span>' : $CFGEO[$return]) : $default);
 				}
 			}
 		}
 		
-		return (isset($CFGEO[$return]) ? ($cache ? '<span class="cfgeo-replace-'.$return.'">' . $CFGEO[$return] . '</span>' : $CFGEO[$return]) : $default);
+		return (isset($CFGEO[$return]) ? ($cache ? '<span class="cfgeo-replace" data-key="'.$return.'">' . $CFGEO[$return] . '</span>' : $CFGEO[$return]) : $default);
 	}
 	
 	/**
@@ -157,8 +160,13 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 	 *
 	 * @since    7.0.0
 	 */
-	public function shortcode_automat_setup(){
+	public function shortcode_automat_setup($atts){
 		$CFGEO = $GLOBALS['CFGEO'];
+		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
+		
+		$cache = isset($atts['cache']) || in_array('cache',$atts);
+		if(isset($CF_GEOPLUGIN_OPTIONS['enable_cache']) ? $CF_GEOPLUGIN_OPTIONS['enable_cache'] : 0) $cache = true;
+		if(isset($atts['no_cache']) || in_array('no_cache',$atts)) $cache = false;
 		
 		if(file_exists(CFGP_INCLUDES . '/class-cf-geoplugin-shortcode-automat.php'))
 		{
@@ -173,7 +181,7 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 				{
 					if(in_array($key, $exclude, true) === false)
 					{
-						$generate['cfgeo_' . $key]=$value;
+						$generate['cfgeo_' . $key]=($cache ? '<span class="cfgeo-replace" data-key="'.$key.'">' . $value . '</span>' : $value);
 					}
 				}
 				
