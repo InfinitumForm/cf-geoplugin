@@ -1,5 +1,9 @@
 == Changelog ==
 
+= 7.7.9 =
+* Fixed PHP error inside shortcodes
+* Improved AJAX calls
+
 = 7.7.8 =
 * Fixed cache problems on the content pages
 * Added AJAX calls for the cached pages

@@ -30,10 +30,10 @@
         var formData = $this.serialize();
 
         $.ajax({
-            'method': 'POST',
-            'data': formData,
-            'cache' : false,
-            'url': CFGP_PUBLIC.ajax_url + '?action=cfgeo_full_currency_converter',
+            method : 'POST',
+            data : formData,
+            cache  : false,
+            url : CFGP_PUBLIC.ajax_url + '?action=cfgeo_full_currency_converter',
             beforeSend: function()
             {
                 $( $this ).find( 'p.cfgp-currency-converted' ).html( '<div class="card w-100 text-white bg-secondary"><div class="card-body text-center"><img src="'+ CFGP_PUBLIC.loading_gif +'" /></div></div>' );
@@ -48,35 +48,51 @@
 	
 	/* Cache Handle */
 	(function(element){
-		var replace = $(element);
-		if(replace.length)
+		var replace = $(element),
+			timeout,
+			clean_this = function(){
+				var e = $(element);
+				if(e.length > 0)
+				{
+					var $this = e,
+						parent = $this.parent(),
+						parent_html = parent.html();
+					if(parent_html)
+					{
+						var regex = /<span class="cfgeo-replace">([0-9a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF\,\;\s\t\n\r\"\'\<\>\:\/\\\#\$\%\&\(\)\€\@\ł\|]+)<\/span>/gi;
+						parent.html(parent_html.replace(regex,'$1')).promise().done(clean_this);
+						//timeout = setTimeout(clean_this,10);
+					}
+				} else {
+					//if(timeout) clearTimeout(timeout);
+				}
+			};
+		if(replace.length > 0)
 		{
+			var nonce = $(replace.get(0)).attr('data-nonce');
+			
 			$.ajax({
-				'method': 'POST',
-				'data': {
-					'cfgeo_nonce' : CFGP_PUBLIC.cfgeo_nonce
+				method : 'POST',
+				data: {
+					'cfgeo_nonce' : nonce
 				},
-				'cache' : false,
-				'url': CFGP_PUBLIC.ajax_url + '?action=cfgeo_cache', 
+				cache : false,
+				async : false,
+				url: CFGP_PUBLIC.ajax_url + '?action=cfgeo_cache', 
 			}).done( function( d ) {
 				if(d)
 				{
 					var data = JSON.parse(d);
-					replace.each(function(){
-						var $this = $(this),
+					replace.each(function(i, e){
+						var $this = $(e),
 							key = $this.attr('data-key');
 							
 						if(key)
 						{
-							$this.text( data[key] ).removeAttr('data-key');
-							var parent = $this.parent(),
-								parent_html = parent.html();
-							if(parent_html)
-							{
-								parent.html(parent_html.replace(/<span class="cfgeo-replace">(.*?)<\/span>/gi,'$1'));
-							}
+							$this.html( data[key] ).removeAttr('data-key').removeAttr('data-nonce');
 						}
-							
+					}).promise().done(function(){
+						clean_this();
 					});
 				}
 			}).fail( function( jqXHR, error, textStatus ) {

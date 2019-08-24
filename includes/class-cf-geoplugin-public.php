@@ -35,7 +35,7 @@ class CF_Geoplugin_Public extends CF_Geoplugin_Global
 
 	
 	public function ajax_fix_cache(){
-		if(wp_verify_nonce( $_REQUEST['cfgeo_nonce'], 'cfgeo-process-cache-ajax'.$comment_id ))
+		if(wp_verify_nonce( $_REQUEST['cfgeo_nonce'], 'cfgeo-process-cache-ajax' ) !== false)
 		{
 			$CFGEO = $GLOBALS['CFGEO'];
 			exit(json_encode($CFGEO));
@@ -88,8 +88,7 @@ class CF_Geoplugin_Public extends CF_Geoplugin_Global
 				'CFGP_PUBLIC',
 				array(
 					'ajax_url'			=> self_admin_url( 'admin-ajax.php' ),
-					'loading_gif'		=> esc_url( CFGP_ASSETS . '/images/double-ring-loader.gif' ),
-					'cfgeo_nonce'		=> wp_create_nonce( 'cfgeo-process-cache-ajax' )
+					'loading_gif'		=> esc_url( CFGP_ASSETS . '/images/double-ring-loader.gif' )
 				)
 			);
 			wp_enqueue_script( CFGP_NAME . '-js-public' );
