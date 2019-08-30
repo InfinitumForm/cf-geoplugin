@@ -135,8 +135,8 @@ class CF_Geoplugin_Public extends CF_Geoplugin_Global
 	{
 		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
 		$post = get_post();
-		
-		if( isset( $CF_GEOPLUGIN_OPTIONS['enable_geo_tag'] ) && in_array( (property_exists($post, 'post_type') ? $post->post_type : NULL), $CF_GEOPLUGIN_OPTIONS['enable_geo_tag'] ) )
+
+		if($post && is_object($post) && isset( $CF_GEOPLUGIN_OPTIONS['enable_geo_tag'] ) && in_array( (property_exists($post, 'post_type') ? $post->post_type : NULL), $CF_GEOPLUGIN_OPTIONS['enable_geo_tag'] ) )
 		{
 			$geo_data = apply_filters( 'cf_geoplugin_geo_tag_data', array(
 				'geo.enable'	=> get_post_meta( $post->ID, 'cfgp-geotag-enable', true ),

@@ -5,7 +5,7 @@ Tags: geolocation, woocommerce, store-locator, seo, google-maps, geomarketing, c
 Requires at least: 3.0
 Tested up to: 5.2
 Requires PHP: 5.6.0
-Stable tag: 7.7.9
+Stable tag: 7.8.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -73,6 +73,10 @@ This plugin is compatible with any Wordpress installation and many available plu
 * [Cloudflare](https://www.cloudflare.com/) (Cache and deep IP recognations)
 * [Contact Form 7](https://wordpress.org/plugins/contact-form-7/) (JavaScript objects and shortcode support)
 * [Nord VPN proxy service](https://goo.gl/lWm3e6) (PROXY settings)
+* [Yoast SEO](https://wordpress.org/plugins/wordpress-seo/)
+* [All in one SEO pack](https://wordpress.org/plugins/all-in-one-seo-pack/)
+* [Wordpress SEO plugin](https://wordpress.org/plugins/seo-by-rank-math/)
+* [SEO framework](https://wordpress.org/plugins/autodescription/)
 
 > <strong>All WordPress Geo Plugin 7.x.x Features</strong><br>
 >
@@ -321,6 +325,18 @@ Please inform us if any of these errors occure via contact form on our website [
 
 == Changelog ==
 
+= 7.8.0 =
+* Adding new special Geo Tags for the geo insertation
+* Adding support for the Yoast SEO
+* Adding support for the All in one SEO pack
+* Adding support for the Wordpress SEO plugin
+* Adding support for the SEO framework
+* Adding support for the widgets
+* Adding support for the Gutemberg
+* Adding support for the taxonomies
+* Improved session
+* Fixed bugs from previous version
+
 = 7.7.9 =
 * Fixed PHP error inside shortcodes
 * Improved AJAX calls
@@ -366,9 +382,18 @@ Please inform us if any of these errors occure via contact form on our website [
 
 == Upgrade Notice ==
 
-= 7.7.7 =
-* IMPORTANT UPDATE: Fixed global SEO redirection bug
-* Improved page impact on the SEO redirection
+= 7.8.0 =
+* Adding new special Geo Tags for the geo insertation
+* Adding support for the Yoast SEO
+* Adding support for the All in one SEO pack
+* Adding support for the Wordpress SEO plugin
+* Adding support for the SEO framework
+* Adding support for the Guthemberg modules
+* Adding support for the widgets
+* Adding support for the Gutemberg
+* Adding support for the taxonomies
+* Improved session
+* Fixed bugs from previous version
 
 == Other Notes ==
 

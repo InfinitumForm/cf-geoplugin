@@ -24,4 +24,4 @@ if ( ! defined( 'CFGP_LIMIT' ) )			define( 'CFGP_LIMIT', 300);
 // Developer license ( enable developer license support )
 if( ! defined( 'CFGP_DEV_MODE' ) )			define( 'CFGP_DEV_MODE', false );
 // Session expire in % minutes
-if( ! defined( 'CFGP_SESSION' ) )			define( 'CFGP_SESSION', 5 ); // 5 minutes
+if( ! defined( 'CFGP_SESSION' ) )			define( 'CFGP_SESSION', 30 ); // 30 minutes

@@ -135,6 +135,20 @@ class CF_Geoplugin_Init extends CF_Geoplugin_Global
 			}
 			else CF_Geoplugin_Debug::log( 'Shortcodes class not loaded - File does not exists' );
 			
+			// Include Utilities
+			if( file_exists( CFGP_INCLUDES . '/class-cf-geoplugin-utilities.php' ) )
+			{
+				include_once CFGP_INCLUDES . '/class-cf-geoplugin-utilities.php';
+				if( class_exists( 'CF_Geoplugin_Utilities' ) )
+				{
+					$utilities = new CF_Geoplugin_Utilities;
+					$utilities->run();
+					CF_Geoplugin_Debug::log( 'Utilities class loaded' );
+				}
+				else CF_Geoplugin_Debug::log( 'Utilities class not loaded - Class does not exists' );
+			}
+			else CF_Geoplugin_Debug::log( 'Shortcodes class not loaded - File does not exists' );
+			
 			// Include Texteditor Buttons
 			if(file_exists(CFGP_INCLUDES . '/class-cf-geoplugin-texteditor-buttons.php'))
 			{

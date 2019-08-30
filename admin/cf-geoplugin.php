@@ -93,12 +93,15 @@ $CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIO
                 <li class="nav-item">
                     <a class="nav-link text-dark active" href="#shortcodes" role="tab" data-toggle="tab"><span class="fa fa-code"></span> <?php _e('Shortcodes',CFGP_NAME); ?></a>
                 </li>
+				<li class="nav-item">
+                    <a class="nav-link text-dark" href="#metatags" role="tab" data-toggle="tab"><span class="fa fa-tag"></span> <?php _e('Tags',CFGP_NAME); ?></a>
+                </li>
                 <?php if($CF_GEOPLUGIN_OPTIONS['enable_beta'] && $CF_GEOPLUGIN_OPTIONS['enable_beta_shortcode']) : ?>
                 <li class="nav-item">
                     <a class="nav-link text-dark" href="#beta" role="tab" data-toggle="tab"><span class="fa fa-code"></span> <?php _e('Simple Shortcodes',CFGP_NAME); ?> <sup class="text-danger" data-container="body" data-toggle="popover" data-placement="top" data-trigger="hover" data-content="<?php _e('This BETA options you can turn off inside your Settings under General tab',CFGP_NAME); ?>">BETA</sup></a>
                 </li>
-                <?php endif; ?>
-                <li class="nav-item">
+                <?php endif; ?>			
+				<li class="nav-item">
                     <a class="nav-link text-dark" href="#info" role="tab" data-toggle="tab"><span class="fa fa-info"></span> <?php _e('Info & Examples',CFGP_NAME); ?></a>
                 </li>
                 <?php do_action('page-cf-geoplugin-tab'); ?>
@@ -283,6 +286,165 @@ $CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIO
                         </thead>
                     </table>
                 </div>
+				
+				<div role="tabpanel" class="tab-pane fade pt-3" id="metatags">
+                	<h3 class="ml-3 mr-3"><?php _e('List of available tags',CFGP_NAME); ?></h3>
+                    <p class="ml-3 mr-3 mb-1"><?php _e('These special tags are intended for quick insertion of geo information into pages and posts. These tags allow the use of geo information in the titles & content of pages, categories and other taxonomy. It can also be used in widgets, various page builders and supports several SEO plugins like Yoast, All in One Seo Pack, SEO Framework and WordPress SEO Plugin by Rank Math.',CFGP_NAME); ?></p>
+					<p class="ml-3 mr-3 text-danger"><?php _e('NOTE: It does not currently support custom fields, but soon this option will be supported.',CFGP_NAME); ?></p>
+                    <table width="100%" class="table table-striped table-sm">
+                        <tbody>
+							<?php do_action('page-cf-geoplugin-tag-table-start'); ?>
+                            <tr>
+                                <td><kbd>%%ip%%</kbd></td>
+                                <td><?php echo $CFGEO['ip']; ?></td>
+                            </tr>
+                            <tr>
+                                <td><kbd>%%ip_version%%</kbd></td>
+                                <td><?php echo $CFGEO['ip_version']; ?></td>
+                            </tr>
+                            <?php if($CF_GEOPLUGIN_OPTIONS['enable_dns_lookup']) : ?>
+                            <tr>
+                                <td><kbd>%%ip_dns%%</kbd></td>
+                                <td><?php echo $CFGEO['ip_dns']; ?></td>
+                            </tr>
+                            <tr>
+                                <td><kbd>%%ip_dns_host%%</kbd></td>
+                                <td><?php echo $CFGEO['ip_dns_host']; ?></td>
+                            </tr>
+                            <tr>
+                                <td><kbd>%%ip_dns_provider%%</kbd></td>
+                                <td><?php echo $CFGEO['ip_dns_provider']; ?></td>
+                            </tr>
+                            <?php endif; ?>
+							<?php do_action('page-cf-geoplugin-tag-table-address'); ?>
+                            <tr>
+                                <td><kbd>%%address%%</kbd><?php if($CFGEO['gps']): ?> <i class="badge">(GPS)</i><?php endif; ?></td>
+                                <td><?php echo $CFGEO['address']; ?></td>
+                            </tr>
+                            <tr>
+                                <td><kbd>%%city%%</kbd><?php if($CFGEO['gps']): ?> <i class="badge">(GPS)</i><?php endif; ?></td>
+                                <td><?php echo $CFGEO['city']; ?></td>
+                            </tr>
+                            <tr>
+                                <td><kbd>%%region%%</kbd><?php if($CFGEO['gps']): ?> <i class="badge">(GPS)</i><?php endif; ?></td>
+                                <td><?php echo $CFGEO['region']; ?></td>
+                            </tr>
+                            <tr>
+                                <td><kbd>%%region_code%%</kbd></td>
+                                <td><?php echo $CFGEO['region_code']; ?></td>
+                            </tr>
+                            <tr>
+                                <td><kbd>%%country%%</kbd></td>
+                                <td><?php echo $CFGEO['country']; ?></td>
+                            </tr>
+                            <tr>
+                                <td><kbd>%%country_code%%</kbd></td>
+                                <td><?php echo $CFGEO['country_code']; ?></td>
+                            </tr>
+                            <tr>
+                                <td><kbd>%%continent%%</kbd></td>
+                                <td><?php echo $CFGEO['continent']; ?></td>
+                            </tr>
+                            <tr>
+                                <td><kbd>%%continent_code%%</kbd></td>
+                                <td><?php echo $CFGEO['continent_code']; ?></td>
+                            </tr>
+                            <tr>
+                                <td><kbd>%%latitude%%</kbd><?php if($CFGEO['gps']): ?> <i class="badge">(GPS)</i><?php endif; ?></td>
+                                <td><?php echo $CFGEO['latitude']; ?></td>
+                            </tr>
+                            <tr>
+                                <td><kbd>%%longitude%%</kbd><?php if($CFGEO['gps']): ?> <i class="badge">(GPS)</i><?php endif; ?></td>
+
+                                <td><?php echo $CFGEO['longitude']; ?></td>
+                            </tr>
+                            <tr>
+                                <td><kbd>%%timezone%%</kbd></td>
+                                <td><?php echo $CFGEO['timezone']; ?></td>
+                            </tr>
+                            <tr>
+                                <td><kbd>%%locale%%</kbd></td>
+                                <td><?php echo $CFGEO['locale']; ?></td>
+                            </tr>
+                            <tr>
+                                <td><kbd>%%currency%%</kbd></td>
+                                <td><?php echo $CFGEO['currency']; ?></td>
+                            </tr>
+                            <tr>
+                                <td><kbd>%%currency_symbol%%</kbd></td>
+                                <td><?php echo $CFGEO['currency_symbol']; ?></td>
+                            </tr>
+							<tr>
+                                <td><kbd>%%base_currency%%</kbd></td>
+                                <td><?php echo $CFGEO['base_currency']; ?></td>
+                            </tr>
+                            <tr>
+                                <td><kbd>%%base_currency_symbol%%</kbd></td>
+                                <td><?php echo $CFGEO['base_currency_symbol']; ?></td>
+                            </tr>
+							<tr>
+                                <td><kbd>%%is_vat%%</kbd></td>
+                                <td><?php echo $CFGEO['is_vat']; ?></td>
+                            </tr>
+							<tr>
+                                <td><kbd>%%in_eu%%</kbd></td>
+                                <td><?php echo $CFGEO['in_eu']; ?></td>
+                            </tr>
+							<tr>
+                                <td><kbd>%%gps%%</kbd></td>
+                                <td><?php echo $CFGEO['gps']; ?></td>
+                            </tr>
+                            <tr>
+                                <td><kbd>%%host%%</kbd></td>
+                                <td><?php echo $CFGEO['host']; ?></td>
+                            </tr>
+                            <tr>
+                                <td><kbd>%%ip_host%%</kbd></td>
+                                <td><?php echo $CFGEO['ip_host']; ?></td>
+                            </tr>
+                            <tr>
+                                <td><kbd>%%current_date%%</kbd></td>
+                                <td><?php echo $CFGEO['current_date']; ?></td>
+                            </tr>
+                            <tr>
+                                <td><kbd>%%current_time%%</kbd></td>
+                                <td><?php echo $CFGEO['current_time']; ?></td>
+                            </tr>
+							<tr>
+                                <td><kbd>%%version%%</kbd></td>
+                                <td><?php echo $CFGEO['version']; ?></td>
+                            </tr>
+                            <tr>
+                                <td><kbd>%%accuracy_radius%%</kbd></td>
+                                <td><?php echo $CFGEO['accuracy_radius']; ?></td>
+                            </tr>
+                            <tr>
+                                <td><kbd>%%lookup%%</kbd></td>
+                                <td><?php echo $CFGEO['lookup']; ?></td>
+                            </tr>
+                            <tr>
+                                <td><kbd>%%runtime%%</kbd></td>
+                                <td><?php echo $CFGEO['runtime']; ?></td>
+                            </tr>
+                            <tr>
+                                <td><kbd>%%status%%</kbd></td>
+                               <td><?php echo $CFGEO['status']; ?></td>
+                            </tr>
+                            <tr>
+                                <td><kbd>%%credit%%</kbd></td>
+                                <td><?php echo $CFGEO['credit']; ?></td>
+                            </tr>
+                            <?php do_action('page-cf-geoplugin-tag-table-end'); ?>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th class="manage-column column-shortcode column-primary" width="40%"><strong><?php _e('Shortcode',CFGP_NAME); ?></strong></th>
+                                <th class="manage-column column-returns column-primary"><strong><?php _e('Returns',CFGP_NAME); ?></strong></th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+				
 			<?php if($CF_GEOPLUGIN_OPTIONS['enable_beta'] && $CF_GEOPLUGIN_OPTIONS['enable_beta_shortcode']) : ?>
                 <div role="tabpanel" class="tab-pane fade pt-3" id="beta">
                 	<h3 class="ml-3 mr-3"><?php _e('List of experimental shortcodes',CFGP_NAME); ?></h3>
