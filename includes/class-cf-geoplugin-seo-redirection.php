@@ -109,23 +109,25 @@ class CF_Geoplugin_SEO_Redirection extends CF_Geoplugin_Global
 			
 			if($city) $where[]="TRIM(LOWER(city)) = '{$city}'";
 			
-			$where = join(' OR ', $where);
-			
+			if(!empty($where)) {
+				$where = ' AND (' . join(' OR ', $where) . ')';
+			} else {
+				$where = '';
+			}
+ 
 			$table_name = self::TABLE['seo_redirection'];
             $redirects = $wpdb->get_results( $query = "
 			SELECT 
 				TRIM(url) AS url,
-				TRIM(LOWER(country)) AS country, 
-				TRIM(LOWER(region)) AS region, 
+				TRIM(LOWER(country)) AS country,
+				TRIM(LOWER(region)) AS region,
 				TRIM(LOWER(city)) AS city,
-				TRIM(http_code) AS http_code, 
+				TRIM(http_code) AS http_code,
 				only_once
 			FROM 
 				{$wpdb->prefix}{$table_name}
 			WHERE
-				active = 1
-			AND
-			({$where});", ARRAY_A );
+				active = 1{$where};", ARRAY_A );
 
 			if( $redirects !== NULL && $wpdb->num_rows > 0 && ( isset( $CFGEO['country'] ) || isset( $CFGEO['country_code'] ) ) )
 			{

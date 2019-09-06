@@ -11,7 +11,7 @@ if(!class_exists('CF_Geoplugin_Global')) :
 class CF_Geoplugin_Global
 {
 	// Instance
-	private static $instance = null;
+	private static $instance = NULL;
 
 	// All available options
 	public $default_options = array(
@@ -484,8 +484,6 @@ class CF_Geoplugin_Global
 			switch($option)
 			{
 				default:
-				case 'string':
-				case 'html':
 					if($is_array) return array_map( 'sanitize_text_field', $input );
 					
 					return sanitize_text_field( $input );
@@ -578,8 +576,6 @@ class CF_Geoplugin_Global
             switch($option)
             {
                 default:
-                case 'string':
-                case 'html':
                     if($is_array) return array_map( 'sanitize_text_field', $input );
                     
                     return sanitize_text_field( $input );
@@ -671,8 +667,6 @@ class CF_Geoplugin_Global
             switch($option)
             {
                 default:
-                case 'string':
-                case 'html':
                     if($is_array) return array_map( 'sanitize_text_field', $input );
                     
                     return sanitize_text_field( $input );
@@ -779,11 +773,11 @@ class CF_Geoplugin_Global
 		
 		if(!is_null($wp_query) && isset($wp_query->post) && isset($wp_query->post->ID) && !empty($wp_query->post->ID))
 			return $wp_query->post->ID;
-		else if(!empty(get_the_id()))
+		else if(function_exists('get_the_id') && !empty(get_the_id()))
 			return get_the_id();
 		else if(!is_null($post) && isset($post->ID) && !empty($post->ID))
 			return $post->ID;
-		else if('page' == get_option( 'show_on_front' ))
+		else if('page' == get_option( 'show_on_front' ) && !empty(get_option( 'page_for_posts' )))
 			return get_option( 'page_for_posts' );
 		else if((is_home() || is_front_page()) && !empty(get_queried_object_id()))
 			return get_queried_object_id();
@@ -1262,9 +1256,7 @@ class CF_Geoplugin_Global
 				strlen((int)$parse[1])===8 && 
 				strlen((int)$parse[2])>=9 &&
 				strlen((int)$parse[2])<=14
-			){
-				return true;
-			}
+			) return true;
 		}
 		return false;
 	}
@@ -1366,7 +1358,7 @@ class CF_Geoplugin_Global
 		}
 		return false;
 	}
-	
+
 	/*
 	 * CHECK INTERNET CONNECTION
 	 * @since	7.0.0
@@ -1374,36 +1366,22 @@ class CF_Geoplugin_Global
 	 */
 	public static function is_connected()
 	{
-		// If Google fail, we are in big trouble
-		$connected = fsockopen('www.google.com', 443);
-		
-		if ($connected){
-			fclose($connected);
-			return true;
-		}
-		
-		// Maby Google have SSL problem
-		$connected = fsockopen('www.google.com', 80);
-		
-		if ($connected){
-			fclose($connected);
-			return true;
-		}
-		
-		// Facebook can be a backup plan
-		$connected = fsockopen('www.facebook.com', 443);
-		
-		if ($connected){
-			fclose($connected);
-			return true;
-		}
-		
-		// ...and maby SSL fail
-		$connected = fsockopen('www.facebook.com', 80);
-		
-		if ($connected){
-			fclose($connected);
-			return true;
+		// List connections
+		$urls = array(
+			'www.google.com',
+			'www.facebook.com'
+		);
+		foreach($urls as $url)
+		{
+			// list ports
+			foreach(array(443,80) as $port)
+			{
+				$connected = fsockopen($url, $port);
+				if ($connected !== false){
+					fclose($connected);
+					return true;
+				}
+			}
 		}
 		
 		// OK you not have connection - boohooo
@@ -1524,19 +1502,19 @@ class CF_Geoplugin_Global
 	 **/
 	public static function runtime_status_icon($runtime, $class='')
 	{
-		if(round($runtime)<=0){
+		if(round($runtime)<=1){
 			echo '<span class="fa fa-battery-full '.$class.'" title="'.__('Exellent',CFGP_NAME).'"></span>';
 		}
-		else if(round($runtime) == 1){
+		else if(round($runtime) == 2){
 			echo '<span class="fa fa-battery-three-quarters '.$class.'" title="'.__('Perfect',CFGP_NAME).'"></span>';
 		}
-		else if(round($runtime) == 2){
+		else if(round($runtime) == 3){
 			echo '<span class="fa fa-battery-half '.$class.'" title="'.__('Good',CFGP_NAME).'"></span>';
 		}
-		else if(round($runtime) == 3){
+		else if(round($runtime) == 4){
 			echo '<span class="fa fa-battery-quarter '.$class.'" title="'.__('Week',CFGP_NAME).'"></span>';
 		}
-		else if(round($runtime) >= 4){
+		else if(round($runtime) >= 5){
 			echo '<span class="fa fa-battery-empty '.$class.'" title="'.__('Bad',CFGP_NAME).'"></span>';
 		}
 	}

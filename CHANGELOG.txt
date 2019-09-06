@@ -1,5 +1,12 @@
 == Changelog ==
 
+= 7.8.1 =
+* Fixing MySQL error in the empty SEO redirection
+* Improved connection speed
+* Improved PHP code
+* Reduced HTTP requests
+* Cleaned old PHP code
+
 = 7.8.0 =
 * Adding new special Geo Tags for the geo insertation
 * Adding support for the Yoast SEO
