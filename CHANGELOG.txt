@@ -1,5 +1,8 @@
 == Changelog ==
 
+= 7.8.2 =
+* Added automated W3 total cache MFUNC support
+
 = 7.8.1 =
 * Fixing MySQL error in the empty SEO redirection
 * Improved connection speed

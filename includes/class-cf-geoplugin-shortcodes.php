@@ -127,13 +127,13 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 				if(!empty($include))
 				{
 					if($this->recursive_array_search($include, $CFGEO)) return do_shortcode($content);
-					else return '';
+					else return ($cache ? '<!--mfunc ' . W3TC_DYNAMIC_SECURITY . ' --><!--/mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : NULL);
 				}
 				
 				if(!empty($exclude))
 				{
-					if($this->recursive_array_search($exclude, $CFGEO)) return '';
-					else return do_shortcode($content);
+					if($this->recursive_array_search($exclude, $CFGEO)) return ($cache ? '<!--mfunc ' . W3TC_DYNAMIC_SECURITY . ' --><!--/mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : NULL);
+					else return ($cache ? '<!--mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' . do_shortcode($content) . '<!--/mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : do_shortcode($content));
 				}
 			} else return __('CF GEOPLUGIN NOTICE: -Please define "include" or "exclude" attributes inside your shortcode on this shortcode mode.', CFGP_NAME);
 		}
@@ -142,19 +142,19 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 			if(!empty($exclude) || !empty($include)) {
 				if(!empty($include))
 				{
-					if($this->recursive_array_search($include, $CFGEO)) return (isset($CFGEO[$return]) ? ($cache ? '<span class="cfgeo-replace" data-key="'.$return.'" data-nonce="' . $nonce . '">' . $CFGEO[$return] . '</span>' : $CFGEO[$return]) : $default);
-					else return '';
+					if($this->recursive_array_search($include, $CFGEO)) return (isset($CFGEO[$return]) ? ($cache ? '<!--mfunc ' . W3TC_DYNAMIC_SECURITY . ' --><span class="cfgeo-replace" data-key="'.$return.'" data-nonce="' . $nonce . '">' . $CFGEO[$return] . '</span><!--/mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : $CFGEO[$return]) : $default);
+					else return ($cache ? '<!--mfunc ' . W3TC_DYNAMIC_SECURITY . ' --><!--/mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : NULL);
 				}
 				
 				if(!empty($exclude))
 				{
-					if($this->recursive_array_search($exclude, $CFGEO)) return '';
-					else return (isset($CFGEO[$return]) ? ($cache ? '<span class="cfgeo-replace" data-key="'.$return.'" data-nonce="' . $nonce . '">' . $CFGEO[$return] . '</span>' : $CFGEO[$return]) : $default);
+					if($this->recursive_array_search($exclude, $CFGEO)) return ($cache ? '<!--mfunc ' . W3TC_DYNAMIC_SECURITY . ' --><!--/mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : NULL);
+					else return (isset($CFGEO[$return]) ? ($cache ? '<!--mfunc ' . W3TC_DYNAMIC_SECURITY . ' --><span class="cfgeo-replace" data-key="'.$return.'" data-nonce="' . $nonce . '">' . $CFGEO[$return] . '</span><!--/mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : $CFGEO[$return]) : $default);
 				}
 			}
 		}
 		
-		return (isset($CFGEO[$return]) ? ($cache ? '<span class="cfgeo-replace" data-key="'.$return.'" data-nonce="' . $nonce . '">' . $CFGEO[$return] . '</span>' : $CFGEO[$return]) : $default);
+		return (isset($CFGEO[$return]) ? ($cache ? '<!--mfunc ' . W3TC_DYNAMIC_SECURITY . ' --><span class="cfgeo-replace" data-key="'.$return.'" data-nonce="' . $nonce . '">' . $CFGEO[$return] . '</span><!--/mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : $CFGEO[$return]) : $default);
 	}
 	
 	/**
@@ -185,7 +185,7 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 				{
 					if(in_array($key, $exclude, true) === false)
 					{
-						$generate['cfgeo_' . $key]=($cache ? '<span class="cfgeo-replace" data-key="'.$key.'" data-nonce="' . $nonce . '">' . $value . '</span>' : $value);
+						$generate['cfgeo_' . $key]=($cache ? '<!--mfunc ' . W3TC_DYNAMIC_SECURITY . ' --><span class="cfgeo-replace" data-key="'.$key.'" data-nonce="' . $nonce . '">' . $value . '</span><!--/mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : $value);
 					}
 				}
 				
@@ -293,12 +293,12 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 		{
 			$address = $CFGEO['address'];
 			if(file_exists(CFGP_ROOT.'/assets/flags/4x3/'.$flag.'.svg'))
-				return sprintf('<img src="%s" alt="%s" title="%s" style="max-width:%s !important;%s" class="flag-icon-img%s" id="%s">', CFGP_ASSETS.'/flags/4x3/'.$flag.'.svg', $address, $address, $size, $css, $class, $id);
+				return sprintf('<!--mfunc ' . W3TC_DYNAMIC_SECURITY . ' --><img src="%s" alt="%s" title="%s" style="max-width:%s !important;%s" class="flag-icon-img%s" id="%s"><!--/mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->', CFGP_ASSETS.'/flags/4x3/'.$flag.'.svg', $address, $address, $size, $css, $class, $id);
 			else
 				return '';
 		}
 		else
-			return sprintf('<span class="flag-icon flag-icon-%s%s" id="%s"%s></span>', $flag.$type, $class, $id,(!empty($css)?' style="'.$css.'"':''));
+			return sprintf('<!--mfunc ' . W3TC_DYNAMIC_SECURITY . ' --><span class="flag-icon flag-icon-%s%s" id="%s"%s></span><!--/mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->', $flag.$type, $class, $id,(!empty($css)?' style="'.$css.'"':''));
 	}
 
 	/*
