@@ -1,5 +1,13 @@
 == Changelog ==
 
+= 7.8.3 =
+* Added filters to WooCommerce prices
+* Added currency converter price adjust
+* Added currency converter round price options
+* Improving W3 total cache support
+* Fixing bugs into WooCommerce support
+* Fixing variable product conversion in the WooCommerce
+
 = 7.8.2 =
 * Added automated W3 total cache MFUNC support
 

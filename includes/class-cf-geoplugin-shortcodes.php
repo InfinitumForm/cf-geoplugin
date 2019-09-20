@@ -123,38 +123,205 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 		
 		if(!empty($content))
 		{			
+			// Include/ Exclude functionality for the content
 			if(!empty($exclude) || !empty($include)) {
+				// Include
 				if(!empty($include))
 				{
-					if($this->recursive_array_search($include, $CFGEO)) return do_shortcode($content);
-					else return ($cache ? '<!--mfunc ' . W3TC_DYNAMIC_SECURITY . ' --><!--/mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : NULL);
+					if($this->recursive_array_search($include, $CFGEO))
+					{
+						if($cache)
+						{
+							return '<!--mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' 
+								. do_shortcode($content) 
+							. '<!--/mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->';
+						}
+						else
+						{
+							return do_shortcode($content);
+						}
+					}
+					else
+					{
+						return ($cache ? '<!--mfunc ' . W3TC_DYNAMIC_SECURITY . ' --><!--/mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : NULL);
+					}
 				}
-				
+				// Exclude
 				if(!empty($exclude))
 				{
-					if($this->recursive_array_search($exclude, $CFGEO)) return ($cache ? '<!--mfunc ' . W3TC_DYNAMIC_SECURITY . ' --><!--/mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : NULL);
-					else return ($cache ? '<!--mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' . do_shortcode($content) . '<!--/mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : do_shortcode($content));
+					if($this->recursive_array_search($exclude, $CFGEO))
+					{
+						return ($cache ? '<!--mfunc ' . W3TC_DYNAMIC_SECURITY . ' --><!--/mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : NULL);
+					}
+					else
+					{
+						if($cache)
+						{
+							return '<!--mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' 
+								. do_shortcode($content) 
+							. '<!--/mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->';
+						}
+						else
+						{
+							return do_shortcode($content);
+						}
+					}
 				}
-			} else return __('CF GEOPLUGIN NOTICE: -Please define "include" or "exclude" attributes inside your shortcode on this shortcode mode.', CFGP_NAME);
+			}
+			else
+			{
+				if($cache)
+					return '<!--mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' 
+						. __('CF GEOPLUGIN NOTICE: -Please define "include" or "exclude" attributes inside your shortcode on this shortcode mode.', CFGP_NAME)
+					. '<!--/mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->';
+				else
+					return __('CF GEOPLUGIN NOTICE: -Please define "include" or "exclude" attributes inside your shortcode on this shortcode mode.', CFGP_NAME);
+			}
 		}
 		else
 		{
+			// Include/ Exclude functionality for the geo informations
 			if(!empty($exclude) || !empty($include)) {
+				// Include
 				if(!empty($include))
 				{
-					if($this->recursive_array_search($include, $CFGEO)) return (isset($CFGEO[$return]) ? ($cache ? '<!--mfunc ' . W3TC_DYNAMIC_SECURITY . ' --><span class="cfgeo-replace" data-key="'.$return.'" data-nonce="' . $nonce . '">' . $CFGEO[$return] . '</span><!--/mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : $CFGEO[$return]) : $default);
-					else return ($cache ? '<!--mfunc ' . W3TC_DYNAMIC_SECURITY . ' --><!--/mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : NULL);
+					if($this->recursive_array_search($include, $CFGEO))
+					{
+						if($cache)
+						{
+							if(isset($CFGEO[$return]))
+							{
+								return '<!--mfunc ' . W3TC_DYNAMIC_SECURITY . ' --><span class="cfgeo-replace" data-key="' . $return . '" data-nonce="' . $nonce . '">' 
+									. $CFGEO[$return] 
+								. '</span><!--/mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->';
+							}
+							else
+							{
+								return '<!--mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' . $default . '<!--/mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->';
+							}
+						}
+						else
+						{
+							if(isset($CFGEO[$return]))
+							{
+								return $CFGEO[$return];
+							}
+							else
+							{
+								return $default;
+							}
+						}
+					}
+					else
+					{
+						return ($cache ? '<!--mfunc ' . W3TC_DYNAMIC_SECURITY . ' --><!--/mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : NULL);
+					}
 				}
-				
+				// Exclude
 				if(!empty($exclude))
 				{
-					if($this->recursive_array_search($exclude, $CFGEO)) return ($cache ? '<!--mfunc ' . W3TC_DYNAMIC_SECURITY . ' --><!--/mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : NULL);
-					else return (isset($CFGEO[$return]) ? ($cache ? '<!--mfunc ' . W3TC_DYNAMIC_SECURITY . ' --><span class="cfgeo-replace" data-key="'.$return.'" data-nonce="' . $nonce . '">' . $CFGEO[$return] . '</span><!--/mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : $CFGEO[$return]) : $default);
+					if($this->recursive_array_search($exclude, $CFGEO))
+					{
+						return ($cache ? '<!--mfunc ' . W3TC_DYNAMIC_SECURITY . ' --><!--/mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : NULL);
+					}
+					else
+					{
+						if($cache)
+						{
+							if(isset($CFGEO[$return]))
+							{
+								return '<!--mfunc ' . W3TC_DYNAMIC_SECURITY . ' --><span class="cfgeo-replace" data-key="' . $return . '" data-nonce="' . $nonce . '">' 
+									. $CFGEO[$return] 
+								. '</span><!--/mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->';
+							}
+							else
+							{
+								return '<!--mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' . $default . '<!--/mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->';
+							}
+						}
+						else
+						{
+							if(isset($CFGEO[$return]))
+							{
+								return $CFGEO[$return];
+							}
+							else
+							{
+								return $default;
+							}
+						}
+					}
 				}
 			}
 		}
 		
-		return (isset($CFGEO[$return]) ? ($cache ? '<!--mfunc ' . W3TC_DYNAMIC_SECURITY . ' --><span class="cfgeo-replace" data-key="'.$return.'" data-nonce="' . $nonce . '">' . $CFGEO[$return] . '</span><!--/mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : $CFGEO[$return]) : $default);
+		// Return geo information
+		if(isset($CFGEO[$return]))
+		{
+			if($cache)
+			{
+				return '<!--mfunc ' . W3TC_DYNAMIC_SECURITY . ' --><span class="cfgeo-replace" data-key="' . $return . '" data-nonce="' . $nonce . '">' 
+					. $CFGEO[$return] 
+				. '</span><!--/mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->';
+			}
+			else return $CFGEO[$return];
+		}
+		
+		if($cache)
+			return '<!--mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' . $default . '<!--/mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->';
+		else
+			return $default;
+	}
+	
+	public function __w3_total_cache($cache, $str=NULL, $default=NULL, $return=NULL, $include=NULL, $exclude=NULL)
+	{
+		$CFGEO = $GLOBALS['CFGEO'];
+		
+		// Include/ Exclude functionality for the content
+		if(!empty($exclude) || !empty($include)) {
+			// Include
+			if(!empty($include))
+			{
+				if($this->recursive_array_search($include, $CFGEO))
+				{
+					if($cache)
+					{
+						return '<!--mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' 
+							. do_shortcode($content) 
+						. '<!--/mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->';
+					}
+					else
+					{
+						return do_shortcode($content);
+					}
+				}
+				else
+				{
+					return ($cache ? '<!--mfunc ' . W3TC_DYNAMIC_SECURITY . ' --><!--/mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : NULL);
+				}
+			}
+			// Exclude
+			if(!empty($exclude))
+			{
+				if($this->recursive_array_search($exclude, $CFGEO))
+				{
+					return ($cache ? '<!--mfunc ' . W3TC_DYNAMIC_SECURITY . ' --><!--/mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : NULL);
+				}
+				else
+				{
+					if($cache)
+					{
+						return '<!--mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' 
+							. do_shortcode($content) 
+						. '<!--/mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->';
+					}
+					else
+					{
+						return do_shortcode($content);
+					}
+				}
+			}
+		}
 	}
 	
 	/**

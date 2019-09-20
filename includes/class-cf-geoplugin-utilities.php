@@ -24,7 +24,7 @@ class CF_Geoplugin_Utilities extends CF_Geoplugin_Global
 	//	$this->add_action('shutdown', 'output_buffer_end');
 	
 		/* Content */
-		$this->add_action('the_content', 'replace_tags', 9999, 1);
+		$this->add_action('the_content', 'replace_tags_cache_control', 9999, 1);
 		$this->add_action('the_title', 'replace_tags', 9999, 1);
 		$this->add_action('the_slug', 'replace_tags', 9999, 1);
 		$this->add_filter('single_term_title', 'replace_tags', 9999, 1 );
@@ -117,6 +117,25 @@ class CF_Geoplugin_Utilities extends CF_Geoplugin_Global
 	
 	public function output_callback($buffer) {
 		return $this->replace_tags($buffer);
+	}
+	
+	public function replace_tags_cache_control ( $string ){
+		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
+		$CFGEO = $GLOBALS['CFGEO'];
+		if(!empty($string) && !is_array($string) && is_array($CFGEO))
+		{
+			$collection = array(); $i=0;
+			
+			foreach($CFGEO as $key => $val){
+				$collection[0][$i] = '/%%' . $key . '%%/i';
+				$collection[1][$i] = ((isset($CF_GEOPLUGIN_OPTIONS['enable_cache']) && $CF_GEOPLUGIN_OPTIONS['enable_cache'] == 1) ? '<!--mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' . $val . '<!--/mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : $val);
+				++$i;
+			};
+			
+			$string = preg_replace($collection[0], $collection[1], $string);
+		}
+		
+		return $string;
 	}
 	
 	public function replace_tags ( $string ){
