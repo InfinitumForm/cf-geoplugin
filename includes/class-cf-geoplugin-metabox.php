@@ -43,9 +43,12 @@ class CF_Geoplugin_Metabox extends CF_Geoplugin_Global
 	// Add custom style to metabox
 	public function metabox_admin_scripts( $hook_suffix ) {
         $screen = get_current_screen();
+		
+		if(isset( $screen->post_type ) && $screen->post_type === 'cf-geoplugin-banner') return;
+		
 		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
 		if(!$CF_GEOPLUGIN_OPTIONS['enable_seo_redirection']) return;
-		if( in_array( $hook_suffix, array( 'post-new.php', 'post.php' ) ) && isset( $screen->post_type ) && $screen->post_type != 'cf-geoplugin-banner' )
+		if( in_array( $hook_suffix, array( 'post-new.php', 'post.php' ) ) && isset( $screen->post_type ) )
 		{            
             wp_register_style( CFGP_NAME . '-fontawesome', CFGP_ASSETS . '/css/font-awesome.min.css', array(), '4.7.0' );
             wp_enqueue_style( CFGP_NAME . '-fontawesome' );
@@ -78,6 +81,20 @@ class CF_Geoplugin_Metabox extends CF_Geoplugin_Global
     // Create meta box
     public function create_meta_box()
     {
+		$screen = get_current_screen();
+		
+		if(isset( $screen->post_type ) && $screen->post_type === 'cf-geoplugin-banner'){
+			add_meta_box(
+				CFGP_NAME . '-banner-sc',
+				__( 'Geo Banner Shortcode', CFGP_NAME ),
+				array( &$this, 'banner_shortcode' ),
+				CFGP_NAME . '-banner',
+				'advanced',
+				'high'
+			);
+			return; 
+		};
+		
         $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
 
         $args = array(
@@ -123,20 +140,16 @@ class CF_Geoplugin_Metabox extends CF_Geoplugin_Global
                 }
             }
         }
-   
-        add_meta_box(
-            CFGP_NAME . '-banner-sc',
-            __( 'CF Geoplugin Shortcode', CFGP_NAME ),
-            array( &$this, 'banner_shortcode' ),
-            CFGP_NAME . '-banner',
-            'side',
-            'high'
-        ); 
             
     }
 	
 	// Add geo tags
-	public function meta_box_geo_tags( $post ){ 
+	public function meta_box_geo_tags( $post ){
+		
+	$screen = get_current_screen();
+		
+	if(isset( $screen->post_type ) && $screen->post_type === 'cf-geoplugin-banner') return;
+		
     $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS']; $CFGEO = $GLOBALS['CFGEO'];
 
     $cfgp_enable = get_post_meta( $post->ID, 'cfgp-geotag-enable', true );
@@ -770,6 +783,7 @@ function CF_GeoPlugin_Google_Map_GeoTag() {
         echo '<ul>';
         echo '<li><strong>' . __('Standard',CFGP_NAME) . ':</strong><br><code>[cfgeo_banner id="'.$post->ID.'"]</code></li>';
         echo '<li><strong>' . __('Advanced',CFGP_NAME) . ':</strong><br><code>[cfgeo_banner id="'.$post->ID.'"]' . __('Default content',CFGP_NAME) . '[/cfgeo_banner]</code></li>';
+		echo '<li><strong>' . __('Enable Cache',CFGP_NAME) . ':</strong><br><code>[cfgeo_banner id="'.$post->ID.'" cache]' . __('Default content',CFGP_NAME) . '[/cfgeo_banner]</code></li>';
         echo '</ul>';
     }
 }

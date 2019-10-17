@@ -14,7 +14,8 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
 /* Clear CF Geo Plugin Session */
 if(!function_exists('clear_cf_geoplugin_session')) :
 	function clear_cf_geoplugin_session(){
-		if(isset($_SESSION[CFGP_PREFIX . 'session_expire']))
+		
+		if(isset($_SESSION[CFGP_PREFIX . 'session_expire']) || (isset($_SESSION[CFGP_PREFIX . 'session_setup']) && $_SESSION[CFGP_PREFIX . 'session_setup'] !== CFGP_SESSION) || CFGP_SESSION <= 0)
 		{
 			foreach($_SESSION as $key => $val)
 			{
@@ -23,7 +24,8 @@ if(!function_exists('clear_cf_geoplugin_session')) :
 					unset($_SESSION[ $key ]);
 				}
 			}
-			$_SESSION[CFGP_PREFIX . 'session_expire'] = (CFGP_TIME + (60 * CFGP_SESSION));
+			$_SESSION[CFGP_PREFIX . 'session_expire'] = (CFGP_SESSION <= 0 ? 0 : (CFGP_TIME + (60 * CFGP_SESSION)));
+			$_SESSION[CFGP_PREFIX . 'session_setup'] = CFGP_SESSION;
 			return true;
 		}
 		return false;
@@ -70,6 +72,12 @@ if(!function_exists('CF_Geoplugin_Session')) :
 		 *
 		 * @author     Ivijan-Stefan Stipic  <creativform@gmail.com>
 		 */
+		
+		if(isset($_SESSION[CFGP_PREFIX . 'session_setup']) && $_SESSION[CFGP_PREFIX . 'session_setup'] !== CFGP_SESSION || CFGP_SESSION <= 0)
+		{
+			clear_cf_geoplugin_session();
+		}
+		 
 		if(isset($_SESSION[CFGP_PREFIX . 'session_expire']))
 		{
 			if(CFGP_TIME > $_SESSION[CFGP_PREFIX . 'session_expire'])
@@ -77,7 +85,10 @@ if(!function_exists('CF_Geoplugin_Session')) :
 				clear_cf_geoplugin_session();
 			}
 		}
-		else $_SESSION[CFGP_PREFIX . 'session_expire'] = (CFGP_TIME + (60 * CFGP_SESSION));
+		else{
+			$_SESSION[CFGP_PREFIX . 'session_expire'] = (CFGP_TIME + (60 * CFGP_SESSION));
+			$_SESSION[CFGP_PREFIX . 'session_setup'] = CFGP_SESSION;
+		}
 
 		return $_SESSION[CFGP_PREFIX . 'session_expire'];
 	}

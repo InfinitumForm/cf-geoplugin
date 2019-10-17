@@ -412,7 +412,9 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 	*/
 	public function cf_geo_rss_feed()
 	{		
-		include CFGP_INCLUDES . '/class-cf-geoplugin-xml.php';
+		if(!class_exists('parseXML') && file_exists(CFGP_INCLUDES . '/class-cf-geoplugin-xml.php')) include CFGP_INCLUDES . '/class-cf-geoplugin-xml.php';
+		if(!class_exists('parseXML')) exit(false);
+		
 		$xml= new parseXML(CFGP_STORE . '/feed/', true);
 		if(isset($xml->fetch) && isset($xml->fetch->channel) && isset($xml->fetch->channel->item) && count($xml->fetch->channel->item)>0)
 		{
@@ -438,7 +440,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 			$_SESSION[CFGP_PREFIX . 'rss'] = $print;
 			echo $print;
 		}
-		exit;
+		wp_die();
 	}
 	
 	/* 
@@ -459,7 +461,21 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 			$enable_seo_posts = array();
 			$enable_geo_tag = array();
 
+			/**
+			 * Get defaults
+			 */
+			if( !CFGP_MULTISITE )
+				$options = get_option('cf_geoplugin');
+			else
+				$options = get_site_option( 'cf_geoplugin' );
+			
+			$options = wp_parse_args($options, $this->default_options);
+
 			$updated = 'true';
+			
+			/**
+			 * Collect data
+			 */
 			foreach( $value as $i => $array )
 			{
 				$option_name = $array['name'];
@@ -467,8 +483,11 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 
 				if( $option_name === 'connection_timeout' || $option_name === 'timeout' ) 
 				{
-					if( empty( $option_value ) || (int)$option_value < 3 || (int)$option_value > 9999 ) $option_value = isset( $this->default_options[ $option_name ] ) ? $this->default_options[ $option_name ] : 15;
+					if( empty( $option_value ) || (int)$option_value < 3 || (int)$option_value > 9999 ) $option_value = isset( $this->default_options[ $option_name ] ) ? $this->default_options[ $option_name ] : 3;
+					
 					$option_value = (int)$option_value;
+					
+					$options[$option_name] = $option_value;
 				}
 				elseif( $option_name === 'enable_seo_posts[]' )
 				{
@@ -480,15 +499,25 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 				}
 				elseif( isset( $this->default_options[ $option_name ] ) ) 
 				{
-					$this->update_option( $option_name, $option_value );
+					$options[$option_name] = $option_value;
 				}
 			}
-
+			
 			/**
 			 * Update checkboxes
 			 */
-			$this->update_option( 'enable_seo_posts', $enable_seo_posts );
-			$this->update_option( 'enable_geo_tag', $enable_geo_tag );
+			$options['enable_seo_posts'] = $enable_seo_posts;
+			$options['enable_geo_tag'] = $enable_geo_tag;
+			
+			$options = parent::sanitize( $options );
+
+			/**
+			 * Update ALL
+			 */
+			if( !CFGP_MULTISITE )
+				update_option('cf_geoplugin', $options, true);
+			else 
+				update_site_option('cf_geoplugin', $options);
 		}
 		else $updated = 'error';
 		
@@ -502,7 +531,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 		if( !check_admin_referer( 'cf_geo_update_redirect', 'cf_geo_update_redirect_nonce' ) )
 		{
 			echo 'error';
-			exit;
+			wp_die();
 		}
 
 		global $wpdb;
@@ -577,7 +606,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 			if( $result === false ) $message = 'false';
 		}
 		echo $message;
-		exit;
+		wp_die();
 	}
 	
 	// Admin bar
@@ -937,7 +966,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 					$content = mb_convert_encoding($content, 'UTF-16LE', 'UTF-8');
 					$content = stripcslashes($content);
 					echo $content;
-					exit;
+					wp_die();
 				}
 			}	
 		}
@@ -1289,6 +1318,13 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 		$this->plugin_custom_menu_class();
 		$this->add_action( 'delete_post', 'delete_post', 10 );
 	}
+	
+	public function admin_footer(){
+		global $hook_suffix;
+		if ( 'plugins.php' == $hook_suffix && ! defined( 'DOING_AJAX' ) ) {
+
+		}
+	}
 
 	// Construct all
 	function __construct(){
@@ -1320,6 +1356,8 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 		$this->add_filter( 'wp_check_filetype_and_ext', 'upload_multi_mimes', 99, 4 );
 
 		$this->add_action( 'admin_bar_menu', 'cf_geoplugin_admin_bar_menu', 900 );
+		
+		$this->add_action( 'admin_footer', 'admin_footer' );
 
 		if($CF_GEOPLUGIN_OPTIONS['enable_dashboard_widget']){
 			if($CF_GEOPLUGIN_OPTIONS['enable_advanced_dashboard_widget']){

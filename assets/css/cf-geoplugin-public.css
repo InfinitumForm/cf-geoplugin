@@ -1,0 +1,8 @@
+.cf-geoplugin-banner-cached:not(.cached){
+	opacity:0;
+	visibility:hidden;
+}
+.cf-geoplugin-banner-cached.cached{
+	opacity:1;
+	visibility:visible;
+}

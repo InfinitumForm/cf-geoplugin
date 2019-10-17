@@ -26,4 +26,4 @@ if( ! defined( 'CFGP_DEV_MODE' ) )			define( 'CFGP_DEV_MODE', false );
 // Session expire in % minutes
 if( ! defined( 'CFGP_SESSION' ) )			define( 'CFGP_SESSION', 30 ); // 30 minutes
 // W3 total cache setup
-if( ! defined( 'W3TC_DYNAMIC_SECURITY' ) )	define( 'W3TC_DYNAMIC_SECURITY', 'cfgeo_' . md5( get_bloginfo('url') . get_bloginfo('admin_email') ));
+if( ! defined( 'W3TC_DYNAMIC_SECURITY' ) )	define( 'W3TC_DYNAMIC_SECURITY', 'cfgeo_' . md5( get_bloginfo('url') ));

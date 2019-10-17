@@ -37,7 +37,7 @@ class CF_Geoplugin_Global
 		'proxy_username'			=>	'',
 		'proxy_password'			=>	'',
 		'enable_ssl'				=>	0,
-		'timeout'					=>	15,
+		'timeout'					=>	5,
 		'map_api_key'				=>	'',
 		'map_zoom'					=>	8,
 		'map_scrollwheel'			=>	1,
@@ -293,7 +293,7 @@ class CF_Geoplugin_Global
 		if(empty($options)){
 			$options = $this->default_options;
 		} else {
-			$options = array_merge($this->default_options, $options);
+			$options = wp_parse_args($options, $this->default_options);
 		}
 		
 		// Get data by option name
@@ -318,33 +318,10 @@ class CF_Geoplugin_Global
 			$options = get_site_option( 'cf_geoplugin' );
 		if($options)
 		{
-			if($value != 0 && empty($value))
-			{
-				$options[$option_name] = NULL;
-			}
-			else
-			{
-				if(is_array($value))
-					$options[$option_name] = $value;
-				else
-				{
-					if(is_numeric($value))
-					{
-						if((int)$value == $value)
-							$options[$option_name] = (int)$value;
-						else if((float)$value == $value)
-							$options[$option_name] = (float)$value;
-						else
-							$options[$option_name] = trim($value);
-					}
-					else if(is_string($value) && in_array(strtolower($value), array('true','false')) !== false)
-					{
-						$options[$option_name] = (strtolower($value) == 'true');
-					}
-					else
-						$options[$option_name] = trim($value);
-				}
-			}
+			$option_name = preg_replace(array('/[^0-9a-z_-]/i'), array(''), $option_name);
+			$option_name = trim( $option_name );
+			
+			$options[$option_name] = self::sanitize( $value );
 
 			if( !CFGP_MULTISITE )
 				update_option('cf_geoplugin', $options, true);
@@ -367,6 +344,49 @@ class CF_Geoplugin_Global
 			}
 		}
 		return false;
+	}
+	
+	/**
+	 * Sanitize string or array
+	 *
+	 * This functionality do automatization for the certain type of data expected in this plugin
+	 */
+	public static function sanitize( $str ){
+		if( is_array($str) )
+		{
+			$data = array();
+			foreach($str as $key => $obj)
+			{
+				$data[$key]=self::sanitize( $obj ); 
+			}
+			return $data;
+		}
+		else
+		{
+			$str = trim( $str );
+			
+			if(empty($str) && $str != 0)
+				return NULL;
+			else if(is_numeric($str))
+			{
+				if(intval( $str ) == $str)
+					$str = intval( $str );
+				else if(floatval($str) == $str)
+					$str = floatval( $str );
+				else
+					$str = sanitize_text_field( $str );
+			}
+			else if(!is_bool($str) && in_array(strtolower($str), array('true','false'), true))
+			{
+				$str = ( strtolower($str) == 'true' );
+			}
+			else
+			{
+				$str = sanitize_text_field( $str );
+			}
+			
+			return $str;
+		}
 	}
 	
 	/*

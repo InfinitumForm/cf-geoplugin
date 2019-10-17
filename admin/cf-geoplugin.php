@@ -383,6 +383,10 @@ $CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIO
                                 <td><?php echo $CFGEO['base_currency_symbol']; ?></td>
                             </tr>
 							<tr>
+                                <td><kbd>%%currency_converter%%</kbd></td>
+                                <td><?php echo $CFGEO['currency_converter']; ?></td>
+                            </tr>
+							<tr>
                                 <td><kbd>%%is_vat%%</kbd></td>
                                 <td><?php echo $CFGEO['is_vat']; ?></td>
                             </tr>
@@ -537,6 +541,10 @@ $CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIO
                             <tr>
                                 <td><kbd>[cfgeo_currency_symbol]</kbd></td>
                                 <td><?php echo $CFGEO['currency_symbol']; ?></td>
+                            </tr>
+							<tr>
+                                <td><kbd>[cfgeo_currency_converter]</kbd></td>
+                                <td><?php echo $CFGEO['currency_converter']; ?></td>
                             </tr>
 							<tr>
                                 <td><kbd>[cfgeo_base_currency]</kbd></td>

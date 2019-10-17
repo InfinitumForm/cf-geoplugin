@@ -11,6 +11,9 @@
 $CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
 include CFGP_INCLUDES . '/class-cf-geoplugin-forms.php';
 $global = CF_Geoplugin_Global::get_instance();
+
+//echo '<pre>', var_dump($CF_GEOPLUGIN_OPTIONS), '</pre>';
+
 $alert = '';
 if($this->get('action') == 'activate_license')
 {
@@ -624,7 +627,7 @@ if( $global->get( 'action' ) == 'deactivate_license' )
 										'style'	=> 'max-width:100px; display:inline-block'
 									),
 									'id'		=> 'timeout',
-									'value'		=> isset( $CF_GEOPLUGIN_OPTIONS['timeout'] ) && (int)$CF_GEOPLUGIN_OPTIONS['timeout'] > 0  ? $CF_GEOPLUGIN_OPTIONS['timeout'] : 15,
+									'value'		=> isset( $CF_GEOPLUGIN_OPTIONS['timeout'] ) ? $CF_GEOPLUGIN_OPTIONS['timeout'] : (isset( $global->default_options[ 'timeout' ] ) ? $global->default_options[ 'timeout' ] : 5),
 									'info'		=> __( 'Set maximum time the request is allowed to take', CFGP_NAME )
 								));
 

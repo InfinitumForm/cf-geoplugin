@@ -46,7 +46,8 @@
         });
     });
 	
-	/* Cache Handle */
+	/* Cache Support for the geo tags */
+	var xhrs = [];
 	(function(element){
 		var replace = $(element),
 			timeout,
@@ -71,7 +72,7 @@
 		{
 			var nonce = $(replace.get(0)).attr('data-nonce');
 			
-			$.ajax({
+			var xhr = $.ajax({
 				method : 'POST',
 				data: {
 					'cfgeo_nonce' : nonce
@@ -79,7 +80,11 @@
 				cache : false,
 				async : false,
 				url: CFGP_PUBLIC.ajax_url + '?action=cfgeo_cache', 
-			}).done( function( d ) {
+			});
+			
+			xhrs.push(xhr);
+			
+			xhr.done( function( d ) {
 				if(d)
 				{
 					var data = JSON.parse(d);
@@ -101,5 +106,61 @@
 			});
 		}
 	}('.cfgeo-replace'));
+	
+	
+	/* Cache support for the Geo Banner */
+	(function(element){
+		var replace = $(element),
+			timeout;
+		if(replace.length > 0)
+		{
+			var nonce = $(replace.get(0)).attr('data-nonce');
+			
+			$.each(replace, function (i, e)  {
+				var $this = $(e),
+					xhr = $.ajax({
+						method : 'POST',
+						data: {
+							'cfgeo_nonce' : nonce,
+							'post_id' : $this.attr('data-id'),
+							'post_posts_per_page' : $this.attr('data-posts_per_page'),
+							'post_class' : $this.attr('data-class'),
+							'post_html'	: $this.html()
+						},
+						cache : false,
+						async : true,
+						url: CFGP_PUBLIC.ajax_url + '?action=cfgeo_banner_cache', 
+					});
+					
+				xhrs.push(xhr);
+				
+				xhr.done(function(data){
+					if(data)
+					{
+						var el = $(data);
+						
+						if(el.is('#cf-geoplugin-banner-' + $this.attr('data-id')))
+						{			
+							$this.html( el.html() );
+						}
+						else
+						{
+							$this.html( data );
+						}
+					}
+					else
+					{
+						$this.html( '' );
+					}
+					$this.addClass('cached');
+				});
+			});
+		}
+	}('.cf-geoplugin-banner-cached'));
+
+	/* Detect cache done */
+	$.when.apply($, xhrs).done(function(){
+		console.log('Fragment cache cleaned for the WordPress Geo Plugin');
+	});
 
 })(jQuery || window.jQuery || Zepto || window.Zepto);

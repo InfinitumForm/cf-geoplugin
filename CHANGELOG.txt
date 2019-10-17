@@ -1,5 +1,27 @@
 == Changelog ==
 
+= 7.8.5 =
+* WordPress Geo Plugin: Fixed metabox problems with the Geo Banner
+* WordPress Geo Plugin: Processed Geo Banner via AJAX for the cached websites
+* WordPress Geo Plugin: Improved speed impact on the XHR calls
+* W3 Total Cache: Adapted W3 Total Cache fragment cache to Geo Banner
+* Fixed JavaScript error for the Chrome
+
+= 7.8.4 =
+* WordPress Geo Plugin: Fixing PHP error while saving data
+* WordPress Geo Plugin: Improved page speed impact
+* WordPress Geo Plugin: Improved HTTP calls
+* WordPress Geo Plugin: Improved session control
+* WordPress Geo Plugin: Added missing tags
+* W3 Total Cache : New improvemants inside page caching
+* W3 Total Cache : New improvemants in fragment caching (BETA)
+* Woocommerce: Changed converted price format
+* Woocommerce: Fixed bad calculations
+* Woocommerce: Fixed rounded prices
+* Woocommerce: Option for the removal conversion price in admin panel to show only original prices in the reports
+* Woocommerce: Improved page impact during calculation
+* Woocommerce: Moved converted price HTML format to open CSS formatting
+
 = 7.8.3 =
 * Added filters to WooCommerce prices
 * Added currency converter price adjust

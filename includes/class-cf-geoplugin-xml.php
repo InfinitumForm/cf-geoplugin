@@ -158,8 +158,9 @@ class parseXML
 			$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
 
 			$G = CF_Geoplugin_Global::get_instance();
+			$timeout = $G->get_option('timeout', 5);
 
-			$data = $G->curl_get( $document, array( 'Accept: text/xml' ) );
+			$data = $G->curl_get( $document, array( 'Accept: text/xml' ), array('timeout' => ($timeout + 3)) );
 			
 			if(!$data) return false;
 			

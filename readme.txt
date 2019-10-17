@@ -5,7 +5,7 @@ Tags: geolocation, woocommerce, store-locator, seo, google-maps, geomarketing, c
 Requires at least: 3.0
 Tested up to: 5.2
 Requires PHP: 5.6.0
-Stable tag: 7.8.3
+Stable tag: 7.8.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -17,11 +17,13 @@ The only geolocation plugin that provides all geomarketing integrations for the 
 
 = FREE AND PAID SERVICES =
 
-WordPress Geo Plugin uses a combination of **[free and payed services](https://cfgeoplugin.com/information/new-plugin-new-features-new-success/)** that return information about the locations.
+WordPress Geo Plugin is free plugin which work with the **[free and payed services](https://cfgeoplugin.com/information/new-plugin-new-features-new-success/)** that return information about the locations.
 
-WordPress Geo Plugin is free by itself but API lookup is limited to **300 lookups per day** for the free users. If you like to have **UNLIMITED** lookup, **please visit [official website](https://cfgeoplugin.com/pricing/) for the more informations**.
+WordPress Geo Plugin is free by itself but API services is limited to **300 lookups per day** for the free users. If you like to have **UNLIMITED** lookup, **please visit [official website](https://cfgeoplugin.com/pricing/) for the more informations**.
 
 **NOTE:** We not place prices on this page because we reserve the right to change these prices and often have monthly promotions and discounts. Please, for the more informations **[look our prices](https://cfgeoplugin.com/pricing/)** on the [official website](https://cfgeoplugin.com/).
+
+This plugin works as a [service](https://en.wikipedia.org/wiki/Software_as_a_service).
 
 = BENEFITS =
 
@@ -77,6 +79,8 @@ This plugin is compatible with any Wordpress installation and many available plu
 * [All in one SEO pack](https://wordpress.org/plugins/all-in-one-seo-pack/)
 * [Wordpress SEO plugin](https://wordpress.org/plugins/seo-by-rank-math/)
 * [SEO framework](https://wordpress.org/plugins/autodescription/)
+
+**YOU NEED TO KNOW** that even if there is compatibility for most plugins, the combination of multiple plugins still has a slight chance of a some conflict. There are over a couple thousand plugins and a couple of few million individual WordPress installations. We cannot 100% guarantee that everything will work properly in all possible cases. Sometimes it happens that other plugins are not compatible with WordPress Geo Plugin, so it is important that you contact us or other plugin authors in case of any problem so that you can solve the problem. The most common fix for most issues is if you keep all the plugins and WordPress installation up to date.
 
 > <strong>All WordPress Geo Plugin 7.x.x Features</strong><br>
 >
@@ -325,6 +329,28 @@ Please inform us if any of these errors occure via contact form on our website [
 
 == Changelog ==
 
+= 7.8.5 =
+* WordPress Geo Plugin: Fixed metabox problems with the Geo Banner
+* WordPress Geo Plugin: Processed Geo Banner via AJAX for the cached websites
+* WordPress Geo Plugin: Improved speed impact on the XHR calls
+* W3 Total Cache: Adapted W3 Total Cache fragment cache to Geo Banner
+* Fixed JavaScript error for the Chrome
+
+= 7.8.4 =
+* WordPress Geo Plugin: Fixing PHP error while saving data
+* WordPress Geo Plugin: Improved page speed impact
+* WordPress Geo Plugin: Improved HTTP calls
+* WordPress Geo Plugin: Improved session control
+* WordPress Geo Plugin: Added missing tags
+* W3 Total Cache : New improvemants inside page caching
+* W3 Total Cache : New improvemants in fragment caching (BETA)
+* Woocommerce: Changed converted price format
+* Woocommerce: Fixed bad calculations
+* Woocommerce: Fixed rounded prices
+* Woocommerce: Option for the removal conversion price in admin panel to show only original prices in the reports
+* Woocommerce: Improved page impact during calculation
+* Woocommerce: Moved converted price HTML format to open CSS formatting
+
 = 7.8.3 =
 * Added filters to WooCommerce prices
 * Added currency converter price adjust
@@ -400,13 +426,27 @@ Please inform us if any of these errors occure via contact form on our website [
 
 == Upgrade Notice ==
 
-= 7.8.3 =
-* Added filters to WooCommerce prices
-* Added currency converter price adjust
-* Added currency converter round price options
-* Improving W3 total cache support
-* Fixing bugs into WooCommerce support
-* Fixing variable product conversion in the WooCommerce
+= 7.8.5 =
+* WordPress Geo Plugin: Fixed metabox problems with the Geo Banner
+* WordPress Geo Plugin: Processed Geo Banner via AJAX for the cached websites
+* WordPress Geo Plugin: Improved speed impact on the XHR calls
+* W3 Total Cache: Adapted W3 Total Cache fragment cache to Geo Banner
+* Fixed JavaScript error for the Chrome
+
+= 7.8.4 =
+* WordPress Geo Plugin: Fixing PHP error while saving data
+* WordPress Geo Plugin: Improved page speed impact
+* WordPress Geo Plugin: Improved HTTP calls
+* WordPress Geo Plugin: Improved session control
+* WordPress Geo Plugin: Added missing tags
+* W3 Total Cache : New improvemants inside page caching
+* W3 Total Cache : New improvemants in fragment caching (BETA)
+* Woocommerce: Changed converted price format
+* Woocommerce: Fixed bad calculations
+* Woocommerce: Fixed rounded prices
+* Woocommerce: Option for the removal conversion price in admin panel to show only original prices in the reports
+* Woocommerce: Improved page impact during calculation
+* Woocommerce: Moved converted price HTML format to open CSS formatting
 
 == Other Notes ==
 

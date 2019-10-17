@@ -83,6 +83,11 @@ if( !is_plugin_active_for_network( plugins_url( 'cf-geoplugin.php', __FILE__ ) )
 {
 	delete_option( 'cf_geoplugin' );
 	delete_option( 'cf_geoplugin_dismissed_notices' );
+	delete_option( 'woocommerce_cf_geoplugin_conversion' );
+	delete_option( 'woocommerce_cf_geoplugin_conversion_rounded' );
+	delete_option( 'woocommerce_cf_geoplugin_conversion_rounded_option' );
+	delete_option( 'woocommerce_cf_geoplugin_conversion_adjust' );
+	delete_option( 'woocommerce_cf_geoplugin_conversion_in_admin' );
 }
 else
 {
@@ -90,11 +95,29 @@ else
 	$current_blog = get_current_blog_id();
 	foreach( $blog_ids as $b )
 	{
-		switch_to_blog( $b->blog_id );
-		delete_site_option( 'cf_geoplugin' );
-		delete_site_option( 'cf_geoplugin_dismissed_notices' );
-		delete_blog_option( $b->blog_id, 'cf_geoplugin' );
-		delete_blog_option( $b->blog_id, 'cf_geoplugin_dismissed_notices' ); 
+		switch_to_blog( $b->blog_id );		
+		
+		if(function_exists('delete_site_option'))
+		{
+			delete_site_option( 'cf_geoplugin' );
+			delete_site_option( 'cf_geoplugin_dismissed_notices' );
+			delete_site_option( 'woocommerce_cf_geoplugin_conversion' );
+			delete_site_option( 'woocommerce_cf_geoplugin_conversion_rounded' );
+			delete_site_option( 'woocommerce_cf_geoplugin_conversion_rounded_option' );
+			delete_site_option( 'woocommerce_cf_geoplugin_conversion_adjust' );
+			delete_site_option( 'woocommerce_cf_geoplugin_conversion_in_admin' );
+		}
+		
+		if(function_exists('delete_blog_option'))
+		{
+			delete_blog_option( $b->blog_id, 'cf_geoplugin' );
+			delete_blog_option( $b->blog_id, 'cf_geoplugin_dismissed_notices' );
+			delete_blog_option( $b->blog_id, 'woocommerce_cf_geoplugin_conversion' );
+			delete_blog_option( $b->blog_id, 'woocommerce_cf_geoplugin_conversion_rounded' );
+			delete_blog_option( $b->blog_id, 'woocommerce_cf_geoplugin_conversion_rounded_option' );
+			delete_blog_option( $b->blog_id, 'woocommerce_cf_geoplugin_conversion_adjust' );
+			delete_blog_option( $b->blog_id, 'woocommerce_cf_geoplugin_conversion_in_admin' );
+		}
 	}
 	switch_to_blog( $current_blog );
 }

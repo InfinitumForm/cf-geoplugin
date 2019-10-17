@@ -8,11 +8,15 @@
  */
 if( !class_exists( 'CF_Geoplugin_Woocommerce' ) ):
 class CF_Geoplugin_Woocommerce extends CF_Geoplugin_Global
-{
+{	
     /**
      * CF GeoPlugin converter option
      */
-    private $cf_conversion = 'original';
+    private $cf_conversion					= 'original';
+	private $cf_conversion_rounded 			= NULL;
+	private $cf_conversion_rounded_option	= NULL;
+	private $cf_conversion_adjust 			= NULL;
+	private $cf_conversion_in_admin 		= 'yes';
 
     function __construct()
     {
@@ -21,10 +25,12 @@ class CF_Geoplugin_Woocommerce extends CF_Geoplugin_Global
 		if(isset($CF_GEOPLUGIN_OPTIONS['enable_cache']) ? $CF_GEOPLUGIN_OPTIONS['enable_cache'] : false) $this->cache = true;
 		
         $this->add_action( 'init', 'check_woocommerce_instalation', 10 );
-        $this->cf_conversion = get_option( 'woocommerce_cf_geoplugin_conversion' );
-		$this->cf_conversion_rounded = get_option( 'woocommerce_cf_geoplugin_conversion_rounded' );
-		$this->cf_conversion_rounded_option = get_option( 'woocommerce_cf_geoplugin_conversion_rounded_option' );
-		$this->cf_conversion_adjust = get_option( 'woocommerce_cf_geoplugin_conversion_adjust' );
+		
+		$this->cf_conversion 				= get_option( 'woocommerce_cf_geoplugin_conversion' );
+		$this->cf_conversion_rounded 		= get_option( 'woocommerce_cf_geoplugin_conversion_rounded' );
+		$this->cf_conversion_rounded_option	= get_option( 'woocommerce_cf_geoplugin_conversion_rounded_option' );
+		$this->cf_conversion_adjust 		= get_option( 'woocommerce_cf_geoplugin_conversion_adjust' );
+		$this->cf_conversion_in_admin 		= get_option( 'woocommerce_cf_geoplugin_conversion_in_admin', 'yes' );
     }
 
     // Check if woocommerce is installed and active
@@ -39,42 +45,32 @@ class CF_Geoplugin_Woocommerce extends CF_Geoplugin_Global
             {
                 if( isset( $CFGEO['currency_converter'] ) && $CFGEO['currency_converter'] > 0 )
                 {
-                    $this->update_option( 'base_currency', get_woocommerce_currency() );
-                    
-                    $this->add_filter( 'woocommerce_get_price_html', 'convert_item_price', 10, 2 ); // Item price on admin side
-                    $this->add_filter( 'woocommerce_cart_item_price', 'convert_cart_item_price', 10, 3 ); // Cart Item price
-                    $this->add_filter( 'woocommerce_cart_item_subtotal', 'convert_cart_item_price', 10, 3 ); // Subtotal Item Price
-                    $this->add_filter( 'woocommerce_cart_subtotal', 'convert_cart_subtotal_price', 10, 3 ); // Subtotal Cart Price
-                    $this->add_filter( 'woocommerce_cart_total', 'convert_cart_total_price', 10 ); // Total Price
-                    //$this->add_filter( 'woocommerce_package_rates', 'convert_shipping_price', 10, 2 ); // Shipping Price 
-                    $this->add_filter( 'woocommerce_before_shipping_calculator', 'show_shipping_price', 10 ); // Show Converted Shipping Price
-                    $this->add_filter( 'woocommerce_cart_totals_coupon_html', 'convert_coupon_price', 10, 3 ); // Coupon Price
-                    $this->add_filter( 'woocommerce_cart_totals_taxes_total_html', 'convert_cart_total_tax', 10 ); // Cart Total Tax Price
-
-                    $this->add_filter( 'woocommerce_general_settings', 'conversion_options', 10 ); // Add custom option for conversion system
-					
-					$this->add_filter( 'woocommerce_variable_sale_price_html', 'convert_variable_price_format', 10, 2 );
-					$this->add_filter( 'woocommerce_variable_price_html', 'convert_variable_price_format', 10, 2 );
-					
+					// All prices conversion
+					if($this->cf_conversion_in_admin == 'yes') {
+						if( !is_admin() ) $this->add_filter( 'wc_price', 'wc_price', 10, 3 );
+					} else {
+						$this->add_filter( 'wc_price', 'wc_price', 10, 3 );
+					}
+					// Add custom option for conversion system
+                    $this->add_filter( 'woocommerce_general_settings', 'conversion_options', 10 );
                 }
-                $this->add_filter( 'woocommerce_settings_tabs_array', 'cfgp_woocommerce_tabs', 50 ); //  Add a settings tabs
-
-                $this->add_action( 'woocommerce_settings_tabs_cf_geoplugin_payment_restriction', 'cfgp_woocommerce_payment_settings' ); // Add payment settings
+				//  Add a settings tabs
+                $this->add_filter( 'woocommerce_settings_tabs_array', 'cfgp_woocommerce_tabs', 50 );
+				// Add payment settings
+                $this->add_action( 'woocommerce_settings_tabs_cf_geoplugin_payment_restriction', 'cfgp_woocommerce_payment_settings' );
                 
                 if( self::access_level( $CF_GEOPLUGIN_OPTIONS['license_sku'] ) >= 2 )
                 {
-                    $this->add_action( 'woocommerce_update_options_cf_geoplugin_payment_restriction', 'cfgp_woocommerce_payment_settings_save' ); // Save our settings for payments
-                    $this->add_filter( 'woocommerce_available_payment_gateways', 'cfgp_woocommerce_payment_disable' ); // Disable payment gateways for specifis users
+					// Save our settings for payments
+                    $this->add_action( 'woocommerce_update_options_cf_geoplugin_payment_restriction', 'cfgp_woocommerce_payment_settings_save' );
+					// Disable payment gateways for specifis users
+                    $this->add_filter( 'woocommerce_available_payment_gateways', 'cfgp_woocommerce_payment_disable' );
                 }
-				
-			//	$this->add_filter( 'raw_woocommerce_price', 'raw_woocommerce_price' );
 
 				$this->add_filter('wp_geo_woocommerce_currency_and_symbol', 'calculate_conversions', 1);
-
-				if( $this->cf_conversion_rounded == 'yes' )
-				{
-					$this->add_filter('wp_geo_woocommerce_currency_and_symbol', 'round_conversions', 2);
-				}
+				
+				$this->add_filter('wp_geo_raw_woocommerce_converted_price', 'calculate_and_modify_price', 1);
+				$this->add_filter('wp_geo_raw_woocommerce_price', 'calculate_and_modify_price', 1);
             }
         }
         else
@@ -82,17 +78,98 @@ class CF_Geoplugin_Woocommerce extends CF_Geoplugin_Global
             $this->update_option( 'woocommerce_active', 0 );
         }
     }
-
-/**
-	public function raw_woocommerce_price( $price ) {
+	
+	/* We must recreate wc_price in order to perform conversion wisely */
+	function wc_price( $original_formatted_price, $price, $args  ) {
+		
+		$return = '';
+		
 		$currency_args = $this->get_currency_and_symbol();
-		if( $currency_args !== false && $this->cf_conversion !== 'original')
+		
+		$unformatted_price = $price;
+		
+		// Let's do direct conversion
+		if( $currency_args !== false && $this->cf_conversion === 'converted')
 		{
-			return $price * $currency_args['currency_converter'];
+			$price = ((float)$price * (float)$currency_args['currency_converter']);
+			$args['currency'] = $currency_args['currency_code'];
 		}
-		return $price;
+		
+		// We show it in the both conversions
+		if( $currency_args !== false && $this->cf_conversion == 'inversion' )
+		{
+			$converted_price = ((float)$unformatted_price * (float)$currency_args['currency_converter']);
+			
+			$converted_negative = $converted_price < 0;
+			$converted_price = apply_filters( 'wp_geo_raw_woocommerce_converted_price', floatval( $converted_negative ? $converted_price * -1 : $converted_price ) );
+			$converted_price = apply_filters( 'wp_geo_formatted_woocommerce_converted_price', number_format( $converted_price, $args['decimals'], $args['decimal_separator'], $args['thousand_separator'] ), $converted_price, $args['decimals'], $args['decimal_separator'], $args['thousand_separator'] );
+			
+			if ( apply_filters( 'wp_geo_woocommerce_converted_price_trim_zeros', false ) && $args['decimals'] > 0 ) {
+				$converted_price = wc_trim_zeros( $converted_price );
+			}
+			
+			$return .= '<span class="woocommerce-original-price">';
+			$converted_formatted_price = ( $converted_negative ? '-' : '' ) . sprintf( $args['price_format'], '<span class="woocommerce-Price-currencySymbol">' . get_woocommerce_currency_symbol( $currency_args['currency_code'] ) . '</span>', $converted_price );
+			$return .= '<span class="woocommerce-Price-amount amount">' . $converted_formatted_price . '</span>';
+			
+			if ( $args['ex_tax_label'] && wc_tax_enabled() ) {
+				$return .= ' <small class="woocommerce-Price-taxLabel tax_label">' . WC()->countries->ex_tax_or_vat() . '</small>';
+			}
+			$return .= '</span>';
+		}
+		
+		// Original price
+		$negative = $price < 0;
+		$price = apply_filters( 'wp_geo_raw_woocommerce_price', floatval( $negative ? $price * -1 : $price ) );
+		$price = apply_filters( 'wp_geo_formatted_woocommerce_price', number_format( $price, $args['decimals'], $args['decimal_separator'], $args['thousand_separator'] ), $price, $args['decimals'], $args['decimal_separator'], $args['thousand_separator'] );
+		
+		if ( apply_filters( 'wp_geo_woocommerce_price_trim_zeros', false ) && $args['decimals'] > 0 ) {
+			$price = wc_trim_zeros( $price );
+		}
+		
+		$return .= '<span class="woocommerce-' . (( $currency_args !== false && $this->cf_conversion == 'inversion' ) ? 'converted' : 'original') . '-price">';
+		$formatted_price = ( $negative ? '-' : '' ) . sprintf( $args['price_format'], '<span class="woocommerce-Price-currencySymbol">' . get_woocommerce_currency_symbol( $args['currency'] ) . '</span>', $price );
+		$return .= '<span class="woocommerce-Price-amount amount">' . $formatted_price . '</span>';
+		
+		if ( $args['ex_tax_label'] && wc_tax_enabled() ) {
+			$return .= ' <small class="woocommerce-Price-taxLabel tax_label">' . WC()->countries->ex_tax_or_vat() . '</small>';
+		}
+		$return .= '</span>';
+		
+		// We show it in the both conversions
+		if( $currency_args !== false && $this->cf_conversion == 'both' )
+		{
+			$converted_price = ((float)$unformatted_price * (float)$currency_args['currency_converter']);
+			
+			$converted_negative = $converted_price < 0;
+			$converted_price = apply_filters( 'wp_geo_raw_woocommerce_converted_price', floatval( $converted_negative ? $converted_price * -1 : $converted_price ) );
+			$converted_price = apply_filters( 'wp_geo_formatted_woocommerce_converted_price', number_format( $converted_price, $args['decimals'], $args['decimal_separator'], $args['thousand_separator'] ), $converted_price, $args['decimals'], $args['decimal_separator'], $args['thousand_separator'] );
+			
+			if ( apply_filters( 'wp_geo_woocommerce_converted_price_trim_zeros', false ) && $args['decimals'] > 0 ) {
+				$converted_price = wc_trim_zeros( $converted_price );
+			}
+			
+			$return .= '<span class="woocommerce-converted-price">';
+			$converted_formatted_price = ( $converted_negative ? '-' : '' ) . sprintf( $args['price_format'], '<span class="woocommerce-Price-currencySymbol">' . get_woocommerce_currency_symbol( $currency_args['currency_code'] ) . '</span>', $converted_price );
+			$return .= '<span class="woocommerce-Price-amount amount">' . $converted_formatted_price . '</span>';
+			
+			if ( $args['ex_tax_label'] && wc_tax_enabled() ) {
+				$return .= ' <small class="woocommerce-Price-taxLabel tax_label">' . WC()->countries->ex_tax_or_vat() . '</small>';
+			}
+			$return .= '</span>';
+		}
+		
+		/**
+		 * Filters the string of price markup.
+		 */
+		return apply_filters(
+			'wp_geo_woocommerce_formatted_price',
+			$return,
+			$price,
+			$args,
+			$currency_args
+		);
 	}
-**/
 	
 	// Calculate % increment
 	public function calculate_conversions($currency_args){
@@ -100,473 +177,34 @@ class CF_Geoplugin_Woocommerce extends CF_Geoplugin_Global
 		{
 			$this->cf_conversion_adjust = ( $this->cf_conversion_adjust >= 100 ? 100 : intval($this->cf_conversion_adjust) );
 			$percentage = (($this->cf_conversion_adjust / 100) * $currency_args['currency_converter']);
-			$currency_args['currency_converter'] = $currency_args['currency_converter'] + $percentage;
+			$currency_args['currency_converter'] = ($currency_args['currency_converter'] + $percentage);
 		}
 		
 		return $currency_args;
 	}
 	
-	// Put conversion  to round number
-	public function round_conversions($currency_args){
-		switch($this->cf_conversion_rounded_option)
-		{
-			default:
-			case 'up':
-				$currency_args['currency_converter'] = ceil($currency_args['currency_converter']);
-				break;
-			case 'nearest':
-				$currency_args['currency_converter'] = round($currency_args['currency_converter']);
-				break;
-			case 'down':
-				$currency_args['currency_converter'] = floor($currency_args['currency_converter']);
-				break;
-		}
-		return $currency_args;
-	}
-	
-	// Format variabile products
-	public function convert_variable_price_format ( $price, $product ){
-		$currency_args = $this->get_currency_and_symbol();
-
-		$max_price = $product->get_variation_price( 'max', true );
-		$min_price = $product->get_variation_price( 'min', true );
+	// Modify raw price
+	public function calculate_and_modify_price($price){
 		
-		if($currency_args !== false && $this->cf_conversion !== 'original')
+		if( $price && $this->cf_conversion_rounded == 'yes' )
 		{
-			$convert_min_price = apply_filters(
-				'wp_geo_woocommerce_convert_variable_min_price_format',
-				((float)$min_price * (float)$currency_args['currency_converter']),
-				$min_price,
-				$currency_args['currency_converter'],
-				$currency_args['currency_code']
-			);
-			$convert_max_price = apply_filters(
-				'wp_geo_woocommerce_convert_variable_max_price_format',
-				((float)$max_price * (float)$currency_args['currency_converter']),
-				$max_price,
-				$currency_args['currency_converter'],
-				$currency_args['currency_code']
-			);
-			
-			if( $this->cf_conversion == 'both' )
+			switch($this->cf_conversion_rounded_option)
 			{
-				if($this->cache)
-				{
-					return '<!--mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->
-					<div class="woocommerce-original-price">
-						' . wc_price($min_price) . '  –  ' . wc_price($max_price) . '
-					</div>
-					' . (is_admin() ? '<hr>' : NULL) . '
-					<div class="woocommerce-converted-price">
-						' . wc_price($convert_min_price, array( 'currency' => $currency_args['currency_code'] )) . '  –  ' . wc_price($convert_max_price, array( 'currency' => $currency_args['currency_code'] )) . '
-					</div><!--/mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->';
-				}
-				else
-				{
-					return '
-					<div class="woocommerce-original-price">
-						' . wc_price($min_price) . '  –  ' . wc_price($max_price) . '
-					</div>
-					' . (is_admin() ? '<hr>' : NULL) . '
-					<div class="woocommerce-converted-price">
-						' . wc_price($convert_min_price, array( 'currency' => $currency_args['currency_code'] )) . '  –  ' . wc_price($convert_max_price, array( 'currency' => $currency_args['currency_code'] )) . '
-					</div>';
-				}
-			}
-			else if( $this->cf_conversion == 'inversion' )
-			{
-				if($this->cache)
-				{
-					return '<!--mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->
-					<div class="woocommerce-original-price">
-						' . wc_price($convert_min_price, array( 'currency' => $currency_args['currency_code'] )) . '  –  ' . wc_price($convert_max_price, array( 'currency' => $currency_args['currency_code'] )) . '
-					</div>
-					' . (is_admin() ? '<hr>' : NULL) . '
-					<div class="woocommerce-converted-price">
-						' . wc_price($min_price) . '  –  ' . wc_price($max_price) . '
-					</div><!--/mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->';
-				}
-				else
-				{
-					return '
-					<div class="woocommerce-original-price">
-						' . wc_price($convert_min_price, array( 'currency' => $currency_args['currency_code'] )) . '  –  ' . wc_price($convert_max_price, array( 'currency' => $currency_args['currency_code'] )) . '
-					</div>
-					' . (is_admin() ? '<hr>' : NULL) . '
-					<div class="woocommerce-converted-price">
-						' . wc_price($min_price) . '  –  ' . wc_price($max_price) . '
-					</div>';
-				}
-			}
-			else if( $this->cf_conversion == 'converted' )
-			{	if($this->cache)
-				{
-					return '<!--mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' . wc_price($convert_min_price, array( 'currency' => $currency_args['currency_code'] )) . '  –  ' . wc_price($convert_max_price, array( 'currency' => $currency_args['currency_code'] )) . '<!--/mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->';
-				}
-				else
-				{
-					return wc_price($convert_min_price, array( 'currency' => $currency_args['currency_code'] )) . '  –  ' . wc_price($convert_max_price, array( 'currency' => $currency_args['currency_code'] ));
-				}
+				default:
+				case 'up':
+					$price = ceil($price);
+					break;
+				case 'nearest':
+					$price = round($price);
+					break;
+				case 'down':
+					$price = floor($price);
+					break;
 			}
 		}
 		
-		
-		return $this->cache ? '<!--mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' . $price . '<!--/mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : $price;
+		return $price;
 	}
-
-    // Convert price and currency symbol for items
-    public function convert_item_price( $price, $product )
-    {
-		if($product->is_type( 'variable' )) return $this->convert_variable_price_format($price, $product);
-		
-        $currency_args = $this->get_currency_and_symbol();
-
-        if( $currency_args !== false && $this->cf_conversion !== 'original')
-        {
-            $sale_price = '';
-            $regular_price = wc_price( 
-				apply_filters(
-					'wp_geo_woocommerce_convert_item_regular_price',
-					((float)$product->get_regular_price() * (float)$currency_args['currency_converter']),
-					$product->get_regular_price(),
-					$currency_args['currency_converter'],
-					$currency_args['currency_code']
-				),
-				array( 'currency' => $currency_args['currency_code'] )
-			);
-            
-			if($sp = $product->get_sale_price()){
-				$regular_price = '<del>' . $regular_price . '</del>';
-            	$sale_price = '<ins>' . wc_price(
-					apply_filters(
-						'wp_geo_woocommerce_convert_item_sale_price',
-						((float)$sp * (float)$currency_args['currency_converter']),
-						$sp,
-						$currency_args['currency_converter'],
-						$currency_args['currency_code']
-					),
-					array( 'currency' => $currency_args['currency_code'] )
-				) . '</ins>';
-			}
-            if( is_admin() ) 
-            {
-                if( $this->cf_conversion == 'both' ) return $price . '<hr>' .  $regular_price . '<br>' . $sale_price;
-                elseif( $this->cf_conversion == 'inversion' ) return $regular_price . '<br>' . $sale_price . '<hr>' . $price;
-                else return $regular_price . '<br>' . $sale_price;
-            }
-            
-            if( $this->cf_conversion == 'both' )
-			{
-				if($this->cache)
-				{
-					return '<!--mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->
-					<div class="woocommerce-original-price">
-						' . $price . '
-					</div>
-					<div class="woocommerce-converted-price">
-						' . $regular_price . "\n\r" . $sale_price .'
-					</div><!--/mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->';
-				}
-				else
-				{
-					return '
-					<div class="woocommerce-original-price">
-						' . $price . '
-					</div>
-					<div class="woocommerce-converted-price">
-						' . $regular_price . "\n\r" . $sale_price .'
-					</div>';
-				}
-			}
-			elseif( $this->cf_conversion == 'inversion' )
-			{
-				if($this->cache)
-				{
-					return '<!--mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->
-					<div class="woocommerce-original-price">
-						' . $regular_price . "\n\r" . $sale_price . '
-					</div>
-					<div class="woocommerce-converted-price">
-						' . $price .'
-					</div><!--/mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->';
-				}
-				else
-				{
-					return '
-					<div class="woocommerce-original-price">
-						' . $regular_price . "\n\r" . $sale_price . '
-					</div>
-					<div class="woocommerce-converted-price">
-						' . $price .'
-					</div>';
-				}
-			}
-			else
-			{
-				if($this->cache)
-					return '<!--mfunc ' . W3TC_DYNAMIC_SECURITY . ' --><div class="woocommerce-original-price">' . $regular_price . "\n\r" . $sale_price.'</div><!--/mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->';
-				else
-					return '<div class="woocommerce-original-price">' . $regular_price . "\n\r" . $sale_price.'</div>';
-			}
-        }
-		
-        return $this->cache ? '<!--mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' . $price . '<!--/mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : $price;
-    }
-
-    // Convert price and currency symbol for items in cart
-    public function convert_cart_item_price( $price, $cart_item, $cart_item_key )
-    {
-        $CFGEO = $GLOBALS['CFGEO'];
-
-        $currency_args = $this->get_currency_and_symbol();
-        if( $currency_args !== false && $this->cf_conversion !== 'original' )
-        {
-            if($sale_price = $cart_item['data']->get_sale_price() )
-            {
-                // Return raw price. In data is set WC_Cart object.
-                $sale_price = wc_price(
-					apply_filters(
-						'wp_geo_woocommerce_convert_cart_item_sale_price',
-						((float)$sale_price * (float)$currency_args['currency_converter']),
-						$sale_price,
-						$currency_args['currency_converter'],
-						$currency_args['currency_code']
-					),
-					array( 'currency' => $currency_args['currency_code'] )
-				);
-				
-                if( $this->cf_conversion == 'both' )
-				{
-					if($this->cache)
-					{
-						return '<!--mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->
-						<div class="woocommerce-original-price">
-							' . $price . '
-						</div>
-						<div class="woocommerce-converted-price">
-							' . $sale_price . '
-						</div><!--/mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->';
-					}
-					else
-					{
-						return '
-						<div class="woocommerce-original-price">
-							' . $price . '
-						</div>
-						<div class="woocommerce-converted-price">
-							' . $sale_price . '
-						</div>';
-					}
-				}
-				elseif( $this->cf_conversion == 'inversion' )
-				{
-					if($this->cache)
-					{
-						return '<!--mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->
-						<div class="woocommerce-original-price">
-							' . $sale_price . '
-						</div>
-						<div class="woocommerce-converted-price">
-							' . $price . '
-						</div><!--mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->';
-					}
-					else
-					{
-						return '
-						<div class="woocommerce-original-price">
-							' . $sale_price . '
-						</div>
-						<div class="woocommerce-converted-price">
-							' . $price . '
-						</div>';
-					}
-				}
-				else
-				{
-					if($this->cache)
-						return '<!--mfunc ' . W3TC_DYNAMIC_SECURITY . ' --><div class="woocommerce-original-price">' . $sale_price . '</div><!--/mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->';
-					else
-						return '<div class="woocommerce-original-price">' . $sale_price . '</div>';
-				}
-            } 
-            else
-            {
-                $regular_price = wc_price(
-					apply_filters(
-						'wp_geo_woocommerce_convert_cart_item_regular_price',
-						((float)$cart_item['data']->get_regular_price() * (float)$currency_args['currency_converter']),
-						$cart_item['data']->get_regular_price(),
-						$currency_args['currency_converter'],
-						$currency_args['currency_code']
-					),
-					array( 'currency' => $currency_args['currency_code'] )
-				);
-                if( $this->cf_conversion == 'both' )
-				{
-					if($this->cache)
-					{
-						return '<!--mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->
-						<div class="woocommerce-original-price">
-							' . $price . '
-						</div>
-						<div class="woocommerce-converted-price">
-							' . $regular_price . '
-						</div><!--/mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->';
-					}
-					else
-					{
-						return '
-						<div class="woocommerce-original-price">
-							' . $price . '
-						</div>
-						<div class="woocommerce-converted-price">
-							' . $regular_price . '
-						</div>';
-					}
-				}
-				elseif( $this->cf_conversion == 'inversion' )
-				{
-					if($this->cache)
-					{
-						return '<!--mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->
-						<div class="woocommerce-original-price">
-							' . $regular_price . '
-						</div>
-						<div class="woocommerce-converted-price">
-							' . $price . '
-						</div><!--mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->';
-					}
-					else
-					{
-						return '
-						<div class="woocommerce-original-price">
-							' . $regular_price . '
-						</div>
-						<div class="woocommerce-converted-price">
-							' . $price . '
-						</div>';
-					}
-				}
-				else
-				{
-					if($this->cache)
-						return '<!--mfunc ' . W3TC_DYNAMIC_SECURITY . ' --><div class="woocommerce-original-price">' . $regular_price . '</div><!--/mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->';
-					else
-						return '<div class="woocommerce-original-price">' . $regular_price . '</div>';
-				}
-            }
-        }
-        return $this->cache ? '<!--mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' . $price . '<!--/mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : $price;
-    }
-
-    // Convert currency and symbol for subtotal cart price
-    public function convert_cart_subtotal_price( $price, $compound, $instance )
-    {
-        $currency_args = $this->get_currency_and_symbol();
-
-        if( $currency_args !== false && $this->cf_conversion !== 'original' )
-        {
-            $subtotal_price = $instance->get_subtotal(); // WC_Cart class
-            $subtotal_price = wc_price(
-				apply_filters(
-					'wp_geo_woocommerce_convert_cart_subtotal_price',
-					($subtotal_price * $currency_args['currency_converter']),
-					$subtotal_price,
-					$currency_args['currency_converter'],
-					$currency_args['currency_code']
-				),
-				array( 'currency' => $currency_args['currency_code'] )
-			);
-            if( $this->cf_conversion == 'both' ) return '<div class="woocommerce-original-price">' . $price . '</div><div class="woocommerce-converted-price">' . $subtotal_price . '</div>';
-            elseif( $this->cf_conversion == 'inversion' ) return '<div class="woocommerce-original-price">' . $subtotal_price . '</div><div class="woocommerce-converted-price">' . $price . '</div>';
-            else return '<div class="woocommerce-original-price">' . $subtotal_price . '</div>';
-        }
-        return $price;
-    }
-
-    // Convert currency and symbol for total cart price
-    public function convert_cart_total_price( $price )
-    {
-        $currency_args = $this->get_currency_and_symbol();
-
-        if( $currency_args !== false && $this->cf_conversion !== 'original' )
-        {
-            $total_price = WC()->cart->total;
-            $total_price = wc_price(
-				apply_filters(
-					'wp_geo_woocommerce_convert_cart_total_price',
-					($total_price * $currency_args['currency_converter']),
-					$total_price,
-					$currency_args['currency_converter'],
-					$currency_args['currency_code']
-				),
-				array( 'currency' => $currency_args['currency_code'] )
-			);
-            if( $this->cf_conversion == 'both' ) return '<div class="woocommerce-original-price">' . $price . '</div><div class="woocommerce-converted-price">' . $total_price . '</div>';
-            elseif( $this->cf_conversion == 'inversion' ) return '<div class="woocommerce-original-price">' . $total_price . '</div><div class="woocommerce-converted-price">' . $price . '</div>';
-            else return '<div class="woocommerce-original-price">' . $total_price . '</div>';
-        }
-        return $price;
-    }
-
-    // Conver currency and symbol for shipping price
-    public function convert_shipping_price( $rates, $package )
-    {
-        return $rates;
-    }
-
-    // Converts currency and symbol for coupon price
-    public function convert_coupon_price(  $coupon_html, $coupon, $discount_amount_html )
-    {
-        $currency_args = $this->get_currency_and_symbol();
-
-        if( $currency_args !== false && $this->cf_conversion !== 'original' )
-        {
-            $price = $coupon->get_amount();
-            $coupon_price = wc_price(
-				apply_filters(
-					'wp_geo_woocommerce_convert_coupon_price',
-					($price * $currency_args['currency_converter']),
-					$price,
-					$currency_args['currency_converter'],
-					$currency_args['currency_code']
-				),
-				array( 'currency' => $currency_args['currency_code'] )
-			);
-
-            if( $this->cf_conversion == 'both' ) return '<div class="woocommerce-original-price">' . $discount_amount_html . '</div><div class="woocommerce-converted-price">' . '-' . $coupon_price . '</div><a href="' . esc_url( add_query_arg( 'remove_coupon', rawurlencode( $coupon->get_code() ), defined( 'WOOCOMMERCE_CHECKOUT' ) ? wc_get_checkout_url() : wc_get_cart_url() ) ) . '" class="woocommerce-remove-coupon" data-coupon="' . esc_attr( $coupon->get_code() ) . '">' . __( '[Remove]', 'woocommerce' ) . '</a>';
-            elseif( $this->cf_conversion == 'inversion' ) return '<div class="woocommerce-original-price">' . $coupon_price . '</div><div class="woocommerce-converted-price">' . '-' . $discount_amount_html . '</div><a href="' . esc_url( add_query_arg( 'remove_coupon', rawurlencode( $coupon->get_code() ), defined( 'WOOCOMMERCE_CHECKOUT' ) ? wc_get_checkout_url() : wc_get_cart_url() ) ) . '" class="woocommerce-remove-coupon" data-coupon="' . esc_attr( $coupon->get_code() ) . '">' . __( '[Remove]', 'woocommerce' ) . '</a>';
-            else return '<div class="woocommerce-original-price">' . '-' . $coupon_price . '</div><a href="' . esc_url( add_query_arg( 'remove_coupon', rawurlencode( $coupon->get_code() ), defined( 'WOOCOMMERCE_CHECKOUT' ) ? wc_get_checkout_url() : wc_get_cart_url() ) ) . '" class="woocommerce-remove-coupon" data-coupon="' . esc_attr( $coupon->get_code() ) . '">' . __( '[Remove]', 'woocommerce' ) . '</a>';
-            // This is WC way of generating coupon html => http://woocommerce.wp-a2z.org/oik_api/wc_cart_totals_coupon_html/
-        }
-        
-        return $coupon_html;
-    }
-
-    // Converts currency and symbol for cart total tax
-    public function convert_cart_total_tax( $price )
-    {
-        $currency_args = $this->get_currency_and_symbol();
-
-        if( $currency_args !== false && $this->cf_conversion !== 'original' )
-        {
-            $tax_price = floatval( preg_replace( '#[^\d.]#', '', WC()->cart->get_cart_total() ) ) - WC()->cart->get_total_ex_tax();
-            $tax_price = wc_price(
-				apply_filters(
-					'wp_geo_woocommerce_convert_cart_total_tax',
-					($tax_price * $currency_args['currency_converter']),
-					$tax_price,
-					$currency_args['currency_converter'],
-					$currency_args['currency_code']
-				),
-				array( 'currency' => $currency_args['currency_code'] )
-			);
-            if( $this->cf_conversion == 'both' ) return '<div class="woocommerce-original-price">' . $price . '</div><div class="woocommerce-converted-price">' . $tax_price . '</div>';
-            elseif( $this->cf_conversion == 'inversion' ) return '<div class="woocommerce-original-price">' . $tax_price . '</div><div class="woocommerce-converted-price">' . $price . '</div>';
-            else return '<div class="woocommerce-original-price">' . $tax_price . '</div>';
-        }
-        return $price;
-    }
 
     // Add custom option to general woocommerce options
     public function conversion_options( $settings )
@@ -640,6 +278,16 @@ class CF_Geoplugin_Woocommerce extends CF_Geoplugin_Global
                     'desc_tip' => __( 'These option is added by the WordPress Geo Plugin.', CFGP_NAME )
                 );
                 $key++;
+				$new_settings[$key] = array(
+                    'title'    => __( 'Not covert in wp-admin', CFGP_NAME ),
+                    'desc'     => __( 'Remove conversion price from admin panel and show only original prices.', CFGP_NAME ),
+                    'class'    => 'wc-enhanced-checkbox',
+                    'id'       => 'woocommerce_cf_geoplugin_conversion_in_admin',
+                    'default'  => 'yes',
+                    'type'     => 'checkbox',
+                    'desc_tip' => __( 'These option is added by the WordPress Geo Plugin.', CFGP_NAME )
+                );
+                $key++;
             }
         }
 
@@ -655,9 +303,11 @@ class CF_Geoplugin_Woocommerce extends CF_Geoplugin_Global
         if( $currency_args !== false && $this->cf_conversion !== 'original' )
         {
             echo '<div class="woocommerce-original-price">';
-            $all_rates = $WC->session->get('shipping_for_package_0')['rates'];
+            $all_rates = $WC->session->get('shipping_for_package_0');
+			$all_rates = $all_rates['rates'];
 			foreach($all_rates  as $method_id => $rate ){
-                if( $WC->session->get('chosen_shipping_methods')[0] == $method_id )
+				$chosen_shipping_methods = $WC->session->get('chosen_shipping_methods');
+                if( $chosen_shipping_methods[0] == $method_id )
                 {
                     $rate_label = $rate->label; // The shipping method label name
                     $rate_cost_excl_tax = floatval($rate->cost); // The cost excluding tax
