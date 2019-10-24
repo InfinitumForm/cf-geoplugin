@@ -1,5 +1,9 @@
 == Changelog ==
 
+= 7.8.6 =
+* WordPress Geo Plugin: WordPress 5.3 support 
+* WooCommerce: Prepared cache support for the cache plugins
+
 = 7.8.5 =
 * WordPress Geo Plugin: Fixed metabox problems with the Geo Banner
 * WordPress Geo Plugin: Processed Geo Banner via AJAX for the cached websites

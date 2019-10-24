@@ -1,11 +1,11 @@
 ﻿	=== WordPress Geo Plugin ===
-Contributors: ivijanstefan, creativform, ej207
+Contributors: ivijanstefan, creativform, ej207, jovanoskibojan
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=creativform@gmail.com
 Tags: geolocation, woocommerce, store-locator, seo, google-maps, geomarketing, content include, content exclude, geo plugin, geo target, geo, geotargeting, geofencing, geotag, cache, rocket
 Requires at least: 3.0
-Tested up to: 5.2
+Tested up to: 5.3
 Requires PHP: 5.6.0
-Stable tag: 7.8.5
+Stable tag: 7.8.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -329,6 +329,10 @@ Please inform us if any of these errors occure via contact form on our website [
 
 == Changelog ==
 
+= 7.8.6 =
+* WordPress Geo Plugin: WordPress 5.3 support 
+* WooCommerce: Prepared cache support for the cache plugins
+
 = 7.8.5 =
 * WordPress Geo Plugin: Fixed metabox problems with the Geo Banner
 * WordPress Geo Plugin: Processed Geo Banner via AJAX for the cached websites
@@ -425,6 +429,10 @@ Please inform us if any of these errors occure via contact form on our website [
 * Improved plugin cache
 
 == Upgrade Notice ==
+
+= 7.8.6 =
+* WordPress Geo Plugin: WordPress 5.3 support 
+* WooCommerce: Prepared cache support for the cache plugins
 
 = 7.8.5 =
 * WordPress Geo Plugin: Fixed metabox problems with the Geo Banner
