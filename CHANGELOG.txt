@@ -1,5 +1,12 @@
 == Changelog ==
 
+= 7.8.8 =
+* WordPress Geo Plugin: Fixed SQL error on the SEO redirection
+
+= 7.8.7 =
+* WordPress Geo Plugin: Fixed Woocommerce PHP error compatibility
+* WooCommerce: Fixed missing SKU and ID in the price control
+
 = 7.8.6 =
 * WordPress Geo Plugin: WordPress 5.3 support 
 * WooCommerce: Prepared cache support for the cache plugins

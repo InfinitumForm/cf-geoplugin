@@ -97,17 +97,17 @@ class CF_Geoplugin_SEO_Redirection extends CF_Geoplugin_Global
 			
 			if($country || $country_code)
 			{
-				if($country) $where[]="TRIM(LOWER(country)) = '{$country}'";
-				if($country_code) $where[]="TRIM(LOWER(country)) = '{$country_code}'";
+				if($country) $where[]=$wpdb->prepare('TRIM(LOWER(country)) = %s', $country);
+				if($country_code) $where[]=$wpdb->prepare('TRIM(LOWER(country)) = %s', $country_code);
 			}
 			
 			if($region || $region_code)
 			{
-				if($region) $where[]="TRIM(LOWER(region)) = '{$region}'";
-				if($region_code) $where[]="TRIM(LOWER(region)) = '{$region_code}'";
+				if($region) $where[]=$wpdb->prepare('TRIM(LOWER(region)) = %s', $region);
+				if($region_code) $where[]=$wpdb->prepare('TRIM(LOWER(region)) = %s', $region_code);
 			}
 			
-			if($city) $where[]="TRIM(LOWER(city)) = '{$city}'";
+			if($city) $where[]=$wpdb->prepare('TRIM(LOWER(city)) = %s', $city);
 			
 			if(!empty($where)) {
 				$where = ' AND (' . join(' OR ', $where) . ')';
@@ -116,18 +116,18 @@ class CF_Geoplugin_SEO_Redirection extends CF_Geoplugin_Global
 			}
  
 			$table_name = self::TABLE['seo_redirection'];
-            $redirects = $wpdb->get_results( $query = "
+            $redirects = $wpdb->get_results("
 			SELECT 
 				TRIM(url) AS url,
 				TRIM(LOWER(country)) AS country,
 				TRIM(LOWER(region)) AS region,
 				TRIM(LOWER(city)) AS city,
-				TRIM(http_code) AS http_code,
+				http_code AS http_code,
 				only_once
 			FROM 
 				{$wpdb->prefix}{$table_name}
 			WHERE
-				active = 1{$where};", ARRAY_A );
+				active = 1{$where}", ARRAY_A );
 
 			if( $redirects !== NULL && $wpdb->num_rows > 0 && ( isset( $CFGEO['country'] ) || isset( $CFGEO['country_code'] ) ) )
 			{

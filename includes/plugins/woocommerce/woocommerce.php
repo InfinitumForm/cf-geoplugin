@@ -82,8 +82,18 @@ class CF_Geoplugin_Woocommerce extends CF_Geoplugin_Global
 	/* We must recreate wc_price in order to perform conversion wisely */
 	function wc_price( $original_formatted_price, $price, $args  ) {
 		global $product;
+		
 		$return = '';
-
+		$SKU = NULL;
+		$PID = NULL;
+		
+		if(is_object($product))
+		{
+			if(property_exists($product, 'get_id')) $PID = $product->get_id();
+			if(property_exists($product, 'get_sku')) $SKU = $product->get_sku();
+		}
+		
+		
 		$currency_args = $this->get_currency_and_symbol();
 		
 		$unformatted_price = $price;
@@ -108,8 +118,8 @@ class CF_Geoplugin_Woocommerce extends CF_Geoplugin_Global
 				$converted_price = wc_trim_zeros( $converted_price );
 			}
 			
-			$return .= '<span class="woocommerce-original-price" data-id="' . $product->get_id() . '"'.(!empty($product->get_sku()) ? ' data-sku="' . $product->get_sku() . '"':NULL).'>';
-			$converted_formatted_price = ( $converted_negative ? '-' : '' ) . sprintf( $args['price_format'], '<span class="woocommerce-Price-currencySymbol" data-id="' . $product->get_id() . '"'.(!empty($product->get_sku()) ? ' data-sku="' . $product->get_sku() . '"':NULL).'>' . get_woocommerce_currency_symbol( $currency_args['currency_code'] ) . '</span>', $converted_price );
+			$return .= '<span class="woocommerce-original-price" data-id="' . $PID . '"' . ($SKU ?  ' data-sku="' . $SKU . '"':NULL) . '>';
+			$converted_formatted_price = ( $converted_negative ? '-' : '' ) . sprintf( $args['price_format'], '<span class="woocommerce-Price-currencySymbol" data-id="' . $PID . '"' . ($SKU ?  ' data-sku="' . $SKU . '"':NULL) . '>' . get_woocommerce_currency_symbol( $currency_args['currency_code'] ) . '</span>', $converted_price );
 			$return .= '<span class="woocommerce-Price-amount amount">' . $converted_formatted_price . '</span>';
 			
 			if ( $args['ex_tax_label'] && wc_tax_enabled() ) {
@@ -127,7 +137,7 @@ class CF_Geoplugin_Woocommerce extends CF_Geoplugin_Global
 			$price = wc_trim_zeros( $price );
 		}
 		
-		$return .= '<span class="woocommerce-' . (( $currency_args !== false && $this->cf_conversion == 'inversion' ) ? 'converted' : 'original') . '-price" data-id="' . $product->get_id() . '"'.(!empty($product->get_sku()) ? ' data-sku="' . $product->get_sku() . '"':NULL).'>';
+		$return .= '<span class="woocommerce-' . (( $currency_args !== false && $this->cf_conversion == 'inversion' ) ? 'converted' : 'original') . '-price" data-id="' . $PID . '"' . ($SKU ?  ' data-sku="' . $SKU . '"':NULL) . '>';
 		$formatted_price = ( $negative ? '-' : '' ) . sprintf( $args['price_format'], '<span class="woocommerce-Price-currencySymbol">' . get_woocommerce_currency_symbol( $args['currency'] ) . '</span>', $price );
 		$return .= '<span class="woocommerce-Price-amount amount">' . $formatted_price . '</span>';
 		
@@ -149,8 +159,8 @@ class CF_Geoplugin_Woocommerce extends CF_Geoplugin_Global
 				$converted_price = wc_trim_zeros( $converted_price );
 			}
 			
-			$return .= '<span class="woocommerce-converted-price" data-id="' . $product->get_id() . '"'.(!empty($product->get_sku()) ? ' data-sku="' . $product->get_sku() . '"':NULL).'>';
-			$converted_formatted_price = ( $converted_negative ? '-' : '' ) . sprintf( $args['price_format'], '<span class="woocommerce-Price-currencySymbol" data-id="' . $product->get_id() . '"'.(!empty($product->get_sku()) ? ' data-sku="' . $product->get_sku() . '"':NULL).'>' . get_woocommerce_currency_symbol( $currency_args['currency_code'] ) . '</span>', $converted_price );
+			$return .= '<span class="woocommerce-converted-price" data-id="' . $PID . '"' . ($SKU ?  ' data-sku="' . $SKU . '"':NULL) . '>';
+			$converted_formatted_price = ( $converted_negative ? '-' : '' ) . sprintf( $args['price_format'], '<span class="woocommerce-Price-currencySymbol" data-id="' . $PID . '"' . ($SKU ?  ' data-sku="' . $SKU . '"':NULL) . '>' . get_woocommerce_currency_symbol( $currency_args['currency_code'] ) . '</span>', $converted_price );
 			$return .= '<span class="woocommerce-Price-amount amount">' . $converted_formatted_price . '</span>';
 			
 			if ( $args['ex_tax_label'] && wc_tax_enabled() ) {

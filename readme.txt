@@ -5,7 +5,7 @@ Tags: geolocation, woocommerce, store-locator, seo, google-maps, geomarketing, c
 Requires at least: 3.0
 Tested up to: 5.3
 Requires PHP: 5.6.0
-Stable tag: 7.8.6
+Stable tag: 7.8.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -329,132 +329,17 @@ Please inform us if any of these errors occure via contact form on our website [
 
 == Changelog ==
 
-= 7.8.6 =
-* WordPress Geo Plugin: WordPress 5.3 support 
-* WooCommerce: Prepared cache support for the cache plugins
+= 7.8.8 =
+* WordPress Geo Plugin: Fixed SQL error on the SEO redirection
 
-= 7.8.5 =
-* WordPress Geo Plugin: Fixed metabox problems with the Geo Banner
-* WordPress Geo Plugin: Processed Geo Banner via AJAX for the cached websites
-* WordPress Geo Plugin: Improved speed impact on the XHR calls
-* W3 Total Cache: Adapted W3 Total Cache fragment cache to Geo Banner
-* Fixed JavaScript error for the Chrome
-
-= 7.8.4 =
-* WordPress Geo Plugin: Fixing PHP error while saving data
-* WordPress Geo Plugin: Improved page speed impact
-* WordPress Geo Plugin: Improved HTTP calls
-* WordPress Geo Plugin: Improved session control
-* WordPress Geo Plugin: Added missing tags
-* W3 Total Cache : New improvemants inside page caching
-* W3 Total Cache : New improvemants in fragment caching (BETA)
-* Woocommerce: Changed converted price format
-* Woocommerce: Fixed bad calculations
-* Woocommerce: Fixed rounded prices
-* Woocommerce: Option for the removal conversion price in admin panel to show only original prices in the reports
-* Woocommerce: Improved page impact during calculation
-* Woocommerce: Moved converted price HTML format to open CSS formatting
-
-= 7.8.3 =
-* Added filters to WooCommerce prices
-* Added currency converter price adjust
-* Added currency converter round price options
-* Improving W3 total cache support
-* Fixing bugs into WooCommerce support
-* Fixing variable product conversion in the WooCommerce
-
-= 7.8.2 =
-* Added automated W3 total cache MFUNC support
-
-= 7.8.1 =
-* Fixing MySQL error in the empty SEO redirection
-* Improved connection speed
-* Improved PHP code
-* Reduced HTTP requests
-* Cleaned old PHP code
-
-= 7.8.0 =
-* Adding new special Geo Tags for the geo insertation
-* Adding support for the Yoast SEO
-* Adding support for the All in one SEO pack
-* Adding support for the Wordpress SEO plugin
-* Adding support for the SEO framework
-* Adding support for the widgets
-* Adding support for the Gutemberg
-* Adding support for the taxonomies
-* Improved session
-* Fixed bugs from previous version
-
-= 7.7.9 =
-* Fixed PHP error inside shortcodes
-* Improved AJAX calls
-
-= 7.7.8 =
-* Fixed cache problems on the content pages
-* Added AJAX calls for the cached pages
-
-= 7.7.7 =
-* IMPORTANT UPDATE: Fixed global SEO redirection bug
-* Improved page impact on the SEO redirection
-
-= 7.7.6 =
-* Added bot and search engine support for the SEO redirection
-* Fixed RSS reads
-* Fixed link path
-
-= 7.7.5 =
-* Added include/exclude attributes to `cfgeo_flag` shortcode for the display/hide flag
-* Fixed ID's on the missing attributes
-* Fixed PHP 7.3 error
-
-= 7.7.4 =
-* Fixed unexpected update and activation error
-
-= 7.7.3 =
-* Fixed XML error on previous version
-* Updated settings
-
-= 7.7.2 =
-* Fixed Wooplatnica integration
-* Fixed Geo Tag generator
-* Improved and changed privacy policy
-* Optimized PHP code
-
-= 7.7.1 =
-* Fixed SEO redirection bug
-* Fixed plugin order includes
-* Fixed wp-admin redirections
-* Fixed settings bug
-* Fixed typo in the descriptions
-* Improved plugin cache
+= 7.8.7 =
+* WordPress Geo Plugin: Fixed Woocommerce PHP error compatibility
+* WooCommerce: Fixed missing SKU and ID in the price control
 
 == Upgrade Notice ==
 
-= 7.8.6 =
-* WordPress Geo Plugin: WordPress 5.3 support 
-* WooCommerce: Prepared cache support for the cache plugins
-
-= 7.8.5 =
-* WordPress Geo Plugin: Fixed metabox problems with the Geo Banner
-* WordPress Geo Plugin: Processed Geo Banner via AJAX for the cached websites
-* WordPress Geo Plugin: Improved speed impact on the XHR calls
-* W3 Total Cache: Adapted W3 Total Cache fragment cache to Geo Banner
-* Fixed JavaScript error for the Chrome
-
-= 7.8.4 =
-* WordPress Geo Plugin: Fixing PHP error while saving data
-* WordPress Geo Plugin: Improved page speed impact
-* WordPress Geo Plugin: Improved HTTP calls
-* WordPress Geo Plugin: Improved session control
-* WordPress Geo Plugin: Added missing tags
-* W3 Total Cache : New improvemants inside page caching
-* W3 Total Cache : New improvemants in fragment caching (BETA)
-* Woocommerce: Changed converted price format
-* Woocommerce: Fixed bad calculations
-* Woocommerce: Fixed rounded prices
-* Woocommerce: Option for the removal conversion price in admin panel to show only original prices in the reports
-* Woocommerce: Improved page impact during calculation
-* Woocommerce: Moved converted price HTML format to open CSS formatting
+= 7.8.8 =
+* WordPress Geo Plugin: Fixed SQL error on the SEO redirection
 
 == Other Notes ==
 
