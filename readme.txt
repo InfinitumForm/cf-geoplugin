@@ -5,7 +5,7 @@ Tags: geolocation, woocommerce, store-locator, seo, google-maps, geomarketing, c
 Requires at least: 3.0
 Tested up to: 5.3
 Requires PHP: 5.6.0
-Stable tag: 7.8.8
+Stable tag: 7.8.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -51,6 +51,7 @@ This plugin works as a [service](https://en.wikipedia.org/wiki/Software_as_a_ser
 > - **Display local currency**, local symbol or converter
 > - **Use currency converter** to calculate price in local currency
 > - **Use VAT** to check is current country under tax rate
+> - **Use EU** to check is country from the European Union
 > 
 > <strong>ANTI SPAM PROTECTION</strong><br>
 > - **Spam protection** from the danger visitors or spammers
@@ -79,6 +80,7 @@ This plugin is compatible with any Wordpress installation and many available plu
 * [All in one SEO pack](https://wordpress.org/plugins/all-in-one-seo-pack/)
 * [Wordpress SEO plugin](https://wordpress.org/plugins/seo-by-rank-math/)
 * [SEO framework](https://wordpress.org/plugins/autodescription/)
+* [WP Fastest Cache](https://wordpress.org/plugins/wp-fastest-cache/)
 
 **YOU NEED TO KNOW** that even if there is compatibility for most plugins, the combination of multiple plugins still has a slight chance of a some conflict. There are over a couple thousand plugins and a couple of few million individual WordPress installations. We cannot 100% guarantee that everything will work properly in all possible cases. Sometimes it happens that other plugins are not compatible with WordPress Geo Plugin, so it is important that you contact us or other plugin authors in case of any problem so that you can solve the problem. The most common fix for most issues is if you keep all the plugins and WordPress installation up to date.
 
@@ -103,14 +105,18 @@ This plugin is compatible with any Wordpress installation and many available plu
 
 = Basics usage and example =
 
-`[cfgeo_flag]`
-`[cfgeo]`
-`[cfgeo_city]`
-`[cfgeo return="region"]`
-`We just found shoes in [cfgeo_city] that you can buy for 50% discount.`
-`[cfgeo ip="127.0.0.1" return="area_code"]`
-`[cfgeo exclude="Toronto"] This text is seeing by everyone except Toronto people [/cfgeo]`
-`[cfgeo include="New York"] This text seeing only people from New York [/cfgeo]`
+`[cfgeo_flag]
+[cfgeo]
+[cfgeo_city]
+[cfgeo return="region"]
+We just found shoes in [cfgeo_city] that you can buy for 50% discount.
+[cfgeo ip="127.0.0.1" return="area_code"]
+[cfgeo exclude="Toronto"] This text is seeing by everyone except Toronto people [/cfgeo]
+[cfgeo include="New York"] This text seeing only people from New York [/cfgeo]
+[in_eu]You are from the European Union[/in_eu]
+[not_in_eu]You are NOT from the European Union[/not_in_eu]
+[is_vat]You are under VAT[/is_vat]
+[is_not_vat]You are NOT under VAT[/is_not_vat]`
 
 = Usage & Example =
 
@@ -127,6 +133,30 @@ If you need to exclude some content from your page based on user location, you c
 If you need to display some content in your page based on user location, you can do that using the `include` attribute like this: 
 
 `[cfgeo include="New York, Miami, Germany"] This text seeing only people from New York, Miami and Germany [/cfgeo]`
+
+**VAT CONTROL:** If you need to show *value-added tax (VAT)* informations on the your website, there is 2 shortcodes what can help you a with it.
+
+`[is_vat]You are under VAT[/is_vat]
+[is_not_vat]You are NOT under VAT[/is_not_vat]`
+
+Both shortcodes have a default option that you can use as an alternative.
+
+`[is_vat default="You are NOT under VAT"]You are under VAT[/is_vat]
+[is_not_vat default="You are under VAT"]You are NOT under VAT[/is_not_vat]`
+
+Generally, these two shortcodes show or hide everything inside it, depending on the your needs.
+
+**EU CONTROL:** If you need to display some content related to *European Union (EU)* countries, you can do it on the two easy way:
+
+`[in_eu]You are from the European Union[/in_eu]
+[not_in_eu]You are NOT from the European Union[/not_in_eu]`
+
+Like many of our shortcodes, there is default options what you can use as an alternative:
+
+`[in_eu default="You are NOT from the European Union"]You are from the European Union[/in_eu]
+[not_in_eu defauilt="You are from the European Union"]You are NOT from the European Union[/not_in_eu]`
+
+These two shortcodes also show or hide everything inside it, depending on the your needs.
 
 **GOOGLE MAP:** If you whant to place simple google map in your post or page, you just need to place shortcode [cfgeo_map] and your visitor will see own city on google map by default.
 
@@ -329,6 +359,11 @@ Please inform us if any of these errors occure via contact form on our website [
 
 == Changelog ==
 
+= 7.8.9 =
+* Added new shortcodes for the VAT and EU control
+* Fixed API bugs
+* Fixed translations
+
 = 7.8.8 =
 * WordPress Geo Plugin: Fixed SQL error on the SEO redirection
 
@@ -338,8 +373,10 @@ Please inform us if any of these errors occure via contact form on our website [
 
 == Upgrade Notice ==
 
-= 7.8.8 =
-* WordPress Geo Plugin: Fixed SQL error on the SEO redirection
+= 7.8.9 =
+* Added new shortcodes for the VAT and EU control
+* Fixed API bugs
+* Fixed translations
 
 == Other Notes ==
 

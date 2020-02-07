@@ -1066,7 +1066,6 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 						}
 						else
 						{
-							_e( '', CFGP_NAME );
 							printf('<b style="color:#cc0000;">' . __( 'Plugin require WordPress version %s or above!', CFGP_NAME ) . '</b>', $plugin->requires);
 						}
 					?></span></li>
@@ -1078,7 +1077,6 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 						}
 						else
 						{
-							_e( '', CFGP_NAME );
 							printf('<b style="color:#cc0000;">' . __( 'Plugin not support PHP version %1$s. Please use PHP vesion %2$s or above.', CFGP_NAME ) . '</b>', PHP_VERSION, $plugin->requires_php);
 						}
 					?></span></li>
@@ -1201,7 +1199,6 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 									}
 									else
 									{
-										_e( '', CFGP_NAME );
 										printf('<b style="color:#cc0000;">' . __( 'Plugin require WordPress version %s or above!', CFGP_NAME ) . '</b>', $plugin->requires);
 									}
 								?></span></li>
@@ -1213,7 +1210,6 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 									}
 									else
 									{
-										_e( '', CFGP_NAME );
 										printf('<b style="color:#cc0000;">' . __( 'Plugin not support PHP version %1$s. Please use PHP vesion %2$s or above.', CFGP_NAME ) . '</b>', PHP_VERSION, $plugin->requires_php);
 									}
 								?></span></li>

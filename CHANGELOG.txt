@@ -1,5 +1,10 @@
 == Changelog ==
 
+= 7.8.9 =
+* Added new shortcodes for the VAT and EU control
+* Fixed API bugs
+* Fixed translations
+
 = 7.8.8 =
 * WordPress Geo Plugin: Fixed SQL error on the SEO redirection
 

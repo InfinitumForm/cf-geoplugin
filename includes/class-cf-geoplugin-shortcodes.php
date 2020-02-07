@@ -66,6 +66,165 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 		// Full converter shortcode
 		$this->add_shortcode( 'cfgeo_full_converter', 'cfgeo_full_converter' );
 		$this->add_action( 'wp_ajax_cfgeo_full_currency_converter', 'cfgeo_full_currency_converter' );
+		
+		// IS VAT
+		if ( !shortcode_exists( 'cfgeo_is_vat' ) ) $this->add_shortcode( 'cfgeo_is_vat', 'is_vat' );
+		if ( !shortcode_exists( 'is_vat' ) ) $this->add_shortcode( 'is_vat', 'is_vat' );
+
+		// IS NOT VAT
+		if ( !shortcode_exists( 'cfgeo_is_not_vat' ) ) $this->add_shortcode( 'cfgeo_is_not_vat', 'is_not_vat' );
+		if ( !shortcode_exists( 'is_not_vat' ) ) $this->add_shortcode( 'is_not_vat', 'is_not_vat' );
+		
+		// IN EU
+		if ( !shortcode_exists( 'cfgeo_in_eu' ) ) $this->add_shortcode( 'cfgeo_in_eu', 'in_eu' );
+		if ( !shortcode_exists( 'in_eu' ) ) $this->add_shortcode( 'in_eu', 'in_eu' );
+		
+		// NOT IN EU
+		if ( !shortcode_exists( 'cfgeo_not_in_eu' ) ) $this->add_shortcode( 'cfgeo_not_in_eu', 'not_in_eu' );
+		if ( !shortcode_exists( 'not_in_eu' ) ) $this->add_shortcode( 'not_in_eu', 'not_in_eu' );
+	}
+	
+	// IN EU
+	public function in_eu($attr, $content=''){
+		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
+		$CFGEO = $GLOBALS['CFGEO'];
+		
+		$cache = $this->is_attribute_exists('cache', $atts);
+		if($this->is_attribute_exists('no_cache', $atts)) $cache = false;
+		
+		$array = shortcode_atts( array(
+			'ip'		=>	false,
+			'default'	=>	NULL,
+        ), $attr );
+
+		$ip 		= $array['ip'];
+		$default 	= $array['default'];
+		
+		if( !empty($ip) )
+		{
+			$CFGEO_API = new CF_Geoplugin_API;
+			$CFGEO = $CFGEO_API->run(array('ip' => $ip));
+		}
+		
+		if(isset($CFGEO['in_eu']) && $CFGEO['in_eu'])
+		{
+			return ($cache ? '<!-- ' . W3TC_DYNAMIC_SECURITY . ' mfunc -->' . do_shortcode($content) . '<!-- /mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : do_shortcode($content));
+		}
+		else
+		{
+			return ($cache ? '<!-- ' . W3TC_DYNAMIC_SECURITY . ' mfunc -->' . $default . '<!-- /mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : $default);
+		}
+	}
+	
+	// NOT IN EU
+	public function not_in_eu($attr, $content=''){
+		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
+		$CFGEO = $GLOBALS['CFGEO'];
+		
+		$cache = $this->is_attribute_exists('cache', $atts);
+		if($this->is_attribute_exists('no_cache', $atts)) $cache = false;
+		
+		$array = shortcode_atts( array(
+			'ip'		=>	false,
+			'default'	=>	NULL,
+        ), $attr );
+
+		$ip 		= $array['ip'];
+		$default 	= $array['default'];
+		
+		if( !empty($ip) )
+		{
+			$CFGEO_API = new CF_Geoplugin_API;
+			$CFGEO = $CFGEO_API->run(array('ip' => $ip));
+		}
+		
+		if(isset($CFGEO['in_eu']))
+		{
+			if(!$CFGEO['in_eu'])
+			{
+				return ($cache ? '<!-- ' . W3TC_DYNAMIC_SECURITY . ' mfunc -->' . do_shortcode($content) . '<!-- /mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : do_shortcode($content));
+			}
+			else
+			{
+				return ($cache ? '<!-- ' . W3TC_DYNAMIC_SECURITY . ' mfunc -->' . $default . '<!-- /mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : $default);
+			}
+		}
+		else
+		{
+			return ($cache ? '<!-- ' . W3TC_DYNAMIC_SECURITY . ' mfunc -->' . $default . '<!-- /mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : $default);
+		}		
+	}
+	
+	// IS VAT
+	public function is_vat($attr, $content=''){
+		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
+		$CFGEO = $GLOBALS['CFGEO'];
+		
+		$cache = $this->is_attribute_exists('cache', $atts);
+		if($this->is_attribute_exists('no_cache', $atts)) $cache = false;
+		
+		$array = shortcode_atts( array(
+			'ip'		=>	false,
+			'default'	=>	NULL,
+        ), $attr );
+
+		$ip 		= $array['ip'];
+		$default 	= $array['default'];
+		
+		if( !empty($ip) )
+		{
+			$CFGEO_API = new CF_Geoplugin_API;
+			$CFGEO = $CFGEO_API->run(array('ip' => $ip));
+		}
+		
+		if(isset($CFGEO['is_vat']) && $CFGEO['is_vat'])
+		{
+			return ($cache ? '<!-- ' . W3TC_DYNAMIC_SECURITY . ' mfunc -->' . do_shortcode($content) . '<!-- /mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : do_shortcode($content));
+		}
+		else
+		{
+			return ($cache ? '<!-- ' . W3TC_DYNAMIC_SECURITY . ' mfunc -->' . $default . '<!-- /mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : $default);
+		}
+	}
+	
+	
+	// IS NOT VAT
+	public function is_not_vat($attr, $content=''){
+		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
+		$CFGEO = $GLOBALS['CFGEO'];
+		
+		$cache = $this->is_attribute_exists('cache', $atts);
+		if($this->is_attribute_exists('no_cache', $atts)) $cache = false;
+		
+		$array = shortcode_atts( array(
+			'ip'		=>	false,
+			'default'	=>	NULL,
+        ), $attr );
+
+		$ip 		= $array['ip'];
+		$default 	= $array['default'];
+		
+		if( !empty($ip) )
+		{
+			$CFGEO_API = new CF_Geoplugin_API;
+			$CFGEO = $CFGEO_API->run(array('ip' => $ip));
+		}
+		
+		if(isset($CFGEO['is_vat']))
+		{
+			if(!$CFGEO['is_vat'])
+			{
+				return ($cache ? '<!-- ' . W3TC_DYNAMIC_SECURITY . ' mfunc -->' . do_shortcode($content) . '<!-- /mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : do_shortcode($content));
+			}
+			else
+			{
+				return ($cache ? '<!-- ' . W3TC_DYNAMIC_SECURITY . ' mfunc -->' . $default . '<!-- /mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : $default);
+			}
+		}
+		else
+		{
+			return ($cache ? '<!-- ' . W3TC_DYNAMIC_SECURITY . ' mfunc -->' . $default . '<!-- /mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : $default);
+		}
 	}
 	
 	
@@ -102,7 +261,7 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 		$array = shortcode_atts( array(
 			'return' 	=>  'ip',
 			'ip'		=>	false,
-			'default'	=>	'',
+			'default'	=>	NULL,
 			'exclude'	=>	false,
 			'include'	=>	false
         ), $atts );
@@ -143,7 +302,7 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 					}
 					else
 					{
-						return ($cache ? '<!-- ' . W3TC_DYNAMIC_SECURITY . ' mfunc --><!-- /mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : NULL);
+						return ($cache ? '<!-- ' . W3TC_DYNAMIC_SECURITY . ' mfunc -->' . $default . '<!-- /mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : $default);
 					}
 				}
 				// Exclude
@@ -151,7 +310,7 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 				{
 					if($this->recursive_array_search($exclude, $CFGEO))
 					{
-						return ($cache ? '<!-- ' . W3TC_DYNAMIC_SECURITY . ' mfunc --><!-- /mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : NULL);
+						return ($cache ? '<!-- ' . W3TC_DYNAMIC_SECURITY . ' mfunc -->' . $default . '<!-- /mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : $default);
 					}
 					else
 					{
@@ -214,7 +373,7 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 					}
 					else
 					{
-						return ($cache ? '<!-- ' . W3TC_DYNAMIC_SECURITY . ' mfunc --><!-- /mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : NULL);
+						return ($cache ? '<!-- ' . W3TC_DYNAMIC_SECURITY . ' mfunc -->' . $default . '<!-- /mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : $default);
 					}
 				}
 				// Exclude
@@ -222,7 +381,7 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 				{
 					if($this->recursive_array_search($exclude, $CFGEO))
 					{
-						return ($cache ? '<!-- ' . W3TC_DYNAMIC_SECURITY . ' mfunc --><!-- /mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : NULL);
+						return ($cache ? '<!-- ' . W3TC_DYNAMIC_SECURITY . ' mfunc -->' . $default . '<!-- /mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : $default);
 					}
 					else
 					{
@@ -297,7 +456,7 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 				}
 				else
 				{
-					return ($cache ? '<!-- ' . W3TC_DYNAMIC_SECURITY . ' mfunc --><!-- /mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : NULL);
+					return ($cache ? '<!-- ' . W3TC_DYNAMIC_SECURITY . ' mfunc -->' . $default . '<!-- /mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : $default);
 				}
 			}
 			// Exclude
@@ -305,7 +464,7 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 			{
 				if($this->recursive_array_search($exclude, $CFGEO))
 				{
-					return ($cache ? '<!-- ' . W3TC_DYNAMIC_SECURITY . ' mfunc --><!-- /mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : NULL);
+					return ($cache ? '<!-- ' . W3TC_DYNAMIC_SECURITY . ' mfunc -->' . $default . '<!-- /mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : $default);
 				}
 				else
 				{
@@ -345,7 +504,7 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 			
 			if(class_exists('CF_Geoplugin_Shortcode_Automat'))
 			{
-				$exclude = array_map('trim', explode(',','state,continentCode,areaCode,dmaCode,timezoneName,currencySymbol,currencyConverter'));
+				$exclude = array_map('trim', explode(',','is_vat,in_eu,state,continentCode,areaCode,dmaCode,timezoneName,currencySymbol,currencyConverter'));
 				
 				$generate=array();
 				foreach($CFGEO as $key => $value )

@@ -78,7 +78,7 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
 		'version' 				=> CFGP_VERSION,
 		'lookup' 				=> 0,
 		'available_lookup' 		=> 0,
-		'is_eu'					=> 0,
+		'in_eu'					=> 0,
 		'is_vat'				=> 0,
 		'gps'					=> 0,
 		'accuracy_radius'		=> 0,

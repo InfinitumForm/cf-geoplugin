@@ -555,12 +555,20 @@ $CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIO
                                 <td><?php echo $CFGEO['base_currency_symbol']; ?></td>
                             </tr>
 							<tr>
-                                <td><kbd>[cfgeo_is_vat]</kbd></td>
-                                <td><?php echo $CFGEO['is_vat']; ?></td>
+                                <td><kbd>[is_vat]<?php _e('You are under VAT', CFGP_NAME); ?>[/is_vat]</kbd></td>
+                                <td><?php echo do_shortcode('[is_vat]' .__('You are under VAT', CFGP_NAME). '[/is_vat]'); ?></td>
+                            </tr>
+                            <tr>
+                                <td><kbd>[is_not_vat]<?php _e('You are NOT under VAT', CFGP_NAME); ?>[/is_not_vat]</kbd></td>
+                                <td><?php echo do_shortcode('[is_not_vat]' .__('You are NOT under VAT', CFGP_NAME). '[/is_not_vat]'); ?></td>
                             </tr>
 							<tr>
-                                <td><kbd>[cfgeo_in_eu]</kbd></td>
-                                <td><?php echo $CFGEO['in_eu']; ?></td>
+                                <td><kbd>[in_eu]<?php _e('You are from the EU', CFGP_NAME); ?>[/in_eu]</kbd></td>
+                                <td><?php echo do_shortcode('[in_eu]' .__('You are from the EU', CFGP_NAME). '[/in_eu]'); ?></td>
+                            </tr>
+                            <tr>
+                                <td><kbd>[not_in_eu]<?php _e('You are NOT from the EU', CFGP_NAME); ?>[/not_in_eu]</kbd></td>
+                                <td><?php echo do_shortcode('[not_in_eu]' .__('You are NOT from the EU', CFGP_NAME). '[/not_in_eu]'); ?></td>
                             </tr>
 							<tr>
                                 <td><kbd>[cfgeo_gps]</kbd></td>
