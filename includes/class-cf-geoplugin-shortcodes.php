@@ -89,8 +89,8 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
 		$CFGEO = $GLOBALS['CFGEO'];
 		
-		$cache = $this->is_attribute_exists('cache', $atts);
-		if($this->is_attribute_exists('no_cache', $atts)) $cache = false;
+		$cache = $this->is_attribute_exists('cache', $attr);
+		if($this->is_attribute_exists('no_cache', $attr)) $cache = false;
 		
 		$array = shortcode_atts( array(
 			'ip'		=>	false,
@@ -121,8 +121,8 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
 		$CFGEO = $GLOBALS['CFGEO'];
 		
-		$cache = $this->is_attribute_exists('cache', $atts);
-		if($this->is_attribute_exists('no_cache', $atts)) $cache = false;
+		$cache = $this->is_attribute_exists('cache', $attr);
+		if($this->is_attribute_exists('no_cache', $attr)) $cache = false;
 		
 		$array = shortcode_atts( array(
 			'ip'		=>	false,
@@ -160,8 +160,8 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
 		$CFGEO = $GLOBALS['CFGEO'];
 		
-		$cache = $this->is_attribute_exists('cache', $atts);
-		if($this->is_attribute_exists('no_cache', $atts)) $cache = false;
+		$cache = $this->is_attribute_exists('cache', $attr);
+		if($this->is_attribute_exists('no_cache', $attr)) $cache = false;
 		
 		$array = shortcode_atts( array(
 			'ip'		=>	false,
@@ -193,8 +193,8 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
 		$CFGEO = $GLOBALS['CFGEO'];
 		
-		$cache = $this->is_attribute_exists('cache', $atts);
-		if($this->is_attribute_exists('no_cache', $atts)) $cache = false;
+		$cache = $this->is_attribute_exists('cache', $attr);
+		if($this->is_attribute_exists('no_cache', $attr)) $cache = false;
 		
 		$array = shortcode_atts( array(
 			'ip'		=>	false,

@@ -5,7 +5,7 @@ Tags: geolocation, woocommerce, store-locator, seo, google-maps, geomarketing, c
 Requires at least: 3.0
 Tested up to: 5.3
 Requires PHP: 5.6.0
-Stable tag: 7.8.9
+Stable tag: 7.8.10
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -359,6 +359,11 @@ Please inform us if any of these errors occure via contact form on our website [
 
 == Changelog ==
 
+= 7.8.10 =
+* Fixed PHP notice in the shortcodes
+* Included post type check
+* Prepared code for the new future versions
+
 = 7.8.9 =
 * Added new shortcodes for the VAT and EU control
 * Fixed API bugs
@@ -373,10 +378,10 @@ Please inform us if any of these errors occure via contact form on our website [
 
 == Upgrade Notice ==
 
-= 7.8.9 =
-* Added new shortcodes for the VAT and EU control
-* Fixed API bugs
-* Fixed translations
+= 7.8.10 =
+* Fixed PHP notice in the shortcodes
+* Included post type check
+* Prepared code for the new future versions
 
 == Other Notes ==
 

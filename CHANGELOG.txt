@@ -1,5 +1,10 @@
 == Changelog ==
 
+= 7.8.10 =
+* Fixed PHP notice in the shortcodes
+* Included post type check
+* Prepared code for the new future versions
+
 = 7.8.9 =
 * Added new shortcodes for the VAT and EU control
 * Fixed API bugs
