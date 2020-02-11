@@ -95,15 +95,31 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 		$array = shortcode_atts( array(
 			'ip'		=>	false,
 			'default'	=>	NULL,
+			'exclude'	=>	false,
+			'include'	=>	false
         ), $attr );
 
 		$ip 		= $array['ip'];
 		$default 	= $array['default'];
+		$exclude 	= $array['exclude'];
+		$include 	= $array['include'];
 		
 		if( !empty($ip) )
 		{
 			$CFGEO_API = new CF_Geoplugin_API;
 			$CFGEO = $CFGEO_API->run(array('ip' => $ip));
+		}
+		
+		if(!empty($exclude) || !empty($include)) {
+			if(!empty($include))
+			{
+				if(!$this->recursive_array_search($include, $CFGEO)) return ($cache ? '<!-- ' . W3TC_DYNAMIC_SECURITY . ' mfunc -->' . $default . '<!-- /mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : $default);
+			}
+			
+			if(!empty($exclude))
+			{
+				if($this->recursive_array_search($exclude, $CFGEO)) return ($cache ? '<!-- ' . W3TC_DYNAMIC_SECURITY . ' mfunc -->' . $default . '<!-- /mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : $default);
+			}
 		}
 		
 		if(isset($CFGEO['in_eu']) && $CFGEO['in_eu'])
@@ -127,15 +143,33 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 		$array = shortcode_atts( array(
 			'ip'		=>	false,
 			'default'	=>	NULL,
+			'exclude'	=>	false,
+			'include'	=>	false
         ), $attr );
 
 		$ip 		= $array['ip'];
 		$default 	= $array['default'];
+		$exclude 	= $array['exclude'];
+		$include 	= $array['include'];
 		
 		if( !empty($ip) )
 		{
 			$CFGEO_API = new CF_Geoplugin_API;
 			$CFGEO = $CFGEO_API->run(array('ip' => $ip));
+		}
+		
+		if(!empty($exclude) || !empty($include)) {
+			if(!empty($include))
+			{
+				if(!$this->recursive_array_search($include, $CFGEO))
+					return ($cache ? '<!-- ' . W3TC_DYNAMIC_SECURITY . ' mfunc -->' . do_shortcode($content) . '<!-- /mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : do_shortcode($content));
+			}
+			
+			if(!empty($exclude))
+			{
+				if($this->recursive_array_search($exclude, $CFGEO))
+					return ($cache ? '<!-- ' . W3TC_DYNAMIC_SECURITY . ' mfunc -->' . do_shortcode($content) . '<!-- /mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : do_shortcode($content));
+			}
 		}
 		
 		if(isset($CFGEO['in_eu']))
@@ -166,15 +200,31 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 		$array = shortcode_atts( array(
 			'ip'		=>	false,
 			'default'	=>	NULL,
+			'exclude'	=>	false,
+			'include'	=>	false
         ), $attr );
 
 		$ip 		= $array['ip'];
 		$default 	= $array['default'];
+		$exclude 	= $array['exclude'];
+		$include 	= $array['include'];
 		
 		if( !empty($ip) )
 		{
 			$CFGEO_API = new CF_Geoplugin_API;
 			$CFGEO = $CFGEO_API->run(array('ip' => $ip));
+		}
+		
+		if(!empty($exclude) || !empty($include)) {
+			if(!empty($include))
+			{
+				if(!$this->recursive_array_search($include, $CFGEO)) return ($cache ? '<!-- ' . W3TC_DYNAMIC_SECURITY . ' mfunc -->' . $default . '<!-- /mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : $default);
+			}
+			
+			if(!empty($exclude))
+			{
+				if($this->recursive_array_search($exclude, $CFGEO)) return ($cache ? '<!-- ' . W3TC_DYNAMIC_SECURITY . ' mfunc -->' . $default . '<!-- /mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : $default);
+			}
 		}
 		
 		if(isset($CFGEO['is_vat']) && $CFGEO['is_vat'])
@@ -199,15 +249,33 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 		$array = shortcode_atts( array(
 			'ip'		=>	false,
 			'default'	=>	NULL,
+			'exclude'	=>	false,
+			'include'	=>	false
         ), $attr );
 
 		$ip 		= $array['ip'];
 		$default 	= $array['default'];
+		$exclude 	= $array['exclude'];
+		$include 	= $array['include'];
 		
 		if( !empty($ip) )
 		{
 			$CFGEO_API = new CF_Geoplugin_API;
 			$CFGEO = $CFGEO_API->run(array('ip' => $ip));
+		}
+		
+		if(!empty($exclude) || !empty($include)) {
+			if(!empty($include))
+			{
+				if(!$this->recursive_array_search($include, $CFGEO))
+					return ($cache ? '<!-- ' . W3TC_DYNAMIC_SECURITY . ' mfunc -->' . do_shortcode($content) . '<!-- /mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : do_shortcode($content));
+			}
+			
+			if(!empty($exclude))
+			{
+				if($this->recursive_array_search($exclude, $CFGEO))
+					return ($cache ? '<!-- ' . W3TC_DYNAMIC_SECURITY . ' mfunc -->' . do_shortcode($content) . '<!-- /mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : do_shortcode($content));
+			}
 		}
 		
 		if(isset($CFGEO['is_vat']))
