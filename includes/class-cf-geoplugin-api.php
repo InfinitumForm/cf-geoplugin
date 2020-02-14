@@ -47,20 +47,20 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
 		'regionCode' 			=> '',
 		'cityName' 				=> '',
 		'continent' 			=> '',
-		'continentCode' 		=> '',
+	//	'continentCode' 		=> '',
 		'address' 				=> '',
-		'areaCode'				=> '',
-		'dmaCode'				=> '',
-		'latitude' 				=> '',
-		'longitude' 			=> '',
+	//	'areaCode'				=> '',
+	//	'dmaCode'				=> '',
+		'latitude' 				=> 0,
+		'longitude' 			=> 0,
 		'timezone' 				=> '',
 		'locale'				=> '',
 		'currency' 				=> '',
 		'base_currency'			=> '',
-		'currencySymbol' 		=> '',
-		'currencyConverter' 	=> '',
+	//	'currencySymbol' 		=> '',
+	//	'currencyConverter' 	=> 0,
 		'currency_symbol' 		=> '',
-		'currency_converter' 	=> '',
+		'currency_converter' 	=> 0,
 		'base_currency_symbol' 	=> '',
 		'referer' 				=> '',
 		'refererIP' 			=> '',
@@ -80,6 +80,7 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
 		'available_lookup' 		=> 0,
 		'in_eu'					=> 0,
 		'is_vat'				=> 0,
+		'vat_rate'				=> 0,
 		'gps'					=> 0,
 		'accuracy_radius'		=> 0,
 	);
@@ -183,12 +184,12 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
                 'city' => $geodata->cityName,
                 'continent' => $continent,
                 'continent_code' => $continentCode,
-                'continentCode' => $continentCode, // deprecated
+            //    'continentCode' => $continentCode, // deprecated
                 'address' => $geodata->address,
                 'area_code' => $geodata->areaCode,
-                'areaCode' => $geodata->areaCode, // deprecated
+            //   'areaCode' => $geodata->areaCode, // deprecated
                 'dma_code' => $geodata->dmaCode,
-                'dmaCode' => $geodata->dmaCode, // deprecated
+            //    'dmaCode' => $geodata->dmaCode, // deprecated
                 'latitude' => $lat,
                 'longitude' => $lng,
                 'timezone' => $geodata->timezone,
@@ -198,9 +199,9 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
                 'currency_symbol' => $currency_symbol,
 				'base_currency' => $CF_GEOPLUGIN_OPTIONS['base_currency'],
 				'base_currency_symbol' => CF_Geplugin_Library::CURRENCY_SYMBOL[$CF_GEOPLUGIN_OPTIONS['base_currency']],
-                'currencySymbol' => $currency_symbol, // deprecated
-                'currency_converter' => $geodata->currencyConverter,
-                'currencyConverter' => $geodata->currencyConverter, // deprecated
+            //    'currencySymbol' => $currency_symbol, // deprecated
+                'currency_converter' => (!empty($geodata->currencyConverter) ? $geodata->currencyConverter : 0),
+            //    'currencyConverter' => (!empty($geodata->currencyConverter) ? $geodata->currencyConverter : 0), // deprecated
                 'host' => $geodata->referer,
                 'ip_host' => $geodata->refererIP,
                 'timestamp' => $geodata->timestamp,
@@ -208,8 +209,9 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
                 'current_time' => $geodata->currentTime,
                 'current_date' => $geodata->currentDate,
                 'version' => CFGP_VERSION,
-				'is_vat' => isset( $geodata->isVAT ) ? $geodata->isVAT : '',
-				'in_eu'	=> isset( $geodata->inEU ) ? $geodata->inEU : '',
+				'is_vat' => isset( $geodata->isVAT ) ? (int)$geodata->isVAT : 0,
+				'vat_rate'	=> isset( $geodata->VATrate ) ? (float)$geodata->VATrate : 0,
+				'in_eu'	=> isset( $geodata->inEU ) ? (int)$geodata->inEU : 0,
 				'gps'	=> isset( $geodata->gps ) ? ($geodata->gps ? 1 : 0) : 0,
 				'accuracy_radius' => $m_accuracy.$m_unit,
 				'runtime' => abs($geodata->runtime),
@@ -421,7 +423,7 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
 			{
 				$CF_GEOPLUGIN_OPTIONS['license'] = 0;
 				
-				if( !CFGP_MULTISITE )
+				if( !(defined( 'CFGP_MULTISITE' ) && CFGP_MULTISITE) )
 					update_option('cf_geoplugin', $CF_GEOPLUGIN_OPTIONS, true);
 				else
 					update_site_option('cf_geoplugin', $CF_GEOPLUGIN_OPTIONS);

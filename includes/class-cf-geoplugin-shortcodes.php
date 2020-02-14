@@ -82,11 +82,60 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 		// NOT IN EU
 		if ( !shortcode_exists( 'cfgeo_not_in_eu' ) ) $this->add_shortcode( 'cfgeo_not_in_eu', 'not_in_eu' );
 		if ( !shortcode_exists( 'not_in_eu' ) ) $this->add_shortcode( 'not_in_eu', 'not_in_eu' );
+		
+		// GPS
+		if ( !shortcode_exists( 'cfgeo_gps' ) ) $this->add_shortcode( 'cfgeo_gps', 'cfgeo_gps' );
+	}
+	
+	// GPS
+	public function cfgeo_gps($attr, $content=''){
+		$CFGEO = $GLOBALS['CFGEO'];
+		
+		$cache = $this->is_attribute_exists('cache', $attr);
+		if($this->is_attribute_exists('no_cache', $attr)) $cache = false;
+		
+		$array = shortcode_atts( array(
+			'ip'		=>	false,
+			'default'	=>	NULL,
+			'exclude'	=>	false,
+			'include'	=>	false
+        ), $attr );
+
+		$ip 		= $array['ip'];
+		$default 	= $array['default'];
+		$exclude 	= $array['exclude'];
+		$include 	= $array['include'];
+		
+		if( !empty($ip) )
+		{
+			$CFGEO_API = new CF_Geoplugin_API;
+			$CFGEO = $CFGEO_API->run(array('ip' => $ip));
+		}
+		
+		if(!empty($exclude) || !empty($include)) {
+			if(!empty($include))
+			{
+				if(!$this->recursive_array_search($include, $CFGEO)) return ($cache ? '<!-- ' . W3TC_DYNAMIC_SECURITY . ' mfunc -->' . $default . '<!-- /mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : $default);
+			}
+			
+			if(!empty($exclude))
+			{
+				if($this->recursive_array_search($exclude, $CFGEO)) return ($cache ? '<!-- ' . W3TC_DYNAMIC_SECURITY . ' mfunc -->' . $default . '<!-- /mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : $default);
+			}
+		}
+		
+		if(isset($CFGEO['gps']) && $CFGEO['gps'])
+		{
+			return ($cache ? '<!-- ' . W3TC_DYNAMIC_SECURITY . ' mfunc -->' . do_shortcode($content) . '<!-- /mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : do_shortcode($content));
+		}
+		else
+		{
+			return ($cache ? '<!-- ' . W3TC_DYNAMIC_SECURITY . ' mfunc -->' . $default . '<!-- /mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : $default);
+		}
 	}
 	
 	// IN EU
 	public function in_eu($attr, $content=''){
-		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
 		$CFGEO = $GLOBALS['CFGEO'];
 		
 		$cache = $this->is_attribute_exists('cache', $attr);
@@ -134,7 +183,6 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 	
 	// NOT IN EU
 	public function not_in_eu($attr, $content=''){
-		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
 		$CFGEO = $GLOBALS['CFGEO'];
 		
 		$cache = $this->is_attribute_exists('cache', $attr);
@@ -191,7 +239,6 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 	
 	// IS VAT
 	public function is_vat($attr, $content=''){
-		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
 		$CFGEO = $GLOBALS['CFGEO'];
 		
 		$cache = $this->is_attribute_exists('cache', $attr);
@@ -240,7 +287,6 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 	
 	// IS NOT VAT
 	public function is_not_vat($attr, $content=''){
-		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
 		$CFGEO = $GLOBALS['CFGEO'];
 		
 		$cache = $this->is_attribute_exists('cache', $attr);
@@ -572,7 +618,7 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 			
 			if(class_exists('CF_Geoplugin_Shortcode_Automat'))
 			{
-				$exclude = array_map('trim', explode(',','is_vat,in_eu,state,continentCode,areaCode,dmaCode,timezoneName,currencySymbol,currencyConverter'));
+				$exclude = array_map('trim', explode(',','gps,is_vat,in_eu,state,continentCode,areaCode,dmaCode,timezoneName,currencySymbol,currencyConverter'));
 				
 				$generate=array();
 				foreach($CFGEO as $key => $value )
@@ -932,7 +978,7 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 		$this->add_action( 'wp_footer', 'CF_GeoPlugin_Google_Map_Shortcode_Script' );
 		$this->add_action( 'admin_footer', 'CF_GeoPlugin_Google_Map_Shortcode_Script' );
 
-		return '<!-- ' . W3TC_DYNAMIC_SECURITY . ' mfunc --><div class="CF_GeoPlugin_Google_Map_Shortcode" style="width:'.esc_attr($att->width).'; height:'.esc_attr($att->height).'"'.join(' ', $attributes).'>'.$content.'</div><!-- /mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->';
+		return '<!-- ' . W3TC_DYNAMIC_SECURITY . ' mfunc --><div class="CF_GeoPlugin_Google_Map_Shortcode" style="width:'.esc_attr($att->width).'; height:'.esc_attr($att->height).'"'.join(' ', $attributes).'>'.do_shortcode($content).'</div><!-- /mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->';
 	}
 		
 	

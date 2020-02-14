@@ -1,4 +1,17 @@
 == Changelog ==
+= 7.9.0 =
+* Added new shortcode for the GPS
+* Added new Shortcode for the standard VAT rate value
+* Added support for the PHP 7.4
+* Fixed multisite problem with update options
+* Fixed VAT rate API calls
+* Fixed errors when site reach maximum lookup
+* Fixed errors if currency is not available
+* Fixed bad translations
+* Removed unuseful shortcodes
+* Removed deprecated functions
+* Removed deprecated shortcodes
+
 = 7.8.11 =
 * Included include/exclude property into VAT shortcodes
 * Included include/exclude property into EU shortcodes

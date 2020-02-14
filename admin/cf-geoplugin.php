@@ -1,6 +1,6 @@
 <?php if ( ! defined( 'WPINC' ) ) { die( "Don't mess with us." ); }
 /**
- * Page WordPress Geo Plugin
+ * Page CF Geo Plugin
  *
  * @since      7.0.0
  * @package    CF_Geoplugin
@@ -14,7 +14,7 @@ $CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIO
 <div class="container-fluid">
 	<div class="row">
     	<div class="col-12">
-        	<h1 class="h5 mt-3"><i class="fa fa-map-marker"></i> <?php _e('WordPress Geo Plugin',CFGP_NAME); ?></h1>
+        	<h1 class="h5 mt-3"><i class="fa fa-map-marker"></i> <?php _e('CF Geo Plugin',CFGP_NAME); ?></h1>
             <hr>
         </div>
         <div class="col">
@@ -221,16 +221,8 @@ $CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIO
                                 <td><?php echo $CFGEO['currency_converter']; ?></td>
                             </tr>
 							<tr>
-                                <td><kbd>[cfgeo return="is_vat"]</kbd></td>
-                                <td><?php echo $CFGEO['is_vat']; ?></td>
-                            </tr>
-							<tr>
-                                <td><kbd>[cfgeo return="in_eu"]</kbd></td>
-                                <td><?php echo $CFGEO['in_eu']; ?></td>
-                            </tr>
-							<tr>
-                                <td><kbd>[cfgeo return="gps"]</kbd></td>
-                                <td><?php echo $CFGEO['gps']; ?></td>
+                                <td><kbd>[cfgeo return="vat_rate"]</kbd></td>
+                                <td><abbr data-container="body" data-toggle="popover" data-placement="top" data-trigger="hover" data-content="<?php echo esc_attr(__('Standard VAT Rate in percentages (%)', CFGP_NAME)); ?>"><?php echo $CFGEO['vat_rate']; ?></abbr></td>
                             </tr>
                             <tr>
                                 <td><kbd>[cfgeo return="host"]</kbd></td>
@@ -387,12 +379,8 @@ $CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIO
                                 <td><?php echo $CFGEO['currency_converter']; ?></td>
                             </tr>
 							<tr>
-                                <td><kbd>%%is_vat%%</kbd></td>
-                                <td><?php echo $CFGEO['is_vat']; ?></td>
-                            </tr>
-							<tr>
-                                <td><kbd>%%in_eu%%</kbd></td>
-                                <td><?php echo $CFGEO['in_eu']; ?></td>
+                                <td><kbd>%%vat_rate%%</kbd></td>
+                                <td><abbr data-container="body" data-toggle="popover" data-placement="top" data-trigger="hover" data-content="<?php echo esc_attr(__('Standard VAT Rate in percentages (%)', CFGP_NAME)); ?>"><?php echo $CFGEO['vat_rate']; ?></abbr></td>
                             </tr>
 							<tr>
                                 <td><kbd>%%gps%%</kbd></td>
@@ -558,6 +546,10 @@ $CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIO
                                 <td><kbd>[is_vat]<?php _e('You are under VAT', CFGP_NAME); ?>[/is_vat]</kbd></td>
                                 <td><?php echo do_shortcode('[is_vat]' .__('You are under VAT', CFGP_NAME). '[/is_vat]'); ?></td>
                             </tr>
+							<tr>
+                                <td><kbd>[vat_rate]</kbd></td>
+                                <td><abbr data-container="body" data-toggle="popover" data-placement="top" data-trigger="hover" data-content="<?php echo esc_attr(__('Standard VAT Rate in percentages (%)', CFGP_NAME)); ?>"><?php echo $CFGEO['vat_rate']; ?></abbr></td>
+                            </tr>
                             <tr>
                                 <td><kbd>[is_not_vat]<?php _e('You are NOT under VAT', CFGP_NAME); ?>[/is_not_vat]</kbd></td>
                                 <td><?php echo do_shortcode('[is_not_vat]' .__('You are NOT under VAT', CFGP_NAME). '[/is_not_vat]'); ?></td>
@@ -571,8 +563,31 @@ $CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIO
                                 <td><?php echo do_shortcode('[not_in_eu]' .__('You are NOT from the EU', CFGP_NAME). '[/not_in_eu]'); ?></td>
                             </tr>
 							<tr>
-                                <td><kbd>[cfgeo_gps]</kbd></td>
-                                <td><?php echo $CFGEO['gps']; ?></td>
+                                <td><kbd>[cfgeo_gps]<?php _e('GPS is enabled', CFGP_NAME); ?>[/cfgeo_gps]</kbd></td>
+                                <td>
+									<?php echo do_shortcode('[cfgeo_gps default="' .__('GPS in not enabled', CFGP_NAME). '"]' .__('GPS is enabled', CFGP_NAME). '[/cfgeo_gps]'); ?> 
+									<span class="badge"><?php
+										if(CF_Geoplugin_Global::is_plugin_active('cf-geoplugin-gps/cf-geoplugin-gps.php'))
+										{
+											if(!$CFGEO['gps'])
+											{
+											//	_e('', CFGP_NAME);
+											}
+										}
+										else
+										{
+											printf( 
+												sprintf(
+													__('GPS is enabled only with %s extension', CFGP_NAME),
+													sprintf(
+														'<a href="%1$s" class="thickbox open-plugin-details-modal">CF Geo Plugin GPS</a>',
+														admin_url('plugin-install.php?tab=plugin-information&plugin=cf-geoplugin-gps&TB_iframe=true&width=772&height=923')
+													)
+												)
+											);
+										}
+									?></span>
+								</td>
                             </tr>
                             <tr>
                                 <td><kbd>[cfgeo_host]</kbd></td>
@@ -640,7 +655,7 @@ $CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIO
         &nbsp;&nbsp;[text* country placeholder "* Country"]<br><br>
         &lt;script&gt;<br>
         jQuery(document).ready(function(){<br>
-        &nbsp;&nbsp;// Get WordPress Geo Plugin Data<br>
+        &nbsp;&nbsp;// Get CF Geo Plugin Data<br>
         &nbsp;&nbsp;var city = \'[cfgeo return="city"]\';<br>
         &nbsp;&nbsp;var country = \'[cfgeo return="country"]\';<br><br>
         &nbsp;&nbsp;// Insert values inside input fields<br>
@@ -669,7 +684,7 @@ $CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIO
                                 
                                 <p class="manage-menus"><?php printf(__("Like you notice, this plugin have changed shortcode names but still support old <strong>deprecated</strong> shortcode name %s what you still can use but we strongly recommended to use new one %s.",CFGP_NAME), '<code>cg_geo</code>', '<code>cfgeo</code>'); ?></p>
                             <?php if($CF_GEOPLUGIN_OPTIONS['enable_beta'] && $CF_GEOPLUGIN_OPTIONS['enable_beta_shortcode']) : ?>
-                                <p class="manage-menus"><?php printf(__("Also we trying to made all works faster and more understandable and we also add <strong>experimental</strong> shortcode called %s that you can use insteand of %s like %s but if you have similar geo plugin installed beside WordPress Geo Plugin you can have a problems and interference.",CFGP_NAME), '<code>geo</code>', '<code>cfgeo</code>', '<code>[geo]</code>'); ?></p>
+                                <p class="manage-menus"><?php printf(__("Also we trying to made all works faster and more understandable and we also add <strong>experimental</strong> shortcode called %s that you can use insteand of %s like %s but if you have similar geo plugin installed beside CF Geo Plugin you can have a problems and interference.",CFGP_NAME), '<code>geo</code>', '<code>cfgeo</code>', '<code>[geo]</code>'); ?></p>
                             <?php endif; ?>
                             
                             <?php do_action('page-cf-geoplugin-tab-info-end'); ?>

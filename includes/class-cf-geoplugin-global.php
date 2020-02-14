@@ -284,7 +284,7 @@ class CF_Geoplugin_Global
 		}
 		
 		// Let's get options
-		if( !CFGP_MULTISITE )
+		if( !(defined( 'CFGP_MULTISITE' ) && CFGP_MULTISITE) )
 			$options = get_option('cf_geoplugin');
 		else
 			$options = get_site_option( 'cf_geoplugin' );
@@ -312,7 +312,7 @@ class CF_Geoplugin_Global
 	 * Hook Update Options
 	*/
 	public function update_option($option_name, $value){
-		if( !CFGP_MULTISITE )
+		if( !(defined( 'CFGP_MULTISITE' ) && CFGP_MULTISITE) )
 			$options = get_option('cf_geoplugin');
 		else
 			$options = get_site_option( 'cf_geoplugin' );
@@ -323,7 +323,7 @@ class CF_Geoplugin_Global
 			
 			$options[$option_name] = self::sanitize( $value );
 
-			if( !CFGP_MULTISITE )
+			if( !(defined( 'CFGP_MULTISITE' ) && CFGP_MULTISITE) )
 				update_option('cf_geoplugin', $options, true);
 			else 
 				update_site_option('cf_geoplugin', $options);
@@ -332,7 +332,7 @@ class CF_Geoplugin_Global
 		}
 		else // Add options to WP DB if not exists
 		{
-			if( !CFGP_MULTISITE ) 
+			if( !(defined( 'CFGP_MULTISITE' ) && CFGP_MULTISITE) ) 
 			{
 				update_option( 'cf_geoplugin', $this->default_options );
 				return get_option( 'cf_geoplugin' );
@@ -393,7 +393,7 @@ class CF_Geoplugin_Global
 	 * Hook Delete Options
 	*/
 	public function delete_option($option_name){
-		if( !CFGP_MULTISITE )
+		if( !(defined( 'CFGP_MULTISITE' ) && CFGP_MULTISITE) )
 			$options = get_option('cf_geoplugin');
 		else
 			$options = get_site_option( 'cf_geoplugin' );
@@ -403,7 +403,7 @@ class CF_Geoplugin_Global
 			if(isset($options[$option_name]))
 			{
 				unset($options[$option_name]);
-				if( !CFGP_MULTISITE )
+				if( !(defined( 'CFGP_MULTISITE' ) && CFGP_MULTISITE) )
 					update_option('cf_geoplugin', $options, true);
 				else
 					update_site_option('cf_geoplugin', $options);
@@ -2022,6 +2022,14 @@ class CF_Geoplugin_Global
 		}
 		
 		return $post_type;
+	}
+	
+	public static function is_plugin_active($plugin)
+	{
+		if(!function_exists('is_plugin_active'))
+			include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+		
+		return is_plugin_active($plugin);
 	}
 }
 endif;

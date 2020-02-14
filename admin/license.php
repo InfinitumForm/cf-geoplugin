@@ -153,7 +153,7 @@ if( $global->get( 'action' ) == 'deactivate_license' && isset( $_GET['cfgp_licen
                 <p class="lead"><?php printf(
     __('Thank you for using unlimited license. You license is active until %1$s. It would be great to expand your license by that date. After expiration date you will experience plugin limitations.<br><br>To review or deactivate your license, please go to your %2$s.',CFGP_NAME),
     '<strong>' . ($CF_GEOPLUGIN_OPTIONS['license_expire'] == 0 ? __('never',CFGP_NAME) : date(get_option('date_format') . ' ' . get_option('time_format'), (int)$CF_GEOPLUGIN_OPTIONS['license_expire'])) . '</strong>',
-	'<a href="' . $CF_GEOPLUGIN_OPTIONS['license_url'] . '" target="_blank">' . __('WordPress Geo Plugin account',CFGP_NAME) . '</a>'
+	'<a href="' . $CF_GEOPLUGIN_OPTIONS['license_url'] . '" target="_blank">' . __('CF Geo Plugin account',CFGP_NAME) . '</a>'
 ); ?></p>
                 <?php else : ?>
                 <h1 class="display-4"><?php _e('Activate Unlimited!',CFGP_NAME); ?></h1>

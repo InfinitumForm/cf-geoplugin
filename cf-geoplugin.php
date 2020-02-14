@@ -8,7 +8,7 @@
  * Plugin Name:       WordPress Geo Plugin
  * Plugin URI:        http://cfgeoplugin.com/
  * Description:       Create Dynamic Content, Banners and Images on Your Website Based On Visitor Geo Location By Using Shortcodes With CF Geo Plugin.
- * Version:           7.8.11
+ * Version:           7.9.0
  * Author:            INFINITUM FORM
  * Author URI:        https://infinitumform.com/
  * License:           GPL-2.0+
@@ -111,13 +111,29 @@ if (!defined('PHP_SESSION_NONE')) {
 	define('PHP_SESSION_NONE', -1);
 }
 // Check if is multisite installation
-if( ! defined( 'CFGP_MULTISITE' ) )			
+if( ! defined( 'CFGP_MULTISITE' ) && defined( 'WP_ALLOW_MULTISITE' ) && WP_ALLOW_MULTISITE )			
+{
+	define( 'CFGP_MULTISITE', WP_ALLOW_MULTISITE );
+}
+else if( ! defined( 'CFGP_MULTISITE' ) )			
 {
     // New safer approach
-    if( !function_exists( 'is_plugin_active_for_network' ) ) include ABSPATH . '/wp-admin/includes/plugin.php';
+    if( !function_exists( 'is_plugin_active_for_network' ) )
+		include ABSPATH . '/wp-admin/includes/plugin.php';
 
 	define( 'CFGP_MULTISITE', is_plugin_active_for_network( CFGP_ROOT . '/cf-geoplugin.php' ) );
 }
+/*
+ * Define upgrade  notice message
+ */
+add_action( 'in_plugin_update_message-cf-geoplugin/cf-geoplugin.php', function ($currentPluginMetadata, $newPluginMetadata){
+   if (isset($newPluginMetadata->upgrade_notice) && strlen(trim($newPluginMetadata->upgrade_notice)) > 0){
+        echo '<div style="padding: 10px; color: #f9f9f9; margin-top: 10px"><h3>' . __('Important Upgrade Notice:', CFGP_NAME) . '</h3> ';
+        echo $newPluginMetadata->upgrade_notice, '</div>';
+   }
+}, 10, 2 );
+// PHP7 DEPRECATED FUNCTION SUPPORT
+include_once CFGP_ROOT.'/includes/php7.x.php';
 // Include privacy policy
 include_once CFGP_ROOT.'/globals/cf-geoplugin-privacy.php';
 // Include debug class

@@ -1,11 +1,11 @@
-﻿	=== CF Geo Plugin - WordPress Geo Plugin ===
-Contributors: ivijanstefan, creativform, ej207, jovanoskibojan
+﻿=== CF Geo Plugin - WordPress Geo Plugin ===
+Contributors: ivijanstefan, creativform
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=creativform@gmail.com
 Tags: geolocation, woocommerce, store-locator, seo, google-maps, geomarketing, content include, content exclude, geo plugin, geo target, geo, geotargeting, geofencing, geotag, cache, rocket
 Requires at least: 3.0
 Tested up to: 5.3
 Requires PHP: 5.6.0
-Stable tag: 7.8.11
+Stable tag: 7.9.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -13,7 +13,7 @@ The only geolocation plugin that provides all geomarketing integrations for the 
 
 == Description ==
 
-**[CF Geo Plugin](https://cfgeoplugin.com/)** is GeoMarketing tool that allows you to have full geo control of your WordPress. **CF Geo Plugin** gives you ability to attach content, geographic informations, geo tags, Google maps to posts, pages, widgets and custom templates by using simple, options shortcodes, PHP code or JavaScript. It also lets you to specify a default geographic location for your entire WordPress blog, do SEO redirection, spam protection, WooCommerce control and many more. **CF Geo Plugin** help you to increase conversion, do better SEO, capture leads on your blog or landing pages.
+**[CF Geo Plugin](https://cfgeoplugin.com/)** is GeoMarketing tool that allows you to have full geo control of your WordPress. **CF Geo Plugin** gives you ability to attach content, geographic informations, geo tags, Google Maps to posts, pages, widgets and custom templates by using simple, options shortcodes, PHP code or JavaScript. It also lets you to specify a default geographic location for your entire WordPress blog, do SEO redirection, spam protection, WooCommerce control and many more. **CF Geo Plugin** help you to increase conversion, do better SEO, capture leads on your blog or landing pages.
 
 = FREE AND PAID SERVICES =
 
@@ -126,7 +126,7 @@ But here are some simple examples:
 
 **GEO PLUGIN:** Usage is simple. After installation and activation, in your post you just need to insert `[cfgeo]` shortcode and that's it. Enter a shortcode as this and it returns and display IP adress to a visitor. If you like to display region (for example California for users who are from California), you just need to use `return` attribute in your shortcode like this: `[cfgeo return="region"]`. By changing the return settings, you can display any information from list above. Each user who comes to the site will see information related to their area. 
 
-If you whant to track some custom IP and return some information from that IP, you can do that by adding one optional attribute ip like on example `[cfgeo ip="127.0.0.1" return="area_code"]` what will return area code from that IP address.
+If you want to track some custom IP and return some information from that IP, you can do that by adding one optional attribute ip like on example `[cfgeo ip="127.0.0.1" return="area_code"]` what will return area code from that IP address.
 
 If you like to ad default values to your shortcode if data is empty you need to add extra attribute in your shortcode like this example `[cfgeo return="country_code" default="US"]` what will return US if geoplugin can't locate country code.
 
@@ -162,11 +162,11 @@ Like many of our shortcodes, there is default options what you can use as an alt
 
 These two shortcodes also show or hide everything inside it, depending on the your needs.
 
-**GOOGLE MAP:** If you whant to place simple google map in your post or page, you just need to place shortcode [cfgeo_map] and your visitor will see own city on google map by default.
+**GOOGLE MAP:** If you want to place simple Google Map in your post or page, you just need to place shortcode [cfgeo_map] and your visitor will see own location on Google Map by default.
 
-Like example, you can display own company street address inside Google map like this: `[cfgeo_map longitude="-74.0059" latitude="40.7128" zoom="15"]` and pointer will show your street and place where you work.
+Like example, you can display own company street address inside Google Map like this: `[cfgeo_map longitude="-74.0059" latitude="40.7128" zoom="15"]` and pointer will show your street and place where you work.
 
-Google map also allow you to use HTML inside map and display info bar: 
+Google Map also allow you to use HTML inside map and display info bar: 
 
 `[cfgeo_map longitude="-74.0059" latitude="40.7128" zoom="15" title="My Company Name"] 
    <h3>My Company Name<h3> 
@@ -174,7 +174,7 @@ Google map also allow you to use HTML inside map and display info bar:
    <p>We have what you need</p> 
 [/cfgeo_map]`
 
-With this plugin you can easy setup your google map.
+With this plugin you can easy setup your Google Map.
 
 **GEO BANNER:** With this plugin you have also ability to make a dynamic content (text, images, banners, videos...) and target your messages to people from certain regions, track IP address, setup WordPress to work on user's timezone, etc. The possibilities are huge, you can increase conversions, use this plugin like support for your custom template, build your own plugin and use CF Geo Plugin like additional option, etc.
 
@@ -363,6 +363,19 @@ Please inform us if any of these errors occure via contact form on our website [
 
 == Changelog ==
 
+= 7.9.0 =
+* Added new shortcode for the GPS
+* Added new Shortcode for the standard VAT rate value
+* Added support for the PHP 7.4
+* Fixed multisite problem with update options
+* Fixed VAT rate API calls
+* Fixed errors when site reach maximum lookup
+* Fixed errors if currency is not available
+* Fixed bad translations
+* Removed unuseful shortcodes
+* Removed deprecated functions
+* Removed deprecated shortcodes
+
 = 7.8.11 =
 * Included include/exclude property into VAT shortcodes
 * Included include/exclude property into EU shortcodes
@@ -386,9 +399,18 @@ Please inform us if any of these errors occure via contact form on our website [
 
 == Upgrade Notice ==
 
-= 7.8.11 =
-* Included include/exclude property into VAT shortcodes
-* Included include/exclude property into EU shortcodes
+= 7.9.0 =
+* Added new shortcode for the GPS
+* Added new Shortcode for the standard VAT rate value
+* Added support for the PHP 7.4
+* Fixed multisite problem with update options
+* Fixed VAT rate API calls
+* Fixed errors when site reach maximum lookup
+* Fixed errors if currency is not available
+* Fixed bad translations
+* Removed unuseful shortcodes
+* Removed deprecated functions
+* Removed deprecated shortcodes
 
 == Other Notes ==
 

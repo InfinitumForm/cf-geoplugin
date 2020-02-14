@@ -11,7 +11,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 {
 	private $is_connected = false;
 	
-	// Main WordPress Geo Plugin Page
+	// Main CF Geo Plugin Page
 	function page_cf_geoplugin(){
 		if(file_exists(CFGP_ADMIN . '/cf-geoplugin.php'))
 			require_once CFGP_ADMIN . '/cf-geoplugin.php';
@@ -217,7 +217,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 		$this->add_action( 'admin_enqueue_scripts', 'register_javascripts_ctp' );
     }
 	
-	// Create "WordPress Geo Plugin" Page
+	// Create "CF Geo Plugin" Page
 	public function add_cf_geoplugin() {
 		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
 		add_menu_page(
@@ -464,7 +464,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 			/**
 			 * Get defaults
 			 */
-			if( !CFGP_MULTISITE )
+			if( !(defined( 'CFGP_MULTISITE' ) && CFGP_MULTISITE) )
 				$options = get_option('cf_geoplugin');
 			else
 				$options = get_site_option( 'cf_geoplugin' );
@@ -514,7 +514,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 			/**
 			 * Update ALL
 			 */
-			if( !CFGP_MULTISITE )
+			if( !(defined( 'CFGP_MULTISITE' ) && CFGP_MULTISITE) )
 				update_option('cf_geoplugin', $options, true);
 			else 
 				update_site_option('cf_geoplugin', $options);
@@ -621,7 +621,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 		float:left; width:25px !important; height:25px !important;
 		margin-left: 5px !important; margin-top: 2px !important; background:url(\''.CFGP_ASSETS . '/images/cf-geo-25x25.png\') no-repeat center center / cover;"></span>',
 			'href' => '',
-			'meta'  => array( 'class' => CFGP_NAME . '-toolbar-page', 'title'=>sprintf(__("WordPress Geo Plugin ver.%s",CFGP_NAME),$CFGEO['version'])),
+			'meta'  => array( 'class' => CFGP_NAME . '-toolbar-page', 'title'=>sprintf(__("CF Geo Plugin ver.%s",CFGP_NAME),$CFGEO['version'])),
 			'parent' => false,
 		) );
 		$wp_admin_bar->add_node( array(
@@ -982,7 +982,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 
 		wp_add_dashboard_widget(
 			CFGP_NAME . '-admin-status', 
-			trim(do_shortcode('[cfgeo_flag size="14" image]') . ' ' . __( 'WordPress Geo Plugin', CFGP_NAME )),
+			trim(do_shortcode('[cfgeo_flag size="14" image]') . ' ' . __( 'CF Geo Plugin', CFGP_NAME )),
 			array( &$this, 'cf_geoplugin_dashboard_callback' ) 
 		);
 	}
@@ -1031,14 +1031,14 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 			
 			<div id="cf-geoplugin-dashboard-version-info-title" class="activity-block<?php if($plugin_updated) : ?> hilight<?php endif; ?>">
             <?php if(!$plugin_updated) : ?>
-				<h3><strong><?php printf(__( 'What is new on WordPress Geo Plugin version %s', CFGP_NAME ), $plugin->version); ?></strong></h3>
+				<h3><strong><?php printf(__( 'What is new on CF Geo Plugin version %s', CFGP_NAME ), $plugin->version); ?></strong></h3>
             <?php else: ?>
-            	<h3><strong style="color:#cc0000;"><?php printf(__( 'NEW version is available - WordPress Geo Plugin ver.%s', CFGP_NAME ), $plugin->version); ?></strong></h3>
+            	<h3><strong style="color:#cc0000;"><?php printf(__( 'NEW version is available - CF Geo Plugin ver.%s', CFGP_NAME ), $plugin->version); ?></strong></h3>
             <?php endif; ?>
 			</div>
             <div id="cf-geoplugin-dashboard-version-info" class="activity-block<?php if($plugin_updated) : ?> hilight<?php endif; ?>">
             <?php if($plugin_updated) : ?>
-            <h3><strong><?php _e( 'Update WordPress Geo Plugin and get:', CFGP_NAME ); ?></strong></h3>
+            <h3><strong><?php _e( 'Update CF Geo Plugin and get:', CFGP_NAME ); ?></strong></h3>
             <?php endif; ?>
             <?php
 				preg_match('@<h4>' . str_replace('.','\.',$plugin->version) . '</h4>.*?(<ul>(.*?)</ul>)@si', $plugin->sections['changelog'], $version_details, PREG_OFFSET_CAPTURE);
@@ -1048,11 +1048,11 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 					_e( 'There was error in fetching plugin data.', CFGP_NAME )
 			?>
 			<?php if($plugin_updated && !is_multisite()) : ?>
-				<a href="<?php echo self_admin_url('plugin-install.php?tab=plugin-information&plugin=cf-geoplugin&TB_iframe=true&width=600&height=550'); ?>"  class="button button-primary button-hero">Download new version NOW</a>
+				<a href="<?php echo self_admin_url('plugin-install.php?tab=plugin-information&plugin=cf-geoplugin&TB_iframe=true&width=600&height=550'); ?>"  class="thickbox open-plugin-details-modal button button-primary button-hero"><?php _e( 'Download new version NOW', CFGP_NAME ); ?></a>
 			<?php endif; ?>
             </div>
             <div id="cf-geoplugin-dashboard-details-info-title" class="activity-block">
-				<h3><strong><?php _e( 'WordPress Geo Plugin details', CFGP_NAME ); ?></strong></h3>
+				<h3><strong><?php _e( 'CF Geo Plugin details', CFGP_NAME ); ?></strong></h3>
 			</div>
             <div id="cf-geoplugin-dashboard-details-info" class="activity-block">
             	<ul class="cf-geoplugin-dashboard-details">
@@ -1088,7 +1088,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 					<a href="<?php echo CFGP_STORE; ?>/pricing/" target="_blank"><?php _e( 'Pricing', CFGP_NAME ); ?></a> | <a href="<?php echo CFGP_STORE; ?>/documentation/" target="_blank"><?php _e( 'Documentation', CFGP_NAME ); ?></a> | <a href="<?php echo CFGP_STORE; ?>/faq/" target="_blank"><?php _e( 'FAQ', CFGP_NAME ); ?></a> | <a href="<?php echo CFGP_STORE; ?>/privacy-policy/" target="_blank"><?php _e( 'Privacy Policy', CFGP_NAME ); ?></a> | <a href="<?php echo self_admin_url( 'admin.php?page=' . CFGP_NAME . '-settings'); ?>"><?php _e( 'Settings', CFGP_NAME ); ?></a>
 				</div>
 				<div class="cf-geoplugin-dashboard-details-copyright-column" style="text-align:center; margin-top:5px;">
-					<small>Copyright © 2015-<?php echo date('Y'); ?> WordPress Geo Plugin. All rights reserved.</small>
+					<small>Copyright © 2015-<?php echo date('Y'); ?> CF Geo Plugin. All rights reserved.</small>
 				</div>
 				<div class="cf-geoplugin-dashboard-details-copyright-column" style="text-align:center; margin-top:5px;">
 					<small><a href="https://infinitumform.com?ref=cf-geoplugin" target="_blank" title="INFINITUM FORM - Specialized agency for web development, graphic design, marketing and PR" rel="author">Created by INFINITUM FORM®</a></small>
@@ -1135,8 +1135,8 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 
 		<div id="custom-id" class="welcome-panel" style="display: none;">
 			<div class="welcome-panel-content"  id="cf-geoplugin-dashboard-wrapper">
-				<h2><?php echo trim(($CF_GEOPLUGIN_OPTIONS['enable_flag']?do_shortcode('[cfgeo_flag size="21" image]'):'') . ' ' . __( 'WordPress Geo Plugin', CFGP_NAME )); ?></h2>
-				<p class="about-description"><?php _e( 'WordPress Geo Plugin is fully active and ready to use', CFGP_NAME ); ?></p>
+				<h2><?php echo trim(($CF_GEOPLUGIN_OPTIONS['enable_flag']?do_shortcode('[cfgeo_flag size="21" image]'):'') . ' ' . __( 'CF Geo Plugin', CFGP_NAME )); ?></h2>
+				<p class="about-description"><?php _e( 'CF Geo Plugin is fully active and ready to use', CFGP_NAME ); ?></p>
 				<div class="welcome-panel-column-container">
 					<div class="welcome-panel-column" id="cf-geoplugin-dashboard-info">
 						<div class="activity-block">
@@ -1155,14 +1155,14 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 					<div class="welcome-panel-column">
 						<div id="cf-geoplugin-dashboard-version-info-title" class="activity-block<?php if($plugin_updated) : ?> hilight<?php endif; ?>">
 						<?php if(!$plugin_updated) : ?>
-							<h3><strong><?php printf(__( 'What is new on WordPress Geo Plugin version %s', CFGP_NAME ), $plugin->version); ?></strong></h3>
+							<h3><strong><?php printf(__( 'What is new on CF Geo Plugin version %s', CFGP_NAME ), $plugin->version); ?></strong></h3>
 						<?php else: ?>
-							<h3><strong style="color:#cc0000;"><?php printf(__( 'NEW version is available - WordPress Geo Plugin ver.%s', CFGP_NAME ), $plugin->version); ?></strong></h3>
+							<h3><strong style="color:#cc0000;"><?php printf(__( 'NEW version is available - CF Geo Plugin ver.%s', CFGP_NAME ), $plugin->version); ?></strong></h3>
 						<?php endif; ?>
 						</div>
 						<div id="cf-geoplugin-dashboard-version-info" class="activity-block<?php if($plugin_updated) : ?> hilight<?php endif; ?>">
 						<?php if($plugin_updated) : ?>
-						<h3><strong><?php _e( 'Update WordPress Geo Plugin and get:', CFGP_NAME ); ?></strong></h3>
+						<h3><strong><?php _e( 'Update CF Geo Plugin and get:', CFGP_NAME ); ?></strong></h3>
 						<?php endif; ?>
 						<?php
 							preg_match('@<h4>' . str_replace('.','\.',$plugin->version) . '</h4>.*?(<ul>(.*?)</ul>)@si', $plugin->sections['changelog'], $version_details, PREG_OFFSET_CAPTURE);
@@ -1172,7 +1172,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 								_e( 'There was error in fetching plugin data.', CFGP_NAME )
 						?>
 						<?php if($plugin_updated && !is_multisite() && !$this->get( 'cfgp_auto_update', 'bool' ) ) : ?>
-							<a href="<?php echo self_admin_url( 'plugin-install.php?tab=plugin-information&plugin=cf-geoplugin&TB_iframe=true&widht=600&height=550' ); ?>"  class="button button-primary button-hero"><?php _e( 'Download new version NOW', CFGP_NAME ); ?></a>
+							<a href="<?php echo self_admin_url( 'plugin-install.php?tab=plugin-information&plugin=cf-geoplugin&TB_iframe=true&widht=600&height=550' ); ?>"  class="thickbox open-plugin-details-modal button button-primary button-hero"><?php _e( 'Download new version NOW', CFGP_NAME ); ?></a>
 						<?php
 							elseif( $plugin_updated && $this->get( 'cfgp_auto_update', 'bool' ) ) :
 								?>
@@ -1185,7 +1185,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 					</div>
 					<div class="welcome-panel-column welcome-panel-last">
 						<div id="cf-geoplugin-dashboard-details-info-title" class="activity-block">
-							<h3><strong><?php _e( 'WordPress Geo Plugin details', CFGP_NAME ); ?></strong></h3>
+							<h3><strong><?php _e( 'CF Geo Plugin details', CFGP_NAME ); ?></strong></h3>
 						</div>
 						<div id="cf-geoplugin-dashboard-details-info" class="activity-block">
 							<ul class="cf-geoplugin-dashboard-details">
@@ -1220,7 +1220,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 				</div>
 				<div class="welcome-panel-column-container" id="cf-geoplugin-dashboard-footer">
 					<div class="welcome-panel-column">
-						Copyright © 2015-<?php echo date('Y'); ?> WordPress Geo Plugin. All rights reserved.
+						Copyright © 2015-<?php echo date('Y'); ?> CF Geo Plugin. All rights reserved.
 					</div>
 					<div class="welcome-panel-column" style="text-align:center">
 						<a href="https://infinitumform.com?ref=cf-geoplugin" target="_blank" title="INFINITUM FORM - Specialized agency for web development, graphic design, marketing and PR" rel="author">Created by INFINITUM FORM®</a>
@@ -1328,7 +1328,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 		
 		$this->add_action( 'admin_init', 'admin_init' );
 		
-		if(CFGP_MULTISITE) $this->add_action( "network_admin_menu", 'add_cf_geoplugin' );
+		if((defined( 'CFGP_MULTISITE' ) && CFGP_MULTISITE)) $this->add_action( "network_admin_menu", 'add_cf_geoplugin' );
 		else $this->add_action( 'admin_menu', 'add_cf_geoplugin' );
 
 		$this->add_action( 'page-cf-geoplugin-sidebar', 'add_rss_feed' );
@@ -1359,7 +1359,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 			if($CF_GEOPLUGIN_OPTIONS['enable_advanced_dashboard_widget']){
 				$this->add_action( 'admin_footer', 'rv_custom_dashboard_widget' );
 			} else {
-				if( CFGP_MULTISITE ) $this->add_action( 'wp_network_dashboard_setup', 'cf_geoplugin_dashboard_widgets' );
+				if( (defined( 'CFGP_MULTISITE' ) && CFGP_MULTISITE) ) $this->add_action( 'wp_network_dashboard_setup', 'cf_geoplugin_dashboard_widgets' );
 				else $this->add_action( 'wp_dashboard_setup', 'cf_geoplugin_dashboard_widgets' );
 			}
 		}

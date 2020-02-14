@@ -1,6 +1,6 @@
 <?php if ( ! defined( 'WPINC' ) ) { die( "Don't mess with us." ); }
 /**
- * Settings Page WordPress Geo Plugin
+ * Settings Page CF Geo Plugin
  *
  * @since      7.0.0
  * @package    CF_Geoplugin
@@ -75,7 +75,7 @@ if( $global->get( 'action' ) == 'deactivate_license' )
 <div class="container-fluid">
 	<div class="row">
         <div class="col-12">
-        	<h1 class="h5 mt-3"><i class="fa fa-cogs text-left"></i> <?php _e('WordPress Geo Plugin Settings',CFGP_NAME); ?></h1>
+        	<h1 class="h5 mt-3"><i class="fa fa-cogs text-left"></i> <?php _e('CF Geo Plugin Settings',CFGP_NAME); ?></h1>
             <hr>
         </div>
         <div class="col-12" id="alert"><?php echo $alert; ?></div>
@@ -110,7 +110,7 @@ if( $global->get( 'action' ) == 'deactivate_license' )
                         	<?php
                             	$general = new CF_Geoplugin_Form;
 								$general->html('<h5 class="mt-3" id="WordPress_Settings">'.__('WordPress Settings',CFGP_NAME).'</h5>');
-								$general->html('<p>'.__('This settings only affect on WordPress Geo Plugin functionality and connection between plugin and WordPress setup. Use it smart and careful.',CFGP_NAME).'</p><hr>');
+								$general->html('<p>'.__('This settings only affect on CF Geo Plugin functionality and connection between plugin and WordPress setup. Use it smart and careful.',CFGP_NAME).'</p><hr>');
 								
 								$general->radio(array(
 									'label'		=> __('Enable Plugin Auto Update',CFGP_NAME),
@@ -145,7 +145,7 @@ if( $global->get( 'action' ) == 'deactivate_license' )
 										'value'	=> 0,
 										'id'	=> 'enable_dashboard_widget_false',
 									),
-									'info'		=> __('Enable WordPress Geo Plugin widget in the dashboard area.',CFGP_NAME)
+									'info'		=> __('Enable CF Geo Plugin widget in the dashboard area.',CFGP_NAME)
 								));
 								
 								$general->radio(array(
@@ -232,23 +232,27 @@ if( $global->get( 'action' ) == 'deactivate_license' )
 									)
 								));
 								
-								$base_currency_options = array();
-								$i = 0;
-								foreach( CF_Geplugin_Library::CURRENCY_SYMBOL as $currency => $value )
+								
+								if(!( $CF_GEOPLUGIN_OPTIONS['woocommerce_active'] && $CF_GEOPLUGIN_OPTIONS['enable_woocommerce'] ? true : false ))
 								{
-									$base_currency_options[$i]['value'] = $currency;
-									$base_currency_options[$i]['text'] = $currency . (!empty($value) ? " &nbsp;&nbsp;-&nbsp;&nbsp; {$value}" : '');
-									$i++;
+									$base_currency_options = array();
+									$i = 0;
+									foreach( CF_Geplugin_Library::CURRENCY_SYMBOL as $currency => $value )
+									{
+										$base_currency_options[$i]['value'] = $currency;
+										$base_currency_options[$i]['text'] = $currency . (!empty($value) ? " &nbsp;&nbsp;-&nbsp;&nbsp; {$value}" : '');
+										$i++;
+									}
+									$general->select(array_merge(array(
+										'label'		=> __('Base currency',CFGP_NAME),
+										'name'		=> 'base_currency',
+										'id'		=> 'base_currency',
+										'default'	=> (isset($CF_GEOPLUGIN_OPTIONS['base_currency']) ? $CF_GEOPLUGIN_OPTIONS['base_currency'] : 'USD'),
+										'attr'		=> array('autocomplete'=>'off', 'style'=>'max-width:120px;display: inline-block;'),
+										'info'		=> '<p>' . __('The base currency (transaction currency) - The currency by which conversion is checked by geo location.',CFGP_NAME) . '<span class="text-info" id="base_currency_info"' . ((!$CF_GEOPLUGIN_OPTIONS['woocommerce_active'] || !$CF_GEOPLUGIN_OPTIONS['enable_woocommerce']) ? ' style="display: none;"' : '') . '><br>' . __('Woocommerce take control of this and you can change it inside Woocommerce Settings.',CFGP_NAME) . '</span>' . '</p>',
+										'disabled'	=> ( $CF_GEOPLUGIN_OPTIONS['woocommerce_active'] && $CF_GEOPLUGIN_OPTIONS['enable_woocommerce'] ? true : false )
+									), $base_currency_options ));
 								}
-								$general->select(array_merge(array(
-									'label'		=> __('Base currency',CFGP_NAME),
-									'name'		=> 'base_currency',
-									'id'		=> 'base_currency',
-									'default'	=> (isset($CF_GEOPLUGIN_OPTIONS['base_currency']) ? $CF_GEOPLUGIN_OPTIONS['base_currency'] : 'USD'),
-									'attr'		=> array('autocomplete'=>'off', 'style'=>'max-width:120px;display: inline-block;'),
-									'info'		=> '<p>' . __('The base currency (transaction currency) - The currency by which conversion is checked by geo location.',CFGP_NAME) . '<span class="text-info" id="base_currency_info"' . ((!$CF_GEOPLUGIN_OPTIONS['woocommerce_active'] || !$CF_GEOPLUGIN_OPTIONS['enable_woocommerce']) ? ' style="display: none;"' : '') . '><br>' . __('Woocommerce take control of this and you can change it inside Woocommerce Settings.',CFGP_NAME) . '</span>' . '</p>',
-									'disabled'	=> ( $CF_GEOPLUGIN_OPTIONS['woocommerce_active'] && $CF_GEOPLUGIN_OPTIONS['enable_woocommerce'] ? true : false )
-								), $base_currency_options ));
 								
 								$general->html( sprintf( '<button type="submit" class="btn btn-success pull-right cfgp_save_options">%s</button>', __( 'Update All Options', CFGP_NAME ) ) );
 								$general->html('<h5 class="mt-5" id="Plugin_Settings">'.__('Plugin Settings',CFGP_NAME).'</h5>');
@@ -335,7 +339,7 @@ if( $global->get( 'action' ) == 'deactivate_license' )
 									'name'		=> 'enable_woocommerce',
 									'class'		=> 'enable_woocommerce',
 									'default'	=> (isset($CF_GEOPLUGIN_OPTIONS['enable_woocommerce']) ? $CF_GEOPLUGIN_OPTIONS['enable_woocommerce'] : 0 ),
-									'info'		=> !$CF_GEOPLUGIN_OPTIONS['woocommerce_active'] ? __('This function is only enabled when Woocommerce is active.', CFGP_NAME) : ($CF_GEOPLUGIN_OPTIONS['enable_woocommerce'] ? __( 'For more options visit WooCommerce Settings', CFGP_NAME ) : __( 'If you want to WordPress Geo Plugin add new options to your WooCommerce, activate this option.', CFGP_NAME )),
+									'info'		=> !$CF_GEOPLUGIN_OPTIONS['woocommerce_active'] ? __('This function is only enabled when Woocommerce is active.', CFGP_NAME) : ($CF_GEOPLUGIN_OPTIONS['enable_woocommerce'] ? __( 'For more options visit WooCommerce Settings', CFGP_NAME ) : __( 'If you want to CF Geo Plugin add new options to your WooCommerce, activate this option.', CFGP_NAME )),
 									array(
 										'text'	=> __('Enable', CFGP_NAME),
 										'value'	=> 1,
@@ -357,7 +361,7 @@ if( $global->get( 'action' ) == 'deactivate_license' )
 									'name'		=> 'enable_rest',
 									'class'		=> 'enable_rest',
 									'default'	=> (isset($CF_GEOPLUGIN_OPTIONS['enable_rest']) ? $CF_GEOPLUGIN_OPTIONS['enable_rest'] : 0),
-									'info'		=> __('The WordPress Geo Plugin REST API allows external apps to use geo informations.',CFGP_NAME) . (CF_Geoplugin_Global::access_level($CF_GEOPLUGIN_OPTIONS) < 4 ? '<br><span class="text-info">' . __('REST API is only functional for the Business License.',CFGP_NAME) . '</span>' : ''),
+									'info'		=> __('The CF Geo Plugin REST API allows external apps to use geo informations.',CFGP_NAME) . (CF_Geoplugin_Global::access_level($CF_GEOPLUGIN_OPTIONS) < 4 ? '<br><span class="text-info">' . __('REST API is only functional for the Business License.',CFGP_NAME) . '</span>' : ''),
 									array(
 										'text'	=> __('Enable',CFGP_NAME),
 										'value'	=> 1,
@@ -633,7 +637,7 @@ if( $global->get( 'action' ) == 'deactivate_license' )
 
 								$general->html( sprintf( '<button type="submit" class="btn btn-success pull-right cfgp_save_options">%s</button>', __( 'Update All Options', CFGP_NAME ) ) );
 								$general->html('<h5 class="mt-5" class="BETA_Testing">'.__('BETA Testing & Advanced Features',CFGP_NAME).'</h5>');
-								$general->html('<p>'.__('Here you can enable BETA functionality and test it. In many cases, normaly you should not have any problems but some functionality are new and experimental that mean if any conflict happen, you must be aware of this. If many users find this functionality useful we may keep this functionality and include it as standard functionality of WordPress Geo Plugin.',CFGP_NAME).'</p><hr>');
+								$general->html('<p>'.__('Here you can enable BETA functionality and test it. In many cases, normaly you should not have any problems but some functionality are new and experimental that mean if any conflict happen, you must be aware of this. If many users find this functionality useful we may keep this functionality and include it as standard functionality of CF Geo Plugin.',CFGP_NAME).'</p><hr>');
 								
 								$general->radio(array(
 									'label'		=> __('Enable Advanced Features (BETA)',CFGP_NAME),
@@ -705,7 +709,7 @@ if( $global->get( 'action' ) == 'deactivate_license' )
 									'id'		=> 'map_latitude',
 									'value'		=> (isset($CF_GEOPLUGIN_OPTIONS['map_latitude']) ? $CF_GEOPLUGIN_OPTIONS['map_latitude'] : ''),
 									'attr'		=> array('autocomplete'=>'off'),
-									'info'		=> __('Leave blank for WordPress Geo Plugin default support or place custom value.',CFGP_NAME),
+									'info'		=> __('Leave blank for CF Geo Plugin default support or place custom value.',CFGP_NAME),
 									'attr'		=> array('style'=>'max-width:200px;')
 								));
 								
@@ -715,7 +719,7 @@ if( $global->get( 'action' ) == 'deactivate_license' )
 									'id'		=> 'map_longitude',
 									'value'		=> (isset($CF_GEOPLUGIN_OPTIONS['map_longitude']) ? $CF_GEOPLUGIN_OPTIONS['map_longitude'] : ''),
 									'attr'		=> array('autocomplete'=>'off'),
-									'info'		=> __('Leave blank for WordPress Geo Plugin default support or place custom value.',CFGP_NAME),
+									'info'		=> __('Leave blank for CF Geo Plugin default support or place custom value.',CFGP_NAME),
 									'attr'		=> array('style'=>'max-width:200px;')
 								));
 								
@@ -875,7 +879,7 @@ if( $global->get( 'action' ) == 'deactivate_license' )
                             <?php if(CF_Geoplugin_Global::access_level($CF_GEOPLUGIN_OPTIONS) < 4): ?>
                             <h5 class="mt-3 text-danger"><?php _e('NOTE: The REST API is only functional for the Business License',CFGP_NAME) ?></h5>
                             <?php endif; ?>
-                            <p><?php _e('The WordPress Geo Plugin REST API allows external apps to use geo informations and made your WordPress like geo informations provider.',CFGP_NAME) ?></p>
+                            <p><?php _e('The CF Geo Plugin REST API allows external apps to use geo informations and made your WordPress like geo informations provider.',CFGP_NAME) ?></p>
                             <h5><?php _e('API KEY',CFGP_NAME) ?>:</h5>
                             <div><code style="font-size: large;width: 100%;text-align: center;font-weight: 800;padding: 10px"><?php echo $CF_GEOPLUGIN_OPTIONS['id']; ?></code></div>
                             <h5 class="mt-3"><?php _e('Secret API KEY',CFGP_NAME) ?>:</h5>
@@ -893,7 +897,7 @@ if( $global->get( 'action' ) == 'deactivate_license' )
                                 <div class="col-sm-10 tab-content" id="cf-geo-rest-tabContent">
                                     <div class="tab-pane border border-secondary rounded pt-1 pb-1 pl-3 pr-3 fade show active" id="cf-geo-rest-info" role="tabpanel" aria-labelledby="cf-geo-rest-info-tab">
                                     	<h5 class="mt-3"><?php _e('Authentication endpoint',CFGP_NAME) ?>:</h5>
-                                        <p><?php _e('Endpoint used to authenticate connection between WordPress Geo Plugin on your site and your external app.',CFGP_NAME) ?></p>
+                                        <p><?php _e('Endpoint used to authenticate connection between CF Geo Plugin on your site and your external app.',CFGP_NAME) ?></p>
                                         <p><code><?php echo self_admin_url('admin-ajax.php?action=cf_geoplugin_authenticate'); ?></code></p>
                                         <p><?php _e('Expected GET or POST parameters.',CFGP_NAME) ?></p>
                                         <table class="table">
