@@ -5,7 +5,7 @@ Tags: geolocation, woocommerce, store-locator, seo, google-maps, geomarketing, c
 Requires at least: 3.0
 Tested up to: 5.3
 Requires PHP: 5.6.0
-Stable tag: 7.9.0
+Stable tag: 7.9.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -363,6 +363,10 @@ Please inform us if any of these errors occure via contact form on our website [
 
 == Changelog ==
 
+= 7.9.1 =
+* Fixed SEO redirection because of CORS (Cross-Origin Resource Sharing) protection
+* Fixed error logging
+
 = 7.9.0 =
 * Added new shortcode for the GPS
 * Added new Shortcode for the standard VAT rate value
@@ -375,42 +379,12 @@ Please inform us if any of these errors occure via contact form on our website [
 * Removed unuseful shortcodes
 * Removed deprecated functions
 * Removed deprecated shortcodes
-
-= 7.8.11 =
-* Included include/exclude property into VAT shortcodes
-* Included include/exclude property into EU shortcodes
-
-= 7.8.10 =
-* Fixed PHP notice in the shortcodes
-* Included post type check
-* Prepared code for the new future versions
-
-= 7.8.9 =
-* Added new shortcodes for the VAT and EU control
-* Fixed API bugs
-* Fixed translations
-
-= 7.8.8 =
-* CF Geo Plugin: Fixed SQL error on the SEO redirection
-
-= 7.8.7 =
-* CF Geo Plugin: Fixed Woocommerce PHP error compatibility
-* WooCommerce: Fixed missing SKU and ID in the price control
 
 == Upgrade Notice ==
 
-= 7.9.0 =
-* Added new shortcode for the GPS
-* Added new Shortcode for the standard VAT rate value
-* Added support for the PHP 7.4
-* Fixed multisite problem with update options
-* Fixed VAT rate API calls
-* Fixed errors when site reach maximum lookup
-* Fixed errors if currency is not available
-* Fixed bad translations
-* Removed unuseful shortcodes
-* Removed deprecated functions
-* Removed deprecated shortcodes
+= 7.9.1 =
+* Fixed SEO redirection because of CORS (Cross-Origin Resource Sharing) protection
+* Fixed error logging
 
 == Other Notes ==
 

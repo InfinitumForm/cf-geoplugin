@@ -141,12 +141,38 @@ class CF_Geoplugin_SEO_Redirection extends CF_Geoplugin_Global
 	
 	private function redirect($url, $http_code=302){
 		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
-		if(!$CF_GEOPLUGIN_OPTIONS['enable_cache'])
+		if (!headers_sent())
 		{
-			header('Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0');
-			header('Expires: Sat, 26 Jul 1997 05:00:00 GMT');
+			// Clear cache for the redirections
+			if(!$CF_GEOPLUGIN_OPTIONS['enable_cache'])
+			{
+				header('Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0');
+				header('Expires: Sat, 26 Jul 1997 05:00:00 GMT');
+			}
+			
+			// Redirect via PHP
+			if( !wp_redirect( $url, $http_code ) )
+			{
+				// Log exception
+				if(isset($CF_GEOPLUGIN_OPTIONS['log_errors']) && $CF_GEOPLUGIN_OPTIONS['log_errors']) {
+					throw new Exception(__('CF GEO PLUGIN NOTICE: WordPress redirection fail because of CORS (Cross-Origin Resource Sharing) protection. We proceed with the standard PHP redirection.', CFGP_NAME));
+				}
+			}
+			
+			// Standard redirect
+			header('Location: ' . $url, true, $http_code);
+			
+			// Optional workaround for an IE bug (thanks Olav)
+        	header('Connection: close');
+			exit;
 		}
-		if (wp_redirect( $url, $http_code )) exit;
+		else
+		{
+			// Log exception
+			if(isset($CF_GEOPLUGIN_OPTIONS['log_errors']) && $CF_GEOPLUGIN_OPTIONS['log_errors']) {
+				throw new Exception(sprintf(__('CF GEO PLUGIN NOTICE: Headers already sent, redirection is not possible to the: %s', CFGP_NAME), $url));
+			}
+		}
 	}
 
 	private function do_redirection( $redirect )

@@ -1,4 +1,8 @@
 == Changelog ==
+= 7.9.1 =
+* Fixed SEO redirection because of CORS (Cross-Origin Resource Sharing) protection
+* Fixed error logging
+
 = 7.9.0 =
 * Added new shortcode for the GPS
 * Added new Shortcode for the standard VAT rate value
