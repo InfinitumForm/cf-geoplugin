@@ -8,7 +8,7 @@
  * Plugin Name:       WordPress Geo Plugin
  * Plugin URI:        http://cfgeoplugin.com/
  * Description:       Create Dynamic Content, Banners and Images on Your Website Based On Visitor Geo Location By Using Shortcodes With CF Geo Plugin.
- * Version:           7.9.1
+ * Version:           7.9.2
  * Author:            INFINITUM FORM
  * Author URI:        https://infinitumform.com/
  * License:           GPL-2.0+
@@ -100,6 +100,11 @@ if ( ! defined( 'CFGP_METABOX' ) )		define( 'CFGP_METABOX', 'cf_geo_metabox_');
 if ( ! defined( 'CFGP_PREFIX' ) )		define( 'CFGP_PREFIX', 'cf_geo_'.preg_replace("/[^0-9]/Ui",'',CFGP_VERSION).'_');
 // Timestamp
 if( ! defined( 'CFGP_TIME' ) )			define( 'CFGP_TIME', time() );
+
+// if PHP_VERSION missing
+if( ! defined( 'PHP_VERSION' ) && function_exists('phpversion') )
+	define( 'PHP_VERSION', phpversion());
+
 // PHP_VERSION_ID is available as of PHP 5.2.7, if our version is lower than that, then emulate it
 if (!defined('PHP_VERSION_ID')) {
     $php_version = explode('.', PHP_VERSION);
@@ -123,70 +128,68 @@ else if( ! defined( 'CFGP_MULTISITE' ) )
 
 	define( 'CFGP_MULTISITE', is_plugin_active_for_network( CFGP_ROOT . '/cf-geoplugin.php' ) );
 }
-/*
- * Define upgrade  notice message
- */
-add_action( 'in_plugin_update_message-cf-geoplugin/cf-geoplugin.php', function ($currentPluginMetadata, $newPluginMetadata){
-   if (isset($newPluginMetadata->upgrade_notice) && strlen(trim($newPluginMetadata->upgrade_notice)) > 0){
-        echo '<div style="padding: 10px; color: #f9f9f9; margin-top: 10px"><h3>' . __('Important Upgrade Notice:', CFGP_NAME) . '</h3> ';
-        echo $newPluginMetadata->upgrade_notice, '</div>';
-   }
-}, 10, 2 );
-// PHP7 DEPRECATED FUNCTION SUPPORT
-include_once CFGP_ROOT.'/includes/php7.x.php';
-// Include privacy policy
-include_once CFGP_ROOT.'/globals/cf-geoplugin-privacy.php';
-// Include debug class
-include_once CFGP_INCLUDES . '/class-cf-geoplugin-debug.php';
-// Activate session
-include_once CFGP_GLOBALS . '/cf-geoplugin-session.php';
-// Our debug object to global variables
-if( !isset( $GLOBALS['debug'] ) ) $GLOBALS['debug'] = new CF_Geoplugin_Debug;
-// Check cURL
-if( !function_exists( 'curl_init' ) ) CF_Geoplugin_Debug::log( 'cURL Status: Disabled' );
-else CF_Geoplugin_Debug::log( 'cURL Status: Enabled' );
-// Include hook class
-include_once CFGP_INCLUDES . '/class-cf-geoplugin-admin-notice.php';
-// Get locale setup
-include_once CFGP_INCLUDES . '/class-cf-geoplugin-locale.php';
-// Get globals
-include_once CFGP_INCLUDES . '/class-cf-geoplugin-global.php';
-// Define important constants
-include_once CFGP_GLOBALS . '/cf-geoplugin-global.php';
-// Define API services
-include_once CFGP_GLOBALS . '/cf-geoplugin-api.php';
-// Include Converter Widget
-include_once CFGP_GLOBALS . '/cf-geoplugin-includes.php';
-// Include Plugin integrations
-include_once CFGP_GLOBALS . '/cf-geoplugin-plugins.php';
-// Include Activation Control
-include_once CFGP_GLOBALS . '/cf-geoplugin-activation.php';
 
-/*
-* When everything is constructed and builded, just load plugin properly
-* @since 7.0.0
-*/
-function CF_Geoplugin_Invoke(){
-	if(class_exists('CF_Geoplugin_Load')) :
-		return CF_Geoplugin_Load::cf_geoplugin();
+// Requirements
+include_once CFGP_GLOBALS . '/cf-geoplugin-requirements.php';
+$CF_Geoplugin_Requirements_Check = new CF_Geoplugin_Requirements_Check(array('file' => CFGP_FILE));
+
+if($CF_Geoplugin_Requirements_Check->passes()) :
+	// PHP7 DEPRECATED FUNCTION SUPPORT
+	include_once CFGP_ROOT.'/includes/php7.x.php';
+	// Include privacy policy
+	include_once CFGP_ROOT.'/globals/cf-geoplugin-privacy.php';
+	// Include debug class
+	include_once CFGP_INCLUDES . '/class-cf-geoplugin-debug.php';
+	// Activate session
+	include_once CFGP_GLOBALS . '/cf-geoplugin-session.php';
+	// Our debug object to global variables
+	if( !isset( $GLOBALS['debug'] ) ) $GLOBALS['debug'] = new CF_Geoplugin_Debug;
+	// Check cURL
+	if( !function_exists( 'curl_init' ) ) CF_Geoplugin_Debug::log( 'cURL Status: Disabled' );
+	else CF_Geoplugin_Debug::log( 'cURL Status: Enabled' );
+	// Include hook class
+	include_once CFGP_INCLUDES . '/class-cf-geoplugin-admin-notice.php';
+	// Get locale setup
+	include_once CFGP_INCLUDES . '/class-cf-geoplugin-locale.php';
+	// Get globals
+	include_once CFGP_INCLUDES . '/class-cf-geoplugin-global.php';
+	// Define important constants
+	include_once CFGP_GLOBALS . '/cf-geoplugin-global.php';
+	// Define API services
+	include_once CFGP_GLOBALS . '/cf-geoplugin-api.php';
+	// Include Converter Widget
+	include_once CFGP_GLOBALS . '/cf-geoplugin-includes.php';
+	// Include Plugin integrations
+	include_once CFGP_GLOBALS . '/cf-geoplugin-plugins.php';
+	// Include Activation Control
+	include_once CFGP_GLOBALS . '/cf-geoplugin-activation.php';
+
+	/*
+	* When everything is constructed and builded, just load plugin properly
+	* @since 7.0.0
+	*/
+	function CF_Geoplugin_Invoke(){
+		if(class_exists('CF_Geoplugin_Load')) :
+			return CF_Geoplugin_Load::cf_geoplugin();
+		endif;
+	}
+	/*
+	* Do old function name support (lowercase)
+	* @since 6.0.0
+	*/
+	if(!function_exists('cf_geoplugin')) :
+		function cf_geoplugin(){ return CF_Geoplugin_Invoke(); }
 	endif;
-}
-/*
-* Do old function name support (lowercase)
-* @since 6.0.0
-*/
-if(!function_exists('cf_geoplugin')) :
-	function cf_geoplugin(){ return CF_Geoplugin_Invoke(); }
+
+	// Load plugin properly
+	CF_Geoplugin_Load::load_plugin();
+	CF_Geoplugin_Debug::log( 'Function "CF_Geoplugin_Load::load_plugin()" is loaded.' );
+
+	// Plugin is loaded
+	if(add_action('init', 'CF_Geoplugin', 2, 0)){
+		CF_Geoplugin_Debug::log( 'Function "CF_Geoplugin()" is loaded.' );
+	} else CF_Geoplugin_Debug::log( 'Function "CF_Geoplugin()" is not loaded and plugin can\'t start.' );
+
+	// Add privacy policy
+	add_action( 'admin_init', 'cf_geoplugin_privacy_policy' );
 endif;
-
-// Load plugin properly
-CF_Geoplugin_Load::load_plugin();
-CF_Geoplugin_Debug::log( 'Function "CF_Geoplugin_Load::load_plugin()" is loaded.' );
-
-// Plugin is loaded
-if(add_action('init', 'CF_Geoplugin', 2, 0)){
-	CF_Geoplugin_Debug::log( 'Function "CF_Geoplugin()" is loaded.' );
-} else CF_Geoplugin_Debug::log( 'Function "CF_Geoplugin()" is not loaded and plugin can\'t start.' );
-
-// Add privacy policy
-add_action( 'admin_init', 'cf_geoplugin_privacy_policy' );

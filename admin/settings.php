@@ -640,7 +640,7 @@ if( $global->get( 'action' ) == 'deactivate_license' )
 								$general->html('<p>'.__('Here you can enable BETA functionality and test it. In many cases, normaly you should not have any problems but some functionality are new and experimental that mean if any conflict happen, you must be aware of this. If many users find this functionality useful we may keep this functionality and include it as standard functionality of CF Geo Plugin.',CFGP_NAME).'</p><hr>');
 								
 								$general->radio(array(
-									'label'		=> __('Enable Advanced Features (BETA)',CFGP_NAME),
+									'label'		=> __('Enable BETA Features',CFGP_NAME),
 									'name'		=> 'enable_beta',
 									'default'	=> (isset($CF_GEOPLUGIN_OPTIONS['enable_beta']) ? $CF_GEOPLUGIN_OPTIONS['enable_beta'] : 1),
 									'info'		=> __('This enable/disable all BETA functionality by default.',CFGP_NAME),
@@ -674,7 +674,24 @@ if( $global->get( 'action' ) == 'deactivate_license' )
 										'id'	=> 'enable_beta_shortcode_false',
 										'disabled' 	=> (isset($CF_GEOPLUGIN_OPTIONS['enable_beta']) && $CF_GEOPLUGIN_OPTIONS['enable_beta'] ? false : true),
 										'input_class'	=> 'beta-disable'
-									)
+									),
+								));
+								
+								$general->radio(array(
+									'label'		=> __('Enable Advanced Logging',CFGP_NAME),
+									'name'		=> 'log_errors',
+									'default'	=> (isset($CF_GEOPLUGIN_OPTIONS['log_errors']) ? $CF_GEOPLUGIN_OPTIONS['log_errors'] : 0),
+									'info'		=> __('This option will log any errors and warnings in your error_log file that you can later use during technical support.',CFGP_NAME),
+									array(
+										'text'	=> __('Enable',CFGP_NAME),
+										'value'	=> 1,
+										'id'	=> 'log_errors_true'
+									),
+									array(
+										'text'	=> __('Disable',CFGP_NAME),
+										'value'	=> 0,
+										'id'	=> 'log_errors_false'
+									),
 								));
 								
 								// Print form

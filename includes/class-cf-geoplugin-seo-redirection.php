@@ -12,6 +12,14 @@ class CF_Geoplugin_SEO_Redirection extends CF_Geoplugin_Global
 {
     public function __construct()
     {
+		// Prevent redirection using GET parametter
+		if(isset($_GET['geo']) && ($_GET['geo'] === false || $_GET['geo'] === 'false'))
+			return;
+			
+		if(isset($_REQUEST['stop_redirection']) && ($_REQUEST['stop_redirection'] === true || $_REQUEST['stop_redirection'] === 'true'))
+			return;
+		
+		
 		$this->add_action( 'template_redirect', 'page_seo_redirection', 1);
 		$this->add_action( 'template_redirect', 'wp_seo_redirection', 1);
 	}

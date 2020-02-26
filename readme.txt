@@ -5,7 +5,7 @@ Tags: geolocation, woocommerce, store-locator, seo, google-maps, geomarketing, c
 Requires at least: 3.0
 Tested up to: 5.3
 Requires PHP: 5.6.0
-Stable tag: 7.9.1
+Stable tag: 7.9.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -363,6 +363,12 @@ Please inform us if any of these errors occure via contact form on our website [
 
 == Changelog ==
 
+= 7.9.2 =
+* Added manual bypass for the SEO redirection
+* Added subversion control for the older PHP and WordPress versions
+* Added logging control in the settings
+* Fixed PHP bugs from the previous version
+
 = 7.9.1 =
 * Fixed SEO redirection because of CORS (Cross-Origin Resource Sharing) protection
 * Fixed error logging
@@ -382,9 +388,11 @@ Please inform us if any of these errors occure via contact form on our website [
 
 == Upgrade Notice ==
 
-= 7.9.1 =
-* Fixed SEO redirection because of CORS (Cross-Origin Resource Sharing) protection
-* Fixed error logging
+= 7.9.2 =
+* Added manual bypass for the SEO redirection
+* Added subversion control for the older PHP and WordPress versions
+* Added logging control in the settings
+* Fixed PHP bugs from the previous version
 
 == Other Notes ==
 
