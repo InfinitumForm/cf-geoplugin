@@ -197,7 +197,7 @@ if( isset( $_GET['action'] ) && ( $_GET['action'] == 'debugger' || $_GET['action
                                 <tbody>
                                     <?php do_action('page-cf-geoplugin-debug-recived-data-table'); ?>
                                     <tr>
-                                        <td><strong><?php _e( 'Site Title', CFGP_NAME ); ?></strong></td>
+                                        <td><strong><?php _e( 'Site title', CFGP_NAME ); ?></strong></td>
                                         <td><?php echo get_bloginfo( 'name' ); ?></td>
                                     </tr>
                                     <tr>
@@ -209,11 +209,15 @@ if( isset( $_GET['action'] ) && ( $_GET['action'] == 'debugger' || $_GET['action
                                         <td><?php echo get_bloginfo( 'wpurl' ); ?></td>
                                     </tr>
                                     <tr>
-                                        <td><strong><?php _e( 'WordPress Host', CFGP_NAME ); ?></strong></td>
+                                        <td><strong><?php _e( 'WordPress host', CFGP_NAME ); ?></strong></td>
                                         <td><?php echo self::get_host(); ?></td>
                                     </tr>
                                     <tr>
-                                        <td><strong><?php _e( 'Admin Email', CFGP_NAME ); ?></strong></td>
+                                        <td><strong><?php _e( 'WordPress multisite', CFGP_NAME ); ?></strong></td>
+                                        <td><?php echo (CFGP_MULTISITE ? _e('Enabled', CFGP_NAME) : _e('Disabled', CFGP_NAME)); ?></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong><?php _e( 'Admin email', CFGP_NAME ); ?></strong></td>
                                         <td><?php echo get_bloginfo( 'admin_email' ); ?></td>
                                     </tr>
                                     <tr>
@@ -221,7 +225,7 @@ if( isset( $_GET['action'] ) && ( $_GET['action'] == 'debugger' || $_GET['action
                                         <td><?php echo get_bloginfo( 'charset' ); ?></td>
                                     </tr>
                                     <tr>
-                                        <td><strong><?php _e( 'WordPress Version', CFGP_NAME ); ?></strong></td>
+                                        <td><strong><?php _e( 'WordPress version', CFGP_NAME ); ?></strong></td>
                                         <td><?php echo get_bloginfo( 'version' ); ?></td>
                                     </tr>
                                     <tr>
@@ -233,30 +237,48 @@ if( isset( $_GET['action'] ) && ( $_GET['action'] == 'debugger' || $_GET['action
                                         <td><?php echo get_bloginfo( 'language' ); ?></td>
                                     </tr>
                                     <tr>
-                                        <td><strong><?php _e( 'Server Time', CFGP_NAME ); ?></strong></td>
+                                        <td><strong><?php _e( 'Server time', CFGP_NAME ); ?></strong></td>
                                         <td><?php echo date( 'r' ); ?></td>
                                     </tr>
                                     <tr>
-                                        <td><strong><?php _e( 'WordPress Folder Path', CFGP_NAME ); ?></strong></td>
+                                        <td><strong><?php _e( 'WordPress directory path', CFGP_NAME ); ?></strong></td>
                                         <td><?php echo ABSPATH; ?></td>
                                     </tr>
-                                    <?php if (defined('PHP_VERSION')): ?>
                                     <tr>
-                                        <td><strong><?php _e( 'PHP Version', CFGP_NAME ); ?></strong></td>
+                                        <td><strong><?php _e( 'PHP version', CFGP_NAME ); ?></strong></td>
                                         <td>PHP <?php echo PHP_VERSION; ?></td>
                                     </tr>
-                                    <?php endif; ?>
                                     <tr>
-                                        <td><strong><?php _e( 'Operting System', CFGP_NAME ); ?></strong></td>
-                                        <td><?php echo CF_Geoplugin_OS::getOS(); ?> <?php echo CF_Geoplugin_OS::architecture(); ?>bit</td>
+                                        <td><strong><?php _e( 'PHP version ID', CFGP_NAME ); ?></strong></td>
+                                        <td><?php echo PHP_VERSION_ID; ?></td>
                                     </tr>
                                     <tr>
-                                        <td><strong><?php _e( 'User Agent', CFGP_NAME ); ?></strong></td>
+                                        <td><strong><?php _e( 'PHP architecture', CFGP_NAME ); ?></strong></td>
+                                        <td><?php printf(__('%dbit', CFGP_NAME), (CF_Geoplugin_OS::is_php64() ? 64 : 32)); ?></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong><?php _e( 'Operting system', CFGP_NAME ); ?></strong></td>
+                                        <td><?php echo CF_Geoplugin_OS::getOS(); ?> <?php printf(__('%dbit', CFGP_NAME), CF_Geoplugin_OS::architecture()); ?></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong><?php _e( 'User agent', CFGP_NAME ); ?></strong></td>
                                         <td><?php echo CF_Geoplugin_OS::user_agent(); ?></td>
                                     </tr>
                                     <tr>
-                                        <td><strong><?php _e( 'WordPress Debug', CFGP_NAME ); ?></strong></td>
+                                        <td><strong><?php _e( 'WordPress debug', CFGP_NAME ); ?></strong></td>
                                         <td><?php echo ( WP_DEBUG ? '<strong><span class="text-danger">' . __( 'On', CFGP_NAME ) . '</span></strong>' : __( 'Off', CFGP_NAME ) ); ?></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong><?php _e( 'Plugin directory path', CFGP_NAME ); ?></strong></td>
+                                        <td><?php echo CFGP_ROOT; ?></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong><?php _e( 'Session API expire', CFGP_NAME ); ?></strong></td>
+                                        <td><?php printf(__('%d minutes', CFGP_NAME), CFGP_SESSION); ?></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong><?php _e( 'Local or live server', CFGP_NAME ); ?></strong></td>
+                                        <td><?php (CFGP_LOCAL ? _e('Local server', CFGP_NAME) : _e('Live server', CFGP_NAME)); ?></td>
                                     </tr>
                                 </tbody>
                             </table>

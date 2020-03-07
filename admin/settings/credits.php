@@ -5,7 +5,7 @@
 <p><?php echo sprintf(__('The %s allows you to attach geographic information and Google maps to posts, pages, widgets and custom templates by using shortcodes and user IP address. It also lets you to specify a default geographic location for your entire WordPress blog. Also you can place banners and content realated to user locations.',CFGP_NAME),'<strong>CF Geo Plugin</strong>'); ?></p>
 <hr>
 <h3 class="h5"><span class="fa fa-code"></span> <?php _e('For Developers and Contributors',CFGP_NAME); ?></h3>
-<p><?php _e('You are welcome to contribute to my plugin and help me in the development. Also you are welcome to use this plugin inside your projects like part of your own plugins and templates. All great new ideas will be taken into consideration and all together we can do something fantastic!',CFGP_NAME); ?></p>
+<p><?php _e('You are welcome to contribute to my plugin and help me in the development. Also you are welcome to use this plugin inside your projects like part of your own plugins and templates. All great new ideas will be taken into consideration and all together we can do something fantastic!',CFGP_NAME); ?><br><?php printf('<a href="https://cfgeoplugin.com/get-involved/" target="_blank">[%s]</a>', __('Read more about this', CFGP_NAME)); ?></p>
 <hr>
 <h3 class="h5"><span class="fa fa-copyright"></span> <?php _e('Copyright',CFGP_NAME); ?></h3>
 <p>Copyright <span class="fa fa-copyright"></span> 2015 - <?php echo date("Y")?> <a href="http://cfgeoplugin.com" target="_blank"><em><strong>CF Geo Plugin</strong></em></a> by <a href="https://www.infinitumform.com" target="_blank"><em><strong>INFINITUM FORM</strong></em></a>. All Right Reserved.</p>

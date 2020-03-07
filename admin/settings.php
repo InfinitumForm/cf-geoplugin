@@ -551,72 +551,7 @@ if( $global->get( 'action' ) == 'deactivate_license' )
 								);
 								
 								$general->html( sprintf( '<button type="submit" class="btn btn-success pull-right cfgp_save_options">%s</button>', __( 'Update All Options', CFGP_NAME ) ) );
-								$general->html('<h5 class="mt-5" id="Proxy_Settings">'.__('Proxy Settings',CFGP_NAME).'</h5>');
-								$general->html('<p>'.sprintf(__('Some servers not share real IP because of security reasons or IP is blocked from geolocation. Using proxy you can bypass that protocols and enable geoplugin to work properly. Also, this option on individual servers can cause inaccurate geo informations, and because of that this option is disabled by default. You need to test this option on your side and use wise. Need proxy service? %1$s.',CFGP_NAME),'<a href="https://go.nordvpn.net/aff_c?offer_id=15&aff_id=14042&url_id=902" target="_blank">'.__('We have Recommended Service For You',CFGP_NAME).'</a>').'</p><p>'.__('This is usually good if you use some Onion domain or you are a general user of the private web and all your websites are in the private networks.',CFGP_NAME).'</p><hr>');
 								
-								
-							if(CF_Geoplugin_Global::access_level($CF_GEOPLUGIN_OPTIONS) > 1):
-								$general->radio(array(
-									'label'		=> __('Enable Proxy',CFGP_NAME),
-									'name'		=> 'proxy',
-									'default'	=> (isset($CF_GEOPLUGIN_OPTIONS['proxy']) ? $CF_GEOPLUGIN_OPTIONS['proxy'] : 0),
-									array(
-										'text'	=> __('Enable',CFGP_NAME),
-										'value'	=> 1,
-										'id'	=> 'proxy_true',
-									),
-									array(
-										'text'	=> __('Disable',CFGP_NAME),
-										'value'	=> 0,
-										'id'	=> 'proxy_false',
-									)
-								));
-								
-								$general->input(array(
-									'label'		=> __('Proxy IP/Host',CFGP_NAME),
-									'name'		=> 'proxy_ip',
-									'id'		=> 'proxy_ip',
-									'value'		=> (isset($CF_GEOPLUGIN_OPTIONS['proxy_ip']) ? $CF_GEOPLUGIN_OPTIONS['proxy_ip'] : ''),									
-									'disabled' => (isset($CF_GEOPLUGIN_OPTIONS['proxy']) && $CF_GEOPLUGIN_OPTIONS['proxy'] ? false : true),
-									'attr'		=> array('autocomplete'=>'off'),
-									'input_class'	=> 'proxy-disable'
-								));
-								
-								$general->input(array(
-									'label'		=> __('Proxy Port',CFGP_NAME),
-									'name'		=> 'proxy_port',
-									'id'		=> 'proxy_port',
-									'value'		=> (isset($CF_GEOPLUGIN_OPTIONS['proxy_port']) ? $CF_GEOPLUGIN_OPTIONS['proxy_port'] : ''),									
-									'disabled' 	=> (isset($CF_GEOPLUGIN_OPTIONS['proxy']) && $CF_GEOPLUGIN_OPTIONS['proxy'] ? false : true),
-									'attr'		=> array('autocomplete'=>'off'),
-									'input_class'	=> 'proxy-disable'
-								));
-								
-								$general->input(array(
-									'label'		=> __('Proxy Username',CFGP_NAME),
-									'name'		=> 'proxy_username',
-									'id'		=> 'proxy_username',
-									'value'		=> (isset($CF_GEOPLUGIN_OPTIONS['proxy_username']) ? $CF_GEOPLUGIN_OPTIONS['proxy_username'] : ''),									
-									'disabled' 	=> (isset($CF_GEOPLUGIN_OPTIONS['proxy']) && $CF_GEOPLUGIN_OPTIONS['proxy'] ? false : true),
-									'attr'		=> array('autocomplete'=>'off'),
-									'input_class'	=> 'proxy-disable'
-								));
-								
-								$general->input(array(
-									'label'		=> __('Proxy Password',CFGP_NAME),
-									'name'		=> 'proxy_password',
-									'id'		=> 'proxy_password',
-									'type'		=> 'password',
-									'value'		=> (isset($CF_GEOPLUGIN_OPTIONS['proxy_password']) ? $CF_GEOPLUGIN_OPTIONS['proxy_password'] : ''),									
-									'disabled'	=> (isset($CF_GEOPLUGIN_OPTIONS['proxy']) && $CF_GEOPLUGIN_OPTIONS['proxy'] ? false : true),
-									'attr'		=> array('autocomplete'=>'off'),
-									'input_class'	=> 'proxy-disable'
-								));
-							else :
-								$general->html('<p class="text-danger"><strong>'.__('This option is only available for users with Personal, Freelancer and Business license.',CFGP_NAME).'</strong></p><hr>');
-							endif;
-								
-								$general->html( sprintf( '<button type="submit" class="btn btn-success pull-right cfgp_save_options">%s</button>', __( 'Update All Options', CFGP_NAME ) ) );
 								$general->html('<h5 class="mt-5" id="Special_Settings">'.__('Special Settings',CFGP_NAME).'</h5>');
 								$general->html('<p>'.__('Special plugin settings that, in some cases, need to be changed to make some plugin systems to work properly. Many of theese settings depends of your server.', CFGP_NAME).'</p><hr>');
 
@@ -696,6 +631,75 @@ if( $global->get( 'action' ) == 'deactivate_license' )
 								
 								// Print form
 								$general->html( sprintf( '<br><br><button type="submit" class="btn btn-success pull-right cfgp_save_options">%s</button>', __( 'Update All Options', CFGP_NAME ) ) );
+								
+								$general->html('<h5 class="mt-5" id="Proxy_Settings">'.__('Proxy Settings',CFGP_NAME).'</h5>');
+								$general->html('<p>'.sprintf(__('Some servers not share real IP because of security reasons or IP is blocked from geolocation. Using proxy you can bypass that protocols and enable geoplugin to work properly. Also, this option on individual servers can cause inaccurate geo informations, and because of that this option is disabled by default. You need to test this option on your side and use wise. Need proxy service? %1$s.',CFGP_NAME),'<a href="https://go.nordvpn.net/aff_c?offer_id=15&aff_id=14042&url_id=902" target="_blank">'.__('We have Recommended Service For You',CFGP_NAME).'</a>').'</p><p>'.__('This is usually good if you use some Onion domain or you are a general user of the private web and all your websites are in the private networks.',CFGP_NAME).'</p><hr>');
+								
+								
+							if(CF_Geoplugin_Global::access_level($CF_GEOPLUGIN_OPTIONS) > 1):
+								$general->radio(array(
+									'label'		=> __('Enable Proxy',CFGP_NAME),
+									'name'		=> 'proxy',
+									'default'	=> (isset($CF_GEOPLUGIN_OPTIONS['proxy']) ? $CF_GEOPLUGIN_OPTIONS['proxy'] : 0),
+									array(
+										'text'	=> __('Enable',CFGP_NAME),
+										'value'	=> 1,
+										'id'	=> 'proxy_true',
+									),
+									array(
+										'text'	=> __('Disable',CFGP_NAME),
+										'value'	=> 0,
+										'id'	=> 'proxy_false',
+									)
+								));
+								
+								$general->input(array(
+									'label'		=> __('Proxy IP/Host',CFGP_NAME),
+									'name'		=> 'proxy_ip',
+									'id'		=> 'proxy_ip',
+									'value'		=> (isset($CF_GEOPLUGIN_OPTIONS['proxy_ip']) ? $CF_GEOPLUGIN_OPTIONS['proxy_ip'] : ''),									
+									'disabled' => (isset($CF_GEOPLUGIN_OPTIONS['proxy']) && $CF_GEOPLUGIN_OPTIONS['proxy'] ? false : true),
+									'attr'		=> array('autocomplete'=>'off'),
+									'input_class'	=> 'proxy-disable'
+								));
+								
+								$general->input(array(
+									'label'		=> __('Proxy Port',CFGP_NAME),
+									'name'		=> 'proxy_port',
+									'id'		=> 'proxy_port',
+									'value'		=> (isset($CF_GEOPLUGIN_OPTIONS['proxy_port']) ? $CF_GEOPLUGIN_OPTIONS['proxy_port'] : ''),									
+									'disabled' 	=> (isset($CF_GEOPLUGIN_OPTIONS['proxy']) && $CF_GEOPLUGIN_OPTIONS['proxy'] ? false : true),
+									'attr'		=> array('autocomplete'=>'off'),
+									'input_class'	=> 'proxy-disable'
+								));
+								
+								$general->input(array(
+									'label'		=> __('Proxy Username',CFGP_NAME),
+									'name'		=> 'proxy_username',
+									'id'		=> 'proxy_username',
+									'value'		=> (isset($CF_GEOPLUGIN_OPTIONS['proxy_username']) ? $CF_GEOPLUGIN_OPTIONS['proxy_username'] : ''),									
+									'disabled' 	=> (isset($CF_GEOPLUGIN_OPTIONS['proxy']) && $CF_GEOPLUGIN_OPTIONS['proxy'] ? false : true),
+									'attr'		=> array('autocomplete'=>'off'),
+									'input_class'	=> 'proxy-disable'
+								));
+								
+								$general->input(array(
+									'label'		=> __('Proxy Password',CFGP_NAME),
+									'name'		=> 'proxy_password',
+									'id'		=> 'proxy_password',
+									'type'		=> 'password',
+									'value'		=> (isset($CF_GEOPLUGIN_OPTIONS['proxy_password']) ? $CF_GEOPLUGIN_OPTIONS['proxy_password'] : ''),									
+									'disabled'	=> (isset($CF_GEOPLUGIN_OPTIONS['proxy']) && $CF_GEOPLUGIN_OPTIONS['proxy'] ? false : true),
+									'attr'		=> array('autocomplete'=>'off'),
+									'input_class'	=> 'proxy-disable'
+								));
+							else :
+								$general->html('<p class="text-danger"><strong>'.__('This option is only available for users with Personal, Freelancer and Business license.',CFGP_NAME).'</strong></p><hr>');
+							endif;
+								
+								$general->html( sprintf( '<button type="submit" class="btn btn-success pull-right cfgp_save_options">%s</button>', __( 'Update All Options', CFGP_NAME ) ) );
+								
+								
 								$general->form(array('name'=>'general-settings', 'autocomplete'=>'off', 'class' => 'cfgp_options_form'));
 							?>
                         </div>

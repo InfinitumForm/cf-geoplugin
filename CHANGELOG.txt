@@ -1,4 +1,17 @@
 == Changelog ==
+= 7.9.3 =
+* Improved code and added support for the WordPress 5.4
+* Improved CF Geo Banner post type
+* Improved CF Geo Banner taxonomy
+* Improved Settings options
+* Improved PHP functions
+* Improved debugging
+* Improved update options for the multisite
+* Optimized PHP code
+* Optimized REST API
+* Removed bugs in the previous version
+* Fixed translations
+
 = 7.9.2 =
 * Added manual bypass for the SEO redirection
 * Added subversion control for the older PHP and WordPress versions

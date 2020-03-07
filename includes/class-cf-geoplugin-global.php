@@ -286,7 +286,7 @@ class CF_Geoplugin_Global
 		
 		// Let's get options
 		if( !(defined( 'CFGP_MULTISITE' ) && CFGP_MULTISITE) )
-			$options = get_option('cf_geoplugin');
+			$options = get_option( 'cf_geoplugin' );
 		else
 			$options = get_site_option( 'cf_geoplugin' );
 		
@@ -317,10 +317,13 @@ class CF_Geoplugin_Global
 			$options = get_option('cf_geoplugin');
 		else
 			$options = get_site_option( 'cf_geoplugin' );
+			
 		if($options)
 		{
 			$option_name = preg_replace(array('/[^0-9a-z_-]/i'), array(''), $option_name);
-			$option_name = trim( $option_name );
+			
+			if(empty($option_name))
+				return false;
 			
 			$options[$option_name] = self::sanitize( $value );
 

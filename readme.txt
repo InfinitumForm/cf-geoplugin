@@ -3,9 +3,9 @@ Contributors: ivijanstefan, creativform
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=creativform@gmail.com
 Tags: geolocation, woocommerce, store-locator, seo, google-maps, geomarketing, content include, content exclude, geo plugin, geo target, geo, geotargeting, geofencing, geotag, cache, rocket
 Requires at least: 3.0
-Tested up to: 5.3
+Tested up to: 5.4
 Requires PHP: 5.6.0
-Stable tag: 7.9.2
+Stable tag: 7.9.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -363,6 +363,19 @@ Please inform us if any of these errors occure via contact form on our website [
 
 == Changelog ==
 
+= 7.9.3 =
+* Improved code and added support for the WordPress 5.4
+* Improved CF Geo Banner post type
+* Improved CF Geo Banner taxonomy
+* Improved Settings options
+* Improved PHP functions
+* Improved debugging
+* Improved update options for the multisite
+* Optimized PHP code
+* Optimized REST API
+* Removed bugs in the previous version
+* Fixed translations
+
 = 7.9.2 =
 * Added manual bypass for the SEO redirection
 * Added subversion control for the older PHP and WordPress versions
@@ -388,11 +401,18 @@ Please inform us if any of these errors occure via contact form on our website [
 
 == Upgrade Notice ==
 
-= 7.9.2 =
-* Added manual bypass for the SEO redirection
-* Added subversion control for the older PHP and WordPress versions
-* Added logging control in the settings
-* Fixed PHP bugs from the previous version
+= 7.9.3 =
+* Improved code and added support for the WordPress 5.4
+* Improved CF Geo Banner post type
+* Improved CF Geo Banner taxonomy
+* Improved Settings options
+* Improved PHP functions
+* Improved debugging
+* Improved update options for the multisite
+* Optimized PHP code
+* Optimized REST API
+* Removed bugs in the previous version
+* Fixed translations
 
 == Other Notes ==
 

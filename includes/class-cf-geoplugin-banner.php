@@ -7,6 +7,7 @@
  * @author     Goran Zivkovic
  */
 if( ! class_exists( 'CF_Geoplugin_Banner' ) ) :
+
 Class CF_Geoplugin_Banner extends CF_Geoplugin_Global
 {    
     private $taxonomy = false;
@@ -14,8 +15,21 @@ Class CF_Geoplugin_Banner extends CF_Geoplugin_Global
     // Construct all
     function __construct()
     {
-        $this->add_action( 'init', 'register_banner' );
-        $this->add_action( 'init', 'register_baner_taxonomy' );
+		if(!function_exists('post_type_exists') && file_exists(ABSPATH . WPINC . '/post.php'))
+			require_once ABSPATH . WPINC . '/post.php';
+			
+		if(!function_exists('taxonomy_exists') && file_exists(ABSPATH . WPINC . '/taxonomy.php'))
+			require_once ABSPATH . WPINC . '/taxonomy.php';
+		
+		$this->register_banner();
+		$this->register_baner_taxonomy();
+		
+        if(!post_type_exists('cf-geoplugin-banner'))
+			$this->add_action( 'init', 'register_banner' );
+		
+		if(!taxonomy_exists( 'cf-geoplugin-country' ) || !taxonomy_exists( 'cf-geoplugin-region' ) || !taxonomy_exists( 'cf-geoplugin-city' ))
+       		$this->add_action( 'init', 'register_baner_taxonomy' );
+		
 		$this->add_filter('manage_posts_columns', 'columns_banner_head');
 		$this->add_action('manage_posts_custom_column', 'columns_banner_content', 10, 2);
     }
@@ -134,94 +148,108 @@ Class CF_Geoplugin_Banner extends CF_Geoplugin_Global
 			'menu_icon' 			=> 'dashicons-pressthis',
 			'show_in_menu'			=> false
 		);
-		register_post_type( 'cf-geoplugin-banner', $projects );
+		
+		if(!post_type_exists('cf-geoplugin-banner'))
+			register_post_type( 'cf-geoplugin-banner', $projects );
     }
 
     // Register banner taxonomies
     public function register_baner_taxonomy()
     {
-		register_taxonomy(
-			'cf-geoplugin-country', 'cf-geoplugin-banner',
-			array(
-				'labels'			=> array(
-					'name' 					=> __('Countries',CFGP_NAME),
-					'singular_name' 		=> __('Country',CFGP_NAME),
-					'menu_name' 			=> __('Countries',CFGP_NAME),
-					'all_items' 			=> __('All Countries',CFGP_NAME),
-					'edit_item' 			=> __('Edit Country',CFGP_NAME),
-					'view_item' 			=> __('View Country',CFGP_NAME),
-					'update_item' 			=> __('Update Country',CFGP_NAME),
-					'add_new_item' 			=> __('Add New Country',CFGP_NAME),
-					'new_item_name' 		=> __('New Country Name',CFGP_NAME),
-					'parent_item' 			=> __('Parent Country',CFGP_NAME),
-					'parent_item_colon' 	=> __('Parent Country',CFGP_NAME),
-				),
-				'hierarchical'		=> true,
-				'show_ui'			=> true,
-				'public'		 	=> false,
-				'label'          	=> __('Countries',CFGP_NAME),
-				'singular_label' 	=> __('Country',CFGP_NAME),
-				'rewrite'        	=> true,
-				'query_var'			=> false,
-				'show_tagcloud'		=> false,
-				'show_in_nav_menus'	=> false
-			)
-		);
-		register_taxonomy(
-			'cf-geoplugin-region', 'cf-geoplugin-banner',
-			array(
-				'labels'			=> array(
-					'name' 					=> __('Regions',CFGP_NAME),
-					'singular_name' 		=> __('Region',CFGP_NAME),
-					'menu_name' 			=> __('Regions',CFGP_NAME),
-					'all_items' 			=> __('All Regions',CFGP_NAME),
-					'edit_item' 			=> __('Edit Region',CFGP_NAME),
-					'view_item' 			=> __('View Region',CFGP_NAME),
-					'update_item' 			=> __('Update Region',CFGP_NAME),
-					'add_new_item' 			=> __('Add New Region',CFGP_NAME),
-					'new_item_name' 		=> __('New Region Name',CFGP_NAME),
-					'parent_item' 			=> __('Parent Region',CFGP_NAME),
-					'parent_item_colon' 	=> __('Parent Region',CFGP_NAME),
-				),
-				'hierarchical'   	=> true,
-				'show_ui'			=> true,
-				'public'		 	=> false,
-				'label'          	=> __('Regions',CFGP_NAME),
-				'singular_label' 	=> __('Region',CFGP_NAME),
-				'rewrite'        	=> true,
-				'query_var'			=> false,
-				'show_tagcloud'		=> false,
-				'show_in_nav_menus'	=> false
-			)
-		);
-		register_taxonomy(
-			'cf-geoplugin-city', 'cf-geoplugin-banner',
-			array(
-				'labels'			=> array(
-					'name' 					=> __('Cities',CFGP_NAME),
-					'singular_name' 		=> __('City',CFGP_NAME),
-					'menu_name' 			=> __('Cities',CFGP_NAME),
-					'all_items' 			=> __('All Cities',CFGP_NAME),
-					'edit_item' 			=> __('Edit City',CFGP_NAME),
-					'view_item' 			=> __('View City',CFGP_NAME),
-					'update_item' 			=> __('Update City',CFGP_NAME),
-					'add_new_item' 			=> __('Add New City',CFGP_NAME),
-					'new_item_name' 		=> __('New City Name',CFGP_NAME),
-					'parent_item' 			=> __('Parent City',CFGP_NAME),
-					'parent_item_colon' 	=> __('Parent City',CFGP_NAME),
-				),
-				'hierarchical'   	=> true,
-				'show_ui'			=> true,
-				'public'		 	=> false,
-				'label'          	=> __('Cities',CFGP_NAME),
-				'singular_label' 	=> __('City',CFGP_NAME),
-				'rewrite'        	=> true,
-				'query_var'			=> false,
-				'show_tagcloud'		=> false,
-				'show_in_nav_menus'	=> false
-			)
-        );
-        
+		if(!taxonomy_exists( 'cf-geoplugin-country' ))
+		{
+			register_taxonomy(
+				'cf-geoplugin-country', 'cf-geoplugin-banner',
+				array(
+					'labels'			=> array(
+						'name' 					=> __('Countries',CFGP_NAME),
+						'singular_name' 		=> __('Country',CFGP_NAME),
+						'menu_name' 			=> __('Countries',CFGP_NAME),
+						'all_items' 			=> __('All Countries',CFGP_NAME),
+						'edit_item' 			=> __('Edit Country',CFGP_NAME),
+						'view_item' 			=> __('View Country',CFGP_NAME),
+						'update_item' 			=> __('Update Country',CFGP_NAME),
+						'add_new_item' 			=> __('Add New Country',CFGP_NAME),
+						'new_item_name' 		=> __('New Country Name',CFGP_NAME),
+						'parent_item' 			=> __('Parent Country',CFGP_NAME),
+						'parent_item_colon' 	=> __('Parent Country',CFGP_NAME),
+					),
+					'hierarchical'		=> true,
+					'show_ui'			=> true,
+					'public'		 	=> false,
+					'label'          	=> __('Countries',CFGP_NAME),
+					'singular_label' 	=> __('Country',CFGP_NAME),
+					'rewrite'        	=> true,
+					'query_var'			=> false,
+					'show_tagcloud'		=> false,
+					'show_in_nav_menus'	=> false
+				)
+			);
+		}
+		
+		if(!taxonomy_exists( 'cf-geoplugin-region' ))
+		{
+			register_taxonomy(
+				'cf-geoplugin-region', 'cf-geoplugin-banner',
+				array(
+					'labels'			=> array(
+						'name' 					=> __('Regions',CFGP_NAME),
+						'singular_name' 		=> __('Region',CFGP_NAME),
+						'menu_name' 			=> __('Regions',CFGP_NAME),
+						'all_items' 			=> __('All Regions',CFGP_NAME),
+						'edit_item' 			=> __('Edit Region',CFGP_NAME),
+						'view_item' 			=> __('View Region',CFGP_NAME),
+						'update_item' 			=> __('Update Region',CFGP_NAME),
+						'add_new_item' 			=> __('Add New Region',CFGP_NAME),
+						'new_item_name' 		=> __('New Region Name',CFGP_NAME),
+						'parent_item' 			=> __('Parent Region',CFGP_NAME),
+						'parent_item_colon' 	=> __('Parent Region',CFGP_NAME),
+					),
+					'hierarchical'   	=> true,
+					'show_ui'			=> true,
+					'public'		 	=> false,
+					'label'          	=> __('Regions',CFGP_NAME),
+					'singular_label' 	=> __('Region',CFGP_NAME),
+					'rewrite'        	=> true,
+					'query_var'			=> false,
+					'show_tagcloud'		=> false,
+					'show_in_nav_menus'	=> false
+				)
+			);
+		}
+		
+		
+		if(!taxonomy_exists( 'cf-geoplugin-city' ))
+		{
+			register_taxonomy(
+				'cf-geoplugin-city', 'cf-geoplugin-banner',
+				array(
+					'labels'			=> array(
+						'name' 					=> __('Cities',CFGP_NAME),
+						'singular_name' 		=> __('City',CFGP_NAME),
+						'menu_name' 			=> __('Cities',CFGP_NAME),
+						'all_items' 			=> __('All Cities',CFGP_NAME),
+						'edit_item' 			=> __('Edit City',CFGP_NAME),
+						'view_item' 			=> __('View City',CFGP_NAME),
+						'update_item' 			=> __('Update City',CFGP_NAME),
+						'add_new_item' 			=> __('Add New City',CFGP_NAME),
+						'new_item_name' 		=> __('New City Name',CFGP_NAME),
+						'parent_item' 			=> __('Parent City',CFGP_NAME),
+						'parent_item_colon' 	=> __('Parent City',CFGP_NAME),
+					),
+					'hierarchical'   	=> true,
+					'show_ui'			=> true,
+					'public'		 	=> false,
+					'label'          	=> __('Cities',CFGP_NAME),
+					'singular_label' 	=> __('City',CFGP_NAME),
+					'rewrite'        	=> true,
+					'query_var'			=> false,
+					'show_tagcloud'		=> false,
+					'show_in_nav_menus'	=> false
+				)
+			);
+		}
+		        
         $this->install_country_terms( 'country-list', 'cf-geoplugin-country' );
     }
 

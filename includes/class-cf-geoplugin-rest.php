@@ -15,7 +15,7 @@ class CF_Geoplugin_REST extends CF_Geoplugin_Global {
 		'error_message' => 'Bad Request!'
 	);
 	
-	function run(){
+	public function run(){
 		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
 		if(isset($CF_GEOPLUGIN_OPTIONS['enable_rest']) ? $CF_GEOPLUGIN_OPTIONS['enable_rest'] : 0)
 		{
@@ -75,7 +75,7 @@ class CF_Geoplugin_REST extends CF_Geoplugin_Global {
 	}
 	
 	// Delete Access token
-	function delete_access_token(){
+	public function delete_access_token(){
 		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
 		if(isset($_POST['token']) && !empty($_POST['token']))
 		{
@@ -102,7 +102,7 @@ class CF_Geoplugin_REST extends CF_Geoplugin_Global {
 	}
 	
 	// Generate REST Secret key
-	function generate_secret_key(){
+	public function generate_secret_key(){
 		$secret_key = $this->generate_token(28);
 		$this->update_option('rest_secret', $secret_key);
 		
