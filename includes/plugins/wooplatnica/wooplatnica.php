@@ -15,7 +15,10 @@ class CF_Geoplugin_Wooplatnica extends CF_Geoplugin_Global
 {
 	function __construct()
     {
-		$this->wooplatnica();
+		if(parent::get_the_option('enable_wooplatnica', 0))
+		{
+			$this->wooplatnica();
+		}
     }
 	
 	function wooplatnica(){

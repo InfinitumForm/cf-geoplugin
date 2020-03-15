@@ -8,7 +8,7 @@
  * Plugin Name:       WordPress Geo Plugin
  * Plugin URI:        http://cfgeoplugin.com/
  * Description:       Create Dynamic Content, Banners and Images on Your Website Based On Visitor Geo Location By Using Shortcodes With CF Geo Plugin.
- * Version:           7.9.3
+ * Version:           7.9.5
  * Author:            INFINITUM FORM
  * Author URI:        https://infinitumform.com/
  * License:           GPL-2.0+
@@ -71,6 +71,15 @@ if ( defined( 'WP_CF_GEO_DEBUG' ) ){
 	}
 }
 
+// Find wp-admin file path
+if ( strrpos(WP_CONTENT_DIR, '/wp-content/', 1) !== false) {
+    $WP_ADMIN_DIR = substr(WP_CONTENT_DIR, 0, -10) . 'wp-admin';
+} else {
+    $WP_ADMIN_DIR = substr(WP_CONTENT_DIR, 0, -11) . '/wp-admin';
+}
+if (!defined('WP_ADMIN_DIR')) define('WP_ADMIN_DIR', $WP_ADMIN_DIR);
+
+
 // First initialization
 $GLOBALS['CFGEO'] = array();
 $GLOBALS['CF_GEOPLUGIN_OPTIONS'] = array();
@@ -100,7 +109,6 @@ if ( ! defined( 'CFGP_METABOX' ) )		define( 'CFGP_METABOX', 'cf_geo_metabox_');
 if ( ! defined( 'CFGP_PREFIX' ) )		define( 'CFGP_PREFIX', 'cf_geo_'.preg_replace("/[^0-9]/Ui",'',CFGP_VERSION).'_');
 // Timestamp
 if( ! defined( 'CFGP_TIME' ) )			define( 'CFGP_TIME', time() );
-
 // if PHP_VERSION missing
 if( ! defined( 'PHP_VERSION' ) && function_exists('phpversion') )
 	define( 'PHP_VERSION', phpversion());
@@ -120,14 +128,18 @@ if( ! defined( 'CFGP_MULTISITE' ) && defined( 'WP_ALLOW_MULTISITE' ) && WP_ALLOW
 {
 	define( 'CFGP_MULTISITE', WP_ALLOW_MULTISITE );
 }
-else if( ! defined( 'CFGP_MULTISITE' ) )			
+
+if( ! defined( 'CFGP_MULTISITE' ) )			
 {
     // New safer approach
     if( !function_exists( 'is_plugin_active_for_network' ) )
-		include ABSPATH . '/wp-admin/includes/plugin.php';
+		include WP_ADMIN_DIR . '/includes/plugin.php';
 
-	define( 'CFGP_MULTISITE', is_plugin_active_for_network( CFGP_ROOT . '/cf-geoplugin.php' ) );
+	if(file_exists(WP_ADMIN_DIR . '/includes/plugin.php'))
+		define( 'CFGP_MULTISITE', is_plugin_active_for_network( CFGP_ROOT . '/cf-geoplugin.php' ) );
 }
+
+if( ! defined( 'CFGP_MULTISITE' ) ) define( 'CFGP_MULTISITE', false );
 
 // Requirements
 include_once CFGP_GLOBALS . '/cf-geoplugin-requirements.php';

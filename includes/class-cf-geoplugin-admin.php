@@ -14,43 +14,43 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 	// Main CF Geo Plugin Page
 	function page_cf_geoplugin(){
 		if(file_exists(CFGP_ADMIN . '/cf-geoplugin.php'))
-			require_once CFGP_ADMIN . '/cf-geoplugin.php';
+			include_once CFGP_ADMIN . '/cf-geoplugin.php';
 	}
 	
 	// Defender page
 	function page_cf_geoplugin_defender(){
 		if(file_exists(CFGP_ADMIN . '/defender.php'))
-			require_once CFGP_ADMIN . '/defender.php';
+			include_once CFGP_ADMIN . '/defender.php';
 	}
 	
 	// Google Map page
 	function page_cf_geoplugin_google_map(){
 		if(file_exists(CFGP_ADMIN . '/google-map.php'))
-			require_once CFGP_ADMIN . '/google-map.php';
+			include_once CFGP_ADMIN . '/google-map.php';
 	}
 	
 	// Debug page
 	function page_cf_geoplugin_debug(){
 		if(file_exists(CFGP_ADMIN . '/debug.php'))
-			require_once CFGP_ADMIN . '/debug.php';
+			include_once CFGP_ADMIN . '/debug.php';
 	}
 	
 	// Settings page
 	function page_cf_geoplugin_settings(){
 		if(file_exists(CFGP_ADMIN . '/settings.php'))
-			require_once CFGP_ADMIN . '/settings.php';
+			include_once CFGP_ADMIN . '/settings.php';
 	}
 	
 	// License page
 	function page_cf_geoplugin_license(){
 		if(file_exists(CFGP_ADMIN . '/license.php'))
-			require_once CFGP_ADMIN . '/license.php';
+			include_once CFGP_ADMIN . '/license.php';
 	}
 	// SEO Redirection page
 	function page_cf_geoplugin_seo_redirection()
 	{
 		if( file_exists( CFGP_ADMIN . '/seo-redirection.php' ) )
-			require_once CFGP_ADMIN . '/seo-redirection.php';
+			include_once CFGP_ADMIN . '/seo-redirection.php';
 	}
 	
 	// Set custom style
@@ -999,7 +999,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 		wp_enqueue_style( CFGP_NAME . '-dashboard-style' );
 		
 		if ( ! function_exists( 'plugins_api' ) ) {
-			  require_once( ABSPATH . 'wp-admin/includes/plugin-install.php' );
+			  include_once( WP_ADMIN_DIR . '/includes/plugin-install.php' );
 		}
 		/** Prepare our query */
 		//donate_link
@@ -1113,7 +1113,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 		wp_enqueue_style( CFGP_NAME . '-dashboard-style' );
 		
 		if ( ! function_exists( 'plugins_api' ) ) {
-			  require_once( ABSPATH . 'wp-admin/includes/plugin-install.php' );
+			  include_once( WP_ADMIN_DIR . '/includes/plugin-install.php' );
 		}
 		/** Prepare our query */
 		//donate_link

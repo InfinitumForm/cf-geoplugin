@@ -332,30 +332,79 @@ if( $global->get( 'action' ) == 'deactivate_license' )
 									),
 									'info'		=> __('Place simple Google Map to your page.',CFGP_NAME)
 								));
-							if ( class_exists( 'WooCommerce' ) )
-							{	
-								$general->radio(array(
-									'label'		=> __('WooCommerce integration'),
-									'name'		=> 'enable_woocommerce',
-									'class'		=> 'enable_woocommerce',
-									'default'	=> (isset($CF_GEOPLUGIN_OPTIONS['enable_woocommerce']) ? $CF_GEOPLUGIN_OPTIONS['enable_woocommerce'] : 0 ),
-									'info'		=> !$CF_GEOPLUGIN_OPTIONS['woocommerce_active'] ? __('This function is only enabled when Woocommerce is active.', CFGP_NAME) : ($CF_GEOPLUGIN_OPTIONS['enable_woocommerce'] ? __( 'For more options visit WooCommerce Settings', CFGP_NAME ) : __( 'If you want to CF Geo Plugin add new options to your WooCommerce, activate this option.', CFGP_NAME )),
-									array(
-										'text'	=> __('Enable', CFGP_NAME),
-										'value'	=> 1,
-										'id'	=> 'enable_woocommerce_true',
-										'disabled'	=> ( $CF_GEOPLUGIN_OPTIONS['woocommerce_active'] ? false : true ),
-										'input_class'	=> 'enable-woocommerce'
-									),
-									array(
-										'text'	=> __('Disable', CFGP_NAME),
-										'value'	=> 0,
-										'id'	=> 'enable_woocommerce_false',
-										'disabled'	=> ( $CF_GEOPLUGIN_OPTIONS['woocommerce_active'] ? false : true ),
-										'input_class'	=> 'enable-woocommerce'
-									),
-								));
-							}
+
+								if( is_plugin_active('woocommerce/woocommerce.php') )
+								{	
+									$general->radio(array(
+										'label'		=> __('WooCommerce integration'),
+										'name'		=> 'enable_woocommerce',
+										'class'		=> 'enable_woocommerce',
+										'default'	=> CF_Geoplugin_Global::get_the_option('enable_woocommerce', 0),
+										'info'		=> !$CF_GEOPLUGIN_OPTIONS['woocommerce_active'] ? __('This function is only enabled when Woocommerce is active.', CFGP_NAME) : ($CF_GEOPLUGIN_OPTIONS['enable_woocommerce'] ? __( 'For more options visit WooCommerce Settings', CFGP_NAME ) : __( 'If you want to CF Geo Plugin add new options to your WooCommerce, activate this option.', CFGP_NAME )),
+										array(
+											'text'	=> __('Enable', CFGP_NAME),
+											'value'	=> 1,
+											'id'	=> 'enable_woocommerce_true',
+											'disabled'	=> ( CF_Geoplugin_Global::get_the_option('woocommerce_active', 0) ? false : true ),
+											'input_class'	=> 'enable-woocommerce'
+										),
+										array(
+											'text'	=> __('Disable', CFGP_NAME),
+											'value'	=> 0,
+											'id'	=> 'enable_woocommerce_false',
+											'disabled'	=> ( CF_Geoplugin_Global::get_the_option('woocommerce_active', 0) ? false : true ),
+											'input_class'	=> 'enable-woocommerce'
+										),
+									));
+									
+									
+									if( is_plugin_active('wooplatnica/wooplatnica.php') )
+									{
+										$general->radio(array(
+											'label'		=> __('Wooplatnica integration'),
+											'name'		=> 'enable_wooplatnica',
+											'class'		=> 'enable_wooplatnica',
+											'default'	=> CF_Geoplugin_Global::get_the_option('enable_wooplatnica', 0),
+											'info'		=> __( 'If you want to CF Geo Plugin take control over Woocommerce addon "Wooplatnica", activate this option.', CFGP_NAME ),
+											array(
+												'text'	=> __('Enable', CFGP_NAME),
+												'value'	=> 1,
+												'id'	=> 'enable_wooplatnica_true',
+												'input_class'	=> 'enable-wooplatnica'
+											),
+											array(
+												'text'	=> __('Disable', CFGP_NAME),
+												'value'	=> 0,
+												'id'	=> 'enable_wooplatnica_false',
+												'input_class'	=> 'enable-wooplatnica'
+											),
+										));
+									}
+								}
+								
+								if( is_plugin_active('contact-form-7/wp-contact-form-7.php') )
+								{
+									$general->radio(array(
+										'label'		=> __('Contact Form 7 integration'),
+										'name'		=> 'enable_cf7',
+										'class'		=> 'enable_cf7',
+										'default'	=> CF_Geoplugin_Global::get_the_option('enable_cf7', 0),
+										'info'		=> __( 'If you want to CF Geo Plugin add new options to your Contact Form 7, activate this option.', CFGP_NAME ),
+										array(
+											'text'	=> __('Enable', CFGP_NAME),
+											'value'	=> 1,
+											'id'	=> 'enable_cf7_true',
+											'input_class'	=> 'enable-cf7'
+										),
+										array(
+											'text'	=> __('Disable', CFGP_NAME),
+											'value'	=> 0,
+											'id'	=> 'enable_cf7_false',
+											'input_class'	=> 'enable-cf7'
+										),
+									));
+								}
+
 								$general->radio(array(
 									'label'		=> __('Enable REST API',CFGP_NAME),
 									'name'		=> 'enable_rest',

@@ -86,6 +86,8 @@ class CF_Geoplugin_Global
 		'log_errors'				=> 0,
 		'enable_seo_posts'			=> array('post', 'page'),
 		'enable_geo_tag'			=> array('post', 'page'),
+		'enable_cf7'				=> 0,
+		'enable_wooplatnica'		=> 0
 	);
 
 	// Deprecated options
@@ -306,8 +308,15 @@ class CF_Geoplugin_Global
 			}
 		} else {
 			// Return all options if option name is not defined
-			return apply_filters( 'cf_geoplugin_settings', $options);
+			return apply_filters( 'cf_geoplugin_get_option', $options);
 		}
+	}
+	/*
+	 * Hook get already setup option
+	*/
+	public function get_the_option($option_name='', $default=NULL){
+		$options = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
+		return apply_filters( 'cf_geoplugin_get_the_option', (!empty($option_name) && isset($options[$option_name]) ? $options[$option_name] : $default));
 	}
 	/*
 	 * Hook Update Options
@@ -328,23 +337,27 @@ class CF_Geoplugin_Global
 			$options[$option_name] = self::sanitize( $value );
 
 			if( !(defined( 'CFGP_MULTISITE' ) && CFGP_MULTISITE) )
-				update_option('cf_geoplugin', $options, true);
-			else 
-				update_site_option('cf_geoplugin', $options);
-		
-			return $options;
+			{
+				update_option('cf_geoplugin', apply_filters( 'cf_geoplugin_update_option', $options, $this->default_options), true);
+				return apply_filters( 'cf_geoplugin_get_option_updated', get_option( 'cf_geoplugin' ), $options, $this->default_options);
+			}
+			else
+			{
+				update_site_option('cf_geoplugin', apply_filters( 'cf_geoplugin_update_option', $options, $this->default_options));
+				return apply_filters( 'cf_geoplugin_get_option_updated', get_site_option( 'cf_geoplugin' ), $options, $this->default_options);
+			}
 		}
 		else // Add options to WP DB if not exists
 		{
 			if( !(defined( 'CFGP_MULTISITE' ) && CFGP_MULTISITE) ) 
 			{
-				update_option( 'cf_geoplugin', $this->default_options );
-				return get_option( 'cf_geoplugin' );
+				update_option( 'cf_geoplugin', apply_filters( 'cf_geoplugin_update_option', $this->default_options, $this->default_options) );
+				return apply_filters( 'cf_geoplugin_get_option_updated', get_option( 'cf_geoplugin' ), $this->default_options, $this->default_options);
 			}
 			else 
 			{
-				update_site_option( 'cf_geoplugin', $this->default_options );
-				return get_site_option( 'cf_geoplugin' );
+				update_site_option( 'cf_geoplugin', apply_filters( 'cf_geoplugin_update_option', $this->default_options, $this->default_options) );
+				return apply_filters( 'cf_geoplugin_get_option_updated', get_site_option( 'cf_geoplugin' ), $this->default_options, $this->default_options);
 			}
 		}
 		return false;

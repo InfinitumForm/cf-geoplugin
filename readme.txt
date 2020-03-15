@@ -5,7 +5,7 @@ Tags: geolocation, woocommerce, store-locator, seo, google-maps, geomarketing, c
 Requires at least: 3.0
 Tested up to: 5.4
 Requires PHP: 5.6.0
-Stable tag: 7.9.3
+Stable tag: 7.9.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -363,6 +363,20 @@ Please inform us if any of these errors occure via contact form on our website [
 
 == Changelog ==
 
+= 7.9.5 =
+-Added new Contact Form 7 tags based on geo location
+-Added new Settings for the Contact Form 7 & Wooplatnica
+-Added new filters: cf_geoplugin_get_option, cf_geoplugin_get_the_option, cf_geoplugin_update_option & cf_geoplugin_get_option_updated
+-Added new object CF_Geoplugin_Global::get_the_option()
+-Fixed typos in the plugin
+-Fixed supported plugins includes
+
+= 7.9.4 =
+* Insert WP_ADMIN_DIR absolute path protocol
+* Fixed plugin version check
+* Fixed absolute path for the wp-admin included files
+* Fixed CFGP_MULTISITE constant
+
 = 7.9.3 =
 * Improved code and added support for the WordPress 5.4
 * Improved CF Geo Banner post type
@@ -401,18 +415,13 @@ Please inform us if any of these errors occure via contact form on our website [
 
 == Upgrade Notice ==
 
-= 7.9.3 =
-* Improved code and added support for the WordPress 5.4
-* Improved CF Geo Banner post type
-* Improved CF Geo Banner taxonomy
-* Improved Settings options
-* Improved PHP functions
-* Improved debugging
-* Improved update options for the multisite
-* Optimized PHP code
-* Optimized REST API
-* Removed bugs in the previous version
-* Fixed translations
+= 7.9.5 =
+-Added new Contact Form 7 tags based on geo location
+-Added new Settings for the Contact Form 7 & Wooplatnica
+-Added new filters: cf_geoplugin_get_option, cf_geoplugin_get_the_option, cf_geoplugin_update_option & cf_geoplugin_get_option_updated
+-Added new object CF_Geoplugin_Global::get_the_option()
+-Fixed typos in the plugin
+-Fixed supported plugins includes
 
 == Other Notes ==
 

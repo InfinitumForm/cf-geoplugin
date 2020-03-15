@@ -246,7 +246,7 @@ class CF_Geoplugin_Woocommerce extends CF_Geoplugin_Global
                 );
                 $key++;
 				$new_settings[$key] = array(
-                    'title'    => __( 'Convert to round priced', CFGP_NAME ),
+                    'title'    => __( 'Convert to round price', CFGP_NAME ),
                     'desc'     => __( 'Force all converted prices to be round number.', CFGP_NAME ),
                     'class'    => 'wc-enhanced-checkbox',
                     'id'       => 'woocommerce_cf_geoplugin_conversion_rounded',
@@ -289,7 +289,7 @@ class CF_Geoplugin_Woocommerce extends CF_Geoplugin_Global
                 );
                 $key++;
 				$new_settings[$key] = array(
-                    'title'    => __( 'Not covert in wp-admin', CFGP_NAME ),
+                    'title'    => __( 'Not convert in wp-admin', CFGP_NAME ),
                     'desc'     => __( 'Remove conversion price from admin panel and show only original prices.', CFGP_NAME ),
                     'class'    => 'wc-enhanced-checkbox',
                     'id'       => 'woocommerce_cf_geoplugin_conversion_in_admin',

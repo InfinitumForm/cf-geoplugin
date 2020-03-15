@@ -1,4 +1,18 @@
 == Changelog ==
+= 7.9.5 =
+-Added new Contact Form 7 tags based on geo location
+-Added new Settings for the Contact Form 7 & Wooplatnica
+-Added new filters: cf_geoplugin_get_option, cf_geoplugin_get_the_option, cf_geoplugin_update_option & cf_geoplugin_get_option_updated
+-Added new object CF_Geoplugin_Global::get_the_option()
+-Fixed typos in the plugin
+-Fixed supported plugins includes
+
+= 7.9.4 =
+* Insert WP_ADMIN_DIR absolute path protocol
+* Fixed plugin version check
+* Fixed absolute path for the wp-admin included files
+* Fixed CFGP_MULTISITE constant
+
 = 7.9.3 =
 * Improved code and added support for the WordPress 5.4
 * Improved CF Geo Banner post type
