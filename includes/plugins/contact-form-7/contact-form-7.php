@@ -15,7 +15,7 @@ class CF_Geoplugin_Contact_Form_7 extends CF_Geoplugin_Global{
 	function __construct(){
 		if(parent::get_the_option('enable_cf7', 0))
 		{
-			$this->add_filter( 'wpcf7_init', 'add_shortcode', 99, 3 );
+			$this->add_filter( 'wpcf7_init', 'add_wpcf7_shortcode', 99, 3 );
 			$this->add_action( 'wpcf7_admin_init', 'tag_generator', 999 );
 		}
 	}
@@ -26,7 +26,7 @@ class CF_Geoplugin_Contact_Form_7 extends CF_Geoplugin_Global{
 		return $this->excluded;
 	}
 	
-	function add_shortcode() {
+	function add_wpcf7_shortcode() {
 		if(function_exists('wpcf7_add_form_tag'))
 		{
 			$CFGEO = $GLOBALS['CFGEO'];

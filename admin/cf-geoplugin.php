@@ -102,7 +102,7 @@ $CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIO
                 </li>
                 <?php endif; ?>			
 				<li class="nav-item">
-                    <a class="nav-link text-dark" href="#info" role="tab" data-toggle="tab"><span class="fa fa-info"></span> <?php _e('Info & Examples',CFGP_NAME); ?></a>
+                    <a class="nav-link text-dark" href="#info" role="tab" data-toggle="tab"><span class="fa fa-book"></span> <?php _e('Documentation',CFGP_NAME); ?></a>
                 </li>
                 <?php do_action('page-cf-geoplugin-tab'); ?>
             </ul>
@@ -382,10 +382,6 @@ $CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIO
                                 <td><kbd>%%vat_rate%%</kbd></td>
                                 <td><abbr data-container="body" data-toggle="popover" data-placement="top" data-trigger="hover" data-content="<?php echo esc_attr(__('Standard VAT Rate in percentages (%)', CFGP_NAME)); ?>"><?php echo $CFGEO['vat_rate']; ?></abbr></td>
                             </tr>
-							<tr>
-                                <td><kbd>%%gps%%</kbd></td>
-                                <td><?php echo $CFGEO['gps']; ?></td>
-                            </tr>
                             <tr>
                                 <td><kbd>%%host%%</kbd></td>
                                 <td><?php echo $CFGEO['host']; ?></td>
@@ -644,48 +640,63 @@ $CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIO
                 	<div class="row">
                     	<div class="col-12">
                         	<?php do_action('page-cf-geoplugin-tab-info-start'); ?>
-                            <h3><?php _e('Usage, additional attributes and settings',CFGP_NAME); ?></h3>
-                                <p class="manage-menus"><?php printf( __( "If you whant to display live conversion in your posts, you can do that by using shortcode like this: %s - what will return converted value and currency name. <br /><b>Params available</b>: <br />from = From currency example from='USD' ( by default site currency ) <br />to = To currency example to='EUR' ( by defult visitor's currency ) <br />align = L(eft) | R(right) - default <br />separator = Separate currency from currency name ( by default blank space )", CFGP_NAME ), '<code>[cfgeo_converter]300USD[/cfgeo_converter]</code>' ); ?></p>
-                                <p class="manage-menus"><?php printf(__("If you like to display region (for example California for users who are from California), you just need to use return attribute in your shortcode like this: %s - what will return region name by visitors location.",CFGP_NAME),'<br><code>[cfgeo return="region"]</code>'); ?></p>
-                                
-                                <p class="manage-menus"><?php printf(__('If you whant to track some custom IP and return some information from that IP, you can do that by adding one optional attribute %s like on example: %s - what will return area code from that IP address.',CFGP_NAME),'<code>ip</code>','<br><code>[cfgeo ip="127.0.0.1" return="area_code"]</code>'); ?></p>
-                                
-                                <p class="manage-menus"><?php printf(__("If you like to ad default values to your shortcode if data is empty you need to add extra attribute in your shortcode like this example: %s - what will return US if geoplugin can't locate country code.",CFGP_NAME),'<br><code>[cfgeo return="country_code" default="US"]</code>'); ?></p>
-                                <p class="manage-menus"><?php printf(__("Sometimes you need to include other HTML, CSS and JavaScript, and jQuery codes inside <strong>ContactForm7</strong>. Sometimes you need to insert a geolocation in input fields. This is not easy but here is one example with jQuery: %s This code will auto fill value of CF7 city field when a visitor visits the contact page.",CFGP_NAME),'<br><br><code>&nbsp;[text* city placeholder "* City"]<br>
-        &nbsp;&nbsp;[text* country placeholder "* Country"]<br><br>
-        &lt;script&gt;<br>
-        jQuery(document).ready(function(){<br>
-        &nbsp;&nbsp;// Get CF Geo Plugin Data<br>
-        &nbsp;&nbsp;var city = \'[cfgeo return="city"]\';<br>
-        &nbsp;&nbsp;var country = \'[cfgeo return="country"]\';<br><br>
-        &nbsp;&nbsp;// Insert values inside input fields<br>
-        &nbsp;&nbsp;jQuery("input[name^=\'city\']").val(city);<br>
-        &nbsp;&nbsp;jQuery("input[name^=\'country\']").val(country);<br>
-        });<br>
-        &lt;/script&gt;<br><br>
-        </code>'); ?></p>
-        
-                            <h3><?php _e('Displaying Country Flags in text or like image',CFGP_NAME); ?></h3>
-                            
-                            <p class="manage-menus"><?php printf(__("If you like to display country flag in your text like icon, you can do that simple like: %s - and you will see flag in your text.",CFGP_NAME),'<br><code>[cfgeo_flag]</code>'); ?></p>
-                            
-                            <p class="manage-menus"><?php printf(__("If you like to display country flag in your content like image, you can do that also simple using %s or %s attributes like: %s - and you will see image flag in your content",CFGP_NAME),'<code>img</code>','<code>image</code>','<br><code>[cfgeo_flag img]</code>'); ?></p>
-                            
-                            <p class="manage-menus"><?php printf(__("You also can give custom sizes of flags in %s, %s, %s, %s or %s using %s attribute like this: %s - and you will see your flag in that size. %s",CFGP_NAME),'<code>%</code>','<code>px</code>','<code>in</code>','<code>pt</code>','<code>em</code>', '<code>size</code>','<br><code>[cfgeo_flag size="32px"]</code>','<br><strong>-'.__("You can use this size in image and normal text mode also.",CFGP_NAME).'</strong>'); ?></p>
-                            
-                            <p class="manage-menus"><?php printf(__("You also can display custom flag using %s attribute by placing country code simple like: %s - and you will see flag in your text or like image.",CFGP_NAME),'<code>country</code>', '<br><code>[cfgeo_flag country="ca"]</code>'); ?></p>
-                            
-                            <p class="manage-menus"><?php printf(__("We allow you also full controll of this flags and you can place %s, %s or %s attributes to be able use this in any kind of work like this: %s",CFGP_NAME),'<code>css</code>', '<code>class</code>', '<code>id</code>', '<br><code>[cfgeo_flag css="padding:10px;" class="your-custom-class custom-class custom" id="top-flag"]</code>'); ?></p>
-                            <?php if($CF_GEOPLUGIN_OPTIONS['enable_beta'] && $CF_GEOPLUGIN_OPTIONS['enable_beta_shortcode']) : ?>
-                                <h3><?php _e('Experimental & Deprecate Shortcodes',CFGP_NAME); ?></h3>
-                            <?php else : ?>
-                            	<h3><?php _e('Deprecate Shortcodes',CFGP_NAME); ?></h3>
-                            <?php endif; ?>
-                                
-                                <p class="manage-menus"><?php printf(__("Like you notice, this plugin have changed shortcode names but still support old <strong>deprecated</strong> shortcode name %s what you still can use but we strongly recommended to use new one %s.",CFGP_NAME), '<code>cg_geo</code>', '<code>cfgeo</code>'); ?></p>
-                            <?php if($CF_GEOPLUGIN_OPTIONS['enable_beta'] && $CF_GEOPLUGIN_OPTIONS['enable_beta_shortcode']) : ?>
-                                <p class="manage-menus"><?php printf(__("Also we trying to made all works faster and more understandable and we also add <strong>experimental</strong> shortcode called %s that you can use insteand of %s like %s but if you have similar geo plugin installed beside CF Geo Plugin you can have a problems and interference.",CFGP_NAME), '<code>geo</code>', '<code>cfgeo</code>', '<code>[geo]</code>'); ?></p>
-                            <?php endif; ?>
+                            <p><?php _e('The CF Geo Plugin comes with many options and it is best to study the following items in our documentation to get the best from plugin.',CFGP_NAME); ?></p>
+                            <ul class="row">
+							   <li class="col-lg-6 mt-3">
+								  <a target="_blank" href="https://cfgeoplugin.com/documentation/quick-start/" class="docspress-archive-list-item-title">
+									 <h4 class="mb-3">Quick Start</h4>
+								  </a>
+								  <ul>
+									 <li><a target="_blank" href="https://cfgeoplugin.com/documentation/quick-start/benefits-of-cf-geo-plugin/">Benefits of CF Geo Plugin</a></li>
+									 <li><a target="_blank" href="https://cfgeoplugin.com/documentation/quick-start/all-cf-geoplugin-features/">All CF Geo Plugin Features</a></li>
+									 <li><a target="_blank" href="https://cfgeoplugin.com/documentation/quick-start/how-to-install-cf-geoplugin/">How to install CF Geo Plugin</a></li>
+									 <li><a target="_blank" href="https://cfgeoplugin.com/documentation/quick-start/how-to-use-cf-geoplugin/">How to use CF Geo Plugin</a></li>
+									 <li><a target="_blank" href="https://cfgeoplugin.com/documentation/quick-start/what-information-cf-geoplugin-returns/">What Information CF Geo Plugin returns?</a></li>
+									 <li><a target="_blank" href="https://cfgeoplugin.com/documentation/quick-start/cf-geoplugin-shortcodes/">CF Geo Plugin Shortcodes</a></li>
+									 <li><a target="_blank" href="https://cfgeoplugin.com/documentation/quick-start/cf-geo-plugin-tags/">CF Geo Plugin Tags</a></li>
+									 <li><a target="_blank" href="https://cfgeoplugin.com/documentation/quick-start/wordpress-geo-plugin-compatibility/">CF Geo Plugin Compatibility</a></li>
+									 <li><a target="_blank" href="https://cfgeoplugin.com/documentation/quick-start/what-do-i-get-from-unlimited-license/">What do I get from Unlimited License</a></li>
+								  </ul>
+							   </li>
+							   <li class="col-lg-6 mt-3">
+								  <a target="_blank" href="https://cfgeoplugin.com/documentation/user-guide/" class="docspress-archive-list-item-title">
+									 <h4 class="mb-3">User Guide</h4>
+								  </a>
+								  <ul>
+									 <li><a target="_blank" href="https://cfgeoplugin.com/documentation/user-guide/cf-geo-plugin-user-guide/">CF Geo Plugin User Guide</a></li>
+									 <li><a target="_blank" href="https://cfgeoplugin.com/documentation/user-guide/cf-geoplugin-settings/">CF Geo Plugin Settings</a></li>
+									 <li><a target="_blank" href="https://cfgeoplugin.com/documentation/user-guide/google-map-settings/">Google Map Settings</a></li>
+									 <li><a target="_blank" href="https://cfgeoplugin.com/documentation/user-guide/plugin-usage/">Plugin Usage</a></li>
+									 <li><a target="_blank" href="https://cfgeoplugin.com/documentation/user-guide/widgets/">Widgets</a></li>
+								  </ul>
+							   </li>
+							   <li class="col-lg-6 mt-3">
+								  <a target="_blank" href="https://cfgeoplugin.com/documentation/plugins-integration/" class="docspress-archive-list-item-title">
+									 <h4 class="mb-3">Plugins Integration</h4>
+								  </a>
+								  <ul>
+									 <li><a target="_blank" href="https://cfgeoplugin.com/documentation/plugins-integration/woocommerce/">WooCommerce</a></li>
+									 <li><a target="_blank" href="https://cfgeoplugin.com/documentation/plugins-integration/wooplatnica/">Wooplatnica</a></li>
+									 <li><a target="_blank" href="https://cfgeoplugin.com/documentation/plugins-integration/yoast-seo/">Yoast SEO</a></li>
+									 <li><a target="_blank" href="https://cfgeoplugin.com/documentation/plugins-integration/all-in-one-seo-pack/">All in One SEO Pack</a></li>
+									 <li><a target="_blank" href="https://cfgeoplugin.com/documentation/plugins-integration/wordpress-seo-plugin-by-rank-math/">WordPress SEO Plugin by Rank Math</a></li>
+									 <li><a target="_blank" href="https://cfgeoplugin.com/documentation/plugins-integration/the-seo-framework/">The SEO Framework</a></li>
+									 <li><a target="_blank" href="https://cfgeoplugin.com/documentation/plugins-integration/wp-fastest-cache/">WP Fastest Cache</a></li>
+									 <li><a target="_blank" href="https://cfgeoplugin.com/documentation/plugins-integration/w3-total-cache-w3tc/">W3 Total Cache (W3TC)</a></li>
+									 <li><a target="_blank" href="https://cfgeoplugin.com/documentation/plugins-integration/contact-form-7/">Contact Form 7</a></li>
+								  </ul>
+							   </li>
+							   <li class="col-lg-6 mt-3">
+								  <a target="_blank" href="https://cfgeoplugin.com/documentation/advanced-usage/" class="docspress-archive-list-item-title">
+									 <h4 class="mb-3">Advanced Usage</h4>
+								  </a>
+								  <ul>
+									 <li><a target="_blank" href="https://cfgeoplugin.com/documentation/advanced-usage/php-integration/">PHP Integration</a></li>
+									 <li><a target="_blank" href="https://cfgeoplugin.com/documentation/advanced-usage/javascript-integration/">JavaScript Integration</a></li>
+									 <li><a target="_blank" href="https://cfgeoplugin.com/documentation/advanced-usage/rest-api/">REST API</a></li>
+								  </ul>
+							   </li>
+							</ul>
                             
                             <?php do_action('page-cf-geoplugin-tab-info-end'); ?>
                         </div>

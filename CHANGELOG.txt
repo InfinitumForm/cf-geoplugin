@@ -1,11 +1,27 @@
 == Changelog ==
+= 7.9.8 =
+* IMPORTANT UPDATE: Fixed infinity loop into SEO redirection for the target pages
+* Added documentation to plugin pages
+
+= 7.9.7 =
+* Added HTTP referer control for the SEO redirection
+* Fixed activation form
+* Fixed SEO redirection error on the missing page_id
+* Fixed missing objects in the API
+* Fixed wp-admin widget
+* Improved settings options
+* Added new filters: cf_geoplugin_default_options, cf_geoplugin_access_level, cf_geoplugin_get_option, cf_geoplugin_get_option_updated, cf_geoplugin_access_level
+
+= 7.9.6 =
+* Urgent fix: Contact Form 7 CF_Geoplugin_Contact_Form_7::add_shortcode() conflict
+
 = 7.9.5 =
--Added new Contact Form 7 tags based on geo location
--Added new Settings for the Contact Form 7 & Wooplatnica
--Added new filters: cf_geoplugin_get_option, cf_geoplugin_get_the_option, cf_geoplugin_update_option & cf_geoplugin_get_option_updated
--Added new object CF_Geoplugin_Global::get_the_option()
--Fixed typos in the plugin
--Fixed supported plugins includes
+* Added new Contact Form 7 tags based on geo location
+* Added new Settings for the Contact Form 7 & Wooplatnica
+* Added new filters: cf_geoplugin_get_option, cf_geoplugin_get_the_option, cf_geoplugin_update_option & cf_geoplugin_get_option_updated
+* Added new object CF_Geoplugin_Global::get_the_option()
+* Fixed typos in the plugin
+* Fixed supported plugins includes
 
 = 7.9.4 =
 * Insert WP_ADMIN_DIR absolute path protocol

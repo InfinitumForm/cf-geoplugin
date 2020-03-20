@@ -18,20 +18,21 @@ class CF_Geoplugin_SEO_Redirection extends CF_Geoplugin_Global
 			
 		if(isset($_REQUEST['stop_redirection']) && ($_REQUEST['stop_redirection'] === true || $_REQUEST['stop_redirection'] === 'true'))
 			return;
-		
-		
+
 		$this->add_action( 'template_redirect', 'page_seo_redirection', 1);
 		$this->add_action( 'template_redirect', 'wp_seo_redirection', 1);
 	}
-	
-	// Page SEO Redirection
+
+	/*
+	 * Page SEO Redirection
+	 */
 	public function page_seo_redirection(){
-		$CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
+		$CFGEO = $GLOBALS['CFGEO'];
 		
-		if((isset($CF_GEOPLUGIN_OPTIONS['redirect_disable_bots']) ? ($CF_GEOPLUGIN_OPTIONS['redirect_disable_bots'] == 1) : false) && parent::is_bot()) return;
+		if(parent::get_the_option('redirect_disable_bots', false) && parent::is_bot()) return;
 		
 		$page_id = $this->get_current_page_ID();
-		if(!is_admin() && $CF_GEOPLUGIN_OPTIONS['enable_seo_redirection'])
+		if(!is_admin() && parent::get_the_option('enable_seo_redirection', false))
 		{
 			$redirect_data 	= $this->get_post_meta( 'redirection' );
 			if( is_array( $redirect_data ) )
@@ -84,14 +85,16 @@ class CF_Geoplugin_SEO_Redirection extends CF_Geoplugin_Global
 			if( isset( $redirection['seo_redirect'] ) && $redirection['seo_redirect'] == '1' ) $this->do_redirection( $redirection );
 		}
 	}
-	
-	// WordPress SEO Redirection
-	public function wp_seo_redirection(){
-		global $wpdb; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS']; $CFGEO = $GLOBALS['CFGEO'];
-		
-		if((isset($CF_GEOPLUGIN_OPTIONS['redirect_disable_bots']) ? ($CF_GEOPLUGIN_OPTIONS['redirect_disable_bots'] == 1) : false) && parent::is_bot()) return;
 
-		if(!is_admin() && $CF_GEOPLUGIN_OPTIONS['enable_seo_redirection'])
+	/*
+	 * WordPress SEO Redirection
+	 */
+	public function wp_seo_redirection(){
+		global $wpdb; $CFGEO = $GLOBALS['CFGEO'];
+		
+		if(parent::get_the_option('redirect_disable_bots', false) && parent::is_bot()) return;
+
+		if(!is_admin() && parent::get_the_option('enable_seo_redirection', false))
 		{
 			$country = (isset($CFGEO['country']) && !empty($CFGEO['country']) ? strtolower($CFGEO['country']) : NULL);
 			$country_code = (isset($CFGEO['country_code']) && !empty($CFGEO['country_code']) ? strtolower($CFGEO['country_code']) : NULL);
@@ -147,28 +150,36 @@ class CF_Geoplugin_SEO_Redirection extends CF_Geoplugin_Global
 		}
 	}
 	
+	/*
+	 * Safe WordPress redirection
+	 */
 	private function redirect($url, $http_code=302){
-		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
 		if (!headers_sent())
 		{
 			// Clear cache for the redirections
-			if(!$CF_GEOPLUGIN_OPTIONS['enable_cache'])
+			if(parent::get_the_option('enable_cache', false))
 			{
 				header('Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0');
 				header('Expires: Sat, 26 Jul 1997 05:00:00 GMT');
+			}
+			
+			// Using the Referrer-Policy HTTP header
+			if( parent::get_the_option('hide_http_referer_headers', 0) )
+			{
+				header('Referrer-Policy: no-referrer');
 			}
 			
 			// Redirect via PHP
 			if( !wp_redirect( $url, $http_code ) )
 			{
 				// Log exception
-				if(isset($CF_GEOPLUGIN_OPTIONS['log_errors']) && $CF_GEOPLUGIN_OPTIONS['log_errors']) {
+				if(parent::get_the_option('log_errors', false)) {
 					throw new Exception(__('CF GEO PLUGIN NOTICE: WordPress redirection fail because of CORS (Cross-Origin Resource Sharing) protection. We proceed with the standard PHP redirection.', CFGP_NAME));
 				}
 			}
 			
 			// Standard redirect
-			header('Location: ' . $url, true, $http_code);
+			header("Location: {$url}", true, $http_code);
 			
 			// Optional workaround for an IE bug (thanks Olav)
         	header('Connection: close');
@@ -177,12 +188,15 @@ class CF_Geoplugin_SEO_Redirection extends CF_Geoplugin_Global
 		else
 		{
 			// Log exception
-			if(isset($CF_GEOPLUGIN_OPTIONS['log_errors']) && $CF_GEOPLUGIN_OPTIONS['log_errors']) {
+			if(parent::get_the_option('log_errors', false)) {
 				throw new Exception(sprintf(__('CF GEO PLUGIN NOTICE: Headers already sent, redirection is not possible to the: %s', CFGP_NAME), $url));
 			}
 		}
 	}
 
+	/*
+	 * Prepare and do redirection
+	 */
 	private function do_redirection( $redirect )
 	{		
 		$CFGEO = $GLOBALS['CFGEO'];
@@ -220,23 +234,80 @@ class CF_Geoplugin_SEO_Redirection extends CF_Geoplugin_Global
 		}
 	}
 	
+	/*
+	 * Redirection control
+	 */
 	private function control_redirection( $redirect )
-	{		
-		if(isset( $redirect['only_once'] ) && $redirect['only_once'] == 1){
-			$cookie_name = '__cfgp_seo_' . $redirect['page_id'] . '_once_' . $redirect['ID'];
+	{	
+		// Forbid infinity loop
+		if($this->current_url( $redirect['url'], true ))
+		{
+			return false;
+		}
+	
+		// Redirect only once
+		if(isset( $redirect['only_once'] ) && $redirect['only_once'] == 1)
+		{
+			
+			if(isset($redirect['page_id']) && isset($redirect['ID']) && !empty($redirect['page_id'])) {
+				$cookie_name = '__cfgp_seo_' . md5($redirect['page_id'] . '_once_' . $redirect['ID']);
+			} else {
+				$cookie_name = '__cfgp_seo_' . md5($redirect['url']);
+			}
+			
+			$expire = (time()+((365 * DAY_IN_SECONDS) * 2));
 			
 			if(isset($_COOKIE[$cookie_name]) && !empty($_COOKIE[$cookie_name])){
 				return false;
 			} else {
-				setcookie( $cookie_name, time() . '_' . (time()+((365 * DAY_IN_SECONDS) * 2)), (time()+((365 * DAY_IN_SECONDS) * 2)), COOKIEPATH, COOKIE_DOMAIN );
+				setcookie( $cookie_name, time() . '_' . $expire, $expire, COOKIEPATH, COOKIE_DOMAIN );
 			}
 		}
 		
 		return true;
 	}
 	
+	/*
+	 * Test is object empty or not
+	 */
 	private function is_object_empty($obj,$name){
 		return ( ( isset( $obj[$name][0] ) && empty( $obj[$name][0] ) ) || ( empty( $obj[$name] ) ) );
+	}
+	
+	/*
+	 * Get current URL or match current URL
+	 */
+	private function current_url ($url = NULL, $avoid_protocol = false) {
+		$host = $_SERVER['HTTP_HOST'];
+		$uri = $_SERVER['REQUEST_URI'];
+		
+		if( $avoid_protocol )
+		{
+			$url = preg_replace('/(https?\:\/\/)/i', '', $url);
+			$location = "{$host}{$uri}";
+		}
+		else
+		{
+			$protocol = parent::is_ssl() ? 'https' : 'http';
+			$location = "{$protocol}://{$host}{$uri}";
+		}
+
+		
+		if(NULL === $url)
+			return $location;
+		else
+		{
+			if(!empty($url) && !empty($location))
+			{
+				$url = rtrim($url, '/');
+				$location = rtrim($location, '/');
+				
+				if(strtolower($url) == strtolower($location))
+					return $location;
+			}
+		}
+		
+		return false;
 	}
 }
 endif;

@@ -1008,6 +1008,16 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 			'slug' => 'cf-geoplugin',
 			'fields' => array(
 				'version' => true,
+				'tested' => true,
+				'description' => false,
+				'sections' => true,
+				'versions' => false,
+				'donate_link' => true,
+				'downloadlink' => true,
+				'tags' => false,
+				'downloaded' => true,
+				'short_description' => false,
+				'contributors' => false
 			)
 		));
 
@@ -1048,7 +1058,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 					_e( 'There was error in fetching plugin data.', CFGP_NAME )
 			?>
 			<?php if($plugin_updated && !is_multisite()) : ?>
-				<a href="<?php echo self_admin_url('plugin-install.php?tab=plugin-information&plugin=cf-geoplugin&TB_iframe=true&width=600&height=550'); ?>"  class="thickbox open-plugin-details-modal button button-primary button-hero"><?php _e( 'Download new version NOW', CFGP_NAME ); ?></a>
+				<a href="<?php echo self_admin_url('plugin-install.php?tab=plugin-information&plugin=cf-geoplugin&TB_iframe=true&width=600&height=550'); ?>"  class="open-plugin-details-modal button button-primary button-hero"><?php _e( 'Download new version NOW', CFGP_NAME ); ?></a>
 			<?php endif; ?>
             </div>
             <div id="cf-geoplugin-dashboard-details-info-title" class="activity-block">
@@ -1085,7 +1095,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
         	</div>
 			<div class="cf-geoplugin-dashboard-details-copyright" id="cf-geoplugin-dashboard-footer">
 				<div class="cf-geoplugin-dashboard-details-copyright-column" style="text-align:center; margin-top:10px;">
-					<a href="<?php echo CFGP_STORE; ?>/pricing/" target="_blank"><?php _e( 'Pricing', CFGP_NAME ); ?></a> | <a href="<?php echo CFGP_STORE; ?>/documentation/" target="_blank"><?php _e( 'Documentation', CFGP_NAME ); ?></a> | <a href="<?php echo CFGP_STORE; ?>/faq/" target="_blank"><?php _e( 'FAQ', CFGP_NAME ); ?></a> | <a href="<?php echo CFGP_STORE; ?>/privacy-policy/" target="_blank"><?php _e( 'Privacy Policy', CFGP_NAME ); ?></a> | <a href="<?php echo self_admin_url( 'admin.php?page=' . CFGP_NAME . '-settings'); ?>"><?php _e( 'Settings', CFGP_NAME ); ?></a>
+					<a href="<?php echo CFGP_STORE; ?>/pricing/" target="_blank"><?php _e( 'Pricing', CFGP_NAME ); ?></a> | <a href="<?php echo CFGP_STORE; ?>/documentation/" target="_blank"><?php _e( 'Documentation', CFGP_NAME ); ?></a> | <a href="<?php echo CFGP_STORE; ?>/terms-and-conditions/" target="_blank"><?php _e( 'Terms & Conditions', CFGP_NAME ); ?></a> | <a href="<?php echo CFGP_STORE; ?>/privacy-policy/" target="_blank"><?php _e( 'Privacy Policy', CFGP_NAME ); ?></a> | <a href="<?php echo self_admin_url( 'admin.php?page=' . CFGP_NAME . '-settings'); ?>"><?php _e( 'Settings', CFGP_NAME ); ?></a>
 				</div>
 				<div class="cf-geoplugin-dashboard-details-copyright-column" style="text-align:center; margin-top:5px;">
 					<small>Copyright © 2015-<?php echo date('Y'); ?> CF Geo Plugin. All rights reserved.</small>
@@ -1122,15 +1132,22 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 			'slug' => 'cf-geoplugin',
 			'fields' => array(
 				'version' => true,
+				'tested' => true,
+				'description' => false,
+				'sections' => true,
+				'versions' => false,
+				'donate_link' => true,
+				'downloadlink' => true,
+				'tags' => false,
+				'downloaded' => true,
+				'short_description' => false,
+				'contributors' => false
 			)
 		));
 
 		if( $plugin === false || is_wp_error( $plugin ) ) return false; // User doesnt't have connection or something is wrong with API so prevent errors
-
 		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS']; $CFGEO = $GLOBALS['CFGEO'];
-		
 		$plugin_updated = version_compare(CFGP_VERSION, $plugin->version, '<');
-		
 		?>
 
 		<div id="custom-id" class="welcome-panel" style="display: none;">
@@ -1172,7 +1189,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 								_e( 'There was error in fetching plugin data.', CFGP_NAME )
 						?>
 						<?php if($plugin_updated && !is_multisite() && !$this->get( 'cfgp_auto_update', 'bool' ) ) : ?>
-							<a href="<?php echo self_admin_url( 'plugin-install.php?tab=plugin-information&plugin=cf-geoplugin&TB_iframe=true&widht=600&height=550' ); ?>"  class="thickbox open-plugin-details-modal button button-primary button-hero"><?php _e( 'Download new version NOW', CFGP_NAME ); ?></a>
+							<a href="<?php echo self_admin_url( 'plugin-install.php?tab=plugin-information&plugin=cf-geoplugin&TB_iframe=true&widht=600&height=550' ); ?>"  class="open-plugin-details-modal button button-primary button-hero"><?php _e( 'Download new version NOW', CFGP_NAME ); ?></a>
 						<?php
 							elseif( $plugin_updated && $this->get( 'cfgp_auto_update', 'bool' ) ) :
 								?>
@@ -1226,7 +1243,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 						<a href="https://infinitumform.com?ref=cf-geoplugin" target="_blank" title="INFINITUM FORM - Specialized agency for web development, graphic design, marketing and PR" rel="author">Created by INFINITUM FORM®</a>
 					</div>
 					<div class="welcome-panel-column" style="text-align:right">
-						<a href="<?php echo CFGP_STORE; ?>/pricing/" target="_blank"><?php _e( 'Pricing', CFGP_NAME ); ?></a> | <a href="<?php echo CFGP_STORE; ?>/documentation/" target="_blank"><?php _e( 'Documentation', CFGP_NAME ); ?></a> | <a href="<?php echo CFGP_STORE; ?>/faq/" target="_blank"><?php _e( 'FAQ', CFGP_NAME ); ?></a> | <a href="<?php echo CFGP_STORE; ?>/privacy-policy/" target="_blank"><?php _e( 'Privacy Policy', CFGP_NAME ); ?></a> | <a href="<?php echo self_admin_url( 'admin.php?page=' . CFGP_NAME . '-settings'); ?>"><?php _e( 'Settings', CFGP_NAME ); ?></a>
+						<a href="<?php echo CFGP_STORE; ?>/pricing/" target="_blank"><?php _e( 'Pricing', CFGP_NAME ); ?></a> | <a href="<?php echo CFGP_STORE; ?>/documentation/" target="_blank"><?php _e( 'Documentation', CFGP_NAME ); ?></a> | <a href="<?php echo CFGP_STORE; ?>/terms-and-conditions/" target="_blank"><?php _e( 'Terms & Conditions', CFGP_NAME ); ?></a> | <a href="<?php echo CFGP_STORE; ?>/privacy-policy/" target="_blank"><?php _e( 'Privacy Policy', CFGP_NAME ); ?></a> | <a href="<?php echo self_admin_url( 'admin.php?page=' . CFGP_NAME . '-settings'); ?>"><?php _e( 'Settings', CFGP_NAME ); ?></a>
 					</div>
 				</div>
 			</div>

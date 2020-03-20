@@ -127,8 +127,8 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
 			
 			$provider=$this->get_dns($geodata->ipAddress);
 			
-			$lng = $geodata->longitude;
-			$lat = $geodata->latitude;
+			$lng = (isset($geodata->longitude) ? $geodata->longitude : 0);
+			$lat = (isset($geodata->latitude) ? $geodata->latitude : 0);
 			
 			$countryCode = $geodata->countryCode;
 			
@@ -143,16 +143,16 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
 			if(isset($currency_symbol[$currency]))
 				$currency_symbol = $currency_symbol[$currency];
 			else
-				$currency_symbol = $geodata->currencySymbol;
+				$currency_symbol = isset($geodata->currencySymbol) ? $geodata->currencySymbol : NULL;
 			
 			$continent = empty($geodata->continent) ? $this->array_find_parent(CF_Geplugin_Library::COUNTRY_REGION_LIST, $countryCode) : $geodata->continent;
-			$continentCode =  $geodata->continentCode;
+			$continentCode =  isset($geodata->continentCode) ? $geodata->continentCode : NULL;
 			if(empty($continentCode)){
 				$continentCodeArr = array_flip(CF_Geplugin_Library::CONTINENT_LIST);
 				$continentCode = isset($continentCodeArr[$continent]) ? $continentCodeArr[$continent] : '';
 			}
 			
-			$m_unit = 'km';
+			$m_unit = __('km',CFGP_NAME);
 			$m_accuracy = isset( $geodata->accuracy ) ? $geodata->accuracy : 1;
 			
 			if(isset($CF_GEOPLUGIN_OPTIONS['measurement_unit']))
@@ -186,9 +186,9 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
                 'continent_code' => $continentCode,
             //    'continentCode' => $continentCode, // deprecated
                 'address' => $geodata->address,
-                'area_code' => $geodata->areaCode,
+                'area_code' => (isset($geodata->areaCode) ? $geodata->areaCode : NULL),
             //   'areaCode' => $geodata->areaCode, // deprecated
-                'dma_code' => $geodata->dmaCode,
+                'dma_code' => (isset($geodata->dmaCode) ? $geodata->dmaCode : NULL),
             //    'dmaCode' => $geodata->dmaCode, // deprecated
                 'latitude' => $lat,
                 'longitude' => $lng,

@@ -171,6 +171,7 @@ if( $global->get( 'action' ) == 'deactivate_license' && isset( $_GET['cfgp_licen
                 	<input type="text" name="license_key" value="<?php echo isset($_POST['license_key']) ? $_POST['license_key'] : $CF_GEOPLUGIN_OPTIONS['license_key']; ?>" class="form-control" placeholder="<?php _e('Enter Your License Key',CFGP_NAME); ?>" autocomplete="off" style="width: 500px; display:inline-block;" <?php echo CFGP_ACTIVATED ? ' disabled' : ''; ?>> 
                     <?php if(!CFGP_ACTIVATED) : ?><strong><a href="https://cfgeoplugin.com/#price" target="_blank"><?php _e('GET MY LICENSE KEY',CFGP_NAME); ?></a></strong><?php endif; ?><br><br>
                     <strong><label><?php _e('License Type',CFGP_NAME); ?> <?php CFGP_ACTIVATED ? '' : _e('(required)',CFGP_NAME); ?></label></strong><br>
+					<?php if(!CFGP_ACTIVATED) : ?>
                     <select name="sku" class="form-control" style="width: 300px; display:inline-block;" <?php echo CFGP_ACTIVATED ? ' disabled' : ''; ?>>
                     <?php
                     	$options = CF_Geoplugin_Global::license_name(true);
@@ -179,7 +180,13 @@ if( $global->get( 'action' ) == 'deactivate_license' && isset( $_GET['cfgp_licen
 							printf('<option value="%1$s"%2$s>%3$s</option>', $key, $active, $val);
 						}
 					?>
-                    </select><?php if(!CFGP_ACTIVATED) : ?><br><span>(<?php _e('License type must match to your license key that you ordered.',CFGP_NAME); ?>)</span><br><br>
+                    </select>
+					<?php else:
+						$options = CF_Geoplugin_Global::license_name(true);
+					?>
+						<input type="text" value="<?php echo esc_attr($options[$CF_GEOPLUGIN_OPTIONS['license_sku']]); ?>" class="form-control" style="width: 500px; display:inline-block;" disabled>
+					<?php endif; ?>
+					<?php if(!CFGP_ACTIVATED) : ?><br><span>(<?php _e('License type must match to your license key that you ordered.',CFGP_NAME); ?>)</span><br><br>
                     <?php printf(
 						__('Before any action don\'t forget to read and agree with %1$s and %2$s.'),
 						'<strong><a href="https://cfgeoplugin.com/privacy-policy/" target="_blank">' . __('Privacy Policy',CFGP_NAME) . '</a></strong>',

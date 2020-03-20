@@ -87,7 +87,8 @@ class CF_Geoplugin_Global
 		'enable_seo_posts'			=> array('post', 'page'),
 		'enable_geo_tag'			=> array('post', 'page'),
 		'enable_cf7'				=> 0,
-		'enable_wooplatnica'		=> 0
+		'enable_wooplatnica'		=> 0,
+		'hide_http_referer_headers' => 0
 	);
 
 	// Deprecated options
@@ -161,8 +162,12 @@ class CF_Geoplugin_Global
 			self::FREELANCER_LICENSE	=> __('UNLIMITED Freelancer License',CFGP_NAME),
 			self::BUSINESS_LICENSE		=> __('UNLIMITED Business License',CFGP_NAME)
 		);
+		if( CFGP_DEV_MODE )
+		{
+			$this->license_names[self::DEVELOPER_LICENSE] = __('UNLIMITED Developer License', CFGP_NAME);
+		}
 		
-		$this->default_options = apply_filters( 'cf_geoplugin_default_settings', $this->default_options);
+		$this->default_options = apply_filters( 'cf_geoplugin_default_options', $this->default_options);
 		
 		$this->http_codes = apply_filters( 'cf_geoplugin_http_codes', array(
 			301 => __( '301 - Moved Permanently', CFGP_NAME ),
@@ -172,11 +177,6 @@ class CF_Geoplugin_Global
 			308 => __( '308 - Permanent Redirect', CFGP_NAME ),
 			404 => __( '404 - Not Found (not recommended)', CFGP_NAME )
 		));
-		
-		if( CFGP_DEV_MODE )
-		{
-			$this->license_names[CF_Geoplugin_Global::DEVELOPER_LICENSE] = __('UNLIMITED Developer License', CFGP_NAME);
-		}
 	}
 	
 	/**
@@ -234,6 +234,7 @@ class CF_Geoplugin_Global
 		$instance = self::get_instance();
 		if($instance->check_defender_activation()) return 100;
 		
+		$return = 0;
 		
 		$check = array_flip(array(
 			0,
@@ -251,17 +252,18 @@ class CF_Geoplugin_Global
 				if($level['license'])
 				{
 					if(isset($check[$level['license_sku']]))
-						return $check[$level['license_sku']];
+						$return = $check[$level['license_sku']];
 				}
 			}
 		}
 		else
 		{			
 			if(isset($check[$level]))
-				return $check[$level];
+				$return = $check[$level];
 		}
-		return 0;
-	} 
+		
+		return apply_filters( 'cf_geoplugin_access_level', $return, $check, $level);
+	}
 
 	/*
 	 * Start Admin notice
@@ -302,13 +304,13 @@ class CF_Geoplugin_Global
 		// Get data by option name
 		if( !empty($option_name) ) {
 			if(isset($options[$option_name])) {
-				return $options[$option_name]; // Return single searched value
+				return apply_filters( 'cf_geoplugin_get_option', $options[$option_name], $option_name, $default); // Return single searched value
 			} else {
-				return $default; // Return default if field is not set yet
+				return apply_filters( 'cf_geoplugin_get_option', $default, $option_name, $default); // Return default if field is not set yet
 			}
 		} else {
 			// Return all options if option name is not defined
-			return apply_filters( 'cf_geoplugin_get_option', $options);
+			return apply_filters( 'cf_geoplugin_get_option', $options, $option_name, $default);
 		}
 	}
 	/*

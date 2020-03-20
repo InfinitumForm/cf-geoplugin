@@ -1,11 +1,11 @@
-﻿=== CF Geo Plugin - WordPress Geo Plugin ===
+﻿=== WordPress Geo Plugin - CF Geo Plugin ===
 Contributors: ivijanstefan, creativform
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=creativform@gmail.com
 Tags: geolocation, woocommerce, store-locator, seo, google-maps, geomarketing, content include, content exclude, geo plugin, geo target, geo, geotargeting, geofencing, geotag, cache, rocket
 Requires at least: 3.0
 Tested up to: 5.4
 Requires PHP: 5.6.0
-Stable tag: 7.9.5
+Stable tag: 7.9.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -363,13 +363,29 @@ Please inform us if any of these errors occure via contact form on our website [
 
 == Changelog ==
 
+= 7.9.8 =
+* IMPORTANT UPDATE: Fixed infinity loop into SEO redirection for the target pages
+* Added documentation to plugin pages
+
+= 7.9.7 =
+* Added HTTP referer control for the SEO redirection
+* Fixed activation form
+* Fixed SEO redirection error on the missing page_id
+* Fixed missing objects in the API
+* Fixed wp-admin widget
+* Improved settings options
+* Added new filters: cf_geoplugin_default_options, cf_geoplugin_access_level, cf_geoplugin_get_option, cf_geoplugin_get_option_updated, cf_geoplugin_access_level
+
+= 7.9.6 =
+* Urgent fix: Contact Form 7 CF_Geoplugin_Contact_Form_7::add_shortcode() conflict
+
 = 7.9.5 =
--Added new Contact Form 7 tags based on geo location
--Added new Settings for the Contact Form 7 & Wooplatnica
--Added new filters: cf_geoplugin_get_option, cf_geoplugin_get_the_option, cf_geoplugin_update_option & cf_geoplugin_get_option_updated
--Added new object CF_Geoplugin_Global::get_the_option()
--Fixed typos in the plugin
--Fixed supported plugins includes
+* Added new Contact Form 7 tags based on geo location
+* Added new Settings for the Contact Form 7 & Wooplatnica
+* Added new filters: cf_geoplugin_get_option, cf_geoplugin_get_the_option, cf_geoplugin_update_option & cf_geoplugin_get_option_updated
+* Added new object CF_Geoplugin_Global::get_the_option()
+* Fixed typos in the plugin
+* Fixed supported plugins includes
 
 = 7.9.4 =
 * Insert WP_ADMIN_DIR absolute path protocol
@@ -415,13 +431,18 @@ Please inform us if any of these errors occure via contact form on our website [
 
 == Upgrade Notice ==
 
-= 7.9.5 =
--Added new Contact Form 7 tags based on geo location
--Added new Settings for the Contact Form 7 & Wooplatnica
--Added new filters: cf_geoplugin_get_option, cf_geoplugin_get_the_option, cf_geoplugin_update_option & cf_geoplugin_get_option_updated
--Added new object CF_Geoplugin_Global::get_the_option()
--Fixed typos in the plugin
--Fixed supported plugins includes
+= 7.9.8 =
+* IMPORTANT UPDATE: Fixed infinity loop into SEO redirection for the target pages
+* Added documentation to plugin pages
+
+= 7.9.7 =
+* Added HTTP referer control for the SEO redirection
+* Fixed activation form
+* Fixed SEO redirection error on the missing page_id
+* Fixed missing objects in the API
+* Fixed wp-admin widget
+* Improved settings options
+* Added new filters: cf_geoplugin_default_options, cf_geoplugin_access_level, cf_geoplugin_get_option, cf_geoplugin_get_option_updated, cf_geoplugin_access_level
 
 == Other Notes ==
 
