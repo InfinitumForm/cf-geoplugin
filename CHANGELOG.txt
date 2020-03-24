@@ -1,4 +1,11 @@
 == Changelog ==
+= 7.9.10 =
+* Fixed COVID-19 shortcode include
+
+= 7.9.9 =
+* New COVID-19 (Coronavirus) shortcodes
+* Fixed bugs from the previus version
+
 = 7.9.8 =
 * IMPORTANT UPDATE: Fixed infinity loop into SEO redirection for the target pages
 * Added documentation to plugin pages

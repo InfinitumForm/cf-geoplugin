@@ -58,6 +58,20 @@ class CF_Geoplugin_Init extends CF_Geoplugin_Global
 			else CF_Geoplugin_Debug::log( 'REST API class not loaded - Class does not exists' );
 		}
 		else CF_Geoplugin_Debug::log( 'REST API class not loaded - File does not exists' );
+		
+		// Include COVID 19
+		if( file_exists( CFGP_INCLUDES . '/class-cf-geoplugin-covid-19.php' ) )
+		{
+			include_once CFGP_INCLUDES . '/class-cf-geoplugin-covid-19.php';
+			if( class_exists( 'CF_Geoplugin_Covid_19' ) )
+			{
+				$COVID19 = new CF_Geoplugin_Covid_19;
+				$COVID19->run();
+				CF_Geoplugin_Debug::log( 'CF_Geoplugin_Covid_19 class loaded' );
+			}
+			else CF_Geoplugin_Debug::log( 'CF_Geoplugin_Covid_19 class not loaded - Class does not exists' );
+		}
+		else CF_Geoplugin_Debug::log( 'CF_Geoplugin_Covid_19 class not loaded - File does not exists' );
 		 
 		// Include internal library
 		if(file_exists(CFGP_INCLUDES . '/class-cf-geoplugin-library.php'))

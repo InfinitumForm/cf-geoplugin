@@ -679,6 +679,23 @@ if( $global->get( 'action' ) == 'deactivate_license' )
 								));
 								
 								$general->radio(array(
+									'label'		=> __('COVID-19 Shortcodes',CFGP_NAME),
+									'name'		=> 'covid19',
+									'default'	=> CF_Geoplugin_Global::get_the_option('covid19', 1),
+									'info'		=> __('You can display global or country based informations of the Coronavirus (COVID 19).',CFGP_NAME),
+									array(
+										'text'	=> __('Enable',CFGP_NAME),
+										'value'	=> 1,
+										'id'	=> 'covid19_true'
+									),
+									array(
+										'text'	=> __('Disable',CFGP_NAME),
+										'value'	=> 0,
+										'id'	=> 'covid19_false'
+									),
+								));
+								
+								$general->radio(array(
 									'label'		=> __('Enable Advanced Logging',CFGP_NAME),
 									'name'		=> 'log_errors',
 									'default'	=> CF_Geoplugin_Global::get_the_option('log_errors', 0),

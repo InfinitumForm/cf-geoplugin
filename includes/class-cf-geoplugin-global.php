@@ -88,7 +88,8 @@ class CF_Geoplugin_Global
 		'enable_geo_tag'			=> array('post', 'page'),
 		'enable_cf7'				=> 0,
 		'enable_wooplatnica'		=> 0,
-		'hide_http_referer_headers' => 0
+		'hide_http_referer_headers' => 0,
+		'covid19'					=> 1
 	);
 
 	// Deprecated options
@@ -138,6 +139,9 @@ class CF_Geoplugin_Global
 	// Available HTTP codes
 	public $http_codes = array();
 	
+	// Access Levels
+	private $access_level = array();
+	
 	// Database tables
 	const TABLE = array(
 		'seo_redirection' 	=> 'cf_geo_seo_redirection',
@@ -162,6 +166,7 @@ class CF_Geoplugin_Global
 			self::FREELANCER_LICENSE	=> __('UNLIMITED Freelancer License',CFGP_NAME),
 			self::BUSINESS_LICENSE		=> __('UNLIMITED Business License',CFGP_NAME)
 		);
+	//	$this->set_license_and_access_levels();
 		if( CFGP_DEV_MODE )
 		{
 			$this->license_names[self::DEVELOPER_LICENSE] = __('UNLIMITED Developer License', CFGP_NAME);
@@ -177,6 +182,50 @@ class CF_Geoplugin_Global
 			308 => __( '308 - Permanent Redirect', CFGP_NAME ),
 			404 => __( '404 - Not Found (not recommended)', CFGP_NAME )
 		));
+	}
+	
+	public function set_license_and_access_levels(){
+	//	$instance = self::get_instance();
+		if($response = $this->get_license_products())
+		{
+			foreach($response['products'] as $product)
+			{
+				$this->license_names[ $product['sku'] ]	=	$product['title'];
+				$this->access_level[ $product['sku'] ]	=	$product['level'];
+			}
+		}
+	}
+
+	/**
+	 * Get product licenses
+	 * @since     7.9.9
+	 * @version   1.0.0
+	 */
+	public function get_license_products(){
+		
+		if(isset($this->get_license_products) && !empty($this->get_license_products))
+			return apply_filters( 'cf_geoplugin_get_license_products', $this->get_license_products, $this->license_names);
+		
+		if( $cache = get_transient('cfgp-product-licenses') )
+		{
+			$this->get_license_products = $cache;
+			return apply_filters( 'cf_geoplugin_get_license_products', $this->get_license_products, $this->license_names);
+		}
+		else
+		{
+			$response = $this->curl_get(CFGP_STORE . '/wp-ajax.php?action=cfgp_get_product_data');
+			if(!empty($response))
+			{
+				$response = json_decode($response, true);
+				if( !$response['error'] )
+				{
+					$this->get_license_products = $response;
+					set_transient('cfgp-product-licenses', $this->get_license_products, (60*60*24));
+					return apply_filters( 'cf_geoplugin_get_license_products', $this->get_license_products, $this->license_names);
+				}
+			}
+		}
+		return false;
 	}
 	
 	/**

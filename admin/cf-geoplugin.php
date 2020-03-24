@@ -9,6 +9,7 @@
 **/
 
 $CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
+//echo '<pre>', var_dump(CF_Geoplugin_Global::set_license_and_access_levels()), '</pre>';
 ?>
 <div class="clearfix"></div>
 <div class="container-fluid">
@@ -100,7 +101,7 @@ $CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIO
                 <li class="nav-item">
                     <a class="nav-link text-dark" href="#beta" role="tab" data-toggle="tab"><span class="fa fa-code"></span> <?php _e('Simple Shortcodes',CFGP_NAME); ?> <sup class="text-danger" data-container="body" data-toggle="popover" data-placement="top" data-trigger="hover" data-content="<?php _e('This BETA options you can turn off inside your Settings under General tab',CFGP_NAME); ?>">BETA</sup></a>
                 </li>
-                <?php endif; ?>			
+                <?php endif; ?>
 				<li class="nav-item">
                     <a class="nav-link text-dark" href="#info" role="tab" data-toggle="tab"><span class="fa fa-book"></span> <?php _e('Documentation',CFGP_NAME); ?></a>
                 </li>

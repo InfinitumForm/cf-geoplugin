@@ -1,17 +1,21 @@
 ﻿=== WordPress Geo Plugin - CF Geo Plugin ===
 Contributors: ivijanstefan, creativform
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=creativform@gmail.com
-Tags: geolocation, woocommerce, store-locator, seo, google-maps, geomarketing, content include, content exclude, geo plugin, geo target, geo, geotargeting, geofencing, geotag, cache, rocket
+Tags: covid-19, covid, coronavirus, geolocation, woocommerce, store-locator, seo, google-maps, geomarketing, content include, content exclude, geo plugin, geo target, geo, geotargeting, geofencing, geotag, cache, rocket
 Requires at least: 3.0
 Tested up to: 5.4
 Requires PHP: 5.6.0
-Stable tag: 7.9.8
+Stable tag: 7.9.10
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-The only geolocation plugin that provides all geomarketing integrations for the WordPress.
+All in one geolocation plugin that provides all geo functionality for the WordPress.
 
 == Description ==
+
+> <strong>COVID-19 INFORMATIONS (Coronavirus informations)</strong><br>
+> Using this plugin you can display coronavirus (COVID-19) informations in the real time on the your website for FREE.
+> You can display country based informations or global world wide informations about coronavirus.
 
 **[CF Geo Plugin](https://cfgeoplugin.com/)** is GeoMarketing tool that allows you to have full geo control of your WordPress. **CF Geo Plugin** gives you ability to attach content, geographic informations, geo tags, Google Maps to posts, pages, widgets and custom templates by using simple, options shortcodes, PHP code or JavaScript. It also lets you to specify a default geographic location for your entire WordPress blog, do SEO redirection, spam protection, WooCommerce control and many more. **CF Geo Plugin** help you to increase conversion, do better SEO, capture leads on your blog or landing pages.
 
@@ -27,6 +31,10 @@ This plugin works as a [service](https://en.wikipedia.org/wiki/Software_as_a_ser
 
 = BENEFITS =
 
+> <strong>COVID-19 INFORMATIONS (Coronavirus informations)</strong><br>
+> - **Country based** coronavirus informations via shortcode
+> - **World wide (global)** coronavirus informations via shortcode
+>
 > <strong>SERVER & WORDPRESS</strong><br>
 > - **There is no need to buy expensive and heavy databases**
 > - **No affect on the site performances**
@@ -123,6 +131,26 @@ We just found shoes in [cfgeo_city] that you can buy for 50% discount.
 To best understand how shortcode works, it's best to [read the documentation](https://cfgeoplugin.com/documentation/quick-start/cf-geoplugin-shortcodes/).
 
 But here are some simple examples:
+
+**Coronavirus information (COVID-19 informations)** Using shortcodes or tags you can display global or country based Coronavirus informations in the real time:
+
+`[cfgeo_covid19_total_cases]
+[cfgeo_covid19_total_recovered]
+[cfgeo_covid19_total_unresolved]
+[cfgeo_covid19_total_deaths]
+[cfgeo_covid19_total_new_cases_today]
+[cfgeo_covid19_total_new_deaths_today]
+[cfgeo_covid19_total_active_cases]
+[cfgeo_covid19_total_serious_cases]
+
+[cfgeo_covid19_global_total_cases]
+[cfgeo_covid19_global_total_recovered]
+[cfgeo_covid19_global_total_unresolved]
+[cfgeo_covid19_global_total_deaths]
+[cfgeo_covid19_global_total_new_cases_today]
+[cfgeo_covid19_global_total_new_deaths_today]
+[cfgeo_covid19_global_total_active_cases]
+[cfgeo_covid19_global_total_serious_cases]`
 
 **GEO PLUGIN:** Usage is simple. After installation and activation, in your post you just need to insert `[cfgeo]` shortcode and that's it. Enter a shortcode as this and it returns and display IP adress to a visitor. If you like to display region (for example California for users who are from California), you just need to use `return` attribute in your shortcode like this: `[cfgeo return="region"]`. By changing the return settings, you can display any information from list above. Each user who comes to the site will see information related to their area. 
 
@@ -360,8 +388,16 @@ Please inform us if any of these errors occure via contact form on our website [
 9. Example 2
 10. Example 3
 11. SEO Redirection
+12. COVID-19 (Coronavirus) Shortcodes
 
 == Changelog ==
+
+= 7.9.10 =
+* Fixed COVID-19 shortcode include
+
+= 7.9.9 =
+* New COVID-19 (Coronavirus) shortcodes
+* Fixed bugs from the previus version
 
 = 7.9.8 =
 * IMPORTANT UPDATE: Fixed infinity loop into SEO redirection for the target pages
@@ -431,18 +467,12 @@ Please inform us if any of these errors occure via contact form on our website [
 
 == Upgrade Notice ==
 
-= 7.9.8 =
-* IMPORTANT UPDATE: Fixed infinity loop into SEO redirection for the target pages
-* Added documentation to plugin pages
+= 7.9.10 =
+* Fixed COVID-19 shortcode include
 
-= 7.9.7 =
-* Added HTTP referer control for the SEO redirection
-* Fixed activation form
-* Fixed SEO redirection error on the missing page_id
-* Fixed missing objects in the API
-* Fixed wp-admin widget
-* Improved settings options
-* Added new filters: cf_geoplugin_default_options, cf_geoplugin_access_level, cf_geoplugin_get_option, cf_geoplugin_get_option_updated, cf_geoplugin_access_level
+= 7.9.9 =
+* New COVID-19 (Coronavirus) shortcodes
+* Fixed bugs from the previus version
 
 == Other Notes ==
 
