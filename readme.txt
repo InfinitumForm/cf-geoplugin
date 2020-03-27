@@ -5,7 +5,7 @@ Tags: covid-19, covid, coronavirus, geolocation, woocommerce, store-locator, seo
 Requires at least: 3.0
 Tested up to: 5.4
 Requires PHP: 5.6.0
-Stable tag: 7.9.10
+Stable tag: 7.9.11
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -392,6 +392,10 @@ Please inform us if any of these errors occure via contact form on our website [
 
 == Changelog ==
 
+= 7.9.11 =
+* Added support for the WooCommerce 4.0.0 or higher
+* Fixed WooCommerce currency converter
+
 = 7.9.10 =
 * Fixed COVID-19 shortcode include
 
@@ -467,12 +471,12 @@ Please inform us if any of these errors occure via contact form on our website [
 
 == Upgrade Notice ==
 
+= 7.9.11 =
+* Added support for the WooCommerce 4.0.0 or higher
+* Fixed WooCommerce currency converter
+
 = 7.9.10 =
 * Fixed COVID-19 shortcode include
-
-= 7.9.9 =
-* New COVID-19 (Coronavirus) shortcodes
-* Fixed bugs from the previus version
 
 == Other Notes ==
 

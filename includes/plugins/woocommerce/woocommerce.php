@@ -4,7 +4,7 @@
  *
  * @since      7.0.0
  * @package    CF_Geoplugin
- * @author     Goran Zivkovic
+ * @author     Ivijan-Stefan Stipic
  */
 if( !class_exists( 'CF_Geoplugin_Woocommerce' ) ):
 class CF_Geoplugin_Woocommerce extends CF_Geoplugin_Global
@@ -13,9 +13,9 @@ class CF_Geoplugin_Woocommerce extends CF_Geoplugin_Global
      * CF GeoPlugin converter option
      */
     private $cf_conversion					= 'original';
-	private $cf_conversion_rounded 			= NULL;
-	private $cf_conversion_rounded_option	= NULL;
-	private $cf_conversion_adjust 			= NULL;
+	private $cf_conversion_rounded 			= 0;
+	private $cf_conversion_rounded_option	= 'up';
+	private $cf_conversion_adjust 			= 0;
 	private $cf_conversion_in_admin 		= 'yes';
 
     function __construct()
@@ -26,10 +26,10 @@ class CF_Geoplugin_Woocommerce extends CF_Geoplugin_Global
 		
         $this->add_action( 'init', 'check_woocommerce_instalation', 10 );
 		
-		$this->cf_conversion 				= get_option( 'woocommerce_cf_geoplugin_conversion' );
-		$this->cf_conversion_rounded 		= get_option( 'woocommerce_cf_geoplugin_conversion_rounded' );
-		$this->cf_conversion_rounded_option	= get_option( 'woocommerce_cf_geoplugin_conversion_rounded_option' );
-		$this->cf_conversion_adjust 		= get_option( 'woocommerce_cf_geoplugin_conversion_adjust' );
+		$this->cf_conversion 				= get_option( 'woocommerce_cf_geoplugin_conversion', 'original');
+		$this->cf_conversion_rounded 		= get_option( 'woocommerce_cf_geoplugin_conversion_rounded', 0);
+		$this->cf_conversion_rounded_option	= get_option( 'woocommerce_cf_geoplugin_conversion_rounded_option', 'up');
+		$this->cf_conversion_adjust 		= get_option( 'woocommerce_cf_geoplugin_conversion_adjust', 0);
 		$this->cf_conversion_in_admin 		= get_option( 'woocommerce_cf_geoplugin_conversion_in_admin', 'yes' );
     }
 
@@ -43,14 +43,18 @@ class CF_Geoplugin_Woocommerce extends CF_Geoplugin_Global
             
             if( isset( $CF_GEOPLUGIN_OPTIONS['enable_woocommerce'] ) && $CF_GEOPLUGIN_OPTIONS['enable_woocommerce'] == 1 )
             {
-                if( isset( $CFGEO['currency_converter'] ) && $CFGEO['currency_converter'] > 0 )
+                if( isset( $CFGEO['currency_converter'] ) && $CFGEO['currency_converter'] > 0)
                 {
-					// All prices conversion
-					if($this->cf_conversion_in_admin == 'yes') {
-						if( !is_admin() ) $this->add_filter( 'wc_price', 'wc_price', 10, 3 );
-					} else {
-						$this->add_filter( 'wc_price', 'wc_price', 10, 3 );
+					if($this->cf_conversion != 'original')
+					{
+						// All prices conversion
+						if($this->cf_conversion_in_admin == 'yes') {
+							if( !is_admin() ) $this->add_filter( 'wc_price', 'wc_price', 99, 3 );
+						} else {
+							$this->add_filter( 'wc_price', 'wc_price', 99, 3 );
+						}
 					}
+					
 					// Add custom option for conversion system
                     $this->add_filter( 'woocommerce_general_settings', 'conversion_options', 10 );
                 }
@@ -86,13 +90,16 @@ class CF_Geoplugin_Woocommerce extends CF_Geoplugin_Global
 		$return = '';
 		$SKU = NULL;
 		$PID = NULL;
+
+		// We must have float number for all cases
+		$price_split = explode($args['decimal_separator'], $price);	
+		$price = floatval(preg_replace('/[^0-9]+/','',$price_split[0]) . '.' . (isset($price_split[1]) && !empty($price_split[1]) ? $price_split[1] : '00'));
 		
 		if(is_object($product))
 		{
 			if(property_exists($product, 'get_id')) $PID = $product->get_id();
 			if(property_exists($product, 'get_sku')) $SKU = $product->get_sku();
 		}
-		
 		
 		$currency_args = $this->get_currency_and_symbol();
 		
@@ -101,14 +108,14 @@ class CF_Geoplugin_Woocommerce extends CF_Geoplugin_Global
 		// Let's do direct conversion
 		if( $currency_args !== false && $this->cf_conversion === 'converted')
 		{
-			$price = ((float)$price * (float)$currency_args['currency_converter']);
+			$price = ($price * $currency_args['currency_converter']);
 			$args['currency'] = $currency_args['currency_code'];
 		}
 		
 		// We show it in the both conversions
 		if( $currency_args !== false && $this->cf_conversion == 'inversion' )
 		{
-			$converted_price = ((float)$unformatted_price * (float)$currency_args['currency_converter']);
+			$converted_price = ($unformatted_price * $currency_args['currency_converter']);
 			
 			$converted_negative = $converted_price < 0;
 			$converted_price = apply_filters( 'wp_geo_raw_woocommerce_converted_price', floatval( $converted_negative ? $converted_price * -1 : $converted_price ) );
@@ -149,7 +156,7 @@ class CF_Geoplugin_Woocommerce extends CF_Geoplugin_Global
 		// We show it in the both conversions
 		if( $currency_args !== false && $this->cf_conversion == 'both' )
 		{
-			$converted_price = ((float)$unformatted_price * (float)$currency_args['currency_converter']);
+			$converted_price = ($unformatted_price * $currency_args['currency_converter']);
 			
 			$converted_negative = $converted_price < 0;
 			$converted_price = apply_filters( 'wp_geo_raw_woocommerce_converted_price', floatval( $converted_negative ? $converted_price * -1 : $converted_price ) );
@@ -159,7 +166,7 @@ class CF_Geoplugin_Woocommerce extends CF_Geoplugin_Global
 				$converted_price = wc_trim_zeros( $converted_price );
 			}
 			
-			$return .= '<span class="woocommerce-converted-price" data-id="' . $PID . '"' . ($SKU ?  ' data-sku="' . $SKU . '"':NULL) . '>';
+			$return .= '<span class="woocommerce-converted-price" data-id="' . $PID . '"' . ($SKU ?  ' data-sku="' . $SKU . '"' : NULL) . '>';
 			$converted_formatted_price = ( $converted_negative ? '-' : '' ) . sprintf( $args['price_format'], '<span class="woocommerce-Price-currencySymbol" data-id="' . $PID . '"' . ($SKU ?  ' data-sku="' . $SKU . '"':NULL) . '>' . get_woocommerce_currency_symbol( $currency_args['currency_code'] ) . '</span>', $converted_price );
 			$return .= '<span class="woocommerce-Price-amount amount">' . $converted_formatted_price . '</span>';
 			
@@ -352,7 +359,7 @@ class CF_Geoplugin_Woocommerce extends CF_Geoplugin_Global
         $return_value = array();
 
         $currency_code =  ( isset( $CFGEO['currency'] ) ? strtoupper( (string)$CFGEO['currency'] ) : '' );
-        $currency_converted = ( isset( $CFGEO['currency_converter'] ) ? (float)$CFGEO['currency_converter'] : '' );
+        $currency_converted = ( isset( $CFGEO['currency_converter'] ) && (float)$CFGEO['currency_converter'] > 0 ? (float)$CFGEO['currency_converter'] : 1 );
         if( !empty( $currency_code )  && !empty( $currency_converted ) && $currency_code !== get_woocommerce_currency() )
         {
             $return_value['currency_code'] = $currency_code;

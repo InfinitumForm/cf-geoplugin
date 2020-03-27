@@ -1,4 +1,8 @@
 == Changelog ==
+= 7.9.11 =
+* Added support for the WooCommerce 4.0.0 or higher
+* Fixed WooCommerce currency converter
+
 = 7.9.10 =
 * Fixed COVID-19 shortcode include
 
