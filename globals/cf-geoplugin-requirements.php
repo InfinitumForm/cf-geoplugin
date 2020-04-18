@@ -29,11 +29,49 @@ if(!class_exists('CF_Geoplugin_Requirements_Check')) :
 			add_action( 'in_plugin_update_message-cf-geoplugin/cf-geoplugin.php', array(&$this, 'in_plugin_update_message'), 10, 2 );
 		}
 		
-		function in_plugin_update_message($currentPluginMetadata, $newPluginMetadata){
-		   if (isset($newPluginMetadata->upgrade_notice) && strlen(trim($newPluginMetadata->upgrade_notice)) > 0){
-				echo '<div style="padding: 10px; color: #f9f9f9; margin-top: 10px"><h3>' . __('Important Upgrade Notice:', CFGP_NAME) . '</h3> ';
-				echo $newPluginMetadata->upgrade_notice, '</div>';
-		   }
+		function in_plugin_update_message($args, $response) {
+			
+		//	echo '<pre>', var_dump($response), '</pre>';
+			
+		   if (isset($response->upgrade_notice) && strlen(trim($response->upgrade_notice)) > 0) : ?>
+<style>
+.cf-geoplugin-upgrade-notice{
+	padding: 10px;
+	color: #000;
+	margin-top: 10px
+}
+.cf-geoplugin-upgrade-notice-list ol{
+	list-style-type: decimal;
+	padding-left:0;
+	margin-left: 15px;
+}
+.cf-geoplugin-upgrade-notice + p{
+	display:none;
+}
+.cf-geoplugin-upgrade-notice-info{
+	margin-top:32px;
+	font-weight:600;
+}
+</style>
+<div class="cf-geoplugin-upgrade-notice">
+	<h3><?php printf(__('Important upgrade notice for the version %s:', CFGP_NAME), $response->new_version); ?></h3>
+	<div class="cf-geoplugin-upgrade-notice-list">
+		<?php echo str_replace(
+			array(
+				'<ul>',
+				'</ul>'
+			),array(
+				'<ol>',
+				'</ol>'
+			),
+			$response->upgrade_notice
+		); ?>
+	</div>
+	<div class="cf-geoplugin-upgrade-notice-info">
+		<?php _e('NOTE: Before doing the update, it would be a good idea to backup your WordPress installations and settings.', CFGP_NAME); ?>
+	</div>
+</div> 
+		    <?php endif;
 		}
 
 		public function passes() {

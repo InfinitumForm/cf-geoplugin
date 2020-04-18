@@ -89,7 +89,9 @@ class CF_Geoplugin_Global
 		'enable_cf7'				=> 0,
 		'enable_wooplatnica'		=> 0,
 		'hide_http_referer_headers' => 0,
-		'covid19'					=> 1
+		'covid19'					=> 0,
+		// 1-Session; 2-Database; 3-Both
+		'session_type'				=> 1,
 	);
 
 	// Deprecated options
@@ -160,20 +162,23 @@ class CF_Geoplugin_Global
 	private static $is_proxy = false;
 	
 	function __construct(){		
+		// Default license names
 		$this->license_names = array(
 			self::BASIC_LICENSE			=> __('UNLIMITED Basic License (1 month)',CFGP_NAME),
 			self::PERSONAL_LICENSE		=> __('UNLIMITED Personal License',CFGP_NAME),
 			self::FREELANCER_LICENSE	=> __('UNLIMITED Freelancer License',CFGP_NAME),
 			self::BUSINESS_LICENSE		=> __('UNLIMITED Business License',CFGP_NAME)
 		);
-	//	$this->set_license_and_access_levels();
+		// Enable development mode
 		if( CFGP_DEV_MODE )
 		{
 			$this->license_names[self::DEVELOPER_LICENSE] = __('UNLIMITED Developer License', CFGP_NAME);
 		}
-		
+		// License name filters
+		$this->license_names = apply_filters( 'cf_geoplugin_license_names', $this->license_names);
+		// Default options filters
 		$this->default_options = apply_filters( 'cf_geoplugin_default_options', $this->default_options);
-		
+		// HTTP codes
 		$this->http_codes = apply_filters( 'cf_geoplugin_http_codes', array(
 			301 => __( '301 - Moved Permanently', CFGP_NAME ),
 			302 => __( '302 - Found (Moved temporarily)', CFGP_NAME ),
@@ -182,50 +187,6 @@ class CF_Geoplugin_Global
 			308 => __( '308 - Permanent Redirect', CFGP_NAME ),
 			404 => __( '404 - Not Found (not recommended)', CFGP_NAME )
 		));
-	}
-	
-	public function set_license_and_access_levels(){
-	//	$instance = self::get_instance();
-		if($response = $this->get_license_products())
-		{
-			foreach($response['products'] as $product)
-			{
-				$this->license_names[ $product['sku'] ]	=	$product['title'];
-				$this->access_level[ $product['sku'] ]	=	$product['level'];
-			}
-		}
-	}
-
-	/**
-	 * Get product licenses
-	 * @since     7.9.9
-	 * @version   1.0.0
-	 */
-	public function get_license_products(){
-		
-		if(isset($this->get_license_products) && !empty($this->get_license_products))
-			return apply_filters( 'cf_geoplugin_get_license_products', $this->get_license_products, $this->license_names);
-		
-		if( $cache = get_transient('cfgp-product-licenses') )
-		{
-			$this->get_license_products = $cache;
-			return apply_filters( 'cf_geoplugin_get_license_products', $this->get_license_products, $this->license_names);
-		}
-		else
-		{
-			$response = $this->curl_get(CFGP_STORE . '/wp-ajax.php?action=cfgp_get_product_data');
-			if(!empty($response))
-			{
-				$response = json_decode($response, true);
-				if( !$response['error'] )
-				{
-					$this->get_license_products = $response;
-					set_transient('cfgp-product-licenses', $this->get_license_products, (60*60*24));
-					return apply_filters( 'cf_geoplugin_get_license_products', $this->get_license_products, $this->license_names);
-				}
-			}
-		}
-		return false;
 	}
 	
 	/**
@@ -294,6 +255,8 @@ class CF_Geoplugin_Global
 			self::DEVELOPER_LICENSE
 		));
 		
+		$check = apply_filters( 'cf_geoplugin_access_level', $check);
+		
 		if(is_array($level))
 		{
 			if(isset($level['license']) && isset($level['license_sku']))
@@ -311,7 +274,7 @@ class CF_Geoplugin_Global
 				$return = $check[$level];
 		}
 		
-		return apply_filters( 'cf_geoplugin_access_level', $return, $check, $level);
+		return $return;
 	}
 
 	/*
@@ -928,7 +891,7 @@ class CF_Geoplugin_Global
 	 *
 	 * @since    4.0.4
 	 */
-	public static function curl_get( $url, $headers = '', $new_params = array() )
+	public static function curl_get( $url, $headers = '', $new_params = array(), $json = false )
 	{
 		$G = self::get_instance();
 		$options = $G->get_option();
@@ -987,6 +950,8 @@ class CF_Geoplugin_Global
 		}
 		
 		if( empty( $output ) ) return false;
+
+		if($json !== false) $output = json_decode($output, true);
 
 		return $output;
 	}
@@ -1173,6 +1138,7 @@ class CF_Geoplugin_Global
 			'REMOTE_ADDR', // Most reliable way, can be tricked by proxy so check it after proxies
 			'HTTP_CLIENT_IP', // Shared Interner services - Very easy to manipulate and most unreliable way
 		));
+		
 		// Stop all special-use addresses and blacklisted addresses
 		// IP => RANGE
 		$blacklistIP=$this->ip_blocked( array( $this->ip_server() ) );
@@ -1559,12 +1525,29 @@ class CF_Geoplugin_Global
 	 *
 	 * @since    7.7.6
 	 **/
-	public static function is_bot() {
+	public static function is_bot()
+	{
 		
-		if(isset($_SERVER['HTTP_USER_AGENT']))
+		// Get by user agent (wide range)
+		if(isset($_SERVER['HTTP_USER_AGENT']) && !empty($_SERVER['HTTP_USER_AGENT']))
 		{
-			return (preg_match('/rambler|abacho|acoi|accona|aspseek|altavista|estyle|scrubby|lycos|geona|ia_archiver|alexa|sogou|skype|facebook|twitter|pinterest|linkedin|naver|bing|google|yahoo|duckduckgo|yandex|baidu|teoma|xing|java\/1.7.0_45|bot|crawl|slurp|spider|mediapartners|\sask\s|\saol\s/i', $_SERVER['HTTP_USER_AGENT']) ? true : false);
+			return (preg_match('/AlkalineBOT|botlink|abacho|accona|AddThis|AdsBot|ahoy|AhrefsBot|AISearchBot|alexa|altavista|anthill|appie|applebot|arale|araneo|AraybOt|ariadne|arks|aspseek|ATN_Worldwide|Atomz|baiduspider|baidu|bbot|bingbot|bing|Bjaaland|BlackWidow|BotLink|bot|boxseabot|bspider|calif|CCBot|ChinaClaw|christcrawler|CMC\/0\.01|combine|confuzzledbot|contaxe|CoolBot|cosmos|crawler|crawlpaper|crawl|curl|cusco|cyberspyder|cydralspider|dataprovider|digger|DIIbot|DotBot|downloadexpress|DragonBot|DuckDuckBot|dwcp|EasouSpider|ebiness|ecollector|elfinbot|esculapio|ESI|esther|eStyle|Ezooms|facebookexternalhit|facebook|facebot|fastcrawler|FatBot|FDSE|FELIX IDE|fetch|fido|find|Firefly|fouineur|Freecrawl|froogle|gammaSpider|gazz|gcreep|geona|Getterrobo-Plus|get|girafabot|golem|googlebot|\-google|grabber|GrabNet|griffon|Gromit|gulliver|gulper|hambot|havIndex|hotwired|htdig|HTTrack|ia_archiver|iajabot|IDBot|Informant|InfoSeek|InfoSpiders|INGRID\/0\.1|inktomi|inspectorwww|Internet Cruiser Robot|irobot|Iron33|JBot|jcrawler|Jeeves|jobo|KDD\-Explorer|KIT\-Fireball|ko_yappo_robot|label\-grabber|larbin|legs|libwww-perl|linkedin|Linkidator|linkwalker|Lockon|logo_gif_crawler|Lycos|m2e|majesticsEO|marvin|mattie|mediafox|mediapartners|MerzScope|MindCrawler|MJ12bot|mod_pagespeed|moget|Motor|msnbot|muncher|muninn|MuscatFerret|MwdSearch|NationalDirectory|naverbot|NEC\-MeshExplorer|NetcraftSurveyAgent|NetScoop|NetSeer|newscan\-online|nil|none|Nutch|ObjectsSearch|Occam|openstat.ru\/Bot|packrat|pageboy|ParaSite|patric|pegasus|perlcrawler|phpdig|piltdownman|Pimptrain|pingdom|pinterest|pjspider|PlumtreeWebAccessor|PortalBSpider|psbot|rambler|Raven|RHCS|RixBot|roadrunner|Robbie|robi|RoboCrawl|robofox|Scooter|Scrubby|Search\-AU|searchprocess|search|SemrushBot|Senrigan|seznambot|Shagseeker|sharp\-info\-agent|sift|SimBot|Site Valet|SiteSucker|skymob|SLCrawler\/2\.0|slurp|snooper|solbot|speedy|spider_monkey|SpiderBot\/1\.0|spiderline|spider|suke|tach_bw|TechBOT|TechnoratiSnoop|templeton|teoma|titin|topiclink|twitterbot|twitter|UdmSearch|Ukonline|UnwindFetchor|URL_Spider_SQL|urlck|urlresolver|Valkyrie libwww\-perl|verticrawl|Victoria|void\-bot|Voyager|VWbot_K|wapspider|WebBandit\/1\.0|webcatcher|WebCopier|WebFindBot|WebLeacher|WebMechanic|WebMoose|webquest|webreaper|webspider|webs|WebWalker|WebZip|wget|whowhere|winona|wlm|WOLP|woriobot|WWWC|XGET|xing|yahoo|YandexBot|YandexMobileBot|yandex|yeti|Zeus/i', $_SERVER['HTTP_USER_AGENT']) ? true : false);
 		}
+		
+		// Search by IP
+		$instance = self::get_instance();
+		$ip = $instance->ip();
+		
+		$bots = array(
+			'66.249.66.1',		// Google
+			'157.55.33.18',		// Bing
+			'123.125.66.120',	// Baidu
+			'141.8.142.60',		// Yandex
+			'72.94.249.35',		// DuckDuckGo
+			'68.180.228.178',	// Yahoo
+		);
+		
+		if($ip && in_array($ip, $bots, true)) return true;
 		
 		return true;
 	}
@@ -2089,6 +2072,8 @@ class CF_Geoplugin_Global
 			return ($post_type === $find);
 		}
 		
+		$post_type = apply_filters( 'cf_geoplugin_get_post_type', $post_type);
+		
 		return $post_type;
 	}
 	
@@ -2098,6 +2083,22 @@ class CF_Geoplugin_Global
 			include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 		
 		return is_plugin_active($plugin);
+	}
+	
+	public static function var_dump()
+	{
+		if( current_user_can('editor') || current_user_can('administrator') )
+		{
+			if(func_num_args() === 1)
+			{
+				$a = func_get_args();
+				echo '<pre>', var_dump( $a[0] ), '</pre><hr>';
+			}
+			else if(func_num_args() > 1)
+				echo '<pre>', var_dump( func_get_args() ), '</pre><hr>';
+			else
+				throw Exception('You must provide at least one argument to this function.');
+		}
 	}
 }
 endif;

@@ -7,6 +7,8 @@
  * @author     Goran Zivkovic
  *
 **/
+global $CFGEO_DEBUG;
+$CFGEO_DEBUG = true;
 
 $CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
 

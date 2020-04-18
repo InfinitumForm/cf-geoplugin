@@ -9,7 +9,7 @@
 **/
 
 $CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
-//echo '<pre>', var_dump(CF_Geoplugin_Global::set_license_and_access_levels()), '</pre>';
+// if(is_admin()) echo '<pre>', var_dump($_SESSION), '</pre>';
 ?>
 <div class="clearfix"></div>
 <div class="container-fluid">
@@ -102,10 +102,10 @@ $CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIO
                     <a class="nav-link text-dark" href="#beta" role="tab" data-toggle="tab"><span class="fa fa-code"></span> <?php _e('Simple Shortcodes',CFGP_NAME); ?> <sup class="text-danger" data-container="body" data-toggle="popover" data-placement="top" data-trigger="hover" data-content="<?php _e('This BETA options you can turn off inside your Settings under General tab',CFGP_NAME); ?>">BETA</sup></a>
                 </li>
                 <?php endif; ?>
+				<?php do_action('page-cf-geoplugin-tab'); ?>
 				<li class="nav-item">
                     <a class="nav-link text-dark" href="#info" role="tab" data-toggle="tab"><span class="fa fa-book"></span> <?php _e('Documentation',CFGP_NAME); ?></a>
                 </li>
-                <?php do_action('page-cf-geoplugin-tab'); ?>
             </ul>
             
             <!-- Tab panes -->
@@ -151,6 +151,22 @@ $CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIO
                                 <td><kbd>[cfgeo return="ip_dns_provider"]</kbd></td>
                                 <td><?php echo $CFGEO['ip_dns_provider']; ?></td>
                             </tr>
+							<tr>
+                                <td><kbd>[cfgeo return="isp"]</kbd></td>
+                                <td><?php echo $CFGEO['isp']; ?></td>
+                            </tr>
+                            <tr>
+                                <td><kbd>[cfgeo return="isp_organization"]</kbd></td>
+                                <td><?php echo $CFGEO['isp_organization']; ?></td>
+                            </tr>
+                            <tr>
+                                <td><kbd>[cfgeo return="isp_as"]</kbd></td>
+                                <td><?php echo $CFGEO['isp_as']; ?></td>
+                            </tr>
+							<tr>
+                                <td><kbd>[cfgeo return="isp_asname"]</kbd></td>
+                                <td><?php echo $CFGEO['isp_asname']; ?></td>
+                            </tr>
                             <?php endif; ?>
 							<?php do_action('page-cf-geoplugin-shortcode-table-address'); ?>
                             <tr>
@@ -160,6 +176,10 @@ $CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIO
                             <tr>
                                 <td><kbd>[cfgeo return="city"]</kbd><?php if($CFGEO['gps']): ?> <i class="badge">(GPS)</i><?php endif; ?></td>
                                 <td><?php echo $CFGEO['city']; ?></td>
+                            </tr>
+							<tr>
+                                <td><kbd>[cfgeo return="zip"]</kbd></td>
+                                <td><?php echo $CFGEO['zip']; ?></td>
                             </tr>
                             <tr>
                                 <td><kbd>[cfgeo return="region"]</kbd><?php if($CFGEO['gps']): ?> <i class="badge">(GPS)</i><?php endif; ?></td>
@@ -217,10 +237,12 @@ $CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIO
                                 <td><kbd>[cfgeo return="base_currency_symbol"]</kbd></td>
                                 <td><?php echo $CFGEO['base_currency_symbol']; ?></td>
                             </tr>
+							<?php if(isset( $CFGEO['currency_converter'] ) && !empty( $CFGEO['currency_converter'] )) : ?>
                             <tr>
                                 <td><kbd>[cfgeo return="currency_converter"]</kbd></td>
                                 <td><?php echo $CFGEO['currency_converter']; ?></td>
                             </tr>
+							<?php endif; ?>
 							<tr>
                                 <td><kbd>[cfgeo return="vat_rate"]</kbd></td>
                                 <td><abbr data-container="body" data-toggle="popover" data-placement="top" data-trigger="hover" data-content="<?php echo esc_attr(__('Standard VAT Rate in percentages (%)', CFGP_NAME)); ?>"><?php echo $CFGEO['vat_rate']; ?></abbr></td>
@@ -242,32 +264,12 @@ $CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIO
                                 <td><?php echo $CFGEO['current_time']; ?></td>
                             </tr>
                             <tr>
-                                <td><kbd>[cfgeo return="accuracy_radius"]</kbd></td>
-                                <td><?php echo $CFGEO['accuracy_radius']; ?></td>
-                            </tr>
-                            <tr>
-                                <td><kbd>[cfgeo return="runtime"]</kbd></td>
-                                <td><?php echo $CFGEO['runtime']; ?></td>
-                            </tr>
-                            <tr>
-                                <td><kbd>[cfgeo return="status"]</kbd></td>
-                               <td><?php echo $CFGEO['status']; ?></td>
-                            </tr>
-                            <tr>
                                 <td><kbd>[cfgeo return="version"]</kbd></td>
                                 <td><?php echo $CFGEO['version']; ?></td>
-                            </tr>
-                            <tr>
-                                <td><kbd>[cfgeo return="lookup"]</kbd></td>
-                                <td><?php echo $CFGEO['lookup']; ?></td>
                             </tr>
 							<tr>
                                 <td><kbd>[cfgeo return="credit"]</kbd></td>
                                 <td><?php echo $CFGEO['credit']; ?></td>
-                            </tr>
-                            <tr>
-                                <td><kbd>[cfgeo_converter from="<?php echo isset( $CF_GEOPLUGIN_OPTIONS['base_currency'] ) ? $CF_GEOPLUGIN_OPTIONS['base_currency'] : ''; ?>"]1[/cfgeo_converter]</kbd></td>
-                                <td><?php echo isset( $CFGEO['currency_converter'] ) && !empty( $CFGEO['currency_converter'] ) ? $CFGEO['currency_converter'] : __( 'Sorry currently we are not able to do conversion.', CFGP_NAME ); echo isset( $CFGEO['currency_symbol'] ) ? ' ' . $CFGEO['currency_symbol'] : ''; ?></td>
                             </tr>
 							<?php do_action('page-cf-geoplugin-shortcode-table-end'); ?>
                         </tbody>
@@ -308,9 +310,29 @@ $CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIO
                                 <td><kbd>%%ip_dns_provider%%</kbd></td>
                                 <td><?php echo $CFGEO['ip_dns_provider']; ?></td>
                             </tr>
+							<tr>
+                                <td><kbd>%%isp%%</kbd></td>
+                                <td><?php echo $CFGEO['isp']; ?></td>
+                            </tr>
+							<tr>
+                                <td><kbd>%%isp_organization%%</kbd></td>
+                                <td><?php echo $CFGEO['isp_organization']; ?></td>
+                            </tr>
+							<tr>
+                                <td><kbd>%%isp_as%%</kbd></td>
+                                <td><?php echo $CFGEO['isp_as']; ?></td>
+                            </tr>
+							<tr>
+                                <td><kbd>%%isp_asname%%</kbd></td>
+                                <td><?php echo $CFGEO['isp_asname']; ?></td>
+                            </tr>
                             <?php endif; ?>
 							<?php do_action('page-cf-geoplugin-tag-table-address'); ?>
                             <tr>
+                                <td><kbd>%%zip%%</kbd></td>
+                                <td><?php echo $CFGEO['zip']; ?></td>
+                            </tr>
+							<tr>
                                 <td><kbd>%%address%%</kbd><?php if($CFGEO['gps']): ?> <i class="badge">(GPS)</i><?php endif; ?></td>
                                 <td><?php echo $CFGEO['address']; ?></td>
                             </tr>
@@ -375,10 +397,12 @@ $CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIO
                                 <td><kbd>%%base_currency_symbol%%</kbd></td>
                                 <td><?php echo $CFGEO['base_currency_symbol']; ?></td>
                             </tr>
+							<?php if(isset( $CFGEO['currency_converter'] ) && !empty( $CFGEO['currency_converter'] )) : ?>
 							<tr>
                                 <td><kbd>%%currency_converter%%</kbd></td>
                                 <td><?php echo $CFGEO['currency_converter']; ?></td>
                             </tr>
+							<?php endif; ?>
 							<tr>
                                 <td><kbd>%%vat_rate%%</kbd></td>
                                 <td><abbr data-container="body" data-toggle="popover" data-placement="top" data-trigger="hover" data-content="<?php echo esc_attr(__('Standard VAT Rate in percentages (%)', CFGP_NAME)); ?>"><?php echo $CFGEO['vat_rate']; ?></abbr></td>
@@ -399,31 +423,16 @@ $CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIO
                                 <td><kbd>%%current_time%%</kbd></td>
                                 <td><?php echo $CFGEO['current_time']; ?></td>
                             </tr>
+							<?php do_action('page-cf-geoplugin-tag-table-end'); ?>
 							<tr>
                                 <td><kbd>%%version%%</kbd></td>
                                 <td><?php echo $CFGEO['version']; ?></td>
                             </tr>
                             <tr>
-                                <td><kbd>%%accuracy_radius%%</kbd></td>
-                                <td><?php echo $CFGEO['accuracy_radius']; ?></td>
-                            </tr>
-                            <tr>
-                                <td><kbd>%%lookup%%</kbd></td>
-                                <td><?php echo $CFGEO['lookup']; ?></td>
-                            </tr>
-                            <tr>
-                                <td><kbd>%%runtime%%</kbd></td>
-                                <td><?php echo $CFGEO['runtime']; ?></td>
-                            </tr>
-                            <tr>
-                                <td><kbd>%%status%%</kbd></td>
-                               <td><?php echo $CFGEO['status']; ?></td>
-                            </tr>
-                            <tr>
                                 <td><kbd>%%credit%%</kbd></td>
                                 <td><?php echo $CFGEO['credit']; ?></td>
                             </tr>
-                            <?php do_action('page-cf-geoplugin-tag-table-end'); ?>
+                            
                         </tbody>
                         <tfoot>
                             <tr>
@@ -468,11 +477,31 @@ $CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIO
                                 <td><kbd>[cfgeo_ip_dns_provider]</kbd></td>
                                 <td><?php echo $CFGEO['ip_dns_provider']; ?></td>
                             </tr>
+							<tr>
+                                <td><kbd>[cfgeo_isp]</kbd></td>
+                                <td><?php echo $CFGEO['isp']; ?></td>
+                            </tr>
+							<tr>
+                                <td><kbd>[cfgeo_isp_organization]</kbd></td>
+                                <td><?php echo $CFGEO['isp_organization']; ?></td>
+                            </tr>
+							<tr>
+                                <td><kbd>[cfgeo_isp_as]</kbd></td>
+                                <td><?php echo $CFGEO['isp_as']; ?></td>
+                            </tr>
+							<tr>
+                                <td><kbd>[cfgeo_isp_asname]</kbd></td>
+                                <td><?php echo $CFGEO['isp_asname']; ?></td>
+                            </tr>
                             <?php endif; ?>
 							<?php do_action('page-cf-geoplugin-beta-shortcode-table-address'); ?>
                             <tr>
                                 <td><kbd>[cfgeo_address]</kbd><?php if($CFGEO['gps']): ?> <i class="badge">(GPS)</i><?php endif; ?></td>
                                 <td><?php echo $CFGEO['address']; ?></td>
+                            </tr>
+							<tr>
+                                <td><kbd>[cfgeo_zip]</kbd></td>
+                                <td><?php echo $CFGEO['zip']; ?></td>
                             </tr>
                             <tr>
                                 <td><kbd>[cfgeo_city]</kbd><?php if($CFGEO['gps']): ?> <i class="badge">(GPS)</i><?php endif; ?></td>
@@ -527,10 +556,12 @@ $CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIO
                                 <td><kbd>[cfgeo_currency_symbol]</kbd></td>
                                 <td><?php echo $CFGEO['currency_symbol']; ?></td>
                             </tr>
+							<?php if(isset( $CFGEO['currency_converter'] ) && !empty( $CFGEO['currency_converter'] )) : ?>
 							<tr>
                                 <td><kbd>[cfgeo_currency_converter]</kbd></td>
                                 <td><?php echo $CFGEO['currency_converter']; ?></td>
                             </tr>
+							<?php endif; ?>
 							<tr>
                                 <td><kbd>[cfgeo_base_currency]</kbd></td>
                                 <td><?php echo $CFGEO['base_currency']; ?></td>
@@ -547,7 +578,7 @@ $CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIO
                                 <td><kbd>[vat_rate]</kbd></td>
                                 <td><abbr data-container="body" data-toggle="popover" data-placement="top" data-trigger="hover" data-content="<?php echo esc_attr(__('Standard VAT Rate in percentages (%)', CFGP_NAME)); ?>"><?php echo $CFGEO['vat_rate']; ?></abbr></td>
                             </tr>
-                            <tr>
+							<tr>
                                 <td><kbd>[is_not_vat]<?php _e('You are NOT under VAT', CFGP_NAME); ?>[/is_not_vat]</kbd></td>
                                 <td><?php echo do_shortcode('[is_not_vat]' .__('You are NOT under VAT', CFGP_NAME). '[/is_not_vat]'); ?></td>
                             </tr>
@@ -586,6 +617,16 @@ $CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIO
 									?></span>
 								</td>
                             </tr>
+							<tr>
+                                <td><kbd>[is_proxy]<?php _e('Proxy connection', CFGP_NAME); ?>[/is_proxy]</kbd></td>
+                                <td><?php echo do_shortcode('[is_proxy default="' .__('No proxy', CFGP_NAME). '"]' .__('Proxy connection', CFGP_NAME). '[/is_proxy]'); ?></td>
+                            </tr>
+							<?php if(isset( $CFGEO['currency_converter'] ) && !empty( $CFGEO['currency_converter'] )) : ?>
+							<tr>
+                                <td><kbd>[cfgeo_converter from="<?php echo isset( $CF_GEOPLUGIN_OPTIONS['base_currency'] ) ? $CF_GEOPLUGIN_OPTIONS['base_currency'] : ''; ?>"]1[/cfgeo_converter]</kbd></td>
+                                <td><?php echo isset( $CFGEO['currency_converter'] ) && !empty( $CFGEO['currency_converter'] ) ? $CFGEO['currency_converter'] : __( 'Sorry currently we are not able to do conversion.', CFGP_NAME ); echo isset( $CFGEO['currency_symbol'] ) ? ' ' . $CFGEO['currency_symbol'] : ''; ?></td>
+                            </tr>
+							<?php endif; ?>
                             <tr>
                                 <td><kbd>[cfgeo_host]</kbd></td>
                                 <td><?php echo $CFGEO['host']; ?></td>
@@ -602,31 +643,16 @@ $CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIO
                                 <td><kbd>[cfgeo_current_time]</kbd></td>
                                 <td><?php echo $CFGEO['current_time']; ?></td>
                             </tr>
+							<?php do_action('page-cf-geoplugin-beta-shortcode-table-end'); ?>
 							<tr>
                                 <td><kbd>[cfgeo_version]</kbd></td>
                                 <td><?php echo $CFGEO['version']; ?></td>
                             </tr>
                             <tr>
-                                <td><kbd>[cfgeo_accuracy_radius]</kbd></td>
-                                <td><?php echo $CFGEO['accuracy_radius']; ?></td>
-                            </tr>
-                            <tr>
-                                <td><kbd>[cfgeo_lookup]</kbd></td>
-                                <td><?php echo $CFGEO['lookup']; ?></td>
-                            </tr>
-                            <tr>
-                                <td><kbd>[cfgeo_runtime]</kbd></td>
-                                <td><?php echo $CFGEO['runtime']; ?></td>
-                            </tr>
-                            <tr>
-                                <td><kbd>[cfgeo_status]</kbd></td>
-                               <td><?php echo $CFGEO['status']; ?></td>
-                            </tr>
-                            <tr>
                                 <td><kbd>[cfgeo_credit]</kbd></td>
                                 <td><?php echo $CFGEO['credit']; ?></td>
                             </tr>
-                            <?php do_action('page-cf-geoplugin-beta-shortcode-table-end'); ?>
+                            
                         </tbody>
                         <tfoot>
                             <tr>

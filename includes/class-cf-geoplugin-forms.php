@@ -92,8 +92,10 @@ class CF_Geoplugin_Form extends CF_Geoplugin_Global
 				'container_class' 	=> '',
 				'name'				=> '',
 				'default'			=> '',
+				'form_class'		=> '',
 				'html'				=> '',
 				'info' 				=> '',
+				'separator' 		=> '',
 				'license'			=> false,
 				'license_message'	=> ''
 				/* DEMO *
@@ -122,22 +124,27 @@ class CF_Geoplugin_Form extends CF_Geoplugin_Global
 				echo $attr['label'];
 				if( !empty($attr['info'])) echo '<i class="fa fa-question-circle fa-cfgeo-help" data-toggle="tooltip" data-placement="top" title="' . esc_attr($attr['info']) . '"></i>';
 			?></label>
-            <div class="col-md-8 col-lg-9">
+            <div class="col-md-8 col-lg-9<?php 
+				if( !empty($attr['form_class']) ) echo ' ' . esc_attr($attr['form_class']);
+			?>">
             <?php if($attr['license'] && is_numeric($attr['license']) && self::access_level($CF_GEOPLUGIN_OPTIONS['license_sku']) < $attr['license']): ?>
             	<strong class="text-danger"><?php 
 					echo esc_attr($attr['license_message']); 
 				?></strong>
             <?php else: ?>
-            	<?php foreach($attr as $key => $obj) : if(is_numeric($key)) : ?>
+            	<?php $x = 0; foreach($attr as $key => $obj) : if(is_numeric($key)) : ?>
                     <div class="custom-control custom-radio custom-control-inline cfgp-autosave">
                     	<input tabindex="<?php echo $this->tabindex; ?>" type="radio" class="custom-control-input<?php 
 							if( !empty($obj['input_class']) ) echo ' ' . $obj['input_class'];
 							if( isset($obj['disabled']) && $obj['disabled'] === true ) echo ' disabled';
 							if( isset($obj['readonly']) && $obj['readonly'] === true ) echo ' readonly';
 						?>" name="<?php 
-							echo esc_attr($attr['name']); 
+							echo esc_attr($attr['name']);
 						?>" id="<?php 
-							echo esc_attr($obj['id']); 
+							if(isset($obj['id']))
+								echo esc_attr($obj['id']);
+							else
+								echo esc_attr($attr['name'] . "_{$x}");
 						?>" value="<?php 
 							echo esc_attr($obj['value']); 
 						?>"<?php 
@@ -149,12 +156,15 @@ class CF_Geoplugin_Form extends CF_Geoplugin_Global
 							if( isset($obj['readonly']) && $obj['readonly'] === true ) echo ' readonly';
 						?>>
                         <label class="custom-control-label" for="<?php 
-							echo $obj['id']; 
+							if(isset($obj['id']))
+								echo esc_attr($obj['id']);
+							else
+								echo esc_attr($attr['name'] . "_{$x}");
 						?>"><?php 
 							echo $obj['text']; 
 						?></label>
-                    </div>
-                <?php ++$this->tabindex; endif; endforeach; ?>
+                    </div><?php echo ( !empty($attr['separator']) ? $attr['separator'] : '' ); ?>
+                <?php ++$this->tabindex; ++$x; endif; endforeach; ?>
                 <?php 
 					if( !empty($attr['html'])) echo $attr['html'];
 				?>
@@ -172,8 +182,10 @@ class CF_Geoplugin_Form extends CF_Geoplugin_Global
 				'label'				=> 'Input ' . $this->tabindex,
 				'label_class' 		=> '',
 				'container_class' 	=> '',
+				'form_class'		=> '',
 				'html'				=> '',
 				'info' 				=> '',
+				'separator' 		=> '',
 				'license'			=> false,
 				'license_message'	=> ''
 				/* DEMO *
@@ -204,7 +216,9 @@ class CF_Geoplugin_Form extends CF_Geoplugin_Global
 				echo $attr['label'];
 				if( !empty($attr['info'])) echo '<i class="fa fa-question-circle fa-cfgeo-help" data-toggle="tooltip" data-placement="top" title="' . esc_attr($attr['info']) . '"></i>';
 			?></label>
-            <div class="col-md-8 col-lg-9">
+            <div class="col-md-8 col-lg-9<?php 
+				if( !empty($attr['form_class']) ) echo ' ' . esc_attr($attr['form_class']);
+			?>">
            	<?php if($attr['license'] && is_numeric($attr['license']) && self::access_level($CF_GEOPLUGIN_OPTIONS['license_sku']) < $attr['license']): ?>
             	<strong class="text-danger"><?php 
 					echo esc_attr($attr['license_message']); 
@@ -219,7 +233,10 @@ class CF_Geoplugin_Form extends CF_Geoplugin_Global
 						?>" name="<?php 
 							echo esc_attr($obj['name']); 
 						?>" id="<?php 
-							echo esc_attr($obj['id']); 
+							if(isset($obj['id']))
+								echo esc_attr($obj['id']);
+							else
+								echo esc_attr($attr['name'] . "_{$x}");
 						?>" value="<?php 
 							echo esc_attr($obj['value']); 
 						?>"<?php 
@@ -233,11 +250,14 @@ class CF_Geoplugin_Form extends CF_Geoplugin_Global
 							if( isset($obj['readonly']) && $obj['readonly'] === true ) echo ' readonly';
 						?>>
                         <label class="custom-control-label" for="<?php 
-							echo $obj['id']; 
+							if(isset($obj['id']))
+								echo esc_attr($obj['id']);
+							else
+								echo esc_attr($attr['name'] . "_{$x}");
 						?>"><?php 
 							echo $obj['text']; 
 						?></label>
-                    </div>
+                    </div><?php echo ( !empty($attr['separator']) ? $attr['separator'] : '' ); ?>
                 <?php ++$this->tabindex; endif; endforeach; ?>
                 <?php
 					if( !empty($attr['html'])) echo $attr['html'];

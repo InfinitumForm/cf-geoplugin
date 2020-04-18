@@ -62,7 +62,44 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 	
 	// Register Style
 	public function register_style($page){
-		if(!$this->limit_scripts($page)) return false;
+
+		if(strpos($page, 'plugins.php') !== false) {
+			if($this->is_connected)
+			{
+				wp_register_style( 'fontawesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css', array(), '4.7.0' );
+			}
+			else
+			{
+				wp_register_style( 'fontawesome', CFGP_ASSETS . '/css/font-awesome.min.css', array(), '4.7.0' );
+			}
+			wp_enqueue_style( 'fontawesome' );
+		?>
+<style type="text/css">
+.plugin-version-author-uri .cfgeo-plugins-action-vote{
+	color:#f5c542;
+}
+.plugin-version-author-uri .cfgeo-plugins-action-vote:hover{
+	color:#cca539;
+}
+.row-actions .cfgeo-plugins-action-documentation{
+	color:#fd4624;
+	font-weight:bold;
+}
+.row-actions .cfgeo-plugins-action-documentation:hover{
+	color:#F92702;
+}
+.row-actions .cfgeo-plugins-action-settings{
+	color: #2aa4bf
+}
+.row-actions .cfgeo-plugins-action-settings:hover{
+	color: #23889e
+}
+</style>
+			<?php
+		}
+		
+		if(!$this->limit_scripts($page)) return;
+		
 		wp_register_style( CFGP_NAME . '-bootstrap-reboot', CFGP_ASSETS . '/css/bootstrap-reboot.min.css', array(), '4.1.1' );
 		wp_enqueue_style( CFGP_NAME . '-bootstrap-reboot' );
 		
@@ -114,7 +151,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 	public function register_javascripts($page){		
 		//$this->add_action('admin_head', 'custom_javascript', 10);
 
-		if(!$this->limit_scripts($page)) return false;
+		if(!$this->limit_scripts($page)) return;
 		
 		if(!$this->is_connected)
 			$this->is_connected = parent::is_connected();
@@ -332,8 +369,8 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 	// WP Hidden links by plugin setting page
 	public function plugin_setting_page( $links ) {
 		$mylinks = array( 
-			'settings'	=> sprintf( '<a href="' . self_admin_url( 'admin.php?page=' . CFGP_NAME . '-settings' ) . '"><b>%s</b></a>', esc_html__( 'Settings', CFGP_NAME ) ), 
-			'documentation' => sprintf( '<i class="fa fa-book"></i> <a href="%s" target="_blank" rel="noopener noreferrer">%s</a>', esc_url( CFGP_STORE . '/documentation/' ), esc_html__( 'Documentation', CFGP_NAME ) ),
+			'settings'	=> sprintf( '<a href="' . self_admin_url( 'admin.php?page=' . CFGP_NAME . '-settings' ) . '" class="cfgeo-plugins-action-settings"><b><i class="fa fa-cog fa-spin"></i> %s</b></a>', esc_html__( 'Settings', CFGP_NAME ) ), 
+			'documentation' => sprintf( '<a href="%s" target="_blank" rel="noopener noreferrer" class="cfgeo-plugins-action-documentation"><i class="fa fa-book"></i> %s</a>', esc_url( CFGP_STORE . '/documentation/' ), esc_html__( 'Documentation', CFGP_NAME ) ),
 		);
 
 		return array_merge( $links, $mylinks );
@@ -345,9 +382,8 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 		if( plugin_basename( CFGP_FILE ) == $file )
 		{
 			$row_meta = array(
-				'cfgp_faq' => sprintf( '<a href="%s" target="_blank" rel="noopener noreferrer">%s</a>', esc_url( CFGP_STORE . '/faq/' ), esc_html__( 'FAQ', CFGP_NAME ) ),
-				'cfgp_donate' => sprintf( '<a href="%s" target="_blank" rel="noopener noreferrer">%s</a>', esc_url( 'https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=creativform@gmail.com' ), esc_html__( 'Donate', CFGP_NAME ) ),
-				'cfgp_vote'	=> sprintf( '<a href="%s" target="_blank" rel="noopener noreferrer">%s</a>', esc_url( 'https://wordpress.org/support/plugin/cf-geoplugin/reviews/?filter=5' ), esc_html__( 'Vote', CFGP_NAME ) )
+				'cfgp_donate' => sprintf( '<a href="%s" target="_blank" rel="noopener noreferrer" class="cfgeo-plugins-action-donation">%s</a>', esc_url( 'https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=creativform@gmail.com' ), esc_html__( 'Donate', CFGP_NAME ) ),
+				'cfgp_vote'	=> sprintf( '<a href="%s" target="_blank" rel="noopener noreferrer" class="cfgeo-plugins-action-vote" title="%s"><i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i></a>', esc_url( 'https://wordpress.org/support/plugin/cf-geoplugin/reviews/?filter=5' ), esc_html__( 'Vote', CFGP_NAME ) )
 			);
 
 			$links = array_merge( $links, $row_meta );
@@ -382,17 +418,28 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 
 	// Add RSS fed from plugin site
 	public function add_rss_feed()
-	{ ?>
+	{
+		$session_type = parent::get_the_option('session_type', 1);
+		
+		$print = '';
+		if(in_array($session_type, array(2,3)) !==  false && $cached = get_transient(CFGP_PREFIX . 'rss')) {
+			$print = $cached;
+		}
+		
+		if(in_array($session_type, array(1,3)) !==  false && isset($_SESSION[CFGP_PREFIX . 'rss'])) {
+			$print = $_SESSION[CFGP_PREFIX . 'rss'];
+		}
+	?>
     <div class="card">
         <div class="card-header">
             <span class="fa fa-info"></span> <?php _e('Live News & info',CFGP_NAME) ?>
         </div>
         <div class="card-body">
             <ul class="list-unstyled list-feed">
-                <div class="inside<?php echo (isset($_SESSION[CFGP_PREFIX . 'rss']) ? ' rss-loaded' : ''); ?>" id="rss">
+                <div class="inside<?php echo (!empty($print) ? ' rss-loaded' : ''); ?>" id="rss">
                 	<?php
-						if( isset($_SESSION[CFGP_PREFIX . 'rss']) ) :
-							echo $_SESSION[CFGP_PREFIX . 'rss'];
+						if( !empty($print) ) :
+							echo $print;
 						else :
 					?>
                      <div style="text-align:center; padding:32px 0">
@@ -416,6 +463,9 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 		if(!class_exists('parseXML')) exit(false);
 		
 		$xml= new parseXML(CFGP_STORE . '/feed/', true);
+		// Session Type
+		$session_type = parent::get_the_option('session_type', 1);
+		
 		if(isset($xml->fetch) && isset($xml->fetch->channel) && isset($xml->fetch->channel->item) && count($xml->fetch->channel->item)>0)
 		{
 			$items = $xml->fetch->channel->item;
@@ -437,12 +487,18 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 			$print = strip_tags( join("\r\n", $print), '<a><img><h1><h2><h3><h4><p><br>' );
 			$print = preg_replace('/<a\s(.*?)>/i', '<a $1 target="_blank">', $print);
 			$print = preg_replace('/href="(.*?)"/i', 'href="$1?ref=live-news"', $print);
-			$_SESSION[CFGP_PREFIX . 'rss'] = $print;
+			
+			if(in_array($session_type, array(2,3)) !==  false) {
+				set_transient(CFGP_PREFIX . 'rss', $print, (MINUTE_IN_SECONDS * CFGP_SESSION));
+			}
+			if(in_array($session_type, array(1,3)) !==  false) {
+				$_SESSION[CFGP_PREFIX . 'rss'] = $print;
+			}
 			echo $print;
 		}
 		wp_die();
 	}
-	
+
 	/* 
 	 * Update plugin options
 	 * @since 7.0.0

@@ -24,12 +24,12 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
 	 * @var      array
 	 */
 	private $url = array(
-		'api' 					=> 'https://cdn-cfgeoplugin.com/api6.0/index.php?ip={IP}&sip={SIP}&t={TIME}&r={HOST}&v={VERSION}&m={M}&p={P}&base_convert={CURRENCY}',
-		'api_alternate' 		=> 'http://159.203.47.151/api6.0/index.php?ip={IP}&sip={SIP}&t={TIME}&r={HOST}&v={VERSION}&m={M}&p={P}&base_convert={CURRENCY}',
-		'dns' 					=> 'https://cdn-cfgeoplugin.com/api6.0/dns.php?ip={IP}&sip={SIP}&r={HOST}&v={VERSION}&p={P}',
-		'dns_alternate' 		=> 'http://159.203.47.151/api6.0/dns.php?ip={IP}&sip={SIP}&r={HOST}&v={VERSION}&p={P}',
+		'api' 					=> 'https://cdn-cfgeoplugin.com/api/index.php?ip={IP}&sip={SIP}&t={TIME}&r={HOST}&v={VERSION}&m={M}&p={P}&base_convert={CURRENCY}&reverse={REVERSE}',
+		'api_alternate' 		=> 'http://159.203.47.151/api/index.php?ip={IP}&sip={SIP}&t={TIME}&r={HOST}&v={VERSION}&m={M}&p={P}&base_convert={CURRENCY}&reverse={REVERSE}',
+		'dns' 					=> 'https://cdn-cfgeoplugin.com/api/dns.php?ip={IP}&sip={SIP}&r={HOST}&v={VERSION}&p={P}',
+		'dns_alternate' 		=> 'http://159.203.47.151/api/dns.php?ip={IP}&sip={SIP}&r={HOST}&v={VERSION}&p={P}',
 	);
-	
+
 	/**
 	 * Geoplugin default return fields.
 	 *
@@ -41,12 +41,18 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
 		'ipAddress' 			=> '',
 		'ipVersion' 			=> '',
 		'ipNumber' 				=> '',
+		'isp' 					=> '',
+		'org' 					=> '',
+		'as' 					=> '',
+		'asname' 				=> '',
 		'countryCode' 			=> '',
+		'countryNumericCode' 	=> '',
 		'countryName' 			=> '',
 		'regionName' 			=> '',
 		'regionCode' 			=> '',
 		'cityName' 				=> '',
 		'continent' 			=> '',
+		'zip' 					=> '',
 	//	'continentCode' 		=> '',
 		'address' 				=> '',
 	//	'areaCode'				=> '',
@@ -58,7 +64,7 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
 		'currency' 				=> '',
 		'base_currency'			=> '',
 	//	'currencySymbol' 		=> '',
-	//	'currencyConverter' 	=> 0,
+		'proxy' 				=> 0,
 		'currency_symbol' 		=> '',
 		'currency_converter' 	=> 0,
 		'base_currency_symbol' 	=> '',
@@ -176,7 +182,12 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
                 'ip_dns_host' => $provider->host,
                 'ip_dns_provider' => $provider->provider,
                 'ip_number' => $geodata->ipNumber,
-                'country_code' => $countryCode,
+                'isp' => (isset($provider->isp) ? $provider->isp : NULL),
+				'isp_organization' => (isset($provider->org) ? $provider->org : NULL),
+				'isp_as' => (isset($provider->as) ? $provider->as : NULL),
+				'isp_asname' => (isset($provider->asname) ? $provider->asname : NULL),
+				'country_code_numeric' => (isset($geodata->countryNumericCode) ? $geodata->countryNumericCode : NULL),
+				'country_code' => $countryCode,
                 'country' => $geodata->countryName,
                 'region' => $geodata->regionName, //regionCode
                 'region_code' => $geodata->regionCode,
@@ -185,10 +196,11 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
                 'continent' => $continent,
                 'continent_code' => $continentCode,
             //    'continentCode' => $continentCode, // deprecated
+				'zip' => (isset($geodata->zip) ? $geodata->zip : NULL),
                 'address' => $geodata->address,
-                'area_code' => (isset($geodata->areaCode) ? $geodata->areaCode : NULL),
+            //    'area_code' => (isset($geodata->areaCode) ? $geodata->areaCode : NULL),
             //   'areaCode' => $geodata->areaCode, // deprecated
-                'dma_code' => (isset($geodata->dmaCode) ? $geodata->dmaCode : NULL),
+            //    'dma_code' => (isset($geodata->dmaCode) ? $geodata->dmaCode : NULL),
             //    'dmaCode' => $geodata->dmaCode, // deprecated
                 'latitude' => $lat,
                 'longitude' => $lng,
@@ -209,6 +221,7 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
                 'current_time' => $geodata->currentTime,
                 'current_date' => $geodata->currentDate,
                 'version' => CFGP_VERSION,
+				'is_proxy' => (isset( $geodata->proxy ) && $geodata->proxy ? $geodata->proxy : 0),
 				'is_vat' => isset( $geodata->isVAT ) ? (int)$geodata->isVAT : 0,
 				'vat_rate'	=> isset( $geodata->VATrate ) ? (float)$geodata->VATrate : 0,
 				'in_eu'	=> isset( $geodata->inEU ) ? (int)$geodata->inEU : 0,
@@ -249,14 +262,67 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
 	{
 		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
 		
+		$fix_dns_host = function($result){
+			$return = array();
+			if(isset($result['reverse']))
+			{
+				$noIP		=	str_replace($result['ipNumber'],'',$result['reverse']);
+				$split		=	explode('.',$noIP);
+				$clean		=	array_filter($split);
+				$keys		=	array_keys($clean);
+				$lastKey	=	end($keys);
+				
+				if(empty($lastKey) || $lastKey===0){}else
+				{
+					$provider = 'https://'.$split[($lastKey-1)].'.'.$split[$lastKey];
+					if (filter_var($provider, FILTER_VALIDATE_URL) !== false) {
+						// Get Provider
+						$return['provider'] = $provider;
+						// Get Host
+						$return['host'] = $split[($lastKey-1)].'.'.$split[$lastKey];
+					}
+				}
+			}
+			return array_merge(array(
+				'ip' => (isset($result['ipNumber']) ? $result['ipNumber'] : NULL),
+				'host_ip' => (isset($result['ipNumber']) ? $result['ipNumber'] : NULL),
+				'isp' => (isset($result['isp']) ? $result['isp'] : NULL),
+				'org' => (isset($result['org']) ? $result['org'] : NULL),
+				'as' => (isset($result['as']) ? $result['as'] : NULL),
+				'asname' => (isset($result['asname']) ? $result['asname'] : NULL),
+				'dns' => (isset($result['reverse']) ? $result['reverse'] : NULL),
+			), $return);
+		};
+		
 		$this->check_validations();
+		// Session Type
+		$session_type = parent::get_the_option('session_type', 1);
 		// Current or custom IP
 		$ip = ($ip !== false ? $ip : CFGP_IP);
-		if (isset($_SESSION[CFGP_PREFIX . 'api_session']) && isset($_SESSION[CFGP_PREFIX . 'api_session']['ipAddress']) && $_SESSION[CFGP_PREFIX . 'api_session']['ipAddress'] == $ip && $this->option['debug'] === false)
+		// IP slug
+		$ip_slug = (!empty($ip) ? str_replace('.', '_', $ip ) : false);
+		
+		if($this->option['debug'] === false)
 		{
-			$_SESSION[CFGP_PREFIX . 'api_session']['currentTime'] = date('H:i:s', CFGP_TIME);
-			$_SESSION[CFGP_PREFIX . 'api_session']['currentDate'] = date('F j, Y', CFGP_TIME);
-			return (object)apply_filters('cf_geoplugin_api_get_geodata', $_SESSION[CFGP_PREFIX . 'api_session']);
+			if(!empty($ip) && $ip_slug && in_array($session_type, array(2,3)) !==  false && $cached = get_transient("cfgp-api-{$ip_slug}"))
+			{
+				if(isset($cached['ipAddress']) && !empty($cached['ipAddress']) && $ip == $cached['ipAddress']) {
+
+					$this->transfer_dns_records = $fix_dns_host($cached);
+				
+					$cached['currentTime'] = date('H:i:s', CFGP_TIME);
+					$cached['currentDate'] = date('F j, Y', CFGP_TIME);
+					return (object)apply_filters('cf_geoplugin_api_get_geodata', $cached);
+				}
+			}
+			
+			if (isset($_SESSION[CFGP_PREFIX . 'api_session']) && isset($_SESSION[CFGP_PREFIX . 'api_session']['ipAddress']) && $_SESSION[CFGP_PREFIX . 'api_session']['ipAddress'] == $ip && in_array($session_type, array(1,3)) !==  false)
+			{
+				$this->transfer_dns_records = $fix_dns_host($_SESSION[CFGP_PREFIX . 'api_session']);
+				$_SESSION[CFGP_PREFIX . 'api_session']['currentTime'] = date('H:i:s', CFGP_TIME);
+				$_SESSION[CFGP_PREFIX . 'api_session']['currentDate'] = date('F j, Y', CFGP_TIME);
+				return (object)apply_filters('cf_geoplugin_api_get_geodata', $_SESSION[CFGP_PREFIX . 'api_session']);
+			}
 		}
 	
 		$api = get_option('cf_geo_defender_api_key');
@@ -275,6 +341,7 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
 				get_bloginfo("admin_email"),
 				$api,
 				($this->option['base_currency'] && strlen($this->option['base_currency']) === 3 ? strtoupper($this->option['base_currency']) : $CF_GEOPLUGIN_OPTIONS['base_currency']),
+				($CF_GEOPLUGIN_OPTIONS["enable_dns_lookup"] && self::access_level($CF_GEOPLUGIN_OPTIONS['license_sku']) >= 1) ? '1' : '0'
 			));
 			$urlPharams = array(
 				'{IP}',
@@ -285,9 +352,10 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
 				'{M}',
 				'{P}',
 				'{CURRENCY}',
+				'{REVERSE}'
 			);
 			$url = str_replace($urlPharams, $urlReplace, $this->url['api']);
-	
+
 			// Get content from URL
 	
 			$return = self::curl_get($url);
@@ -297,13 +365,24 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
 			{
 				$return = json_decode($return, true);
 				if (is_array($return)) $result = array_merge($result, $return);
-				
+
 				$result = apply_filters('cf_geoplugin_api_get_geodata', $result);
 				
 				if (isset($_SERVER["HTTP_CF_IPCOUNTRY"]) && $CF_GEOPLUGIN_OPTIONS['enable_cloudflare']) {
 					$result['countryCode'] = $_SERVER["HTTP_CF_IPCOUNTRY"];
 				}
-				if($this->option['debug'] === false) $_SESSION[CFGP_PREFIX . 'api_session'] = $result;
+				
+				$this->transfer_dns_records = $fix_dns_host($result);
+				
+				if($this->option['debug'] === false)
+				{
+					if($ip_slug && in_array($session_type, array(2,3)) !==  false) {
+						set_transient("cfgp-api-{$ip_slug}", (array)$result, (MINUTE_IN_SECONDS * CFGP_SESSION));
+					}
+					if(in_array($session_type, array(1,3)) !==  false) {
+						$_SESSION[CFGP_PREFIX . 'api_session'] = $result;
+					}
+				}
 				return (object)$result;
 			}
 			else
@@ -326,7 +405,19 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
 					if (isset($_SERVER["HTTP_CF_IPCOUNTRY"]) && $CF_GEOPLUGIN_OPTIONS['enable_cloudflare']) {
 						$result['countryCode'] = $_SERVER["HTTP_CF_IPCOUNTRY"];
 					}
-					if($this->option['debug'] === false) $_SESSION[CFGP_PREFIX . 'api_session'] = $result;
+					
+					$this->transfer_dns_records = $fix_dns_host($result);
+					
+					if($this->option['debug'] === false)
+					{
+						if($ip_slug && in_array($session_type, array(2,3)) !==  false) {
+							set_transient("cfgp-api-{$ip_slug}", (array)$result, (MINUTE_IN_SECONDS * CFGP_SESSION));
+						}
+						if(in_array($session_type, array(1,3)) !==  false) {
+							$_SESSION[CFGP_PREFIX . 'api_session'] = $result;
+						}
+					}
+					
 					return (object)$result;
 				}
 				else return false;
@@ -361,57 +452,90 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
 		
 		if ($CF_GEOPLUGIN_OPTIONS["enable_dns_lookup"] && self::access_level($CF_GEOPLUGIN_OPTIONS['license_sku']) >= 1)
 		{
+			// Session Type
+			$session_type = parent::get_the_option('session_type', 1);
+			// Current or custom IP
 			$ip = ($ip !== false ? $ip : CFGP_IP);
+			// IP slug
+			$ip_slug = (!empty($ip) ? str_replace('.', '_', $ip ) : false);
+			
 			$api = get_option('cf_geo_defender_api_key');
 			
-			if (isset($_SESSION[CFGP_PREFIX . 'api_dns_session']) && isset($_SESSION[CFGP_PREFIX . 'api_dns_session']['ip']) && $_SESSION[CFGP_PREFIX . 'api_dns_session']['ip'] == $ip && $this->option['debug'] === false)
+			if($this->option['debug'] === false)
 			{
-				return (object)apply_filters('cf_geoplugin_api_get_dns', $_SESSION[CFGP_PREFIX . 'api_dns_session']);
+				if(!empty($ip) && $ip_slug && in_array($session_type, array(2,3)) !==  false && $cached = get_transient("cfgp-api-dns-{$ip_slug}"))
+				{
+					if(isset($cached['ip']) && !empty($cached['ip']) && $ip == $cached['ip'])
+					{
+						
+						return (object)apply_filters('cf_geoplugin_api_get_dns', $cached);
+					}
+				}
+				
+				if (isset($_SESSION[CFGP_PREFIX . 'api_dns_session']) && isset($_SESSION[CFGP_PREFIX . 'api_dns_session']['ip']) && $_SESSION[CFGP_PREFIX . 'api_dns_session']['ip'] == $ip && in_array($session_type, array(1,3)) !==  false)
+				{
+					return (object)apply_filters('cf_geoplugin_api_get_dns', $_SESSION[CFGP_PREFIX . 'api_dns_session']);
+				}
 			}
 
-			$urlReplace = array_map("rawurlencode", array(
-				$ip,
-				CFGP_SERVER_IP,
-				self::get_host(true),
-				CFGP_VERSION,
-				$api
-			));
-			$urlPharams = array(
-				'{IP}',
-				'{SIP}',
-				'{HOST}',
-				'{VERSION}',
-				'{P}'
-			);
-			$url = str_replace($urlPharams, $urlReplace, $this->url['dns']);
-			
-			$data = self::curl_get($url);
-			if ($data !== false)
+			if(isset($this->transfer_dns_records) && !empty($this->transfer_dns_records))
 			{
-				$data = json_decode($data, true);
+				$data = $this->transfer_dns_records;
 				$return = array_merge($return, $data);
 			}
 			else
 			{
-				$url = str_replace($urlPharams, $urlReplace, $this->url['dns_alternate']);
-				
+				$urlReplace = array_map("rawurlencode", array(
+					$ip,
+					CFGP_SERVER_IP,
+					self::get_host(true),
+					CFGP_VERSION,
+					$api
+				));
+				$urlPharams = array(
+					'{IP}',
+					'{SIP}',
+					'{HOST}',
+					'{VERSION}',
+					'{P}'
+				);
+				$url = str_replace($urlPharams, $urlReplace, $this->url['dns']);
+			
 				$data = self::curl_get($url);
-				
 				if ($data !== false)
 				{
 					$data = json_decode($data, true);
 					$return = array_merge($return, $data);
 				}
+				else
+				{
+					$url = str_replace($urlPharams, $urlReplace, $this->url['dns_alternate']);
+					
+					$data = self::curl_get($url);
+					
+					if ($data !== false)
+					{
+						$data = json_decode($data, true);
+						$return = array_merge($return, $data);
+					}
+				}
 			}
-			
 			$return = apply_filters('cf_geoplugin_api_get_dns', $return);
 
-			if($this->option['debug'] === false) $_SESSION[CFGP_PREFIX . 'api_dns_session'] = $return;
+			if($this->option['debug'] === false)
+			{
+				if($ip_slug && in_array($session_type, array(2,3)) !==  false) {
+					set_transient("cfgp-api-dns-{$ip_slug}", (array)$return, (MINUTE_IN_SECONDS * CFGP_SESSION));
+				}
+				if(in_array($session_type, array(1,3)) !==  false) {
+					$_SESSION[CFGP_PREFIX . 'api_dns_session'] = $return;
+				}
+			}
 		}
 		
 		return (object)$return;
 	}
-	
+
 	private function check_validations()
 	{
 		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];

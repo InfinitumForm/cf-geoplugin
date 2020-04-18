@@ -1,4 +1,24 @@
 == Changelog ==
+
+= 7.10.1 =
+* Fixed glitch in a previous version of COVID-19 API.
+
+= 7.10.0 =
+* Switched to the improved API service
+* Removed unuseful shortcodes from the API
+* Improved session on the COVID-19 API
+* Fixed calculation bugs inside COVID-19 API
+* Fixed Contact Form 7 bug
+* Fixed Settings forms
+* Improved UX
+* Improved debuging tool
+* Improved DNS lookup
+* Added MySLQ caching
+* Added ISP lookup
+* Added ZIP code lookup
+* Added [is_proxy] shortcode for proxy check
+* Optimized API request
+
 = 7.9.11 =
 * Added support for the WooCommerce 4.0.0 or higher
 * Fixed WooCommerce currency converter

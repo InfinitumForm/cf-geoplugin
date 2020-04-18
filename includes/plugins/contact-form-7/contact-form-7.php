@@ -9,7 +9,7 @@
 if( !class_exists( 'CF_Geoplugin_Contact_Form_7' ) ):
 class CF_Geoplugin_Contact_Form_7 extends CF_Geoplugin_Global{
 	
-	private $remove = 'state,continentCode,areaCode,dmaCode,timezoneName,currencySymbol,currencyConverter,in_eu,is_vat,gps,error,error_message,lookup,status,runtime,accuracy_radius,credit';
+	private $remove = 'state,continentCode,areaCode,dmaCode,timezoneName,currencySymbol,currencyConverter,is_proxy,is_mobile,in_eu,is_vat,gps,error,error_message,lookup,status,runtime,accuracy_radius,credit';
 	private $excluded;
 	
 	function __construct(){
@@ -30,6 +30,9 @@ class CF_Geoplugin_Contact_Form_7 extends CF_Geoplugin_Global{
 		if(function_exists('wpcf7_add_form_tag'))
 		{
 			$CFGEO = $GLOBALS['CFGEO'];
+			
+			if(empty($CFGEO) || !is_array($CFGEO)) return '';
+			
 			foreach($CFGEO as $key => $value)
 			{
 				if( in_array($key, $this->get_excluded()) !== false ) continue;

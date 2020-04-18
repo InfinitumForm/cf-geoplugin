@@ -22,7 +22,7 @@ class CF_Geoplugin_Utilities extends CF_Geoplugin_Global
 		*/
 	//	$this->add_action('wp_loaded', 'output_buffer_start');
 	//	$this->add_action('shutdown', 'output_buffer_end');
-	
+
 		/* Content */
 		$this->add_action('the_content', 'replace_tags_cache_control', 9999, 1);
 		$this->add_action('the_title', 'replace_tags', 9999, 1);
@@ -36,7 +36,7 @@ class CF_Geoplugin_Utilities extends CF_Geoplugin_Global
 			$this->add_action('wpseo_register_extra_replacements', 'wpseo_register_extra_replacements', 99);
 			$this->add_filter('wpseo_title', 'the_title', 9999, 1);
 		}
-		
+
 		/* SEO Framework */
 		if ( is_plugin_active( 'autodescription/autodescription.php' )) {
 			$this->add_filter( 'the_seo_framework_title_from_custom_field', 'the_title', 9999, 1);

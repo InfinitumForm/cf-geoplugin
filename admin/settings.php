@@ -12,8 +12,6 @@ $CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIO
 include CFGP_INCLUDES . '/class-cf-geoplugin-forms.php';
 $global = CF_Geoplugin_Global::get_instance();
 
-//echo '<pre>', var_dump($CF_GEOPLUGIN_OPTIONS), '</pre>';
-
 $alert = '';
 if($this->get('action') == 'activate_license')
 {
@@ -259,7 +257,7 @@ if( $global->get( 'action' ) == 'deactivate_license' )
 								$general->html('<p>'.__('This settings enable advanced lookup and functionality of plugin.',CFGP_NAME).'</p><hr>');
 								
 								$general->radio(array(
-									'label'		=> __('Enable DNS Lookup',CFGP_NAME),
+									'label'		=> __('Enable DNS/ISP Lookup',CFGP_NAME),
 									'name'		=> 'enable_dns_lookup',
 									'default'	=> CF_Geoplugin_Global::get_the_option('enable_dns_lookup', 0),
 									'license'	=> 1,
@@ -274,7 +272,7 @@ if( $global->get( 'action' ) == 'deactivate_license' )
 										'value'	=> 0,
 										'id'	=> 'enable_dns_lookup_false',
 									),
-									'info'		=> __('DNS lookup allow you to get DNS informations from your visitors.',CFGP_NAME)
+									'info'		=> __('Activate DNS/ISP lookup to be able to provide this information.',CFGP_NAME)
 								));
 								
 								$general->radio(array(
@@ -496,6 +494,8 @@ if( $global->get( 'action' ) == 'deactivate_license' )
 
 								$seo_redirections['label'] = __( 'Enable Post SEO Redirection In', CFGP_NAME );
 								$seo_redirections['container_class'] = 'container-enable-seo-posts';
+								$seo_redirections['separator'] = '<br>';
+								$seo_redirections['label_class'] = 'align-self-start';
 								$general->checkbox(
 									$seo_redirections
 								); 
@@ -611,7 +611,9 @@ if( $global->get( 'action' ) == 'deactivate_license' )
 								}
 
 								$geo_tag['label'] = __( 'Enable Geo Tag In', CFGP_NAME );
+								$geo_tag['label_class'] = 'align-self-start';
 								$geo_tag['container_class'] = 'container-enable-geo-tag';
+								$geo_tag['separator'] = '<br>';
 								$general->checkbox(
 									$geo_tag
 								);
@@ -634,6 +636,27 @@ if( $global->get( 'action' ) == 'deactivate_license' )
 									'id'		=> 'timeout',
 									'value'		=> isset( $CF_GEOPLUGIN_OPTIONS['timeout'] ) ? $CF_GEOPLUGIN_OPTIONS['timeout'] : (isset( $global->default_options[ 'timeout' ] ) ? $global->default_options[ 'timeout' ] : 5),
 									'info'		=> __( 'Set maximum time the request is allowed to take', CFGP_NAME )
+								));
+								
+								$general->radio(array(
+									'label'		=> __('Session type',CFGP_NAME),
+									'name'		=> 'session_type',
+									'default'	=> CF_Geoplugin_Global::get_the_option('session_type', 1),
+									'info'		=> __('Choose the best session type that suits your server.',CFGP_NAME),
+									'separator'	=> '<br>',
+									'label_class' => 'align-self-start',
+									array(
+										'text'	=> __('PHP Session (standard: RAM memory consuming)',CFGP_NAME),
+										'value'	=> 1
+									),
+									array(
+										'text'	=> __('MySQL Session (faster: server memory consuming)',CFGP_NAME),
+										'value'	=> 2
+									),
+									array(
+										'text'	=> __('PHP & MySQL "cross-session" (safe mode: RAM and server memory consuming)',CFGP_NAME),
+										'value'	=> 3
+									)
 								));
 
 								$general->html( sprintf( '<button type="submit" class="btn btn-success pull-right cfgp_save_options">%s</button>', __( 'Update All Options', CFGP_NAME ) ) );

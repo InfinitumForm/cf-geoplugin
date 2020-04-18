@@ -83,6 +83,10 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 		if ( !shortcode_exists( 'cfgeo_not_in_eu' ) ) $this->add_shortcode( 'cfgeo_not_in_eu', 'not_in_eu' );
 		if ( !shortcode_exists( 'not_in_eu' ) ) $this->add_shortcode( 'not_in_eu', 'not_in_eu' );
 		
+		// IS PROXY
+		if ( !shortcode_exists( 'cfgeo_is_proxy' ) ) $this->add_shortcode( 'cfgeo_is_proxy', 'is_proxy' );
+		if ( !shortcode_exists( 'is_proxy' ) ) $this->add_shortcode( 'is_proxy', 'is_proxy' );
+		
 		// GPS
 		if ( !shortcode_exists( 'cfgeo_gps' ) ) $this->add_shortcode( 'cfgeo_gps', 'cfgeo_gps' );
 	}
@@ -125,6 +129,53 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 		}
 		
 		if(isset($CFGEO['gps']) && $CFGEO['gps'])
+		{
+			return ($cache ? '<!-- ' . W3TC_DYNAMIC_SECURITY . ' mfunc -->' . do_shortcode($content) . '<!-- /mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : do_shortcode($content));
+		}
+		else
+		{
+			return ($cache ? '<!-- ' . W3TC_DYNAMIC_SECURITY . ' mfunc -->' . $default . '<!-- /mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : $default);
+		}
+	}
+	
+	// IS PROXY
+	public function is_proxy($attr, $content=''){
+		$CFGEO = $GLOBALS['CFGEO'];
+		
+		$cache = $this->is_attribute_exists('cache', $attr);
+		if($this->is_attribute_exists('no_cache', $attr)) $cache = false;
+		
+		$array = shortcode_atts( array(
+			'ip'		=>	false,
+			'default'	=>	NULL,
+			'exclude'	=>	false,
+			'include'	=>	false
+        ), $attr );
+
+		$ip 		= $array['ip'];
+		$default 	= $array['default'];
+		$exclude 	= $array['exclude'];
+		$include 	= $array['include'];
+		
+		if( !empty($ip) )
+		{
+			$CFGEO_API = new CF_Geoplugin_API;
+			$CFGEO = $CFGEO_API->run(array('ip' => $ip));
+		}
+		
+		if(!empty($exclude) || !empty($include)) {
+			if(!empty($include))
+			{
+				if(!$this->recursive_array_search($include, $CFGEO)) return ($cache ? '<!-- ' . W3TC_DYNAMIC_SECURITY . ' mfunc -->' . $default . '<!-- /mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : $default);
+			}
+			
+			if(!empty($exclude))
+			{
+				if($this->recursive_array_search($exclude, $CFGEO)) return ($cache ? '<!-- ' . W3TC_DYNAMIC_SECURITY . ' mfunc -->' . $default . '<!-- /mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : $default);
+			}
+		}
+		
+		if(isset($CFGEO['is_proxy']) && $CFGEO['is_proxy'])
 		{
 			return ($cache ? '<!-- ' . W3TC_DYNAMIC_SECURITY . ' mfunc -->' . do_shortcode($content) . '<!-- /mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : do_shortcode($content));
 		}
@@ -618,7 +669,7 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 			
 			if(class_exists('CF_Geoplugin_Shortcode_Automat'))
 			{
-				$exclude = array_map('trim', explode(',','gps,is_vat,in_eu,state,continentCode,areaCode,dmaCode,timezoneName,currencySymbol,currencyConverter'));
+				$exclude = array_map('trim', explode(',','gps,is_vat,is_proxy,is_mobile,in_eu,state,continentCode,areaCode,dmaCode,timezoneName,currencySymbol,currencyConverter'));
 				
 				$generate=array();
 				foreach($CFGEO as $key => $value )
@@ -728,7 +779,7 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 			else
 				$class='';
 		} else $class='';
-		
+
 		if($img_format===true)
 		{
 			$address = $CFGEO['address'];

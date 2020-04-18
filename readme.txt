@@ -5,7 +5,7 @@ Tags: covid-19, covid, coronavirus, geolocation, woocommerce, store-locator, seo
 Requires at least: 3.0
 Tested up to: 5.4
 Requires PHP: 5.6.0
-Stable tag: 7.9.11
+Stable tag: 7.10.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -392,6 +392,25 @@ Please inform us if any of these errors occure via contact form on our website [
 
 == Changelog ==
 
+= 7.10.1 =
+* Fixed glitch in a previous version of COVID-19 API.
+
+= 7.10.0 =
+* Switched to the improved API service
+* Removed unuseful shortcodes from the API
+* Improved session on the COVID-19 API
+* Fixed calculation bugs inside COVID-19 API
+* Fixed Contact Form 7 bug
+* Fixed Settings forms
+* Improved UX
+* Improved debuging tool
+* Improved DNS lookup
+* Added MySLQ caching
+* Added ISP lookup
+* Added ZIP code lookup
+* Added [is_proxy] shortcode for proxy check
+* Optimized API request
+
 = 7.9.11 =
 * Added support for the WooCommerce 4.0.0 or higher
 * Fixed WooCommerce currency converter
@@ -471,12 +490,24 @@ Please inform us if any of these errors occure via contact form on our website [
 
 == Upgrade Notice ==
 
-= 7.9.11 =
-* Added support for the WooCommerce 4.0.0 or higher
-* Fixed WooCommerce currency converter
+= 7.10.1 =
+* Fixed glitch in a previous version of COVID-19 API.
 
-= 7.9.10 =
-* Fixed COVID-19 shortcode include
+= 7.10.0 =
+* Switched to the improved API service
+* Removed unuseful shortcodes from the API
+* Improved session on the COVID-19 API
+* Fixed calculation bugs inside COVID-19 API
+* Fixed Contact Form 7 bug
+* Fixed Settings forms
+* Improved UX
+* Improved debuging tool
+* Improved DNS lookup
+* Added MySLQ caching
+* Added ISP lookup
+* Added ZIP code lookup
+* Added [is_proxy] shortcode for proxy check
+* Optimized API request
 
 == Other Notes ==
 
