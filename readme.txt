@@ -5,7 +5,7 @@ Tags: covid-19, covid, coronavirus, geolocation, woocommerce, store-locator, seo
 Requires at least: 3.0
 Tested up to: 5.4
 Requires PHP: 5.6.0
-Stable tag: 7.10.5
+Stable tag: 7.10.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -392,6 +392,10 @@ Please inform us if any of these errors occure via contact form on our website [
 
 == Changelog ==
 
+= 7.10.6 =
+* Optimized jQuery code
+* Added AJAX cache control for the CSS property
+
 = 7.10.5 =
 * Fixed bug with CSS `cfgeo-show-in-{property}`
 * Added new search engine bots in the whitelist 
@@ -445,6 +449,10 @@ Please inform us if any of these errors occure via contact form on our website [
 * Optimized API request
 
 == Upgrade Notice ==
+
+= 7.10.6 =
+* Optimized jQuery code
+* Added AJAX cache control for the CSS property
 
 = 7.10.5 =
 * Fixed bug with CSS `cfgeo-show-in-{property}`

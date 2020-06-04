@@ -1,5 +1,9 @@
 == Changelog ==
 
+= 7.10.6 =
+* Optimized jQuery code
+* Added AJAX cache control for the CSS property
+
 = 7.10.5 =
 * Fixed bug with CSS `cfgeo-show-in-{property}`
 * Added new search engine bots in the whitelist 

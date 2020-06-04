@@ -13,11 +13,8 @@
         var toVal = $( $this ).closest( 'form' ).find( 'select.cfgp-currency-to option:selected' ).val();
         var toText = $( $this ).closest( 'form' ).find( 'select.cfgp-currency-to option:selected' ).text();
 
-        $( 'select.cfgp-currency-from option:selected' ).val( toVal );
-        $( 'select.cfgp-currency-from option:selected' ).text( toText );
-
-        $( 'select.cfgp-currency-to option:selected' ).val( fromVal );
-        $( 'select.cfgp-currency-to option:selected' ).text( fromText );
+        $( 'select.cfgp-currency-from option:selected' ).val( toVal ).text( toText );
+        $( 'select.cfgp-currency-to option:selected' ).val( fromVal ).text( fromText );
     });
 
     /**
@@ -110,8 +107,8 @@
 	
 	/* Cache support for the Geo Banner */
 	(function(element){
-		var replace = $(element),
-			timeout;
+		var replace = $(element);
+		
 		if(replace.length > 0)
 		{
 			var nonce = $(replace.get(0)).attr('data-nonce');
@@ -157,6 +154,35 @@
 			});
 		}
 	}('.cf-geoplugin-banner-cached'));
+	
+	
+	/* Cache support for the CSS */
+	(function(element){
+		var $this = $(element);
+			
+		if($this.length > 0)
+		{
+			var nonce = $this.attr('data-nonce'),
+				xhr = $.ajax({
+					method : 'POST',
+					data: {
+						'cfgeo_nonce' : nonce,
+					},
+					cache : false,
+					async : true,
+					url: CFGP_PUBLIC.ajax_url + '?action=cfgeo_css_cache', 
+				});
+				
+			xhrs.push(xhr);
+			
+			xhr.done(function( data ){
+				if(data)
+				{
+					$this.text( data ).attr('data-cached', 'true');
+				}
+			});
+		}
+	}('#cf-geoplugin-display-control'));
 
 	/* Detect cache done */
 	$.when.apply($, xhrs).done(function(){
