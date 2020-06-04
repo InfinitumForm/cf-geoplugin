@@ -12,12 +12,17 @@ class CF_Geoplugin_Public extends CF_Geoplugin_Global
 	public function run(){
 		$this->add_action( 'init', 'run_style' );
 		$this->add_action( 'wp_head', 'initialize_plugin_javascript', 1 );
+		$this->add_action( 'wp_head', 'initialize_plugin_css', 999);
 		$this->add_action( 'admin_head', 'initialize_plugin_javascript', 1 );
 		$this->add_action( 'wp_head', 'cfgp_geo_tag' );
+		
+		$this->add_action('page-cf-geoplugin-tab', 'cf_geoplugin_tab');
+		$this->add_action('page-cf-geoplugin-tab-panel', 'cf_geoplugin_tab_panel');
 		
 		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
 		
 		if(isset($CF_GEOPLUGIN_OPTIONS['enable_cache']) ? $CF_GEOPLUGIN_OPTIONS['enable_cache'] : 0) {
+
 			$this->add_action( 'wp_ajax_cfgeo_cache', 'ajax_fix_cache' );
 			$this->add_action( 'wp_ajax_nopriv_cfgeo_cache', 'ajax_fix_cache' );
 			
@@ -26,7 +31,62 @@ class CF_Geoplugin_Public extends CF_Geoplugin_Global
 			
 			$this->add_filter( 'the_content', 'enable_cache' );
 		}
+		
+		$this->tab_id = 'css-property';
 	}
+	
+	public function cf_geoplugin_tab ()
+	{ ?>
+		<li class="nav-item">
+			<a class="nav-link nav-link-<?php echo $this->tab_id; ?> text-dark" href="#<?php echo $this->tab_id; ?>" role="tab" data-toggle="tab"><span class="fa fa-css3"></span> <?php _e('CSS property',CFGP_NAME); ?></a>
+		</li>
+	<?php }
+	
+	public function cf_geoplugin_tab_panel ()
+	{
+		$CFGEO = $GLOBALS['CFGEO'];
+		
+		$css_show = $css_hide = array();
+
+		foreach($CFGEO as $key=>$geo){
+			if( empty($geo) || !in_array($key, array('country','country_code','region','city','continent','continent_code','currency','base_currency'),true)!==false ) continue;
+			
+			$css_show[]= 'cfgeo-show-in-' . sanitize_title($geo);
+			$css_hide[]= 'cfgeo-hide-from-' . sanitize_title($geo);
+		}
+		
+		?>
+		<div role="tabpanel" class="tab-pane tab-pane-<?php echo $this->tab_id; ?> fade pt-3" id="<?php echo $this->tab_id; ?>">
+			<h3 class="ml-3 mr-3"><?php _e('CSS property',CFGP_NAME); ?></h3>
+			<p class="ml-3 mr-3"><?php _e('The CF Geo Plugin has dynamic CSS settings that can hide or display some content if you use it properly.',CFGP_NAME); ?></p>
+			<h5 class="ml-3 mr-3 mt-3"><?php _e('How to use it?',CFGP_NAME); ?></h5>
+			<p class="ml-3 mr-3"><?php _e('These CSS settings are dynamic and depend on the geolocation of the visitor.',CFGP_NAME); ?></p>
+			<p class="ml-3 mr-3"><?php _e('A different CSS setting is generated for each state, city, region according to the following principle: <code>cfgeo-show-in-{property}</code> or  <code>cfgeo-hide-from-{property}</code>, where the {property} is actually a geo-location name in lowercase letters and multiple words separated by a minus sign.',CFGP_NAME); ?></p>
+			<p class="ml-3 mr-3"><?php _e('These CSS settings you can insert inside your HTML via class attribute just like any other CSS setting.',CFGP_NAME); ?></p>
+			<table width="100%" class="table table-striped table-sm">
+				<thead>
+					<tr>
+						<th class="manage-column column-shortcode column-primary" width="40%"><strong><?php _e('Show settings',CFGP_NAME); ?></strong></th>
+						<th class="manage-column column-returns column-primary"><strong><?php _e('Hide settings',CFGP_NAME); ?></strong></th>
+					</tr>
+				</thead>
+				<tbody>
+				<?php foreach($css_show as $i => $code) : ?>
+					<tr>
+						<td><kbd><?php echo $code; ?></kbd></td>
+						<td><kbd><?php echo $css_hide[$i]; ?></kbd></td>
+					</tr>
+				<?php endforeach; ?>
+				</tbody>
+				<thead>
+					<tr>
+						<th class="manage-column column-shortcode column-primary" width="40%"><strong><?php _e('Show settings',CFGP_NAME); ?></strong></th>
+						<th class="manage-column column-returns column-primary"><strong><?php _e('Hide settings',CFGP_NAME); ?></strong></th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+	<?php }
 	
 	public function enable_cache( $content ) {
 		if(preg_match('/\[cfgeo(.*?)\]/i', $content))
@@ -132,8 +192,30 @@ class CF_Geoplugin_Public extends CF_Geoplugin_Global
 		} 
 	}
 	
+	public function initialize_plugin_css() {
+		$CFGEO = $GLOBALS['CFGEO'];
+		
+		if(empty($CFGEO)) return;
+		
+		$css_show = $css_hide = array();
+
+		foreach($CFGEO as $key=>$geo){
+			if( empty($geo) || !in_array($key, array('country','country_code','region','city','continent','continent_code','currency','base_currency'),true)!==false ) continue;
+			
+			$css_show[]= '.cfgeo-show-in-' . sanitize_title($geo);
+			$css_hide[]= '.cfgeo-hide-from-' . sanitize_title($geo);
+		}
+
+		if( !empty($css_show) ) :
+		?><style media="all" type="text/css" id="cf-geoplugin-display-control"><?php echo join(',', $css_hide); ?>{display:none !important;} <?php echo join(',', $css_show); ?>{display:block !important;}</style><?php
+		endif;
+	}
+	
+	
 	public function initialize_plugin_javascript(){
-		$CFGEO = $GLOBALS['CFGEO']; ?>
+		$CFGEO = $GLOBALS['CFGEO'];
+		if(empty($CFGEO)) return;
+		?>
 <!-- <?php _e('CF Geoplugin JavaScript Plugin',CFGP_NAME); ?> -->
 <script>
 /* <![CDATA[ */

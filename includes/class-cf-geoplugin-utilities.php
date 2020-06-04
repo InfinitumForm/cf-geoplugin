@@ -120,7 +120,6 @@ class CF_Geoplugin_Utilities extends CF_Geoplugin_Global
 	}
 	
 	public function replace_tags_cache_control ( $string ){
-		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
 		$CFGEO = $GLOBALS['CFGEO'];
 		if(!empty($string) && !is_array($string) && is_array($CFGEO))
 		{
@@ -128,7 +127,7 @@ class CF_Geoplugin_Utilities extends CF_Geoplugin_Global
 			
 			foreach($CFGEO as $key => $val){
 				$collection[0][$i] = '/%%' . $key . '%%/i';
-				$collection[1][$i] = ((isset($CF_GEOPLUGIN_OPTIONS['enable_cache']) && $CF_GEOPLUGIN_OPTIONS['enable_cache'] == 1) ? '<!-- ' . W3TC_DYNAMIC_SECURITY . ' mfunc -->' . $val . '<!-- /mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : $val);
+				$collection[1][$i] = (parent::get_the_option('enable_cache') ? '<!-- ' . W3TC_DYNAMIC_SECURITY . ' mfunc -->' . $val . '<!-- /mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : $val);
 				++$i;
 			};
 			

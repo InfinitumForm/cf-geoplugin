@@ -230,12 +230,20 @@ $CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIO
                                 <td><?php echo $CFGEO['currency_symbol']; ?></td>
                             </tr>
 							<tr>
+                                <td><kbd>[cfgeo return="currency_name"]</kbd></td>
+                                <td><?php echo $CFGEO['currency_name']; ?></td>
+                            </tr>
+							<tr>
                                 <td><kbd>[cfgeo return="base_currency"]</kbd></td>
                                 <td><?php echo $CFGEO['base_currency']; ?></td>
                             </tr>
 							<tr>
                                 <td><kbd>[cfgeo return="base_currency_symbol"]</kbd></td>
                                 <td><?php echo $CFGEO['base_currency_symbol']; ?></td>
+                            </tr>
+							<tr>
+                                <td><kbd>[cfgeo return="base_currency_name"]</kbd></td>
+                                <td><?php echo $CFGEO['base_currency_name']; ?></td>
                             </tr>
 							<?php if(isset( $CFGEO['currency_converter'] ) && !empty( $CFGEO['currency_converter'] )) : ?>
                             <tr>
@@ -390,12 +398,20 @@ $CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIO
                                 <td><?php echo $CFGEO['currency_symbol']; ?></td>
                             </tr>
 							<tr>
+                                <td><kbd>%%currency_name%%</kbd></td>
+                                <td><?php echo $CFGEO['currency_name']; ?></td>
+                            </tr>
+							<tr>
                                 <td><kbd>%%base_currency%%</kbd></td>
                                 <td><?php echo $CFGEO['base_currency']; ?></td>
                             </tr>
                             <tr>
                                 <td><kbd>%%base_currency_symbol%%</kbd></td>
                                 <td><?php echo $CFGEO['base_currency_symbol']; ?></td>
+                            </tr>
+							<tr>
+                                <td><kbd>%%base_currency_name%%</kbd></td>
+                                <td><?php echo $CFGEO['base_currency_name']; ?></td>
                             </tr>
 							<?php if(isset( $CFGEO['currency_converter'] ) && !empty( $CFGEO['currency_converter'] )) : ?>
 							<tr>
@@ -556,6 +572,10 @@ $CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIO
                                 <td><kbd>[cfgeo_currency_symbol]</kbd></td>
                                 <td><?php echo $CFGEO['currency_symbol']; ?></td>
                             </tr>
+							<tr>
+                                <td><kbd>[cfgeo_currency_name]</kbd></td>
+                                <td><?php echo $CFGEO['currency_name']; ?></td>
+                            </tr>
 							<?php if(isset( $CFGEO['currency_converter'] ) && !empty( $CFGEO['currency_converter'] )) : ?>
 							<tr>
                                 <td><kbd>[cfgeo_currency_converter]</kbd></td>
@@ -569,6 +589,10 @@ $CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIO
                             <tr>
                                 <td><kbd>[cfgeo_base_currency_symbol]</kbd></td>
                                 <td><?php echo $CFGEO['base_currency_symbol']; ?></td>
+                            </tr>
+							<tr>
+                                <td><kbd>[cfgeo_base_currency_name]</kbd></td>
+                                <td><?php echo $CFGEO['base_currency_name']; ?></td>
                             </tr>
 							<tr>
                                 <td><kbd>[is_vat]<?php _e('You are under VAT', CFGP_NAME); ?>[/is_vat]</kbd></td>

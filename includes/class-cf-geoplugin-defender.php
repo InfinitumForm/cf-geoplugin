@@ -14,14 +14,14 @@ class CF_Geoplugin_Defender extends CF_Geoplugin_Global
 
     function __construct()
     {
-        $this->add_action( 'send_headers', 'protect' );
+        $this->add_action( 'init', 'protect' );
     }
 
     // Protect site from visiting
     public function protect()
     {
         $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
-        if( $this->check() && !is_admin() )
+        if( $this->check() )
         {
 			if( function_exists('http_response_code') && version_compare(PHP_VERSION, '5.4', '>=') ) {
 				http_response_code(403);
@@ -37,7 +37,7 @@ class CF_Geoplugin_Defender extends CF_Geoplugin_Global
         if( isset( $CF_GEOPLUGIN_OPTIONS['enable_spam_ip'] ) && $CF_GEOPLUGIN_OPTIONS['enable_spam_ip'] && isset( $CF_GEOPLUGIN_OPTIONS['enable_defender'] ) && $CF_GEOPLUGIN_OPTIONS['enable_defender'] && self::access_level( $CF_GEOPLUGIN_OPTIONS['license_sku'] ) > 0 )
         {
             $CFGEO = $GLOBALS['CFGEO'];
-            $url = add_query_arg( 'ip', $CFGEO['ip'], 'https://cdn-cfgeoplugin.com/api6.0/spam-checker.php' );
+            $url = add_query_arg( 'ip', $CFGEO['ip'], 'https://cdn-cfgeoplugin.com/api/spam-checker.php' );
             $response = $this->curl_get( $url );
             
             if( $response !== false )
@@ -61,6 +61,8 @@ class CF_Geoplugin_Defender extends CF_Geoplugin_Global
     // Check what to do with user
     public function check()
     {
+		if(parent::is_bot()) return false;
+		
         $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS']; $CFGEO = $GLOBALS['CFGEO'];
         if( $CF_GEOPLUGIN_OPTIONS['enable_defender'] == 0 ) return false;
         $flag = false;

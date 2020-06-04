@@ -53,6 +53,7 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
 		'cityName' 				=> '',
 		'continent' 			=> '',
 		'zip' 					=> '',
+		'base_convert'			=> '',
 	//	'continentCode' 		=> '',
 		'address' 				=> '',
 	//	'areaCode'				=> '',
@@ -62,7 +63,10 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
 		'timezone' 				=> '',
 		'locale'				=> '',
 		'currency' 				=> '',
+		'currency_name' 		=> '',
 		'base_currency'			=> '',
+		'base_currency_symbol'	=> '',
+		'base_currency_name'	=> '',
 	//	'currencySymbol' 		=> '',
 		'proxy' 				=> 0,
 		'currency_symbol' 		=> '',
@@ -175,6 +179,9 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
 				}
 			}
 			
+			$base_currency = ($this->option['base_currency'] && strlen($this->option['base_currency']) === 3 ? strtoupper($this->option['base_currency']) : $CF_GEOPLUGIN_OPTIONS['base_currency']);
+			$base_currency = (isset($geodata->base_convert) && !empty($geodata->base_convert) ? $geodata->base_convert : $base_currency);
+			
 			return apply_filters( 'cf_geoplugin_api_render_response', array(
                 'ip' => $geodata->ipAddress,
                 'ip_version' => $ipv,
@@ -209,8 +216,10 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
                 'timezoneName' => $geodata->timezone, // deprecated
                 'currency' => $currency,
                 'currency_symbol' => $currency_symbol,
-				'base_currency' => $CF_GEOPLUGIN_OPTIONS['base_currency'],
-				'base_currency_symbol' => CF_Geplugin_Library::CURRENCY_SYMBOL[$CF_GEOPLUGIN_OPTIONS['base_currency']],
+				'currency_name' => (isset(CF_Geplugin_Library::CURRENCY_NAME[$currency]) ? CF_Geplugin_Library::CURRENCY_NAME[$currency] : $currency),
+				'base_currency' => $base_currency,
+				'base_currency_symbol' => (isset(CF_Geplugin_Library::CURRENCY_SYMBOL[$base_currency]) ? CF_Geplugin_Library::CURRENCY_SYMBOL[$base_currency] : $base_currency),
+				'base_currency_name' => (isset(CF_Geplugin_Library::CURRENCY_NAME[$base_currency]) ? CF_Geplugin_Library::CURRENCY_NAME[$base_currency] : $base_currency),
             //    'currencySymbol' => $currency_symbol, // deprecated
                 'currency_converter' => (!empty($geodata->currencyConverter) ? $geodata->currencyConverter : 0),
             //    'currencyConverter' => (!empty($geodata->currencyConverter) ? $geodata->currencyConverter : 0), // deprecated
@@ -293,7 +302,9 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
 				'dns' => (isset($result['reverse']) ? $result['reverse'] : NULL),
 			), $return);
 		};
-		
+		// Get Base currency
+		$base_currency = ($this->option['base_currency'] && strlen($this->option['base_currency']) === 3 ? strtoupper($this->option['base_currency']) : $CF_GEOPLUGIN_OPTIONS['base_currency']);
+		// check validations
 		$this->check_validations();
 		// Session Type
 		$session_type = parent::get_the_option('session_type', 1);
@@ -306,7 +317,9 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
 		{
 			if(!empty($ip) && $ip_slug && in_array($session_type, array(2,3)) !==  false && $cached = get_transient("cfgp-api-{$ip_slug}"))
 			{
-				if(isset($cached['ipAddress']) && !empty($cached['ipAddress']) && $ip == $cached['ipAddress']) {
+				if(isset($cached['ipAddress']) && !empty($cached['ipAddress']) && $ip == $cached['ipAddress'] && (
+					!empty($base_currency) && isset($cached['base_convert']) ? $base_currency == $cached['base_convert'] : true
+				) ) {
 
 					$this->transfer_dns_records = $fix_dns_host($cached);
 				
@@ -316,7 +329,9 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
 				}
 			}
 			
-			if (isset($_SESSION[CFGP_PREFIX . 'api_session']) && isset($_SESSION[CFGP_PREFIX . 'api_session']['ipAddress']) && $_SESSION[CFGP_PREFIX . 'api_session']['ipAddress'] == $ip && in_array($session_type, array(1,3)) !==  false)
+			if (isset($_SESSION[CFGP_PREFIX . 'api_session']) && isset($_SESSION[CFGP_PREFIX . 'api_session']['ipAddress']) && $_SESSION[CFGP_PREFIX . 'api_session']['ipAddress'] == $ip && in_array($session_type, array(1,3)) !==  false && (
+				!empty($base_currency) && isset($_SESSION[CFGP_PREFIX . 'api_session']['base_convert']) ? $base_currency == $_SESSION[CFGP_PREFIX . 'api_session']['base_convert'] : true
+			))
 			{
 				$this->transfer_dns_records = $fix_dns_host($_SESSION[CFGP_PREFIX . 'api_session']);
 				$_SESSION[CFGP_PREFIX . 'api_session']['currentTime'] = date('H:i:s', CFGP_TIME);
@@ -340,7 +355,7 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
 				CFGP_VERSION,
 				get_bloginfo("admin_email"),
 				$api,
-				($this->option['base_currency'] && strlen($this->option['base_currency']) === 3 ? strtoupper($this->option['base_currency']) : $CF_GEOPLUGIN_OPTIONS['base_currency']),
+				$base_currency,
 				($CF_GEOPLUGIN_OPTIONS["enable_dns_lookup"] && self::access_level($CF_GEOPLUGIN_OPTIONS['license_sku']) >= 1) ? '1' : '0'
 			));
 			$urlPharams = array(

@@ -105,3 +105,26 @@ else
 	if($debug && property_exists($debug, 'save'))
 		$debug->save(  'Contact Form 7 integration not loaded - File does not exists' );
 }
+
+
+// Include Elementor integration
+if( file_exists( CFGP_INCLUDES . '/plugins/elementor/elementor.php' ) )
+{
+	if( is_plugin_active('elementor/elementor.php') )
+	{
+		include_once CFGP_INCLUDES . '/plugins/elementor/elementor.php';
+		new CF_Geoplugin_Elementor;
+		if($debug && property_exists($debug, 'save'))
+			$debug->save( 'Elementor integration loaded' );
+	}
+	else
+	{
+		if($debug && property_exists($debug, 'save'))
+			$debug->save( 'Elementor integration not loaded - Plugin does not exists' );
+	}
+}
+else
+{
+	if($debug && property_exists($debug, 'save'))
+		$debug->save(  'Elementor integration not loaded - File does not exists' );
+}

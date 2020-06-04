@@ -193,9 +193,9 @@ class parseXML
 		}
 		
 		$contents = "";
-		if (!function_exists('xml_parser_create'))return array ();
+		if (!function_exists('xml_parser_create')) return array();
 		$parser = xml_parser_create('');
-		if (!($fp = @ fopen(($custom_url==true?'':$this->root).$document, 'r'))) return array ();
+		if (!($fp = @ fopen(($custom_url==true?'':$this->root).$document, 'r'))) return array();
 		while (!feof($fp)) $contents .= fread($fp, (int)$this->fread_length);
 		fclose($fp);
 		xml_parser_set_option($parser, XML_OPTION_TARGET_ENCODING, 'utf-8');

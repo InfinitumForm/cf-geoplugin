@@ -143,7 +143,8 @@ class CF_Geoplugin_OS
 	public static function getOS($user_agent = null)
 	{
 		$os_array = array();
-		if(empty($user_agent)) {
+		if(empty($user_agent))
+		{
 			if(function_exists('php_uname'))
 				$user_agent = php_uname('a');
 			else if(function_exists('shell_exec') && !self::is_win())
@@ -210,6 +211,7 @@ class CF_Geoplugin_OS
 				'openwrt' => 'Linux - openWRT',
 				'fedora' => 'Linux - Fedora',
 				'linux' => 'Linux',
+				'Mac OS X 10.1[^0-9]' => 'Mac OS X Puma',
 				'sierra' => 'Mac OS - Sierra',
 				'mavericks' => 'Mac OS - Mavericks',
 				'yosemite' => 'Mac OS - Yosemite',
@@ -217,6 +219,7 @@ class CF_Geoplugin_OS
 				'os x' => 'Mac OS X',
 				'mac os' => 'Mac OS',
 				'mac' => 'Mac OS',
+				'android' => 'Android'
 			) as $ver => $name) {
 				$os_array[$ver]=$name; 
 			}
@@ -256,13 +259,13 @@ class CF_Geoplugin_OS
 				'android'                                    =>  'Android',
 				'blackberry'                                 =>  'BlackBerry',
 				'webos'                                      =>  'Mobile',
+				'Mac OS X 10.1[^0-9]'						 =>  'Mac OS X Puma',
 				'(media center pc).([0-9]{1,2}\.[0-9]{1,2})'=>'Windows Media Center',
 				'(win)([0-9]{1,2}\.[0-9x]{1,2})'=>'Windows',
 				'(win)([0-9]{2})'=>'Windows',
 				'(windows)([0-9x]{2})'=>'Windows',
-				// Doesn't seem like these are necessary...not totally sure though..
-				//'(winnt)([0-9]{1,2}\.[0-9]{1,2}){0,1}'=>'Windows NT',
-				//'(windows nt)(([0-9]{1,2}\.[0-9]{1,2}){0,1})'=>'Windows NT',
+				'(winnt)([0-9]{1,2}\.[0-9]{1,2}){0,1}'=>'Windows NT',
+				'(windows nt)(([0-9]{1,2}\.[0-9]{1,2}){0,1})'=>'Windows NT',
 				'Win 9x 4.90'=>'Windows ME',
 				'(windows)([0-9]{1,2}\.[0-9]{1,2})'=>'Windows',
 				'win32'=>'Windows',
@@ -295,17 +298,11 @@ class CF_Geoplugin_OS
 				'(Dropline)'=>'Linux - Slackware (Dropline GNOME)',
 				'(ASPLinux)'=>'Linux - ASPLinux',
 				'(Red Hat)'=>'Linux - Red Hat',
-				// Loads of Linux machines will be detected as unix.
-				// Actually, all of the linux machines I've checked have the 'X11' in the User Agent.
-				//'X11'=>'Unix',
 				'(linux)'=>'Linux',
 				'(amigaos)([0-9]{1,2}\.[0-9]{1,2})'=>'AmigaOS',
 				'amiga-aweb'=>'AmigaOS',
 				'amiga'=>'Amiga',
 				'AvantGo'=>'PalmOS',
-				//'(Linux)([0-9]{1,2}\.[0-9]{1,2}\.[0-9]{1,3}(rel\.[0-9]{1,2}){0,1}-([0-9]{1,2}) i([0-9]{1})86){1}'=>'Linux',
-				//'(Linux)([0-9]{1,2}\.[0-9]{1,2}\.[0-9]{1,3}(rel\.[0-9]{1,2}){0,1} i([0-9]{1}86)){1}'=>'Linux',
-				//'(Linux)([0-9]{1,2}\.[0-9]{1,2}\.[0-9]{1,3}(rel\.[0-9]{1,2}){0,1})'=>'Linux',
 				'[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{1,3})'=>'Linux',
 				'(webtv)/([0-9]{1,2}\.[0-9]{1,2})'=>'WebTV',
 				'Dreamcast'=>'Dreamcast OS',
@@ -328,8 +325,6 @@ class CF_Geoplugin_OS
 				'wget'=>'Windows',
 				'Java'=>'Unknown',
 				'flashget'=>'Windows',
-				// delete next line if the script show not the right OS
-				//'(PHP)/([0-9]{1,2}.[0-9]{1,2})'=>'PHP',
 				'MS FrontPage'=>'Windows',
 				'(msproxy)/([0-9]{1,2}.[0-9]{1,2})'=>'Windows',
 				'(msie)([0-9]{1,2}.[0-9]{1,2})'=>'Windows',

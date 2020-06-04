@@ -91,13 +91,13 @@
 					replace.each(function(i, e){
 						var $this = $(e),
 							key = $this.attr('data-key');
-							
+
 						if(key)
 						{
 							$this.html( data[key] ).removeAttr('data-key').removeAttr('data-nonce');
 						}
 					}).promise().done(function(){
-						clean_this();
+						
 					});
 				}
 			}).fail( function( jqXHR, error, textStatus ) {
@@ -160,7 +160,7 @@
 
 	/* Detect cache done */
 	$.when.apply($, xhrs).done(function(){
-		console.log('Fragment cache cleaned for the WordPress Geo Plugin');
+		console.info('Fragment cache cleaned for the WordPress Geo Plugin');
 	});
 
 })(jQuery || window.jQuery || Zepto || window.Zepto);

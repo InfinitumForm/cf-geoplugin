@@ -10,17 +10,15 @@ if(!class_exists('CF_Geoplugin_Shortcodes')) :
 class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 {
 	public function run()
-	{
-		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
-		
-		if( $CF_GEOPLUGIN_OPTIONS['enable_beta'] === 1 &&  $CF_GEOPLUGIN_OPTIONS['enable_beta_shortcode'] === 1 ){
+	{	
+		if( parent::get_the_option('enable_beta', 0) && parent::get_the_option('enable_beta_shortcode', 0) ){
 			// EXPERIMENTAL Generate Shortcodes by type
 			$this->add_action( 'wp_loaded', 'shortcode_automat_setup' );
 		}
 		
 		// Deprecated CF GeoPlugin shortcode but supported for now
 		$this->add_shortcode('cf_geo', 'cf_geoplugin');
-		if( $CF_GEOPLUGIN_OPTIONS['enable_beta'] === 1  &&  $CF_GEOPLUGIN_OPTIONS['enable_beta_shortcode'] === 1 ){
+		if( parent::get_the_option('enable_beta', 0) && parent::get_the_option('enable_beta_shortcode', 0) ){
 			// EXPERIMENTAL BUT SUPPORTED
 			if ( !shortcode_exists( 'geo' ) ) $this->add_shortcode('geo', 'cf_geoplugin');
 		}
@@ -28,10 +26,10 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 		// Official CF GeoPlugin shortcode
 		$this->add_shortcode('cfgeo', 'cf_geoplugin');
 		
-		if($CF_GEOPLUGIN_OPTIONS['enable_flag']){
+		if(parent::get_the_option('enable_flag', 0)){
 			// Deprecated flag shortcode
 			$this->add_shortcode('cf_geo_flag', 'generate_flag');
-			if($CF_GEOPLUGIN_OPTIONS['enable_beta'] && $CF_GEOPLUGIN_OPTIONS['enable_beta_shortcode']){
+			if(parent::get_the_option('enable_beta', 0) && parent::get_the_option('enable_beta_shortcode', 0)){
 				// EXPERIMENTAL BUT SUPPORTED
 				if ( !shortcode_exists( 'country_flag' ) ) $this->add_shortcode('country_flag', 'generate_flag');
 			}
@@ -40,14 +38,14 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 		}
 
 		//$this->add_action( 'wp_head', 'CF_GeoPlugin_Google_Map_Shortcode_Script' );
-		if( isset( $CF_GEOPLUGIN_OPTIONS['enable_gmap'] ) && $CF_GEOPLUGIN_OPTIONS['enable_gmap'] ) {
+		if( parent::get_the_option('enable_gmap', 0) ) {
 			// Deprecated Google Map shortcode
 			$this->add_shortcode( 'cf_geo_map', 'google_map' );
 			// Official Google Map Shortcode
 			$this->add_shortcode( 'cfgeo_map', 'google_map' );
 		}
 
-		if( isset( $CF_GEOPLUGIN_OPTIONS['enable_banner'] ) && $CF_GEOPLUGIN_OPTIONS['enable_banner'] ) {
+		if( parent::get_the_option('enable_banner', 0) ) {
 			// Deprecated Banner shortcode
 			$this->add_shortcode( 'cf_geo_banner', 'geo_banner' );
 			// Official Banner shortcode
@@ -65,7 +63,9 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 
 		// Full converter shortcode
 		$this->add_shortcode( 'cfgeo_full_converter', 'cfgeo_full_converter' );
+		
 		$this->add_action( 'wp_ajax_cfgeo_full_currency_converter', 'cfgeo_full_currency_converter' );
+		$this->add_action( 'wp_ajax_nopriv_cfgeo_full_currency_converter', 'cfgeo_full_currency_converter' );
 		
 		// IS VAT
 		if ( !shortcode_exists( 'cfgeo_is_vat' ) ) $this->add_shortcode( 'cfgeo_is_vat', 'is_vat' );
@@ -87,55 +87,12 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 		if ( !shortcode_exists( 'cfgeo_is_proxy' ) ) $this->add_shortcode( 'cfgeo_is_proxy', 'is_proxy' );
 		if ( !shortcode_exists( 'is_proxy' ) ) $this->add_shortcode( 'is_proxy', 'is_proxy' );
 		
+		// IS NOT PROXY
+		if ( !shortcode_exists( 'cfgeo_is_not_proxy' ) ) $this->add_shortcode( 'cfgeo_is_not_proxy', 'is_not_proxy' );
+		if ( !shortcode_exists( 'is_not_proxy' ) ) $this->add_shortcode( 'is_not_proxy', 'is_not_proxy' );
+		
 		// GPS
 		if ( !shortcode_exists( 'cfgeo_gps' ) ) $this->add_shortcode( 'cfgeo_gps', 'cfgeo_gps' );
-	}
-	
-	// GPS
-	public function cfgeo_gps($attr, $content=''){
-		$CFGEO = $GLOBALS['CFGEO'];
-		
-		$cache = $this->is_attribute_exists('cache', $attr);
-		if($this->is_attribute_exists('no_cache', $attr)) $cache = false;
-		
-		$array = shortcode_atts( array(
-			'ip'		=>	false,
-			'default'	=>	NULL,
-			'exclude'	=>	false,
-			'include'	=>	false
-        ), $attr );
-
-		$ip 		= $array['ip'];
-		$default 	= $array['default'];
-		$exclude 	= $array['exclude'];
-		$include 	= $array['include'];
-		
-		if( !empty($ip) )
-		{
-			$CFGEO_API = new CF_Geoplugin_API;
-			$CFGEO = $CFGEO_API->run(array('ip' => $ip));
-		}
-		
-		if(!empty($exclude) || !empty($include)) {
-			if(!empty($include))
-			{
-				if(!$this->recursive_array_search($include, $CFGEO)) return ($cache ? '<!-- ' . W3TC_DYNAMIC_SECURITY . ' mfunc -->' . $default . '<!-- /mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : $default);
-			}
-			
-			if(!empty($exclude))
-			{
-				if($this->recursive_array_search($exclude, $CFGEO)) return ($cache ? '<!-- ' . W3TC_DYNAMIC_SECURITY . ' mfunc -->' . $default . '<!-- /mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : $default);
-			}
-		}
-		
-		if(isset($CFGEO['gps']) && $CFGEO['gps'])
-		{
-			return ($cache ? '<!-- ' . W3TC_DYNAMIC_SECURITY . ' mfunc -->' . do_shortcode($content) . '<!-- /mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : do_shortcode($content));
-		}
-		else
-		{
-			return ($cache ? '<!-- ' . W3TC_DYNAMIC_SECURITY . ' mfunc -->' . $default . '<!-- /mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : $default);
-		}
 	}
 	
 	// IS PROXY
@@ -166,22 +123,125 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 		if(!empty($exclude) || !empty($include)) {
 			if(!empty($include))
 			{
-				if(!$this->recursive_array_search($include, $CFGEO)) return ($cache ? '<!-- ' . W3TC_DYNAMIC_SECURITY . ' mfunc -->' . $default . '<!-- /mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : $default);
+				if(!$this->recursive_array_search($include, $CFGEO)) return self::__wrap($default, $cache, false);
 			}
 			
 			if(!empty($exclude))
 			{
-				if($this->recursive_array_search($exclude, $CFGEO)) return ($cache ? '<!-- ' . W3TC_DYNAMIC_SECURITY . ' mfunc -->' . $default . '<!-- /mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : $default);
+				if($this->recursive_array_search($exclude, $CFGEO)) return self::__wrap($default, $cache, false);
 			}
 		}
 		
 		if(isset($CFGEO['is_proxy']) && $CFGEO['is_proxy'])
 		{
-			return ($cache ? '<!-- ' . W3TC_DYNAMIC_SECURITY . ' mfunc -->' . do_shortcode($content) . '<!-- /mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : do_shortcode($content));
+			return self::__wrap($content, $cache);
 		}
 		else
 		{
-			return ($cache ? '<!-- ' . W3TC_DYNAMIC_SECURITY . ' mfunc -->' . $default . '<!-- /mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : $default);
+			return self::__wrap($default, $cache, false);
+		}
+	}
+	
+	// IS NOT PROXY
+	public function is_not_proxy($attr, $content=''){
+		$CFGEO = $GLOBALS['CFGEO'];
+		
+		$cache = $this->is_attribute_exists('cache', $attr);
+		if($this->is_attribute_exists('no_cache', $attr)) $cache = false;
+		
+		$array = shortcode_atts( array(
+			'ip'		=>	false,
+			'default'	=>	NULL,
+			'exclude'	=>	false,
+			'include'	=>	false
+        ), $attr );
+
+		$ip 		= $array['ip'];
+		$default 	= $array['default'];
+		$exclude 	= $array['exclude'];
+		$include 	= $array['include'];
+		
+		if( !empty($ip) )
+		{
+			$CFGEO_API = new CF_Geoplugin_API;
+			$CFGEO = $CFGEO_API->run(array('ip' => $ip));
+		}
+		
+		if(!empty($exclude) || !empty($include)) {
+			if(!empty($include))
+			{
+				if(!$this->recursive_array_search($include, $CFGEO))
+					return self::__wrap($content, $cache);
+			}
+			
+			if(!empty($exclude))
+			{
+				if($this->recursive_array_search($exclude, $CFGEO))
+					return self::__wrap($content, $cache);
+			}
+		}
+		
+		if(isset($CFGEO['is_proxy']))
+		{
+			if(!$CFGEO['is_proxy'])
+			{
+				return self::__wrap($content, $cache);
+			}
+			else
+			{
+				return self::__wrap($default, $cache, false);
+			}
+		}
+		else
+		{
+			return self::__wrap($default, $cache, false);
+		}		
+	}
+	
+	// GPS
+	public function cfgeo_gps($attr, $content=''){
+		$CFGEO = $GLOBALS['CFGEO'];
+		
+		$cache = $this->is_attribute_exists('cache', $attr);
+		if($this->is_attribute_exists('no_cache', $attr)) $cache = false;
+		
+		$array = shortcode_atts( array(
+			'ip'		=>	false,
+			'default'	=>	NULL,
+			'exclude'	=>	false,
+			'include'	=>	false
+        ), $attr );
+
+		$ip 		= $array['ip'];
+		$default 	= $array['default'];
+		$exclude 	= $array['exclude'];
+		$include 	= $array['include'];
+		
+		if( !empty($ip) )
+		{
+			$CFGEO_API = new CF_Geoplugin_API;
+			$CFGEO = $CFGEO_API->run(array('ip' => $ip));
+		}
+		
+		if(!empty($exclude) || !empty($include)) {
+			if(!empty($include))
+			{
+				if(!$this->recursive_array_search($include, $CFGEO)) return self::__wrap($default, $cache, false);
+			}
+			
+			if(!empty($exclude))
+			{
+				if($this->recursive_array_search($exclude, $CFGEO)) return self::__wrap($default, $cache, false);
+			}
+		}
+		
+		if(isset($CFGEO['gps']) && $CFGEO['gps'])
+		{
+			return self::__wrap($content, $cache);
+		}
+		else
+		{
+			return self::__wrap($default, $cache, false);
 		}
 	}
 	
@@ -213,22 +273,22 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 		if(!empty($exclude) || !empty($include)) {
 			if(!empty($include))
 			{
-				if(!$this->recursive_array_search($include, $CFGEO)) return ($cache ? '<!-- ' . W3TC_DYNAMIC_SECURITY . ' mfunc -->' . $default . '<!-- /mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : $default);
+				if(!$this->recursive_array_search($include, $CFGEO)) return self::__wrap($default, $cache, false);
 			}
 			
 			if(!empty($exclude))
 			{
-				if($this->recursive_array_search($exclude, $CFGEO)) return ($cache ? '<!-- ' . W3TC_DYNAMIC_SECURITY . ' mfunc -->' . $default . '<!-- /mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : $default);
+				if($this->recursive_array_search($exclude, $CFGEO)) return self::__wrap($default, $cache, false);
 			}
 		}
 		
 		if(isset($CFGEO['in_eu']) && $CFGEO['in_eu'])
 		{
-			return ($cache ? '<!-- ' . W3TC_DYNAMIC_SECURITY . ' mfunc -->' . do_shortcode($content) . '<!-- /mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : do_shortcode($content));
+			return self::__wrap($content, $cache);
 		}
 		else
 		{
-			return ($cache ? '<!-- ' . W3TC_DYNAMIC_SECURITY . ' mfunc -->' . $default . '<!-- /mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : $default);
+			return self::__wrap($default, $cache, false);
 		}
 	}
 	
@@ -261,13 +321,13 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 			if(!empty($include))
 			{
 				if(!$this->recursive_array_search($include, $CFGEO))
-					return ($cache ? '<!-- ' . W3TC_DYNAMIC_SECURITY . ' mfunc -->' . do_shortcode($content) . '<!-- /mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : do_shortcode($content));
+					return self::__wrap($content, $cache);
 			}
 			
 			if(!empty($exclude))
 			{
 				if($this->recursive_array_search($exclude, $CFGEO))
-					return ($cache ? '<!-- ' . W3TC_DYNAMIC_SECURITY . ' mfunc -->' . do_shortcode($content) . '<!-- /mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : do_shortcode($content));
+					return self::__wrap($content, $cache);
 			}
 		}
 		
@@ -275,16 +335,16 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 		{
 			if(!$CFGEO['in_eu'])
 			{
-				return ($cache ? '<!-- ' . W3TC_DYNAMIC_SECURITY . ' mfunc -->' . do_shortcode($content) . '<!-- /mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : do_shortcode($content));
+				return self::__wrap($content, $cache);
 			}
 			else
 			{
-				return ($cache ? '<!-- ' . W3TC_DYNAMIC_SECURITY . ' mfunc -->' . $default . '<!-- /mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : $default);
+				return self::__wrap($default, $cache, false);
 			}
 		}
 		else
 		{
-			return ($cache ? '<!-- ' . W3TC_DYNAMIC_SECURITY . ' mfunc -->' . $default . '<!-- /mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : $default);
+			return self::__wrap($default, $cache, false);
 		}		
 	}
 	
@@ -316,22 +376,22 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 		if(!empty($exclude) || !empty($include)) {
 			if(!empty($include))
 			{
-				if(!$this->recursive_array_search($include, $CFGEO)) return ($cache ? '<!-- ' . W3TC_DYNAMIC_SECURITY . ' mfunc -->' . $default . '<!-- /mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : $default);
+				if(!$this->recursive_array_search($include, $CFGEO)) return self::__wrap($default, $cache, false);
 			}
 			
 			if(!empty($exclude))
 			{
-				if($this->recursive_array_search($exclude, $CFGEO)) return ($cache ? '<!-- ' . W3TC_DYNAMIC_SECURITY . ' mfunc -->' . $default . '<!-- /mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : $default);
+				if($this->recursive_array_search($exclude, $CFGEO)) return self::__wrap($default, $cache, false);
 			}
 		}
 		
 		if(isset($CFGEO['is_vat']) && $CFGEO['is_vat'])
 		{
-			return ($cache ? '<!-- ' . W3TC_DYNAMIC_SECURITY . ' mfunc -->' . do_shortcode($content) . '<!-- /mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : do_shortcode($content));
+			return self::__wrap($content, $cache);
 		}
 		else
 		{
-			return ($cache ? '<!-- ' . W3TC_DYNAMIC_SECURITY . ' mfunc -->' . $default . '<!-- /mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : $default);
+			return self::__wrap($default, $cache, false);
 		}
 	}
 	
@@ -365,13 +425,13 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 			if(!empty($include))
 			{
 				if(!$this->recursive_array_search($include, $CFGEO))
-					return ($cache ? '<!-- ' . W3TC_DYNAMIC_SECURITY . ' mfunc -->' . do_shortcode($content) . '<!-- /mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : do_shortcode($content));
+					return self::__wrap($content, $cache);
 			}
 			
 			if(!empty($exclude))
 			{
 				if($this->recursive_array_search($exclude, $CFGEO))
-					return ($cache ? '<!-- ' . W3TC_DYNAMIC_SECURITY . ' mfunc -->' . do_shortcode($content) . '<!-- /mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : do_shortcode($content));
+					return self::__wrap($content, $cache);
 			}
 		}
 		
@@ -379,16 +439,16 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 		{
 			if(!$CFGEO['is_vat'])
 			{
-				return ($cache ? '<!-- ' . W3TC_DYNAMIC_SECURITY . ' mfunc -->' . do_shortcode($content) . '<!-- /mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : do_shortcode($content));
+				return self::__wrap($content, $cache);
 			}
 			else
 			{
-				return ($cache ? '<!-- ' . W3TC_DYNAMIC_SECURITY . ' mfunc -->' . $default . '<!-- /mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : $default);
+				return self::__wrap($default, $cache, false);
 			}
 		}
 		else
 		{
-			return ($cache ? '<!-- ' . W3TC_DYNAMIC_SECURITY . ' mfunc -->' . $default . '<!-- /mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : $default);
+			return self::__wrap($default, $cache, false);
 		}
 	}
 	
@@ -416,9 +476,7 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 	 * @version    7.0.0
 	*/
 	public function cf_geoplugin($atts, $content='')
-	{
-		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
-		
+	{		
 		$cache = $this->is_attribute_exists('cache', $atts);
 		if($this->is_attribute_exists('no_cache', $atts)) $cache = false;
 		
@@ -464,10 +522,11 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 						{
 							return do_shortcode($content);
 						}
+						
 					}
 					else
 					{
-						return ($cache ? '<!-- ' . W3TC_DYNAMIC_SECURITY . ' mfunc -->' . $default . '<!-- /mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : $default);
+						return self::__wrap($default, $cache, false);
 					}
 				}
 				// Exclude
@@ -475,10 +534,11 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 				{
 					if($this->recursive_array_search($exclude, $CFGEO))
 					{
-						return ($cache ? '<!-- ' . W3TC_DYNAMIC_SECURITY . ' mfunc -->' . $default . '<!-- /mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : $default);
+						return self::__wrap($default, $cache, false);
 					}
 					else
 					{
+						
 						if($cache)
 						{
 							return '<!-- ' . W3TC_DYNAMIC_SECURITY . ' mfunc -->' 
@@ -538,7 +598,7 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 					}
 					else
 					{
-						return ($cache ? '<!-- ' . W3TC_DYNAMIC_SECURITY . ' mfunc -->' . $default . '<!-- /mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : $default);
+						return self::__wrap($default, $cache, false);
 					}
 				}
 				// Exclude
@@ -546,7 +606,7 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 				{
 					if($this->recursive_array_search($exclude, $CFGEO))
 					{
-						return ($cache ? '<!-- ' . W3TC_DYNAMIC_SECURITY . ' mfunc -->' . $default . '<!-- /mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : $default);
+						return self::__wrap($default, $cache, false);
 					}
 					else
 					{
@@ -621,7 +681,7 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 				}
 				else
 				{
-					return ($cache ? '<!-- ' . W3TC_DYNAMIC_SECURITY . ' mfunc -->' . $default . '<!-- /mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : $default);
+					return self::__wrap($default, $cache, false);
 				}
 			}
 			// Exclude
@@ -629,7 +689,7 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 			{
 				if($this->recursive_array_search($exclude, $CFGEO))
 				{
-					return ($cache ? '<!-- ' . W3TC_DYNAMIC_SECURITY . ' mfunc -->' . $default . '<!-- /mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : $default);
+					return self::__wrap($default, $cache, false);
 				}
 				else
 				{
@@ -655,12 +715,11 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 	 */
 	public function shortcode_automat_setup($atts){
 		$CFGEO = $GLOBALS['CFGEO'];
-		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
 		
 		$nonce = wp_create_nonce( 'cfgeo-process-cache-ajax' );
 		
 		$cache = $this->is_attribute_exists('cache', $atts);
-		if(isset($CF_GEOPLUGIN_OPTIONS['enable_cache']) ? $CF_GEOPLUGIN_OPTIONS['enable_cache'] : 0) $cache = true;
+		if(parent::get_the_option('enable_cache', 0)) $cache = true;
 		if($this->is_attribute_exists('no_cache', $atts)) $cache = false;
 		
 		if(file_exists(CFGP_INCLUDES . '/class-cf-geoplugin-shortcode-automat.php'))
@@ -676,7 +735,7 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 				{
 					if(in_array($key, $exclude, true) === false)
 					{
-						$generate['cfgeo_' . $key]=($cache ? '<!-- ' . W3TC_DYNAMIC_SECURITY . ' mfunc --><span class="cfgeo-replace" data-key="'.$key.'" data-nonce="' . $nonce . '">' . $value . '</span><!-- /mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : $value);
+						$generate['cfgeo_' . $key]=($cache ? '<!-- ' . W3TC_DYNAMIC_SECURITY . ' mfunc --><span class="cfgeo-replace" data-key="' . $key . '" data-nonce="' . $nonce . '">' . $value . '</span><!-- /mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : $value);
 					}
 				}
 				
@@ -1042,7 +1101,7 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 	{
 		wp_enqueue_style( CFGP_NAME . '-public' );
 		
-		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS']; $CFGEO = $GLOBALS['CFGEO'];
+		$CFGEO = $GLOBALS['CFGEO'];
 		
 		$cache = $this->is_attribute_exists('cache', $atts);
 		if($this->is_attribute_exists('no_cache', $atts)) $cache = false;
@@ -1050,7 +1109,7 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 		$nonce = NULL;
 		if($cache) $nonce = wp_create_nonce( 'cfgeo-process-cache-ajax' );
 
-		if( !isset( $CF_GEOPLUGIN_OPTIONS['enable_banner'] ) || !$CF_GEOPLUGIN_OPTIONS['enable_banner'] ) return '';
+		if(!parent::get_the_option('enable_banner', 0)) return '';
 		$ID = parent::generate_token(16); // Let's made this realy hard
 	
 		$array = shortcode_atts( array(
@@ -1271,7 +1330,7 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 				'to'		=> $to,
 				'amount'	=> $content
 			);
-			$api_url = add_query_arg( $api_params, 'http://cdn-cfgeoplugin.com/api6.0/convert.php' );
+			$api_url = add_query_arg( $api_params, 'http://cdn-cfgeoplugin.com/api/convert.php' );
 
 			$result = $this->curl_get( $api_url );
 
@@ -1419,7 +1478,7 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 			'to'		=> strtoupper( $_REQUEST['cfgp_currency_to'] ),
 			'amount'	=> $amount
 		);
-		$api_url = add_query_arg( $api_params, 'http://cdn-cfgeoplugin.com/api6.0/convert.php' );
+		$api_url = add_query_arg( $api_params, 'http://cdn-cfgeoplugin.com/api/convert.php' );
 
 		$result = $this->curl_get( $api_url );
 		
@@ -1510,6 +1569,29 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 		}
 		
 		return false;
+	}
+	
+	/* Content wrapper */
+	private static function __wrap($content, $cache = false, $shortcode = true) {
+		if($cache)
+		{
+			$str = '<!-- ' . W3TC_DYNAMIC_SECURITY . ' mfunc -->';
+			if($shortcode === true) {
+				$str.= do_shortcode($content);
+			} else {
+				$str.= $content;
+			}
+			$str.= '<!-- /mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->';
+			return $str;
+		}
+		else
+		{
+			if($shortcode === true) {
+				return do_shortcode($content);
+			} else {
+				return $content;
+			}
+		}
 	}
 }
 endif;

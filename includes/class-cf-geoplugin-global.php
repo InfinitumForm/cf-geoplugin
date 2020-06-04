@@ -330,7 +330,38 @@ class CF_Geoplugin_Global
 	*/
 	public function get_the_option($option_name='', $default=NULL){
 		$options = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
-		return apply_filters( 'cf_geoplugin_get_the_option', (!empty($option_name) && isset($options[$option_name]) ? $options[$option_name] : $default));
+		
+		if( !empty($option_name) && isset($options[$option_name]) ) {
+			$return = $options[$option_name];
+		} else {
+			$return = $default;
+		}
+		
+		if( !is_array($return) )
+		{
+			if($return != 0 && empty($return))
+			{
+				$return = NULL;
+			}
+			else if(is_numeric($return))
+			{
+				if((int)$return == $return) {
+					$return = (int)$return;
+				} else if((float)$return == $return) {
+					$return = (float)$return;
+				}
+			}
+			else if(in_array($return, array('true', 'false'), true) !== false)
+			{
+				$return = ($return == 'true');
+			}
+			else
+			{
+				$return = trim($return);
+			}
+		}
+		
+		return apply_filters( 'cf_geoplugin_get_the_option', $return, $GLOBALS['CF_GEOPLUGIN_OPTIONS']);
 	}
 	/*
 	 * Hook Update Options
@@ -832,10 +863,10 @@ class CF_Geoplugin_Global
 			return get_option( 'page_for_posts' );
 		else if((is_home() || is_front_page()) && !empty(get_queried_object_id()))
 			return get_queried_object_id();
-		else if(isset($_GET['post']) && !empty($_GET['post']) && isset($_GET['action']) && $_GET['action'] == 'edit' && intval($_GET['post']) == $_GET['post'])
-			return (int)$_GET['post'];
-		else if(!is_admin() && isset($_GET['p']) && !empty($_GET['p']) && intval($_GET['p']) == $_GET['p'])
-			return (int)$_GET['p'];
+		else if($this->get('action') == 'edit' && $post = $this->get('post', 'int', false))
+			return $post;
+		else if(!is_admin() && $p = $this->get('p', 'int', false))
+			return $p;
 		
 		return false;
 	}
@@ -1088,10 +1119,10 @@ class CF_Geoplugin_Global
 			else
 			{
 				// Parse IP and extract last number for mathing
-				$breakIP = explode(".", $key);
+				$breakIP = explode('.', $key);
 				$lastNum = ((int)end($breakIP));
 				array_pop($breakIP);
-				$connectIP=join(".", $breakIP).'.';
+				$connectIP=join('.', $breakIP).'.';
 				
 				if($lastNum>=$num)
 				{
@@ -1107,7 +1138,7 @@ class CF_Geoplugin_Global
 				$breakIP = $lastNum = $connectIP = NULL;
 			}
 		}
-		if(!empty($blacklistIP)) $blacklistIP=array_map("trim", $blacklistIP);
+		if(!empty($blacklistIP)) $blacklistIP=array_map('trim', $blacklistIP);
 		
 		return $blacklistIP;
 	}
@@ -1121,12 +1152,12 @@ class CF_Geoplugin_Global
 	 */
 	public function ip()
 	{
-		if ($this->get_option('enable_cloudflare') && isset($_SERVER["HTTP_CF_CONNECTING_IP"]) && !empty($_SERVER["HTTP_CF_CONNECTING_IP"])) {
-			$_SERVER['REMOTE_ADDR'] = $_SERVER["HTTP_CF_CONNECTING_IP"];
+		if ($this->get_option('enable_cloudflare') && isset($_SERVER['HTTP_CF_CONNECTING_IP']) && !empty($_SERVER['HTTP_CF_CONNECTING_IP'])) {
+			$_SERVER['REMOTE_ADDR'] = $_SERVER['HTTP_CF_CONNECTING_IP'];
 		}
 		// check any protocols
 		$findIP=array();
-		if ($this->get_option('enable_cloudflare') && isset($_SERVER["HTTP_CF_CONNECTING_IP"]) && !empty($_SERVER["HTTP_CF_CONNECTING_IP"])) {
+		if ($this->get_option('enable_cloudflare') && isset($_SERVER['HTTP_CF_CONNECTING_IP']) && !empty($_SERVER['HTTP_CF_CONNECTING_IP'])) {
 			$findIP[]='HTTP_CF_CONNECTING_IP';
 		}
 		$findIP=array_merge($findIP, array(
@@ -1345,7 +1376,7 @@ class CF_Geoplugin_Global
 		// Validate
 		$CF_GEOPLUGIN_OPTIONS = $instance->get_option();
 		if($CF_GEOPLUGIN_OPTIONS['license'] == 1 && $CF_GEOPLUGIN_OPTIONS['license_key'] && $CF_GEOPLUGIN_OPTIONS['license_id']) :
-			$url = $CF_GEOPLUGIN_OPTIONS['store'] . '/wp-admin/admin-ajax.php';
+			$url = 'https://cdn-cfgeoplugin.com/api/authenticate.php';
 			$data = array(
 				'action' 		=> 'license_key_validate',
 				'license_key' 	=> $CF_GEOPLUGIN_OPTIONS['license_key'],
@@ -1354,15 +1385,23 @@ class CF_Geoplugin_Global
 				'domain' 		=> self::get_host(true),
 				'activation_id'	=> $CF_GEOPLUGIN_OPTIONS['license_id']
 			);
+			
 			CF_Geoplugin_Debug::log( 'cURL license validation send data:' );
 			CF_Geoplugin_Debug::log( json_encode( $data ) );
+			
 			$url = sprintf( '%s?%s', $url, ltrim( http_build_query( $data ), '?' ) );
 			$response = $instance->curl_get( $url );
 
 			if( empty( $response ) )
 			{
-				$context = self::set_stream_context( array( 'Accept: application/json' ), 'GET', http_build_query( $data ) );
-				$response = @file_get_contents( $url, false, $context );
+				$url = $CF_GEOPLUGIN_OPTIONS['store'] . '/wp-admin/admin-ajax.php';
+				$url = sprintf( '%s?%s', $url, ltrim( http_build_query( $data ), '?' ) );
+				$response = $instance->curl_get( $url );
+				
+				if( empty( $response ) ) {
+					$context = self::set_stream_context( array( 'Accept: application/json' ), 'GET', http_build_query( $data ) );
+					$response = @file_get_contents( $url, false, $context );
+				}
 			}
 
 			if($response)
@@ -1527,29 +1566,48 @@ class CF_Geoplugin_Global
 	 **/
 	public static function is_bot()
 	{
-		
-		// Get by user agent (wide range)
-		if(isset($_SERVER['HTTP_USER_AGENT']) && !empty($_SERVER['HTTP_USER_AGENT']))
-		{
-			return (preg_match('/AlkalineBOT|botlink|abacho|accona|AddThis|AdsBot|ahoy|AhrefsBot|AISearchBot|alexa|altavista|anthill|appie|applebot|arale|araneo|AraybOt|ariadne|arks|aspseek|ATN_Worldwide|Atomz|baiduspider|baidu|bbot|bingbot|bing|Bjaaland|BlackWidow|BotLink|bot|boxseabot|bspider|calif|CCBot|ChinaClaw|christcrawler|CMC\/0\.01|combine|confuzzledbot|contaxe|CoolBot|cosmos|crawler|crawlpaper|crawl|curl|cusco|cyberspyder|cydralspider|dataprovider|digger|DIIbot|DotBot|downloadexpress|DragonBot|DuckDuckBot|dwcp|EasouSpider|ebiness|ecollector|elfinbot|esculapio|ESI|esther|eStyle|Ezooms|facebookexternalhit|facebook|facebot|fastcrawler|FatBot|FDSE|FELIX IDE|fetch|fido|find|Firefly|fouineur|Freecrawl|froogle|gammaSpider|gazz|gcreep|geona|Getterrobo-Plus|get|girafabot|golem|googlebot|\-google|grabber|GrabNet|griffon|Gromit|gulliver|gulper|hambot|havIndex|hotwired|htdig|HTTrack|ia_archiver|iajabot|IDBot|Informant|InfoSeek|InfoSpiders|INGRID\/0\.1|inktomi|inspectorwww|Internet Cruiser Robot|irobot|Iron33|JBot|jcrawler|Jeeves|jobo|KDD\-Explorer|KIT\-Fireball|ko_yappo_robot|label\-grabber|larbin|legs|libwww-perl|linkedin|Linkidator|linkwalker|Lockon|logo_gif_crawler|Lycos|m2e|majesticsEO|marvin|mattie|mediafox|mediapartners|MerzScope|MindCrawler|MJ12bot|mod_pagespeed|moget|Motor|msnbot|muncher|muninn|MuscatFerret|MwdSearch|NationalDirectory|naverbot|NEC\-MeshExplorer|NetcraftSurveyAgent|NetScoop|NetSeer|newscan\-online|nil|none|Nutch|ObjectsSearch|Occam|openstat.ru\/Bot|packrat|pageboy|ParaSite|patric|pegasus|perlcrawler|phpdig|piltdownman|Pimptrain|pingdom|pinterest|pjspider|PlumtreeWebAccessor|PortalBSpider|psbot|rambler|Raven|RHCS|RixBot|roadrunner|Robbie|robi|RoboCrawl|robofox|Scooter|Scrubby|Search\-AU|searchprocess|search|SemrushBot|Senrigan|seznambot|Shagseeker|sharp\-info\-agent|sift|SimBot|Site Valet|SiteSucker|skymob|SLCrawler\/2\.0|slurp|snooper|solbot|speedy|spider_monkey|SpiderBot\/1\.0|spiderline|spider|suke|tach_bw|TechBOT|TechnoratiSnoop|templeton|teoma|titin|topiclink|twitterbot|twitter|UdmSearch|Ukonline|UnwindFetchor|URL_Spider_SQL|urlck|urlresolver|Valkyrie libwww\-perl|verticrawl|Victoria|void\-bot|Voyager|VWbot_K|wapspider|WebBandit\/1\.0|webcatcher|WebCopier|WebFindBot|WebLeacher|WebMechanic|WebMoose|webquest|webreaper|webspider|webs|WebWalker|WebZip|wget|whowhere|winona|wlm|WOLP|woriobot|WWWC|XGET|xing|yahoo|YandexBot|YandexMobileBot|yandex|yeti|Zeus/i', $_SERVER['HTTP_USER_AGENT']) ? true : false);
-		}
-		
 		// Search by IP
 		$instance = self::get_instance();
 		$ip = $instance->ip();
 		
 		$bots = array(
+			'65.214.45.143',	// Ask
+			'65.214.45.148',	// Ask
+			'66.235.124.192',	// Ask
+			'66.235.124.7',		// Ask
+			'66.235.124.101',	// Ask
+			'66.235.124.193',	// Ask
+			'66.235.124.73',	// Ask
+			'66.235.124.196',	// Ask
+			'66.235.124.74',	// Ask
+			'63.123.238.8',		// Ask
+			'202.143.148.61',	// Ask
+			
 			'66.249.66.1',		// Google
+			
 			'157.55.33.18',		// Bing
 			'123.125.66.120',	// Baidu
 			'141.8.142.60',		// Yandex
+			
+			'72.94.249.34',		// DuckDuckGo
 			'72.94.249.35',		// DuckDuckGo
-			'68.180.228.178',	// Yahoo
+			'72.94.249.36',		// DuckDuckGo
+			'72.94.249.37',		// DuckDuckGo
+			'72.94.249.38',		// DuckDuckGo
+			
+			'68.180.228.178'	// Yahoo
 		);
 		
 		if($ip && in_array($ip, $bots, true)) return true;
 		
-		return true;
+		
+		// Get by user agent (wide range)
+		if(isset($_SERVER['HTTP_USER_AGENT']) && !empty($_SERVER['HTTP_USER_AGENT']))
+		{
+			return (preg_match('/rambler|abacho|acoi|accona|aspseek|altavista|estyle|scrubby|lycos|geona|ia_archiver|alexa|sogou|skype|facebook|duckduckbot|duckduck|twitter|pinterest|linkedin|skype|naver|bing|google|yahoo|duckduckgo|yandex|baidu|baiduspider|teoma|xing|java\/1.7.0_45|bot|crawl|slurp|spider|mediapartners|\sask\s|\saol\s/i', $_SERVER['HTTP_USER_AGENT']) ? true : false);
+		}
+		
+		return false;
 	}
 	
 	/**

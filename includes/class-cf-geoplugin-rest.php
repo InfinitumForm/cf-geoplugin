@@ -17,7 +17,7 @@ class CF_Geoplugin_REST extends CF_Geoplugin_Global {
 	
 	public function run(){
 		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
-		if(isset($CF_GEOPLUGIN_OPTIONS['enable_rest']) ? $CF_GEOPLUGIN_OPTIONS['enable_rest'] : 0)
+		if(parent::get_the_option('enable_rest',0))
 		{
 			if(self::access_level($CF_GEOPLUGIN_OPTIONS['license_sku']) >= 4)
 			{

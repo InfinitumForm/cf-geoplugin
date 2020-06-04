@@ -35,7 +35,7 @@ class CF_Geoplugin_Covid_19 extends CF_Geoplugin_Global
 	);
 	
 	public function run(){
-		if(parent::get_the_option('covid19', 1))
+		if(parent::get_the_option('covid19', 0))
 		{
 			// Session Type
 			$this->session_type = parent::get_the_option('session_type', 1);
@@ -51,7 +51,7 @@ class CF_Geoplugin_Covid_19 extends CF_Geoplugin_Global
 	public function cf_geoplugin_tab ()
 	{ ?>
 		<li class="nav-item">
-			<a class="nav-link nav-link-<?php echo $this->tab_id; ?> text-dark" href="#<?php echo $this->tab_id; ?>" role="tab" data-toggle="tab"><span class="fa fa-sun-o"></span> <?php _e('COVID-19',CFGP_NAME); ?> <sup class="text-danger" data-container="body" data-toggle="popover" data-placement="top" data-trigger="hover" data-content="<?php _e('This BETA options you can turn off inside your Settings under General tab',CFGP_NAME); ?>">BETA</sup></a>
+			<a class="nav-link nav-link-<?php echo $this->tab_id; ?> text-dark" href="#<?php echo $this->tab_id; ?>" role="tab" data-toggle="tab"><span class="fa fa-sun-o"></span> <?php _e('COVID-19',CFGP_NAME); ?></a>
 		</li>
 	<?php }
 	

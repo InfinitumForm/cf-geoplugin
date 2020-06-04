@@ -6,3 +6,8 @@
 	opacity:1;
 	visibility:visible;
 }
+*[class="cfgeo-show-in-"],
+*[class*="cfgeo-show-in-"],
+*[class^="cfgeo-show-in-"]{
+	display: none;
+}

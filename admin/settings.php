@@ -402,6 +402,23 @@ if( $global->get( 'action' ) == 'deactivate_license' )
 										),
 									));
 								}
+								
+								$general->radio(array(
+									'label'		=> __('COVID-19 Shortcodes',CFGP_NAME),
+									'name'		=> 'covid19',
+									'default'	=> CF_Geoplugin_Global::get_the_option('covid19', 1),
+									'info'		=> __('You can display global or country based informations of the Coronavirus (COVID 19).',CFGP_NAME),
+									array(
+										'text'	=> __('Enable',CFGP_NAME),
+										'value'	=> 1,
+										'id'	=> 'covid19_true'
+									),
+									array(
+										'text'	=> __('Disable',CFGP_NAME),
+										'value'	=> 0,
+										'id'	=> 'covid19_false'
+									),
+								));
 
 								$general->radio(array(
 									'label'		=> __('Enable REST API',CFGP_NAME),
@@ -698,23 +715,6 @@ if( $global->get( 'action' ) == 'deactivate_license' )
 										'id'	=> 'enable_beta_shortcode_false',
 										'disabled' 	=> (CF_Geoplugin_Global::get_the_option('enable_beta', 1) ? false : true),
 										'input_class'	=> 'beta-disable'
-									),
-								));
-								
-								$general->radio(array(
-									'label'		=> __('COVID-19 Shortcodes',CFGP_NAME),
-									'name'		=> 'covid19',
-									'default'	=> CF_Geoplugin_Global::get_the_option('covid19', 1),
-									'info'		=> __('You can display global or country based informations of the Coronavirus (COVID 19).',CFGP_NAME),
-									array(
-										'text'	=> __('Enable',CFGP_NAME),
-										'value'	=> 1,
-										'id'	=> 'covid19_true'
-									),
-									array(
-										'text'	=> __('Disable',CFGP_NAME),
-										'value'	=> 0,
-										'id'	=> 'covid19_false'
 									),
 								));
 								

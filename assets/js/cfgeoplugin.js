@@ -526,7 +526,7 @@ $.fn.alerts = function(text, type){
 	(function (data) {
 		if(data) {
 			for(key in data) {
-				var tag = $('.cfgeo-replace-' + key);
+				var tag = $('.cfgeo-replace-' + key);				
 				if(tag.length > 0) {
 					tag.text(data[key]);
 				}

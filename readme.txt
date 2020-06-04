@@ -5,7 +5,7 @@ Tags: covid-19, covid, coronavirus, geolocation, woocommerce, store-locator, seo
 Requires at least: 3.0
 Tested up to: 5.4
 Requires PHP: 5.6.0
-Stable tag: 7.10.1
+Stable tag: 7.10.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -392,6 +392,39 @@ Please inform us if any of these errors occure via contact form on our website [
 
 == Changelog ==
 
+= 7.10.5 =
+* Fixed bug with CSS `cfgeo-show-in-{property}`
+* Added new search engine bots in the whitelist 
+* Improved security
+* Fixed PHP bugs
+
+= 7.10.4 =
+* Added CSS rules for the showing or hiding content by geolocation
+* Added Elementor widget for the EU
+* Added Elementor widget for the VAT
+* Fixed currency converter widget
+* Improved defender functionality
+* Improved bots tracking
+* COVID 19 API moved from BETA to plugin features
+
+= 7.10.3 =
+* Fixed currency converter
+* Fixed base currency session problems
+* Fixed currency symbol
+* Fixed missing data
+* Added currency name library
+* Improved currency converter response
+* New shortcodes: [cfgeo_currency_name] and [cfgeo_base_currency_name]
+
+= 7.10.2 =
+* Improved SEO functionality
+* Improved caching functionality
+* Improved data loading
+* Fixed data overwrite
+* Introduced new shortcode [is_not_proxy]
+* Added new OS detection
+* Fixed bugs from the previous versions
+
 = 7.10.1 =
 * Fixed glitch in a previous version of COVID-19 API.
 
@@ -410,104 +443,23 @@ Please inform us if any of these errors occure via contact form on our website [
 * Added ZIP code lookup
 * Added [is_proxy] shortcode for proxy check
 * Optimized API request
-
-= 7.9.11 =
-* Added support for the WooCommerce 4.0.0 or higher
-* Fixed WooCommerce currency converter
-
-= 7.9.10 =
-* Fixed COVID-19 shortcode include
-
-= 7.9.9 =
-* New COVID-19 (Coronavirus) shortcodes
-* Fixed bugs from the previus version
-
-= 7.9.8 =
-* IMPORTANT UPDATE: Fixed infinity loop into SEO redirection for the target pages
-* Added documentation to plugin pages
-
-= 7.9.7 =
-* Added HTTP referer control for the SEO redirection
-* Fixed activation form
-* Fixed SEO redirection error on the missing page_id
-* Fixed missing objects in the API
-* Fixed wp-admin widget
-* Improved settings options
-* Added new filters: cf_geoplugin_default_options, cf_geoplugin_access_level, cf_geoplugin_get_option, cf_geoplugin_get_option_updated, cf_geoplugin_access_level
-
-= 7.9.6 =
-* Urgent fix: Contact Form 7 CF_Geoplugin_Contact_Form_7::add_shortcode() conflict
-
-= 7.9.5 =
-* Added new Contact Form 7 tags based on geo location
-* Added new Settings for the Contact Form 7 & Wooplatnica
-* Added new filters: cf_geoplugin_get_option, cf_geoplugin_get_the_option, cf_geoplugin_update_option & cf_geoplugin_get_option_updated
-* Added new object CF_Geoplugin_Global::get_the_option()
-* Fixed typos in the plugin
-* Fixed supported plugins includes
-
-= 7.9.4 =
-* Insert WP_ADMIN_DIR absolute path protocol
-* Fixed plugin version check
-* Fixed absolute path for the wp-admin included files
-* Fixed CFGP_MULTISITE constant
-
-= 7.9.3 =
-* Improved code and added support for the WordPress 5.4
-* Improved CF Geo Banner post type
-* Improved CF Geo Banner taxonomy
-* Improved Settings options
-* Improved PHP functions
-* Improved debugging
-* Improved update options for the multisite
-* Optimized PHP code
-* Optimized REST API
-* Removed bugs in the previous version
-* Fixed translations
-
-= 7.9.2 =
-* Added manual bypass for the SEO redirection
-* Added subversion control for the older PHP and WordPress versions
-* Added logging control in the settings
-* Fixed PHP bugs from the previous version
-
-= 7.9.1 =
-* Fixed SEO redirection because of CORS (Cross-Origin Resource Sharing) protection
-* Fixed error logging
-
-= 7.9.0 =
-* Added new shortcode for the GPS
-* Added new Shortcode for the standard VAT rate value
-* Added support for the PHP 7.4
-* Fixed multisite problem with update options
-* Fixed VAT rate API calls
-* Fixed errors when site reach maximum lookup
-* Fixed errors if currency is not available
-* Fixed bad translations
-* Removed unuseful shortcodes
-* Removed deprecated functions
-* Removed deprecated shortcodes
 
 == Upgrade Notice ==
 
-= 7.10.1 =
-* Fixed glitch in a previous version of COVID-19 API.
+= 7.10.5 =
+* Fixed bug with CSS `cfgeo-show-in-{property}`
+* Added new search engine bots in the whitelist 
+* Improved security
+* Fixed PHP bugs
 
-= 7.10.0 =
-* Switched to the improved API service
-* Removed unuseful shortcodes from the API
-* Improved session on the COVID-19 API
-* Fixed calculation bugs inside COVID-19 API
-* Fixed Contact Form 7 bug
-* Fixed Settings forms
-* Improved UX
-* Improved debuging tool
-* Improved DNS lookup
-* Added MySLQ caching
-* Added ISP lookup
-* Added ZIP code lookup
-* Added [is_proxy] shortcode for proxy check
-* Optimized API request
+= 7.10.4 =
+* Added CSS rules for the showing or hiding content by geolocation
+* Added Elementor widget for the EU
+* Added Elementor widget for the VAT
+* Fixed currency converter widget
+* Improved defender functionality
+* Improved bots tracking
+* COVID 19 API moved from BETA to plugin features
 
 == Other Notes ==
 
