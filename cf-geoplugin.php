@@ -8,7 +8,7 @@
  * Plugin Name:       WordPress Geo Plugin
  * Plugin URI:        http://cfgeoplugin.com/
  * Description:       Create Dynamic Content, Banners and Images on Your Website Based On Visitor Geo Location By Using Shortcodes With CF Geo Plugin.
- * Version:           7.10.6
+ * Version:           7.11.0
  * Author:            INFINITUM FORM
  * Author URI:        https://infinitumform.com/
  * License:           GPL-2.0+
@@ -83,6 +83,26 @@ if (!defined('WP_ADMIN_DIR')) define('WP_ADMIN_DIR', $WP_ADMIN_DIR);
 // First initialization
 $GLOBALS['CFGEO'] = array();
 $GLOBALS['CF_GEOPLUGIN_OPTIONS'] = array();
+
+/*
+ * API calls used inside CF Geo Plugin.
+ *
+ * @since      7.11.0
+ * @privacy    https://cfgeoplugin.com/privacy-policy/
+ */
+$GLOBALS['CFGEO_API_CALL'] = apply_filters( 'cf_geoplugin_api_calls', array(
+	// Standard CF Geo Plugin API URLs
+	'main'			=>	'https://cdn-cfgeoplugin.com/api/index.php',
+	'dns'			=>	'https://cdn-cfgeoplugin.com/api/dns.php',
+	'authenticate'	=>	'https://cdn-cfgeoplugin.com/api/authenticate.php',
+	'spam-checker'	=>	'https://cdn-cfgeoplugin.com/api/spam-checker.php',
+	'converter'		=>	'https://cdn-cfgeoplugin.com/api/convert.php',
+	// 3rd party Covid-19 free API call
+	'covid-api'		=>	'https://api.covid19api.com',
+	// 3rd party IPFY free API call for finding real IP address on the local machines
+	'ipfy'			=>	'https://api.ipify.org'
+));
+
 // Main website
 if ( ! defined( 'CFGP_STORE' ) )		define( 'CFGP_STORE', 'https://cfgeoplugin.com');
 // Main plugin file

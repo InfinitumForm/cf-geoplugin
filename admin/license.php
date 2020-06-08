@@ -26,7 +26,7 @@ if(isset($_POST['license_key']) && isset($_POST['license'])) :
 	if(count($post) === 5 )
 	{
 		$response = '';
-		$url = add_query_arg( $post, 'https://cdn-cfgeoplugin.com/api/authenticate.php' );
+		$url = add_query_arg( $post, $GLOBALS['CFGEO_API_CALL']['authenticate'] );
 
 		$response = $global->curl_get( $url );
 		if( empty( $response ) )
@@ -107,7 +107,7 @@ if( $global->get( 'action' ) == 'deactivate_license' && isset( $_GET['cfgp_licen
 		'domain' 		=> self::get_host(true),
 		'activation_id'	=> $CF_GEOPLUGIN_OPTIONS['license_id']
 	);
-	$deactive_url = add_query_arg( $deactive_params, 'https://cdn-cfgeoplugin.com/api/authenticate.php' );
+	$deactive_url = add_query_arg( $deactive_params, $GLOBALS['CFGEO_API_CALL']['authenticate'] );
 
 	$response = $global->curl_get( $deactive_url );
 	if( empty( $response ) )

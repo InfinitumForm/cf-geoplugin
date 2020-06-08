@@ -1330,7 +1330,7 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 				'to'		=> $to,
 				'amount'	=> $content
 			);
-			$api_url = add_query_arg( $api_params, 'http://cdn-cfgeoplugin.com/api/convert.php' );
+			$api_url = add_query_arg( $api_params, $GLOBALS['CFGEO_API_CALL']['converter'] );
 
 			$result = $this->curl_get( $api_url );
 
@@ -1436,13 +1436,13 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 								</select>
 							</div>
 							<div class="cfgp-form-group cfgp-form-group-result">
-								<?php wp_nonce_field( 'cfgeo_full_currency_converter' ); ?>
 								<p class="cfgp-currency-converted"></p>
 							</div>
 							<div class="cfgp-form-group cfgp-form-group-submit">
 								<button type="submit" class="button submit cfgp-btn cfgp-btn-calculate"><?php esc_html_e( $instance['convert'], CFGP_NAME ); ?></button>
 								<button type="button" class="button submit cfgp-btn cfgp-exchange-currency">&#8646;</button> 
 							</div>
+                            <?php wp_nonce_field( 'cfgeo_full_currency_converter', 'cfgeo_currency_converter_nonce__' ); ?>
 						</form>
 						</div>
 					</div>
@@ -1458,7 +1458,7 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 	 */
 	public function cfgeo_full_currency_converter()
 	{
-		if( !isset( $_REQUEST['_wpnonce'] ) || !wp_verify_nonce( $_REQUEST['_wpnonce'], 'cfgeo_full_currency_converter' ) )
+		if( !isset( $_REQUEST['cfgeo_currency_converter_nonce__'] ) || !wp_verify_nonce( $_REQUEST['cfgeo_currency_converter_nonce__'], 'cfgeo_full_currency_converter' ) )
 		{
 			$this->show_conversion_card_message( 'error_direct' );
 			wp_die();
@@ -1478,7 +1478,7 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 			'to'		=> strtoupper( $_REQUEST['cfgp_currency_to'] ),
 			'amount'	=> $amount
 		);
-		$api_url = add_query_arg( $api_params, 'http://cdn-cfgeoplugin.com/api/convert.php' );
+		$api_url = add_query_arg( $api_params, $GLOBALS['CFGEO_API_CALL']['converter'] );
 
 		$result = $this->curl_get( $api_url );
 		

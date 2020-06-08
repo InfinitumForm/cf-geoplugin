@@ -43,6 +43,27 @@
         });
     });
 	
+	/* Clear Session */
+	$( '.cf-geoplugin-clear-session' ).on( 'click', function( e ) {
+		e.preventDefault();
+		var $this = $(this);
+		$this.prop('disabled', true);
+		$.ajax({
+            method : 'POST',
+            data : formData,
+            cache  : false,
+            url : CFGP_PUBLIC.ajax_url + '?action=cf_geoplugin_clear_session',
+        }).done( function( d ) {
+			console.info('Session cleared');
+			$this.prop('disabled', false);
+			location.reload();
+        }).fail( function( jqXHR, error, textStatus ) {
+            console.log( jqXHR );
+            console.log( textStatus );
+			$this.prop('disabled', false);
+        });
+	});
+	
 	/* Cache Support for the geo tags */
 	var xhrs = [];
 	(function(element){

@@ -21,6 +21,17 @@ $CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIO
         <div class="col">
         	<div class="card border-secondary">
                 <div class="card-body text-white bg-secondary text-center">
+				<?php if($CFGEO['status'] == 402) : ?>
+					<div class="row align-items-center">
+                    	<div class="col-sm-2 text-left">
+                        	<i class="fa fa-exclamation-triangle fa-3x" aria-hidden="true"></i>
+                        </div>
+                        <div class="col-sm-10 text-right">
+							<div class="h4"><?php _e('No Information',CFGP_NAME); ?></div>
+                            <div class="card-text"><small><?php _e('API is limited',CFGP_NAME); ?></small></div>
+                        </div>
+                    </div>
+				<?php elseif($CFGEO['status'] == 200) : ?>
                 	<div class="row align-items-center">
                     	<div class="col-sm-2 text-left">
                         	<?php echo $CF_GEOPLUGIN_OPTIONS['enable_flag'] ? do_shortcode('[cfgeo_flag size=3em]') : '<i class="fa fa-globe fa-3x"></i>'; ?>
@@ -30,6 +41,17 @@ $CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIO
                             <div class="card-text"><small><?php echo $CFGEO['address']; ?></small></div>
                         </div>
                     </div>
+				<?php else : ?>
+					<div class="row align-items-center">
+                    	<div class="col-sm-2 text-left">
+                        	<i class="fa fa-ban fa-3x" aria-hidden="true"></i>
+                        </div>
+                        <div class="col-sm-10 text-right">
+							<div class="h4"><?php _e('No Information',CFGP_NAME); ?></div>
+                            <div class="card-text"><small><?php _e('You have error',CFGP_NAME); ?></small></div>
+                        </div>
+                    </div>
+				<?php endif; ?>
                 </div>
             </div>
         </div>
@@ -41,6 +63,12 @@ $CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIO
                         	<?php CF_Geoplugin_Global::lookup_status_icon($CFGEO['lookup'], 'fa-3x'); ?>
                         </div>
                         <div class="col-sm-10 text-right">
+						<?php if($CFGEO['status'] == 402) : ?>
+							<div class="h4"><?php _e('YOU REACH LIMIT!',CFGP_NAME); ?></div>
+							<div class="card-text">
+								<small><?php printf(__('You reach %d lookup'), CFGP_LIMIT); ?> | <a href="<?php echo self_admin_url('admin.php?page=cf-geoplugin-activate'); ?>" class="text-white text-strong"><strong><?php _e('GET UNLIMITED',CFGP_NAME); ?></strong></a></small>
+							</div>
+						<?php elseif($CFGEO['status'] == 200) : ?>
 							<div class="h4">
                             <?php if($CFGEO['lookup'] == 'unlimited') : ?>
                             	<?php _e('UNLIMITED',CFGP_NAME); ?>
@@ -65,6 +93,12 @@ $CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIO
                                 <?php endif; ?>
                             <?php endif; ?>
                             </div>
+						<?php else : ?>
+							<div class="h4"><?php printf(__('ERROR %d!',CFGP_NAME), $CFGEO['status']); ?></div>
+							<div class="card-text">
+								<a href="<?php echo self_admin_url('admin.php?page=cf-geoplugin-debug'); ?>" class="text-white text-strong"><strong><?php _e('Go to Debug Mode',CFGP_NAME); ?></strong></a>
+							</div>
+						<?php endif; ?>
                         </div>
                     </div>
                 </div>
@@ -633,7 +667,7 @@ $CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIO
 													__('GPS is enabled only with %s extension', CFGP_NAME),
 													sprintf(
 														'<a href="%1$s" class="thickbox open-plugin-details-modal">CF Geo Plugin GPS</a>',
-														admin_url('plugin-install.php?tab=plugin-information&plugin=cf-geoplugin-gps&TB_iframe=true&width=772&height=923')
+														self_admin_url('plugin-install.php?tab=plugin-information&plugin=cf-geoplugin-gps&TB_iframe=true&width=772&height=923')
 													)
 												)
 											);

@@ -31,14 +31,14 @@ class CF_Geoplugin_Global
 		'enable_dashboard_widget'	=>	1,
 		'enable_advanced_dashboard_widget'	=>	1,
 		'enable_rest'				=>	1,
-		'proxy_ip'					=>	'',
-		'proxy_port'				=>	'',
+		'proxy_ip'					=>	NULL,
+		'proxy_port'				=>	NULL,
 		'proxy'						=>	0,
-		'proxy_username'			=>	'',
-		'proxy_password'			=>	'',
+		'proxy_username'			=>	NULL,
+		'proxy_password'			=>	NULL,
 		'enable_ssl'				=>	0,
 		'timeout'					=>	5,
-		'map_api_key'				=>	'',
+		'map_api_key'				=>	NULL,
 		'map_zoom'					=>	8,
 		'map_scrollwheel'			=>	1,
 		'map_navigationControl'		=>	1,
@@ -48,36 +48,36 @@ class CF_Geoplugin_Global
 		'map_width'					=>	'100%',
 		'map_height'				=>	'400px',
 		'map_infoMaxWidth'			=>	200,
-		'map_latitude'				=>	'',
-		'map_longitude'				=>	'',
-		'block_country'				=>	'',
-		'block_region'				=>	'',
-		'block_ip'					=>	'',
-		'block_city'				=>	'',
-		'block_country_messages'	=>	'',
-		'license_key'				=>	'',
-		'license_id'				=>	'',
-		'license_expire'			=>	'',
-		'license_expire_date'		=>	'',
-		'license_url'				=>	'',
-		'license_sku'				=>	'',
-		'license_expired'			=>	'',
-		'license_status'			=>	'',
+		'map_latitude'				=>	NULL,
+		'map_longitude'				=>	NULL,
+		'block_country'				=>	NULL,
+		'block_region'				=>	NULL,
+		'block_ip'					=>	NULL,
+		'block_city'				=>	NULL,
+		'block_country_messages'	=>	NULL,
+		'license_key'				=>	NULL,
+		'license_id'				=>	NULL,
+		'license_expire'			=>	NULL,
+		'license_expire_date'		=>	NULL,
+		'license_url'				=>	NULL,
+		'license_sku'				=>	NULL,
+		'license_expired'			=>	NULL,
+		'license_status'			=>	NULL,
 		'license'					=>	0,
 		'store'						=>	'https://cfgeoplugin.com',
 		'store_code'				=>	'YR5pv3FU8l78v3N',
 		'redirect_enable'			=>	0,
 		'redirect_disable_bots'		=>	0,
-		'redirect_country'			=>	'',
-		'redirect_region'			=>	'',
-		'redirect_city'				=>	'',
-		'redirect_url'				=>	'',
+		'redirect_country'			=>	NULL,
+		'redirect_region'			=>	NULL,
+		'redirect_city'				=>	NULL,
+		'redirect_url'				=>	NULL,
 		'measurement_unit'			=>	'km',
 		'redirect_http_code'		=>	302,
 		'base_currency'				=>	'USD',
 		'enable_woocommerce'		=>	0,
 		'woocommerce_active'		=>	0,
-		'rest_secret'				=>	'',
+		'rest_secret'				=>	NULL,
 		'rest_token'				=>	array(),
 		'rest_token_info'			=>	array(),
 		'plugin_activated'			=>	NULL,
@@ -1262,12 +1262,12 @@ class CF_Geoplugin_Global
 		// let's try the last thing, why not?
 		if( self::is_connected() )
 		{
-			$result = $this->curl_get( 'https://api.ipify.org?format=json' );
+			$result = $this->curl_get( $GLOBALS['CFGEO_API_CALL']['ipfy'] . '?format=json' );
 			
 			if( empty( $result ) )
 			{
 				$context = self::set_stream_context( array( 'Accept: application/json' ), 'GET' );
-				$result = @file_get_contents( 'https://api.ipify.org?format=json', false, $context );
+				$result = @file_get_contents( $GLOBALS['CFGEO_API_CALL']['ipfy'] . '?format=json', false, $context );
 			}
 
 			if($result)
@@ -1376,7 +1376,7 @@ class CF_Geoplugin_Global
 		// Validate
 		$CF_GEOPLUGIN_OPTIONS = $instance->get_option();
 		if($CF_GEOPLUGIN_OPTIONS['license'] == 1 && $CF_GEOPLUGIN_OPTIONS['license_key'] && $CF_GEOPLUGIN_OPTIONS['license_id']) :
-			$url = 'https://cdn-cfgeoplugin.com/api/authenticate.php';
+			$url = $GLOBALS['CFGEO_API_CALL']['authenticate'];
 			$data = array(
 				'action' 		=> 'license_key_validate',
 				'license_key' 	=> $CF_GEOPLUGIN_OPTIONS['license_key'],

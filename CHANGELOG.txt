@@ -1,5 +1,13 @@
 == Changelog ==
 
+= 7.11.0 =
+* Centralized API calls
+* Fixed currency converter nonce error
+* Fixed API informations
+* Fixed WooCommerce price calculation
+* Fixed WP Admin URL's on the multisite
+* Improved PHP code
+
 = 7.10.6 =
 * Optimized jQuery code
 * Added AJAX cache control for the CSS property

@@ -23,12 +23,7 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
 	 * @access   private
 	 * @var      array
 	 */
-	private $url = array(
-		'api' 					=> 'https://cdn-cfgeoplugin.com/api/index.php?ip={IP}&sip={SIP}&t={TIME}&r={HOST}&v={VERSION}&m={M}&p={P}&base_convert={CURRENCY}&reverse={REVERSE}',
-		'api_alternate' 		=> 'http://159.203.47.151/api/index.php?ip={IP}&sip={SIP}&t={TIME}&r={HOST}&v={VERSION}&m={M}&p={P}&base_convert={CURRENCY}&reverse={REVERSE}',
-		'dns' 					=> 'https://cdn-cfgeoplugin.com/api/dns.php?ip={IP}&sip={SIP}&r={HOST}&v={VERSION}&p={P}',
-		'dns_alternate' 		=> 'http://159.203.47.151/api/dns.php?ip={IP}&sip={SIP}&r={HOST}&v={VERSION}&p={P}',
-	);
+	private $url = array();
 
 	/**
 	 * Geoplugin default return fields.
@@ -98,6 +93,15 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
 	private $option = array();
 	
 	private $return = array();
+	
+	function __construct() {
+		$this->url = array(
+			'api' 					=> $GLOBALS['CFGEO_API_CALL']['main'] . '?ip={IP}&sip={SIP}&t={TIME}&r={HOST}&v={VERSION}&m={M}&p={P}&base_convert={CURRENCY}&reverse={REVERSE}',
+			'api_alternate' 		=> 'http://159.203.47.151/api/index.php?ip={IP}&sip={SIP}&t={TIME}&r={HOST}&v={VERSION}&m={M}&p={P}&base_convert={CURRENCY}&reverse={REVERSE}',
+			'dns' 					=> $GLOBALS['CFGEO_API_CALL']['dns'] . '?ip={IP}&sip={SIP}&r={HOST}&v={VERSION}&p={P}',
+			'dns_alternate' 		=> 'http://159.203.47.151/api/dns.php?ip={IP}&sip={SIP}&r={HOST}&v={VERSION}&p={P}',
+		);
+	}
 	
 	/**
 	 * Run API

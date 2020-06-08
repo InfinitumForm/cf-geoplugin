@@ -9,8 +9,12 @@
 if(!class_exists('CF_Geoplugin_Covid_19')) :
 class CF_Geoplugin_Covid_19 extends CF_Geoplugin_Global
 {
-	private $URL = 'https://api.covid19api.com';
+	private $URL;
 	private $tab_id = 'covid19';
+	
+	function __construct() {
+		$this->URL = $GLOBALS['CFGEO_API_CALL']['covid-api'];
+	}
 	
 	private static $default_fields = array(
 		'covid19_total_cases' 				=> 0,
