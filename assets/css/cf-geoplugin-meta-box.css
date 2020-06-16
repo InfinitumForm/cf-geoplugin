@@ -53,3 +53,12 @@
 	display:block;
 	margin-top:6px;
 }
+
+.cfgp-select-all > object{
+	display: inline-block;
+    width: 15px;
+    position: relative;
+    margin-right: 2px;
+    margin-left: 2px;
+    bottom: -2px;
+}

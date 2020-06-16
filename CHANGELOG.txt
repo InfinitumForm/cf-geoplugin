@@ -1,5 +1,14 @@
 == Changelog ==
 
+= 7.11.2 =
+* Improved "localhost" detection
+* Improved IP detection
+* Improved server detection
+* Fixed multisite menu problems
+
+= 7.11.1 =
+* Added "Sellect All" to the geo selection
+
 = 7.11.0 =
 * Centralized API calls
 * Fixed currency converter nonce error

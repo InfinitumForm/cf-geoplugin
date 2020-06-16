@@ -555,4 +555,16 @@ $.fn.alerts = function(text, type){
         });
 	});
 	
+	/* Select all */
+	$(document).on('click', '.cfgp-select-all', function( e ){
+		e.preventDefault();
+		var $this = $(this),
+			$target = $( '#' + $this.attr('data-target') );
+		$target.find('option').each(function(){
+			$(this).prop('selected',true);
+		}).promise().done(function(){
+			$target.trigger('chosen:updated');
+		});
+	});
+	
 })(jQuery || window.jQuery || Zepto || window.Zepto);

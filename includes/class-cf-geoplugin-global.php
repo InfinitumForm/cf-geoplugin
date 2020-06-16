@@ -1034,42 +1034,68 @@ class CF_Geoplugin_Global
 				$ip = gethostbyname($_SERVER['SERVER_NAME']);
 			}
 			// Check if IP is real and valid
-			if(function_exists("filter_var") && !empty($ip) && filter_var($ip, FILTER_VALIDATE_IP) !== false)
-			{
-				return $ip;
-			}
-			else if(preg_match('/^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/', $ip) && !empty($ip))
+			if($this->validate_ip($ip))
 			{
 				return $ip;
 			}
 		}
 		// Running CLI
-		if(!empty($ip))
+		if(stristr(PHP_OS, 'WIN'))
 		{
-			if(stristr(PHP_OS, 'WIN'))
+			if(function_exists('shell_exec'))
 			{
-				if (version_compare(PHP_VERSION, '5.3.0', '>=') && function_exists('gethostname'))
-					return gethostbyname(gethostname());
-				else if(version_compare(PHP_VERSION, '5.3.0', '<') && function_exists('php_uname'))
-					return gethostbyname(php_uname("n"));
-				else
-					return gethostbyname(trim(`hostname`));
-			}
-			else 
-			{
-				if(function_exists('shell_exec')){
-					$ip = shell_exec("/sbin/ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}'");
-					return $ip;
+				if(file_exists(CFGP_SHELL . '/win_find_server_ip.cmd') && is_executable(CFGP_SHELL . '/win_find_server_ip.cmd'))
+				{
+					if($ips = shell_exec(CFGP_SHELL . '/win_find_server_ip.cmd'))
+					{
+						$ips = preg_split('/[\s\n\r]+/', $ips);
+						$ips = array_filter($ips);
+						
+						if(!empty($ips))
+						{
+							$ip = end($ips);
+							if($this->validate_ip($ip) !== false) {
+								return $ip;
+							}
+						}
+					}
 				}
-				else if (version_compare(PHP_VERSION, '5.3.0', '>=') && function_exists('gethostname'))
-					return gethostbyname(gethostname());
-				else if(version_compare(PHP_VERSION, '5.3.0', '<') && function_exists('php_uname'))
-					return gethostbyname(php_uname("n"));
-				else
-					return gethostbyname(trim(`hostname`));
 			}
 		}
+		else 
+		{
+			if(function_exists('shell_exec')){
+				$ip = shell_exec("/sbin/ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}'");
+				
+				if($this->validate_ip($ip) !== false)
+					return $ip;
+			}
+		}
+		
+		if (version_compare(PHP_VERSION, '5.3.0', '>=') && function_exists('gethostname'))
+			return gethostbyname(gethostname());
+		else if(version_compare(PHP_VERSION, '5.3.0', '<') && function_exists('php_uname'))
+			return gethostbyname(php_uname("n"));
+		else
+			return gethostbyname(trim(`hostname`));
+
 		return '0.0.0.0';
+	}
+	
+	public function validate_ip( $ip ){
+		
+		$ip = str_replace(array("\r", "\n", "\r\n", "\s"), '', $ip);
+		
+		if(function_exists("filter_var") && !empty($ip) && filter_var($ip, FILTER_VALIDATE_IP) !== false)
+		{
+			return $ip;
+		}
+		else if(!empty($ip) && preg_match('/^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/', $ip))
+		{
+			return $ip;
+		}
+		
+		return false;
 	}
 	
 	/**
@@ -1283,6 +1309,54 @@ class CF_Geoplugin_Global
 				}
 			}
 		}
+		// Let's ask server?
+		if(stristr(PHP_OS, 'WIN'))
+		{
+			if(function_exists('shell_exec'))
+			{
+				$ip = shell_exec('powershell.exe -InputFormat none -ExecutionPolicy Unrestricted -NoProfile -Command "(Invoke-WebRequest ' . $GLOBALS['CFGEO_API_CALL']['ipfy'] . ').Content.Trim()"');
+				if($this->filter_ip($ip)!==false)
+				{
+					return $ip;
+				}
+				
+				$ip = shell_exec('powershell.exe -InputFormat none -ExecutionPolicy Unrestricted -NoProfile -Command "(Invoke-WebRequest ' . $GLOBALS['CFGEO_API_CALL']['smartIP'] . ').Content.Trim()"');
+				if($this->filter_ip($ip)!==false)
+				{
+					return $ip;
+				}
+				
+				$ip = shell_exec('powershell.exe -InputFormat none -ExecutionPolicy Unrestricted -NoProfile -Command "(Invoke-WebRequest ' . $GLOBALS['CFGEO_API_CALL']['indent'] . ').Content.Trim()"');
+				if($this->filter_ip($ip)!==false)
+				{
+					return $ip;
+				}
+			}
+		}
+		else
+		{
+			if(function_exists('shell_exec'))
+			{
+				$ip = shell_exec('curl ' . $GLOBALS['CFGEO_API_CALL']['ipfy'] . '##*( )');
+				if($this->filter_ip($ip)!==false)
+				{
+					return $ip;
+				}
+				
+				$ip = shell_exec('curl ' . $GLOBALS['CFGEO_API_CALL']['smartIP'] . '##*( )');
+				if($this->filter_ip($ip)!==false)
+				{
+					return $ip;
+				}
+				
+				$ip = shell_exec('curl ' . $GLOBALS['CFGEO_API_CALL']['indent'] . '##*( )');
+				if($this->filter_ip($ip)!==false)
+				{
+					return $ip;
+				}
+			}
+		}
+		
 		// OK, this is the end :(
 		return '0.0.0.0';
 	}

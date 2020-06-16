@@ -8,7 +8,7 @@
  * Plugin Name:       WordPress Geo Plugin
  * Plugin URI:        http://cfgeoplugin.com/
  * Description:       Create Dynamic Content, Banners and Images on Your Website Based On Visitor Geo Location By Using Shortcodes With CF Geo Plugin.
- * Version:           7.11.0
+ * Version:           7.11.2
  * Author:            INFINITUM FORM
  * Author URI:        https://infinitumform.com/
  * License:           GPL-2.0+
@@ -41,7 +41,8 @@ if ( ! defined( 'CFGP_LOCAL' ) ) {
 	if(isset($_SERVER['REMOTE_ADDR'])) {
 		define('CFGP_LOCAL', in_array($_SERVER['REMOTE_ADDR'], array(
 			'127.0.0.1',
-			'::1'
+			'::1',
+			'localhost'
 		)));
 	} else {
 		define('CFGP_LOCAL', false);
@@ -100,7 +101,9 @@ $GLOBALS['CFGEO_API_CALL'] = apply_filters( 'cf_geoplugin_api_calls', array(
 	// 3rd party Covid-19 free API call
 	'covid-api'		=>	'https://api.covid19api.com',
 	// 3rd party IPFY free API call for finding real IP address on the local machines
-	'ipfy'			=>	'https://api.ipify.org'
+	'ipfy'			=>	'https://api.ipify.org',
+	'smartIP'		=>	'https://smart-ip.net/myip',
+	'indent'		=>	'https://ident.me'
 ));
 
 // Main website
@@ -111,6 +114,8 @@ if ( ! defined( 'CFGP_FILE' ) )			define( 'CFGP_FILE', __FILE__ );
 if ( ! defined( 'CFGP_ROOT' ) )			define( 'CFGP_ROOT', rtrim(plugin_dir_path(CFGP_FILE), '/') );
 // Globals directory
 if ( ! defined( 'CFGP_GLOBALS' ) )		define( 'CFGP_GLOBALS', CFGP_ROOT . '/globals' );
+// Shell
+if ( ! defined( 'CFGP_SHELL' ) )		define( 'CFGP_SHELL', CFGP_ROOT . '/shell' );
 // Require plugin general setup
 include_once CFGP_GLOBALS . '/cf-geoplugin-setup.php';
 // Includes directory

@@ -156,7 +156,7 @@ global $wp_version;
                                             ));
                                         }
                                     ?>
-                                    <select class="chosen-select w-100" data-placeholder="<?php _e( 'Choose countries...', CFGP_NAME ); ?>" aria-describedby="countryHelp" id="block_country" name="block_country[]" multiple >
+                                    <select class="chosen-select w-100" data-placeholder="<?php _e( 'Choose countries...', CFGP_NAME ); ?>" id="block_country" aria-describedby="countryHelp" id="block_country" name="block_country[]" multiple >
                                     <?php
                                         if( is_array( $all_countries ) && !empty( $all_countries ) )
                                         {
@@ -176,6 +176,7 @@ global $wp_version;
                                         }
                                     ?>
                                     </select>
+                                    <br><button style="font-size: 14px;" type="button" class="cfgp-select-all" data-target="block_country"><object data="<?php echo CFGP_ASSETS . '/images/select.svg'; ?>" width="15" height="15"></object> <?php esc_attr_e( 'Select all', CFGP_NAME ); ?></button>
                                     <small id="countryHelp" class="form-text text-muted"><?php _e('To setup list of countries, you need to go in Geo Banner -> Countries',CFGP_NAME); ?></small>
                                 </div>
                                 <div class="form-group">
@@ -216,6 +217,7 @@ global $wp_version;
                                     }
                                 ?>
                                 </select>
+                                <br><button style="font-size: 14px;" type="button" class="cfgp-select-all" data-target="block_region"><object data="<?php echo CFGP_ASSETS . '/images/select.svg'; ?>" width="15" height="15"></object> <?php esc_attr_e( 'Select all', CFGP_NAME ); ?></button>
                                 <small id="regionHelp" class="form-text text-muted"><?php _e('To setup list of regions, you need to go in Geo Banner -> Regions',CFGP_NAME); ?></small>
                                 </div>
                                 <div class="form-group">
@@ -256,6 +258,7 @@ global $wp_version;
                                     }
                                     ?>
                                 </select>
+                                <br><button style="font-size: 14px;" type="button" class="cfgp-select-all" data-target="block_city"><object data="<?php echo CFGP_ASSETS . '/images/select.svg'; ?>" width="15" height="15"></object> <?php esc_attr_e( 'Select all', CFGP_NAME ); ?></button>
                                 <small id="cityHelp" class="form-text text-muted" ><?php _e('To setup list of cities, you need to go in Geo Banner -> Cities',CFGP_NAME); ?></small>
                                 </div>
                                 <div class="form-group">

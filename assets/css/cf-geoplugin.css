@@ -151,3 +151,12 @@ body.cf-geo-plugin_page_cf-geoplugin-settings #alert > .alert{
 #collapse-button {
     font-size: 80%;
 }
+
+.cfgp-select-all > object{
+	display: inline-block;
+    width: 15px;
+    position: relative;
+    margin-right: 2px;
+    margin-left: 2px;
+    bottom: -2px;
+}

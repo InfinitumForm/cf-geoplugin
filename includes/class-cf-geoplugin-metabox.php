@@ -581,8 +581,8 @@ function CF_GeoPlugin_Google_Map_GeoTag() {
                         <tr>
                             <td>
                                 <!-- COUNTRY -->
-                                <label for="<?php echo $this->prefix; ?>[<?php echo $i; ?>][country]"><?php _e( 'Choose Countries', CFGP_NAME ); ?></label><br>
-                                <select name="<?php echo $this->prefix; ?>[<?php echo $i; ?>][country][]" placeholder="<?php _e( 'Choose countries...', CFGP_NAME ); ?>" data-placeholder="<?php _e( 'Choose countries...', CFGP_NAME ); ?>" id="<?php echo $this->prefix; ?>[<?php echo $i; ?>][country]" class="widefat fixed chosen-select" multiple>
+                                <label for="<?php echo $this->prefix; ?>-<?php echo $i; ?>-country"><?php _e( 'Choose Countries', CFGP_NAME ); ?></label><br>
+                                <select name="<?php echo $this->prefix; ?>[<?php echo $i; ?>][country][]" placeholder="<?php _e( 'Choose countries...', CFGP_NAME ); ?>" data-placeholder="<?php _e( 'Choose countries...', CFGP_NAME ); ?>" id="<?php echo $this->prefix; ?>-<?php echo $i; ?>-country" class="widefat fixed chosen-select" multiple>
                                 <?php
                                     if( is_array( $all_countries ) && !empty( $all_countries ) )
                                     {
@@ -602,11 +602,12 @@ function CF_GeoPlugin_Google_Map_GeoTag() {
                                 ?>
                                 </select>
                                 <span class="description"><?php esc_attr_e( 'Select the country you want to redirect.', CFGP_NAME ); ?></span>
+                                <br><button type="button" class="cfgp-select-all" data-target="<?php echo $this->prefix; ?>-<?php echo $i; ?>-country"><object data="<?php echo CFGP_ASSETS . '/images/select.svg'; ?>" width="15" height="15"></object> <?php esc_attr_e( 'Select all', CFGP_NAME ); ?></button>
                             </td>
                             <td>
                                 <!-- REGION -->
-                                <label for="<?php echo $this->prefix; ?>[<?php echo $i; ?>][region]"><?php _e( 'Choose Regions', CFGP_NAME ); ?></label>
-                                <select name="<?php echo $this->prefix; ?>[<?php echo $i; ?>][region][]" placeholder="<?php _e( 'Choose regions...', CFGP_NAME ); ?>" data-placeholder="<?php _e( 'Choose regions...', CFGP_NAME ); ?>" id="<?php echo $this->prefix; ?>[<?php echo $i; ?>][region]" class="chosen-select widefat fixed" multiple>
+                                <label for="<?php echo $this->prefix; ?>-<?php echo $i; ?>-region"><?php _e( 'Choose Regions', CFGP_NAME ); ?></label>
+                                <select name="<?php echo $this->prefix; ?>[<?php echo $i; ?>][region][]" placeholder="<?php _e( 'Choose regions...', CFGP_NAME ); ?>" data-placeholder="<?php _e( 'Choose regions...', CFGP_NAME ); ?>" id="<?php echo $this->prefix; ?>-<?php echo $i; ?>-region" class="chosen-select widefat fixed" multiple>
                                 <?php
                                 if( is_array( $all_regions ) &&  !empty( $all_regions ) ):
                                     foreach( $all_regions as $key => $region )
@@ -625,11 +626,12 @@ function CF_GeoPlugin_Google_Map_GeoTag() {
                                 ?>
                                 </select>
                                 <span class="description"><?php esc_attr_e( 'Select the region you want to redirect.', CFGP_NAME ); ?></span>
+                                <br><button type="button" class="cfgp-select-all" data-target="<?php echo $this->prefix; ?>-<?php echo $i; ?>-region"><object data="<?php echo CFGP_ASSETS . '/images/select.svg'; ?>" width="15" height="15"></object> <?php esc_attr_e( 'Select all', CFGP_NAME ); ?></button>
                             </td>
                             <td>
                                 <!-- CITY -->
-                                <label for="<?php echo $this->prefix; ?>[<?php echo $i; ?>][city]"><?php _e( 'Choose City', CFGP_NAME ); ?></label>
-                                <select name="<?php echo $this->prefix; ?>[<?php echo $i; ?>][city][]" placeholder="<?php _e( 'Choose cities...', CFGP_NAME ); ?>" data-placeholder="<?php _e( 'Choose cities...', CFGP_NAME ); ?>" id="<?php echo $this->prefix; ?>[<?php echo $i; ?>][city]" class="chosen-select widefat fixed" multiple>
+                                <label for="<?php echo $this->prefix; ?>-<?php echo $i; ?>-city"><?php _e( 'Choose City', CFGP_NAME ); ?></label>
+                                <select name="<?php echo $this->prefix; ?>[<?php echo $i; ?>][city][]" placeholder="<?php _e( 'Choose cities...', CFGP_NAME ); ?>" data-placeholder="<?php _e( 'Choose cities...', CFGP_NAME ); ?>" id="<?php echo $this->prefix; ?>-<?php echo $i; ?>-city" class="chosen-select widefat fixed" multiple>
                                 <?php
                                     if( is_array( $all_cities ) && !empty( $all_cities ) ):
                                         foreach( $all_cities as $key => $city )
@@ -648,6 +650,7 @@ function CF_GeoPlugin_Google_Map_GeoTag() {
                                 ?>
                                 </select>
                                 <span class="description"><?php esc_attr_e( 'Select the city you want to redirect.', CFGP_NAME ); ?></span>
+                                <br><button type="button" class="cfgp-select-all" data-target="<?php echo $this->prefix; ?>-<?php echo $i; ?>-city"><object data="<?php echo CFGP_ASSETS . '/images/select.svg'; ?>" width="15" height="15"></object> <?php esc_attr_e( 'Select all', CFGP_NAME ); ?></button>
                             </td>
                         </tr>
                         <tr>

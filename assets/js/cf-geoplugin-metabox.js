@@ -134,5 +134,17 @@
         reset.find( ".http_select" ).val( "302" ).prop('checked', false).prop('selected', false);
         reset.find( "input[type=radio][value=0]" ).prop( 'checked', true );
     });
+	
+	/* Select all */
+	$(document).on('click', '.cfgp-select-all', function( e ){
+		e.preventDefault();
+		var $this = $(this),
+			$target = $( '#' + $this.attr('data-target') );
+		$target.find('option').each(function(){
+			$(this).prop('selected',true);
+		}).promise().done(function(){
+			$target.trigger('chosen:updated');
+		});
+	});
 
 })(jQuery || window.jQuery || Zepto || window.Zepto);

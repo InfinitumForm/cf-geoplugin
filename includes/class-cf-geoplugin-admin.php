@@ -1399,10 +1399,10 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 	function __construct(){
 		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
 		
-		$this->add_action( 'admin_init', 'admin_init' );
+		$this->add_action( 'admin_init', 'admin_init', 1 );
 		
-		if((defined( 'CFGP_MULTISITE' ) && CFGP_MULTISITE)) $this->add_action( "network_admin_menu", 'add_cf_geoplugin' );
-		else $this->add_action( 'admin_menu', 'add_cf_geoplugin' );
+		if((defined( 'CFGP_MULTISITE' ) && CFGP_MULTISITE)) $this->add_action( 'network_admin_menu', 'add_cf_geoplugin',  11 );
+		else $this->add_action( 'admin_menu', 'add_cf_geoplugin', 11 );
 
 		$this->add_action( 'page-cf-geoplugin-sidebar', 'add_rss_feed' );
 		$this->add_action( 'page-cf-geoplugin-defender-sidebar', 'add_rss_feed' );
