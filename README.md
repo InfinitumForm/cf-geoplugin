@@ -13,8 +13,6 @@ This repository is made for anyone who want to contribute and improve this plugi
 OPEN PROBLEMS:
 ========
 - **Problem with HTML server caching** - Many cache plugins had server caching for the HTML where they create HTML snapshoot of the page and display static content to users. That affect to shortcodes.
-- **Improving SEO redirection** - Current SEO redirection can redirect visitors based on the geo location. We need improve this functionality.
-- **Changing API calls** - We have new API service and need to integrate it into plugin (you need to contact us).
 
 CONTACT:
 ========
