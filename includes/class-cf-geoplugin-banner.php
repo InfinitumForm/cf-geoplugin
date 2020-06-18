@@ -32,7 +32,20 @@ Class CF_Geoplugin_Banner extends CF_Geoplugin_Global
 		
 		$this->add_filter('manage_posts_columns', 'columns_banner_head');
 		$this->add_action('manage_posts_custom_column', 'columns_banner_content', 10, 2);
+		
+	//	$this->add_action( 'init', 'setup_global_taxomomies' );
     }
+	
+	public function setup_global_taxomomies(){ 
+		global $wpdb;
+	 
+		if ( $wpdb->prefix != $wpdb->base_prefix ){
+			$wpdb->terms = str_replace( $wpdb->prefix, $wpdb->base_prefix, $wpdb->terms );
+			$wpdb->term_relationships = str_replace( $wpdb->prefix, $wpdb->base_prefix, $wpdb->term_relationships );
+			$wpdb->term_taxonomy = str_replace( $wpdb->prefix, $wpdb->base_prefix, $wpdb->term_taxonomy );
+			$wpdb->termmeta = str_replace( $wpdb->prefix, $wpdb->base_prefix, $wpdb->termmeta );
+		}
+	}
 	
 	/**
 	 * Banner Head
@@ -149,8 +162,10 @@ Class CF_Geoplugin_Banner extends CF_Geoplugin_Global
 			'show_in_menu'			=> false
 		);
 		
-		if(!post_type_exists('cf-geoplugin-banner'))
+		if(!post_type_exists('cf-geoplugin-banner')) {
 			register_post_type( 'cf-geoplugin-banner', $projects );
+			flush_rewrite_rules();
+		}
     }
 
     // Register banner taxonomies

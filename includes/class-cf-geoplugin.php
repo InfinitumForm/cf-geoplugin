@@ -414,6 +414,9 @@ class CF_Geoplugin_Init extends CF_Geoplugin_Global
 		
 		dbDelta( $sql1 );
 		
+		if( defined( 'CFGP_MULTISITE' ) && CFGP_MULTISITE && function_exists('flush_rewrite_rules') )
+			flush_rewrite_rules();
+		
 		CF_Geoplugin_Debug::log( 'Plugin activated and tables created' );
 	}
 	

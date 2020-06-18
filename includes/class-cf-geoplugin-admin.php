@@ -177,7 +177,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 		wp_enqueue_script(  CFGP_NAME . '-admin' );
 		
 		wp_localize_script(CFGP_NAME . '-admin', 'CFGP', array(
-				'ajaxurl' => self_admin_url('admin-ajax.php'),
+				'ajaxurl' => admin_url('admin-ajax.php'),
 				'adminurl' => self_admin_url('/'),
 				'label' => array(
 					'loading' => __('Loading...',CFGP_NAME),
@@ -237,7 +237,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 		wp_register_script( CFGP_NAME . '-cpt', CFGP_ASSETS . '/js/cf-geoplugin-cpt.js', array( 'jquery' ), CFGP_VERSION, true );
 		wp_enqueue_script( CFGP_NAME . '-cpt' );
 		wp_localize_script(CFGP_NAME . '-cpt', 'CFGP', array(
-			'ajaxurl' => self_admin_url('admin-ajax.php') ,
+			'ajaxurl' => admin_url('admin-ajax.php'),
 			'label' => array(
 				'loading' => __('Loading...',CFGP_NAME),
 				'not_found' => __('Not Found!',CFGP_NAME),

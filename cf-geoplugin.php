@@ -149,7 +149,7 @@ if (!defined('PHP_SESSION_NONE')) {
 	define('PHP_SESSION_NONE', -1);
 }
 // Check if is multisite installation
-if( ! defined( 'CFGP_MULTISITE' ) && defined( 'WP_ALLOW_MULTISITE' ) && WP_ALLOW_MULTISITE )			
+if( ! defined( 'CFGP_MULTISITE' ) && defined( 'WP_ALLOW_MULTISITE' ) && WP_ALLOW_MULTISITE && defined( 'MULTISITE' ) && MULTISITE )			
 {
 	define( 'CFGP_MULTISITE', WP_ALLOW_MULTISITE );
 }

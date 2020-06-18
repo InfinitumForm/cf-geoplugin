@@ -476,7 +476,7 @@ class CF_Geoplugin_Global
 	}
 	
 	/*
-	 * Hook for register_activation_hook()
+	 * Hook for register_uninstall_hook()
 	*/
 	public function register_uninstall_hook($file, $function){		
 		if(!is_array($function))
@@ -1064,11 +1064,23 @@ class CF_Geoplugin_Global
 		}
 		else 
 		{
-			if(function_exists('shell_exec')){
-				$ip = shell_exec("/sbin/ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}'");
-				
-				if($this->validate_ip($ip) !== false)
-					return $ip;
+			if(function_exists('shell_exec'))
+			{
+				if(file_exists(CFGP_SHELL . '/unix_find_server_ip.sh') && is_executable(CFGP_SHELL . '/unix_find_server_ip.sh'))
+				{
+					if($ips = shell_exec(CFGP_SHELL . '/unix_find_server_ip.sh'))
+					{
+						$ips = preg_split('/[\s\n\r]+/', $ips);
+						$ips = array_filter($ips);
+						
+						if(!empty($ips))
+						{
+							$ip = end($ips);
+							if($this->validate_ip($ip) !== false)
+								return $ip;
+						}
+					}
+				}
 			}
 		}
 		
@@ -1459,16 +1471,16 @@ class CF_Geoplugin_Global
 				'domain' 		=> self::get_host(true),
 				'activation_id'	=> $CF_GEOPLUGIN_OPTIONS['license_id']
 			);
-			
+
 			CF_Geoplugin_Debug::log( 'cURL license validation send data:' );
 			CF_Geoplugin_Debug::log( json_encode( $data ) );
-			
+
 			$url = sprintf( '%s?%s', $url, ltrim( http_build_query( $data ), '?' ) );
 			$response = $instance->curl_get( $url );
 
 			if( empty( $response ) )
 			{
-				$url = $CF_GEOPLUGIN_OPTIONS['store'] . '/wp-admin/admin-ajax.php';
+				$url = $CF_GEOPLUGIN_OPTIONS['store'] . '/wp-ajax.php';
 				$url = sprintf( '%s?%s', $url, ltrim( http_build_query( $data ), '?' ) );
 				$response = $instance->curl_get( $url );
 				
@@ -1490,6 +1502,7 @@ class CF_Geoplugin_Global
 					return false;
 				}
 			}
+
 			CF_Geoplugin_Debug::log( 'Validation status: license valid' );
 			return true;
 
@@ -1497,7 +1510,7 @@ class CF_Geoplugin_Global
 		CF_Geoplugin_Debug::log( 'Validation status: license invalid' );
 		return false;
 	}
-	
+
 	/*
 	 * CHECK IS SSL
 	 * @since	7.0.0
@@ -1550,11 +1563,11 @@ class CF_Geoplugin_Global
 				}
 			}
 		}
-		
+
 		// OK you not have connection - boohooo
 		return false;
 	}
-	
+
 	/**
 	 * Find parent from assoc array
 	 *
