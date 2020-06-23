@@ -1,5 +1,17 @@
 == Changelog ==
 
+= 7.11.3 =
+* IMPORTANT UPDATE: Fixed multisite AJAX error
+* IMPORTANT UPDATE: Fixed multisite redirection
+* IMPORTANT UPDATE: Fixed multisite admin navigation
+* IMPORTANT UPDATE: Fixed multisite includes
+* IMPORTANT UPDATE: Fixed PHP error for the missing API object
+* Enhancement: X-Forwarded-For IP lookup
+* Enhancement: IP lookup via SHELL scripts for Win10 & UNIX (if are allowed)
+* Enhancement: Saving options
+* Enhancement: Plugin activation
+* Optimized PHP code
+
 = 7.11.2 =
 * Improved "localhost" detection
 * Improved IP detection

@@ -301,10 +301,10 @@ class CF_Geoplugin_Global
 		}
 		
 		// Let's get options
-		if( !(defined( 'CFGP_MULTISITE' ) && CFGP_MULTISITE) )
-			$options = get_option( 'cf_geoplugin' );
-		else
+		if( function_exists('is_network_admin') && is_network_admin() )
 			$options = get_site_option( 'cf_geoplugin' );
+		else
+			$options = get_option( 'cf_geoplugin' );
 		
 		// If options are empty get default - wee nedd it for normal function or merge new settings
 		if(empty($options)){
@@ -367,10 +367,10 @@ class CF_Geoplugin_Global
 	 * Hook Update Options
 	*/
 	public function update_option($option_name, $value){
-		if( !(defined( 'CFGP_MULTISITE' ) && CFGP_MULTISITE) )
-			$options = get_option('cf_geoplugin');
+		if( function_exists('is_network_admin') && is_network_admin() )
+			$options = get_site_option('cf_geoplugin');
 		else
-			$options = get_site_option( 'cf_geoplugin' );
+			$options = get_option( 'cf_geoplugin' );
 			
 		if($options)
 		{
@@ -381,28 +381,28 @@ class CF_Geoplugin_Global
 			
 			$options[$option_name] = self::sanitize( $value );
 
-			if( !(defined( 'CFGP_MULTISITE' ) && CFGP_MULTISITE) )
+			if( function_exists('is_network_admin') && is_network_admin() )
 			{
-				update_option('cf_geoplugin', apply_filters( 'cf_geoplugin_update_option', $options, $this->default_options), true);
-				return apply_filters( 'cf_geoplugin_get_option_updated', get_option( 'cf_geoplugin' ), $options, $this->default_options);
+				update_site_option('cf_geoplugin', apply_filters( 'cf_geoplugin_update_option', $options, $this->default_options), true);
+				return apply_filters( 'cf_geoplugin_get_option_updated', get_site_option( 'cf_geoplugin' ), $options, $this->default_options);
 			}
 			else
 			{
-				update_site_option('cf_geoplugin', apply_filters( 'cf_geoplugin_update_option', $options, $this->default_options));
-				return apply_filters( 'cf_geoplugin_get_option_updated', get_site_option( 'cf_geoplugin' ), $options, $this->default_options);
+				update_option('cf_geoplugin', apply_filters( 'cf_geoplugin_update_option', $options, $this->default_options));
+				return apply_filters( 'cf_geoplugin_get_option_updated', get_option( 'cf_geoplugin' ), $options, $this->default_options);
 			}
 		}
 		else // Add options to WP DB if not exists
 		{
-			if( !(defined( 'CFGP_MULTISITE' ) && CFGP_MULTISITE) ) 
-			{
-				update_option( 'cf_geoplugin', apply_filters( 'cf_geoplugin_update_option', $this->default_options, $this->default_options) );
-				return apply_filters( 'cf_geoplugin_get_option_updated', get_option( 'cf_geoplugin' ), $this->default_options, $this->default_options);
-			}
-			else 
+			if( function_exists('is_network_admin') && is_network_admin() )
 			{
 				update_site_option( 'cf_geoplugin', apply_filters( 'cf_geoplugin_update_option', $this->default_options, $this->default_options) );
 				return apply_filters( 'cf_geoplugin_get_option_updated', get_site_option( 'cf_geoplugin' ), $this->default_options, $this->default_options);
+			}
+			else 
+			{
+				update_option( 'cf_geoplugin', apply_filters( 'cf_geoplugin_update_option', $this->default_options, $this->default_options) );
+				return apply_filters( 'cf_geoplugin_get_option_updated', get_option( 'cf_geoplugin' ), $this->default_options, $this->default_options);
 			}
 		}
 		return false;
@@ -455,20 +455,20 @@ class CF_Geoplugin_Global
 	 * Hook Delete Options
 	*/
 	public function delete_option($option_name){
-		if( !(defined( 'CFGP_MULTISITE' ) && CFGP_MULTISITE) )
-			$options = get_option('cf_geoplugin');
+		if( function_exists('is_network_admin') && is_network_admin() )
+			$options = get_site_option('cf_geoplugin');
 		else
-			$options = get_site_option( 'cf_geoplugin' );
+			$options = get_option( 'cf_geoplugin' );
 		
 		if($options)
 		{
 			if(isset($options[$option_name]))
 			{
 				unset($options[$option_name]);
-				if( !(defined( 'CFGP_MULTISITE' ) && CFGP_MULTISITE) )
-					update_option('cf_geoplugin', $options, true);
+				if( function_exists('is_network_admin') && is_network_admin() )
+					update_site_option('cf_geoplugin', $options, true);
 				else
-					update_site_option('cf_geoplugin', $options);
+					update_option('cf_geoplugin', $options);
 				return true;
 			}
 		}
@@ -543,6 +543,31 @@ class CF_Geoplugin_Global
 			$function_to_add = array(&$this, $function_to_add);
 			
 		return add_shortcode( $tag, $function_to_add );
+	}
+	
+	/*
+	 * Hook for the admin URL
+	 * @author        Ivijan-Stefan Stipic
+	*/
+	public static function add_admin_url( $str = '' )
+	{
+		if( self::is_network_admin() )
+		{
+			self_admin_url($str);
+		}
+		else
+		{
+			admin_url($str);
+		}
+	}
+	
+	/*
+	 * Hook is network admin
+	 * @author        Ivijan-Stefan Stipic
+	 * @return        boolean true/false
+	*/
+	public static function is_network_admin() {
+		return function_exists('is_network_admin') && is_network_admin();
 	}
 	
 	/* 
@@ -1249,7 +1274,16 @@ class CF_Geoplugin_Global
 				if($ipMAX>0)
 				{
 					if($ipMAX > 1)
-						return end($ipf);
+					{
+						if('HTTP_X_FORWARDED_FOR' == $http)
+						{
+							return $ipf[0];
+						}
+						else
+						{
+							return end($ipf);
+						}
+					}
 					else
 						return $ipf[0];
 				}
@@ -1288,10 +1322,10 @@ class CF_Geoplugin_Global
 				$ipMAX=count($ipf);
 				if($ipMAX>0)
 				{
-					if($ipMAX > 1)
+					/*if($ipMAX > 1)
 						return end($ipf);
-					else
-						return $ipf[0];
+					else*/
+					return $ipf[0];
 				}
 				
 				$ips = $ipf = $ipx = $ipMAX = NULL;

@@ -66,7 +66,7 @@ $CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIO
 						<?php if($CFGEO['status'] == 402) : ?>
 							<div class="h4"><?php _e('YOU REACH LIMIT!',CFGP_NAME); ?></div>
 							<div class="card-text">
-								<small><?php printf(__('You reach %d lookup'), CFGP_LIMIT); ?> | <a href="<?php echo self_admin_url('admin.php?page=cf-geoplugin-activate'); ?>" class="text-white text-strong"><strong><?php _e('GET UNLIMITED',CFGP_NAME); ?></strong></a></small>
+								<small><?php printf(__('You reach %d lookup'), CFGP_LIMIT); ?> | <a href="<?php echo CF_Geoplugin_Global::add_admin_url('admin.php?page=cf-geoplugin-activate'); ?>" class="text-white text-strong"><strong><?php _e('GET UNLIMITED',CFGP_NAME); ?></strong></a></small>
 							</div>
 						<?php elseif($CFGEO['status'] == 200) : ?>
 							<div class="h4">
@@ -89,14 +89,14 @@ $CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIO
                             	<?php if($CFGEO['lookup'] == 'unlimited') : ?>
                                 	<?php _e('LIFETIME!',CFGP_NAME); ?>
                                 <?php else : ?>
-									<small><?php _e('Lookup',CFGP_NAME); ?> | <a href="<?php echo self_admin_url('admin.php?page=cf-geoplugin-activate'); ?>" class="text-white text-strong"><strong><?php _e('GET UNLIMITED',CFGP_NAME); ?></strong></a></small>
+									<small><?php _e('Lookup',CFGP_NAME); ?> | <a href="<?php echo CF_Geoplugin_Global::add_admin_url('admin.php?page=cf-geoplugin-activate'); ?>" class="text-white text-strong"><strong><?php _e('GET UNLIMITED',CFGP_NAME); ?></strong></a></small>
                                 <?php endif; ?>
                             <?php endif; ?>
                             </div>
 						<?php else : ?>
 							<div class="h4"><?php printf(__('ERROR %d!',CFGP_NAME), $CFGEO['status']); ?></div>
 							<div class="card-text">
-								<a href="<?php echo self_admin_url('admin.php?page=cf-geoplugin-debug'); ?>" class="text-white text-strong"><strong><?php _e('Go to Debug Mode',CFGP_NAME); ?></strong></a>
+								<a href="<?php echo CF_Geoplugin_Global::add_admin_url('admin.php?page=cf-geoplugin-debug'); ?>" class="text-white text-strong"><strong><?php _e('Go to Debug Mode',CFGP_NAME); ?></strong></a>
 							</div>
 						<?php endif; ?>
                         </div>
@@ -667,7 +667,7 @@ $CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIO
 													__('GPS is enabled only with %s extension', CFGP_NAME),
 													sprintf(
 														'<a href="%1$s" class="thickbox open-plugin-details-modal">CF Geo Plugin GPS</a>',
-														self_admin_url('plugin-install.php?tab=plugin-information&plugin=cf-geoplugin-gps&TB_iframe=true&width=772&height=923')
+														CF_Geoplugin_Global::add_admin_url('plugin-install.php?tab=plugin-information&plugin=cf-geoplugin-gps&TB_iframe=true&width=772&height=923')
 													)
 												)
 											);

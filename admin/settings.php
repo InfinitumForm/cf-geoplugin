@@ -88,9 +88,11 @@ if( $global->get( 'action' ) == 'deactivate_license' )
                 <li class="nav-item"<?php echo (!$CF_GEOPLUGIN_OPTIONS['enable_gmap'] ? ' style="display: none;"' : ''); ?>>
                     <a class="nav-link text-dark" href="#settings-google-map" role="tab" data-toggle="tab"><span class="fa fa-globe"></span> <?php _e('Google Map',CFGP_NAME); ?></a>
                 </li>
+				<?php if(CF_Geoplugin_Global::access_level($CF_GEOPLUGIN_OPTIONS) >= 4) : ?>
                 <li class="nav-item"<?php echo (!$CF_GEOPLUGIN_OPTIONS['enable_rest'] ? ' style="display: none;"' : ''); ?>>
                     <a class="nav-link text-dark" href="#settings-rest-api" role="tab" data-toggle="tab"><span class="fa fa-code"></span> <?php _e('REST API',CFGP_NAME); ?></a>
                 </li>
+				<?php endif; ?>
                 <?php if(!CFGP_DEFENDER_ACTIVATED) : ?>
                 <li class="nav-item">
                     <a class="nav-link text-dark" href="#settings-license" role="tab" data-toggle="tab"><span class="fa fa-star"></span> <?php _e('License',CFGP_NAME); ?></a>
@@ -110,24 +112,47 @@ if( $global->get( 'action' ) == 'deactivate_license' )
 								$general->html('<h5 class="mt-3" id="WordPress_Settings">'.__('WordPress Settings',CFGP_NAME).'</h5>');
 								$general->html('<p>'.__('This settings only affect on CF Geo Plugin functionality and connection between plugin and WordPress setup. Use it smart and careful.',CFGP_NAME).'</p><hr>');
 								
-								$general->radio(array(
-									'label'		=> __('Enable Plugin Auto Update',CFGP_NAME),
-									'name'		=> 'enable_update',
-									'default'	=> ((isset($CF_GEOPLUGIN_OPTIONS['enable_update']) && CF_Geoplugin_Global::access_level($CF_GEOPLUGIN_OPTIONS) >= 1) ? $CF_GEOPLUGIN_OPTIONS['enable_update'] : 0),
-									array(
-										'text'			=> __('Enable',CFGP_NAME),
-										'value'			=> 1,
-										'id'			=> 'enable_update_true',
-										'disabled'		=> CF_Geoplugin_Global::access_level($CF_GEOPLUGIN_OPTIONS) < 1
-									),
-									array(
-										'text'			=> __('Disable',CFGP_NAME),
-										'value'			=> 0,
-										'id'			=> 'enable_update_false',
-										'disabled'		=> CF_Geoplugin_Global::access_level($CF_GEOPLUGIN_OPTIONS) < 1
-									),
-									'info'		=> __('Allow your plugin to be up to date.',CFGP_NAME) . (CF_Geoplugin_Global::access_level($CF_GEOPLUGIN_OPTIONS) < 1 ? '(' . __('Auto update is only enabled with plugin license.',CFGP_NAME) . ')' : ''),
-								));
+								if(CFGP_MULTISITE) :
+									if(CF_Geoplugin_Global::is_network_admin()) :
+										$general->radio(array(
+											'label'		=> __('Enable Plugin Auto Update',CFGP_NAME),
+											'name'		=> 'enable_update',
+											'default'	=> ((isset($CF_GEOPLUGIN_OPTIONS['enable_update']) && CF_Geoplugin_Global::access_level($CF_GEOPLUGIN_OPTIONS) >= 1) ? $CF_GEOPLUGIN_OPTIONS['enable_update'] : 0),
+											array(
+												'text'			=> __('Enable',CFGP_NAME),
+												'value'			=> 1,
+												'id'			=> 'enable_update_true',
+												'disabled'		=> CF_Geoplugin_Global::access_level($CF_GEOPLUGIN_OPTIONS) < 1
+											),
+											array(
+												'text'			=> __('Disable',CFGP_NAME),
+												'value'			=> 0,
+												'id'			=> 'enable_update_false',
+												'disabled'		=> CF_Geoplugin_Global::access_level($CF_GEOPLUGIN_OPTIONS) < 1
+											),
+											'info'		=> __('Allow your plugin to be up to date.',CFGP_NAME) . (CF_Geoplugin_Global::access_level($CF_GEOPLUGIN_OPTIONS) < 1 ? '(' . __('Auto update is only enabled with plugin license.',CFGP_NAME) . ')' : ''),
+										));
+									endif;
+								else :
+									$general->radio(array(
+										'label'		=> __('Enable Plugin Auto Update',CFGP_NAME),
+										'name'		=> 'enable_update',
+										'default'	=> ((isset($CF_GEOPLUGIN_OPTIONS['enable_update']) && CF_Geoplugin_Global::access_level($CF_GEOPLUGIN_OPTIONS) >= 1) ? $CF_GEOPLUGIN_OPTIONS['enable_update'] : 0),
+										array(
+											'text'			=> __('Enable',CFGP_NAME),
+											'value'			=> 1,
+											'id'			=> 'enable_update_true',
+											'disabled'		=> CF_Geoplugin_Global::access_level($CF_GEOPLUGIN_OPTIONS) < 1
+										),
+										array(
+											'text'			=> __('Disable',CFGP_NAME),
+											'value'			=> 0,
+											'id'			=> 'enable_update_false',
+											'disabled'		=> CF_Geoplugin_Global::access_level($CF_GEOPLUGIN_OPTIONS) < 1
+										),
+										'info'		=> __('Allow your plugin to be up to date.',CFGP_NAME) . (CF_Geoplugin_Global::access_level($CF_GEOPLUGIN_OPTIONS) < 1 ? '(' . __('Auto update is only enabled with plugin license.',CFGP_NAME) . ')' : ''),
+									));
+								endif;
 								
 								$general->radio(array(
 									'label'		=> __('Enable Dashboard Widget',CFGP_NAME),
@@ -425,7 +450,9 @@ if( $global->get( 'action' ) == 'deactivate_license' )
 									'name'		=> 'enable_rest',
 									'class'		=> 'enable_rest',
 									'default'	=> CF_Geoplugin_Global::get_the_option('enable_rest', 0),
-									'info'		=> __('The CF Geo Plugin REST API allows external apps to use geo informations.',CFGP_NAME) . (CF_Geoplugin_Global::access_level($CF_GEOPLUGIN_OPTIONS) < 4 ? '<br><span class="text-info">' . __('REST API is only functional for the Business License.',CFGP_NAME) . '</span>' : ''),
+									'info'		=> __('The CF Geo Plugin REST API allows external apps to use geo informations from your website.',CFGP_NAME),
+									'license'	=> 4,
+									'license_message'	=> __('REST API is only functional for the Business License.',CFGP_NAME),
 									array(
 										'text'	=> __('Enable',CFGP_NAME),
 										'value'	=> 1,
@@ -999,6 +1026,7 @@ if( $global->get( 'action' ) == 'deactivate_license' )
                 </div>
                 <?php endif; ?>
                 
+				<?php if(CF_Geoplugin_Global::access_level($CF_GEOPLUGIN_OPTIONS) >= 4) : ?>
                 <div role="tabpanel" class="tab-pane fade" id="settings-rest-api">
                 	<div class="row">
     					<div class="col-12 pb-5">
@@ -1025,7 +1053,7 @@ if( $global->get( 'action' ) == 'deactivate_license' )
                                     <div class="tab-pane border border-secondary rounded pt-1 pb-1 pl-3 pr-3 fade show active" id="cf-geo-rest-info" role="tabpanel" aria-labelledby="cf-geo-rest-info-tab">
                                     	<h5 class="mt-3"><?php _e('Authentication endpoint',CFGP_NAME) ?>:</h5>
                                         <p><?php _e('Endpoint used to authenticate connection between CF Geo Plugin on your site and your external app.',CFGP_NAME) ?></p>
-                                        <p><code><?php echo self_admin_url('admin-ajax.php?action=cf_geoplugin_authenticate'); ?></code></p>
+                                        <p><code><?php echo admin_url('admin-ajax.php?action=cf_geoplugin_authenticate'); ?></code></p>
                                         <p><?php _e('Expected GET or POST parameters.',CFGP_NAME) ?></p>
                                         <table class="table">
                                         	<tr>
@@ -1106,7 +1134,7 @@ if( $global->get( 'action' ) == 'deactivate_license' )
                                     <div class="tab-pane border border-secondary rounded pt-1 pb-1 pl-3 pr-3 fade" id="cf-geo-rest-info-tab-lookup" role="tabpanel" aria-labelledby="cf-geo-rest-info-tab-lookup-tab">
                                     	<h5 class="mt-3"><?php _e('Lookup endpoint',CFGP_NAME) ?>:</h5>
                                         <p><?php _e('Endpoint used to lookup IP address informations. To make this work properly, you must have a valid KEY and Access Token API.',CFGP_NAME) ?></p>
-                                        <p><code><?php echo self_admin_url('admin-ajax.php?action=cf_geoplugin_lookup'); ?></code></p>
+                                        <p><code><?php echo admin_url('admin-ajax.php?action=cf_geoplugin_lookup'); ?></code></p>
                                         <p><?php _e('Expected GET or POST parameters.',CFGP_NAME) ?></p>
                                         <table class="table">
                                         	<tr>
@@ -1215,6 +1243,7 @@ endforeach;
                         </div>
                     </div>
                 </div>
+				<?php endif; ?>
                 
                 <?php do_action('page-cf-geoplugin-settings-tab-content'); ?>
                 

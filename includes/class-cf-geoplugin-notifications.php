@@ -93,7 +93,7 @@ class CF_Geoplugin_Notifications extends CF_Geoplugin_Global
 			'<strong><a href="https://cfgeoplugin.com/privacy-policy/" target="_blank">' . __('Privacy Policy',CFGP_NAME) . '</a></strong>',
 			'<strong><a href="https://cfgeoplugin.com/terms-and-conditions/" target="_blank">' . __('Terms & Conditions',CFGP_NAME) . '</a></strong>'
 		);
-		$message2 = '<a href="' . self_admin_url('/admin.php?page=cf-geoplugin-activate') . '" class="button button-primary">' . __('Activate Unlimited',CFGP_NAME) . '</a>';
+		$message2 = '<a href="' . parent::add_admin_url('/admin.php?page=cf-geoplugin-activate') . '" class="button button-primary">' . __('Activate Unlimited',CFGP_NAME) . '</a>';
 
 		
 		self::notice()->register_notice(
@@ -158,7 +158,7 @@ class CF_Geoplugin_Notifications extends CF_Geoplugin_Global
 		self::notice()->register_notice(
 			'settings',
 			'warning',
-			sprintf( '<h3>%s</h3><p>%s <a href="%s">%s</a></p>', $title, __( 'We recommend after first or fresh plugin activation to check settings page. Please', CFGP_NAME ), self_admin_url( 'admin.php?page=cf-geoplugin-settings' ), __( 'click here to visit settings page.', CFGP_NAME ) ),
+			sprintf( '<h3>%s</h3><p>%s <a href="%s">%s</a></p>', $title, __( 'We recommend after first or fresh plugin activation to check settings page. Please', CFGP_NAME ), parent::add_admin_url( 'admin.php?page=cf-geoplugin-settings' ), __( 'click here to visit settings page.', CFGP_NAME ) ),
 			array( 'dismissible' => false )
 		);
 	}

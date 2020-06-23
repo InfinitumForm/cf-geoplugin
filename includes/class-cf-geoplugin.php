@@ -280,10 +280,10 @@ class CF_Geoplugin_Init extends CF_Geoplugin_Global
 		// Set default values
 		$check = get_option('cf_geoplugin');
 		
-		if( !CFGP_MULTISITE )
-			$check = get_option('cf_geoplugin');
-		else 
+		if( parent::is_network_admin() )
 			$check = get_site_option('cf_geoplugin');
+		else 
+			$check = get_option('cf_geoplugin');
 		
 		if(!is_array($check)) $check = NULL;
 		
@@ -337,16 +337,19 @@ class CF_Geoplugin_Init extends CF_Geoplugin_Global
 						
 					}
 					CF_Geoplugin_Debug::log( $key );
-					if( !CFGP_MULTISITE ) delete_option( $key );
-					else delete_site_option( $key );
+					
+					if( parent::is_network_admin() )
+						delete_site_option( $key );
+					else
+						delete_option( $key );
 				}
 			}
 			
 			// Save new data
-			if( !CFGP_MULTISITE )
-				update_option('cf_geoplugin', $collect, true);
+			if( parent::is_network_admin() )
+				update_site_option('cf_geoplugin', $collect, true);
 			else
-				update_site_option('cf_geoplugin', $collect);
+				update_option('cf_geoplugin', $collect);
 		}
 		else
 		{

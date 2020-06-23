@@ -220,10 +220,10 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
                 'timezoneName' => $geodata->timezone, // deprecated
                 'currency' => $currency,
                 'currency_symbol' => $currency_symbol,
-				'currency_name' => (isset(CF_Geplugin_Library::CURRENCY_NAME[$currency]) ? CF_Geplugin_Library::CURRENCY_NAME[$currency] : $currency),
+				'currency_name' => (!empty($currency) && null !== CF_Geplugin_Library::CURRENCY_NAME[$currency] ? CF_Geplugin_Library::CURRENCY_NAME[$currency] : $currency),
 				'base_currency' => $base_currency,
-				'base_currency_symbol' => (isset(CF_Geplugin_Library::CURRENCY_SYMBOL[$base_currency]) ? CF_Geplugin_Library::CURRENCY_SYMBOL[$base_currency] : $base_currency),
-				'base_currency_name' => (isset(CF_Geplugin_Library::CURRENCY_NAME[$base_currency]) ? CF_Geplugin_Library::CURRENCY_NAME[$base_currency] : $base_currency),
+				'base_currency_symbol' => (!empty($base_currency) && null !== CF_Geplugin_Library::CURRENCY_SYMBOL[$base_currency] ? CF_Geplugin_Library::CURRENCY_SYMBOL[$base_currency] : $base_currency),
+				'base_currency_name' => (!empty($base_currency) && null !== CF_Geplugin_Library::CURRENCY_NAME[$base_currency] ? CF_Geplugin_Library::CURRENCY_NAME[$base_currency] : $base_currency),
             //    'currencySymbol' => $currency_symbol, // deprecated
                 'currency_converter' => (!empty($geodata->currencyConverter) ? $geodata->currencyConverter : 0),
             //    'currencyConverter' => (!empty($geodata->currencyConverter) ? $geodata->currencyConverter : 0), // deprecated
@@ -566,11 +566,12 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
 			{
 				$CF_GEOPLUGIN_OPTIONS['license'] = 0;
 				
-				if( !(defined( 'CFGP_MULTISITE' ) && CFGP_MULTISITE) )
-					update_option('cf_geoplugin', $CF_GEOPLUGIN_OPTIONS, true);
-				else
-					update_site_option('cf_geoplugin', $CF_GEOPLUGIN_OPTIONS);
-
+				if( parent::is_network_admin() ) {
+					update_site_option('cf_geoplugin', $CF_GEOPLUGIN_OPTIONS, true);
+				} else {
+					update_option('cf_geoplugin', $CF_GEOPLUGIN_OPTIONS);
+				}
+				
 				$GLOBALS['CF_GEOPLUGIN_OPTIONS']=$CF_GEOPLUGIN_OPTIONS;
 			}
 		}

@@ -60,7 +60,7 @@ if( isset( $_GET['action'] ) && ( $_GET['action'] == 'debugger' || $_GET['action
                                     <input type="text" value="<?php echo $this->get( 'ip_address' ); ?>" placeholder="<?php echo CFGP_IP; ?>" class="form-control" id="ip_address" name="ip_address" autocomplete="off" />
                                     <div class="input-group-append">
 	                                    <button type="submit" class="btn btn-warning text-black"><i class="fa fa-eye"></i> <?php _e( 'Lookup', CFGP_NAME ); ?></button>
-                                        <?php if( $this->get( 'ip-lookup', 'bool', false )  ) : ?><a href="<?php echo self_admin_url('admin.php?page=cf-geoplugin-debug'); ?>" class="btn btn-light text-black"><i class="fa fa-ban"></i> <?php _e( 'Clean', CFGP_NAME ); ?></a><?php endif; ?>
+                                        <?php if( $this->get( 'ip-lookup', 'bool', false )  ) : ?><a href="<?php echo CF_Geoplugin_Global::add_admin_url('admin.php?page=cf-geoplugin-debug'); ?>" class="btn btn-light text-black"><i class="fa fa-ban"></i> <?php _e( 'Clean', CFGP_NAME ); ?></a><?php endif; ?>
                                     </div>
                                 </div>
                             </form>
@@ -316,7 +316,7 @@ if( isset( $_GET['action'] ) && ( $_GET['action'] == 'debugger' || $_GET['action
                                     </tr>
                                     <tr>
                                         <td><strong><?php _e( 'SIP', CFGP_NAME ); ?></strong></td>
-                                        <td><?php echo CFGP_SERVER_IP . (CFGP_PROXY ?' <strong><a class="text-danger" href="'.self_admin_url('admin.php?page=cf-geoplugin-settings').'">('.__('Proxy Enabled',CFGP_NAME).')</a></strong> ' : ''); ?></td>
+                                        <td><?php echo CFGP_SERVER_IP . (CFGP_PROXY ?' <strong><a class="text-danger" href="'.CF_Geoplugin_Global::add_admin_url('admin.php?page=cf-geoplugin-settings').'">('.__('Proxy Enabled',CFGP_NAME).')</a></strong> ' : ''); ?></td>
                                         <td><?php _e( 'Server IP Address' ); ?></td>
                                     </tr>
                                     <tr>
@@ -409,12 +409,12 @@ if( isset( $_GET['action'] ) && ( $_GET['action'] == 'debugger' || $_GET['action
                             <?php _e( 'This feature allows you to collect and download all possible plugin data. This is very helpful in some situations. Note: On every debug last log file is deleted and new one is created.' ) ?> 
                         </div>
                         <div class="card-body">
-                            <a class="btn btn-warning" href="<?php echo self_admin_url( 'admin.php?page=' . $_GET['page'] . '&action=debugger' ); ?>"><?php _e( 'Debug Plugin', CFGP_NAME ); ?></a>&nbsp;
+                            <a class="btn btn-warning" href="<?php echo CF_Geoplugin_Global::add_admin_url( 'admin.php?page=' . $_GET['page'] . '&action=debugger' ); ?>"><?php _e( 'Debug Plugin', CFGP_NAME ); ?></a>&nbsp;
                         <?php
                             if( file_exists( CFGP_ROOT . '/cf-geoplugin-debug.log' ) )
                             {
                                 ?>
-                                <a class="btn btn-primary" href="<?php echo self_admin_url( 'admin.php?page=' . $_GET['page'] . '&action=download_debug_log' ); ?>"><?php _e( 'Download Last Debug File', CFGP_NAME ); ?></a><br />
+                                <a class="btn btn-primary" href="<?php echo CF_Geoplugin_Global::add_admin_url( 'admin.php?page=' . $_GET['page'] . '&action=download_debug_log' ); ?>"><?php _e( 'Download Last Debug File', CFGP_NAME ); ?></a><br />
                                 <?php
                             }
                         ?>

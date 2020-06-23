@@ -17,7 +17,7 @@ wp_enqueue_media();
     <div class="card mx-auto mt-5">
         <div class="card-header bg-transparent">
             <?php _e( 'SEO Redirection Upload', CFGP_NAME ); ?>
-            <a href="<?php echo self_admin_url( 'admin.php?page='. $_GET['page'] .'&action=export_csv'); ?>" id="backup-seo" class="btn btn-outline-secondary btn-sm pull-right"><span class="fa fa-download"></span> <?php _e( 'Backup Prevous Settings', CFGP_NAME); ?></a>
+            <a href="<?php echo CF_Geoplugin_Global::add_admin_url( 'admin.php?page='. $_GET['page'] .'&action=export_csv'); ?>" id="backup-seo" class="btn btn-outline-secondary btn-sm pull-right"><span class="fa fa-download"></span> <?php _e( 'Backup Prevous Settings', CFGP_NAME); ?></a>
         </div>
         <div class="card-footer bg-transparent">
             <p><?php _e( 'If you want to make large amounts of redirects easier, we give you this option. Here you can easily enter a thousand redirects by the rules you define in your CSV file with just a few clicks. Before proceeding with this, you need to be informed about the structure of the CSV file that we expect.', CFGP_NAME); ?></p>

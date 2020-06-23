@@ -1390,7 +1390,7 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 					?>
 					<div class="cfgp-row">
 						<div class="cfgp-col-12">
-						<form action="<?php self_admin_url( 'admin-ajax.php?action=cfgeo_full_currency_converter' ); ?>" class="cfgp-currency-form" method="post">
+						<form action="<?php admin_url( 'admin-ajax.php?action=cfgeo_full_currency_converter' ); ?>" class="cfgp-currency-form" method="post">
 							<div class="cfgp-form-group cfgp-form-group-amount">
 								<?php 
 									$label_amount = sprintf( '%s-%s', 'cfgp-currency-amount', $this->generate_token(5) );

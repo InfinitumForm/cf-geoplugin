@@ -109,7 +109,7 @@ global $wp_version;
                     <a class="nav-link text-dark <?php echo $active_page; ?>" href="#defender-page" role="tab" data-toggle="tab"><span class="fa fa-file"></span> <?php _e( 'Defender page', CFGP_NAME ); ?></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-dark" href="<?php echo self_admin_url( 'admin.php?page='. $_GET['page'] .'&test=true' ); ?>" target="_blank"><span class="fa fa-desktop"></span> <?php _e( 'Defender test', CFGP_NAME ); ?></a>
+                    <a class="nav-link text-dark" href="<?php echo CF_Geoplugin_Global::add_admin_url( 'admin.php?page='. $_GET['page'] .'&test=true' ); ?>" target="_blank"><span class="fa fa-desktop"></span> <?php _e( 'Defender test', CFGP_NAME ); ?></a>
                 </li>
                 <?php do_action('page-cf-geoplugin-defender-tab'); ?>
             </ul>
@@ -121,7 +121,7 @@ global $wp_version;
                             <?php
                                 $blacklist_text = '<strong>'
 									.sprintf(__( 'Automatic IP address blacklist check is NOT ENABLED. If you want additional protection %1$s', CFGP_NAME ),
-									'<a href="'.self_admin_url('admin.php?page=cf-geoplugin-settings#Spam_Protection').'">'
+									'<a href="'.CF_Geoplugin_Global::add_admin_url('admin.php?page=cf-geoplugin-settings#Spam_Protection').'">'
 										.__('enable it in settings', CFGP_NAME)
 									.'</a>')
 								.'</strong>';
@@ -133,7 +133,7 @@ global $wp_version;
                             <p><?php _e( 'This options will remove all your content, template, design and display custom message to your visitors.', CFGP_NAME ); ?></p>
                         </div>
                         <div class="col-12">
-                            <form method="post" enctype="multipart/form-data" action="<?php echo self_admin_url( 'admin.php?page='. $_GET['page'] .'&settings-updated=true&setting=general'); ?>" target="_self" id="template-options-tab">
+                            <form method="post" enctype="multipart/form-data" action="<?php echo CF_Geoplugin_Global::add_admin_url( 'admin.php?page='. $_GET['page'] .'&settings-updated=true&setting=general'); ?>" target="_self" id="template-options-tab">
                                 <div class="form-group">
                                     <label for="block_ip"><?php _e('IP address separated by comma',CFGP_NAME); ?>:</label>
                                     <textarea class="form-control" id="block_ip" name="block_ip" rows="1" cols="3" style="min-height:62px"><?php echo $this->get_option('block_ip'); ?></textarea>
@@ -271,7 +271,7 @@ global $wp_version;
                 <div role="tabpanel" class="tab-pane fade <?php echo $active_page; ?>" id="defender-page">
                     <div class="row">
                         <div class="col-12">
-                            <form method="post" enctype="multipart/form-data" action="<?php echo self_admin_url( 'admin.php?page='. $_GET['page'] .'&settings-updated=true&setting=page' ); ?>" target="_self" id="template-options-tab">
+                            <form method="post" enctype="multipart/form-data" action="<?php echo CF_Geoplugin_Global::add_admin_url( 'admin.php?page='. $_GET['page'] .'&settings-updated=true&setting=page' ); ?>" target="_self" id="template-options-tab">
                                 <div class="form-group">
                                     <label for="block_country_message" ><?php _e('Message that is displayed to a blocked visitor (HTML allowed)',CFGP_NAME); ?>:</label>
                                     <?php

@@ -211,7 +211,7 @@ class CF_Geoplugin_Public extends CF_Geoplugin_Global
 				CFGP_NAME . '-js-public',
 				'CFGP_PUBLIC',
 				array(
-					'ajax_url'			=> self_admin_url( 'admin-ajax.php' ),
+					'ajax_url'			=> admin_url( 'admin-ajax.php' ),
 					'loading_gif'		=> esc_url( CFGP_ASSETS . '/images/double-ring-loader.gif' )
 				)
 			);

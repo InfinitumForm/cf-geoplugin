@@ -5,7 +5,7 @@ Tags: covid-19, covid, coronavirus, geolocation, woocommerce, store-locator, seo
 Requires at least: 3.0
 Tested up to: 5.4
 Requires PHP: 5.6.0
-Stable tag: 7.11.2
+Stable tag: 7.11.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -392,6 +392,18 @@ Please inform us if any of these errors occure via contact form on our website [
 
 == Changelog ==
 
+= 7.11.3 =
+* IMPORTANT UPDATE: Fixed multisite AJAX error
+* IMPORTANT UPDATE: Fixed multisite redirection
+* IMPORTANT UPDATE: Fixed multisite admin navigation
+* IMPORTANT UPDATE: Fixed multisite includes
+* IMPORTANT UPDATE: Fixed PHP error for the missing API object
+* Enhancement: X-Forwarded-For IP lookup
+* Enhancement: IP lookup via SHELL scripts for Win10 & UNIX (if are allowed)
+* Enhancement: Saving options
+* Enhancement: Plugin activation
+* Optimized PHP code
+
 = 7.11.2 =
 * Improved "localhost" detection
 * Improved IP detection
@@ -408,81 +420,20 @@ Please inform us if any of these errors occure via contact form on our website [
 * Fixed WooCommerce price calculation
 * Fixed WP Admin URL's on the multisite
 * Improved PHP code
-
-= 7.10.6 =
-* Optimized jQuery code
-* Added AJAX cache control for the CSS property
-
-= 7.10.5 =
-* Fixed bug with CSS `cfgeo-show-in-{property}`
-* Added new search engine bots in the whitelist 
-* Improved security
-* Fixed PHP bugs
-
-= 7.10.4 =
-* Added CSS rules for the showing or hiding content by geolocation
-* Added Elementor widget for the EU
-* Added Elementor widget for the VAT
-* Fixed currency converter widget
-* Improved defender functionality
-* Improved bots tracking
-* COVID 19 API moved from BETA to plugin features
-
-= 7.10.3 =
-* Fixed currency converter
-* Fixed base currency session problems
-* Fixed currency symbol
-* Fixed missing data
-* Added currency name library
-* Improved currency converter response
-* New shortcodes: [cfgeo_currency_name] and [cfgeo_base_currency_name]
-
-= 7.10.2 =
-* Improved SEO functionality
-* Improved caching functionality
-* Improved data loading
-* Fixed data overwrite
-* Introduced new shortcode [is_not_proxy]
-* Added new OS detection
-* Fixed bugs from the previous versions
-
-= 7.10.1 =
-* Fixed glitch in a previous version of COVID-19 API.
-
-= 7.10.0 =
-* Switched to the improved API service
-* Removed unuseful shortcodes from the API
-* Improved session on the COVID-19 API
-* Fixed calculation bugs inside COVID-19 API
-* Fixed Contact Form 7 bug
-* Fixed Settings forms
-* Improved UX
-* Improved debuging tool
-* Improved DNS lookup
-* Added MySLQ caching
-* Added ISP lookup
-* Added ZIP code lookup
-* Added [is_proxy] shortcode for proxy check
-* Optimized API request
 
 == Upgrade Notice ==
 
-= 7.11.2 =
-* Improved "localhost" detection
-* Improved IP detection
-* Improved server detection
-* Fixed multisite menu problems
-
-= 7.11.1 =
-* Added "Sellect All" to the geo selection
-
-= 7.11.0 =
-* Centralized API calls
-* Fixed currency converter nonce error
-* Fixed API informations
-* Fixed WooCommerce price calculation
-* Fixed WP Admin URL's on the multisite
-* Improved PHP code
+= 7.11.3 =
+* IMPORTANT UPDATE: Fixed multisite AJAX error
+* IMPORTANT UPDATE: Fixed multisite redirection
+* IMPORTANT UPDATE: Fixed multisite admin navigation
+* IMPORTANT UPDATE: Fixed multisite includes
+* IMPORTANT UPDATE: Fixed PHP error for the missing API object
+* Enhancement: X-Forwarded-For IP lookup
+* Enhancement: IP lookup via SHELL scripts for Win10 & UNIX (if are allowed)
+* Enhancement: Saving options
+* Enhancement: Plugin activation
+* Optimized PHP code
 
 == Other Notes ==
 

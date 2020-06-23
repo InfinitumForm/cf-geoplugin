@@ -299,7 +299,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 					__('Geo Banner',CFGP_NAME),
 					__('Geo Banner',CFGP_NAME),
 					'manage_options',
-					self_admin_url('edit.php?post_type=' . CFGP_NAME . '-banner')
+					admin_url('edit.php?post_type=' . CFGP_NAME . '-banner')
 				);
 					
 			}
@@ -319,21 +319,21 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 				__('Countries',CFGP_NAME),
 				__('Countries',CFGP_NAME),
 				'manage_options',
-				self_admin_url('edit-tags.php?taxonomy=' . CFGP_NAME . '-country&post_type=' . CFGP_NAME . '-banner')
+				admin_url('edit-tags.php?taxonomy=' . CFGP_NAME . '-country&post_type=' . CFGP_NAME . '-banner')
 			);
 			add_submenu_page(
 				CFGP_NAME,
 				__('Regions',CFGP_NAME),
 				__('Regions',CFGP_NAME),
 				'manage_options',
-				self_admin_url('edit-tags.php?taxonomy=' . CFGP_NAME . '-region&post_type=' . CFGP_NAME . '-banner')
+				admin_url('edit-tags.php?taxonomy=' . CFGP_NAME . '-region&post_type=' . CFGP_NAME . '-banner')
 			);
 			add_submenu_page(
 				CFGP_NAME,
 				__('Cities',CFGP_NAME),
 				__('Cities',CFGP_NAME),
 				'manage_options',
-				self_admin_url('edit-tags.php?taxonomy=' . CFGP_NAME . '-city&post_type=' . CFGP_NAME . '-banner')
+				admin_url('edit-tags.php?taxonomy=' . CFGP_NAME . '-city&post_type=' . CFGP_NAME . '-banner')
 			);
 			add_submenu_page(
 				CFGP_NAME,
@@ -520,10 +520,10 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 			/**
 			 * Get defaults
 			 */
-			if( !(defined( 'CFGP_MULTISITE' ) && CFGP_MULTISITE) )
-				$options = get_option('cf_geoplugin');
+			if( parent::is_network_admin() )
+				$options = get_site_option('cf_geoplugin');
 			else
-				$options = get_site_option( 'cf_geoplugin' );
+				$options = get_option( 'cf_geoplugin' );
 			
 			$options = wp_parse_args($options, $this->default_options);
 
@@ -570,10 +570,10 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 			/**
 			 * Update ALL
 			 */
-			if( !(defined( 'CFGP_MULTISITE' ) && CFGP_MULTISITE) )
-				update_option('cf_geoplugin', $options, true);
+			if( parent::is_network_admin() )
+				update_site_option('cf_geoplugin', $options, true);
 			else 
-				update_site_option('cf_geoplugin', $options);
+				update_option('cf_geoplugin', $options);
 		}
 		else $updated = 'error';
 		
@@ -665,6 +665,8 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 		wp_die();
 	}
 	
+	
+	
 	// Admin bar
 	function cf_geoplugin_admin_bar_menu() {
 		$CFGEO = $GLOBALS['CFGEO']; 
@@ -693,7 +695,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 			$wp_admin_bar->add_node( array(
 				'id' => CFGP_NAME . '-gmap',
 				'title' => __('Google Map',CFGP_NAME),
-				'href' => self_admin_url( 'admin.php?page=' . CFGP_NAME . '-google-map'),
+				'href' => parent::add_admin_url( 'admin.php?page=' . CFGP_NAME . '-google-map'),
 				'meta'  => array( 'class' => CFGP_NAME . '-gmap-toolbar-page' ),
 				'parent' => CFGP_NAME,
 			) );
@@ -706,7 +708,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 				$wp_admin_bar->add_node( array(
 					'id' => CFGP_NAME . '-defender',
 					'title' => __('Anti Spam Protection',CFGP_NAME),
-					'href' => self_admin_url( 'admin.php?page=' . CFGP_NAME . '-defender'),
+					'href' => parent::add_admin_url( 'admin.php?page=' . CFGP_NAME . '-defender'),
 					'meta'  => array( 'class' => CFGP_NAME . '-defender-toolbar-page' ),
 					'parent' => CFGP_NAME,
 				) );
@@ -714,7 +716,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 				$wp_admin_bar->add_node( array(
 					'id' => CFGP_NAME . '-banner',
 					'title' => __('Geo Banner',CFGP_NAME),
-					'href' => self_admin_url( 'edit.php?post_type=' . CFGP_NAME . '-banner' ),
+					'href' => admin_url( 'edit.php?post_type=' . CFGP_NAME . '-banner' ),
 					'meta'  => array( 'class' => CFGP_NAME . '-banner-toolbar-page' ),
 					'parent' => CFGP_NAME,
 				) );
@@ -722,7 +724,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 				$wp_admin_bar->add_node( array(
 					'id' => CFGP_NAME . '-seo-redirection',
 					'title' => __('SEO Redirection',CFGP_NAME),
-					'href' => self_admin_url( 'admin.php?page=' . CFGP_NAME . '-seo-redirection'),
+					'href' => parent::add_admin_url( 'admin.php?page=' . CFGP_NAME . '-seo-redirection'),
 					'meta'  => array( 'class' => CFGP_NAME . '-seo-redirection-toolbar-page' ),
 					'parent' => CFGP_NAME,
 				) );
@@ -730,7 +732,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 				$wp_admin_bar->add_node( array(
 					'id' => CFGP_NAME . '-countries',
 					'title' => __('Countries',CFGP_NAME),
-					'href' => self_admin_url( 'edit-tags.php?taxonomy=' . CFGP_NAME . '-country&post_type=cf-geoplugin-banner' ),
+					'href' => admin_url( 'edit-tags.php?taxonomy=' . CFGP_NAME . '-country&post_type=cf-geoplugin-banner' ),
 					'meta'  => array( 'class' => CFGP_NAME . '-countries-toolbar-page' ),
 					'parent' => CFGP_NAME,
 				) );
@@ -738,7 +740,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 				$wp_admin_bar->add_node( array(
 					'id' => CFGP_NAME . '-regions',
 					'title' => __('Regions',CFGP_NAME),
-					'href' =>  self_admin_url( 'edit-tags.php?taxonomy=' . CFGP_NAME . '-region&post_type=cf-geoplugin-banner' ),
+					'href' =>  admin_url( 'edit-tags.php?taxonomy=' . CFGP_NAME . '-region&post_type=cf-geoplugin-banner' ),
 					'meta'  => array( 'class' => CFGP_NAME . '-regions-toolbar-page' ),
 					'parent' => CFGP_NAME,
 				) );
@@ -746,7 +748,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 				$wp_admin_bar->add_node( array(
 					'id' => CFGP_NAME . '-cities',
 					'title' => __('Cities',CFGP_NAME),
-					'href' => self_admin_url( 'edit-tags.php?taxonomy=' . CFGP_NAME . '-city&post_type=cf-geoplugin-banner' ),
+					'href' => admin_url( 'edit-tags.php?taxonomy=' . CFGP_NAME . '-city&post_type=cf-geoplugin-banner' ),
 					'meta'  => array( 'class' => CFGP_NAME . '-city-toolbar-page' ),
 					'parent' => CFGP_NAME,
 				) );
@@ -754,14 +756,14 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 			$wp_admin_bar->add_node( array(
 				'id' => CFGP_NAME . '-debug',
 				'title' => __('Debug Mode',CFGP_NAME),
-				'href' => self_admin_url( 'admin.php?page=' . CFGP_NAME . '-debug'),
+				'href' => parent::add_admin_url( 'admin.php?page=' . CFGP_NAME . '-debug'),
 				'meta'  => array( 'class' => CFGP_NAME . '-debug-toolbar-page' ),
 				'parent' => CFGP_NAME,
 			) );
 			$wp_admin_bar->add_node( array(
 				'id' => CFGP_NAME . '-setup',
 				'title' => __('Settings',CFGP_NAME),
-				'href' => self_admin_url( 'admin.php?page=' . CFGP_NAME . '-settings'),
+				'href' => parent::add_admin_url( 'admin.php?page=' . CFGP_NAME . '-settings'),
 				'meta'  => array( 'class' => CFGP_NAME . '-setup-toolbar-page' ),
 				'parent' => CFGP_NAME,
 			) );
@@ -771,7 +773,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 				$wp_admin_bar->add_node( array(
 					'id' => CFGP_NAME . '-activate',
 					'title' => __('Activate Unlimited',CFGP_NAME),
-					'href' => self_admin_url( 'admin.php?page=' . CFGP_NAME . '-activate'),
+					'href' => parent::add_admin_url( 'admin.php?page=' . CFGP_NAME . '-activate'),
 					'meta'  => array( 'class' => CFGP_NAME . '-activate-toolbar-page' ),
 					'parent' => CFGP_NAME,
 				) );
@@ -1391,7 +1393,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 	public function admin_footer(){
 		global $hook_suffix;
 		if ( 'plugins.php' == $hook_suffix && ! defined( 'DOING_AJAX' ) ) {
-
+			
 		}
 	}
 
@@ -1401,9 +1403,12 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 		
 		$this->add_action( 'admin_init', 'admin_init', 1 );
 		
-		if((defined( 'CFGP_MULTISITE' ) && CFGP_MULTISITE)) $this->add_action( 'network_admin_menu', 'add_cf_geoplugin',  11 );
-		else $this->add_action( 'admin_menu', 'add_cf_geoplugin', 11 );
-
+		if( parent::is_network_admin() ) {
+			$this->add_action( 'network_admin_menu', 'add_cf_geoplugin',  11 );
+		} else {
+			$this->add_action( 'admin_menu', 'add_cf_geoplugin', 11 );
+		}
+		
 		$this->add_action( 'page-cf-geoplugin-sidebar', 'add_rss_feed' );
 		$this->add_action( 'page-cf-geoplugin-defender-sidebar', 'add_rss_feed' );
 		$this->add_action( 'page-cf-geoplugin-license-sidebar', 'add_rss_feed' );
@@ -1432,8 +1437,11 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 			if($CF_GEOPLUGIN_OPTIONS['enable_advanced_dashboard_widget']){
 				$this->add_action( 'admin_footer', 'rv_custom_dashboard_widget' );
 			} else {
-				if( (defined( 'CFGP_MULTISITE' ) && CFGP_MULTISITE) ) $this->add_action( 'wp_network_dashboard_setup', 'cf_geoplugin_dashboard_widgets' );
-				else $this->add_action( 'wp_dashboard_setup', 'cf_geoplugin_dashboard_widgets' );
+				if( parent::is_network_admin() ) {
+					$this->add_action( 'wp_network_dashboard_setup', 'cf_geoplugin_dashboard_widgets' );
+				} else {
+					$this->add_action( 'wp_dashboard_setup', 'cf_geoplugin_dashboard_widgets' );
+				}
 			}
 		}
 
