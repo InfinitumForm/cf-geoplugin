@@ -5,7 +5,7 @@ Tags: covid-19, covid, coronavirus, geolocation, woocommerce, store-locator, seo
 Requires at least: 3.0
 Tested up to: 5.4
 Requires PHP: 5.6.0
-Stable tag: 7.11.3
+Stable tag: 7.11.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -392,6 +392,10 @@ Please inform us if any of these errors occure via contact form on our website [
 
 == Changelog ==
 
+= 7.11.4 =
+* IMPORTANT UPDATE: Fixed wp-admin linking
+* Enhancement: License activation and deactivation
+
 = 7.11.3 =
 * IMPORTANT UPDATE: Fixed multisite AJAX error
 * IMPORTANT UPDATE: Fixed multisite redirection
@@ -422,6 +426,10 @@ Please inform us if any of these errors occure via contact form on our website [
 * Improved PHP code
 
 == Upgrade Notice ==
+
+= 7.11.4 =
+* IMPORTANT UPDATE: Fixed wp-admin linking
+* Enhancement: License activation and deactivation
 
 = 7.11.3 =
 * IMPORTANT UPDATE: Fixed multisite AJAX error

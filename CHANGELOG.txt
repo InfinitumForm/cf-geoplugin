@@ -1,5 +1,9 @@
 == Changelog ==
 
+= 7.11.4 =
+* IMPORTANT UPDATE: Fixed wp-admin linking
+* Enhancement: License activation and deactivation
+
 = 7.11.3 =
 * IMPORTANT UPDATE: Fixed multisite AJAX error
 * IMPORTANT UPDATE: Fixed multisite redirection

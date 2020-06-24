@@ -548,16 +548,25 @@ class CF_Geoplugin_Global
 	/*
 	 * Hook for the admin URL
 	 * @author        Ivijan-Stefan Stipic
+	 * @version       1.0.2
+	 * @since         7.11.3
 	*/
 	public static function add_admin_url( $str = '' )
 	{
-		if( self::is_network_admin() )
+		if(defined('CFGP_MULTISITE') && CFGP_MULTISITE)
 		{
-			self_admin_url($str);
+			if( self::is_network_admin() )
+			{
+				return self_admin_url($str);
+			}
+			else
+			{
+				return admin_url($str);
+			}
 		}
 		else
 		{
-			admin_url($str);
+			return admin_url($str);
 		}
 	}
 	

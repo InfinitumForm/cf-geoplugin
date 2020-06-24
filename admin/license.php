@@ -51,13 +51,13 @@ if(isset($_POST['license_key']) && isset($_POST['license'])) :
 				$CF_GEOPLUGIN_OPTIONS['license'] = 1;
 				
 				if( CF_Geoplugin_Global::is_network_admin() )
-					update_site_option('cf_geoplugin', $CF_GEOPLUGIN_OPTIONS, true);
+					update_site_option('cf_geoplugin', $CF_GEOPLUGIN_OPTIONS);
 				else
 					update_option('cf_geoplugin', $CF_GEOPLUGIN_OPTIONS);
 				
 				if(function_exists('clear_cf_geoplugin_session')) clear_cf_geoplugin_session();
 				
-				exit('<h3 class="mt-5"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i><span class="sr-only">Loading...</span> '.__('Please wait...',CFGP_NAME).'</h3><meta http-equiv="Refresh" content="0.1; url='.CF_Geoplugin_Global::add_admin_url('admin.php?page=cf-geoplugin-settings&action=activate_license').'">');
+				exit('<h3 class="mt-5"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i><span class="sr-only">'.__('Loading...',CFGP_NAME).'</span> '.__('Please wait...',CFGP_NAME).'</h3><meta http-equiv="Refresh" content="0.1; url='.CF_Geoplugin_Global::add_admin_url('admin.php?page=cf-geoplugin-settings&action=activate_license').'">');
 			}
 			else
 			{ ob_start();
@@ -133,7 +133,7 @@ if( $global->get( 'action' ) == 'deactivate_license' && isset( $_GET['cfgp_licen
 
 			if(function_exists('clear_cf_geoplugin_session')) clear_cf_geoplugin_session();
 			
-			exit('<h3 class="mt-5"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i><span class="sr-only">Loading...</span> '.__('Please wait...',CFGP_NAME).'</h3><meta http-equiv="Refresh" content="0.1; url='.CF_Geoplugin_Global::add_admin_url('admin.php?page=cf-geoplugin-settings&action=deactivate_license').'">');
+			exit('<h3 class="mt-5"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i><span class="sr-only">'.__('Loading...',CFGP_NAME).'</span> '.__('Please wait...',CFGP_NAME).'</h3><meta http-equiv="Refresh" content="0.1; url='.CF_Geoplugin_Global::add_admin_url('admin.php?page=cf-geoplugin-settings&action=deactivate_license').'">');
 		}
 	}
 }
