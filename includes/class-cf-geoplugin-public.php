@@ -29,11 +29,11 @@ class CF_Geoplugin_Public extends CF_Geoplugin_Global
 			$this->add_action( 'wp_ajax_cfgeo_banner_cache', 'ajax_fix_banner_cache' );
 			$this->add_action( 'wp_ajax_nopriv_cfgeo_banner_cache', 'ajax_fix_banner_cache' );
 			
-			$this->add_action( 'wp_ajax_cfgeo_css_cache', 'ajax_fix_css_cache' );
-			$this->add_action( 'wp_ajax_nopriv_cfgeo_css_cache', 'ajax_fix_css_cache' );
-			
 			$this->add_filter( 'the_content', 'enable_cache' );
 		}
+		
+		$this->add_action( 'wp_ajax_cfgeo_css_cache', 'ajax_fix_css_cache' );
+		$this->add_action( 'wp_ajax_nopriv_cfgeo_css_cache', 'ajax_fix_css_cache' );
 		
 		$this->tab_id = 'css-property';
 	}
@@ -110,7 +110,7 @@ class CF_Geoplugin_Public extends CF_Geoplugin_Global
 	}
 	
 	public function ajax_fix_css_cache(){
-		if(wp_verify_nonce( $_REQUEST['cfgeo_nonce'], 'cfgeo-process-cache-ajax' ) !== false)
+		if(wp_verify_nonce( $_REQUEST['cfgeo_nonce'], 'cfgeo-process-css-cache-ajax' ) !== false)
 		{
 			$CFGEO = $GLOBALS['CFGEO'];
 		
@@ -235,7 +235,7 @@ class CF_Geoplugin_Public extends CF_Geoplugin_Global
 		}
 
 		if( !empty($css_show) ) :
-		?><style media="all" type="text/css" id="cf-geoplugin-display-control" data-nonce="<?php echo wp_create_nonce( 'cfgeo-process-cache-ajax' ); ?>">*[class="cfgeo-show-in-"],*[class*="cfgeo-show-in-"],*[class^="cfgeo-show-in-"]{display: none;}<?php echo join(',', $css_hide); ?>{display:none !important;} <?php echo join(',', $css_show); ?>{display:block !important;}</style><?php
+		?><style media="all" type="text/css" id="cf-geoplugin-display-control" data-nonce="<?php echo wp_create_nonce( 'cfgeo-process-css-cache-ajax' ); ?>">*[class="cfgeo-show-in-"],*[class*="cfgeo-show-in-"],*[class^="cfgeo-show-in-"]{display: none;}<?php echo join(',', $css_hide); ?>{display:none !important;} <?php echo join(',', $css_show); ?>{display:block !important;}</style><?php
 		endif;
 	}
 	

@@ -22,7 +22,7 @@ if(!class_exists('CF_Geoplugin_Requirements_Check')) :
 		public function __construct( $args ) {
 			foreach ( array( 'title', 'php', 'wp', 'file' ) as $setting ) {
 				if ( isset( $args[$setting] ) ) {
-					$this->$setting = $args[$setting];
+					$this->{$setting} = $args[$setting];
 				}
 			}
 			

@@ -93,11 +93,12 @@
 			var xhr = $.ajax({
 				method : 'POST',
 				data: {
+					'action' : 'cfgeo_cache',
 					'cfgeo_nonce' : nonce
 				},
 				cache : false,
 				async : false,
-				url: CFGP_PUBLIC.ajax_url + '?action=cfgeo_cache', 
+				url: CFGP_PUBLIC.ajax_url, 
 			});
 			
 			xhrs.push(xhr);
@@ -139,6 +140,7 @@
 					xhr = $.ajax({
 						method : 'POST',
 						data: {
+							'action' : 'cfgeo_banner_cache',
 							'cfgeo_nonce' : nonce,
 							'post_id' : $this.attr('data-id'),
 							'post_posts_per_page' : $this.attr('data-posts_per_page'),
@@ -147,7 +149,7 @@
 						},
 						cache : false,
 						async : true,
-						url: CFGP_PUBLIC.ajax_url + '?action=cfgeo_banner_cache', 
+						url: CFGP_PUBLIC.ajax_url, 
 					});
 					
 				xhrs.push(xhr);
@@ -187,13 +189,14 @@
 				xhr = $.ajax({
 					method : 'POST',
 					data: {
-						'cfgeo_nonce' : nonce,
+						'action' : 'cfgeo_css_cache',
+						'cfgeo_nonce' : nonce
 					},
 					cache : false,
 					async : true,
-					url: CFGP_PUBLIC.ajax_url + '?action=cfgeo_css_cache', 
-				});
-				
+					url: CFGP_PUBLIC.ajax_url
+				});	
+			
 			xhrs.push(xhr);
 			
 			xhr.done(function( data ){

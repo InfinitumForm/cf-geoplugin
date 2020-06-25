@@ -1,5 +1,11 @@
 == Changelog ==
 
+= 7.11.5 =
+* IMPORTANT UPDATE: CSS cache
+* Enhancement: JavaScript AJAX calls
+* Enhancement: PHP settings
+* Enhancement: COVID-19 setup
+
 = 7.11.4 =
 * IMPORTANT UPDATE: Fixed wp-admin linking
 * Enhancement: License activation and deactivation

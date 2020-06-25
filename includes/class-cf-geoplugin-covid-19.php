@@ -115,8 +115,10 @@ class CF_Geoplugin_Covid_19 extends CF_Geoplugin_Global
 		
 		if(empty($data))
 			return $data;
+		
 		if(!isset($data['country_code']))
 			return $data;
+		
 		if(empty($data['country_code']))
 			return $data;
 		
