@@ -943,6 +943,7 @@ class CF_Geplugin_Library{
 		'ZAR' => '&#82;',
 		'ZMK' => '&#90;&#75;', // ?
 		'ZWL' => '&#90;&#36;',
+		'RTG' => '&#90;&#36;'
 	);
 
 	const CURRENCY_NAME = array(
@@ -1102,12 +1103,14 @@ class CF_Geplugin_Library{
 		'XAF' => 'Central African CFA franc',
 		'XCD' => 'East Caribbean dollar',
 		'XOF' => 'West African CFA franc',
+		'XDR' => 'Special drawing rights',
 		'XPF' => 'CFP franc',
 		'XXX' => 'No currency',
 		'YER' => 'Yemeni rial',
 		'ZAR' => 'South African rand',
 		'ZMW' => 'Zambian kwacha',
-		'ZWL' => 'Zimbabwean dollar'
+		'ZWL' => 'Zimbabwean dollar',
+		'RTG' => 'Zimbabwean dollar'
 	);
 	
 }

@@ -1234,11 +1234,11 @@ class CF_Geoplugin_Global
 		}
 		$findIP=array_merge($findIP, array(
 			'HTTP_X_FORWARDED_FOR', // X-Forwarded-For: <client>, <proxy1>, <proxy2> client = client ip address; https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-For
-			'HTTP_FORWARDED_FOR', 
-			'HTTP_FORWARDED', // Forwarded: by=<identifier>; for=<identifier>; host=<host>; proto=<http|https>; https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Forwarded
 			'HTTP_X_FORWARDED',
 			'HTTP_X_CLUSTER_CLIENT_IP', // Private LAN address
 			'REMOTE_ADDR', // Most reliable way, can be tricked by proxy so check it after proxies
+			'HTTP_FORWARDED_FOR',
+			'HTTP_FORWARDED', // Forwarded: by=<identifier>; for=<identifier>; host=<host>; proto=<http|https>; https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Forwarded
 			'HTTP_CLIENT_IP', // Shared Interner services - Very easy to manipulate and most unreliable way
 		));
 		
@@ -1428,6 +1428,8 @@ class CF_Geoplugin_Global
 		if(empty($blacklistIP)){
 			$blacklistIP=$this->ip_blocked( array( $this->ip_server() ) );
 		}
+		
+		if($this->ip_server() == $ip) return false;
 		
 		if(
 			function_exists('filter_var') 

@@ -1,5 +1,10 @@
 == Changelog ==
 
+= 7.11.6 =
+* IMPORTANT UPDATE: COVID-19 API update
+* IMPORTANT UPDATE: Filtered IP server from client IP
+* Enhancement: Currency library
+
 = 7.11.5 =
 * IMPORTANT UPDATE: CSS cache
 * Enhancement: JavaScript AJAX calls
