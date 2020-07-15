@@ -873,7 +873,7 @@ class CF_Geoplugin_Global
 	// Link plugin simple link default set http
 	public function addhttp($url) {
 		if (!preg_match("~^(?:f|ht)tps?://~i", $url)) {
-			$url = "http://{$url}";
+			$url = 'http://' . $url;
 		}
 		return $url;
 	}
@@ -2150,9 +2150,9 @@ class CF_Geoplugin_Global
 					array(
 						'http' => array(
 							'method'  			=> $method,
-							'proxy' 			=> "tcp://{$proxy_host}:{$proxy_port}",
+							'proxy' 			=> 'tcp://' . $proxy_host. ':' . $proxy_port,
 							'request_fulluri' 	=> true,
-							'header' 			=> array_merge( array( "Proxy-Authorization: Basic {$auth}" ), $header ),
+							'header' 			=> array_merge( array( 'Proxy-Authorization: Basic ' . $auth ), $header ),
 							'content'			=> $content
 						)
 					)
@@ -2164,7 +2164,7 @@ class CF_Geoplugin_Global
 					array(
 						'http' => array(
 							'method'  			=> $method,
-							'proxy' 			=> "tcp://{$proxy_host}:{$proxy_port}",
+							'proxy' 			=> 'tcp://' . $proxy_host. ':' . $proxy_port,
 							'request_fulluri' 	=> true,
 							'header' 			=> $header,
 							'content'			=> $content

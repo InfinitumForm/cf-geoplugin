@@ -9,6 +9,18 @@
 if(!class_exists('CF_Geoplugin_Public')) :
 class CF_Geoplugin_Public extends CF_Geoplugin_Global
 {
+	
+	private $allowed_css = array(
+		'country',
+		'country_code',
+		'region',
+		'city',
+		'continent',
+		'continent_code',
+		'currency',
+		'base_currency'
+	);
+	
 	public function run(){
 		$this->add_action( 'init', 'run_style' );
 		$this->add_action( 'wp_head', 'initialize_plugin_javascript', 1 );
@@ -52,7 +64,7 @@ class CF_Geoplugin_Public extends CF_Geoplugin_Global
 		$css_show = $css_hide = array();
 
 		foreach($CFGEO as $key=>$geo){
-			if( empty($geo) || !in_array($key, array('country','country_code','region','city','continent','continent_code','currency','base_currency'),true)!==false ) continue;
+			if( empty($geo) || !in_array($key, apply_filters( 'cf_geoplugin_allowed_css', $this->allowed_css),true)!==false ) continue;
 			
 			$css_show[]= 'cfgeo-show-in-' . sanitize_title($geo);
 			$css_hide[]= 'cfgeo-hide-from-' . sanitize_title($geo);
@@ -119,7 +131,7 @@ class CF_Geoplugin_Public extends CF_Geoplugin_Global
 			$css_show = $css_hide = array();
 
 			foreach($CFGEO as $key=>$geo){
-				if( empty($geo) || !in_array($key, array('country','country_code','region','city','continent','continent_code','currency','base_currency'),true)!==false ) continue;
+				if( empty($geo) || !in_array($key, apply_filters( 'cf_geoplugin_allowed_css', $this->allowed_css),true)!==false ) continue;
 				
 				$css_show[]= '.cfgeo-show-in-' . sanitize_title($geo);
 				$css_hide[]= '.cfgeo-hide-from-' . sanitize_title($geo);
@@ -228,7 +240,7 @@ class CF_Geoplugin_Public extends CF_Geoplugin_Global
 		$css_show = $css_hide = array();
 
 		foreach($CFGEO as $key=>$geo){
-			if( empty($geo) || !in_array($key, array('country','country_code','region','city','continent','continent_code','currency','base_currency'),true)!==false ) continue;
+			if( empty($geo) || !in_array($key, apply_filters( 'cf_geoplugin_allowed_css', $this->allowed_css),true)!==false ) continue;
 			
 			$css_show[]= '.cfgeo-show-in-' . sanitize_title($geo);
 			$css_hide[]= '.cfgeo-hide-from-' . sanitize_title($geo);
@@ -251,12 +263,12 @@ class CF_Geoplugin_Public extends CF_Geoplugin_Global
 	window.wp.geo = window.wp.geo || {};
 	if(typeof cf == 'undefined') var cf = {};
 	cf.geoplugin = {url:window.location.href,host:window.location.hostname,protocol:window.location.protocol.replace(/\:/g,''),<?php
-		$exclude = array_map('trim', explode(',','state,continentCode,areaCode,dmaCode,timezoneName,currencySymbol,currencyConverter,error,status,runtime,error_message'));
+		$exclude = array_map('trim', apply_filters( 'cf_geoplugin_initialize_plugin_javascript_exclude', explode(',','state,continentCode,areaCode,dmaCode,timezoneName,currencySymbol,currencyConverter,error,status,runtime,error_message')));
 		$sprintf = array();
 		if( isset( $CFGEO['country_code'] ) && !empty( $CFGEO['country_code'] ) )
 		{
 			$CFGEO = array_merge($CFGEO,array(
-				'flag' => CFGP_ASSETS.'/flags/4x3/'.strtolower($CFGEO['country_code']).'.svg'
+				'flag' => CFGP_ASSETS . '/flags/4x3/'.strtolower($CFGEO['country_code']) . '.svg'
 			));
 		}
 		foreach($CFGEO as $name=>$value)

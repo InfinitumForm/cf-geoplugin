@@ -5,7 +5,7 @@ Tags: covid-19, covid, coronavirus, geolocation, woocommerce, store-locator, seo
 Requires at least: 3.0
 Tested up to: 5.4
 Requires PHP: 5.6.0
-Stable tag: 7.11.6
+Stable tag: 7.11.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -392,6 +392,13 @@ Please inform us if any of these errors occure via contact form on our website [
 
 == Changelog ==
 
+= 7.11.7 =
+* IMPORTANT UPDATE: Fixed COVID-19 memory leaking
+* IMPORTANT UPDATE: Fixed COVID-19 data calculation
+* Enhancement: PHP7.4 transition code
+* Enhancement: API call speed
+* NEW FEATURE: COVID-19 API recovery and mortality rate calculation
+
 = 7.11.6 =
 * IMPORTANT UPDATE: COVID-19 API update
 * IMPORTANT UPDATE: Filtered IP server from client IP
@@ -437,6 +444,13 @@ Please inform us if any of these errors occure via contact form on our website [
 * Improved PHP code
 
 == Upgrade Notice ==
+
+= 7.11.7 =
+* IMPORTANT UPDATE: Fixed COVID-19 memory leaking
+* IMPORTANT UPDATE: Fixed COVID-19 data calculation
+* Enhancement: PHP7.4 transition code
+* Enhancement: API call speed
+* NEW FEATURE: COVID-19 API recovery and mortality rate calculation
 
 = 7.11.6 =
 * IMPORTANT UPDATE: COVID-19 API update

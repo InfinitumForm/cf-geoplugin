@@ -200,12 +200,22 @@ class CF_Geoplugin_Covid_19 extends CF_Geoplugin_Global
 		}
 		else
 		{
-			if($api_summary = $this->curl_get("{$this->URL}/summary", '', array(), true))
+			if($api_summary = $this->curl_get($this->URL . '/summary', '', array(), false))
 			{
+				if(preg_match('/^({"Global":{.*?}),/i', $api_summary, $match)){
+					$api_summary = $match[1] . '}';
+					$api_summary = json_decode($api_summary, true);
+				}
+				
 				if(isset($api_summary['Global']))
 				{
 					$summary = (object)$api_summary['Global'];
 					
+					$summary->TotalConfirmed = $summary->TotalConfirmed ? (int)$summary->TotalConfirmed : 0;
+					$summary->TotalRecovered = $summary->TotalRecovered ? (int)$summary->TotalRecovered : 0;
+					$summary->TotalDeaths = $summary->TotalDeaths ? (int)$summary->TotalDeaths : 0;
+					$summary->NewConfirmed = $summary->NewConfirmed ? (int)$summary->NewConfirmed : 0;
+					$summary->NewDeaths = $summary->NewDeaths ? (int)$summary->NewDeaths : 0;
 					
 					$covid19_global_total_unresolved = ($summary->TotalConfirmed - $summary->TotalRecovered - $summary->TotalDeaths);
 					$covid19_global_total_active_cases = ($summary->TotalConfirmed - $summary->TotalDeaths);
@@ -244,17 +254,17 @@ class CF_Geoplugin_Covid_19 extends CF_Geoplugin_Global
 	public function get_country_statistic( $country_code, $country )
 	{
 		global $CFGEO_DEBUG;
-		// delete_transient("cfgp-covid19-{$country_code}-statistic");
+		// delete_transient('cfgp-covid19-' . $country_code . '-statistic');
 
 		if(empty($country_code)) return false;
 		
 		if(isset($this->covid19_country_statistic_{$country_code}) && !empty($this->covid19_country_statistic_{$country_code}) && $CFGEO_DEBUG !== true)
-			return apply_filters( "cf_geoplugin_covid19_{$country_code}_statistic", $this->covid19_country_statistic_{$country_code}, self::$default_fields);
+			return apply_filters( 'cf_geoplugin_covid19_' . $country_code . '_statistic', $this->covid19_country_statistic_{$country_code}, self::$default_fields);
 		
-		if( $cache = get_transient("cfgp-covid19-{$country_code}-statistic") && $CFGEO_DEBUG !== true && in_array($this->session_type, array(2,3)) !==  false)
+		if( $cache = get_transient('cfgp-covid19-' . $country_code . '-statistic') && $CFGEO_DEBUG !== true && in_array($this->session_type, array(2,3)) !==  false)
 		{
 			$this->covid19_country_statistic_{$country_code} = $cache;
-			return apply_filters( "cf_geoplugin_covid19_{$country_code}_statistic", $cache, self::$default_fields);
+			return apply_filters( 'cf_geoplugin_covid19_' . $country_code . '_statistic', $cache, self::$default_fields);
 		}
 		else if (
 			isset($_SESSION[CFGP_PREFIX . 'api_covid_19_statistic']) 
@@ -265,7 +275,7 @@ class CF_Geoplugin_Covid_19 extends CF_Geoplugin_Global
 		)
 		{
 			$this->covid19_country_statistic_{$country_code} = $_SESSION[CFGP_PREFIX . 'api_covid_19_statistic'];
-			return apply_filters( "cf_geoplugin_covid19_{$country_code}_statistic", $_SESSION[CFGP_PREFIX . 'api_covid_19_statistic'], self::$default_fields);
+			return apply_filters( 'cf_geoplugin_covid19_' . $country_code . '_statistic', $_SESSION[CFGP_PREFIX . 'api_covid_19_statistic'], self::$default_fields);
 		}
 		else
 		{
@@ -287,12 +297,17 @@ class CF_Geoplugin_Covid_19 extends CF_Geoplugin_Global
 					continue;
 				}
 				
-				if($slug && $response_total = $this->curl_get("{$this->URL}/dayone/country/{$slug}", '', array(), true))
+				if($slug && $response_total = $this->curl_get($this->URL . '/country/' . $slug . '?from=' . date('Y-m-d', strtotime('-3 days')) . 'T00:00:00Z&to=' . date('Y-m-d') . 'T00:00:00Z', '', array(), true))
 				{
 					if(!empty($response_total))
-					{
+					{				
 						$total = count($response_total);
 						$today = (object)$response_total[$total-1];
+						
+						$today->Recovered = $today->Recovered ? (int)$today->Recovered : 0;
+						$today->Confirmed = $today->Confirmed ? (int)$today->Confirmed : 0;
+						$today->Active = $today->Active ? (int)$today->Active : 0;
+						$today->Deaths = $today->Deaths ? (int)$today->Deaths : 0;
 						
 						$recovered = $today->Recovered;
 						if(empty($recovered))
@@ -310,6 +325,11 @@ class CF_Geoplugin_Covid_19 extends CF_Geoplugin_Global
 						if(isset($response_total[$total-2]))
 						{
 							$yesturday = (object)$response_total[$total-2];
+							
+							$yesturday->Recovered = $yesturday->Recovered ? (int)$yesturday->Recovered : 0;
+							$yesturday->Confirmed = $yesturday->Confirmed ? (int)$yesturday->Confirmed : 0;
+							$yesturday->Active = $yesturday->Active ? (int)$yesturday->Active : 0;
+							$yesturday->Deaths = $yesturday->Deaths ? (int)$yesturday->Deaths : 0;
 							
 							$covid19_total_new_cases_today	= ($today->Confirmed - $yesturday->Confirmed);
 							$covid19_total_new_deaths_today	= ($today->Deaths - $yesturday->Deaths);
@@ -329,17 +349,17 @@ class CF_Geoplugin_Covid_19 extends CF_Geoplugin_Global
 						if($CFGEO_DEBUG !== true)
 						{
 							if(in_array($this->session_type, array(2,3)) !==  false) {
-								set_transient("cfgp-covid19-{$country_code}-statistic", $this->covid19_country_statistic_{$country_code}, (MINUTE_IN_SECONDS * CFGP_SESSION));
+								set_transient('cfgp-covid19-' . $country_code . '-statistic', $this->covid19_country_statistic_{$country_code}, (MINUTE_IN_SECONDS * CFGP_SESSION));
 							}
 							if(in_array($this->session_type, array(1,3)) !==  false) {
 								$this->covid19_country_statistic_{$country_code}['covid19_total_country'] = $country_code;
 								$_SESSION[CFGP_PREFIX . 'api_covid_19_statistic'] = $this->covid19_country_statistic_{$country_code};
 							}
 						}
-						return apply_filters( "cf_geoplugin_covid19_{$country_code}_statistic", $this->covid19_country_statistic_{$country_code}, self::$default_fields);
+						return apply_filters( 'cf_geoplugin_covid19_' . $country_code . '_statistic', $this->covid19_country_statistic_{$country_code}, self::$default_fields);
 					}
 				}
-				
+
 			}
 		}
 		return false;

@@ -885,11 +885,11 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 		}
 
 		$table_name = $wpdb->prefix . parent::TABLE['seo_redirection'];
-		$wpdb->query( "TRUNCATE TABLE {$table_name};");
+		$wpdb->query( 'TRUNCATE TABLE ' . $table_name . ';');
 
 		foreach( $query_data as $queries )
 		{
-			$sql = "INSERT INTO {$table_name} ( country, region, city, url, http_code, active, only_once ) VALUES ";
+			$sql = 'INSERT INTO ' . $table_name . ' ( country, region, city, url, http_code, active, only_once ) VALUES ';
 			$value = array();
 			foreach( $queries as $query )
 			{
@@ -990,7 +990,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 				$results = $wpdb->get_results(
 					"
 						SELECT country, region, city, url, http_code, active, only_once
-						FROM {$table_name};
+						FROM " . $table_name . ";
 					", ARRAY_A
 				);
 				if( $results !== false )
@@ -1006,10 +1006,10 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 					if(!$CF_GEOPLUGIN_OPTIONS['enable_cache'])
 					{
 						// disable caching
-						$now = gmdate("D, d M Y H:i:s");
-						header("Expires: Tue, 03 Jul 2001 06:00:00 GMT");
-						header("Cache-Control: max-age=0, post-check=0, pre-check=0, no-cache, must-revalidate, proxy-revalidate");
-						header("Last-Modified: {$now} GMT");
+						$now = gmdate('D, d M Y H:i:s');
+						header('Expires: Tue, 03 Jul 2001 06:00:00 GMT');
+						header('Cache-Control: max-age=0, post-check=0, pre-check=0, no-cache, must-revalidate, proxy-revalidate');
+						header('Last-Modified: ' . $now . ' GMT');
 						header('Pragma: public');
 					}
 				
