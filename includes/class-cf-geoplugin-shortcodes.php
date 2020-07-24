@@ -1242,6 +1242,9 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 		if( empty( $content ) ) return '';
 
 		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS']; $CFGEO = $GLOBALS['CFGEO'];
+		
+		if(empty($CFGEO['currency_converter']) && $CFGEO['currency_converter'] != 0) return $content;
+		
 		$atts = shortcode_atts(
 			array(
 				'from'	=> isset( $CF_GEOPLUGIN_OPTIONS['base_currency'] ) && !empty( $CF_GEOPLUGIN_OPTIONS['base_currency'] ) ? strtoupper( $CF_GEOPLUGIN_OPTIONS['base_currency'] ) : 'USD',

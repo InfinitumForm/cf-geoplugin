@@ -13,7 +13,7 @@ function cf_geoplugin_privacy_policy() {
     }
  
     $content = sprintf(
-        __( 'This site uses the WordPress Geo Plugin (formerly: CF Geo Plugin) to display public visitor information based on IP address that can then be collected or used for various purposes depending on the settings of the plugin.
+        __( 'This site uses the WordPress Geo Plugin (formerly: CF Geo Plugin) to display public visitor information based on IP addresses that can then be collected or used for various purposes depending on the settings of the plugin.
 		
 		The WordPress Geo Plugin allows you to redirect pages, attach content, geographic information and Google maps to posts, pages, widgets and custom templates by using simple Shortcodes, PHP code or JavaScript by user IP address. It also lets you to specify a default geographic location for your entire WordPress blog. This plugin is also great for SEO and increasing conversions on your blog or landing pages.
 		

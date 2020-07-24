@@ -226,6 +226,19 @@ class CF_Geoplugin_Init extends CF_Geoplugin_Global
 				else CF_Geoplugin_Debug::log( 'Defender class not loaded - Class does not exists' );
 			}
 			else CF_Geoplugin_Debug::log( 'Defender class not loaded - File does not exists' );
+			
+			// Include Notification
+			if( file_exists( CFGP_INCLUDES . '/class-cf-geoplugin-notification.php' ) )
+			{
+				include_once CFGP_INCLUDES . '/class-cf-geoplugin-notification.php';
+				if( class_exists( 'CF_Geoplugin_Notification' ) )
+				{
+					new CF_Geoplugin_Notification;
+					CF_Geoplugin_Debug::log( 'Notification class loaded' );
+				}
+				else CF_Geoplugin_Debug::log( 'Notification class not loaded - Class does not exists' );
+			}
+			else CF_Geoplugin_Debug::log( 'Notification class not loaded - File does not exists' );
 
 
 			CF_Geoplugin_Debug::log( '------------ SERVER INFORMATIONS ------------' );

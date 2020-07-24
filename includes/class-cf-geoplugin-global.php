@@ -325,6 +325,7 @@ class CF_Geoplugin_Global
 			return apply_filters( 'cf_geoplugin_get_option', $options, $option_name, $default);
 		}
 	}
+	
 	/*
 	 * Hook get already setup option
 	*/
@@ -363,6 +364,7 @@ class CF_Geoplugin_Global
 		
 		return apply_filters( 'cf_geoplugin_get_the_option', $return, $GLOBALS['CF_GEOPLUGIN_OPTIONS']);
 	}
+	
 	/*
 	 * Hook Update Options
 	*/
@@ -882,25 +884,25 @@ class CF_Geoplugin_Global
 	* Get current page ID
 	* @autor    Ivijan-Stefan Stipic
 	* @since    7.6.0
-	* @version  1.0.0
+	* @version  1.0.1
 	**/
 	function get_current_page_ID(){
 		global $post, $wp_query;
 		
-		if(!is_null($wp_query) && isset($wp_query->post) && isset($wp_query->post->ID) && !empty($wp_query->post->ID))
+		if((is_home() || is_front_page()) && !empty(get_queried_object_id()))
+			return get_queried_object_id();
+		else if(!is_null($wp_query) && isset($wp_query->post) && isset($wp_query->post->ID) && !empty($wp_query->post->ID))
 			return $wp_query->post->ID;
 		else if(function_exists('get_the_id') && !empty(get_the_id()))
 			return get_the_id();
 		else if(!is_null($post) && isset($post->ID) && !empty($post->ID))
 			return $post->ID;
-		else if('page' == get_option( 'show_on_front' ) && !empty(get_option( 'page_for_posts' )))
-			return get_option( 'page_for_posts' );
-		else if((is_home() || is_front_page()) && !empty(get_queried_object_id()))
-			return get_queried_object_id();
 		else if($this->get('action') == 'edit' && $post = $this->get('post', 'int', false))
 			return $post;
 		else if(!is_admin() && $p = $this->get('p', 'int', false))
 			return $p;
+		else if('page' == get_option( 'show_on_front' ) && !empty(get_option( 'page_for_posts' )))
+			return get_option( 'page_for_posts' );
 		
 		return false;
 	}
@@ -1028,7 +1030,7 @@ class CF_Geoplugin_Global
 	 * @return   $bool true/false
 	 */
 	public function proxy(){
-		$proxy = $this->get_option("proxy");
+		$proxy = $this->get_option('proxy');
 		return ($proxy === true ? true : false);
 	}
 	
@@ -1546,6 +1548,22 @@ class CF_Geoplugin_Global
 					CF_Geoplugin_Debug::log( 'Validation status: error' );
 					return false;
 				}
+				
+				if(isset($license->data) && isset($license->data->expire))
+				{
+					$CF_GEOPLUGIN_OPTIONS['license_expire'] = $license->data->expire;
+					$CF_GEOPLUGIN_OPTIONS['license_expire_date'] = $license->data->expire_date;
+					$CF_GEOPLUGIN_OPTIONS['license_status'] = $license->data->status;
+					
+					$GLOBALS['CF_GEOPLUGIN_OPTIONS'] = $CF_GEOPLUGIN_OPTIONS;
+					
+					if( CF_Geoplugin_Global::is_network_admin() )
+						update_site_option('cf_geoplugin', $CF_GEOPLUGIN_OPTIONS);
+					else
+						update_option('cf_geoplugin', $CF_GEOPLUGIN_OPTIONS);
+					
+					if(function_exists('clear_cf_geoplugin_session')) clear_cf_geoplugin_session();
+				}
 			}
 
 			CF_Geoplugin_Debug::log( 'Validation status: license valid' );
@@ -1914,19 +1932,19 @@ class CF_Geoplugin_Global
 		
 		// specify allowed field delimiters
 		$delimiters = array(
-			'comma'     => ',',
-			'semicolon' => ';',
-			'tab'         => "\t",
-			'pipe'         => '|',
-			'colon'     => ':'
+			'comma'		=> ',',
+			'semicolon'	=> ';',
+			'tab'		=> "\t",
+			'pipe'		=> '|',
+			'colon'		=> ':'
 		);
 		
 		// specify allowed line endings
 		$line_endings = array(
-			'rn'         => "\r\n",
-			'n'         => "\n",
-			'r'         => "\r",
-			'nr'         => "\n\r"
+			'rn'	=> "\r\n",
+			'n'		=> "\n",
+			'r'		=> "\r",
+			'nr'	=> "\n\r"
 		);
 		
 		// loop and count each line ending instance
@@ -1938,10 +1956,10 @@ class CF_Geoplugin_Global
 		asort($line_result);
 		
 		// log to output array
-		$output['line_ending']['results']     = $line_result;
-		$output['line_ending']['count']     = end($line_result);
-		$output['line_ending']['key']         = key($line_result);
-		$output['line_ending']['value']     = $line_endings[$output['line_ending']['key']];
+		$output['line_ending']['results']	= $line_result;
+		$output['line_ending']['count']		= end($line_result);
+		$output['line_ending']['key']		= key($line_result);
+		$output['line_ending']['value']		= $line_endings[$output['line_ending']['key']];
 		$lines = explode($output['line_ending']['value'], $contents);
 		
 		// remove last line of array, as this maybe incomplete?
@@ -1951,8 +1969,8 @@ class CF_Geoplugin_Global
 		$complete_lines = implode(' ', $lines);
 		
 		// log statistics to output array
-		$output['lines']['count']     = count($lines);
-		$output['lines']['length']     = strlen($complete_lines);
+		$output['lines']['count'] 	= count($lines);
+		$output['lines']['length']	= strlen($complete_lines);
 		
 		// loop and count each delimiter instance
 		foreach ($delimiters as $delimiter_key => $delimiter) {
@@ -1963,10 +1981,10 @@ class CF_Geoplugin_Global
 		asort($delimiter_result);
 		
 		// log statistics to output array with largest counts as the value
-		$output['delimiter']['results']     = $delimiter_result;
-		$output['delimiter']['count']         = end($delimiter_result);
-		$output['delimiter']['key']         = key($delimiter_result);
-		$output['delimiter']['value']         = $delimiters[$output['delimiter']['key']];
+		$output['delimiter']['results']	= $delimiter_result;
+		$output['delimiter']['count']	= end($delimiter_result);
+		$output['delimiter']['key']		= key($delimiter_result);
+		$output['delimiter']['value']	= $delimiters[$output['delimiter']['key']];
 		
 		// capture ending memory usage
 		$output['peak_mem']['end'] = memory_get_peak_usage(true);

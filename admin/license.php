@@ -50,6 +50,8 @@ if(isset($_POST['license_key']) && isset($_POST['license'])) :
 				$CF_GEOPLUGIN_OPTIONS['license_sku'] = $license->data->sku;
 				$CF_GEOPLUGIN_OPTIONS['license'] = 1;
 				
+				$GLOBALS['CF_GEOPLUGIN_OPTIONS'] = $CF_GEOPLUGIN_OPTIONS;
+				
 				if( CF_Geoplugin_Global::is_network_admin() )
 					update_site_option('cf_geoplugin', $CF_GEOPLUGIN_OPTIONS);
 				else
@@ -125,6 +127,8 @@ if( $global->get( 'action' ) == 'deactivate_license' && isset( $_GET['cfgp_licen
 			$CF_GEOPLUGIN_OPTIONS['license_key'] = '';
 			$CF_GEOPLUGIN_OPTIONS['license_sku'] = '';
 			$CF_GEOPLUGIN_OPTIONS['license_id'] = '';
+			
+			$GLOBALS['CF_GEOPLUGIN_OPTIONS'] = $CF_GEOPLUGIN_OPTIONS;
 
 			if( CF_Geoplugin_Global::is_network_admin() )
 				update_site_option('cf_geoplugin', $CF_GEOPLUGIN_OPTIONS, true);

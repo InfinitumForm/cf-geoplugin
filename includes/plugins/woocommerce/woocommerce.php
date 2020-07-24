@@ -36,7 +36,7 @@ class CF_Geoplugin_Woocommerce extends CF_Geoplugin_Global
     // Check if woocommerce is installed and active
     public function check_woocommerce_instalation()
     {
-        $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'] ; $CFGEO = $GLOBALS['CFGEO'];
+        $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS']; $CFGEO = $GLOBALS['CFGEO'];
         if( class_exists( 'WooCommerce' ) )
         {
             $this->update_option( 'woocommerce_active', 1 );

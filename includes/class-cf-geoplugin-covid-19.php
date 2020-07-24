@@ -339,8 +339,8 @@ class CF_Geoplugin_Covid_19 extends CF_Geoplugin_Global
 								'covid19_total_new_cases_today' 	=> ($covid19_total_new_cases_today < 0 ? 0 : $covid19_total_new_cases_today),
 								'covid19_total_new_deaths_today' 	=> ($covid19_total_new_deaths_today < 0 ? 0 : $covid19_total_new_deaths_today),
 								'covid19_total_active_cases'		=> ($covid19_total_active_cases < 0 ? 0 : $covid19_total_active_cases),
-								'covid19_mortality_rate'			=> number_format(floatval(($today->Deaths/$today->Confirmed)*100), 2, '.', ''),
-								'covid19_recovery_rate'				=> number_format(floatval(($recovered/$today->Confirmed)*100), 2, '.', ''),
+								'covid19_mortality_rate'			=> number_format(floatval($today->Confirmed>0 && $today->Deaths>0 ? (($today->Deaths/$today->Confirmed)*100) : 0 ), 2, '.', ''),
+								'covid19_recovery_rate'				=> number_format(floatval($today->Confirmed>0 && $recovered>0 ? (($recovered/$today->Confirmed)*100) : 0 ), 2, '.', ''),
 							//	'covid19_total_serious_cases'		=> 0,
 							));
 						}

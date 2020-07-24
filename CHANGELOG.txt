@@ -1,5 +1,13 @@
 == Changelog ==
 
+= 7.12.0 =
+* IMPORTANT UPDATE: Improved API communication
+* IMPORTANT UPDATE: Improved license verification and renewal.
+* IMPORTANT UPDATE: Added push notifications for license expiration and lookup.
+* IMPORTANT UPDATE: COVID-19 Fixed PHP error "divided by zero"
+* Enhancement: Finding IDs for SEO redirection pages
+* Enhancement: Fixed a bug with the currency conversion shortcode
+
 = 7.11.7 =
 * IMPORTANT UPDATE: Fixed COVID-19 memory leaking
 * IMPORTANT UPDATE: Fixed COVID-19 data calculation
