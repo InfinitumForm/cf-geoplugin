@@ -1,11 +1,11 @@
 ﻿=== WordPress Geo Plugin - CF Geo Plugin ===
 Contributors: ivijanstefan, creativform
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=creativform@gmail.com
-Tags: covid-19, covid, coronavirus, geolocation, woocommerce, store-locator, seo, google-maps, geomarketing, content include, content exclude, geo plugin, geo target, geo, geotargeting, geofencing, geotag, cache, rocket
+Tags: geolocation, locator, GeoIP, geo, geotargeting, seo, seo redirect, woocommerce, include exclude, content, remove content, show hide, covid
 Requires at least: 3.0
 Tested up to: 5.4
 Requires PHP: 5.6.0
-Stable tag: 7.12.0
+Stable tag: 7.12.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -398,6 +398,9 @@ Please inform us if any of these errors occur via contact form on our website [h
 
 == Changelog ==
 
+= 7.12.1 =
+* IMPORTANT UPDATE: Fixed problem with license email expiration
+
 = 7.12.0 =
 * IMPORTANT UPDATE: Improved API communication
 * IMPORTANT UPDATE: Improved license verification and renewal.
@@ -458,6 +461,9 @@ Please inform us if any of these errors occur via contact form on our website [h
 * Improved PHP code
 
 == Upgrade Notice ==
+
+= 7.12.1 =
+* IMPORTANT UPDATE: Fixed problem with license email expiration
 
 = 7.12.0 =
 * IMPORTANT UPDATE: Improved API communication

@@ -41,7 +41,7 @@ class CF_Geoplugin_Notification extends CF_Geoplugin_Global
 			if(isset($CF_GEOPLUGIN_OPTIONS['license_expire']) && !empty($CF_GEOPLUGIN_OPTIONS['license_expire']))
 			{
 				$before_date_expire = strtotime('-1 month', (int)$CF_GEOPLUGIN_OPTIONS['license_expire']);
-				if($before_date_expire >= time())
+				if($before_date_expire <= time())
 				{
 					if($emails = $this->get_admins())
 					{

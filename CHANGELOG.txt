@@ -1,5 +1,8 @@
 == Changelog ==
 
+= 7.12.1 =
+* IMPORTANT UPDATE: Fixed problem with license email expiration
+
 = 7.12.0 =
 * IMPORTANT UPDATE: Improved API communication
 * IMPORTANT UPDATE: Improved license verification and renewal.
