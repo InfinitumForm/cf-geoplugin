@@ -11,7 +11,7 @@ global $wpdb, $wp_version;
 ?>
 
 <div class="clearfix"></div>
-<div class="container-fluid">
+<div class="container-fluid" id="cf-geoplugin-page">
     <div class="row">
     	<div class="col-12">
             <h1 class="h5 mt-3"><i class="fa fa-location-arrow"></i> <?php 
@@ -25,9 +25,9 @@ global $wpdb, $wp_version;
     </div>
     <div class="row">
         <div class="col-9">
-            <div class="card col-12 border-light">
+            <div class="card p-0 col-12 border-light">
                 <div class="card-header bg-transparent">
-                    <h1 class="h5"><?php _e( 'SEO Redirection Global Params', CFGP_NAME );?></h1>
+                    <h1 class="h5 mb-0"><?php _e( 'SEO Redirection Global Params', CFGP_NAME );?></h1>
                 </div>
                 <div class="card-footer bg-transparent">
                     <?php _e( 'Here you can set global params for SEO Redirection. If you want you can also set them individually in posts or pages.', CFGP_NAME ); ?>

@@ -154,7 +154,7 @@ class CF_Geoplugin_OS
 			else
 				$user_agent = NULL;
 			// Get Windows versions
-			foreach(array(
+			foreach(apply_filters( 'cf_geoplugin_windows_version', array(
 				'95',
 				'98',
 				'2000',
@@ -188,13 +188,13 @@ class CF_Geoplugin_OS
 				'vista',
 				'me',
 				'nt'
-			) as $ver) {
+			)) as $ver) {
 				$os_array['windows ' . $ver]='Windows ' . $ver; 
 			}
 			$os_array['microsoft windows']='Microsoft Windows';
 			$os_array['windows']='Windows';
 			// Get Linux/Unix/Mac
-			foreach(array(
+			foreach(apply_filters( 'cf_geoplugin_unix_version', array(
 				'raspberry' => 'Linux - Raspbian',
 				'jessie' => 'Linux - Debian Jessie',
 				'squeeze' => 'Linux - Debian Squeeze',
@@ -220,14 +220,14 @@ class CF_Geoplugin_OS
 				'mac os' => 'Mac OS',
 				'mac' => 'Mac OS',
 				'android' => 'Android'
-			) as $ver => $name) {
+			)) as $ver => $name) {
 				$os_array[$ver]=$name; 
 			}
 		}
 		else
 		{
 			// https://stackoverflow.com/questions/18070154/get-operating-system-info-with-php
-			$os_array = array(
+			$os_array = apply_filters( 'cf_geoplugin_os_version', array(
 				'win10'                          		     =>  'Windows 10',
 				'windows 10'                          		 =>  'Windows 10',
 				'windows 10 enterprise'                		 =>  'Windows 10',
@@ -331,7 +331,7 @@ class CF_Geoplugin_OS
 				'libwww-perl'=>'Unix',
 				'UP.Browser'=>'Windows CE',
 				'NetAnts'=>'Windows',
-			);
+			));
 		}
 		foreach ($os_array as $regex => $value) {
 			if (preg_match('{\b('.$regex.')\b}i', $user_agent)) {

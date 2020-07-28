@@ -1045,11 +1045,11 @@ class CF_Geoplugin_Global
 		$proxy = $this->proxy();
 		if($proxy) $_SERVER['SERVER_ADDR'] = $this->get_option("proxy_ip");
 	
-		$findIP=array(
+		$findIP=apply_filters( 'cf_geoplugin_server_ip_constants', array(
 			'SERVER_ADDR',
 			'LOCAL_ADDR',
 			'SERVER_NAME',
-		);
+		));
 		
 		$ip = '';
 		// start looping
@@ -1155,7 +1155,7 @@ class CF_Geoplugin_Global
 	 * @return  $array of blacklisted IP's
 	 */
 	public function ip_blocked($list=array()){
-		$blacklist=array(
+		$blacklist=apply_filters('cf_geoplugin_ip_blocked', array(
 			'0.0.0.0'		=>	8,
 			'10.0.0.0'		=>	8,
 			'100.64.0.0'	=>	10,
@@ -1173,7 +1173,7 @@ class CF_Geoplugin_Global
 			'224.0.0.0'		=>	4,
 			'240.0.0.0'		=>	4,
 			'255.255.255.0'	=>	255,
-		);
+		));
 		if(!empty($list) && is_array($list))
 		{
 			foreach($list as $k => $v){
@@ -1234,7 +1234,7 @@ class CF_Geoplugin_Global
 		if ($this->get_option('enable_cloudflare') && isset($_SERVER['HTTP_CF_CONNECTING_IP']) && !empty($_SERVER['HTTP_CF_CONNECTING_IP'])) {
 			$findIP[]='HTTP_CF_CONNECTING_IP';
 		}
-		$findIP=array_merge($findIP, array(
+		$findIP=apply_filters( 'cf_geoplugin_ip_constants', array_merge($findIP, array(
 			'HTTP_X_FORWARDED_FOR', // X-Forwarded-For: <client>, <proxy1>, <proxy2> client = client ip address; https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-For
 			'HTTP_X_FORWARDED',
 			'HTTP_X_CLUSTER_CLIENT_IP', // Private LAN address
@@ -1242,7 +1242,7 @@ class CF_Geoplugin_Global
 			'HTTP_FORWARDED_FOR',
 			'HTTP_FORWARDED', // Forwarded: by=<identifier>; for=<identifier>; host=<host>; proto=<http|https>; https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Forwarded
 			'HTTP_CLIENT_IP', // Shared Interner services - Very easy to manipulate and most unreliable way
-		));
+		)) );
 		
 		// Stop all special-use addresses and blacklisted addresses
 		// IP => RANGE
@@ -1720,7 +1720,7 @@ class CF_Geoplugin_Global
 		$instance = self::get_instance();
 		$ip = $instance->ip();
 		
-		$bots = array(
+		$bots = apply_filters( 'cf_geoplugin_bot_ip_list', array(
 			'65.214.45.143',	// Ask
 			'65.214.45.148',	// Ask
 			'66.235.124.192',	// Ask
@@ -1746,7 +1746,7 @@ class CF_Geoplugin_Global
 			'72.94.249.38',		// DuckDuckGo
 			
 			'68.180.228.178'	// Yahoo
-		);
+		));
 		
 		if($ip && in_array($ip, $bots, true)) return true;
 		

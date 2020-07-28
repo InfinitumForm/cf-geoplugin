@@ -70,7 +70,7 @@ if( $global->get( 'action' ) == 'deactivate_license' )
 }
 ?>
 <div class="clearfix"></div>
-<div class="container-fluid">
+<div class="container-fluid" id="cf-geoplugin-page">
 	<div class="row">
         <div class="col-12">
         	<h1 class="h5 mt-3"><i class="fa fa-cogs text-left"></i> <?php _e('CF Geo Plugin Settings',CFGP_NAME); ?></h1>
@@ -79,7 +79,7 @@ if( $global->get( 'action' ) == 'deactivate_license' )
         <div class="col-12" id="alert"><?php echo $alert; ?></div>
 	</div>
     <div class="row mt-4">
-    	<div class="col-sm-12">
+    	<div class="col-sm-9">
         
             <ul class="nav nav-tabs" role="tablist" id="settings-tab">
                 <li class="nav-item">
@@ -1256,6 +1256,9 @@ endforeach;
                 </div>
             </div>
             
+        </div>
+		<div class="col-sm-3">
+        	<?php do_action('page-cf-geoplugin-sidebar'); ?>
         </div>
     </div>
 </div>

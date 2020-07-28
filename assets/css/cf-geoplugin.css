@@ -160,3 +160,8 @@ body.cf-geo-plugin_page_cf-geoplugin-settings #alert > .alert{
     margin-left: 2px;
     bottom: -2px;
 }
+
+input[type=checkbox]:focus, input[type=color]:focus, input[type=date]:focus, input[type=datetime-local]:focus, input[type=datetime]:focus, input[type=email]:focus, input[type=month]:focus, input[type=number]:focus, input[type=password]:focus, input[type=radio]:focus, input[type=search]:focus, input[type=tel]:focus, input[type=text]:focus, input[type=time]:focus, input[type=url]:focus, input[type=week]:focus, select:focus, textarea:focus {
+    border-color: #fd4624;
+    box-shadow: 0 0 0 1px #fd4624;
+}

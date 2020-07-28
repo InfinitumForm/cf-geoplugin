@@ -285,8 +285,8 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 			{
 				add_submenu_page(
 					CFGP_NAME,
-					__('Spam Protection',CFGP_NAME),
-					__('Spam Protection',CFGP_NAME),
+					__('Site Protection',CFGP_NAME),
+					__('Site Protection',CFGP_NAME),
 					'manage_options',
 					CFGP_NAME . '-defender',
 					array( &$this, 'page_cf_geoplugin_defender' )
@@ -430,7 +430,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 			$print = $_SESSION[CFGP_PREFIX . 'rss'];
 		}
 	?>
-    <div class="card">
+    <div class="card  p-0">
         <div class="card-header">
             <span class="fa fa-info"></span> <?php _e('Live News & info',CFGP_NAME) ?>
         </div>
@@ -707,7 +707,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 			{
 				$wp_admin_bar->add_node( array(
 					'id' => CFGP_NAME . '-defender',
-					'title' => __('Anti Spam Protection',CFGP_NAME),
+					'title' => __('Anti Site Protection',CFGP_NAME),
 					'href' => parent::add_admin_url( 'admin.php?page=' . CFGP_NAME . '-defender'),
 					'meta'  => array( 'class' => CFGP_NAME . '-defender-toolbar-page' ),
 					'parent' => CFGP_NAME,

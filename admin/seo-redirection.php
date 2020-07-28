@@ -50,7 +50,7 @@ else
     $total_pages = ceil( $redirection_count / $records_per_page );
 ?>
 <div class="clearfix"></div>
-<div class="container-fluid">
+<div class="container-fluid" id="cf-geoplugin-page">
     <div class="row">
     	<div class="col-12">
         	<h1 class="h5 mt-3"><i class="fa fa-location-arrow"></i> <?php _e('SEO Redirection',CFGP_NAME); ?></h1>

@@ -12,14 +12,14 @@ $CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIO
 // if(is_admin()) echo '<pre>', var_dump($_SESSION), '</pre>';
 ?>
 <div class="clearfix"></div>
-<div class="container-fluid">
+<div class="container-fluid" id="cf-geoplugin-page">
 	<div class="row">
     	<div class="col-12">
         	<h1 class="h5 mt-3"><i class="fa fa-map-marker"></i> <?php _e('CF Geo Plugin',CFGP_NAME); ?></h1>
             <hr>
         </div>
         <div class="col">
-        	<div class="card border-secondary">
+        	<div class="card border-secondary p-0">
                 <div class="card-body text-white bg-secondary text-center">
 				<?php if($CFGEO['status'] == 402) : ?>
 					<div class="row align-items-center">
@@ -56,7 +56,7 @@ $CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIO
             </div>
         </div>
         <div class="col">
-        	<div class="card border-info">
+        	<div class="card border-info p-0">
                 <div class="card-body text-white bg-info text-center">
                 	<div class="row align-items-center">
                     	<div class="col-sm-2 text-left">
@@ -105,7 +105,7 @@ $CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIO
             </div>
         </div>
         <div class="col">
-        	<div class="card border-success">
+        	<div class="card border-success p-0">
                 <div class="card-body text-white bg-success text-center">
                 	<div class="row align-items-center">
                     	<div class="col-sm-2 text-left">
@@ -326,8 +326,7 @@ $CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIO
 				
 				<div role="tabpanel" class="tab-pane fade pt-3" id="metatags">
                 	<h3 class="ml-3 mr-3"><?php _e('List of available tags',CFGP_NAME); ?></h3>
-                    <p class="ml-3 mr-3 mb-1"><?php _e('These special tags are intended for quick insertion of geo information into pages and posts. These tags allow the use of geo information in the titles & content of pages, categories and other taxonomy. It can also be used in widgets, various page builders and supports several SEO plugins like Yoast, All in One Seo Pack, SEO Framework and WordPress SEO Plugin by Rank Math.',CFGP_NAME); ?></p>
-					<p class="ml-3 mr-3 text-danger"><?php _e('NOTE: It does not currently support custom fields, but soon this option will be supported.',CFGP_NAME); ?></p>
+                    <p class="ml-3 mr-3"><?php _e('These special tags are intended for quick insertion of geo information into pages and posts. These tags allow the use of geo information in the titles & content of pages, categories and other taxonomy. It can also be used in widgets, various page builders and supports several SEO plugins like Yoast, All in One Seo Pack, SEO Framework and WordPress SEO Plugin by Rank Math.',CFGP_NAME); ?></p>
                     <table width="100%" class="table table-striped table-sm">
                         <tbody>
 							<?php do_action('page-cf-geoplugin-tag-table-start'); ?>

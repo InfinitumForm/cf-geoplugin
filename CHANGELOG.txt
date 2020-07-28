@@ -1,5 +1,10 @@
 == Changelog ==
 
+= 7.12.2 =
+* Enhancement: Site protection
+* Enhancement: Updated UX and UI inside dashboard
+* Enhancement: Added new filters inside code
+
 = 7.12.1 =
 * IMPORTANT UPDATE: Fixed problem with license email expiration
 

@@ -38,7 +38,7 @@ if( isset( $_GET['action'] ) && ( $_GET['action'] == 'debugger' || $_GET['action
 
 ?>
 <div class="clearfix"></div>
-<div class="container-fluid">
+<div class="container-fluid" id="cf-geoplugin-page">
     <div class="row">
         <div class="col-12">
             <h1 class="h5 mt-3"><i class="fa fa-bug"></i> <?php _e( 'Debug Mode', CFGP_NAME ); ?></h1>
@@ -50,7 +50,7 @@ if( isset( $_GET['action'] ) && ( $_GET['action'] == 'debugger' || $_GET['action
 			
             <div class="row">
             	<div class="col-sm-8">
-                    <div class="card border-secondary bg-secondary text-white">
+                    <div class="card p-0 border-secondary bg-secondary text-white">
                         <div class="card-body">
                         	<?php echo sprintf(__( 'Enter custom IP address for the lookup.', CFGP_NAME ), CFGP_VERSION ); ?>
                             <form method="get" target="_self" id="template-options-tab" autocomplete="off">
@@ -70,7 +70,7 @@ if( isset( $_GET['action'] ) && ( $_GET['action'] == 'debugger' || $_GET['action
                 
                 
                 <div class="col-sm-4">
-                    <div class="card border-success">
+                    <div class="card p-0 border-success">
                         <div class="card-body text-white bg-success text-center">
                             <div class="row align-items-center">
                                 <div class="col-2 text-left">
@@ -88,7 +88,7 @@ if( isset( $_GET['action'] ) && ( $_GET['action'] == 'debugger' || $_GET['action
             </div>
             
             <?php do_action('page-cf-geoplugin-debug-before-tab'); ?>
-            <ul class="nav nav-tabs mt-3" role="tablist">
+            <ul class="nav nav-tabs mt-3 mb-0" role="tablist">
                 <li class="nav-item">
                     <a class="nav-link text-dark <?php echo $data; ?>" href="#recived-data" role="tab" data-toggle="tab"><i class="fa fa-database"> <?php _e( 'Recived data', CFGP_NAME ); ?></i></a>
                 </li>
@@ -108,11 +108,11 @@ if( isset( $_GET['action'] ) && ( $_GET['action'] == 'debugger' || $_GET['action
             </ul> 
 
             <!-- Tab panes -->
-            <div class="tab-content">
-            	<div role="tabpane" class="tab-pane fade in <?php echo $data; ?>" id="recived-data">
-                    <div class="card text-body">
+            <div class="tab-content mt-0">
+            	<div role="tabpane" class="tab-pane mt-0 fade in <?php echo $data; ?>" id="recived-data">
+                    <div class="card border-0 mt-0 p-0 text-body">
                         <div class="card-header bg-transparent">
-                            <h1 class="h5"><?php echo sprintf( __( 'Information that the CF Geo Plugin API ver.%s receives', CFGP_NAME ), CFGP_VERSION ); ?></h1>
+                            <h1 class="h5 mb-0"><?php echo sprintf( __( 'Information that the CF Geo Plugin API ver.%s receives', CFGP_NAME ), CFGP_VERSION ); ?></h1>
                         </div>  
                         <div class="card-body">
                         	<p><?php _e( 'This informations are from CF Geo Plugin API services.', CFGP_NAME ); ?></p>
@@ -182,10 +182,10 @@ if( isset( $_GET['action'] ) && ( $_GET['action'] == 'debugger' || $_GET['action
                         </div>
                     </div>
                 </div>
-                <div role="tabpanel" class="tab-pane fade in" id="server-statistics">
-                    <div class="card text-body">
+                <div role="tabpanel" class="tab-pane mt-0 fade in" id="server-statistics">
+                    <div class="card border-0 mt-0 p-0 text-body">
                         <div class="card-header bg-transparent">
-                            <h1 class="h5"><?php _e( 'Information of your WordPress installation, server and browser', CFGP_NAME ); ?></h1>
+                            <h1 class="h5 mb-0"><?php _e( 'Information of your WordPress installation, server and browser', CFGP_NAME ); ?></h1>
                         </div>
                         <div class="card-body">
                         	<p><?php _e( 'This information is only visible to you', CFGP_NAME ); ?></p>
@@ -287,10 +287,10 @@ if( isset( $_GET['action'] ) && ( $_GET['action'] == 'debugger' || $_GET['action
                         </div>
                     </div>
                 </div>
-                <div role="tabpanel" class="tab-pane fade in" id="sent-data">
-                    <div class="card text-body">
+                <div role="tabpanel" class="tab-pane mt-0 fade in" id="sent-data">
+                    <div class="card border-0 mt-0 p-0 text-body">
                         <div class="card-header bg-transparent">
-                            <h1 class="h5"><?php echo sprintf( __( 'Information that the plugin CF Geo Plugin API ver.%s sends', CFGP_NAME ), CFGP_VERSION ); ?></h1>
+                            <h1 class="h5 mb-0"><?php echo sprintf( __( 'Information that the plugin CF Geo Plugin API ver.%s sends', CFGP_NAME ), CFGP_VERSION ); ?></h1>
                         </div>
                         <div class="card-body">
                         	<p><?php _e('This information are sent to CF Geo Plugin API. All of this informations (hostname, IP and timezone) are available for general public, world wide and we only use them for API purpose which helps plugin to determine the exact location of the visitors and prevent accidental collapse between the IP address. Your IP and email address is also a guarantee that you\'re not a robot or some spamming software.',CFGP_NAME); ?><br><?php _e('If you are concerned about your private informations, please read the <a href="http://cfgeoplugin.com/privacy-policy" target="_blank">Privacy Policy</a>',CFGP_NAME); ?></p>
@@ -359,10 +359,10 @@ if( isset( $_GET['action'] ) && ( $_GET['action'] == 'debugger' || $_GET['action
                         </div>
                     </div>
                 </div>
-                <div role="tabpane" class="tab-pane fade in" id="google-map">
-                    <div class="card text-body">
+                <div role="tabpane" class="tab-pane mt-0 fade in" id="google-map">
+                    <div class="card border-0 mt-0 p-0 text-body">
                             <div class="card-header bg-transparent">
-                                <h1 class="h5"><?php _e( 'Google Map', CFGP_NAME ); ?></h1>  
+                                <h1 class="h5 mb-0"><?php _e( 'Google Map', CFGP_NAME ); ?></h1>  
                             </div>
                             <div class="card-body">
                             <?php
@@ -400,10 +400,10 @@ if( isset( $_GET['action'] ) && ( $_GET['action'] == 'debugger' || $_GET['action
                             </div>
                     </div>
                 </div>
-                <div role="tabpanel" class="tab-pane fade in <?php echo $debug; ?>" id="debugger">
-                    <div class="card text-body">
+                <div role="tabpanel" class="tab-pane mt-0 fade in <?php echo $debug; ?>" id="debugger">
+                    <div class="card border-0 mt-0 p-0 text-body">
                         <div class="card-header bg-transparent">
-                            <h1 class="h5"><?php _e( 'Plugin Debugger', CFGP_NAME ); ?></h1>
+                            <h1 class="h5 mb-0"><?php _e( 'Plugin Debugger', CFGP_NAME ); ?></h1>
                         </div>
                         <div class="card-footer bg-transparent">
                             <?php _e( 'This feature allows you to collect and download all possible plugin data. This is very helpful in some situations. Note: On every debug last log file is deleted and new one is created.' ) ?> 

@@ -11,10 +11,10 @@ $CFGEO = $GLOBALS['CFGEO'];
 wp_enqueue_media();
 ?>
 <div class="clearfix"></div>
-<div class="container mt-5 pb-5">
+<div class="container mt-5 pb-5" id="cf-geoplugin-page">
     <div id="alert-success"></div>
     <div id="alert-fail"></div>
-    <div class="card mx-auto mt-5">
+    <div class="card  p-0 mx-auto mt-5">
         <div class="card-header bg-transparent">
             <?php _e( 'SEO Redirection Upload', CFGP_NAME ); ?>
             <a href="<?php echo CF_Geoplugin_Global::add_admin_url( 'admin.php?page='. $_GET['page'] .'&action=export_csv'); ?>" id="backup-seo" class="btn btn-outline-secondary btn-sm pull-right"><span class="fa fa-download"></span> <?php _e( 'Backup Prevous Settings', CFGP_NAME); ?></a>

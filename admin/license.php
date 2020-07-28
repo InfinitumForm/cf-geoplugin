@@ -144,7 +144,7 @@ if( $global->get( 'action' ) == 'deactivate_license' && isset( $_GET['cfgp_licen
 
 ?>
 <div class="clearfix"></div>
-<div class="container-fluid">
+<div class="container-fluid" id="cf-geoplugin-page">
     <div class="row mt-4">
     	<?php if($this->get('page') != 'cf-geoplugin-settings') : ?>
     	<div class="col-sm-9">

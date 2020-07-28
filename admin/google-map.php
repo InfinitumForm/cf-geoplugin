@@ -11,8 +11,8 @@
 $CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
 ?>
 
-<div class = "clearfix"></div>
-<div class = "container-fluid">
+<div class="clearfix"></div>
+<div class="container-fluid" id="cf-geoplugin-page">
     <div class="row">
     	<div class="col-12">
         	<h1 class="h5 mt-3"><i class="fa fa-globe"></i> <?php _e('Google Map',CFGP_NAME); ?></h1>
@@ -123,12 +123,12 @@ $CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIO
                         </div>
                     </div>
                 </div>
-                <div role="tabpane" class="tab-pane fade in" id="preview">
-                    <div class="card text-body">
-                            <div class="card-header bg-transparent">
+                <div role="tabpane" class="tab-pane mt-0 fade in" id="preview">
+                    <div class="card p-0 mt-0 text-body border-0">
+                            <div class="card-header bg-transparent border-0">
                                 <h1 class="h5"><?php _e( 'Google Map', CFGP_NAME ); ?></h1>  
                             </div>
-                            <div class="card-body">
+                            <div class="card-body border-0">
                             <?php
                                 if( $CF_GEOPLUGIN_OPTIONS['enable_gmap'] )
 								{
