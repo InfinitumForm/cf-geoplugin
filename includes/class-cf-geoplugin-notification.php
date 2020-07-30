@@ -34,40 +34,40 @@ class CF_Geoplugin_Notification extends CF_Geoplugin_Global
 		$transient = 'cf-geoplugin-notification-license-expire-soon';
 		if(!get_transient($transient) )
 		{
-			$this->validate(); // Let's first validate license
-
+			// Let's first validate license
+			if(isset($CF_GEOPLUGIN_OPTIONS['license_expire']) && !empty($CF_GEOPLUGIN_OPTIONS['license_expire']) && strtotime('-1 month', (int)$CF_GEOPLUGIN_OPTIONS['license_expire']) < time()){
+				$this->validate();
+			} else return;
+			
 			$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
 			
-			if(isset($CF_GEOPLUGIN_OPTIONS['license_expire']) && !empty($CF_GEOPLUGIN_OPTIONS['license_expire']))
+			$before_date_expire = strtotime('-1 month', (int)$CF_GEOPLUGIN_OPTIONS['license_expire']);
+			if($before_date_expire <= time())
 			{
-				$before_date_expire = strtotime('-1 month', (int)$CF_GEOPLUGIN_OPTIONS['license_expire']);
-				if($before_date_expire <= time())
+				if($emails = $this->get_admins())
 				{
-					if($emails = $this->get_admins())
-					{
-						$message = array();
-						$message[]= '<p>' . __('Hi there,', CFGP_NAME) . '</p>';
-						$message[]= '<p>' . __('Your license expire soon!', CFGP_NAME) . '</p>';
-						$message[]= '<p>' . __('Please renew your license before it expires so that you can use all services without interruption.', CFGP_NAME) . '</p>';
-						$message[]= '<p>' . sprintf(
-							__('Your license expires on %1$s and after that date you will be returned to the limited lookup which may create a limitation on your current WordPress installation.', CFGP_NAME),
-							date_i18n( get_option( 'date_format' ), (int)$CF_GEOPLUGIN_OPTIONS['license_expire'] )
-						) . '</p>';
-						
-						
-						$message[]= '<p>' . sprintf(
-							__('To extend your license, %1$s.', CFGP_NAME),
-							'<a href="' . CFGP_STORE . '/my-account/?view-license-key=1&key=' . trim($CF_GEOPLUGIN_OPTIONS['license_key']) . '&hook_action=extend" target="_blank">' . __('CLICK HERE', CFGP_NAME) . '</a>'
-						) . '</p>';
-						
-						$message[]= '<p>&nbsp;</p>';
-						$message[]= '<p>' . __('NOTE: You will receive this message a few more times before the license expires.', CFGP_NAME) . '</p>';
-						
-						$message = apply_filters('cf_geoplugin_notification_license_expire_soon', $message);
+					$message = array();
+					$message[]= '<p>' . __('Hi there,', CFGP_NAME) . '</p>';
+					$message[]= '<p>' . __('Your license expire soon!', CFGP_NAME) . '</p>';
+					$message[]= '<p>' . __('Please renew your license before it expires so that you can use all services without interruption.', CFGP_NAME) . '</p>';
+					$message[]= '<p>' . sprintf(
+						__('Your license expires on %1$s and after that date you will be returned to the limited lookup which may create a limitation on your current WordPress installation.', CFGP_NAME),
+						date_i18n( get_option( 'date_format' ), (int)$CF_GEOPLUGIN_OPTIONS['license_expire'] )
+					) . '</p>';
+					
+					
+					$message[]= '<p>' . sprintf(
+						__('To extend your license, %1$s.', CFGP_NAME),
+						'<a href="' . CFGP_STORE . '/my-account/?view-license-key=1&key=' . trim($CF_GEOPLUGIN_OPTIONS['license_key']) . '&hook_action=extend" target="_blank">' . __('CLICK HERE', CFGP_NAME) . '</a>'
+					) . '</p>';
+					
+					$message[]= '<p>&nbsp;</p>';
+					$message[]= '<p>' . __('NOTE: You will receive this message a few more times before the license expires.', CFGP_NAME) . '</p>';
+					
+					$message = apply_filters('cf_geoplugin_notification_license_expire_soon', $message);
 
-						$this->send($emails, __('CF GEO PLUGIN NOTIFICATION - Your license will expire soon', CFGP_NAME), $message);
-						set_transient($transient, 1, (60*60*24*7)); // 7 days
-					}
+					$this->send($emails, __('CF GEO PLUGIN NOTIFICATION - Your license will expire soon', CFGP_NAME), $message);
+					set_transient($transient, 1, (60*60*24*7)); // 7 days
 				}
 			}
 		}

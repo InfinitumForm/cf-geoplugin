@@ -767,6 +767,16 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 				'meta'  => array( 'class' => CFGP_NAME . '-setup-toolbar-page' ),
 				'parent' => CFGP_NAME,
 			) );
+			
+			$protocol = 'http' . (((isset($_SERVER['HTTPS']) && !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') || $_SERVER['SERVER_PORT'] == 443) ? 's' : '') . '://';  
+			$CurPageURL = $protocol . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+			
+			if(strpos($CurPageURL, '?') !== false){
+				$CurPageURL = $CurPageURL . '&cf_geoplugin_clear_session=true';
+			} else {
+				$CurPageURL = $CurPageURL . '?cf_geoplugin_clear_session=true';
+			}			
+				
 
 			if(!CFGP_ACTIVATED)
 			{
@@ -781,8 +791,16 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 		}
 		
 		$wp_admin_bar->add_node( array(
+			'id' => CFGP_NAME . '-clear-session',
+			'title' => __('Clear Session',CFGP_NAME),
+			'href' => esc_url($CurPageURL),
+			'meta'  => array( 'class' => CFGP_NAME . '-clear-session' ),
+			'parent' => CFGP_NAME,
+		) );
+		
+		$wp_admin_bar->add_node( array(
 			'id' => CFGP_NAME . '-devider',
-			'title' => '<span style="text-align:center; display:block;width:100%;">------------ '.__("Info",CFGP_NAME).' ------------</span>',
+			'title' => '<span style="text-align:center; display:block;width:100%;">------------ '.__('Info', CFGP_NAME).' ------------</span>',
 			'href' => '',
 			'parent' => CFGP_NAME,
 		) );

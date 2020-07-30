@@ -22,16 +22,22 @@ class CF_Geoplugin_Public extends CF_Geoplugin_Global
 	);
 	
 	public function run(){
+		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
+		
 		$this->add_action( 'init', 'run_style' );
 		$this->add_action( 'wp_head', 'initialize_plugin_javascript', 1 );
-		$this->add_action( 'wp_head', 'initialize_plugin_css', 99999);
+		
+		if(isset($CF_GEOPLUGIN_OPTIONS['enable_css']) ? $CF_GEOPLUGIN_OPTIONS['enable_css'] : 1){
+			$this->add_action( 'wp_head', 'initialize_plugin_css', 99999);
+		}
+		
 		$this->add_action( 'admin_head', 'initialize_plugin_javascript', 1 );
 		$this->add_action( 'wp_head', 'cfgp_geo_tag' );
 		
-		$this->add_action('page-cf-geoplugin-tab', 'cf_geoplugin_tab');
-		$this->add_action('page-cf-geoplugin-tab-panel', 'cf_geoplugin_tab_panel');
-		
-		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
+		if(isset($CF_GEOPLUGIN_OPTIONS['enable_css']) ? $CF_GEOPLUGIN_OPTIONS['enable_css'] : 1){
+			$this->add_action('page-cf-geoplugin-tab', 'cf_geoplugin_tab');
+			$this->add_action('page-cf-geoplugin-tab-panel', 'cf_geoplugin_tab_panel');
+		}
 		
 		if(isset($CF_GEOPLUGIN_OPTIONS['enable_cache']) ? $CF_GEOPLUGIN_OPTIONS['enable_cache'] : 0) {
 
@@ -44,8 +50,10 @@ class CF_Geoplugin_Public extends CF_Geoplugin_Global
 			$this->add_filter( 'the_content', 'enable_cache' );
 		}
 		
-		$this->add_action( 'wp_ajax_cfgeo_css_cache', 'ajax_fix_css_cache' );
-		$this->add_action( 'wp_ajax_nopriv_cfgeo_css_cache', 'ajax_fix_css_cache' );
+		if(isset($CF_GEOPLUGIN_OPTIONS['enable_css']) ? $CF_GEOPLUGIN_OPTIONS['enable_css'] : 1){
+			$this->add_action( 'wp_ajax_cfgeo_css_cache', 'ajax_fix_css_cache' );
+			$this->add_action( 'wp_ajax_nopriv_cfgeo_css_cache', 'ajax_fix_css_cache' );
+		}
 		
 		$this->tab_id = 'css-property';
 	}
@@ -132,10 +140,13 @@ class CF_Geoplugin_Public extends CF_Geoplugin_Global
 
 			foreach($CFGEO as $key=>$geo){
 				if( empty($geo) || !in_array($key, apply_filters( 'cf_geoplugin_allowed_css', $this->allowed_css),true)!==false ) continue;
-				
-				$css_show[]= '.cfgeo-show-in-' . sanitize_title($geo);
-				$css_hide[]= '.cfgeo-hide-from-' . sanitize_title($geo);
+				$geo = sanitize_title($geo);
+				$css_show[$geo]= '.cfgeo-show-in-' . $geo;
+				$css_hide[$geo]= '.cfgeo-hide-from-' . $geo;
 			}
+			
+			$css_show = apply_filters('cf_geoplugin_css_show_in', $css_show);
+			$css_hide = apply_filters('cf_geoplugin_css_hide_from', $css_hide);
 
 			if( !empty($css_show) ) :
 				ob_start();
@@ -241,19 +252,23 @@ class CF_Geoplugin_Public extends CF_Geoplugin_Global
 
 		foreach($CFGEO as $key=>$geo){
 			if( empty($geo) || !in_array($key, apply_filters( 'cf_geoplugin_allowed_css', $this->allowed_css),true)!==false ) continue;
-			
-			$css_show[]= '.cfgeo-show-in-' . sanitize_title($geo);
-			$css_hide[]= '.cfgeo-hide-from-' . sanitize_title($geo);
+			$geo = sanitize_title($geo);
+			$css_show[$geo]= '.cfgeo-show-in-' . $geo;
+			$css_hide[$geo]= '.cfgeo-hide-from-' . $geo;
 		}
+		
+		$css_show = apply_filters('cf_geoplugin_css_show_in', $css_show);
+		$css_hide = apply_filters('cf_geoplugin_css_hide_from', $css_hide);
 
-		if( !empty($css_show) ) :
-		?><style media="all" type="text/css" id="cf-geoplugin-display-control" data-nonce="<?php echo wp_create_nonce( 'cfgeo-process-css-cache-ajax' ); ?>">*[class="cfgeo-show-in-"],*[class*="cfgeo-show-in-"],*[class^="cfgeo-show-in-"]{display: none;}<?php echo join(',', $css_hide); ?>{display:none !important;} <?php echo join(',', $css_show); ?>{display:block !important;}</style><?php
+		if( !empty($css_show) ) :		
+		?><style media="all" type="text/css" id="cf-geoplugin-display-control" data-nonce="<?php echo wp_create_nonce( 'cfgeo-process-css-cache-ajax' ); ?>">*[class="cfgeo-show-in-"],*[class*="cfgeo-show-in-"],*[class^="cfgeo-show-in-"]{display: none;}<?php echo join(',', $css_hide); ?>{display:none !important;} <?php echo join(',', $css_show); ?>{display:block !important;}<?php do_action('cf_geoplugin_css_property'); ?></style><?php
 		endif;
 	}
 	
 	
 	public function initialize_plugin_javascript(){
 		$CFGEO = $GLOBALS['CFGEO'];
+		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
 		if(empty($CFGEO)) return;
 		?>
 <!-- <?php _e('CF Geoplugin JavaScript Plugin',CFGP_NAME); ?> -->
@@ -262,22 +277,29 @@ class CF_Geoplugin_Public extends CF_Geoplugin_Global
 	window.wp = window.wp || {};
 	window.wp.geo = window.wp.geo || {};
 	if(typeof cf == 'undefined') var cf = {};
-	cf.geoplugin = {url:window.location.href,host:window.location.hostname,protocol:window.location.protocol.replace(/\:/g,''),<?php
-		$exclude = array_map('trim', apply_filters( 'cf_geoplugin_initialize_plugin_javascript_exclude', explode(',','state,continentCode,areaCode,dmaCode,timezoneName,currencySymbol,currencyConverter,error,status,runtime,error_message')));
-		$sprintf = array();
-		if( isset( $CFGEO['country_code'] ) && !empty( $CFGEO['country_code'] ) )
-		{
-			$CFGEO = array_merge($CFGEO,array(
-				'flag' => CFGP_ASSETS . '/flags/4x3/'.strtolower($CFGEO['country_code']) . '.svg'
-			));
-		}
-		foreach($CFGEO as $name=>$value)
-		{
-			if(in_array($name, $exclude, true) === false){
-				$sprintf[]=sprintf('%1$s:"%2$s"',$name,esc_attr($value));
+	cf.geoplugin = {url:window.location.href,host:window.location.hostname,protocol:window.location.protocol.replace(/\:/g,'')<?php
+		if((isset($CF_GEOPLUGIN_OPTIONS['enable_js']) ? $CF_GEOPLUGIN_OPTIONS['enable_js'] : 1) || is_admin()){
+			$exclude = array_map('trim', apply_filters( 'cf_geoplugin_initialize_plugin_javascript_exclude', explode(',','state,continentCode,areaCode,dmaCode,timezoneName,currencySymbol,currencyConverter,error,status,runtime,error_message')));
+			$js = array();
+			
+			if( isset( $CFGEO['country_code'] ) && !empty( $CFGEO['country_code'] ) )
+			{
+				$CFGEO = array_merge($CFGEO,array(
+					'flag' => CFGP_ASSETS . '/flags/4x3/'.strtolower($CFGEO['country_code']) . '.svg'
+				));
 			}
+			
+			foreach($CFGEO as $name=>$value)
+			{
+				if(in_array($name, $exclude, true) === false){
+					$js[]=sprintf('%1$s:"%2$s"',$name,esc_attr($value));
+				}
+			}
+			
+			$js = apply_filters('cf_geoplugin_plugin_javascript_object', $js);
+			
+			echo ',' . join(',', $js);
 		}
-		echo join(',',$sprintf);
 	?>}
 	window.cfgeo = cf.geoplugin;
 	window.wp.geo = window.cfgeo;

@@ -1,5 +1,16 @@
 == Changelog ==
 
+= 7.12.3 =
+* URGENT FIX: Page speed impact
+* URGENT FIX: Missing shortcodes on the MySQL Session
+* IMPORTANT UPDATE: API validation
+* IMPORTANT UPDATE: Fixed COVID 19 transient problems  
+* Enhancement: Session functionality
+* Enhancement: CSS and JavaScript functionality
+* New: CSS and JavaScript settings
+* New: Added new action hooks
+* New: Clear session functionality
+
 = 7.12.2 =
 * Enhancement: Site protection
 * Enhancement: Updated UX and UI inside dashboard

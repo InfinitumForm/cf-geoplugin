@@ -5,7 +5,7 @@ Tags: geolocation, locator, GeoIP, geo, geotargeting, seo, seo redirect, woocomm
 Requires at least: 3.0
 Tested up to: 5.4
 Requires PHP: 5.6.0
-Stable tag: 7.12.2
+Stable tag: 7.12.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -398,6 +398,17 @@ Please inform us if any of these errors occur via contact form on our website [h
 
 == Changelog ==
 
+= 7.12.3 =
+* URGENT FIX: Page speed impact
+* URGENT FIX: Missing shortcodes on the MySQL Session
+* IMPORTANT UPDATE: API validation
+* IMPORTANT UPDATE: Fixed COVID 19 transient problems  
+* Enhancement: Session functionality
+* Enhancement: CSS and JavaScript functionality
+* New: CSS and JavaScript settings
+* New: Added new action hooks
+* New: Clear session functionality
+
 = 7.12.2 =
 * Enhancement: Site protection
 * Enhancement: Updated UX and UI inside dashboard
@@ -467,21 +478,16 @@ Please inform us if any of these errors occur via contact form on our website [h
 
 == Upgrade Notice ==
 
-= 7.12.2 =
-* Enhancement: Site protection
-* Enhancement: Updated UX and UI inside dashboard
-* Enhancement: Added new filters inside code
-
-= 7.12.1 =
-* IMPORTANT UPDATE: Fixed problem with license email expiration
-
-= 7.12.0 =
-* IMPORTANT UPDATE: Improved API communication
-* IMPORTANT UPDATE: Improved license verification and renewal.
-* IMPORTANT UPDATE: Added push notifications for license expiration and lookup.
-* IMPORTANT UPDATE: COVID-19 Fixed PHP error "divided by zero"
-* Enhancement: Finding IDs for SEO redirection pages
-* Enhancement: Fixed a bug with the currency conversion shortcode
+= 7.12.3 =
+* URGENT FIX: Page speed impact
+* URGENT FIX: Missing shortcodes on the MySQL Session
+* IMPORTANT UPDATE: API validation
+* IMPORTANT UPDATE: Fixed COVID 19 transient problems  
+* Enhancement: Session functionality
+* Enhancement: CSS and JavaScript functionality
+* New: CSS and JavaScript settings
+* New: Added new action hooks
+* New: Clear session functionality
 
 == Other Notes ==
 

@@ -14,6 +14,11 @@ class CF_Geoplugin_Init extends CF_Geoplugin_Global
 	*/
 	public function run(){
 		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
+		
+		$this->session_type = $CF_GEOPLUGIN_OPTIONS['session_type'];
+		
+		if($this->session_type == 2) clear_cf_geoplugin_session(true);
+		
 		$this->add_action('plugins_loaded', 'load_textdomain');
 
 		if( isset( $CF_GEOPLUGIN_OPTIONS['enable_update'] ) && $CF_GEOPLUGIN_OPTIONS['enable_update'] )
@@ -119,8 +124,8 @@ class CF_Geoplugin_Init extends CF_Geoplugin_Global
 		}
 		else CF_Geoplugin_Debug::log( 'Notifications class not loaded - File does not exists' );
 
-		if(isset($_SESSION[CFGP_PREFIX . 'api_session']) && isset($GLOBALS['CFGEO']))
-		{			
+		if(isset($GLOBALS['CFGEO']) && !empty($GLOBALS['CFGEO']))
+		{
 			// Include Public Functions
 			if( file_exists( CFGP_INCLUDES . '/class-cf-geoplugin-public.php' ) )
 			{
@@ -134,21 +139,7 @@ class CF_Geoplugin_Init extends CF_Geoplugin_Global
 				else CF_Geoplugin_Debug::log( 'Public class not loaded - Class does not exists' );
 			}
 			else CF_Geoplugin_Debug::log( 'Public class not loaded - File does not exists' );
-			
-			// Include Shortcodes
-			if( file_exists( CFGP_INCLUDES . '/class-cf-geoplugin-shortcodes.php' ) )
-			{
-				include_once CFGP_INCLUDES . '/class-cf-geoplugin-shortcodes.php';
-				if( class_exists( 'CF_Geoplugin_Shortcodes' ) )
-				{
-					$shortcodes = new CF_Geoplugin_Shortcodes;
-					$shortcodes->run();
-					CF_Geoplugin_Debug::log( 'Shortcodes class loaded' );
-				}
-				else CF_Geoplugin_Debug::log( 'Shortcodes class not loaded - Class does not exists' );
-			}
-			else CF_Geoplugin_Debug::log( 'Shortcodes class not loaded - File does not exists' );
-			
+
 			// Include Utilities
 			if( file_exists( CFGP_INCLUDES . '/class-cf-geoplugin-utilities.php' ) )
 			{
@@ -162,7 +153,7 @@ class CF_Geoplugin_Init extends CF_Geoplugin_Global
 				else CF_Geoplugin_Debug::log( 'Utilities class not loaded - Class does not exists' );
 			}
 			else CF_Geoplugin_Debug::log( 'Shortcodes class not loaded - File does not exists' );
-			
+
 			// Include Texteditor Buttons
 			if(file_exists(CFGP_INCLUDES . '/class-cf-geoplugin-texteditor-buttons.php'))
 			{
@@ -239,6 +230,25 @@ class CF_Geoplugin_Init extends CF_Geoplugin_Global
 				else CF_Geoplugin_Debug::log( 'Notification class not loaded - Class does not exists' );
 			}
 			else CF_Geoplugin_Debug::log( 'Notification class not loaded - File does not exists' );
+			
+			
+			
+			
+			// Include Shortcodes KEEP IT LAST
+			if( file_exists( CFGP_INCLUDES . '/class-cf-geoplugin-shortcodes.php' ) )
+			{
+				include_once CFGP_INCLUDES . '/class-cf-geoplugin-shortcodes.php';
+				if( class_exists( 'CF_Geoplugin_Shortcodes' ) )
+				{
+					$shortcodes = new CF_Geoplugin_Shortcodes;
+					$shortcodes->run();
+					CF_Geoplugin_Debug::log( 'Shortcodes class loaded' );
+				}
+				else CF_Geoplugin_Debug::log( 'Shortcodes class not loaded - Class does not exists' );
+			}
+			else CF_Geoplugin_Debug::log( 'Shortcodes class not loaded - File does not exists' );
+			
+			
 
 
 			CF_Geoplugin_Debug::log( '------------ SERVER INFORMATIONS ------------' );
@@ -457,7 +467,7 @@ class CF_Geoplugin_Init extends CF_Geoplugin_Global
 	*/
 	public function deactivate(){
 		// destroy session
-		if (version_compare(PHP_VERSION, '5.4.0', '>='))
+		/*if (version_compare(PHP_VERSION, '5.4.0', '>='))
 		{
 			if (function_exists('session_status') && session_status() != PHP_SESSION_NONE) {
 				session_destroy();
@@ -468,7 +478,7 @@ class CF_Geoplugin_Init extends CF_Geoplugin_Global
 			if(session_id() != '') {
 				session_destroy();
 			}
-		}		
+		}*/
 		// clear CRON
 		wp_clear_scheduled_hook('cf_geo_validate');
 		// Set deactivated time

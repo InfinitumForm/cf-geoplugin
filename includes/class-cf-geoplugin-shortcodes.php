@@ -715,7 +715,7 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 	 */
 	public function shortcode_automat_setup($atts){
 		$CFGEO = $GLOBALS['CFGEO'];
-		
+
 		$nonce = wp_create_nonce( 'cfgeo-process-cache-ajax' );
 		
 		$cache = $this->is_attribute_exists('cache', $atts);

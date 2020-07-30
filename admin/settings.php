@@ -355,6 +355,44 @@ if( $global->get( 'action' ) == 'deactivate_license' )
 									),
 									'info'		=> __('Place simple Google Map to your page.',CFGP_NAME)
 								));
+								
+								
+								$general->radio(array(
+									'label'		=> __('Enable CSS property',CFGP_NAME),
+									'name'		=> 'enable_css',
+									'class'		=> 'enable_css',
+									'default'	=> CF_Geoplugin_Global::get_the_option('enable_css', 0),
+									array(
+										'text'	=> __('Enable',CFGP_NAME),
+										'value'	=> 1,
+										'id'	=> 'enable_css_true',
+									),
+									array(
+										'text'	=> __('Disable',CFGP_NAME),
+										'value'	=> 0,
+										'id'	=> 'enable_css_false',
+									),
+									'info'		=> __('The CF Geo Plugin has dynamic CSS settings that can hide or display some content if you use it properly.',CFGP_NAME)
+								));
+								
+								$general->radio(array(
+									'label'		=> __('Enable JavaScript property',CFGP_NAME),
+									'name'		=> 'enable_js',
+									'class'		=> 'enable_js',
+									'default'	=> CF_Geoplugin_Global::get_the_option('enable_js', 0),
+									array(
+										'text'	=> __('Enable',CFGP_NAME),
+										'value'	=> 1,
+										'id'	=> 'enable_js_true',
+									),
+									array(
+										'text'	=> __('Disable',CFGP_NAME),
+										'value'	=> 0,
+										'id'	=> 'enable_js_false',
+									),
+									'info'		=> __('Enable CF Geo Plugin JavaScript support.',CFGP_NAME)
+								));
+								
 
 								if( is_plugin_active('woocommerce/woocommerce.php') )
 								{	

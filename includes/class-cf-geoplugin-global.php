@@ -87,6 +87,8 @@ class CF_Geoplugin_Global
 		'enable_seo_posts'			=> array('post', 'page'),
 		'enable_geo_tag'			=> array('post', 'page'),
 		'enable_cf7'				=> 0,
+		'enable_css'				=> 1,
+		'enable_js'					=> 1,
 		'enable_wooplatnica'		=> 0,
 		'hide_http_referer_headers' => 0,
 		'covid19'					=> 0,
@@ -1562,7 +1564,7 @@ class CF_Geoplugin_Global
 					else
 						update_option('cf_geoplugin', $CF_GEOPLUGIN_OPTIONS);
 					
-					if(function_exists('clear_cf_geoplugin_session')) clear_cf_geoplugin_session();
+				//	if(function_exists('clear_cf_geoplugin_session')) clear_cf_geoplugin_session();
 				}
 			}
 

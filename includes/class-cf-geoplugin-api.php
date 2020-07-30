@@ -95,12 +95,12 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
 	private $return = array();
 	
 	function __construct() {
-		$this->url = array(
+		$this->url = apply_filters( 'cf_geoplugin_api_urls', array(
 			'api' 					=> $GLOBALS['CFGEO_API_CALL']['main'] . '?ip={IP}&sip={SIP}&t={TIME}&r={HOST}&v={VERSION}&m={M}&p={P}&base_convert={CURRENCY}&reverse={REVERSE}',
 			'api_alternate' 		=> 'http://159.203.47.151/api/index.php?ip={IP}&sip={SIP}&t={TIME}&r={HOST}&v={VERSION}&m={M}&p={P}&base_convert={CURRENCY}&reverse={REVERSE}',
 			'dns' 					=> $GLOBALS['CFGEO_API_CALL']['dns'] . '?ip={IP}&sip={SIP}&r={HOST}&v={VERSION}&p={P}',
 			'dns_alternate' 		=> 'http://159.203.47.151/api/dns.php?ip={IP}&sip={SIP}&r={HOST}&v={VERSION}&p={P}',
-		);
+		));
 	}
 	
 	/**
@@ -399,7 +399,7 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
 						set_transient("cfgp-api-{$ip_slug}", (array)$result, (MINUTE_IN_SECONDS * CFGP_SESSION));
 					}
 					if(in_array($session_type, array(1,3)) !==  false) {
-						$_SESSION[CFGP_PREFIX . 'api_session'] = $result;
+						$_SESSION[CFGP_PREFIX . 'api_session'] = (array)$result;
 					}
 				}
 				return (object)$result;
@@ -433,7 +433,7 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
 							set_transient("cfgp-api-{$ip_slug}", (array)$result, (MINUTE_IN_SECONDS * CFGP_SESSION));
 						}
 						if(in_array($session_type, array(1,3)) !==  false) {
-							$_SESSION[CFGP_PREFIX . 'api_session'] = $result;
+							$_SESSION[CFGP_PREFIX . 'api_session'] = (array)$result;
 						}
 					}
 					
