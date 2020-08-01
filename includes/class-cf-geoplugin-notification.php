@@ -29,20 +29,26 @@ class CF_Geoplugin_Notification extends CF_Geoplugin_Global
 	
 	public function license_expire_soon()
 	{
-		if( defined( 'CFGP_DISABLE_NOTIFICATION_EXPIRE_SOON' ) && CFGP_DISABLE_NOTIFICATION_EXPIRE_SOON ) return;
-		
+		if( defined( 'CFGP_DISABLE_NOTIFICATION_EXPIRE_SOON' ) && CFGP_DISABLE_NOTIFICATION_EXPIRE_SOON ) return NULL;
+	
+		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
+	
 		$transient = 'cf-geoplugin-notification-license-expire-soon';
 		if(!get_transient($transient) )
 		{
 			// Let's first validate license
 			if(isset($CF_GEOPLUGIN_OPTIONS['license_expire']) && !empty($CF_GEOPLUGIN_OPTIONS['license_expire']) && strtotime('-1 month', (int)$CF_GEOPLUGIN_OPTIONS['license_expire']) < time()){
-				$this->validate();
-			} else return;
+				parent::validate();
+			} else {
+				// Prevent code to be fired
+				return false;
+			}
 			
-			$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
+			// Let's use new options from the database again
+			$CF_GEOPLUGIN_OPTIONS = $this->get_option();
 			
-			$before_date_expire = strtotime('-1 month', (int)$CF_GEOPLUGIN_OPTIONS['license_expire']);
-			if($before_date_expire <= time())
+			// Let's again test date
+			if(isset($CF_GEOPLUGIN_OPTIONS['license_expire']) && !empty($CF_GEOPLUGIN_OPTIONS['license_expire']) && strtotime('-1 month', (int)$CF_GEOPLUGIN_OPTIONS['license_expire']) < time())
 			{
 				if($emails = $this->get_admins())
 				{
@@ -67,15 +73,18 @@ class CF_Geoplugin_Notification extends CF_Geoplugin_Global
 					$message = apply_filters('cf_geoplugin_notification_license_expire_soon', $message);
 
 					$this->send($emails, __('CF GEO PLUGIN NOTIFICATION - Your license will expire soon', CFGP_NAME), $message);
-					set_transient($transient, 1, (60*60*24*7)); // 7 days
+					set_transient($transient, time(), WEEK_IN_SECONDS); // 7 days
+					return true;
 				}
 			}
 		}
+		
+		return false;
 	}
 	
 	public function lookup_expired()
 	{
-		if( defined( 'CFGP_DISABLE_NOTIFICATION_LOOKUP_EXPIRED' ) && CFGP_DISABLE_NOTIFICATION_LOOKUP_EXPIRED ) return;
+		if( defined( 'CFGP_DISABLE_NOTIFICATION_LOOKUP_EXPIRED' ) && CFGP_DISABLE_NOTIFICATION_LOOKUP_EXPIRED ) return NULL;
 		
 		$CFGEO = $GLOBALS['CFGEO'];
 		$transient = 'cf-geoplugin-notification-lookup-expired';
@@ -102,14 +111,16 @@ class CF_Geoplugin_Notification extends CF_Geoplugin_Global
 				$message = apply_filters('cf_geoplugin_notification_lookup_expired_message', $message);
 
 				$this->send($emails, __('CF GEO PLUGIN NOTIFICATION - Lookup expired', CFGP_NAME), $message);
-				set_transient($transient, 1, (60*60*24)); // 24 hours
+				set_transient($transient, time(), DAY_IN_SECONDS ); // 24 hours
+				return true;
 			}
 		}
+		return false;
 	}
 
 	public function lookup_expire_soon()
 	{
-		if( defined( 'CFGP_DISABLE_NOTIFICATION_LOOKUP_EXPIRE_SOON' ) && CFGP_DISABLE_NOTIFICATION_LOOKUP_EXPIRE_SOON ) return;
+		if( defined( 'CFGP_DISABLE_NOTIFICATION_LOOKUP_EXPIRE_SOON' ) && CFGP_DISABLE_NOTIFICATION_LOOKUP_EXPIRE_SOON ) return NULL;
 		
 		$CFGEO = $GLOBALS['CFGEO'];
 		$transient = 'cf-geoplugin-notification-lookup-expire-soon';
@@ -133,9 +144,11 @@ class CF_Geoplugin_Notification extends CF_Geoplugin_Global
 				$message = apply_filters('cf_geoplugin_notification_lookup_expire_soon_message', $message);
 
 				$this->send($emails, __('CF GEO PLUGIN NOTIFICATION - Lookup expires soon', CFGP_NAME), $message);
-				set_transient($transient, 1, (60*60*24)); // 24 hours
+				set_transient($transient, time(), DAY_IN_SECONDS); // 24 hours
+				return true;
 			}
 		}
+		return false;
 	}
 	
 	public function send($email, $subject, $message, $headers = array(), $attachments = array()){
@@ -328,7 +341,7 @@ class CF_Geoplugin_Notification extends CF_Geoplugin_Global
       }
 
       a {
-        color: #3498db;
+        color: #fd4624;
         text-decoration: underline; 
       }
 
@@ -350,10 +363,10 @@ class CF_Geoplugin_Notification extends CF_Geoplugin_Global
       }
         .btn a {
           background-color: #ffffff;
-          border: solid 1px #3498db;
+          border: solid 1px #fd4624;
           border-radius: 5px;
           box-sizing: border-box;
-          color: #3498db;
+          color: #fd4624;
           cursor: pointer;
           display: inline-block;
           font-size: 14px;
@@ -365,12 +378,12 @@ class CF_Geoplugin_Notification extends CF_Geoplugin_Global
       }
 
       .btn-primary table td {
-        background-color: #3498db; 
+        background-color: #fd4624; 
       }
 
       .btn-primary a {
-        background-color: #3498db;
-        border-color: #3498db;
+        background-color: #fd4624;
+        border-color: #fd4624;
         color: #ffffff; 
       }
 
@@ -520,7 +533,7 @@ class CF_Geoplugin_Notification extends CF_Geoplugin_Global
     </style>
   </head>
   <body class="">
-	<span class="preheader"><?php echo $subject; ?></span>
+	<span class="preheader"><?php printf(__('If you no longer wish to receive these notifications, please read how to %1$s.', CFGP_NAME), '<a href="' . CFGP_STORE . '/documentation/advanced-usage/php-integration/constants/cfgp_disable_notification/" target="_blank">' . __('disable this notifications', CFGP_NAME) . '</a>'); ?></span>
     <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="body">
       <tr>
         <td>&nbsp;</td>
@@ -559,6 +572,11 @@ class CF_Geoplugin_Notification extends CF_Geoplugin_Global
                 <tr>
                   <td class="content-block powered-by">
                     <?php printf(__('Powered by  %1$s.', CFGP_NAME), '<a href="' . CFGP_STORE . '" target="_blank">CF Geo Plugin</a>'); ?>
+                  </td>
+                </tr>
+				<tr>
+                  <td class="content-block powered-by"><br><br>
+                    <?php printf(__('If you no longer wish to receive these notifications, please read how to %1$s.', CFGP_NAME), '<a href="' . CFGP_STORE . '/documentation/advanced-usage/php-integration/constants/cfgp_disable_notification/" target="_blank">' . __('disable this notifications', CFGP_NAME) . '</a>'); ?>
                   </td>
                 </tr>
               </table>

@@ -458,13 +458,62 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 	 * @since 7.0.0
 	*/
 	public function cf_geo_rss_feed()
-	{		
+	{
+		// Session Type
+		$session_type = parent::get_the_option('session_type', 1);
+		
+		$items = parent::curl_get( CFGP_STORE . '/wp-ajax.php?action=cfgp_get_posts_data');
+		if ($items !== false)
+		{
+			$items = json_decode($items);
+			$i=0;
+			foreach($items->posts as $fetch)
+			{
+				$print[]=sprintf(
+					'<div class="mb-5">
+						<a href="%1$s" target="_blank" class="text-info">
+							<h4 class="h5">%2$s</h4>
+							<img src="%3$s" class="vw-100 mw-100 ml-auto mr-auto">
+						</a>
+						<br>
+						<p>%4$s</p>
+						<p class="mb-1"><a href="%5$s" target="_blank">%6$s</a></p>
+						<p><small>~%7$s</small></p>
+					</div>',
+					$fetch->post_url,
+					$fetch->post_title,
+					$fetch->post_image_medium,
+					$fetch->post_excerpt,
+					$fetch->post_url,
+					__('Read more at CF Geo Plugin', CFGP_NAME),
+					date('F j, Y', strtotime($fetch->post_date_gmt))
+				);
+				++$i;
+			}
+			
+			if(!empty($print))
+			{
+				$print = join("\r\n", $print);
+				
+				if(in_array($session_type, array(2,3)) !==  false) {
+					set_transient(CFGP_PREFIX . 'rss', $print, (MINUTE_IN_SECONDS * CFGP_SESSION));
+				}
+				if(in_array($session_type, array(1,3)) !==  false) {
+					$_SESSION[CFGP_PREFIX . 'rss'] = $print;
+				}
+				echo $print;
+				
+				wp_die();
+				return;
+			}
+		}
+		
+		/**************** RSS WAY ****************/
+		
 		if(!class_exists('parseXML') && file_exists(CFGP_INCLUDES . '/class-cf-geoplugin-xml.php')) include CFGP_INCLUDES . '/class-cf-geoplugin-xml.php';
 		if(!class_exists('parseXML')) exit(false);
 		
 		$xml= new parseXML(CFGP_STORE . '/feed/', true);
-		// Session Type
-		$session_type = parent::get_the_option('session_type', 1);
 		
 		if(isset($xml->fetch) && isset($xml->fetch->channel) && isset($xml->fetch->channel->item) && count($xml->fetch->channel->item)>0)
 		{
@@ -475,7 +524,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 			{
 				if( $i >= 3 ) continue;
 				$print[]=sprintf(
-					'<p><a href="%1$s" target="_blank" class="text-info"><h4 class="h5">%2$s</h4></a>%3$s<small>~%4$s</small></p>',
+					'<div class="mb-3"><a href="%1$s" target="_blank" class="text-info"><h4 class="h5">%2$s</h4></a>%3$s<small>~%4$s</small></div>',
 					$fetch->link,
 					$fetch->title,
 					strip_tags($fetch->description, '<a><img><h1><h2><h3><h4><p><br><strong><i><u><b>'),

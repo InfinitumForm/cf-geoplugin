@@ -212,7 +212,7 @@ $CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIO
                                 <td><?php echo $CFGEO['city']; ?></td>
                             </tr>
 							<tr>
-                                <td><kbd>[cfgeo return="zip"]</kbd></td>
+                                <td><kbd>[cfgeo return="zip"]</kbd><?php if($CFGEO['gps']): ?> <i class="badge">(GPS)</i><?php endif; ?></td>
                                 <td><?php echo $CFGEO['zip']; ?></td>
                             </tr>
                             <tr>
@@ -370,7 +370,7 @@ $CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIO
                             <?php endif; ?>
 							<?php do_action('page-cf-geoplugin-tag-table-address'); ?>
                             <tr>
-                                <td><kbd>%%zip%%</kbd></td>
+                                <td><kbd>%%zip%%</kbd><?php if($CFGEO['gps']): ?> <i class="badge">(GPS)</i><?php endif; ?></td>
                                 <td><?php echo $CFGEO['zip']; ?></td>
                             </tr>
 							<tr>
@@ -549,7 +549,7 @@ $CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIO
                                 <td><?php echo $CFGEO['address']; ?></td>
                             </tr>
 							<tr>
-                                <td><kbd>[cfgeo_zip]</kbd></td>
+                                <td><kbd>[cfgeo_zip]</kbd><?php if($CFGEO['gps']): ?> <i class="badge">(GPS)</i><?php endif; ?></td>
                                 <td><?php echo $CFGEO['zip']; ?></td>
                             </tr>
                             <tr>

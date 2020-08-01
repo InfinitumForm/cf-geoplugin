@@ -1,5 +1,11 @@
 == Changelog ==
 
+= 7.12.4 =
+* URGENT FIX: Fixed issue with spamming notification
+* IMPORTANT UPDATE: Added support for GPS extension to detect the exact address of the visitor
+* IMPORTANT UPDATE: Privacy Policy
+* IMPORTANT UPDATE: Support for WordPress version 5.5
+
 = 7.12.3 =
 * URGENT FIX: Page speed impact
 * URGENT FIX: Missing shortcodes on the MySQL Session

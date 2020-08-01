@@ -3,9 +3,9 @@ Contributors: ivijanstefan, creativform
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=creativform@gmail.com
 Tags: geolocation, locator, GeoIP, geo, geotargeting, seo, seo redirect, woocommerce, include exclude, content, remove content, show hide, covid
 Requires at least: 3.0
-Tested up to: 5.4
+Tested up to: 5.5
 Requires PHP: 5.6.0
-Stable tag: 7.12.3
+Stable tag: 7.12.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -398,6 +398,12 @@ Please inform us if any of these errors occur via contact form on our website [h
 
 == Changelog ==
 
+= 7.12.4 =
+* URGENT FIX: Fixed issue with spamming notification
+* IMPORTANT UPDATE: Added support for GPS extension to detect the exact address of the visitor
+* IMPORTANT UPDATE: Privacy Policy
+* IMPORTANT UPDATE: Support for WordPress version 5.5
+
 = 7.12.3 =
 * URGENT FIX: Page speed impact
 * URGENT FIX: Missing shortcodes on the MySQL Session
@@ -477,6 +483,12 @@ Please inform us if any of these errors occur via contact form on our website [h
 * Improved PHP code
 
 == Upgrade Notice ==
+
+= 7.12.4 =
+* URGENT FIX: Fixed issue with spamming notification
+* IMPORTANT UPDATE: Added support for GPS extension to detect the exact address of the visitor
+* IMPORTANT UPDATE: Privacy Policy
+* IMPORTANT UPDATE: Support for WordPress version 5.5
 
 = 7.12.3 =
 * URGENT FIX: Page speed impact

@@ -377,7 +377,7 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
 
 			// Get content from URL
 	
-			$return = self::curl_get($url);
+			$return = parent::curl_get($url);
 			// Return objects from JSON data
 	
 			if ($return != false)
@@ -410,7 +410,7 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
 	
 				// Get content from URL
 	
-				$return = self::curl_get($url);
+				$return = parent::curl_get($url);
 	
 				// Return objects from JSON data
 	
@@ -520,7 +520,7 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
 				);
 				$url = str_replace($urlPharams, $urlReplace, $this->url['dns']);
 			
-				$data = self::curl_get($url);
+				$data = parent::curl_get($url);
 				if ($data !== false)
 				{
 					$data = json_decode($data, true);
@@ -530,7 +530,7 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
 				{
 					$url = str_replace($urlPharams, $urlReplace, $this->url['dns_alternate']);
 					
-					$data = self::curl_get($url);
+					$data = parent::curl_get($url);
 					
 					if ($data !== false)
 					{
