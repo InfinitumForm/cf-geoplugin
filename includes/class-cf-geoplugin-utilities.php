@@ -101,22 +101,22 @@ class CF_Geoplugin_Utilities extends CF_Geoplugin_Global
 		$CFGEO = $GLOBALS['CFGEO'];
 		if(is_array($CFGEO))
 		{
-			$collection = array(); $i=0;
+			$collection = array();
 			
-			foreach($CFGEO as $key => $val){
-				wpseo_register_var_replacement( '%%' . $key . '%%', function() use ($val){
-					return $val;
-				}, 'advanced', $key );
+			$exclude = apply_filters('cf_geoplugin_wpseo_register_var_replacement_exclude', array_filter( array_map( 'trim', explode( ',','term404,focuskw,caption,pagenumber,pagetotal,user_description,name,id,modified,pt_plural,pt_single,ct_product_cat,ct_product_tag,wc_shortdesc,wc_sku,wc_brand,wc_price,currentyear,currentmonth,currentday,currentdate,currenttime,userid,currentDate,currentTime,state,continentCode,areaCode,dmaCode,timezoneName,currencySymbol,currencyConverter,error,status,runtime,error_message,sitename,page,sep,sitedesc,POSTLINK,BLOGLINK,date,name,searchphrase,term_title,pt_plural,title,archive_title,excerpt,excerpt_only,tag,category,primary_category,category_description,tag_description,term_description,term_title'))));
+			
+			foreach($CFGEO as $key => $val) {
+				if(in_array($key, $exclude, true) === false) {
+					wpseo_register_var_replacement( '%%' . $key . '%%', function() use ($val){
+						return $val;
+					}, 'advanced', $key );
+				}
 			};		
 		}
 	}
 	
 	public function the_title ( $title ){
 		return $this->replace_tags($title);
-	}
-	
-	public function output_callback($buffer) {
-		return $this->replace_tags($buffer);
 	}
 	
 	public function replace_tags_cache_control ( $string ){
@@ -153,6 +153,10 @@ class CF_Geoplugin_Utilities extends CF_Geoplugin_Global
 		}
 		
 		return $string;
+	}
+	
+	public function output_callback($buffer) {
+		return $this->replace_tags($buffer);
 	}
 	
 	public function output_buffer_start() { 

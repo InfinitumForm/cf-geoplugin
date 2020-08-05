@@ -858,12 +858,18 @@ class CF_Geoplugin_Global
     }
 	
 	// Get full URL
-	public function full_url($s, $use_forwarded_host = false) {
+	public function full_url($s = NULL, $use_forwarded_host = false) {
+		
+		if(is_null($s)) $s = $_SERVER;
+		
 		return $this->url_origin($s, $use_forwarded_host) . $s['REQUEST_URI'];
 	}
 	
 	// Get origin URL
-	public function url_origin($s, $use_forwarded_host = false) {
+	public function url_origin($s = NULL, $use_forwarded_host = false) {
+		
+		if(is_null($s)) $s = $_SERVER;
+		
 		$ssl = (!empty($s['HTTPS']) && $s['HTTPS'] == 'on' );
 		$sp = strtolower($s['SERVER_PROTOCOL']);
 		$protocol = substr($sp, 0, strpos($sp, '/')) . ( ( $ssl ) ? 's' : '' );
@@ -886,7 +892,7 @@ class CF_Geoplugin_Global
 	* Get current page ID
 	* @autor    Ivijan-Stefan Stipic
 	* @since    7.6.0
-	* @version  1.0.1
+	* @version  1.1.0
 	**/
 	function get_current_page_ID(){
 		global $post, $wp_query;

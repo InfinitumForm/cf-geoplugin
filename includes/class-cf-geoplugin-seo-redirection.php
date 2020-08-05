@@ -18,9 +18,22 @@ class CF_Geoplugin_SEO_Redirection extends CF_Geoplugin_Global
 			
 		if(isset($_REQUEST['stop_redirection']) && ($_REQUEST['stop_redirection'] === true || $_REQUEST['stop_redirection'] === 'true'))
 			return;
-
-		$this->add_action( 'template_redirect', 'page_seo_redirection', 1);
-		$this->add_action( 'template_redirect', 'wp_seo_redirection', 1);
+		
+		/**
+		 * Fire WordPress redirecion ASAP
+		 =======================================*/
+		/* 01 */ $this->add_action( 'muplugins_loaded',		'wp_seo_redirection', 1);
+		/* 02 */ $this->add_action( 'send_headers',			'wp_seo_redirection', 1);
+		/* 03 */ $this->add_action( 'template_redirect',	'wp_seo_redirection', 1);
+		
+		/**
+		 * Fire Page redirecion ASAP
+		 =======================================*/
+		/* 01 */ $this->add_action( 'send_headers',			'page_seo_redirection', 1);
+		/* 02 */ $this->add_action( 'posts_selection',		'page_seo_redirection', 1);
+		/* 03 */ $this->add_action( 'wp',					'page_seo_redirection', 1);
+		/* 04 */ $this->add_action( 'template_redirect',	'page_seo_redirection', 1);
+		
 	}
 
 	/*
@@ -32,7 +45,8 @@ class CF_Geoplugin_SEO_Redirection extends CF_Geoplugin_Global
 		if(parent::get_the_option('redirect_disable_bots', false) && parent::is_bot()) return;
 		
 		$page_id = $this->get_current_page_ID();
-		if(!is_admin() && parent::get_the_option('enable_seo_redirection', false))
+		
+		if($page_id && !is_admin() && parent::get_the_option('enable_seo_redirection', false))
 		{
 			$redirect_data 	= $this->get_post_meta( 'redirection' );
 			if( is_array( $redirect_data ) )

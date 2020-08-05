@@ -71,10 +71,10 @@ class CF_Geoplugin_Woocommerce extends CF_Geoplugin_Global
                     $this->add_filter( 'woocommerce_available_payment_gateways', 'cfgp_woocommerce_payment_disable' );
                 }
 
-				$this->add_filter('wp_geo_woocommerce_currency_and_symbol', 'calculate_conversions', 1);
+				$this->add_filter('cf_geoplugin_woocommerce_currency_and_symbol', 'calculate_conversions', 1);
 				
-				$this->add_filter('wp_geo_raw_woocommerce_converted_price', 'calculate_and_modify_price', 1);
-				$this->add_filter('wp_geo_raw_woocommerce_price', 'calculate_and_modify_price', 1);
+				$this->add_filter('cf_geoplugin_raw_woocommerce_converted_price', 'calculate_and_modify_price', 1);
+				$this->add_filter('cf_geoplugin_raw_woocommerce_price', 'calculate_and_modify_price', 1);
             }
         }
         else
@@ -118,10 +118,10 @@ class CF_Geoplugin_Woocommerce extends CF_Geoplugin_Global
 			$converted_price = ($unformatted_price * $currency_args['currency_converter']);
 			
 			$converted_negative = $converted_price < 0;
-			$converted_price = apply_filters( 'wp_geo_raw_woocommerce_converted_price', floatval( $converted_negative ? $converted_price * -1 : $converted_price ) );
-			$converted_price = apply_filters( 'wp_geo_formatted_woocommerce_converted_price', number_format( $converted_price, $args['decimals'], $args['decimal_separator'], $args['thousand_separator'] ), $converted_price, $args['decimals'], $args['decimal_separator'], $args['thousand_separator'] );
+			$converted_price = apply_filters( 'cf_geoplugin_raw_woocommerce_converted_price', floatval( $converted_negative ? $converted_price * -1 : $converted_price ) );
+			$converted_price = apply_filters( 'cf_geoplugin_formatted_woocommerce_converted_price', number_format( $converted_price, $args['decimals'], $args['decimal_separator'], $args['thousand_separator'] ), $converted_price, $args['decimals'], $args['decimal_separator'], $args['thousand_separator'] );
 			
-			if ( apply_filters( 'wp_geo_woocommerce_converted_price_trim_zeros', false ) && $args['decimals'] > 0 ) {
+			if ( apply_filters( 'cf_geoplugin_woocommerce_converted_price_trim_zeros', false ) && $args['decimals'] > 0 ) {
 				$converted_price = wc_trim_zeros( $converted_price );
 			}
 			
@@ -137,10 +137,10 @@ class CF_Geoplugin_Woocommerce extends CF_Geoplugin_Global
 		
 		// Original price
 		$negative = $price < 0;
-		$price = apply_filters( 'wp_geo_raw_woocommerce_price', floatval( $negative ? $price * -1 : $price ) );
-		$price = apply_filters( 'wp_geo_formatted_woocommerce_price', number_format( $price, $args['decimals'], $args['decimal_separator'], $args['thousand_separator'] ), $price, $args['decimals'], $args['decimal_separator'], $args['thousand_separator'] );
+		$price = apply_filters( 'cf_geoplugin_raw_woocommerce_price', floatval( $negative ? $price * -1 : $price ) );
+		$price = apply_filters( 'cf_geoplugin_formatted_woocommerce_price', number_format( $price, $args['decimals'], $args['decimal_separator'], $args['thousand_separator'] ), $price, $args['decimals'], $args['decimal_separator'], $args['thousand_separator'] );
 		
-		if ( apply_filters( 'wp_geo_woocommerce_price_trim_zeros', false ) && $args['decimals'] > 0 ) {
+		if ( apply_filters( 'cf_geoplugin_woocommerce_price_trim_zeros', false ) && $args['decimals'] > 0 ) {
 			$price = wc_trim_zeros( $price );
 		}
 		
@@ -159,10 +159,10 @@ class CF_Geoplugin_Woocommerce extends CF_Geoplugin_Global
 			$converted_price = ($unformatted_price * $currency_args['currency_converter']);
 			
 			$converted_negative = $converted_price < 0;
-			$converted_price = apply_filters( 'wp_geo_raw_woocommerce_converted_price', floatval( $converted_negative ? $converted_price * -1 : $converted_price ) );
-			$converted_price = apply_filters( 'wp_geo_formatted_woocommerce_converted_price', number_format( $converted_price, $args['decimals'], $args['decimal_separator'], $args['thousand_separator'] ), $converted_price, $args['decimals'], $args['decimal_separator'], $args['thousand_separator'] );
+			$converted_price = apply_filters( 'cf_geoplugin_raw_woocommerce_converted_price', floatval( $converted_negative ? $converted_price * -1 : $converted_price ) );
+			$converted_price = apply_filters( 'cf_geoplugin_formatted_woocommerce_converted_price', number_format( $converted_price, $args['decimals'], $args['decimal_separator'], $args['thousand_separator'] ), $converted_price, $args['decimals'], $args['decimal_separator'], $args['thousand_separator'] );
 			
-			if ( apply_filters( 'wp_geo_woocommerce_converted_price_trim_zeros', false ) && $args['decimals'] > 0 ) {
+			if ( apply_filters( 'cf_geoplugin_woocommerce_converted_price_trim_zeros', false ) && $args['decimals'] > 0 ) {
 				$converted_price = wc_trim_zeros( $converted_price );
 			}
 			
@@ -180,7 +180,7 @@ class CF_Geoplugin_Woocommerce extends CF_Geoplugin_Global
 		 * Filters the string of price markup.
 		 */
 		return apply_filters(
-			'wp_geo_woocommerce_formatted_price',
+			'cf_geoplugin_woocommerce_formatted_price',
 			$return,
 			$price,
 			$args,
@@ -336,7 +336,7 @@ class CF_Geoplugin_Woocommerce extends CF_Geoplugin_Global
                     $rate_cost_incl_tax = $rate_cost_excl_tax + $rate_taxes;
                     echo $rate_label . ': ' . wc_price(
 						apply_filters(
-							'wp_geo_woocommerce_show_shipping_price',
+							'cf_geoplugin_woocommerce_show_shipping_price',
 							($rate_cost_incl_tax * $currency_args['currency_converter']),
 							$rate_cost_incl_tax,
 							$currency_args['currency_converter'],
@@ -364,7 +364,7 @@ class CF_Geoplugin_Woocommerce extends CF_Geoplugin_Global
         {
             $return_value['currency_code'] = $currency_code;
             $return_value['currency_converter'] = $currency_converted;
-            return apply_filters('wp_geo_woocommerce_currency_and_symbol', $return_value, get_woocommerce_currency());
+            return apply_filters('cf_geoplugin_woocommerce_currency_and_symbol', $return_value, get_woocommerce_currency());
         }
         return false;
     }
@@ -477,20 +477,20 @@ class CF_Geoplugin_Woocommerce extends CF_Geoplugin_Global
                 }
                 $settings[] = array( 'type' => 'sectionend', 'id' => 'cf_geoplugin_payment_restriction' );
 
-                return apply_filters( 'wc_cf_geoplugin_payment_restriction_settings', $settings );
+                return apply_filters( 'cf_geoplugin_payment_restriction_settings', $settings );
             }
             else 
             {
                 $settings[] = array( 'name' => __( 'CF Geoplugin Payments Control', CFGP_NAME ), 'type' => 'title', 'desc' => '<b>' . __( 'Currently we are not able to show desired options. Please try again later.', CFGP_NAME ) . '</b>', 'id' => 'cf_geoplugin_payment_restriction' );
                 $settings[] = array( 'type' => 'sectionend', 'id' => 'cf_geoplugin_payment_restriction' );
-                return apply_filters( 'wc_cf_geoplugin_payment_restriction_settings', $settings );
+                return apply_filters( 'cf_geoplugin_payment_restriction_settings', $settings );
             }
         }
         else 
         {
             $settings[] = array( 'name' => __( 'CF Geoplugin Payments Control', CFGP_NAME ), 'type' => 'title', 'desc' => '<b>' . __( 'No enabled woocommerce payments yet.', CFGP_NAME ), 'id' => 'cf_geoplugin_payment_restriction' . '</b>' );
             $settings[] = array( 'type' => 'sectionend', 'id' => 'cf_geoplugin_payment_restriction' );
-            return apply_filters( 'wc_cf_geoplugin_payment_restriction_settings', $settings );
+            return apply_filters( 'cf_geoplugin_payment_restriction_settings', $settings );
         }
     }
 
@@ -530,7 +530,7 @@ class CF_Geoplugin_Woocommerce extends CF_Geoplugin_Global
                 }
             }
         }
-        return apply_filters( 'wc_cf_geoplugin_woocommerce_payment_disable', $gateways, $original_gateways, $CFGEO ); 
+        return apply_filters( 'cf_geoplugin_woocommerce_payment_disable', $gateways, $original_gateways, $CFGEO ); 
     }
 }
 endif;

@@ -5,7 +5,7 @@ Tags: geolocation, locator, GeoIP, geo, geotargeting, seo, seo redirect, woocomm
 Requires at least: 3.0
 Tested up to: 5.5
 Requires PHP: 5.6.0
-Stable tag: 7.12.4
+Stable tag: 7.12.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -398,6 +398,18 @@ Please inform us if any of these errors occur via contact form on our website [h
 
 == Changelog ==
 
+= 7.12.6 =
+* URGENT FIX: Allowed memory size PHP error on the low cost hostings
+
+= 7.12.5 =
+* IMPORTANT UPDATE: Fixed Yoast SEO tags rendering
+* IMPORTANT UPDATE: Fixed SEO redirection
+* IMPORTANT UPDATE: Fixed page ID finder
+* IMPORTANT UPDATE: Fixed cache plugin supports
+* Enhancement: Woocommerce hooks
+* Enhancement: E-mail template link visibility
+* Enhancement: SEO utilities
+
 = 7.12.4 =
 * URGENT FIX: Fixed issue with spamming notification
 * IMPORTANT UPDATE: Added support for GPS extension to detect the exact address of the visitor
@@ -483,6 +495,18 @@ Please inform us if any of these errors occur via contact form on our website [h
 * Improved PHP code
 
 == Upgrade Notice ==
+
+= 7.12.6 =
+* URGENT FIX: Allowed memory size PHP error on the low cost hostings
+
+= 7.12.5 =
+* IMPORTANT UPDATE: Fixed Yoast SEO tags rendering
+* IMPORTANT UPDATE: Fixed SEO redirection
+* IMPORTANT UPDATE: Fixed page ID finder
+* IMPORTANT UPDATE: Fixed cache plugin supports
+* Enhancement: Woocommerce hooks
+* Enhancement: E-mail template link visibility
+* Enhancement: SEO utilities
 
 = 7.12.4 =
 * URGENT FIX: Fixed issue with spamming notification

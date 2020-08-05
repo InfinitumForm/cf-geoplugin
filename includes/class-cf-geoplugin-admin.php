@@ -756,7 +756,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 			{
 				$wp_admin_bar->add_node( array(
 					'id' => CFGP_NAME . '-defender',
-					'title' => __('Anti Site Protection',CFGP_NAME),
+					'title' => __('Site Protection',CFGP_NAME),
 					'href' => parent::add_admin_url( 'admin.php?page=' . CFGP_NAME . '-defender'),
 					'meta'  => array( 'class' => CFGP_NAME . '-defender-toolbar-page' ),
 					'parent' => CFGP_NAME,

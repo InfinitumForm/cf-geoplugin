@@ -297,7 +297,7 @@ class CF_Geoplugin_Notification extends CF_Geoplugin_Global
         .footer p,
         .footer span,
         .footer a {
-          color: #999999;
+          color: #fd4624;
           font-size: 12px;
           text-align: center; 
       }
