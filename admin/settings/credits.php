@@ -1,8 +1,8 @@
 <h3 class="h5"><span class="fa fa-info-circle"></span> <?php _e('Credits',CFGP_NAME); ?></h3>
 <p><?php echo sprintf(__('%s, %s, %s and all this functionality is made by %s.',CFGP_NAME),'CF Geo Plugin','CF Geo Plugin API','CF Geo Banner','<a href="http://infinitumform.com" target="_blank"><em><strong>INFINITUM FORM</strong></em></a>'); ?></p>
-<p><strong><?php _e('This plugin have purpose to help business people to reach own goals and made maximal conversions. Plugin is SEO optimized, user friendly, easy for use and very dynamic.',CFGP_NAME); ?></strong></p> 
+<p><strong><?php _e('This plugin has the purpose to help business people to reach their own goals and make maximal conversions. Plugin is SEO optimized, user friendly, easy for use and very dynamic.',CFGP_NAME); ?></strong></p> 
 
-<p><?php echo sprintf(__('The %s allows you to attach geographic information and Google maps to posts, pages, widgets and custom templates by using shortcodes and user IP address. It also lets you to specify a default geographic location for your entire WordPress blog. Also you can place banners and content realated to user locations.',CFGP_NAME),'<strong>CF Geo Plugin</strong>'); ?></p>
+<p><?php echo sprintf(__('The %s allows you to attach geographic information and Google maps to posts, pages, widgets and custom templates by using shortcodes and user IP addresses. It also lets you to specify a default geographic location for your entire WordPress blog. Also you can place banners and content related to user locations.',CFGP_NAME),'<strong>CF Geo Plugin</strong>'); ?></p>
 <hr>
 <h3 class="h5"><span class="fa fa-code"></span> <?php _e('For Developers and Contributors',CFGP_NAME); ?></h3>
 <p><?php _e('You are welcome to contribute to my plugin and help me in the development. Also you are welcome to use this plugin inside your projects like part of your own plugins and templates. All great new ideas will be taken into consideration and all together we can do something fantastic!',CFGP_NAME); ?><br><?php printf('<a href="https://cfgeoplugin.com/get-involved/" target="_blank">[%s]</a>', __('Read more about this', CFGP_NAME)); ?></p>

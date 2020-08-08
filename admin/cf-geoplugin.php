@@ -495,7 +495,7 @@ $CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIO
 			<?php if($CF_GEOPLUGIN_OPTIONS['enable_beta'] && $CF_GEOPLUGIN_OPTIONS['enable_beta_shortcode']) : ?>
                 <div role="tabpanel" class="tab-pane fade pt-3" id="beta">
                 	<h3 class="ml-3 mr-3"><?php _e('List of experimental shortcodes',CFGP_NAME); ?></h3>
-                    <p class="ml-3 mr-3"><?php _e('This shortcodes only have purpose to return available geo-information. You can\'t do include, exclude or add default value. Just display geodata following with appropriate shortcodes. ',CFGP_NAME); ?></p>
+                    <p class="ml-3 mr-3"><?php _e('These shortcodes only have the purpose to return available geo-information. You can\'t include, exclude or add default values. Just display geodata following with appropriate shortcodes.',CFGP_NAME); ?></p>
                     <table width="100%" class="table table-striped table-sm">
                         <tbody>
 							<?php do_action('page-cf-geoplugin-beta-shortcode-table-start'); ?>
@@ -724,7 +724,7 @@ $CFGEO = $GLOBALS['CFGEO']; $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIO
                 	<div class="row">
                     	<div class="col-12">
                         	<?php do_action('page-cf-geoplugin-tab-info-start'); ?>
-                            <p><?php _e('The CF Geo Plugin comes with many options and it is best to study the following items in our documentation to get the best from plugin.',CFGP_NAME); ?></p>
+                            <p><?php _e('The CF Geo Plugin comes with many options and it is best to study the following items in our documentation to get the best from the plugin.',CFGP_NAME); ?></p>
                             <ul class="row">
 							   <li class="col-lg-6 mt-3">
 								  <a target="_blank" href="https://cfgeoplugin.com/documentation/quick-start/" class="docspress-archive-list-item-title">

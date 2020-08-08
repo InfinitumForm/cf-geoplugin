@@ -12,7 +12,7 @@ class CF_Geoplugin_Notification extends CF_Geoplugin_Global
 {
 	
 	function __construct()
-	{
+	{		
 		if( defined( 'CFGP_DISABLE_NOTIFICATION' ) && CFGP_DISABLE_NOTIFICATION ) return;
 		
 		if(!$this->check_activation() && !$this->check_defender_activation())
@@ -32,12 +32,20 @@ class CF_Geoplugin_Notification extends CF_Geoplugin_Global
 		if( defined( 'CFGP_DISABLE_NOTIFICATION_EXPIRE_SOON' ) && CFGP_DISABLE_NOTIFICATION_EXPIRE_SOON ) return NULL;
 	
 		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
+		
+		$expire_time = WEEK_IN_SECONDS; // each 7 days
+		$time_defore = '-1 month';
+		if(CF_Geoplugin_Global::access_level($CF_GEOPLUGIN_OPTIONS)==1)
+		{
+			$expire_time = (DAY_IN_SECONDS * 2); // each 2 days
+			$time_defore = '-6 days';
+		}
 	
 		$transient = 'cf-geoplugin-notification-license-expire-soon';
 		if(!get_transient($transient) )
 		{
 			// Let's first validate license
-			if(isset($CF_GEOPLUGIN_OPTIONS['license_expire']) && !empty($CF_GEOPLUGIN_OPTIONS['license_expire']) && strtotime('-1 month', (int)$CF_GEOPLUGIN_OPTIONS['license_expire']) < time()){
+			if(isset($CF_GEOPLUGIN_OPTIONS['license_expire']) && !empty($CF_GEOPLUGIN_OPTIONS['license_expire']) && strtotime($time_defore, (int)$CF_GEOPLUGIN_OPTIONS['license_expire']) < time()){
 				parent::validate();
 			} else {
 				// Prevent code to be fired
@@ -48,7 +56,7 @@ class CF_Geoplugin_Notification extends CF_Geoplugin_Global
 			$CF_GEOPLUGIN_OPTIONS = $this->get_option();
 			
 			// Let's again test date
-			if(isset($CF_GEOPLUGIN_OPTIONS['license_expire']) && !empty($CF_GEOPLUGIN_OPTIONS['license_expire']) && strtotime('-1 month', (int)$CF_GEOPLUGIN_OPTIONS['license_expire']) < time())
+			if(isset($CF_GEOPLUGIN_OPTIONS['license_expire']) && !empty($CF_GEOPLUGIN_OPTIONS['license_expire']) && strtotime($time_defore, (int)$CF_GEOPLUGIN_OPTIONS['license_expire']) < time())
 			{
 				if($emails = $this->get_admins())
 				{
@@ -73,7 +81,7 @@ class CF_Geoplugin_Notification extends CF_Geoplugin_Global
 					$message = apply_filters('cf_geoplugin_notification_license_expire_soon', $message);
 
 					$this->send($emails, __('CF GEO PLUGIN NOTIFICATION - Your license will expire soon', CFGP_NAME), $message);
-					set_transient($transient, time(), WEEK_IN_SECONDS); // 7 days
+					set_transient($transient, time(), $expire_time);
 					return true;
 				}
 			}
@@ -168,29 +176,45 @@ class CF_Geoplugin_Notification extends CF_Geoplugin_Global
 	}
 	
 	private function get_admins(){
+		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
+		
 		$emails = array();
-		$admins = get_users(
-			apply_filters(
-				'cf_geoplugin_notification_users_setup',
-				array(
-					'role__in' => apply_filters(
-						'cf_geoplugin_notification_user_roles',
-						array( 'administrator' )
-					) 
-				)
-			)
-		);
-
-		if($admins && is_array($admins))
+		
+		if($CF_GEOPLUGIN_OPTIONS['notification_recipient_type'] == 'manual')
 		{
-			foreach ( $admins as $admin ) {
-				$emails[$admin->ID]= $admin->user_email;
-			}
-			
-			if(!empty($emails))
+			$explode_emails = explode(',', $CF_GEOPLUGIN_OPTIONS['notification_recipient_emails']);
+			$explode_emails = array_map('trim', $explode_emails);
+			$explode_emails = array_map('sanitize_email', $explode_emails);
+			$emails = array_filter($explode_emails);
+		}
+		else if($CF_GEOPLUGIN_OPTIONS['notification_recipient_type'] == 'all')
+		{
+			$admins = get_users(
+				apply_filters(
+					'cf_geoplugin_notification_users_setup',
+					array(
+						'role__in' => apply_filters(
+							'cf_geoplugin_notification_user_roles',
+							array( 'administrator' )
+						) 
+					)
+				)
+			);
+
+			if($admins && is_array($admins))
 			{
-				return apply_filters('cf_geoplugin_notification_emails', $emails);
+				foreach ( $admins as $admin ) {
+					$emails[$admin->ID]= $admin->user_email;
+				}
 			}
+		}
+		
+		
+		$emails = apply_filters('cf_geoplugin_notification_emails', $emails);
+		
+		if(!empty($emails))
+		{
+			return $emails;
 		}
 		
 		return false;
@@ -295,11 +319,14 @@ class CF_Geoplugin_Notification extends CF_Geoplugin_Global
       }
         .footer td,
         .footer p,
-        .footer span,
-        .footer a {
-          color: #fd4624;
+        .footer span{
+          color: #787878;
           font-size: 12px;
           text-align: center; 
+      }
+	  
+	  .footer a {
+          color: #fd4624;
       }
 
       /* -------------------------------------

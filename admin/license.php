@@ -81,9 +81,9 @@ if(isset($_POST['license_key']) && isset($_POST['license'])) :
 											case 'license_key' :
 												echo '<p><strong>';
 													if(!empty($post['license_key']))
-														_e('One of the Reasons why this happen can be that you must choose valid "License Type". If you purchase "Personal License" and get license key, you must enter that license key and choose license type to validate your key. If key not match to your type you are not able to finish activation.',CFGP_NAME);
+														_e('One of the Reasons why this happens can be that you must choose a valid "License Type". If you purchase a "Personal License" and get a license key, you must enter that license key and choose license type to validate your key. If the key does not match your type you are not able to finish activation.',CFGP_NAME);
 													else
-														_e('You must enter license key in order to continue with licensing your plugin installation.',CFGP_NAME);
+														_e('You must enter a license key in order to continue with licensing your plugin installation.',CFGP_NAME);
 												echo '</strong></p>';
 											break;
 										}
@@ -155,14 +155,14 @@ if( $global->get( 'action' ) == 'deactivate_license' && isset( $_GET['cfgp_licen
             	<?php echo $alert; ?>
                 <?php if(CFGP_ACTIVATED) : ?>
                 <p class="lead"><?php printf(
-    __('Thank you for using unlimited license. You license is active until %1$s. It would be great to expand your license by that date. After expiration date you will experience plugin limitations.<br><br>To review or deactivate your license, please go to your %2$s.',CFGP_NAME),
+    __('Thank you for using an unlimited license. Your license is active until %1$s. It would be great to expand your license by that date. After expiration date you will experience plugin limitations.<br><br>To review or deactivate your license, please go to your %2$s.',CFGP_NAME),
     '<strong>' . ($CF_GEOPLUGIN_OPTIONS['license_expire'] == 0 ? __('never',CFGP_NAME) : date(get_option('date_format') . ' ' . get_option('time_format'), (int)$CF_GEOPLUGIN_OPTIONS['license_expire'])) . '</strong>',
 	'<a href="' . $CF_GEOPLUGIN_OPTIONS['license_url'] . '" target="_blank">' . __('CF Geo Plugin account',CFGP_NAME) . '</a>'
 ); ?></p>
                 <?php else : ?>
                 <h1 class="display-4"><?php _e('Activate Unlimited!',CFGP_NAME); ?></h1>
                 <p class="lead"><?php printf(
-                    __('You currently using free version of plugin with a limited number of lookups.<br>Each free version of this plugin is limited to %1$s lookups per day and you have only %2$s lookups available for today. If you want to have unlimited lookup, please enter your license key.<br>If you are unsure and do not understand what this is about, read %3$s.',CFGP_NAME),
+                    __('You currently use a free version of plugin with a limited number of lookups.<br>Each free version of this plugin is limited to %1$s lookups per day and you have only %2$s lookups available for today. If you want to have unlimited lookup, please enter your license key.<br>If you are unsure and do not understand what this is about, read %3$s.',CFGP_NAME),
                     
                     '<strong>300</strong>',
                     '<strong>'.$CFGEO['lookup'].'</strong>',

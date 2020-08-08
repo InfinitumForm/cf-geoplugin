@@ -8,7 +8,7 @@
  * Plugin Name:       WordPress Geo Plugin
  * Plugin URI:        http://cfgeoplugin.com/
  * Description:       Create Dynamic Content, Banners and Images on Your Website Based On Visitor Geo Location By Using Shortcodes With CF Geo Plugin.
- * Version:           7.12.6
+ * Version:           7.12.7
  * Author:            INFINITUM FORM
  * Author URI:        https://infinitumform.com/
  * License:           GPL-2.0+
@@ -172,9 +172,9 @@ $CF_Geoplugin_Requirements_Check = new CF_Geoplugin_Requirements_Check(array('fi
 
 if($CF_Geoplugin_Requirements_Check->passes()) :
 	// PHP7 DEPRECATED FUNCTION SUPPORT
-	include_once CFGP_ROOT.'/includes/php7.x.php';
+	include_once CFGP_INCLUDES . '/functions-cf-geoplugin-php7.php';
 	// Include privacy policy
-	include_once CFGP_ROOT.'/globals/cf-geoplugin-privacy.php';
+	include_once CFGP_GLOBALS . '/cf-geoplugin-privacy.php';
 	// Include debug class
 	include_once CFGP_INCLUDES . '/class-cf-geoplugin-debug.php';
 	// Activate session
@@ -219,8 +219,12 @@ if($CF_Geoplugin_Requirements_Check->passes()) :
 	endif;
 
 	// Load plugin properly
-	CF_Geoplugin_Load::load_plugin();
-	CF_Geoplugin_Debug::log( 'Function "CF_Geoplugin_Load::load_plugin()" is loaded.' );
+	if(class_exists('CF_Geoplugin_Load')) :
+		CF_Geoplugin_Load::load_plugin();
+		CF_Geoplugin_Debug::log( 'Function "CF_Geoplugin_Load::load_plugin()" is loaded.' );
+	else :
+		CF_Geoplugin_Debug::log( 'Function "CF_Geoplugin_Load::load_plugin()" is not loaded.' );
+	endif;
 
 	// Plugin is loaded
 	if(add_action('init', 'CF_Geoplugin', 2, 0)){

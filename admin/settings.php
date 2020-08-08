@@ -110,7 +110,7 @@ if( $global->get( 'action' ) == 'deactivate_license' )
                         	<?php
                             	$general = new CF_Geoplugin_Form;
 								$general->html('<h5 class="mt-3" id="WordPress_Settings">'.__('WordPress Settings',CFGP_NAME).'</h5>');
-								$general->html('<p>'.__('This settings only affect on CF Geo Plugin functionality and connection between plugin and WordPress setup. Use it smart and careful.',CFGP_NAME).'</p><hr>');
+								$general->html('<p>'.__('These settings only affect CF Geo Plugin functionality and connection between plugin and WordPress setup. Use it smart and careful.',CFGP_NAME).'</p><hr>');
 								
 								if(CFGP_MULTISITE) :
 									if(CF_Geoplugin_Global::is_network_admin()) :
@@ -279,7 +279,7 @@ if( $global->get( 'action' ) == 'deactivate_license' )
 								
 								$general->html( sprintf( '<button type="submit" class="btn btn-success pull-right cfgp_save_options">%s</button>', __( 'Update All Options', CFGP_NAME ) ) );
 								$general->html('<h5 class="mt-5" id="Plugin_Settings">'.__('Plugin Settings',CFGP_NAME).'</h5>');
-								$general->html('<p>'.__('This settings enable advanced lookup and functionality of plugin.',CFGP_NAME).'</p><hr>');
+								$general->html('<p>'.__('These settings enable advanced lookup and functionality of plugin.',CFGP_NAME).'</p><hr>');
 								
 								$general->radio(array(
 									'label'		=> __('Enable DNS/ISP Lookup',CFGP_NAME),
@@ -319,7 +319,7 @@ if( $global->get( 'action' ) == 'deactivate_license' )
 								
 								$general->html( sprintf( '<button type="submit" class="btn btn-success pull-right cfgp_save_options">%s</button>', __( 'Update All Options', CFGP_NAME ) ) );
 								$general->html('<h5 class="mt-5" id="Plugin_Features">'.__('Plugin Features',CFGP_NAME).'</h5>');
-								$general->html('<p>'.__('Here you can enable or disable features that you need. This is useful because you can disable functionality what you not need.',CFGP_NAME).'</p><hr>');
+								$general->html('<p>'.__('Here you can enable or disable features that you need. This is useful because you can disable functionality that you do not need.',CFGP_NAME).'</p><hr>');
 								
 								$general->radio(array(
 									'label'		=> __('Enable Geo Banner',CFGP_NAME),
@@ -598,7 +598,7 @@ if( $global->get( 'action' ) == 'deactivate_license' )
 										'value'	=> 0,
 										'id'	=> 'redirect_disable_bots_false',
 									),
-									'info'		=> __('Disable SEO redirection for the bots, crawlers, spiders and social network bots. This can be a special case that is very important for the SEO.',CFGP_NAME)
+									'info'		=> __('Disable SEO redirection for the bots, crawlers, spiders and social network bots. This can be a special case that is very important for SEO.',CFGP_NAME)
 								));
 								
 								$general->radio(array(
@@ -620,7 +620,7 @@ if( $global->get( 'action' ) == 'deactivate_license' )
 
 								$general->html( sprintf( '<button type="submit" class="btn btn-success pull-right cfgp_save_options">%s</button>', __( 'Update All Options', CFGP_NAME ) ) );
 								$general->html('<h5 class="mt-5" id="Spam_Protection">'.__('Spam Protection',CFGP_NAME).'</h5>');
-								$general->html('<p>'.__( 'With Anti Spam Protection you can enable anti spam filter and block access from the specific IP, country, state and city to your site. This feature is very safe and does not affect to the SEO.' ).'</p><p>'.__( 'By enabling this feature, you get full spam protection from over 30.000 blacklisted IP addresses.' ).'</p><hr>');
+								$general->html('<p>'.__( 'With Anti Spam Protection you can enable anti spam filters and block access from the specific IP, country, state and city to your site. This feature is very safe and does not affect the SEO.' ).'</p><p>'.__( 'By enabling this feature, you get full spam protection from over 60.000 blacklisted IP addresses.' ).'</p><hr>');
 							
 								$general->radio(array(
 									'label'		=> __('Enable Spam Protection',CFGP_NAME),
@@ -665,8 +665,8 @@ if( $global->get( 'action' ) == 'deactivate_license' )
 
 								$general->html( sprintf( '<button type="submit" class="btn btn-success pull-right cfgp_save_options">%s</button>', __( 'Update All Options', CFGP_NAME ) ) );
 								$general->html('<h5 class="mt-5" id="Geo_Tag">'.__('Geo Tag',CFGP_NAME).'</h5>');
-								$general->html('<p>'.__( 'The Geo Tag will help you to create your own geo tags in a simple interactive way without having to deal with latitude or longitude degrees or the syntax of meta tags.' ).'</p>');
-								$general->html('<p>'.__( 'Here you can enable Geo Tag generators inside any post type on the your WordPress website.' ).'</p><hr>');
+								$general->html('<p>'.__( 'The Geo Tag will help you to create your own geotags in a simple interactive way without having to deal with latitude or longitude degrees or the syntax of meta tags.' ).'</p>');
+								$general->html('<p>'.__( 'Here you can enable GeoTag generators inside any post type on the your WordPress website.' ).'</p><hr>');
 
 								$post_types_geo = apply_filters( 'cf_geoplugin_post_types', get_post_types(
 									array(
@@ -703,7 +703,7 @@ if( $global->get( 'action' ) == 'deactivate_license' )
 								$general->html( sprintf( '<button type="submit" class="btn btn-success pull-right cfgp_save_options">%s</button>', __( 'Update All Options', CFGP_NAME ) ) );
 								
 								$general->html('<h5 class="mt-5" id="Special_Settings">'.__('Special Settings',CFGP_NAME).'</h5>');
-								$general->html('<p>'.__('Special plugin settings that, in some cases, need to be changed to make some plugin systems to work properly. Many of theese settings depends of your server.', CFGP_NAME).'</p><hr>');
+								$general->html('<p>'.__('Special plugin settings that, in some cases, need to be changed to make some plugin systems to work properly. Many of these settings depends of your server.', CFGP_NAME).'</p><hr>');
 
 
 								$general->input(array(
@@ -742,8 +742,44 @@ if( $global->get( 'action' ) == 'deactivate_license' )
 								));
 
 								$general->html( sprintf( '<button type="submit" class="btn btn-success pull-right cfgp_save_options">%s</button>', __( 'Update All Options', CFGP_NAME ) ) );
+								
+								
+								$general->html('<h5 class="mt-5">'.__('E-mail Notification Settings',CFGP_NAME).'</h5>');
+								$general->html('<p>'.__('CF Geo Plugin sends notifications in 3 cases: 1) When you reach less than 50 lookups, 2) When the lookup expires, 3) When the license expires.',CFGP_NAME).'<br>' . sprintf(__('This option is very important and cannot be turned off via these settings. But if you want to turn off this notifications, %s.',CFGP_NAME),
+									'<a href="' . CFGP_STORE . '/documentation/advanced-usage/php-integration/constants/cfgp_disable_notification" target="_blank">' . __('read this documentation', CFGP_NAME) . '</a>').'</p>');
+								$general->html('<hr>');
+								
+								
+								$general->radio(array(
+									'label'		=> __('Who receives notifications?',CFGP_NAME),
+									'name'		=> 'notification_recipient_type',
+									'default'	=> CF_Geoplugin_Global::get_the_option('notification_recipient_type', 'all'),
+									'info'		=> __('Select who receives notifications.',CFGP_NAME),
+									'separator'	=> '<br>',
+									'label_class' => 'align-self-start',
+									array(
+										'text'	=> __('All administrators on this site',CFGP_NAME),
+										'value'	=> 'all'
+									),
+									array(
+										'text'	=> __('All email addresses from the list below',CFGP_NAME),
+										'value'	=> 'manual'
+									)
+								));
+								
+								$general->textarea(array(
+									'label'		=> __('Recipient Emails',CFGP_NAME),
+									'name'		=> 'notification_recipient_emails',
+									'id'		=> 'notification_recipient_emails',
+									'value'		=> (isset( $CF_GEOPLUGIN_OPTIONS['notification_recipient_emails'] ) && !empty($CF_GEOPLUGIN_OPTIONS['notification_recipient_emails']) ? $CF_GEOPLUGIN_OPTIONS['notification_recipient_emails'] : get_bloginfo('admin_email')),
+									'attr'		=> array('autocomplete'=>'off'),
+									'info'		=> __( 'You can always add multiple email addresses separated by comma.', CFGP_NAME )
+								));
+								$general->html( sprintf( '<button type="submit" class="btn btn-success pull-right cfgp_save_options">%s</button>', __( 'Update All Options', CFGP_NAME ) ) );
+								
+								
 								$general->html('<h5 class="mt-5" class="BETA_Testing">'.__('BETA Testing & Advanced Features',CFGP_NAME).'</h5>');
-								$general->html('<p>'.__('Here you can enable BETA functionality and test it. In many cases, normaly you should not have any problems but some functionality are new and experimental that mean if any conflict happen, you must be aware of this. If many users find this functionality useful we may keep this functionality and include it as standard functionality of CF Geo Plugin.',CFGP_NAME).'</p><hr>');
+								$general->html('<p>'.__('Here you can enable BETA functionality and test it. In many cases, normally you should not have any problems but some functionality is new and experimental that means if any conflict happens, you must be aware of this. If many users find this functionality useful we may keep this functionality and include it as standard functionality of CF Geo Plugin.',CFGP_NAME).'</p><hr>');
 								
 								$general->radio(array(
 									'label'		=> __('Enable BETA Features',CFGP_NAME),
@@ -804,7 +840,7 @@ if( $global->get( 'action' ) == 'deactivate_license' )
 								$general->html( sprintf( '<br><br><button type="submit" class="btn btn-success pull-right cfgp_save_options">%s</button>', __( 'Update All Options', CFGP_NAME ) ) );
 								
 								$general->html('<h5 class="mt-5" id="Proxy_Settings">'.__('Proxy Settings',CFGP_NAME).'</h5>');
-								$general->html('<p>'.sprintf(__('Some servers not share real IP because of security reasons or IP is blocked from geolocation. Using proxy you can bypass that protocols and enable geoplugin to work properly. Also, this option on individual servers can cause inaccurate geo informations, and because of that this option is disabled by default. You need to test this option on your side and use wise. Need proxy service? %1$s.',CFGP_NAME),'<a href="https://go.nordvpn.net/aff_c?offer_id=15&aff_id=14042&url_id=902" target="_blank">'.__('We have Recommended Service For You',CFGP_NAME).'</a>').'</p><p>'.__('This is usually good if you use some Onion domain or you are a general user of the private web and all your websites are in the private networks.',CFGP_NAME).'</p><hr>');
+								$general->html('<p>'.sprintf(__('Some servers do not share real IP because of security reasons or IP is blocked from geolocation. Using proxy you can bypass that protocol and enable geoplugin to work properly. Also, this option on individual servers can cause inaccurate geo information, and because of that this option is disabled by default. You need to test this option on your side and use wise. Need proxy service? %1$s.',CFGP_NAME),'<a href="https://go.nordvpn.net/aff_c?offer_id=15&aff_id=14042&url_id=902" target="_blank">'.__('We have Recommended Service For You',CFGP_NAME).'</a>').'</p><p>'.__('This is usually good if you use some Onion domain or you are a general user of the private web and all your websites are in the private networks.',CFGP_NAME).'</p><hr>');
 								
 								
 							if(CF_Geoplugin_Global::access_level($CF_GEOPLUGIN_OPTIONS) > 1):
@@ -1072,14 +1108,14 @@ if( $global->get( 'action' ) == 'deactivate_license' )
                             <?php if(CF_Geoplugin_Global::access_level($CF_GEOPLUGIN_OPTIONS) < 4): ?>
                             <h5 class="mt-3 text-danger"><?php _e('NOTE: The REST API is only functional for the Business License',CFGP_NAME) ?></h5>
                             <?php endif; ?>
-                            <p><?php _e('The CF Geo Plugin REST API allows external apps to use geo informations and made your WordPress like geo informations provider.',CFGP_NAME) ?></p>
+                            <p><?php _e('The CF Geo Plugin REST API allows external apps to use geo information and make your WordPress like a geo information provider.',CFGP_NAME) ?></p>
                             <h5><?php _e('API KEY',CFGP_NAME) ?>:</h5>
                             <div><code style="font-size: large;width: 100%;text-align: center;font-weight: 800;padding: 10px"><?php echo $CF_GEOPLUGIN_OPTIONS['id']; ?></code></div>
                             <h5 class="mt-3"><?php _e('Secret API KEY',CFGP_NAME) ?>:</h5>
                             <div><code id="cf-geoplugin-secret-key" style="font-size: large;width: 100%;text-align: center;font-weight: 800;padding: 10px"><?php echo isset($CF_GEOPLUGIN_OPTIONS['rest_secret']) && !is_array($CF_GEOPLUGIN_OPTIONS['rest_secret']) && !empty($CF_GEOPLUGIN_OPTIONS['rest_secret']) ? $CF_GEOPLUGIN_OPTIONS['rest_secret'] : ' - ' . __('Generate Secret Key',CFGP_NAME) . ' - '; ?></code> <button type="button" class="btn btn-sm btn-secondary ml-3" id="cf-geoplugin-generate-secret-key"><?php _e('Generate Secret Key',CFGP_NAME) ?></button></div>
                             
                             <h5 class="mt-3"><?php _e('Documentation',CFGP_NAME) ?>:</h5>
-                            <p><?php _e('This API is designed to provide easy and secure access to geo information on your site sending simple POST or GET requests and receiving JSON formatted data. Through this API, you can easily connect via any programming language that allows crossdomain communication.',CFGP_NAME) ?></p>
+                            <p><?php _e('This API is designed to provide easy and secure access to geo information on your site sending simple POST or GET requests and receiving JSON formatted data. Through this API, you can easily connect via any programming language that allows cross domain communication.',CFGP_NAME) ?></p>
                             
                             <div class="row ml-1 mr-1">
                                 <div class="nav col-sm-2 flex-column nav-pills" id="cf-geo-rest-tab" role="tablist" aria-orientation="vertical">
@@ -1171,7 +1207,7 @@ if( $global->get( 'action' ) == 'deactivate_license' )
                                     </div>
                                     <div class="tab-pane border border-secondary rounded pt-1 pb-1 pl-3 pr-3 fade" id="cf-geo-rest-info-tab-lookup" role="tabpanel" aria-labelledby="cf-geo-rest-info-tab-lookup-tab">
                                     	<h5 class="mt-3"><?php _e('Lookup endpoint',CFGP_NAME) ?>:</h5>
-                                        <p><?php _e('Endpoint used to lookup IP address informations. To make this work properly, you must have a valid KEY and Access Token API.',CFGP_NAME) ?></p>
+                                        <p><?php _e('Endpoint used to look up IP address information. To make this work properly, you must have a valid KEY and Access Token API.',CFGP_NAME) ?></p>
                                         <p><code><?php echo admin_url('admin-ajax.php?action=cf_geoplugin_lookup'); ?></code></p>
                                         <p><?php _e('Expected GET or POST parameters.',CFGP_NAME) ?></p>
                                         <table class="table">
@@ -1240,7 +1276,7 @@ endforeach;
 ?>
 	"code" : <?php echo $CFGEO['status'] . "\n"; ?>
 }</pre>
-										<p><?php _e('You can use these JSON information in your external app anywhere. TIP: In order for your external app to be fast, it would be good to make this call once and record in a temporary session that will expire after few minutes.',CFGP_NAME) ?></p>
+										<p><?php _e('You can use these JSON information in your external app anywhere. TIP: In order for your external app to be fast, it would be good to make this call once and record in a temporary session that will expire after a few minutes.',CFGP_NAME) ?></p>
                                     </div>
                                     <div class="tab-pane border border-secondary rounded pt-1 pb-1 pl-3 pr-3 fade" id="cf-geo-rest-info-tab-token" role="tabpanel" aria-labelledby="cf-geo-rest-info-tab-token-tab">
                                     	<h5 class="mt-3"><?php _e('Available Tokens',CFGP_NAME) ?>:</h5>

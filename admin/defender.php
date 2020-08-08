@@ -126,9 +126,9 @@ global $wp_version;
 									.'</a>')
 								.'</strong>';
                                 
-								if( isset( $CF_GEOPLUGIN_OPTIONS['enable_spam_ip'] ) && $CF_GEOPLUGIN_OPTIONS['enable_spam_ip'] ) $blacklist_text = __( '<strong>Automatic IP Address Blacklist Check</strong> is enabled. All of these IPs are from safe source and most of them are bots and crawlers. Blackliested IPs will be automatically recognized and blocked. If you don\'t want this kind of protection disable it in plugin settings', CFGP_NAME );
+								if( isset( $CF_GEOPLUGIN_OPTIONS['enable_spam_ip'] ) && $CF_GEOPLUGIN_OPTIONS['enable_spam_ip'] ) $blacklist_text = __( '<strong>Automatic IP Address Blacklist Check</strong> is enabled. All of these IPs are from a safe source and most of them are bots and crawlers. Blacklisted IPs will be automatically recognized and blocked. If you don\'t want this kind of protection disable it in plugin settings.', CFGP_NAME );
                             ?>
-                            <p><?php printf(__("With %s you can block the access from the specific IP, country, state and city to your site. Names of countries, states, regions or cities are not case sensitive, but the name must be entered correctly (in English) to get this feature work correctly. This feature is very safe and does not affect to SEO.",CFGP_NAME),'<strong>'.__("Anti Spam Protection",CFGP_NAME).'</strong>'); ?></p>
+                            <p><?php printf(__("With %s you can block the access from the specific IP, country, state and city to your site. Names of countries, states, regions or cities are not case sensitive, but the name must be entered correctly (in English) to get this feature work correctly. This feature is very safe and does not affect SEO.",CFGP_NAME),'<strong>'.__("Anti Spam Protection",CFGP_NAME).'</strong>'); ?></p>
                         </div>
                         <div class="col-12">
                             <form method="post" enctype="multipart/form-data" action="<?php echo CF_Geoplugin_Global::add_admin_url( 'admin.php?page='. $_GET['page'] .'&settings-updated=true&setting=general'); ?>" target="_self" id="template-options-tab">
@@ -208,7 +208,7 @@ global $wp_version;
 													?>
 													</select>
 													<br>
-													<small id="countryHelp" class="form-text text-muted"><?php printf(__('To setup list of countries, you need to go in Geo Plugin -> %s',CFGP_NAME), '<a href="' . admin_url('edit-tags.php?taxonomy=cf-geoplugin-country&post_type=cf-geoplugin-banner') . '" target="_blank">' . __('Countries',CFGP_NAME) . '</a>'); ?></small>
+													<small id="countryHelp" class="form-text text-muted"><?php printf(__('To set up a list of countries, you need to go to the Geo Plugin -> %s',CFGP_NAME), '<a href="' . admin_url('edit-tags.php?taxonomy=cf-geoplugin-country&post_type=cf-geoplugin-banner') . '" target="_blank">' . __('Countries',CFGP_NAME) . '</a>'); ?></small>
 													<br>
 													<button style="font-size: 14px;" type="button" class="btn btn-light btn-small cfgp-select-all" data-target="block_country"><object data="<?php echo CFGP_ASSETS . '/images/select.svg'; ?>" width="15" height="15"></object> <?php esc_attr_e( 'Select all', CFGP_NAME ); ?></button>
 												</div>
@@ -257,7 +257,7 @@ global $wp_version;
 													?>
 													</select>
 													<br>
-													<small id="countryHelp" class="form-text text-muted"><?php printf(__('To setup list of regions, you need to go in Geo Plugin -> %s',CFGP_NAME), '<a href="' . admin_url('edit-tags.php?taxonomy=cf-geoplugin-region&post_type=cf-geoplugin-banner') . '" target="_blank">' . __('Regions',CFGP_NAME) . '</a>'); ?></small>
+													<small id="countryHelp" class="form-text text-muted"><?php printf(__('To set up a list of regions, you need to go to Geo Plugin -> %s',CFGP_NAME), '<a href="' . admin_url('edit-tags.php?taxonomy=cf-geoplugin-region&post_type=cf-geoplugin-banner') . '" target="_blank">' . __('Regions',CFGP_NAME) . '</a>'); ?></small>
 													<br>
 													<button style="font-size: 14px;" type="button" class="btn btn-light btn-small cfgp-select-all" data-target="block_region"><object data="<?php echo CFGP_ASSETS . '/images/select.svg'; ?>" width="15" height="15"></object> <?php esc_attr_e( 'Select all', CFGP_NAME ); ?></button>
 												</div>
@@ -306,7 +306,7 @@ global $wp_version;
 													?>
 													</select>
 													<br>
-													<small id="countryHelp" class="form-text text-muted"><?php printf(__('To setup list of cities, you need to go in Geo Plugin -> %s',CFGP_NAME), '<a href="' . admin_url('edit-tags.php?taxonomy=cf-geoplugin-city&post_type=cf-geoplugin-banner') . '" target="_blank">' . __('Cities',CFGP_NAME) . '</a>'); ?></small>
+													<small id="countryHelp" class="form-text text-muted"><?php printf(__('To set up a list of cities, you need to go to Geo Plugin -> %s',CFGP_NAME), '<a href="' . admin_url('edit-tags.php?taxonomy=cf-geoplugin-city&post_type=cf-geoplugin-banner') . '" target="_blank">' . __('Cities',CFGP_NAME) . '</a>'); ?></small>
 													<br>
 													<button style="font-size: 14px;" type="button" class="btn btn-light btn-small cfgp-select-all" data-target="block_city"><object data="<?php echo CFGP_ASSETS . '/images/select.svg'; ?>" width="15" height="15"></object> <?php esc_attr_e( 'Select all', CFGP_NAME ); ?></button>
 												</div>
@@ -315,7 +315,7 @@ global $wp_version;
 									</div>
 								</div>
 								<p><?php echo $blacklist_text; ?></p>
-								<p><?php _e( 'This options will remove all your content, template, design and display custom message to your visitors.', CFGP_NAME ); ?></p>
+								<p><?php _e( 'These options will remove all your content, template, design and display custom messages to your visitors.', CFGP_NAME ); ?></p>
                                 <div class="form-group">
                                     <button type="submit" class="btn btn-info"><?php _e( 'Save / Update', CFGP_NAME ); ?></button>
                                 </div>
@@ -335,12 +335,10 @@ global $wp_version;
                                         $block_country_messages = html_entity_decode( trim( $this->get_option('block_country_messages') ) );
                                         if( empty( $block_country_messages ) )
                                         {
-                                            $messages="
-                                                <h1>Error</h1>
-                                                <h3>404 - Page not found</h3>
-                                                <p>We could not find the above page on our servers.</p>
-                                                <p>NOTE: This option is not saved!</p>
-                                            ";
+                                            $messages="<h1>Error</h1>
+<h3>404 - Page not found</h3>
+<p>We could not find the above page on our servers.</p>
+<p>NOTE: This option is not saved!</p>";
                                             wp_editor( $messages, 'block_country_messages', $settings );
                                         }
                                         else

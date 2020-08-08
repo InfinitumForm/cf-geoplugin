@@ -609,6 +609,17 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 			}
 			
 			/**
+			 * Update e-mails notfication
+			 */
+			if(isset($options['notification_recipient_emails']))
+			{
+				$explode_emails = preg_split('/[\n\s,;]+/', $options['notification_recipient_emails']);
+				$explode_emails = array_map('sanitize_email', $explode_emails);
+				$explode_emails = array_filter($explode_emails);
+				$options['notification_recipient_emails'] = join(', ',$explode_emails);
+			}
+			
+			/**
 			 * Update checkboxes
 			 */
 			$options['enable_seo_posts'] = $enable_seo_posts;

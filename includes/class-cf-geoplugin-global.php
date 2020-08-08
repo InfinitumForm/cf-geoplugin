@@ -94,6 +94,8 @@ class CF_Geoplugin_Global
 		'covid19'					=> 0,
 		// 1-Session; 2-Database; 3-Both
 		'session_type'				=> 1,
+		'notification_recipient_emails'	=> '',
+		'notification_recipient_type' 	=> 'all'
 	);
 
 	// Deprecated options
@@ -179,7 +181,16 @@ class CF_Geoplugin_Global
 		// License name filters
 		$this->license_names = apply_filters( 'cf_geoplugin_license_names', $this->license_names);
 		// Default options filters
+		
+		
+		// Add admin email to the default options
+		if(isset($this->default_options['notification_recipient_emails']) && empty($this->default_options['notification_recipient_emails'])){
+			$this->default_options['notification_recipient_emails'] = get_bloginfo('admin_email');
+		}
+		
+		// Apply filter
 		$this->default_options = apply_filters( 'cf_geoplugin_default_options', $this->default_options);
+		
 		// HTTP codes
 		$this->http_codes = apply_filters( 'cf_geoplugin_http_codes', array(
 			301 => __( '301 - Moved Permanently', CFGP_NAME ),
@@ -895,7 +906,9 @@ class CF_Geoplugin_Global
 	* @version  1.1.0
 	**/
 	function get_current_page_ID(){
-		global $post, $wp_query;
+		global $post, $wp_query, $wpdb;
+		
+	//	$structure = get_option( 'permalink_structure' );
 		
 		if((is_home() || is_front_page()) && !empty(get_queried_object_id()))
 			return get_queried_object_id();
@@ -907,11 +920,42 @@ class CF_Geoplugin_Global
 			return $post->ID;
 		else if($this->get('action') == 'edit' && $post = $this->get('post', 'int', false))
 			return $post;
-		else if(!is_admin() && $p = $this->get('p', 'int', false))
+		else if($p = $this->get('p', 'int', false))
 			return $p;
-		else if('page' == get_option( 'show_on_front' ) && !empty(get_option( 'page_for_posts' )))
+		else if($page_id = $this->get('page_id', 'int', false))
+			return $page_id;
+		else if(!is_admin() && $wpdb)
+		{
+			$actual_link = rtrim($_SERVER['REQUEST_URI'], '/');
+			$parts = explode('/', $url);
+			if(!empty($parts))
+			{
+				$slug = end($parts);
+				if(!empty($slug))
+				{
+					if($post_id = $wpdb->get_var(
+						$wpdb->prepare(
+							"SELECT ID FROM {$wpdb->posts} 
+							WHERE 
+								`post_status` = %s
+							AND
+								`post_name` = %s
+							AND
+								TRIM(`post_name`) <> ''
+							LIMIT 1",
+							'publish',
+							sanitize_title($slug)
+						)
+					))
+					{
+						return absint($post_id);
+					}
+				}
+			}
+		}
+		else if(!is_admin() && 'page' == get_option( 'show_on_front' ) && !empty(get_option( 'page_for_posts' )))
 			return get_option( 'page_for_posts' );
-		
+
 		return false;
 	}
 	

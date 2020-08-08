@@ -1,5 +1,10 @@
 == Changelog ==
 
+= 7.12.7 =
+* IMPORTANT UPDATE: Added settings for email notification
+* IMPORTANT UPDATE: Improved SEO redirection for cached pages
+* Enhancement: PHP code
+
 = 7.12.6 =
 * URGENT FIX: Allowed memory size PHP error on the low cost hostings
 
