@@ -110,11 +110,11 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
 	 */
 	public function run($options=array()){
 		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
-		$option=array(
+		$option=apply_filters('cf_geoplugin_api_run_options', array(
 			'ip'			=>	CFGP_IP,
 			'base_currency'	=>	( isset( $CF_GEOPLUGIN_OPTIONS['base_currency'] ) ? $CF_GEOPLUGIN_OPTIONS['base_currency'] : 'USD' ),
 			'debug'			=>	false
-		);
+		));
 
 		// replace default options
 		if (version_compare(PHP_VERSION, '7.0.0', '>='))

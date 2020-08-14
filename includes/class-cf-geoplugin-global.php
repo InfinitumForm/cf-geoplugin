@@ -191,6 +191,9 @@ class CF_Geoplugin_Global
 		// Apply filter
 		$this->default_options = apply_filters( 'cf_geoplugin_default_options', $this->default_options);
 		
+		CF_Geoplugin_Debug::log( '------------ Default options ------------' );
+		CF_Geoplugin_Debug::log( $this->default_options );
+		
 		// HTTP codes
 		$this->http_codes = apply_filters( 'cf_geoplugin_http_codes', array(
 			301 => __( '301 - Moved Permanently', CFGP_NAME ),
@@ -342,40 +345,43 @@ class CF_Geoplugin_Global
 	/*
 	 * Hook get already setup option
 	*/
-	public function get_the_option($option_name='', $default=NULL){
-		$options = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
+	public function get_the_option($option_name='', $default=false){
+		$options = apply_filters( 'cf_geoplugin_get_option', $GLOBALS['CF_GEOPLUGIN_OPTIONS']);
 		
 		if( !empty($option_name) && isset($options[$option_name]) ) {
 			$return = $options[$option_name];
+			
+			if(is_numeric($return) && $return == 0) return 0;
+		
+			if( !is_array($return) )
+			{
+				if($return != 0 && empty($return))
+				{
+					$return = NULL;
+				}
+				else if(is_numeric($return))
+				{
+					if((int)$return == $return) {
+						$return = (int)$return;
+					} else if((float)$return == $return) {
+						$return = (float)$return;
+					}
+				}
+				else if(in_array($return, array('true', 'false'), true) !== false)
+				{
+					$return = ($return == 'true');
+				}
+				else
+				{
+					$return = trim($return);
+				}
+			}
+			
 		} else {
 			$return = $default;
 		}
 		
-		if( !is_array($return) )
-		{
-			if($return != 0 && empty($return))
-			{
-				$return = NULL;
-			}
-			else if(is_numeric($return))
-			{
-				if((int)$return == $return) {
-					$return = (int)$return;
-				} else if((float)$return == $return) {
-					$return = (float)$return;
-				}
-			}
-			else if(in_array($return, array('true', 'false'), true) !== false)
-			{
-				$return = ($return == 'true');
-			}
-			else
-			{
-				$return = trim($return);
-			}
-		}
-		
-		return apply_filters( 'cf_geoplugin_get_the_option', $return, $GLOBALS['CF_GEOPLUGIN_OPTIONS']);
+		return apply_filters( 'cf_geoplugin_get_the_option', $return, $options);
 	}
 	
 	/*
@@ -927,7 +933,7 @@ class CF_Geoplugin_Global
 		else if(!is_admin() && $wpdb)
 		{
 			$actual_link = rtrim($_SERVER['REQUEST_URI'], '/');
-			$parts = explode('/', $url);
+			$parts = explode('/', $actual_link);
 			if(!empty($parts))
 			{
 				$slug = end($parts);

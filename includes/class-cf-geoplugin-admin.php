@@ -256,7 +256,6 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 	
 	// Create "CF Geo Plugin" Page
 	public function add_cf_geoplugin() {
-		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
 		add_menu_page(
 			__( 'Geo Plugin', CFGP_NAME ),
 			__( 'Geo Plugin', CFGP_NAME ),
@@ -267,7 +266,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 			59
 		);
 		
-		if($CF_GEOPLUGIN_OPTIONS['enable_gmap'])
+		if($this->get_the_option('enable_gmap'))
 		{
 			add_submenu_page(
 				CFGP_NAME,
@@ -281,7 +280,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 		
 		if ( current_user_can( 'edit_pages' ) && current_user_can( 'edit_posts' ) ) 
 		{
-			if($CF_GEOPLUGIN_OPTIONS['enable_defender'])
+			if($this->get_the_option('enable_defender'))
 			{
 				add_submenu_page(
 					CFGP_NAME,
@@ -292,7 +291,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 					array( &$this, 'page_cf_geoplugin_defender' )
 				);
 			}
-			if($CF_GEOPLUGIN_OPTIONS['enable_banner'])
+			if($this->get_the_option('enable_banner',0))
 			{
 				add_submenu_page(
 					CFGP_NAME,
@@ -303,7 +302,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 				);
 					
 			}
-			if($CF_GEOPLUGIN_OPTIONS['enable_seo_redirection'])
+			if($this->get_the_option('enable_seo_redirection'))
 			{
 				add_submenu_page(
 					CFGP_NAME,
@@ -729,8 +728,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 	
 	// Admin bar
 	function cf_geoplugin_admin_bar_menu() {
-		$CFGEO = $GLOBALS['CFGEO']; 
-		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS']; 
+		$CFGEO = $GLOBALS['CFGEO'];
 		global $wp_admin_bar;
 		// GEOPLUGIN
 		$wp_admin_bar->add_node( array(
@@ -750,7 +748,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 			'parent' => CFGP_NAME,
 		) );
 		
-		if($CF_GEOPLUGIN_OPTIONS['enable_gmap'])
+		if($this->get_the_option('enable_gmap'))
 		{
 			$wp_admin_bar->add_node( array(
 				'id' => CFGP_NAME . '-gmap',
@@ -763,7 +761,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 		
 		if ( current_user_can( 'edit_pages' ) && current_user_can( 'edit_posts' ) ) {
 
-			if($CF_GEOPLUGIN_OPTIONS['enable_defender'])
+			if($this->get_the_option('enable_defender'))
 			{
 				$wp_admin_bar->add_node( array(
 					'id' => CFGP_NAME . '-defender',
@@ -772,7 +770,9 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 					'meta'  => array( 'class' => CFGP_NAME . '-defender-toolbar-page' ),
 					'parent' => CFGP_NAME,
 				) );
-
+			}
+			if($this->get_the_option('enable_banner'))
+			{
 				$wp_admin_bar->add_node( array(
 					'id' => CFGP_NAME . '-banner',
 					'title' => __('Geo Banner',CFGP_NAME),
@@ -780,7 +780,9 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 					'meta'  => array( 'class' => CFGP_NAME . '-banner-toolbar-page' ),
 					'parent' => CFGP_NAME,
 				) );
-
+			}
+			if($this->get_the_option('enable_seo_redirection'))
+			{
 				$wp_admin_bar->add_node( array(
 					'id' => CFGP_NAME . '-seo-redirection',
 					'title' => __('SEO Redirection',CFGP_NAME),
@@ -788,7 +790,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 					'meta'  => array( 'class' => CFGP_NAME . '-seo-redirection-toolbar-page' ),
 					'parent' => CFGP_NAME,
 				) );
-
+			}
 				$wp_admin_bar->add_node( array(
 					'id' => CFGP_NAME . '-countries',
 					'title' => __('Countries',CFGP_NAME),
@@ -812,7 +814,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 					'meta'  => array( 'class' => CFGP_NAME . '-city-toolbar-page' ),
 					'parent' => CFGP_NAME,
 				) );
-			}
+			
 			$wp_admin_bar->add_node( array(
 				'id' => CFGP_NAME . '-debug',
 				'title' => __('Debug Mode',CFGP_NAME),
@@ -917,7 +919,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 		// Currency
 		if(!empty($CFGEO['currency_converter']))
 		{
-			$money =  __('Today\'s course',CFGP_NAME) . ': ' . (1 . '' . $CF_GEOPLUGIN_OPTIONS['base_currency']) . ' = ' . number_format($CFGEO['currency_converter'], 2) . '' . $CFGEO['currency'];
+			$money =  __('Today\'s course',CFGP_NAME) . ': ' . (1 . '' . $this->get_the_option('base_currency')) . ' = ' . number_format($CFGEO['currency_converter'], 2) . '' . $CFGEO['currency'];
 			
 			$wp_admin_bar->add_node( array(
 				'id' => CFGP_NAME . '-course',
@@ -1060,7 +1062,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
 		if( isset( $_GET['action'] ) && $_GET['action'] == 'export_csv' && CF_Geoplugin_Global::access_level($CF_GEOPLUGIN_OPTIONS) > 0 )
 		{
-			if(isset($CF_GEOPLUGIN_OPTIONS['enable_beta_seo_csv']) ? ($CF_GEOPLUGIN_OPTIONS['enable_beta'] && $CF_GEOPLUGIN_OPTIONS['enable_beta_seo_csv']) : 1)
+			if($this->get_the_option('enable_beta_seo_csv'))
 			{
 				global $wpdb;
 
@@ -1079,9 +1081,9 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 						echo join( ';', $result ) . "\n";
 					}
 					$content = ob_get_clean();
-					$file = 'cfgeo_seo_export_' . date('d-m-Y') . '-' . date('h:i:sa') . '.csv';
-					
-					if(!$CF_GEOPLUGIN_OPTIONS['enable_cache'])
+					$file = 'cfgeo_seo_export_' . date('d-m-Y') . '_' . date('h-i-sa') . '.csv';
+
+					if( !$this->get_the_option('enable_cache') )
 					{
 						// disable caching
 						$now = gmdate('D, d M Y H:i:s');
@@ -1096,7 +1098,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 					header('Content-Encoding: UTF-8');
 					header('Content-Type: text/csv; charset=UTF-8');
 					
-					header('Content-Disposition: attachment; filename='.$file);
+					header('Content-Disposition: attachment; filename="' . $file . '"');
 					header('Content-Transfer-Encoding: binary');
 
 					$content = mb_convert_encoding($content, 'UTF-16LE', 'UTF-8');

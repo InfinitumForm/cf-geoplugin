@@ -17,12 +17,12 @@ class CF_Geoplugin_Woocommerce extends CF_Geoplugin_Global
 	private $cf_conversion_rounded_option	= 'up';
 	private $cf_conversion_adjust 			= 0;
 	private $cf_conversion_in_admin 		= 'yes';
+	private $woocommerce_currency;
 
     function __construct()
     {
-		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
 		$this->cache = false;
-		if(isset($CF_GEOPLUGIN_OPTIONS['enable_cache']) ? $CF_GEOPLUGIN_OPTIONS['enable_cache'] : false) $this->cache = true;
+		if($this->get_the_option('enable_cache',false)) $this->cache = true;
 		
         $this->add_action( 'init', 'check_woocommerce_instalation', 10 );
 		
@@ -31,17 +31,36 @@ class CF_Geoplugin_Woocommerce extends CF_Geoplugin_Global
 		$this->cf_conversion_rounded_option	= get_option( 'woocommerce_cf_geoplugin_conversion_rounded_option', 'up');
 		$this->cf_conversion_adjust 		= get_option( 'woocommerce_cf_geoplugin_conversion_adjust', 0);
 		$this->cf_conversion_in_admin 		= get_option( 'woocommerce_cf_geoplugin_conversion_in_admin', 'yes' );
+		$this->woocommerce_currency 		= get_option( 'woocommerce_currency');
+		
+		if($this->woocommerce_currency)
+		{
+		
+			$this->add_filter('cf_geoplugin_api_run_options', 'change_api_run_options', 1);
+			$this->add_filter('cf_geoplugin_default_options', 'change_api_run_options', 1);
+			$this->add_filter('cf_geoplugin_get_option', 'change_api_run_options', 1);
+		
+		}
     }
+	
+	public function change_api_run_options($options){
+		
+		if($this->woocommerce_currency && isset($options['base_currency'])){
+			$options['base_currency'] = $this->woocommerce_currency;
+		}
+		
+		return $options;
+	}
 
     // Check if woocommerce is installed and active
     public function check_woocommerce_instalation()
     {
-        $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS']; $CFGEO = $GLOBALS['CFGEO'];
+        $CFGEO = $GLOBALS['CFGEO'];
         if( class_exists( 'WooCommerce' ) )
         {
             $this->update_option( 'woocommerce_active', 1 );
             
-            if( isset( $CF_GEOPLUGIN_OPTIONS['enable_woocommerce'] ) && $CF_GEOPLUGIN_OPTIONS['enable_woocommerce'] == 1 )
+            if( $this->get_the_option('enable_woocommerce',0) )
             {
                 if( isset( $CFGEO['currency_converter'] ) && $CFGEO['currency_converter'] > 0)
                 {
@@ -63,7 +82,7 @@ class CF_Geoplugin_Woocommerce extends CF_Geoplugin_Global
 				// Add payment settings
                 $this->add_action( 'woocommerce_settings_tabs_cf_geoplugin_payment_restriction', 'cfgp_woocommerce_payment_settings' );
                 
-                if( self::access_level( $CF_GEOPLUGIN_OPTIONS['license_sku'] ) >= 2 )
+                if( self::access_level( $this->get_the_option('license_sku',0) ) >= 2)
                 {
 					// Save our settings for payments
                     $this->add_action( 'woocommerce_update_options_cf_geoplugin_payment_restriction', 'cfgp_woocommerce_payment_settings_save' );
@@ -441,10 +460,14 @@ class CF_Geoplugin_Woocommerce extends CF_Geoplugin_Global
 				isset($custom_attributes['disabled']) && $custom_attributes['disabled']
 				? ' <br><span style="color:#dc3545;">' . sprintf(__('This option is only enabled with the licensed version of the %s. You must use 1 year license or above.', CFGP_NAME), '<a href="' . admin_url('admin.php?page=cf-geoplugin-activate') . '">WordPress Geo Plugin</a>') . '</span>'
 				: ''
-				), 'id' => 'cf_geoplugin_payment_restriction' );
+				) . '<hr>', 'id' => 'cf_geoplugin_payment_restriction' );
+				$count = count($enabled_gateways); $x = 0;
                 foreach( $enabled_gateways as $i => $gateway )
                 {
+					++$x;
+					$hr_id = sprintf( '%s_hr', $gateway->id );
                     $select_setting_id = sprintf( '%s_select', $gateway->id );
+					$checkbox_setting_id = sprintf( '%s_checkbox', $gateway->id );
                     $method_setting_id = sprintf( '%s', $gateway->id );
 					
                     $settings[ $method_setting_id ] = array(
@@ -454,7 +477,6 @@ class CF_Geoplugin_Woocommerce extends CF_Geoplugin_Global
                         'class'    => 'wc-enhanced-select',
                         'default'  => 'cfgp_payment_woo',
                         'css'      => 'min-width:400px;',
-                        'type'     => 'select',
                         'options'  => array(
                             'cfgp_payment_woo'      => __( 'Woocommerce Default', CFGP_NAME ),
                             'cfgp_payment_enable'   => __( 'Enable only in selected countries', CFGP_NAME ),
@@ -464,7 +486,7 @@ class CF_Geoplugin_Woocommerce extends CF_Geoplugin_Global
                     );
 
                     $settings[ $select_setting_id ] = array(
-                        'name'     => sprintf( '%s', esc_html( $gateway->method_title ) ),
+                        'name'     => __( 'Select countries', CFGP_NAME ),
                         'class'    => 'wc-enhanced-select',
                         'id'       => sprintf( 'woocommerce_cfgp_method_%s', $select_setting_id ),
                         'default'  => '',
@@ -473,6 +495,18 @@ class CF_Geoplugin_Woocommerce extends CF_Geoplugin_Global
                         'options'  => $countries_options,
                         'custom_attributes' => $custom_attributes,
                     );
+/*
+					$settings[ $checkbox_setting_id ] = array(
+                        'name'     => __( 'Disable currency conversion for this method', CFGP_NAME ),
+                        'id'       => sprintf( 'woocommerce_cfgp_method_%s', $method_setting_id ),
+                        'type'     => 'checkbox',
+                        'class'    => 'wc-enhanced-checkbox',
+                        'default'  => '',
+                        'custom_attributes' => $custom_attributes,
+                    );
+*/				
+					$settings[ $hr_id ] = array( 'name' => sprintf( '%s', esc_html( $gateway->method_title ) ), 'type' => 'title', 'desc' => '', 'id' => 'cf_geoplugin_payment_restriction' );
+					if($count != $x) $settings[ $hr_id.'_end' ] = array( 'name' => '', 'type' => 'title', 'desc' => '<hr>', 'id' => 'cf_geoplugin_payment_restriction' );
 
                 }
                 $settings[] = array( 'type' => 'sectionend', 'id' => 'cf_geoplugin_payment_restriction' );

@@ -77,7 +77,7 @@ class CF_Geoplugin_Init extends CF_Geoplugin_Global
 			else CF_Geoplugin_Debug::log( 'CF_Geoplugin_Covid_19 class not loaded - Class does not exists' );
 		}
 		else CF_Geoplugin_Debug::log( 'CF_Geoplugin_Covid_19 class not loaded - File does not exists' );
-		 
+
 		// Include internal library
 		if(file_exists(CFGP_INCLUDES . '/class-cf-geoplugin-library.php'))
 		{
@@ -288,6 +288,9 @@ class CF_Geoplugin_Init extends CF_Geoplugin_Global
 				'CFGP_DEFENDER_ACTIVATED'	=> CFGP_DEFENDER_ACTIVATED
 			);
 			CF_Geoplugin_Debug::log( $defines );
+
+			CF_Geoplugin_Debug::log( '------------ CF GEOPLUGIN OPTIONS ------------' );
+			CF_Geoplugin_Debug::log( var_export( $CF_GEOPLUGIN_OPTIONS, 1) );
 		}
 		
 		return $GLOBALS['CFGEO'];

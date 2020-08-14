@@ -1,5 +1,10 @@
 == Changelog ==
 
+= 7.12.8 =
+* IMPORTANT UPDATE: Fixed WooCommerce base conversion
+* Enhancement: Improved WooCommerce Payment Options
+* Enhancement: Fixed global options
+
 = 7.12.7 =
 * IMPORTANT UPDATE: Added settings for email notification
 * IMPORTANT UPDATE: Improved SEO redirection for cached pages
