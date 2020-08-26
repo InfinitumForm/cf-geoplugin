@@ -65,11 +65,13 @@ class CF_Geoplugin_SEO_Redirection extends CF_Geoplugin_Global
 					$value['ID'] = $i;
 					$value['page_id'] = $page_id;
 					
+					$value = apply_filters('cf_geoplugin_page_seo_redirection_values', $value);
+					
 					$this->do_redirection( $value );
 				}
 			}
 
-			$old_redirection = array(
+			$old_redirection = apply_filters('cf_geoplugin_page_seo_redirection_old_fields', array(
 				'country',
 				'region',
 				'city',
@@ -78,7 +80,7 @@ class CF_Geoplugin_SEO_Redirection extends CF_Geoplugin_Global
 				'seo_redirect',
 				'page_id',
 				'ID'
-			);
+			));
 			$redirection = array();
 
 			foreach( $old_redirection as $i => $meta_key )
@@ -96,6 +98,7 @@ class CF_Geoplugin_SEO_Redirection extends CF_Geoplugin_Global
 			}
 			$redirection['ID'] = 0;
 			$redirection['page_id'] = $page_id;
+			$redirection = apply_filters('cf_geoplugin_page_seo_redirection_fields', $redirection);
 			if( isset( $redirection['seo_redirect'] ) && $redirection['seo_redirect'] == '1' ) $this->do_redirection( $redirection );
 		}
 	}
@@ -139,9 +142,11 @@ class CF_Geoplugin_SEO_Redirection extends CF_Geoplugin_Global
 			} else {
 				$where = '';
 			}
+			
+			$where = apply_filters('cf_geoplugin_wp_seo_redirection_query_where', $where, "{$wpdb->prefix}{$table_name}");
  
 			$table_name = self::TABLE['seo_redirection'];
-            $redirects = $wpdb->get_results("
+            $redirects = $wpdb->get_results(apply_filters('cf_geoplugin_wp_seo_redirection_query', "
 			SELECT 
 				TRIM(url) AS url,
 				TRIM(LOWER(country)) AS country,
@@ -152,7 +157,7 @@ class CF_Geoplugin_SEO_Redirection extends CF_Geoplugin_Global
 			FROM 
 				{$wpdb->prefix}{$table_name}
 			WHERE
-				active = 1{$where}", ARRAY_A );
+				active = 1{$where}", "{$wpdb->prefix}{$table_name}"), ARRAY_A );
 
 			if( $redirects !== NULL && $wpdb->num_rows > 0 && ( isset( $CFGEO['country'] ) || isset( $CFGEO['country_code'] ) ) )
 			{
@@ -173,8 +178,12 @@ class CF_Geoplugin_SEO_Redirection extends CF_Geoplugin_Global
 			// Clear cache for the redirections
 			if(parent::get_the_option('enable_cache', false))
 			{
+				if(function_exists('nocache_headers')) {
+					nocache_headers();
+				}
 				header('Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0');
-				header('Expires: Sat, 26 Jul 1997 05:00:00 GMT');
+				header('Pragma: no-cache');
+				header('Expires: Sat, 26 Jul 2019 05:00:00 GMT');
 			}
 			
 			// Using the Referrer-Policy HTTP header
@@ -264,12 +273,16 @@ class CF_Geoplugin_SEO_Redirection extends CF_Geoplugin_Global
 		{
 			
 			if(isset($redirect['page_id']) && isset($redirect['ID']) && !empty($redirect['page_id'])) {
-				$cookie_name = '__cfgp_seo_' . md5($redirect['page_id'] . '_once_' . $redirect['ID']);
+				$cookie_name = apply_filters('cf_geoplugin_control_seo_redirection_cookie_name_' . $redirect['page_id'], '__cfgp_seo_' . md5($redirect['page_id'] . '_once_' . $redirect['ID']), $redirect['page_id'], $redirect['ID']);
 			} else {
-				$cookie_name = '__cfgp_seo_' . md5($redirect['url']);
+				$cookie_name = apply_filters('cf_geoplugin_control_seo_redirection_cookie_name', '__cfgp_seo_' . md5($redirect['url']), $redirect['url']);
 			}
 			
-			$expire = (time()+((365 * DAY_IN_SECONDS) * 2));
+			$expire = apply_filters('cf_geoplugin_control_seo_redirection_cookie_expire_time', (time()+((365 * DAY_IN_SECONDS) * 2)), time());
+			
+			if(isset($redirect['page_id']) && isset($redirect['ID']) && !empty($redirect['page_id'])) {
+				$expire = apply_filters('cf_geoplugin_control_seo_redirection_cookie_expire_time_' . $redirect['page_id'], $expire, time());
+			}
 			
 			if(isset($_COOKIE[$cookie_name]) && !empty($_COOKIE[$cookie_name])){
 				return false;

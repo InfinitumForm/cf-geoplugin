@@ -1,5 +1,8 @@
 == Changelog ==
 
+= 7.12.9 =
+* Enhancement: added new SEO redirection action filters
+
 = 7.12.8 =
 * IMPORTANT UPDATE: Fixed WooCommerce base conversion
 * Enhancement: Improved WooCommerce Payment Options
