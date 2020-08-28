@@ -1,5 +1,10 @@
 == Changelog ==
 
+= 7.12.10 =
+* IMPORTANT UPDATE: Fixed problems with update settings
+* IMPORTANT UPDATE: Fixed problems with SEO redirection
+* IMPORTANT UPDATE: JavaScript support for the WordPress 5.5
+
 = 7.12.9 =
 * Enhancement: added new SEO redirection action filters
 

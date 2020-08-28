@@ -273,15 +273,32 @@ class CF_Geoplugin_SEO_Redirection extends CF_Geoplugin_Global
 		{
 			
 			if(isset($redirect['page_id']) && isset($redirect['ID']) && !empty($redirect['page_id'])) {
-				$cookie_name = apply_filters('cf_geoplugin_control_seo_redirection_cookie_name_' . $redirect['page_id'], '__cfgp_seo_' . md5($redirect['page_id'] . '_once_' . $redirect['ID']), $redirect['page_id'], $redirect['ID']);
+				$cookie_name = apply_filters(
+					'cf_geoplugin_control_seo_redirection_cookie_name_' . $redirect['page_id'],
+					'__cfgp_seo_' . md5($redirect['page_id'] . '_once_' . $redirect['ID']),
+					$redirect['page_id'],
+					$redirect['ID']
+				);
 			} else {
-				$cookie_name = apply_filters('cf_geoplugin_control_seo_redirection_cookie_name', '__cfgp_seo_' . md5($redirect['url']), $redirect['url']);
+				$cookie_name = apply_filters(
+					'cf_geoplugin_control_seo_redirection_cookie_name',
+					'__cfgp_seo_' . md5($redirect['url']),
+					$redirect['url']
+				);
 			}
 			
-			$expire = apply_filters('cf_geoplugin_control_seo_redirection_cookie_expire_time', (time()+((365 * DAY_IN_SECONDS) * 2)), time());
+			$expire = apply_filters(
+				'cf_geoplugin_control_seo_redirection_cookie_expire_time',
+				(time()+((365*DAY_IN_SECONDS)*2)),
+				time()
+			);
 			
 			if(isset($redirect['page_id']) && isset($redirect['ID']) && !empty($redirect['page_id'])) {
-				$expire = apply_filters('cf_geoplugin_control_seo_redirection_cookie_expire_time_' . $redirect['page_id'], $expire, time());
+				$expire = apply_filters(
+					'cf_geoplugin_control_seo_redirection_cookie_expire_time_' . $redirect['page_id'],
+					$expire,
+					time()
+				);
 			}
 			
 			if(isset($_COOKIE[$cookie_name]) && !empty($_COOKIE[$cookie_name])){

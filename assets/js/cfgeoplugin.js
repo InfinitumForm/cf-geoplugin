@@ -97,18 +97,17 @@ $.fn.alerts = function(text, type){
 	(function($$){
 		if( $($$) )
 		{
-			$($$).on('submit',function(e){
+			$(document).on('submit', $$, function(e){
 				e.preventDefault();
 				clearTimeout(debounce);
-				var $this = $( $$ ),
+				var $this = $( this ),
 					field_values = $this.serializeArray(),
 					delay = debounce_delay;
 				
-				$('#alert').alerts(CFGP.label.loading,'info');
-					
 				debounce = setTimeout(function(){
-
-					$('input, select, textarea', $($$)).prop('disabled', true);
+					$('#alert').alerts(CFGP.label.loading,'info');
+					
+					$('input, select, textarea', $this).prop('disabled', true);
 					
 					
 					$.ajax({
@@ -118,8 +117,8 @@ $.fn.alerts = function(text, type){
 						url : CFGP.ajaxurl,
 						data : {action:'cf_geo_update_option', name : 'cfgp_options', value : field_values}
 					}).done(function(d){
-						$('input, select, textarea', $($$)).prop('disabled', false);
-						$('input.disabled, select.disabled, textarea.disabled', $($$)).prop('disabled', true);
+						$('input, select, textarea', $this).prop('disabled', false);
+						$('input.disabled, select.disabled, textarea.disabled', $this).prop('disabled', true);
 						if(d == 'true')
 						{
 							$('#alert').alerts(CFGP.label.settings.saved,'success');
@@ -134,8 +133,8 @@ $.fn.alerts = function(text, type){
 						}
 					}).fail(function(a){
 						console.log(a);
-						$('input, select, textarea', $($$)).prop('disabled', false);
-						$('input.disabled, select.disabled, textarea.disabled', $($$)).prop('disabled', true);
+						$('input, select, textarea', $this).prop('disabled', false);
+						$('input.disabled, select.disabled, textarea.disabled', $this).prop('disabled', true);
 						$('#alert').alerts(CFGP.label.settings.fail,'danger');
 					});
 				},delay);
@@ -327,12 +326,13 @@ $.fn.alerts = function(text, type){
 		if( $($$) )
 		{
 			$($$).on( 'click', function (e) {
-				$($$).prop('disabled', true).attr('disabled', true);
+				var $this = $(this);
+				$this.prop('disabled', true).attr('disabled', true);
 				var $ans = confirm(CFGP.label.csv.delete);
 				if( $ans == false ) 
 				{
 					e.preventDefault();
-					$($$).prop('disabled', false).attr('disabled', false);	
+					$this.prop('disabled', false).attr('disabled', false);	
 				}
 			});
 		}
@@ -343,12 +343,13 @@ $.fn.alerts = function(text, type){
 		if( $($$) )
 		{
 			$($$).on( 'click touchstart', function (e) {
-				$($$).prop('disabled', true).attr('disabled', true);
+				var $this = $(this);
+				$this.prop('disabled', true).attr('disabled', true);
 				var $ans = confirm(CFGP.label.csv.exit);
 				if( $ans == false ) 
 				{
 					e.preventDefault();
-					$($$).prop('disabled', false).attr('disabled', false);	
+					$this.prop('disabled', false).attr('disabled', false);	
 				}
 			});
 		}
