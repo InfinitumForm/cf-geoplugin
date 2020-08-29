@@ -143,9 +143,10 @@ class CF_Geoplugin_SEO_Redirection extends CF_Geoplugin_Global
 				$where = '';
 			}
 			
+			$table_name = self::TABLE['seo_redirection'];
 			$where = apply_filters('cf_geoplugin_wp_seo_redirection_query_where', $where, "{$wpdb->prefix}{$table_name}");
  
-			$table_name = self::TABLE['seo_redirection'];
+			
             $redirects = $wpdb->get_results(apply_filters('cf_geoplugin_wp_seo_redirection_query', "
 			SELECT 
 				TRIM(url) AS url,

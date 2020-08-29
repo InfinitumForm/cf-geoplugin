@@ -1,5 +1,8 @@
 == Changelog ==
 
+= 7.12.11 =
+* IMPORTANT UPDATE: PHP7.4 and above support
+
 = 7.12.10 =
 * IMPORTANT UPDATE: Fixed problems with update settings
 * IMPORTANT UPDATE: Fixed problems with SEO redirection
