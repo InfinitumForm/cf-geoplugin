@@ -10,6 +10,7 @@ if(!class_exists('CF_Geoplugin_Covid_19')) :
 class CF_Geoplugin_Covid_19 extends CF_Geoplugin_Global
 {
 	private $URL;
+	private $covid19_country_statistic = array(); //caching control
 	private $tab_id = 'covid19';
 	
 	function __construct() {
@@ -43,6 +44,9 @@ class CF_Geoplugin_Covid_19 extends CF_Geoplugin_Global
 	);
 	
 	public function run(){
+		// Stop on ajax
+		if(wp_doing_ajax() && isset($_REQUEST['action']) && !in_array($_REQUEST['action'], array('cf_geoplugin_clear_session','cfgeo_banner_cache'))) return;
+		
 		if(parent::get_the_option('covid19', 0))
 		{
 			// Session Type
@@ -222,7 +226,7 @@ class CF_Geoplugin_Covid_19 extends CF_Geoplugin_Global
 		}
 		else
 		{
-			if($api_summary = $this->curl_get($this->URL . '/summary', '', array(), false))
+			if($api_summary = $this->curl_get($this->URL . '/summary', '', apply_filters('api_covid_19_global_statistic_curl_params', array('timeout'=>5)), false))
 			{
 				if(preg_match('/^({"Global":{.*?}),/i', $api_summary, $match)){
 					$api_summary = $match[1] . '}';
@@ -280,27 +284,12 @@ class CF_Geoplugin_Covid_19 extends CF_Geoplugin_Global
 
 		if(empty($country_code)) return false;
 		
-		if (version_compare(PHP_VERSION, '7.4.0', '>='))
-		{
-			if(isset($this->covid19_country_statistic_[$country_code]) && !empty($this->covid19_country_statistic_[$country_code]) && $CFGEO_DEBUG !== true)
-				return apply_filters( 'cf_geoplugin_covid19_' . $country_code . '_statistic', $this->covid19_country_statistic_[$country_code], self::$default_fields);
-		}
-		else
-		{
-			if(isset($this->covid19_country_statistic_{$country_code}) && !empty($this->covid19_country_statistic_{$country_code}) && $CFGEO_DEBUG !== true)
-				return apply_filters( 'cf_geoplugin_covid19_' . $country_code . '_statistic', $this->covid19_country_statistic_{$country_code}, self::$default_fields);
-		}
+		if(isset($this->covid19_country_statistic[$country_code]) && !empty($this->covid19_country_statistic[$country_code]) && $CFGEO_DEBUG !== true)
+			return apply_filters( 'cf_geoplugin_covid19_' . $country_code . '_statistic', $this->covid19_country_statistic[$country_code], self::$default_fields);
 		
 		if( $CFGEO_DEBUG !== true && in_array($this->session_type, array(2,3)) !==  false && $cache = get_transient('cfgp-covid19-' . $country_code . '-statistic'))
 		{
-			if (version_compare(PHP_VERSION, '7.4.0', '>='))
-			{
-				$this->covid19_country_statistic_[$country_code] = $cache;
-			}
-			else
-			{
-				$this->covid19_country_statistic_{$country_code} = $cache;
-			}
+			$this->covid19_country_statistic[$country_code] = $cache;
 			return apply_filters( 'cf_geoplugin_covid19_' . $country_code . '_statistic', $cache, self::$default_fields);
 		}
 		else if (
@@ -311,19 +300,12 @@ class CF_Geoplugin_Covid_19 extends CF_Geoplugin_Global
 			&& in_array($this->session_type, array(1,3)) !==  false
 		)
 		{
-			if (version_compare(PHP_VERSION, '7.4.0', '>='))
-			{
-				$this->covid19_country_statistic_[$country_code] = $_SESSION[CFGP_PREFIX . 'api_covid_19_statistic'];
-			}
-			else
-			{
-				$this->covid19_country_statistic_{$country_code} = $_SESSION[CFGP_PREFIX . 'api_covid_19_statistic'];
-			}
+			$this->covid19_country_statistic[$country_code] = $_SESSION[CFGP_PREFIX . 'api_covid_19_statistic'];
 			return apply_filters( 'cf_geoplugin_covid19_' . $country_code . '_statistic', $_SESSION[CFGP_PREFIX . 'api_covid_19_statistic'], self::$default_fields);
 		}
 		else
 		{
-			if($api_countries = $this->curl_get("{$this->URL}/countries", '', array(), true))
+			if($api_countries = $this->curl_get("{$this->URL}/countries", '', apply_filters('api_covid_19_country_statistic_curl_params', array('timeout'=>3)), true))
 			{				
 				$slug = NULL;
 				foreach($api_countries as $index => $obj)
@@ -341,7 +323,7 @@ class CF_Geoplugin_Covid_19 extends CF_Geoplugin_Global
 					continue;
 				}
 				
-				if($slug && $response_total = $this->curl_get($this->URL . '/country/' . $slug . '?from=' . date('Y-m-d', strtotime('-3 days')) . 'T00:00:00Z&to=' . date('Y-m-d') . 'T00:00:00Z', '', array(), true))
+				if($slug && $response_total = $this->curl_get($this->URL . '/country/' . $slug . '?from=' . date('Y-m-d', strtotime('-3 days')) . 'T00:00:00Z&to=' . date('Y-m-d') . 'T00:00:00Z', '', apply_filters('api_covid_19_country_statistic_curl_params', array('timeout'=>3)), true))
 				{
 					if(!empty($response_total))
 					{				
@@ -389,44 +371,18 @@ class CF_Geoplugin_Covid_19 extends CF_Geoplugin_Global
 							));
 						}
 						
-						
-						if (version_compare(PHP_VERSION, '7.4.0', '>='))
+						$this->covid19_country_statistic[$country_code] = $fields;
+						if($CFGEO_DEBUG !== true)
 						{
-							$this->covid19_country_statistic_[$country_code] = $fields;
-							if($CFGEO_DEBUG !== true)
-							{
-								if(in_array($this->session_type, array(2,3)) !==  false) {
-									set_transient('cfgp-covid19-' . $country_code . '-statistic', $this->covid19_country_statistic_[$country_code], (MINUTE_IN_SECONDS * CFGP_SESSION));
-								}
-								if(in_array($this->session_type, array(1,3)) !==  false) {
-									$this->covid19_country_statistic_[$country_code]['covid19_total_country'] = $country_code;
-									$_SESSION[CFGP_PREFIX . 'api_covid_19_statistic'] = $this->covid19_country_statistic_[$country_code];
-								}
+							if(in_array($this->session_type, array(2,3)) !==  false) {
+								set_transient('cfgp-covid19-' . $country_code . '-statistic', $this->covid19_country_statistic[$country_code], (MINUTE_IN_SECONDS * CFGP_SESSION));
+							}
+							if(in_array($this->session_type, array(1,3)) !==  false) {
+								$this->covid19_country_statistic[$country_code]['covid19_total_country'] = $country_code;
+								$_SESSION[CFGP_PREFIX . 'api_covid_19_statistic'] = $this->covid19_country_statistic[$country_code];
 							}
 						}
-						else
-						{
-							$this->covid19_country_statistic_{$country_code} = $fields;
-							if($CFGEO_DEBUG !== true)
-							{
-								if(in_array($this->session_type, array(2,3)) !==  false) {
-									set_transient('cfgp-covid19-' . $country_code . '-statistic', $this->covid19_country_statistic_{$country_code}, (MINUTE_IN_SECONDS * CFGP_SESSION));
-								}
-								if(in_array($this->session_type, array(1,3)) !==  false) {
-									$this->covid19_country_statistic_{$country_code}['covid19_total_country'] = $country_code;
-									$_SESSION[CFGP_PREFIX . 'api_covid_19_statistic'] = $this->covid19_country_statistic_{$country_code};
-								}
-							}
-						}
-						
-						if (version_compare(PHP_VERSION, '7.4.0', '>='))
-						{
-							return apply_filters( 'cf_geoplugin_covid19_' . $country_code . '_statistic', $this->covid19_country_statistic_[$country_code], self::$default_fields);
-						}
-						else
-						{
-							return apply_filters( 'cf_geoplugin_covid19_' . $country_code . '_statistic', $this->covid19_country_statistic_{$country_code}, self::$default_fields);
-						}
+						return apply_filters( 'cf_geoplugin_covid19_' . $country_code . '_statistic', $this->covid19_country_statistic[$country_code], self::$default_fields);
 					}
 				}
 

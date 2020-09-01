@@ -12,6 +12,9 @@ class CF_Geoplugin_SEO_Redirection extends CF_Geoplugin_Global
 {
     public function __construct()
     {
+		// Stop on ajax
+		if(wp_doing_ajax()) return;
+		
 		// Prevent redirection using GET parametter
 		if(isset($_GET['geo']) && ($_GET['geo'] === false || $_GET['geo'] === 'false'))
 			return;

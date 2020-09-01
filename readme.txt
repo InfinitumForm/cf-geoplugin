@@ -5,7 +5,7 @@ Tags: geolocation, locator, GeoIP, geo, geotargeting, seo, seo redirect, woocomm
 Requires at least: 3.0
 Tested up to: 5.5
 Requires PHP: 5.6.0
-Stable tag: 7.12.11
+Stable tag: 7.12.13
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -398,6 +398,14 @@ Please inform us if any of these errors occur via contact form on our website [h
 
 == Changelog ==
 
+= 7.12.13 =
+* Updated code for the PHP7.4 support
+* Fixed problems with AJAX during SEO redirection
+* Improved COVID-19 API
+
+= 7.12.12 =
+* URGENT  FIX: WordPress crash problem
+
 = 7.12.11 =
 * IMPORTANT UPDATE: PHP7.4 and above support
 
@@ -517,29 +525,13 @@ Please inform us if any of these errors occur via contact form on our website [h
 
 == Upgrade Notice ==
 
-= 7.12.11 =
-* IMPORTANT UPDATE: PHP7.4 and above support
+= 7.12.13 =
+* Updated code for the PHP7.4 support
+* Fixed problems with AJAX during SEO redirection
+* Improved COVID-19 API
 
-= 7.12.10 =
-* IMPORTANT UPDATE: Fixed problems with update settings
-* IMPORTANT UPDATE: Fixed problems with SEO redirection
-* IMPORTANT UPDATE: JavaScript support for the WordPress 5.5
-
-= 7.12.9 =
-* Enhancement: added new SEO redirection action filters
-
-= 7.12.8 =
-* IMPORTANT UPDATE: Fixed WooCommerce base conversion
-* Enhancement: Improved WooCommerce Payment Options
-* Enhancement: Fixed global options
-
-= 7.12.7 =
-* IMPORTANT UPDATE: Added settings for email notification
-* IMPORTANT UPDATE: Improved SEO redirection for cached pages
-* Enhancement: PHP code
-
-= 7.12.6 =
-* URGENT FIX: Allowed memory size PHP error on the low cost hostings
+= 7.12.12 =
+* URGENT  FIX: WordPress crash problem
 
 == Other Notes ==
 
