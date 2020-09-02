@@ -1,11 +1,8 @@
 <?php if ( ! defined( 'WPINC' ) ) { die( "Don't mess with us." ); }
 
-use Elementor\Repeater;
-use Elementor\Widget_Base;
-
 if( !class_exists('CF_Geoplugin_Elementor_Vat_Widget') ) :
 
-class CF_Geoplugin_Elementor_Vat_Widget extends Widget_Base {
+class CF_Geoplugin_Elementor_Vat_Widget extends \Elementor\Widget_Base {
 
 	public static $slug = 'elementor-is-vat';
 

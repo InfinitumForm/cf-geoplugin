@@ -108,12 +108,12 @@ else
 
 
 // Include Elementor integration
-if( file_exists( CFGP_INCLUDES . '/plugins/elementor/elementor.php' ) )
+if( file_exists( CFGP_INCLUDES . '/plugins/elementor/elementor.php' ))
 {
-	if( is_plugin_active('elementor/elementor.php') )
+	if( is_plugin_active('elementor/elementor.php') || is_plugin_active('elementor-pro/elementor-pro.php') )
 	{
 		include_once CFGP_INCLUDES . '/plugins/elementor/elementor.php';
-		new CF_Geoplugin_Elementor;
+		CF_Geoplugin_Elementor::instance();
 		if($debug && property_exists($debug, 'save'))
 			$debug->save( 'Elementor integration loaded' );
 	}

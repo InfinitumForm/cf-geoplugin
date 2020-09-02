@@ -915,10 +915,15 @@ class CF_Geoplugin_Global
 		global $post, $wp_query, $wpdb;
 		
 	//	$structure = get_option( 'permalink_structure' );
-		
-		if((is_home() || is_front_page()) && !empty(get_queried_object_id()))
-			return get_queried_object_id();
-		else if(!is_null($wp_query) && isset($wp_query->post) && isset($wp_query->post->ID) && !empty($wp_query->post->ID))
+	/**
+		if(is_home() || is_front_page())
+		{
+			if(function_exists('get_queried_object_id') && $page_id = get_queried_object_id())
+			return $page_id;
+		}
+		else 
+	**/	
+		if(!is_null($wp_query) && isset($wp_query->post) && isset($wp_query->post->ID) && !empty($wp_query->post->ID))
 			return $wp_query->post->ID;
 		else if(function_exists('get_the_id') && !empty(get_the_id()))
 			return get_the_id();

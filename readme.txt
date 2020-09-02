@@ -5,7 +5,7 @@ Tags: geolocation, locator, GeoIP, geo, geotargeting, seo, seo redirect, woocomm
 Requires at least: 3.0
 Tested up to: 5.5
 Requires PHP: 5.6.0
-Stable tag: 7.12.13
+Stable tag: 7.12.14
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -398,6 +398,11 @@ Please inform us if any of these errors occur via contact form on our website [h
 
 == Changelog ==
 
+= 7.12.14 =
+* IMPORTANT UPDATE: Added Elementor editor inside Geo Banner
+* IMPORTANT UPDATE: Fixed issue with get_queried_object_id()
+* Enhancement: Elementor widgets
+
 = 7.12.13 =
 * Updated code for the PHP7.4 support
 * Fixed problems with AJAX during SEO redirection
@@ -524,6 +529,11 @@ Please inform us if any of these errors occur via contact form on our website [h
 * Improved PHP code
 
 == Upgrade Notice ==
+
+= 7.12.14 =
+* IMPORTANT UPDATE: Added Elementor editor inside Geo Banner
+* IMPORTANT UPDATE: Fixed issue with get_queried_object_id()
+* Enhancement: Elementor widgets
 
 = 7.12.13 =
 * Updated code for the PHP7.4 support

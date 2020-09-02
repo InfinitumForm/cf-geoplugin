@@ -1,11 +1,8 @@
 <?php if ( ! defined( 'WPINC' ) ) { die( "Don't mess with us." ); }
 
-use Elementor\Repeater;
-use Elementor\Widget_Base;
-
 if( !class_exists('CF_Geoplugin_Elementor_Eu_Widget') ) :
 
-class CF_Geoplugin_Elementor_Eu_Widget extends Widget_Base {
+class CF_Geoplugin_Elementor_Eu_Widget extends \Elementor\Widget_Base {
 
 	public static $slug = 'elementor-show-in-eu';
 
@@ -55,7 +52,7 @@ class CF_Geoplugin_Elementor_Eu_Widget extends Widget_Base {
 	 *
 	 * @return array Widget categories.
 	 */
-	public function get_categories() { return [ 'cf-geoplugin' ]; }
+	public function get_categories() { return array( 'cf-geoplugin' ); }
 	
 	/**
 	 * Register oEmbed widget controls.
