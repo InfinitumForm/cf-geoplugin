@@ -37,9 +37,16 @@ class CF_Geoplugin_Defender extends CF_Geoplugin_Global
         if( isset( $CF_GEOPLUGIN_OPTIONS['enable_spam_ip'] ) && $CF_GEOPLUGIN_OPTIONS['enable_spam_ip'] && isset( $CF_GEOPLUGIN_OPTIONS['enable_defender'] ) && $CF_GEOPLUGIN_OPTIONS['enable_defender'] && self::access_level( $CF_GEOPLUGIN_OPTIONS['license_sku'] ) > 0 )
         {
             $CFGEO = $GLOBALS['CFGEO'];
-            $url = add_query_arg( 'ip', $CFGEO['ip'], $GLOBALS['CFGEO_API_CALL']['spam-checker'] );
-            $response = $this->curl_get( $url );
-            
+			if(empty($CFGEO)) return;
+			
+			$response = false;
+			
+			if(isset($CFGEO['ip']) && !empty($CFGEO['ip']))
+			{
+				$url = add_query_arg( 'ip', $CFGEO['ip'], $GLOBALS['CFGEO_API_CALL']['spam-checker'] );
+				$response = $this->curl_get( $url );
+            }
+			
             if( $response !== false )
             {
                 $response = json_decode( $response, true );

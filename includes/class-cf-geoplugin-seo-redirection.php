@@ -123,6 +123,7 @@ class CF_Geoplugin_SEO_Redirection extends CF_Geoplugin_Global
 			$region_code = (isset($CFGEO['region_code']) && !empty($CFGEO['region_code']) ? strtolower($CFGEO['region_code']) : NULL);
 			
 			$city = (isset($CFGEO['city']) && !empty($CFGEO['city']) ? strtolower($CFGEO['city']) : NULL);
+			$postcode = (isset($CFGEO['postcode']) && !empty($CFGEO['postcode']) ? strtolower($CFGEO['postcode']) : NULL);
 			
 			$where = array();
 			
@@ -140,6 +141,8 @@ class CF_Geoplugin_SEO_Redirection extends CF_Geoplugin_Global
 			
 			if($city) $where[]=$wpdb->prepare('TRIM(LOWER(city)) = %s', $city);
 			
+			if($postcode) $where[]=$wpdb->prepare('TRIM(LOWER(postcode)) = %s', $postcode);
+			
 			if(!empty($where)) {
 				$where = ' AND (' . join(' OR ', $where) . ')';
 			} else {
@@ -156,6 +159,7 @@ class CF_Geoplugin_SEO_Redirection extends CF_Geoplugin_Global
 				TRIM(LOWER(country)) AS country,
 				TRIM(LOWER(region)) AS region,
 				TRIM(LOWER(city)) AS city,
+				TRIM(LOWER(postcode)) AS postcode,
 				http_code AS http_code,
 				only_once
 			FROM 
@@ -232,6 +236,7 @@ class CF_Geoplugin_SEO_Redirection extends CF_Geoplugin_Global
 			isset($redirect['country'])		=== false
 			&& isset($redirect['region']) 	=== false
 			&& isset($redirect['city']) 	=== false
+			&& isset($redirect['postcode']) === false
 		) return;
 		
 		$country_check = $this->check_user_by_country( $redirect['country'] );
@@ -239,22 +244,28 @@ class CF_Geoplugin_SEO_Redirection extends CF_Geoplugin_Global
 		$country_empty = false;
 		$region_empty = false;
 		$city_empty = false;
+		$postcode_empty = false;
 		
 		if( $this->is_object_empty($redirect, 'country') ) $country_empty = true;
 		if( $this->is_object_empty($redirect, 'region') ) $region_empty = true;
 		if( $this->is_object_empty($redirect, 'city') ) $city_empty = true;
+		if( $this->is_object_empty($redirect, 'postcode') ) $postcode_empty = true;
 
 		if( isset( $redirect['url'] ) && filter_var($redirect['url'], FILTER_VALIDATE_URL) && ( $country_check || $country_empty ) )
 		{			
-			if($this->check_user_by_city( $redirect['city'] ) && ( $this->check_user_by_region( $redirect['region'] ) || $region_empty ) )
+			if( !$postcode_empty && $this->check_user_by_postcode( $redirect['postcode'] ) )
 			{
 				if($this->control_redirection( $redirect )) $this->redirect( $redirect['url'], $redirect['http_code'] );
 			}
-			elseif($city_empty && $this->check_user_by_region( $redirect['region'] ) ) 
+			elseif( $postcode_empty && $this->check_user_by_city( $redirect['city'] ) && ( $this->check_user_by_region( $redirect['region'] ) || $region_empty ) )
 			{
 				if($this->control_redirection( $redirect )) $this->redirect( $redirect['url'], $redirect['http_code'] );
 			}
-			elseif($region_empty && $city_empty && $country_check ) 
+			elseif( $city_empty && $this->check_user_by_region( $redirect['region'] ) ) 
+			{
+				if($this->control_redirection( $redirect )) $this->redirect( $redirect['url'], $redirect['http_code'] );
+			}
+			elseif( $region_empty && $city_empty && $country_check && $postcode_empty ) 
 			{
 				if($this->control_redirection( $redirect )) $this->redirect( $redirect['url'], $redirect['http_code'] );
 			}

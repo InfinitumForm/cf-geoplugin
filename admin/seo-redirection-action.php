@@ -39,6 +39,7 @@ global $wpdb, $wp_version;
                         'country'   => '',
                         'region'    => '',
                         'city'      => '',
+						'postcode'  => '',
                         'url'       => '',
 						'only_once'	=> 0,
                         'http_code' => 302
@@ -187,6 +188,49 @@ global $wpdb, $wp_version;
                             </div>
                         </div>
                         <?php endif; ?>
+						
+						<?php
+							if( version_compare( $wp_version, '4.6', '>=' ) )
+							{
+								$all_postcode = get_terms(array(
+									'taxonomy'      => 'cf-geoplugin-postcode',
+									'hide_empty'    => false
+								));
+							}
+							else
+							{
+								$all_postcode = $this->cf_geo_get_terms(array(
+									'taxonomy'      => 'cf-geoplugin-postcode',
+									'hide_empty'    => false
+								));
+							}
+							if( is_array( $all_postcode ) && count( $all_postcode ) > 0 ) :
+						?>
+                        <div class="form-group">
+                            <label for="cf_geo_postcode"><?php _e( 'Select Postcode', CFGP_NAME ); ?></label>
+                            <select name="cf_geo_postcode" id="cf_geo_postcode" class="form-control" data-placeholder="<?php _e( 'Choose postcode...', CFGP_NAME ); ?>" aria-describedby="postcodeHelp">
+                            <option value=""><?php _e( 'Choose postcode...', CFGP_NAME ); ?></option>
+                            <?php
+								foreach( $all_postcode as $key => $postcode )
+								{
+									echo '<option id="'
+									.$postcode->slug
+									.'" value="'
+									.$postcode->slug
+									.'"'
+									.( strtolower($postcode->slug) == strtolower($redirect_data['postcode']) ? ' selected':'')
+									.'>'
+									.join(' - ', array_filter(array($postcode->name, $postcode->description))).'</option>';
+								}
+                            ?>
+                            </select>
+                            <small id="postcodeHelp" class="form-text text-muted" ><?php _e('To setup list of postcodes, you need to go in Geo Banner -> Postcodes',CFGP_NAME); ?></small>
+                            <div class="invalid-feedback" id="select-postcode" hidden>
+                                Please select postcode
+                            </div>
+                        </div>
+                        <?php endif; ?>
+						
                         <div class="form-group">
                             <label for="cf_geo_redirect_url"><?php _e( 'Redirect URL', CFGP_NAME ); ?></label>
                             <input type="text" id="cf_geo_redirect_url" name="cf_geo_redirect_url" class="form-control" value="<?php echo $redirect_data['url']; ?>" placeholder="http://" aria-describedby="redirectHelp">

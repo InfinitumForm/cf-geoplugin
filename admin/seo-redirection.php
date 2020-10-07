@@ -83,6 +83,7 @@ else
                         <th scope="col"><?php _e('Country',CFGP_NAME); ?></th>
                         <th scope="col"><?php _e('Region',CFGP_NAME); ?></th>
                         <th scope="col"><?php _e('City',CFGP_NAME); ?></th>
+						<th scope="col"><?php _e('Postcode',CFGP_NAME); ?></th>
                         <th class="text-center" scope="col"><?php _e('Status Code',CFGP_NAME); ?></th>
                         <th class="text-center" scope="col"><?php _e('Only Once',CFGP_NAME); ?></th>
                         <th class="text-right" scope="col"><?php _e('Action',CFGP_NAME); ?></th>
@@ -90,7 +91,7 @@ else
                 </thead>
                 <tbody>
                 <?php
-                    $redirects = $wpdb->get_results( "SELECT id, url, country, region, city, http_code, active, only_once FROM {$wpdb->prefix}{$table_name} LIMIT {$offset}, $records_per_page;", ARRAY_A );
+                    $redirects = $wpdb->get_results( "SELECT id, url, country, region, city, postcode, http_code, active, only_once FROM {$wpdb->prefix}{$table_name} LIMIT {$offset}, $records_per_page;", ARRAY_A );
                     if( $redirects !== NULL && $wpdb->num_rows > 0 )
                     {
 
@@ -101,12 +102,15 @@ else
                             $region = get_term_by( 'slug', $redirect['region'], 'cf-geoplugin-region', ARRAY_A );
 
                             $city = get_term_by( 'slug', $redirect['city'], 'cf-geoplugin-city', ARRAY_A );
+							
+							$postcode = get_term_by( 'slug', $redirect['postcode'], 'cf-geoplugin-postcode', ARRAY_A );
 
                             $disabled = ( (int)$redirect['active'] == 0 ? '<small class="text-danger">'. __( 'Disabled', CFGP_NAME ) .'</small>' : '' );
 							
 							$c_name = array_filter(array($country['name'], $country['description']));
 							$r_name = array_filter(array($region['name'], $region['description']));
 							$ct_name = array_filter(array($city['name'], $city['description']));
+							$pc_name = array_filter(array($postcode['name'], $postcode['description']));
 							
                             printf('
                                 <tr id="cf-geoplugin-seo-redirection-%10$d">
@@ -117,6 +121,7 @@ else
                                     <td>%7$s</td>
                                     <td>%8$s</td>
                                     <td>%9$s</td>
+									<td>%15$s</td>
 									<td class="text-center">%11$s</td>
 									<td class="text-center">%14$s</td>
                                     <td class="text-right">
@@ -138,14 +143,15 @@ else
 								$redirect['http_code'],
 								$disabled,
 								$page_num,
-								($redirect['only_once'] ? __('Yes') : __('No'))
+								($redirect['only_once'] ? __('Yes') : __('No')),
+								end($pc_name)
 							);
                         }
                     }
                     else {
                     ?>
 					<tr>
-                        <td scope="col" colspan="7"><?php _e('There is not yet SEO redirections.',CFGP_NAME); ?></td>
+                        <td scope="col" colspan="8"><?php _e('There is not yet SEO redirections.',CFGP_NAME); ?></td>
                     </tr>	
 					<?php } ?>
                 </tbody>
@@ -155,6 +161,7 @@ else
                         <th scope="col"><?php _e('Country',CFGP_NAME); ?></th>
                         <th scope="col"><?php _e('Region',CFGP_NAME); ?></th>
                         <th scope="col"><?php _e('City',CFGP_NAME); ?></th>
+						<th scope="col"><?php _e('Postcode',CFGP_NAME); ?></th>
                         <th class="text-center" scope="col"><?php _e('Status Code',CFGP_NAME); ?></th>
                         <th class="text-center" scope="col"><?php _e('Only Once',CFGP_NAME); ?></th>
                         <th class="text-right" scope="col"><?php _e('Action',CFGP_NAME); ?></th>

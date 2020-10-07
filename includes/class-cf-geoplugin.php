@@ -421,6 +421,10 @@ class CF_Geoplugin_Init extends CF_Geoplugin_Global
 			{
 				$wpdb->query( "ALTER TABLE {$table_name} ADD only_once TINYINT(1) NOT NULL DEFAULT 0" );
 			}
+			if(!in_array('postcode', $list_columns))
+			{
+				$wpdb->query( "ALTER TABLE {$table_name} ADD postcode varchar(100) NOT NULL AFTER city" );
+			}
 		}
 
 		$sql1 = "
@@ -430,6 +434,7 @@ class CF_Geoplugin_Init extends CF_Geoplugin_Global
 			`country` varchar(100) NOT NULL,
 			`region` varchar(100) NOT NULL,
 			`city` varchar(100) NOT NULL,
+			`postcode` varchar(100) NOT NULL,
 			`url` varchar(100) NOT NULL,
 			`http_code` SMALLINT(3) NOT NULL DEFAULT 302,
 			`active` TINYINT(1) NOT NULL DEFAULT 1,

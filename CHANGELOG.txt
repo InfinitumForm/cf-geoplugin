@@ -1,5 +1,18 @@
 == Changelog ==
 
+= 7.13.1 =
+* Fixed SEO redirection errors
+
+= 7.13.0 =
+* **BIG CHANGES ON THE GEO BANNER - BACKUP IS RECOMMENDED BEFORE UPDATE**
+* Added geo banner default content
+* Added postcode for SEO redirection and geo banner
+* Improved shortcode for geo banner
+* Added new field in XML for SEO redirection (old needs update)
+* Improved SEO redirection
+* Improved metaboxes
+* Improved mail notification filters
+
 = 7.12.14 =
 * IMPORTANT UPDATE: Added Elementor editor inside Geo Banner
 * IMPORTANT UPDATE: Fixed issue with get_queried_object_id()

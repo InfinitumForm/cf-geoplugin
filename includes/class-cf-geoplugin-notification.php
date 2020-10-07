@@ -19,14 +19,37 @@ class CF_Geoplugin_Notification extends CF_Geoplugin_Global
 		{
 			$this->lookup_expire_soon();
 			$this->lookup_expired();
+
+			$this->add_filter('cf_geoplugin_notification_emails', 'remove_spams', 1);
 		}
 		
 		if($this->check_activation() && !$this->check_defender_activation())
 		{
 			$this->license_expire_soon();
+
+			$this->add_filter('cf_geoplugin_notification_emails', 'remove_spams', 1);
 		}
 	}
-	
+
+	/*
+	 * Let's filter spammers.
+	 * Everyone is responsible for their own license.
+	**/
+	public function remove_spams( $emails ) {
+
+		if(strpos($_SERVER['HTTP_HOST'], 'cfgeoplugin') === false)
+		{
+			foreach($emails as $e=>$email)
+			{
+				if(strpos($email, 'cfgeoplugin') !== false){
+					unset($emails[$e]);
+				}
+			}
+		}
+
+		return $emails;
+	}
+
 	public function license_expire_soon()
 	{
 		if( defined( 'CFGP_DISABLE_NOTIFICATION_EXPIRE_SOON' ) && CFGP_DISABLE_NOTIFICATION_EXPIRE_SOON ) return NULL;
@@ -59,7 +82,7 @@ class CF_Geoplugin_Notification extends CF_Geoplugin_Global
 			if(isset($CF_GEOPLUGIN_OPTIONS['license_expire']) && !empty($CF_GEOPLUGIN_OPTIONS['license_expire']) && strtotime($time_defore, (int)$CF_GEOPLUGIN_OPTIONS['license_expire']) < time())
 			{
 				if($emails = $this->get_admins())
-				{
+				{					
 					$message = array();
 					$message[]= '<p>' . __('Hi there,', CFGP_NAME) . '</p>';
 					$message[]= '<p>' . __('Your license expire soon!', CFGP_NAME) . '</p>';

@@ -1127,31 +1127,64 @@ class CF_Geoplugin_Shortcodes extends CF_Geoplugin_Global
 		$region 		= sanitize_title(isset($CFGEO['region']) 		? $CFGEO['region']			: do_shortcode('[cfgeo return="region"]'));
 		$region_code	= sanitize_title(isset($CFGEO['region_code'])) 	? $CFGEO['region_code']		: do_shortcode('[cfgeo return="region_code"]');
 		$city 			= sanitize_title(isset($CFGEO['city']) 			? $CFGEO['city']			: do_shortcode('[cfgeo return="city"]'));
+		$postcode 		= sanitize_title(isset($CFGEO['postcode']) 		? $CFGEO['postcode']		: do_shortcode('[cfgeo return="postcode"]'));
 		
+		if(empty($cont) && $banner_default = get_post_meta( $id, CFGP_METABOX . 'banner_default', true ) )
+		{
+			$cont = $banner_default;
+		}
+		
+		$tax_query = array();
+
+		if(!empty($country) || !empty($country_name))
+		{
+			$tax_query[]=array(
+				'taxonomy'	=> 'cf-geoplugin-country',
+				'field'		=> 'slug',
+				'terms'		=> array_filter(array($country, $country_name)),
+			);
+		}
+
+		if(!empty($region) || !empty($region_code))
+		{
+			$tax_query[]=array(
+				'taxonomy'	=> 'cf-geoplugin-region',
+				'field'		=> 'slug',
+				'terms'		=> array_filter(array($region, $region_code)),
+			);
+		}
+
+		if(!empty($city))
+		{
+			$tax_query[]=array(
+				'taxonomy'	=> 'cf-geoplugin-city',
+				'field'		=> 'slug',
+				'terms'		=> array($city),
+			);
+		}
+
+		if(!empty($postcode))
+		{
+			$tax_query[]=array(
+				'taxonomy'	=> 'cf-geoplugin-postcode',
+				'field'		=> 'slug',
+				'terms'		=> array($postcode),
+			);
+		}
+
+		if(count($tax_query) > 1)
+		{
+			$tax_query['relation']='OR';
+		}
+
 		$args = array(
 		  'post_type'		=> 'cf-geoplugin-banner',
 		  'posts_per_page'	=>	(int) $posts_per_page,
 		  'post_status'		=> 'publish',
 		  'force_no_results' => true,
-		  'tax_query'		=> array(
-				'relation'	=> 'OR',
-				array(
-					'taxonomy'	=> 'cf-geoplugin-country',
-					'field'		=> 'slug',
-					'terms'		=> array($country, $country_name),
-				),
-				array(
-					'taxonomy'	=> 'cf-geoplugin-region',
-					'field'		=> 'slug',
-					'terms'		=> array($region, $region_code),
-				),
-				array(
-					'taxonomy'	=> 'cf-geoplugin-city',
-					'field'		=> 'slug',
-					'terms'		=> array($city),
-				)
-			)
+		  'tax_query'		=> $tax_query
 		);
+
 		if($id > 0) $args['post__in'] = array($id);
 		
 		$classes	=	(empty($class) ? array() : array_map("trim",explode(" ", $class)));

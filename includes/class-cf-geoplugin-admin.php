@@ -336,6 +336,13 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 			);
 			add_submenu_page(
 				CFGP_NAME,
+				__('Postcode',CFGP_NAME),
+				__('Postcode',CFGP_NAME),
+				'manage_options',
+				admin_url('edit-tags.php?taxonomy=' . CFGP_NAME . '-postcode&post_type=' . CFGP_NAME . '-banner')
+			);
+			add_submenu_page(
+				CFGP_NAME,
 				__('Debug Mode',CFGP_NAME),
 				__('Debug Mode',CFGP_NAME),
 				'manage_options',
@@ -657,6 +664,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 			'country'		=> $this->post( 'cf_geo_country'),
 			'region'		=> $this->post( 'cf_geo_region' ),
 			'city'			=> $this->post( 'cf_geo_city' ),
+			'postcode'		=> $this->post( 'cf_geo_postcode' ),
 			'url'			=> $this->post( 'cf_geo_redirect_url', 'url' ),
 			'http_code'		=> $this->post( 'cf_geo_http_code', 'int' ),
 			'only_once'		=> $this->post( 'cf_geo_only_once', 'int', 0 ),
@@ -672,12 +680,14 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 					'country'		=> $data['country'],
 					'region'		=> $data['region'],
 					'city'			=> $data['city'],
+					'postcode'		=> $data['postcode'],
 					'url'			=> $data['url'],
 					'http_code'		=> $data['http_code'],
 					'only_once'		=> $data['only_once'],
 					'active'		=> $data['active']
 				),
 				array(
+					'%s',
 					'%s',
 					'%s',
 					'%s',
@@ -697,6 +707,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 					'country'		=> $data['country'],
 					'region'		=> $data['region'],
 					'city'			=> $data['city'],
+					'postcode'		=> $data['postcode'],
 					'url'			=> $data['url'],
 					'http_code'		=> $data['http_code'],
 					'only_once'		=> $data['only_once'],
@@ -706,6 +717,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 					'id'	=> $data['action']
 				),
 				array(
+					'%s',
 					'%s',
 					'%s',
 					'%s',
@@ -812,6 +824,14 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 					'title' => __('Cities',CFGP_NAME),
 					'href' => admin_url( 'edit-tags.php?taxonomy=' . CFGP_NAME . '-city&post_type=cf-geoplugin-banner' ),
 					'meta'  => array( 'class' => CFGP_NAME . '-city-toolbar-page' ),
+					'parent' => CFGP_NAME,
+				) );
+				
+				$wp_admin_bar->add_node( array(
+					'id' => CFGP_NAME . '-cities',
+					'title' => __('Cities',CFGP_NAME),
+					'href' => admin_url( 'edit-tags.php?taxonomy=' . CFGP_NAME . '-postcode&post_type=cf-geoplugin-banner' ),
+					'meta'  => array( 'class' => CFGP_NAME . '-postcode-toolbar-page' ),
 					'parent' => CFGP_NAME,
 				) );
 			
@@ -969,11 +989,11 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 
 		foreach( $query_data as $queries )
 		{
-			$sql = 'INSERT INTO ' . $table_name . ' ( country, region, city, url, http_code, active, only_once ) VALUES ';
+			$sql = 'INSERT INTO ' . $table_name . ' ( country, region, city, postcode, url, http_code, active, only_once ) VALUES ';
 			$value = array();
 			foreach( $queries as $query )
 			{
-				$value[] = sprintf("( '%s', '%s', '%s', '%s', %d, %d, %d )", $query['country'], $query['region'], $query['city'], $query['url'], $query['http_code'], (int)$query['active'], (int)$query['only_once']);
+				$value[] = sprintf("( '%s', '%s', '%s', '%s', '%s', %d, %d, %d )", $query['country'], $query['region'], $query['city'], $query['postcode'], $query['url'], $query['http_code'], (int)$query['active'], (int)$query['only_once']);
 			}	
 			$sql .= join( ',', $value );
 			$sql .= ';';
@@ -1012,16 +1032,17 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 				
 				// while data exists loop over data
 				while ( ( $ceil = fgetcsv($handle, (isset($header['Content-Length']) ? $header['Content-Length'] : 2000), $analyse['delimiter']['value']) ) !== FALSE ) {
-					if( count( $ceil ) <= 7 )
+					if( count( $ceil ) <= 8 )
 					{
 						$data = array(
-							'country'	=> isset( $ceil[0]) ? $ceil[0] : '',
-							'region'	=> isset( $ceil[1] ) ? $ceil[1] : '',
-							'city'		=> isset( $ceil[2] ) ? $ceil[2] : '',
-							'url'		=> isset( $ceil[3] ) ? $ceil[3] : '',
-							'http_code'	=> ( isset( $ceil[4] ) && in_array( $ceil[4], array_keys($this->http_codes) ) !== false ) ? (int)$ceil[4] : 302,
-							'active'	=> ( isset( $ceil[5] ) && ( (int)$ceil[5] == 0 || (int)$ceil[5] == 1 ) ) ? (int)$ceil[5] : 1,
-							'only_once'	=> ( isset( $ceil[6] ) && ( (int)$ceil[6] == 0 || (int)$ceil[6] == 1 ) ) ? (int)$ceil[6] : 0
+							'country'	=> ( isset( $ceil[0] ) ? $ceil[0] : '' ),
+							'region'	=> ( isset( $ceil[1] ) ? $ceil[1] : '' ),
+							'city'		=> ( isset( $ceil[2] ) ? $ceil[2] : '' ),
+							'postcode'	=> ( isset( $ceil[3] ) ? $ceil[3] : '' ),
+							'url'		=> ( isset( $ceil[4] ) ? $ceil[4] : '' ),
+							'http_code'	=> ( ( isset( $ceil[5] ) && in_array( $ceil[5], array_keys($this->http_codes) ) !== false ) ? (int)$ceil[5] : 302 ),
+							'active'	=> ( ( isset( $ceil[6] ) && ( (int)$ceil[6] == 0 || (int)$ceil[6] == 1 ) ) ? (int)$ceil[6] : 1 ),
+							'only_once'	=> ( ( isset( $ceil[7] ) && ( (int)$ceil[7] == 0 || (int)$ceil[7] == 1 ) ) ? (int)$ceil[7] : 0 )
 						);	
 						
 						$data['url'] = filter_var( $data['url'], FILTER_SANITIZE_URL );
@@ -1069,7 +1090,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 				$table_name = $wpdb->prefix . parent::TABLE['seo_redirection'];
 				$results = $wpdb->get_results(
 					"
-						SELECT country, region, city, url, http_code, active, only_once
+						SELECT country, region, city, postcode, url, http_code, active, only_once
 						FROM " . $table_name . ";
 					", ARRAY_A
 				);
@@ -1092,7 +1113,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 						header('Last-Modified: ' . $now . ' GMT');
 						header('Pragma: public');
 					}
-				
+			
 					// force download 
 					header('Content-Description: File Transfer');
 					header('Content-Encoding: UTF-8');
@@ -1104,7 +1125,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 					$content = mb_convert_encoding($content, 'UTF-16LE', 'UTF-8');
 					$content = stripcslashes($content);
 					echo $content;
-					wp_die();
+					exit;
 				}
 			}	
 		}

@@ -76,8 +76,8 @@ Class CF_Geoplugin_Banner extends CF_Geoplugin_Global
 			if ($column_name == 'cf_geo_banner_shortcode')
 			{
 				echo '<ul>';
-				echo '<li><strong>' . __('Standard',CFGP_NAME) . ':</strong><br><code>[cfgeo_banner id="'.$post_ID.'"]</code></li>';
-				echo '<li><strong>' . __('Advanced',CFGP_NAME) . ':</strong><br><code>[cfgeo_banner id="'.$post_ID.'"]' . __('Default content',CFGP_NAME) . '[/cfgeo_banner]</code></li>';
+				echo '<li><strong>' . __('Standard',CFGP_NAME) . ':</strong><br><code>[cfgeo_banner id="' . $post_ID . '"]</code></li>';
+				echo '<li><strong>' . __('Advanced',CFGP_NAME) . ':</strong><br><code>[cfgeo_banner id="' . $post_ID . '"]' . __('Default content', CFGP_NAME) . '[/cfgeo_banner]</code></li>';
 				echo '</ul>';
 			}
 			else if ($column_name == 'cf_geo_banner_locations')
@@ -86,7 +86,8 @@ Class CF_Geoplugin_Banner extends CF_Geoplugin_Global
 				$taxonomy_list = array(
 					__('Countries',CFGP_NAME)	=>	'cf-geoplugin-country',
 					__('Regions',CFGP_NAME)		=>	'cf-geoplugin-region',
-					__('Cities',CFGP_NAME)		=>	'cf-geoplugin-city'
+					__('Cities',CFGP_NAME)		=>	'cf-geoplugin-city',
+					__('Postcodes',CFGP_NAME)	=>	'cf-geoplugin-postcode'
 				);
 				$print=array();
 				// list taxonomies
@@ -97,20 +98,20 @@ Class CF_Geoplugin_Banner extends CF_Geoplugin_Global
 					$part=array();
 					foreach($all_terms as $i=>$fetch)
 					{
-						$edit_link = esc_url( get_edit_term_link( $fetch->term_id, $taxonomy, 'cf-geoplugin-banner' ) );
-						$part[]='<a href="'.$edit_link.'">'.$fetch->name.' ('.$fetch->description.')</a>';
+						$edit_link = get_edit_term_link( $fetch->term_id, $taxonomy, 'cf-geoplugin-banner' );
+						$part[]='<a href="' . esc_url($edit_link) . '">' . $fetch->name . ( !empty($fetch->description) ? ' (' . $fetch->description . ')' : NULL ) . '</a>';
 					}
 					if(count($part)>0)
 					{
-						$print[]='<li><strong>'.$name.':</strong><br>';
-							$print[]=join(",<br>",$part);
+						$print[]='<li><strong>' . $name . ':</strong><br>';
+							$print[]=join(",<br>", $part);
 						$print[]='<li>';
 					}
 				}
 				// print terms
 				if(count($print)>0)
 				{
-					echo '<ul>'.join("\r\n",$print).'</ul>';
+					echo '<ul>'.join("\r\n", $print).'</ul>';
 				}
 				else
 				{
@@ -257,6 +258,38 @@ Class CF_Geoplugin_Banner extends CF_Geoplugin_Global
 					'public'		 	=> false,
 					'label'          	=> __('Cities',CFGP_NAME),
 					'singular_label' 	=> __('City',CFGP_NAME),
+					'rewrite'        	=> true,
+					'query_var'			=> false,
+					'show_tagcloud'		=> false,
+					'show_in_nav_menus'	=> false
+				)
+			);
+		}
+		
+		
+		if(!taxonomy_exists( 'cf-geoplugin-postcode' ))
+		{
+			register_taxonomy(
+				'cf-geoplugin-postcode', 'cf-geoplugin-banner',
+				array(
+					'labels'			=> array(
+						'name' 					=> __('Postcodes',CFGP_NAME),
+						'singular_name' 		=> __('Postcode',CFGP_NAME),
+						'menu_name' 			=> __('Postcodes',CFGP_NAME),
+						'all_items' 			=> __('All Postcodes',CFGP_NAME),
+						'edit_item' 			=> __('Edit Postcode',CFGP_NAME),
+						'view_item' 			=> __('View Postcode',CFGP_NAME),
+						'update_item' 			=> __('Update Postcode',CFGP_NAME),
+						'add_new_item' 			=> __('Add New Postcode',CFGP_NAME),
+						'new_item_name' 		=> __('New Postcode Name',CFGP_NAME),
+						'parent_item' 			=> __('Parent Postcode',CFGP_NAME),
+						'parent_item_colon' 	=> __('Parent Postcode',CFGP_NAME),
+					),
+					'hierarchical'   	=> true,
+					'show_ui'			=> true,
+					'public'		 	=> false,
+					'label'          	=> __('Postcodes',CFGP_NAME),
+					'singular_label' 	=> __('Postcode',CFGP_NAME),
 					'rewrite'        	=> true,
 					'query_var'			=> false,
 					'show_tagcloud'		=> false,

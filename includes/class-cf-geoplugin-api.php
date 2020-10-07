@@ -48,6 +48,7 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
 		'cityName' 				=> '',
 		'continent' 			=> '',
 		'zip' 					=> '',
+		'postcode' 				=> '',
 		'base_convert'			=> '',
 	//	'continentCode' 		=> '',
 		'address' 				=> '',
@@ -208,6 +209,7 @@ class CF_Geoplugin_API extends CF_Geoplugin_Global
                 'continent_code' => $continentCode,
             //    'continentCode' => $continentCode, // deprecated
 				'zip' => (isset($geodata->zip) ? $geodata->zip : NULL),
+				'postcode' => (isset($geodata->zip) ? $geodata->zip : NULL),
                 'address' => $geodata->address,
             //    'area_code' => (isset($geodata->areaCode) ? $geodata->areaCode : NULL),
             //   'areaCode' => $geodata->areaCode, // deprecated

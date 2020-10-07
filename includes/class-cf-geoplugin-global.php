@@ -1567,6 +1567,8 @@ class CF_Geoplugin_Global
 	 */
 	public static function validate()
 	{
+		if(defined('CFGP_SKIP_VALIDATION') && CFGP_SKIP_VALIDATION === true) return true;
+			
 		$instance = self::get_instance();
 		CF_Geoplugin_Debug::log( '------------ Validation started ------------' );
 		// Validate
@@ -2131,6 +2133,27 @@ class CF_Geoplugin_Global
 		return apply_filters( 'get_terms', $terms, $term_query->query_vars['taxonomy'], $term_query->query_vars, $term_query );
 	}
 
+
+	/**
+	 * Check user's postcode for defender or seo redirection
+	 */
+	public function check_user_by_postcode( $postcode )
+	{
+		$CFGEO = $GLOBALS['CFGEO'];
+		if( is_array( $postcode ) )
+		{
+			$postcode = array_map( 'strtolower', $postcode );
+			if( isset( $postcode[0] ) && !empty( $postcode[0] ) && isset( $CFGEO['postcode'] ) && in_array( sanitize_title_with_dashes( $CFGEO['postcode'] ), $postcode, true ) ) return true;
+		}
+		elseif( is_string( $postcode ) )
+		{
+			if( !empty( $postcode ) && isset( $CFGEO['postcode'] ) && strtolower( $postcode ) === sanitize_title_with_dashes($CFGEO['postcode'] ) ) return true;
+		}
+
+		return false;
+	}
+
+
 	/**
 	 * Check user's city for defender or seo redirection
 	 */
@@ -2369,6 +2392,23 @@ class CF_Geoplugin_Global
 				echo '<pre>', var_dump( func_get_args() ), '</pre><hr>';
 			else
 				throw Exception('You must provide at least one argument to this function.');
+		}
+	}
+	
+	public function flush_w3tc_cache()
+	{			
+		global $w3_plugin_totalcache;
+		if(NULL !== $w3_plugin_totalcache && method_exists($w3_plugin_totalcache, 'flush_all'))
+		{
+			$w3_plugin_totalcache->flush_all();
+		}
+		else
+		{
+			if(function_exists('w3tc_flush_all')) w3tc_flush_all();
+			if(function_exists('w3tc_pgcache_flush')) w3tc_pgcache_flush();
+			if(function_exists('w3tc_pgcache_flush_post')) w3tc_pgcache_flush_post();
+			if(function_exists('w3tc_browsercache_flush')) w3tc_browsercache_flush();
+			if(function_exists('w3tc_dbcache_flush')) w3tc_dbcache_flush();
 		}
 	}
 }

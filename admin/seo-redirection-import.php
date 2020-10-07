@@ -22,7 +22,7 @@ wp_enqueue_media();
         <div class="card-footer bg-transparent">
             <p><?php _e( 'If you want to make large amounts of redirects easier, we give you this option. Here you can easily enter a thousand redirects by the rules you define in your CSV file with just a few clicks. Before proceeding with this, you need to be informed about the structure of the CSV file that we expect.', CFGP_NAME); ?></p>
             <p><strong><?php _e( 'Please carefully follow this manual to avoid unnecessary problems and waste of time.', CFGP_NAME); ?></strong></p>
-            <p><?php _e( 'The file must be a standard comma separated CSV with a maximum of 7 columns. The order of the column is extremely important and its content is strict. If you do not follow the format and column order, CSV will be rejected.', CFGP_NAME); ?></p>
+            <p><?php _e( 'The file must be a standard comma separated CSV with a maximum of 8 columns. The order of the column is extremely important and its content is strict. If you do not follow the format and column order, CSV will be rejected.', CFGP_NAME); ?></p>
             <dl class="row mb-3">
                 <dt class="col-sm-3 text-right"><?php _e( 'Column 1', CFGP_NAME); ?>:</dt>
                 <dd class="col-sm-9"><?php _e( 'Country Code - standard 2 letter country code' ); ?> (<?php printf(__('example: %s', CFGP_NAME), $CFGEO['country_code']); ?>)</dd>
@@ -31,12 +31,14 @@ wp_enqueue_media();
                 <dt class="col-sm-3 text-right"><?php _e( 'Column 3', CFGP_NAME); ?>:</dt>
                 <dd class="col-sm-9"><?php _e( 'City Name', CFGP_NAME); ?> (<?php printf(__('example: %s', CFGP_NAME), $CFGEO['city']); ?>)</dd>
                 <dt class="col-sm-3 text-right"><?php _e( 'Column 4', CFGP_NAME); ?>:</dt>
-                <dd class="col-sm-9"><?php _e( 'Redirect URL - valid URL format', CFGP_NAME); ?></dd>
+				<dd class="col-sm-9"><?php _e( 'Postcode Name', CFGP_NAME); ?> (<?php printf(__('example: %s', CFGP_NAME), (!empty($CFGEO['postcode']) ? $CFGEO['postcode'] : '1210')); ?>)</dd>
                 <dt class="col-sm-3 text-right"><?php _e( 'Column 5', CFGP_NAME); ?>:</dt>
-                <dd class="col-sm-9"><?php _e( 'HTTP Status Code - Accept 301, 302, 303 and 404', CFGP_NAME); ?></dd>
+                <dd class="col-sm-9"><?php _e( 'Redirect URL - valid URL format', CFGP_NAME); ?></dd>
                 <dt class="col-sm-3 text-right"><?php _e( 'Column 6', CFGP_NAME); ?>:</dt>
-                <dd class="col-sm-9"><?php _e( 'Active - Optional, accept integer (1-Enable, 0-Disable)', CFGP_NAME); ?></dd>
+                <dd class="col-sm-9"><?php _e( 'HTTP Status Code - Accept 301, 302, 303 and 404', CFGP_NAME); ?></dd>
                 <dt class="col-sm-3 text-right"><?php _e( 'Column 7', CFGP_NAME); ?>:</dt>
+                <dd class="col-sm-9"><?php _e( 'Active - Optional, accept integer (1-Enable, 0-Disable)', CFGP_NAME); ?></dd>
+                <dt class="col-sm-3 text-right"><?php _e( 'Column 8', CFGP_NAME); ?>:</dt>
                 <dd class="col-sm-9"><?php _e( 'Redirect only once - Optional, accept integer (1-Enable, 0-Disable)', CFGP_NAME); ?></dd>
             </dl>
         </div>

@@ -35,6 +35,7 @@
 		$(".post-type-cf-geoplugin-banner.taxonomy-cf-geoplugin-country .form-field.term-parent-wrap").remove();
 		$(".post-type-cf-geoplugin-banner.taxonomy-cf-geoplugin-region .form-field.term-parent-wrap").remove();
 		$(".post-type-cf-geoplugin-banner.taxonomy-cf-geoplugin-city .form-field.term-parent-wrap").remove();
+		$(".post-type-cf-geoplugin-banner.taxonomy-cf-geoplugin-postcode .form-field.term-parent-wrap").remove();
 		
         var $categoryDivs = $('.categorydiv');
 		$categoryDivs.each(function(){

@@ -18,7 +18,7 @@ class CF_Geoplugin_Metabox extends CF_Geoplugin_Global
     {
         $this->prefix = CFGP_METABOX;
 
-        $this->add_action( 'add_meta_boxes', 'create_meta_box' );
+        $this->add_action( 'add_meta_boxes', 'create_meta_box', 1 );
         $this->add_action( 'save_post', 'meta_box_save' );
 		$this->add_action( 'admin_enqueue_scripts', 'metabox_admin_scripts' );
 		
@@ -82,19 +82,29 @@ class CF_Geoplugin_Metabox extends CF_Geoplugin_Global
     public function create_meta_box()
     {
 		$screen = get_current_screen();
-		
+
 		if(isset( $screen->post_type ) && $screen->post_type === 'cf-geoplugin-banner'){
 			add_meta_box(
-				CFGP_NAME . '-banner-sc',
-				__( 'Geo Banner Shortcode', CFGP_NAME ),
-				array( &$this, 'banner_shortcode' ),
-				CFGP_NAME . '-banner',
+				CFGP_NAME . '-banner-default-content',					// Unique ID
+				__('Geo Banner default content', CFGP_NAME),			// Box title
+				array( &$this, 'default_content_meta_box_callback'),	// Content callback, must be of type callable
+				'cf-geoplugin-banner',									// Post type
 				'advanced',
 				'high'
 			);
+
+			add_meta_box(
+				CFGP_NAME . '-banner-sc',								// Unique ID
+				__( 'Geo Banner Shortcode', CFGP_NAME ),				// Box title
+				array( &$this, 'banner_shortcode' ),					// Content callback, must be of type callable
+				'cf-geoplugin-banner',									// Post type
+				'advanced',
+				'high'
+			);
+
 			return; 
 		};
-		
+
         $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
 
         $args = array(
@@ -140,55 +150,62 @@ class CF_Geoplugin_Metabox extends CF_Geoplugin_Global
                 }
             }
         }
-            
     }
+	
+	public function default_content_meta_box_callback($post){
+		$banner = get_post_meta( $post->ID, $this->prefix . 'banner_default', true );
+?>
+<p style="color:#550000;"><?php _e( 'This content is shown only when the selected location is not found. This means that anyone who is not from the set location will see this content.', CFGP_NAME ); ?></p>
+<?php wp_editor( $banner, 'cf_geo_banner_default_content', $settings = array('textarea_name'=>'cf_geo_banner_default_content') ); ?>
+<?php
+	}
 	
 	// Add geo tags
 	public function meta_box_geo_tags( $post ){
 		
-	$screen = get_current_screen();
-		
-	if(isset( $screen->post_type ) && $screen->post_type === 'cf-geoplugin-banner') return;
-		
-    $CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS']; $CFGEO = $GLOBALS['CFGEO'];
+		$screen = get_current_screen();
+			
+		if(isset( $screen->post_type ) && $screen->post_type === 'cf-geoplugin-banner') return;
+			
+		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS']; $CFGEO = $GLOBALS['CFGEO'];
 
-    $cfgp_enable = get_post_meta( $post->ID, 'cfgp-geotag-enable', true );
-    $cfgp_dc_title = get_post_meta( $post->ID, 'cfgp-dc-title', true );
-    $cfgp_region = get_post_meta( $post->ID, 'cfgp-region', true );
-    $cfgp_placename = get_post_meta( $post->ID, 'cfgp-placename', true );
-    $cfgp_latitude = get_post_meta( $post->ID, 'cfgp-latitude', true );
-    $cfgp_longitude = get_post_meta( $post->ID, 'cfgp-longitude', true );
+		$cfgp_enable = get_post_meta( $post->ID, 'cfgp-geotag-enable', true );
+		$cfgp_dc_title = get_post_meta( $post->ID, 'cfgp-dc-title', true );
+		$cfgp_region = get_post_meta( $post->ID, 'cfgp-region', true );
+		$cfgp_placename = get_post_meta( $post->ID, 'cfgp-placename', true );
+		$cfgp_latitude = get_post_meta( $post->ID, 'cfgp-latitude', true );
+		$cfgp_longitude = get_post_meta( $post->ID, 'cfgp-longitude', true );
 
-    if( empty( $cfgp_dc_title ) && isset( $CFGEO['address'] ) ) $cfgp_dc_title = $CFGEO['address'];
-    if( empty( $cfgp_region ) && isset( $CFGEO['country_code'] ) ) $cfgp_region = $CFGEO['country_code'];
-    if( empty( $cfgp_placename ) && isset( $CFGEO['city'] ) ) $cfgp_placename = $CFGEO['city'];
+		if( empty( $cfgp_dc_title ) && isset( $CFGEO['address'] ) ) $cfgp_dc_title = $CFGEO['address'];
+		if( empty( $cfgp_region ) && isset( $CFGEO['country_code'] ) ) $cfgp_region = $CFGEO['country_code'];
+		if( empty( $cfgp_placename ) && isset( $CFGEO['city'] ) ) $cfgp_placename = $CFGEO['city'];
 
-    if( empty( $cfgp_latitude ) && isset( $CFGEO['latitude'] ) ) 
-    {
-        $cfgp_latitude = $CFGEO['latitude'];
-    }
-    elseif( empty( $cfgp_latitude ) && isset( $CF_GEOPLUGIN_OPTIONS['map_latitude'] ) && !empty( $CF_GEOPLUGIN_OPTIONS['map_latitude'] ) )
-    {
-        $cfgp_latitude = $CF_GEOPLUGIN_OPTIONS['map_latitude'];
-    }
-    elseif( empty( $cfgp_latitude ) )
-    {
-        $cfgp_latitude = '51.4825766';
-    }
+		if( empty( $cfgp_latitude ) && isset( $CFGEO['latitude'] ) ) 
+		{
+			$cfgp_latitude = $CFGEO['latitude'];
+		}
+		elseif( empty( $cfgp_latitude ) && isset( $CF_GEOPLUGIN_OPTIONS['map_latitude'] ) && !empty( $CF_GEOPLUGIN_OPTIONS['map_latitude'] ) )
+		{
+			$cfgp_latitude = $CF_GEOPLUGIN_OPTIONS['map_latitude'];
+		}
+		elseif( empty( $cfgp_latitude ) )
+		{
+			$cfgp_latitude = '51.4825766';
+		}
 
 
-    if( empty( $cfgp_longitude ) && isset( $CFGEO['longitude'] ) ) 
-    {
-        $cfgp_longitude = $CFGEO['longitude'];
-    }
-    elseif( empty( $cfgp_longitude ) && isset( $CF_GEOPLUGIN_OPTIONS['map_longitude'] ) && !empty( $CF_GEOPLUGIN_OPTIONS['map_longitude'] ) )
-    {
-        $cfgp_longitude = $CF_GEOPLUGIN_OPTIONS['map_longitude'];
-    }
-    elseif( empty( $cfgp_longitude ) )
-    {
-        $cfgp_longitude = '-0.0076589';
-    }
+		if( empty( $cfgp_longitude ) && isset( $CFGEO['longitude'] ) ) 
+		{
+			$cfgp_longitude = $CFGEO['longitude'];
+		}
+		elseif( empty( $cfgp_longitude ) && isset( $CF_GEOPLUGIN_OPTIONS['map_longitude'] ) && !empty( $CF_GEOPLUGIN_OPTIONS['map_longitude'] ) )
+		{
+			$cfgp_longitude = $CF_GEOPLUGIN_OPTIONS['map_longitude'];
+		}
+		elseif( empty( $cfgp_longitude ) )
+		{
+			$cfgp_longitude = '-0.0076589';
+		}
 	?>
    <style>
       /* Always set the map height explicitly to define the size of the div
@@ -464,6 +481,10 @@ function CF_GeoPlugin_Google_Map_GeoTag() {
     {
 		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
         $post = get_post( $id );
+		
+		if( isset($_POST[ 'cf_geo_banner_default_content' ]) ) {
+			update_post_meta($id, $this->prefix . 'banner_default', wp_kses_post($_POST[ 'cf_geo_banner_default_content' ]) );
+		}
 
         if( $CF_GEOPLUGIN_OPTIONS['enable_seo_redirection'] )
         {
