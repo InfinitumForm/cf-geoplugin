@@ -129,11 +129,11 @@ $API = $cfgp_cache->get('API');
                                     </tr>
                                     <tr>
                                         <td><?php 
-											$html_map = '<code>[cfgeo_map longitude="-74.0059" latitude="40.7128" zoom="15" title="'.__('My Company Name', CFGEO_NAME).'"]<br>
+											$html_map = '<code>[cfgeo_map longitude="-74.0059" latitude="40.7128" zoom="15" title="'.__('My Company Name', CFGP_NAME).'"]<br>
 											&lt;address&gt;<br>
-											&lt;h3&gt;'.__('My Company Name', CFGEO_NAME).'&lt;/h3&gt;<br>
+											&lt;h3&gt;'.__('My Company Name', CFGP_NAME).'&lt;/h3&gt;<br>
 											&lt;p&gt;No Name Street 35, New York, USA&lt;/p&gt;<br>
-											&lt;p&gt;'.__('We have what you need', CFGEO_NAME).'&lt;/p&gt;<br>
+											&lt;p&gt;'.__('We have what you need', CFGP_NAME).'&lt;/p&gt;<br>
 											&lt;/address&gt;<br>
 											[/cfgeo_map]
 											</code>';

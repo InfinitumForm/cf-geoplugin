@@ -68,6 +68,12 @@ class CFGP_Shortcodes extends CFGP_Global {
 			$this->add_shortcode( 'cfgeo_map', 'google_map' );
 		}
 		
+		// Geo Banner
+		if( CFGP_Options::get_beta('enable_banner', 0) ) {
+			// Official Google Map Shortcode
+			$this->add_shortcode( 'cfgeo_banner', 'geo_banner' );
+		}
+		
 	}
 	
 	/**
@@ -366,7 +372,7 @@ class CFGP_Shortcodes extends CFGP_Global {
 		}
 		
 		if(empty($arg['id']))
-			$id = 'cf-geo-flag-' . parent::generate_token(10);
+			$id = 'cf-geo-flag-' . CFGP_U::generate_token(10);
 		else
 			$id = $arg['id'];
 		
@@ -435,6 +441,174 @@ class CFGP_Shortcodes extends CFGP_Global {
 			return sprintf('<!-- ' . W3TC_DYNAMIC_SECURITY . ' mfunc --><span class="flag-icon flag-icon-%s%s" id="%s"%s></span><!-- /mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->', $flag.$type, $class, $id,(!empty($css)?' style="'.$css.'"':''));
 	}
 	
+	/**
+	 * Geo Banner Shortcode
+	 * 
+	 * @since		7.0.0
+	 */
+	public function geo_banner( $atts, $cont )
+	{
+		global $cfgp_cache;
+		
+		wp_enqueue_style( CFGP_NAME . '-public' );
+		
+		$CFGEO = $cfgp_cache->get('API');
+		
+		$cache = CFGP_U::is_attribute_exists('cache', $atts);
+		if(CFGP_U::is_attribute_exists('no_cache', $atts)) $cache = false;
+		
+		$nonce = NULL;
+		
+		if($cache){
+			$nonce = wp_create_nonce( 'cfgeo-process-cache-ajax' );
+		}
+		
+		if(!CFGP_Settings::get('enable_banner', 0)) return '';
+		$ID = CFGP_U::generate_token(16); // Let's made this realy hard
+	
+		$array = shortcode_atts( array(
+			'id'				=>	$ID,
+			'posts_per_page'	=>	1,
+			'class'				=>	''
+		), $atts );
+		
+		$id				=	intval($array['id']);
+		$posts_per_page	=	intval($array['posts_per_page']);
+		$class			=	sanitize_html_class($array['class']);
+		
+		$country 		= sanitize_title(isset($CFGEO['country_code']) 	? $CFGEO['country_code']	: do_shortcode('[cfgeo return="country_code"]'));
+		$country_name 	= sanitize_title(isset($CFGEO['country']) 		? $CFGEO['country']			: do_shortcode('[cfgeo return="country"]'));
+		$region 		= sanitize_title(isset($CFGEO['region']) 		? $CFGEO['region']			: do_shortcode('[cfgeo return="region"]'));
+		$region_code	= sanitize_title(isset($CFGEO['region_code'])) 	? $CFGEO['region_code']		: do_shortcode('[cfgeo return="region_code"]');
+		$city 			= sanitize_title(isset($CFGEO['city']) 			? $CFGEO['city']			: do_shortcode('[cfgeo return="city"]'));
+		$postcode 		= sanitize_title(isset($CFGEO['postcode']) 		? $CFGEO['postcode']		: do_shortcode('[cfgeo return="postcode"]'));
+		
+		if(empty($cont) && $banner_default = get_post_meta( $id, CFGP_METABOX . 'banner_default', true ) )
+		{
+			$cont = $banner_default;
+		}
+		
+		$tax_query = array();
+
+		if(!empty($country) || !empty($country_name))
+		{
+			$tax_query[]=array(
+				'taxonomy'	=> 'cf-geoplugin-country',
+				'field'		=> 'slug',
+				'terms'		=> array_filter(array($country, $country_name)),
+			);
+		}
+
+		if(!empty($region) || !empty($region_code))
+		{
+			$tax_query[]=array(
+				'taxonomy'	=> 'cf-geoplugin-region',
+				'field'		=> 'slug',
+				'terms'		=> array_filter(array($region, $region_code)),
+			);
+		}
+
+		if(!empty($city))
+		{
+			$tax_query[]=array(
+				'taxonomy'	=> 'cf-geoplugin-city',
+				'field'		=> 'slug',
+				'terms'		=> array($city),
+			);
+		}
+
+		if(!empty($postcode))
+		{
+			$tax_query[]=array(
+				'taxonomy'	=> 'cf-geoplugin-postcode',
+				'field'		=> 'slug',
+				'terms'		=> array($postcode),
+			);
+		}
+
+		if(count($tax_query) > 1)
+		{
+			$tax_query['relation']='OR';
+		}
+
+		$args = array(
+		  'post_type'		=> 'cf-geoplugin-banner',
+		  'posts_per_page'	=>	(int) $posts_per_page,
+		  'post_status'		=> 'publish',
+		  'force_no_results' => true,
+		  'tax_query'		=> $tax_query
+		);
+
+		if($id > 0) $args['post__in'] = array($id);
+		
+		$classes	=	(empty($class) ? array() : array_map("trim",explode(" ", $class)));
+		$classes[]	=	'cf-geoplugin-banner';
+		if($cache)	$classes[]	=	'cf-geoplugin-banner-cached';
+		
+		$queryBanner = new WP_Query( $args );
+		
+		if ( $queryBanner->have_posts() )
+		{
+			$save=array();
+			while ( $queryBanner->have_posts() )
+			{
+				$queryBanner->the_post();
+				
+				$post_id = get_the_ID();
+				$content = get_the_content();
+				$content = do_shortcode($content);
+				$content = apply_filters('the_content', $content);
+				
+				$classes[]	=	'cf-geoplugin-banner-'.$post_id;
+				
+				$save[]='
+				' . ( $cache ? '<!-- ' . W3TC_DYNAMIC_SECURITY . ' mfunc -->' : NULL) 
+				. '<div id="cf-geoplugin-banner-'.$post_id.'" class="'.join(' ',get_post_class($classes, $post_id)).'"'
+				
+				. ($cache ? ' data-id="' . $post_id . '"' : NULL)
+				. ($cache ? ' data-posts_per_page="' . esc_attr($posts_per_page) . '"' : NULL)
+				. ($cache ? ' data-class="' . esc_attr($class) . '"' : NULL)
+				. ($cache ? ' data-nonce="' . esc_attr($nonce) . '"' : NULL)
+				
+				. '>' . $content . '</div>' 
+				. ( $cache ? '<!-- /mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->' : NULL) . '
+				';
+				$classes	= NULL;
+			}
+			wp_reset_postdata();
+			if(count($save) > 0){ return trim(join("\r\n",$save)); }
+		}
+		
+		if(!empty($cont))
+		{
+			$content = do_shortcode($cont);
+			$content = apply_filters('the_content', $content);
+			
+			if( $cache )
+			{
+				return '
+				<!-- ' . W3TC_DYNAMIC_SECURITY . ' mfunc -->
+				<div id="cf-geoplugin-banner-' . $id . '" class="' . join(' ', $classes) . ' cf-geoplugin-banner-cached" data-id="' . $id . '" data-posts_per_page="' . esc_attr($posts_per_page) . '" data-class="' . esc_attr($class) . '" data-nonce="' . esc_attr($nonce) . '">' . $content . '</div>
+				<!-- /mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->
+				';
+			}
+			else
+				return $content;
+		}
+		else 
+		{
+			if( $cache )
+			{
+				return '
+				<!-- ' . W3TC_DYNAMIC_SECURITY . ' mfunc -->
+				<div id="cf-geoplugin-banner-' . $id . '" class="' . join(' ', $classes) . '" data-id="' . $id . '" data-posts_per_page="' . esc_attr($posts_per_page) . '" data-class="' . esc_attr($class) . '" data-nonce="' . esc_attr($nonce) . '"></div>
+				<!-- /mfunc ' . W3TC_DYNAMIC_SECURITY . ' -->
+				';
+			}
+			else
+				return '';
+		}
+	}	
 	
 	/**
 	 * Google Map Shortcode
