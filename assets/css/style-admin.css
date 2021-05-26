@@ -1,0 +1,174 @@
+#cf-geoplugin-settings .cf-geoplugin-sticky-button{
+	position: fixed;
+    z-index: 10;
+    top: 32px;
+    right: 10px;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-top: 0;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+#cf-geoplugin-settings .cf-geoplugin-sticky-button > p.submit{
+	margin:0 !important;
+	padding:0 !important;
+	display:table;
+}
+
+#cf-geoplugin-settings .cf-geoplugin-sticky-button > p.submit > input#submit{
+	margin:8px 10px !important;
+}
+
+#cf-geoplugin-settings #poststuff .cfgp-section-description{
+	margin:0;
+}
+
+#cf-geoplugin-settings #poststuff .cfgp-section-description:last-child,
+#cf-geoplugin-settings #poststuff .cfgp-section-description:last-of-type{
+	margin-bottom:15px;
+}
+
+#cf-geoplugin-settings #poststuff .cfgp-section-description + .cfgp-section-description{
+	margin-top:5px;
+}
+
+#cf-geoplugin-settings #poststuff .cfgp-section-description + .cfgp-form-table{
+	margin-top: 15px !important;
+}
+
+#cf-geoplugin-settings .nav-tab-wrapper-chosen .cfgp-tab-panel{
+	margin-top:-10px;
+}
+.nav-tab-wrapper-chosen .cfgp-tab-panel{
+	display:none;
+	border: 1px solid #c3c4c7;
+	border-top:none;
+}
+.nav-tab-wrapper-chosen .cfgp-tab-panel p.submit{
+	float: initial;
+	margin-bottom:32px;
+}
+.nav-tab-wrapper-chosen .cfgp-tab-panel > table{
+	border-left:none;
+	border-right:none;
+}
+
+.nav-tab-wrapper-chosen .cfgp-tab-panel > table td.cfgp-field{
+	position:relative;
+}
+
+.nav-tab-wrapper-chosen .cfgp-tab-panel > table th.cfgp-label{
+	position:relative;
+}
+
+.nav-tab-wrapper-chosen .cfgp-tab-panel > table th.cfgp-label > label + .cfgp-help{
+	margin-left:5px;
+	top: 2px;
+    position: relative;
+}
+
+.nav-tab-wrapper-chosen .cfgp-tab-panel > table:only-child{
+	border-top:none;
+}
+.nav-tab-wrapper-chosen .cfgp-tab-panel h2{
+	padding:0 15px;
+	font-size: 1.3em !important;
+}
+.nav-tab-wrapper-chosen .cfgp-tab-panel p{
+	padding:0 15px;
+	float: left;
+}
+.nav-tab-wrapper-chosen .cfgp-tab-panel p+p{
+	padding-top:0;
+	margin-top:0;
+}
+.nav-tab-wrapper-chosen .cfgp-tab-panel .form-table{
+	margin:0 15px !important;
+}
+.nav-tab-wrapper-chosen .cfgp-tab-panel .input-radio{
+	display:inline-block;
+}
+.nav-tab-wrapper-chosen .cfgp-tab-panel .input-radio+.input-radio{
+	margin-left:10px;
+}
+.nav-tab-wrapper-chosen .cfgp-tab-panel .title{
+	margin-top: 10px !important;
+}
+.nav-tab-wrapper-chosen .cfgp-tab-panel .form-table + .title{
+	margin-top: 15px !important;
+}
+.nav-tab-wrapper-chosen .cfgp-tab-panel .title + p{
+	margin-top:0;
+	padding-top:0;
+}
+.nav-tab-wrapper-chosen .cfgp-tab-panel input + .cfgp-help,
+.nav-tab-wrapper-chosen .cfgp-tab-panel select + .cfgp-help,
+.nav-tab-wrapper-chosen .cfgp-tab-panel textarea + .cfgp-help,
+.nav-tab-wrapper-chosen .cfgp-tab-panel .input-radio + .cfgp-help{
+	margin-left:10px;
+}
+.nav-tab-wrapper-chosen .cfgp-tab-panel.cfgp-tab-panel-active{
+	display:block !important;
+	background:#FFF;
+}
+.nav-tab-wrapper-chosen .nav-tab.nav-tab-active,
+.nav-tab-wrapper-chosen .nav-tab.nav-tab-active:focus:active{
+	background:#FFF;
+	border-bottom: 1px solid #FFF;
+}
+.nav-tab-wrapper-chosen .cfgp-tab-panel textarea{
+	width:100%;
+	max-width:60%;
+	overflow: auto;
+    resize: vertical;
+}
+
+.nav-tab-wrapper-chosen .cfgp-tab-panel input[type^="text"],
+.nav-tab-wrapper-chosen .cfgp-tab-panel input[type^="password"],
+.nav-tab-wrapper-chosen .cfgp-tab-panel input[type^="url"],
+.nav-tab-wrapper-chosen .cfgp-tab-panel input[type^="email"],
+.nav-tab-wrapper-chosen .cfgp-tab-panel input[type^="tel"]{
+	width:100%;
+	max-width:60%;
+}
+
+.nav-tab-wrapper-chosen .cfgp-tab-panel input:disabled,
+.nav-tab-wrapper-chosen .cfgp-tab-panel input.disabled,
+.nav-tab-wrapper-chosen .cfgp-tab-panel textarea:disabled,
+.nav-tab-wrapper-chosen .cfgp-tab-panel textarea.disabled,
+.nav-tab-wrapper-chosen .cfgp-tab-panel select:disabled,
+.nav-tab-wrapper-chosen .cfgp-tab-panel select.disabled{
+	background-color:#efefef;
+	cursor: not-allowed;
+}
+
+.nav-tab-wrapper-chosen .cfgp-tab-panel .cfgp-tab-panel-section{
+	padding-bottom:15px;
+}
+
+.nav-tab-wrapper-chosen .cfgp-tab-panel .cfgp-tab-panel-section+.cfgp-tab-panel-section{
+	padding-top:15px;
+	border-top:1px solid #c3c4c7;
+}
+
+@media all and (max-width:992px) {
+	.nav-tab-wrapper-chosen .nav-tab > .label{
+		display:none;
+	}
+	.nav-tab-wrapper-chosen .nav-tab.nav-tab-active > .label{
+		display:inline-block;
+	}
+}
+
+.cfgp-cache-debug{
+	margin: 15px auto 100px auto;
+    display: block;
+    width: 100%;
+    max-width: 50%;
+    font-family: monospace, sans-serif;
+    color: #fff;
+    background: #000;
+    padding: 10px 15px;
+    white-space: pre-wrap;
+}
