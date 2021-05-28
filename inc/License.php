@@ -15,7 +15,7 @@ class CFGP_License extends CFGP_Global{
 	/*
 	 * License names
 	 */
-	public function name($sku=false){
+	public static function name($sku=false){
 		$license_names = array(
 			CFGP_Defaults::BASIC_LICENSE			=> __('UNLIMITED Basic License (1 month)',CFGP_NAME),
 			CFGP_Defaults::PERSONAL_LICENSE			=> __('UNLIMITED Personal License (1 year)',CFGP_NAME),
@@ -44,6 +44,20 @@ class CFGP_License extends CFGP_Global{
 		}
 
 		return $license_names;
+	}
+	
+	public static function get_product_data(){
+		$response = get_transient('cfgp-get-product-data');
+		if(!$response) {
+			if($return = CFGP_U::curl_get('https://cfgeoplugin.com/wp-admin/admin-ajax.php?action=cfgp_get_product_data', '', array(), true))
+			{
+				if($return['error'] === false && $return['lenght'] > 0){
+					$response = $return['products'];
+					set_transient('cfgp-get-product-data', $response, (MINUTE_IN_SECONDS * CFGP_SESSION));
+				}
+			}
+		}
+		return empty($response) ? array() : $response;
 	}
 	
 	/*

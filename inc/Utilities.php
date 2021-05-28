@@ -83,7 +83,14 @@ class CFGP_U {
 	 * @since    4.0.4
 	 */
 	public static function curl_get( $url, $headers = '', $new_params = array(), $json = false )
-	{		
+	{
+		global $cfgp_cache;
+		
+		$cache_name = 'cfgp-curl_get-'.md5(serialize(array($url, $headers, $new_params, $json)));
+		if($cache = $cfgp_cache->get($cache_name)){
+			return $cache;
+		}
+		
 		if( empty( $headers ) )
 		{
 			$headers = array( 'Accept: application/json' );
@@ -140,7 +147,9 @@ class CFGP_U {
 		if( empty( $output ) ) return false;
 
 		if($json !== false) $output = json_decode($output, true);
-
+		
+		$cfgp_cache->set($cache_name, $output);
+		
 		return $output;
 	}
 	
@@ -197,6 +206,11 @@ class CFGP_U {
 	 * @author        Ivijan-Stefan Stipic
 	*/
 	public static function plugin_info(array $fields = []) {
+		
+		$cache_name = CFGP_NAME . '-plugin_info-' . md5(serialize($fields));
+		
+		if($cache = wp_cache_get($cache_name, CFGP_NAME)) return $cache;
+		
         if ( is_admin() ) {
 			if ( ! function_exists( 'plugins_api' ) ) {
 				include_once( WP_ADMIN_DIR . '/includes/plugin-install.php' );
@@ -243,7 +257,9 @@ class CFGP_U {
 					'versions' => false,                  // array( [version] url )
 				], $fields)
 			]);
-		 
+		 	
+			wp_cache_set($cache_name, $plugin_data, CFGP_NAME);
+			
 			return $plugin_data;
 		}
     }
@@ -454,6 +470,58 @@ class CFGP_U {
 	 */
 	public static function proxy(){
 		return (CFGP_Options::get('proxy', false) ? true : false);
+	}
+	
+	/**
+	 * Check is bot, search engine or crawler
+	 *
+	 * @since    7.7.6
+	 **/
+	public static function is_bot($ip = false)
+	{
+		// Search by IP
+		if(empty($ip)) {
+			$ip = CFGP_IP::get();
+		}
+		
+		$bots = apply_filters( 'cf_geoplugin_bot_ip_list', array(
+			'65.214.45.143',	// Ask
+			'65.214.45.148',	// Ask
+			'66.235.124.192',	// Ask
+			'66.235.124.7',		// Ask
+			'66.235.124.101',	// Ask
+			'66.235.124.193',	// Ask
+			'66.235.124.73',	// Ask
+			'66.235.124.196',	// Ask
+			'66.235.124.74',	// Ask
+			'63.123.238.8',		// Ask
+			'202.143.148.61',	// Ask
+			
+			'66.249.66.1',		// Google
+			
+			'157.55.33.18',		// Bing
+			'123.125.66.120',	// Baidu
+			'141.8.142.60',		// Yandex
+			
+			'72.94.249.34',		// DuckDuckGo
+			'72.94.249.35',		// DuckDuckGo
+			'72.94.249.36',		// DuckDuckGo
+			'72.94.249.37',		// DuckDuckGo
+			'72.94.249.38',		// DuckDuckGo
+			
+			'68.180.228.178'	// Yahoo
+		));
+		
+		if($ip && in_array($ip, $bots, true)) return true;
+		
+		
+		// Get by user agent (wide range)
+		if(isset($_SERVER['HTTP_USER_AGENT']) && !empty($_SERVER['HTTP_USER_AGENT']))
+		{
+			return (preg_match('/rambler|abacho|acoi|accona|aspseek|altavista|estyle|scrubby|lycos|geona|ia_archiver|alexa|sogou|skype|facebook|duckduckbot|duckduck|twitter|pinterest|linkedin|skype|naver|bing|google|yahoo|duckduckgo|yandex|baidu|baiduspider|teoma|xing|java\/1.7.0_45|bot|crawl|slurp|spider|mediapartners|\sask\s|\saol\s/i', $_SERVER['HTTP_USER_AGENT']) ? true : false);
+		}
+		
+		return false;
 	}
 	
 	/**
@@ -713,6 +781,46 @@ class CFGP_U {
 				))
 			)
 		)));
+	}
+	
+	/*
+	 * Request Array
+	 */
+	public static function request_array($name, $sanitize = 'sanitize_text_field', $default = array()){
+		$request = isset( $_REQUEST[$name] ) ? ((array)$_REQUEST[$name]) : $default;
+		$request = array_map($sanitize, $request);		
+		return $request;
+	}
+	
+	/*
+	 * Request Bool
+	 */
+	public static function request_bool($name){
+		return (isset($_REQUEST[$name]) && $_REQUEST[$name] == 'true');
+	}
+	
+	/*
+	 * Returns API fields
+	 */
+	public static function api($name = false, $default = '') {
+		global $cfgp_cache;
+		if(empty($name)) {
+			return $cfgp_cache->get('API');
+		} else {
+			return isset($cfgp_cache->get('API')[$name]) ? $cfgp_cache->get('API')[$name] : $default;
+		}
+	}
+	
+	public static function dump(){
+		if(func_num_args() === 1)
+		{
+			$a = func_get_args();
+			echo '<pre class="cfgp-dump">', var_dump( $a[0] ), '</pre>';
+		}
+		else if(func_num_args() > 1)
+			echo '<pre class="cfgp-dump">', var_dump( func_get_args() ), '</pre>';
+		else
+			throw Exception('You must provide at least one argument to this function.');
 	}
 }
 endif;

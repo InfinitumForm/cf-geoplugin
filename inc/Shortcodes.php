@@ -617,12 +617,9 @@ class CFGP_Shortcodes extends CFGP_Global {
 	 */
 	public function google_map( $atts, $content = '' )
 	{
-		global $cfgp_cache;
-		$CFGEO = $cfgp_cache->get('API');
-
 		$att = (object)shortcode_atts( array( 
-			'latitude'				=>	CFGP_Options::get('map_latitude', (isset( $CFGEO['latitude'] ) ? $CFGEO['latitude'] : '')),
-			'longitude'				=> 	CFGP_Options::get('map_longitude', (isset( $CFGEO['longitude'] ) ? $CFGEO['longitude'] : '')),
+			'latitude'				=>	CFGP_Options::get('map_latitude', CFGP_U::api('latitude')),
+			'longitude'				=> 	CFGP_Options::get('map_longitude', CFGP_U::api('longitude')),
 			
 			'zoom'					=>	CFGP_Options::get('map_zoom'),
 			'width'					=>	CFGP_Options::get('map_width'),
@@ -636,7 +633,7 @@ class CFGP_Shortcodes extends CFGP_Global {
 			
 			'infoMaxWidth'			=>	CFGP_Options::get('map_infoMaxWidth'),
 
-			'title'					=>	isset( $CFGEO['address'] ) ? $CFGEO['address'] : '' ,
+			'title'					=>	CFGP_U::api('address'),
 			'address'				=>	'',
 			'pointer'				=>  '',
 		), $atts );

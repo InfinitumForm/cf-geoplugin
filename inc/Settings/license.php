@@ -3,7 +3,7 @@
 if ( ! defined( 'WPINC' ) ) { die( "Don't mess with us." ); }
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-global $cfgp_cache;
+do_action('cfgp/page/license/save');
 
 ?>
 <div class="wrap wrap-cfgp" id="<?php echo $_GET['page']; ?>">
@@ -20,7 +20,7 @@ global $cfgp_cache;
 
         	<div id="post-body">
             	<div id="post-body-content">
-					Underconstruction!
+					<?php do_action('cfgp/page/license/content'); ?>
                 </div>
             </div>
             <br class="clear">

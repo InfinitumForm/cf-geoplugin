@@ -158,7 +158,10 @@ class CFGP_Settings extends CFGP_Global {
 	public function register_scripts($page){
 		if(!$this->limit_scripts($page)) return;
 		
-		wp_enqueue_script( CFGP_NAME . '-admin', CFGP_ASSETS . '/js/script-admin.js', array('jquery'), (string)CFGP_VERSION, true );
+		wp_enqueue_style( CFGP_NAME . '-choosen', CFGP_ASSETS . '/js/chosen_v1.8.7/chosen.min.css', 1,  '1.8.7' );
+		wp_enqueue_script( CFGP_NAME . '-choosen', CFGP_ASSETS . '/js/chosen_v1.8.7/chosen.jquery.min.js', array('jquery'), '1.8.7', true );
+		
+		wp_enqueue_script( CFGP_NAME . '-admin', CFGP_ASSETS . '/js/script-admin.js', array('jquery', CFGP_NAME . '-choosen'), (string)CFGP_VERSION, true );
 		wp_localize_script(CFGP_NAME . '-admin', 'CFGP', array(
 			'ajaxurl' => admin_url('admin-ajax.php'),
 			'adminurl' => self_admin_url('/'),
@@ -340,10 +343,12 @@ class CFGP_Settings extends CFGP_Global {
 	
 	public function settings__callback(){
 		include_once CFGP_INC . '/Filters/settings.php';
+		include_once CFGP_INC . '/Filters/license.php';
 		include_once CFGP_INC . '/Settings/settings.php';
 	}
 	
 	public function license__callback(){
+		include_once CFGP_INC . '/Filters/license.php';
 		include_once CFGP_INC . '/Settings/license.php';
 	}
 	

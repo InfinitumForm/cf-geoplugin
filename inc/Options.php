@@ -221,7 +221,7 @@ class CFGP_Options
 				$str = html_entity_decode($str);
 				if(preg_match('/<\/?[a-z][\s\S]*>/i', $str))
 				{
-					$str = sanitize_textarea_field( $str );
+					$str = wp_kses($str, wp_kses_allowed_html('post'));
 				} else {
 					$str = sanitize_text_field( $str );
 				}

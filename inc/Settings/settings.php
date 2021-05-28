@@ -35,7 +35,7 @@ $options = apply_filters('cfgp/settings', array());
                     <div class="cfgp-tab-panel<?php echo ($o===0 ? ' cfgp-tab-panel-active' : ''); ?>" id="<?php echo esc_attr($option['id']); ?>">
                     <?php if(isset($option['sections']) && is_array($option['sections'])) :
         foreach($option['sections'] as $s=>$section) : ?>
-        			<section class="cfgp-tab-panel-section" id="cfgp-tab-panel-section-<?php echo $section['id']; ?>">
+        			<section class="cfgp-tab-panel-section" id="<?php echo sanitize_title($section['title']); ?>">
                       <?php if(!empty($section['title'])) : ?><h2 class="title"><?php echo $section['title']; ?></h2><?php endif; ?>
                         <?php if(!empty($section['desc'])) : ?>
                           <?php if(is_array($section['desc'])) : ?>

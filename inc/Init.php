@@ -23,6 +23,7 @@ final class CFGP_Init{
 			'CFGP_SEO',					// Main SEO class
 			'CFGP_Settings',			// Settings class
 			'CFGP_Shortcodes',			// Settings class
+			'CFGP_Defender',			// Defender class
 		));		
 		foreach($classes as $class){
 			$class::instance();
@@ -54,6 +55,7 @@ final class CFGP_Init{
 			CFGP_INC . '/SEO.php',				// SEO class
 			CFGP_INC . '/Settings.php',			// Settings class
 			CFGP_INC . '/Shortcodes.php',		// Shortcodes class
+			CFGP_INC . '/Defender.php',			// Defender class
 		));
 		foreach($includes as $include){
 			include_once $include;
