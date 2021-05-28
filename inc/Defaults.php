@@ -32,6 +32,18 @@ class CFGP_Defaults {
 		'rest_token' 		=> 'cf_geo_rest_token'
 	);
 	
+	// License options
+	const LICENSE = array(
+		'key'					=>	'',
+		'id'					=>	'',
+		'expire'				=>	'',
+		'expire_date'			=>	'',
+		'url'					=>	'',
+		'sku'					=>	'',
+		'expired'				=>	'',
+		'status'				=>	false
+	);
+	
 	// Plugin options
 	const OPTIONS = array(
 		'id'							=> '',
@@ -74,15 +86,6 @@ class CFGP_Defaults {
 		'block_ip'						=>	'',
 		'block_city'					=>	'',
 		'block_country_messages'		=>	'',
-		'license_key'					=>	'',
-		'license_id'					=>	'',
-		'license_expire'				=>	'',
-		'license_expire_date'			=>	'',
-		'license_url'					=>	'',
-		'license_sku'					=>	'',
-		'license_expired'				=>	'',
-		'license_status'				=>	'',
-		'license'						=>	0,
 		'redirect_enable'				=>	0,
 		'redirect_disable_bots'			=>	0,
 		'redirect_country'				=>	'',

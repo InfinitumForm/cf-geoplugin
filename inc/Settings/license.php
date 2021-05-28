@@ -7,7 +7,7 @@ do_action('cfgp/page/license/save');
 
 ?>
 <div class="wrap wrap-cfgp" id="<?php echo $_GET['page']; ?>">
-	<h1 class="wp-heading-inline"><i class="fa fa-globe"></i> <?php _e('License', CFGP_NAME); ?></h1>
+	<h1 class="wp-heading-inline"><i class="fa fa-trophy"></i> <?php _e('Select the desired license and activate the plugin', CFGP_NAME); ?></h1>
     <hr class="wp-header-end">
     <div id="post">
     	<div id="poststuff" class="metabox-holder has-right-sidebar">

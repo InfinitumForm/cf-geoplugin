@@ -153,6 +153,84 @@ class CFGP_U {
 		return $output;
 	}
 	
+	/**
+	 * POST content via cURL
+	 *
+	 * @since    4.0.4
+	 */
+	public static function curl_post( $url, $post_data = array(), $headers = '', $new_params = array(), $json = false )
+	{
+		global $cfgp_cache;
+		
+		$cache_name = 'cfgp-curl_post-'.md5(serialize(array($url, $headers, $new_params, $json)));
+		if($cache = $cfgp_cache->get($cache_name)){
+			return $cache;
+		}
+		
+		if( empty( $headers ) )
+		{
+			$headers = array( 'Accept: application/json' );
+		}
+
+		// Define proxy if set
+		if( !defined( 'WP_PROXY_HOST' ) && $proxy_ip = CFGP_Options::get('proxy_ip', false))
+		{
+			define( 'WP_PROXY_HOST', $proxy_ip );
+		}
+		if( !defined( 'WP_PROXY_PORT' ) && $proxy_port = CFGP_Options::get('proxy_port', false))
+		{
+			define( 'WP_PROXY_PORT', $proxy_port );
+		}
+		if( !defined( 'WP_PROXY_USERNAME' ) && $proxy_username = CFGP_Options::get('proxy_username', false) )
+		{
+			define( 'WP_PROXY_USERNAME', $proxy_username );
+		}
+		if( !defined( 'WP_PROXY_PASSWORD' ) && $proxy_password = CFGP_Options::get('proxy_password', false) )
+		{
+			define( 'WP_PROXY_PASSWORD', $proxy_password );
+		}
+
+
+		$output = false;
+
+		$default_params = array(
+			'method'	=> 'POST',
+			'timeout'	=> CFGP_Options::get('timeout', 5),
+			'headers'	=> $headers,
+			'body'		=> $post_data
+		);
+
+		$default_params = wp_parse_args( $new_params, $default_params );
+
+		$request = wp_remote_post( esc_url_raw( $url ), $default_params );
+
+		if( !is_wp_error( $request ) )
+		{
+			$output = wp_remote_retrieve_body( $request );
+			if( is_wp_error( $output ) || empty( $output ) )
+			{
+				$output = false;
+			}
+		}
+
+		if( empty( $output ) )
+		{
+			if(function_exists('file_get_contents'))
+			{
+				$context = self::set_stream_context( $headers, 'POST', http_build_query($post_data) );
+				$output = @file_get_contents( $url, false, $context );
+			}
+		}
+		
+		if( empty( $output ) ) return false;
+
+		if($json !== false) $output = json_decode($output, true);
+		
+		$cfgp_cache->set($cache_name, $output);
+		
+		return $output;
+	}
+	
 	/*
 	 * Decode content
 	 * @return        string

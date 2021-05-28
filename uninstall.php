@@ -29,3 +29,6 @@ if(get_option(CFGP_NAME . '-deactivation')) {
 if(get_option(CFGP_NAME . '-version')) {
 	delete_option(CFGP_NAME . '-version');
 }
+if(get_option(CFGP_NAME . '-license')) {
+	delete_option(CFGP_NAME . '-license');
+}

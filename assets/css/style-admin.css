@@ -265,6 +265,7 @@ pre.cfgp-dump + pre.cfgp-dump{
     max-width: 25%;
     flex: 0 0 25%;
 	text-align:center;
+	margin-bottom:10px;
 }
 
 @media all and (max-width:1400px){
@@ -337,17 +338,10 @@ pre.cfgp-dump + pre.cfgp-dump{
     left: 50%;
 }
 
+.cfgp-form-product-checkbox .cfgp-form-product-checkbox-item:hover,
 .cfgp-form-product-checkbox input[type="radio"]:checked + .cfgp-form-product-checkbox-item{
 	border-color:#09F;
 	box-shadow: inset 0 0 10px #09F;
-}
-
-.cfgp-form-product-checkbox .cfgp-form-product-checkbox-item{
-	opacity:0.75;
-}
-.cfgp-form-product-checkbox input[type="radio"]:checked + .cfgp-form-product-checkbox-item,
-.cfgp-form-product-checkbox .cfgp-form-product-checkbox-item:hover{
-	opacity:1;
 }
 
 .cfgp-form-product-license{
@@ -355,4 +349,36 @@ pre.cfgp-dump + pre.cfgp-dump{
 	max-width: 100%;
 	flex: 0 0 100%;
 	margin-top:15px;
+}
+
+.cfgp-form-product-license > .cfgp-form-product-license-item{
+	border:1px solid #ccc;
+	background:#FFF;
+	padding: 40px 8% 32px 8%;
+    margin: 0 auto;
+	text-align:center;
+}
+
+.cfgp-form-product-license > .cfgp-form-product-license-item > label,
+.cfgp-form-product-license > .cfgp-form-product-license-item > input{
+	display:block;
+	width:100%;
+	text-align:center;
+}
+
+.cfgp-form-product-license > .cfgp-form-product-license-item > label{
+	font-size:1.3rem;
+	font-weight:600;
+	margin-bottom:15px;
+}
+
+.cfgp-form-product-license > .cfgp-form-product-license-item > input{
+	font-size: 1.2rem;
+    padding: 10px 5px;
+}
+
+.cfgp-form-product-license > .cfgp-form-product-license-item .cfgp-activate-license{
+	font-size: 1.2rem;
+    width: 100%;
+    text-transform: uppercase;
 }
