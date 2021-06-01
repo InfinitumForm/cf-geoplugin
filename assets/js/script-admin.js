@@ -89,6 +89,80 @@
 		}
 	}('.chosen-select'));
 	
+	// Generate Secret Key
+	(function($$) {
+		if( !!$($$) )
+		{
+			$($$).on( 'click touchstart', function (e) {
+				e.preventDefault();
+				var $this = $(this), $nonce = $this.attr('data-nonce'), $confirm = $this.attr('data-confirm'), container = $('#cf-geoplugin-secret-key');
+				
+				if($confirm){
+					if(!confirm($confirm)){
+						return;
+					}
+				}
+				
+				container.html('<i class="fa fa-circle-o-notch fa-spin fa-fw"></i><span class="sr-only">Loading...</span>');
+				$this.prop('disabled', true).addClass('disabled');
+				$.ajax({
+					url: (typeof ajaxurl !== 'undefined' ? ajaxurl : CFGP.ajaxurl),
+					method: 'post',
+					dataType: 'text',
+					data: {
+						action : 'cfgp_rest_generate_secret_key',
+						nonce : nonce
+					},
+					cache: false
+				}).done( function( data ) {
+					container.html(data);
+					$this.prop('disabled', false).removeClass('disabled');
+				}).fail(function(a,b,c){
+					container.html(c);
+					console.log((typeof ajaxurl !== 'undefined' ? ajaxurl : CFGP.ajaxurl), {
+						action : 'cfgp_generate_secret_key',
+						nonce : $nonce
+					})
+					$this.prop('disabled', false).removeClass('disabled');
+				});
+			});
+		}
+	})('#cf-geoplugin-generate-secret-key');
+	
+	/* Delete REST Access token */
+	$(document).on('click', '.cfgp-button-token-remove', function( e ){
+		e.preventDefault();
+		
+		var $this = $(this),
+			$remove = $this.attr('data-remove'),
+			$confirm = confirm($this.attr('data-confirm')),
+			$nonce = $this.attr('data-nonce');
+		
+		if($confirm)
+		{
+			$.ajax({
+				url: (typeof ajaxurl !== 'undefined' ? ajaxurl : CFGP.ajaxurl),
+				method: 'post',
+				dataType: 'text',
+				data: {
+					action : 'cfgp_rest_delete_access_token',
+					token_id : $this.attr('data-id'),
+					nonce : $nonce
+				},
+				cache: false
+			}).done( function( data ) {
+				$( $remove ).remove();
+			}).fail(function(a,b,c){
+				console.log(c);
+				console.log((typeof ajaxurl !== 'undefined' ? ajaxurl : CFGP.ajaxurl), {
+					action : 'cfgp_rest_delete_access_token',
+					token_id : $this.attr('data-id'),
+					nonce : $nonce
+				})
+			});
+		}
+	});
+	
 	/* Select all */
 	$(document).on('click', '.cfgp-select-all', function( e ){
 		e.preventDefault();

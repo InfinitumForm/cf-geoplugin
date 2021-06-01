@@ -12,40 +12,6 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
 if(!class_exists('CFGP_SEO')) :
 class CFGP_SEO extends CFGP_Global {
 	
-	public function __construct(){
-		$this->add_filter( 'upload_mimes', 'upload_mimes', 99 );
-		$this->add_filter( 'mime_types', 'upload_mimes', 99 );
-		$this->add_filter( 'wp_check_filetype_and_ext', 'upload_multi_mimes', 99, 4 );
-	}
-	
-	/**
-	 * Allow .csv uploads
-	 */
-	public function upload_mimes($mimes = array()) {
-		$mimes['csv'] = "text/csv";
-		return $mimes;
-	}
-	
-	/**
-	 * Allow multi .csv uploads
-	 */
-	public function upload_multi_mimes( $check, $file, $filename, $mimes ) {
-		if ( empty( $check['ext'] ) && empty( $check['type'] ) ) {
-			// Adjust to your needs!
-			$multi_mimes = array( array( 'csv' => 'text/csv' ), array( 'csv' => 'application/vnd.ms-excel' ) );
-
-			// Run new checks for our custom mime types and not on core mime types.
-			foreach( $multi_mimes as $mime ) {
-				$this->remove_filter( 'wp_check_filetype_and_ext', 'upload_multi_mimes', 99, 4 );
-				$check = wp_check_filetype_and_ext( $file, $filename, $mime );
-				$this->add_filter( 'wp_check_filetype_and_ext', 'upload_multi_mimes', 99, 4 );
-				if ( ! empty( $check['ext'] ) ||  ! empty( $check['type'] ) ) {
-					return $check;
-				}
-			}
-		}
-		return $check;
-	}
 	
 	/*
 	 * Instance

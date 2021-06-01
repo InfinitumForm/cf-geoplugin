@@ -19,8 +19,6 @@ class CFGP_Global {
 	 * @author        Ivijan-Stefan Stipic
 	*/
 	public static function register_uninstall_hook($function){
-		if(!is_array($function))
-			$function_to_add = [&$this, $function];
 		return register_uninstall_hook( CFGP_FILE, $function );
 	}
 	
@@ -29,8 +27,6 @@ class CFGP_Global {
 	 * @author        Ivijan-Stefan Stipic
 	*/
 	public static function register_deactivation_hook($function){
-		if(!is_array($function))
-			$function_to_add = [&$this, $function];
 		return register_deactivation_hook( CFGP_FILE, $function );
 	}
 	
@@ -39,8 +35,6 @@ class CFGP_Global {
 	 * @author        Ivijan-Stefan Stipic
 	*/
 	public static function register_activation_hook($function){
-		if(!is_array($function))
-			$function_to_add = [&$this, $function];
 		return register_activation_hook( CFGP_FILE, $function );
 	}
 	

@@ -32,12 +32,32 @@ class CFGP_API extends CFGP_Global {
 		}
 	}
 	
+	
+	/**
+	 * Fetch new geo informations
+	 *
+	 * @since    8.0.0
+	 */
+	public static function lookup($ip, $property = array()){
+		if($ip = CFGP_IP::filter($ip)) {
+			$return = self::instance(true)->get('geo', $ip, $property);
+			if (CFGP_Options::get('enable_dns_lookup', 0)) {
+				$return = array_merge($return, self::instance(true)->get('dns', $ip));
+				$cfgp_cache->delete('transfer_dns_records');
+			}
+			
+			return $return;
+		}
+		
+		return false;
+	}
+	
 	/**
 	 * Get geo informations
 	 *
 	 * @since    8.0.0
 	 */
-	public function get($name, $ip = NULL){
+	public function get($name, $ip = NULL, $property = array()){
 		global $cfgp_cache;
 		
 		$default_fields = apply_filters( 'cf_geoplugin_api_default_fields', CFGP_Defaults::API_RETURN);
@@ -55,7 +75,13 @@ class CFGP_API extends CFGP_Global {
 		}
 
 		$ip_slug = str_replace('.', '_', $ip );
-		$base_currency = CFGP_Options::get('base_currency', 'USD');
+		
+		
+		if(isset($property['base_currency'])) {
+			$base_currency = $property['base_currency'];
+		} else {
+			$base_currency = CFGP_Options::get('base_currency', 'USD');
+		}
 		
 	//	delete_transient("cfgp-api-{$ip_slug}"); //-DEBUG
 	//	delete_transient("cfgp-api-{$ip_slug}-dns"); //-DEBUG
@@ -249,7 +275,7 @@ class CFGP_API extends CFGP_Global {
 							'timestamp_readable' => $return['timestampReadable'],
 							'current_time' => date(get_option('time_format'), CFGP_TIME),
 							'current_date' => date(get_option('date_format'), CFGP_TIME),
-							'version' => $return['version'],
+							'version' => CFGP_VERSION,
 							'is_proxy' => $return['proxy'] ? '1' : '0',
 							'is_vat' => $return['isVAT'] ? '1' : '0',
 							'vat_rate'	=> $return['VATrate'],

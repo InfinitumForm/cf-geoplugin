@@ -889,6 +889,9 @@ class CFGP_U {
 		}
 	}
 	
+	/*
+	 * Next level of var_dump()
+	 */
 	public static function dump(){
 		if(func_num_args() === 1)
 		{
@@ -899,6 +902,17 @@ class CFGP_U {
 			echo '<pre class="cfgp-dump">', var_dump( func_get_args() ), '</pre>';
 		else
 			throw Exception('You must provide at least one argument to this function.');
+	}
+	
+	/*
+	 * Fragment cache
+	 */
+	public static function fragment_caching($str, $cache = false, $wrap_before = '', $wrap_after = ''){
+		if(W3TC_DYNAMIC_SECURITY && function_exists('w3tc_flush_all') && $cache)
+		{
+			return sprintf('<!-- mfunc %2$s -->%1$s<!-- /mfunc %2$s -->', $wrap_before.$str.$wrap_after, W3TC_DYNAMIC_SECURITY);
+		}
+		return $str;
 	}
 }
 endif;

@@ -37,8 +37,13 @@
 	margin-top: 15px !important;
 }
 
-#cf-geoplugin-settings .nav-tab-wrapper-chosen .cfgp-tab-panel{
-	margin-top:-10px;
+
+#cf-geoplugin-settings #poststuff h3.hndle,
+#cf-geoplugin-settings #poststuff .stuffbox > h3,
+#cf-geoplugin-settings #poststuff h2{
+	float: left;
+    width: 99%;
+    display: block;
 }
 
 .nav-tab-wrapper-chosen *{
@@ -329,13 +334,10 @@ pre.cfgp-dump + pre.cfgp-dump{
 }
 
 .cfgp-form-product-checkbox input[type="radio"]{
-	background: none;
-    border: none;
-    box-shadow: none;
-    position: absolute;
-    z-index: -10;
-	top: 50%;
-    left: 50%;
+	position: absolute;
+    z-index: 1;
+    bottom: 38px;
+    left: 20px;
 }
 
 .cfgp-form-product-checkbox .cfgp-form-product-checkbox-item:hover,
@@ -377,8 +379,23 @@ pre.cfgp-dump + pre.cfgp-dump{
     padding: 10px 5px;
 }
 
+.cfgp-form-product-license > .cfgp-form-product-license-item .cfgp-deactivate-license,
 .cfgp-form-product-license > .cfgp-form-product-license-item .cfgp-activate-license{
 	font-size: 1.2rem;
     width: 100%;
     text-transform: uppercase;
+	margin-top:10px;
 }
+
+
+.cfgp-form-product-license > .cfgp-form-product-license-item .cfgp-deactivate-license{
+	background:#900;
+	border-color:#900;
+}
+
+.cfgp-form-product-license > .cfgp-form-product-license-item .cfgp-deactivate-license:hover{
+	background:#770000;
+	border-color:#900;
+}
+
+

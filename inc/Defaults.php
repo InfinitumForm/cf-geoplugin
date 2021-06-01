@@ -27,6 +27,12 @@ class CFGP_Defaults {
 	
 	// Database tables
 	const TABLE = array(
+		'seo_redirection' 	=> 'cfgp_seo_redirection',
+		'rest_tokens' 		=> 'cfgp_rest_access_token'
+	);
+	
+	// Database deprecated tables
+	const DEPRECATED_TABLE = array(
 		'seo_redirection' 	=> 'cf_geo_seo_redirection',
 		'rest_secret' 		=> 'cf_geo_rest_secret',
 		'rest_token' 		=> 'cf_geo_rest_token'
@@ -34,14 +40,19 @@ class CFGP_Defaults {
 	
 	// License options
 	const LICENSE = array(
-		'key'					=>	'',
-		'id'					=>	'',
-		'expire'				=>	'',
-		'expire_date'			=>	'',
-		'url'					=>	'',
-		'sku'					=>	'',
-		'expired'				=>	'',
-		'status'				=>	false
+		'key'			=>	'',
+		'id'			=>	'',
+		'expire'		=>	'',
+		'expire_date'	=>	'',
+		'url'			=>	'',
+		'sku'			=>	'',
+		'expired'		=>	'',
+		'status'		=>	''
+	);
+	
+	// License options
+	const REST = array(
+		'secret_key'	=> '',
 	);
 	
 	// Plugin options

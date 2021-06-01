@@ -13,14 +13,14 @@ if(!class_exists('CFGP_Sidebar')) :
 class CFGP_Sidebar extends CFGP_Global {
 	
 	function __construct(){
-		$this->add_action('cfgp/page/main_page/sidebar', 'statistic');
-		$this->add_action('cfgp/page/defender/sidebar', 'statistic');
-		$this->add_action('cfgp/page/google_map/sidebar', 'statistic');
-		$this->add_action('cfgp/page/seo_redirection/sidebar', 'statistic');
-		$this->add_action('cfgp/page/debug/sidebar', 'statistic');
-		$this->add_action('cfgp/page/settings/sidebar', 'statistic');
-		$this->add_action('cfgp/page/license/sidebar', 'statistic');
-	}
+		$this->add_action('cfgp/page/main_page/sidebar', 'statistic', 30);
+		$this->add_action('cfgp/page/defender/sidebar', 'statistic', 30);
+		$this->add_action('cfgp/page/google_map/sidebar', 'statistic', 30);
+		$this->add_action('cfgp/page/seo_redirection/sidebar', 'statistic', 30);
+		$this->add_action('cfgp/page/debug/sidebar', 'statistic', 30);
+		$this->add_action('cfgp/page/settings/sidebar', 'statistic', 30);
+		$this->add_action('cfgp/page/license/sidebar', 'statistic', 30);
+	}	
 	
 	/**
 	 * Statistic sidebar

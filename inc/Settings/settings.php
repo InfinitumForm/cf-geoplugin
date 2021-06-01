@@ -245,7 +245,7 @@ switch($input['type'])
                     <?php endif; ?>
                     </div>
                 <?php endforeach; ?>
-                  <?php do_action('cfgp/settings/tab-panel/after'); ?>
+                <?php do_action('cfgp/settings/tab-panel/after'); ?>
                 </div>
             </form>
     			</div>

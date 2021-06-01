@@ -57,12 +57,12 @@ include_once CFGP_INC . '/Cache.php';
 $cfgp_cache = new CFGP_Cache();
 
 if ( defined( 'CFGP_DEBUG_CACHE' ) && CFGP_DEBUG_CACHE === true ) {
-	/*add_action('admin_footer', function(){
+	add_action('admin_footer', function(){
 		if(is_user_logged_in() && current_user_can('administrator')) {
 			global $cfgp_cache;
 			$cfgp_cache->debug();
 		}
-	});*/
+	});
 }
 
 /*
@@ -77,6 +77,10 @@ if($CFGP_Requirements->passes()) :
 	include_once CFGP_INC . '/Init.php';
 	// Include dependencies
 	CFGP_Init::dependencies();
+	// Plugin activation
+	CFGP_Init::activation();
+	// Plugin deactivation
+	CFGP_Init::deactivation();
 	// Run plugin
 	CFGP_Init::run();
 	// Dynamic action

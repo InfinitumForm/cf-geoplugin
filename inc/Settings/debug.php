@@ -8,14 +8,8 @@ global $cfgp_cache;
 $remove_tags = array();
 
 $API = $cfgp_cache->get('API');
-if(wp_verify_nonce(CFGP_U::request_string('nonce'), CFGP_NAME . '-lookup') !== false){
-	if($ip = CFGP_IP::filter(CFGP_U::request_string('cfgp_lookup'))) {
-		$API = CFGP_API::instance(true)->get('geo', $ip);
-		if (CFGP_Options::get('enable_dns_lookup', 0)) {
-			$API = array_merge($API, CFGP_API::instance(true)->get('dns', $ip));
-			$cfgp_cache->delete('transfer_dns_records');
-		}
-	}
+if($NEW_API = CFGP_API::lookup(CFGP_U::request_string('cfgp_lookup'))){
+	$API = $NEW_API;
 }
 
 ?>
@@ -169,6 +163,35 @@ if(wp_verify_nonce(CFGP_U::request_string('nonce'), CFGP_NAME . '-lookup') !== f
                                 </thead>
                                 <tbody>
                                 	<tr>
+                                        <td><strong><?php _e( 'Plugin ID', CFGP_NAME ); ?></strong></td>
+                                        <td><?php echo get_option(CFGP_NAME . '-ID'); ?></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong><?php _e( 'Plugin installed', CFGP_NAME ); ?></strong></td>
+                                        <td><?php
+											$plugin_installed = get_option(CFGP_NAME . '-activation');
+											if($plugin_installed && is_array($plugin_installed)){
+												$plugin_installed = array_shift($plugin_installed);
+												echo date(get_option('date_format').' '.get_option('time_format'),strtotime($plugin_installed));
+											} else {
+												$plugin_installed = NULL;
+												 echo '-';
+											}
+										?></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong><?php _e( 'Plugin updated', CFGP_NAME ); ?></strong></td>
+                                        <td><?php
+											$plugin_activation = get_option(CFGP_NAME . '-activation'); 
+											if($plugin_activation && is_array($plugin_activation)){
+												$plugin_activation = end($plugin_activation);
+												if($plugin_activation != $plugin_installed) {
+													echo date(get_option('date_format').' '.get_option('time_format'),strtotime($plugin_activation));
+												} else echo '-';
+											} else echo '-';
+										?></td>
+                                    </tr>
+                                    <tr>
                                         <td><strong><?php _e( 'Site title', CFGP_NAME ); ?></strong></td>
                                         <td><?php echo get_bloginfo( 'name' ); ?></td>
                                     </tr>

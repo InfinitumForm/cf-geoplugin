@@ -343,7 +343,7 @@ class CFGP_Settings extends CFGP_Global {
 	
 	public function settings__callback(){
 		include_once CFGP_INC . '/Filters/settings.php';
-		include_once CFGP_INC . '/Filters/license.php';
+		include_once CFGP_INC . '/Filters/settings-rest.php';
 		include_once CFGP_INC . '/Settings/settings.php';
 	}
 	
