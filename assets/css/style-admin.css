@@ -239,6 +239,8 @@ pre.cfgp-dump{
     padding: 15px;
     width: 100%;
     max-width: 95%;
+	word-break: break-all;
+    white-space: break-spaces;
 }
 
 pre.cfgp-dump + pre.cfgp-dump{

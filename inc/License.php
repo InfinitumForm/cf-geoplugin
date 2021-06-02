@@ -130,8 +130,10 @@ class CFGP_License extends CFGP_Global{
 	
 	/*
 	 * Check if plugin is licensed
+	 *
+	 * @return  true/false
 	 * 
-	 * NOTICE FOR HACKERS:
+	 * NOTICE FOR HACKERS AND DEVELOPERS:
 	 * If you try to hack this function to activate the hidden functionality of the plugin,
 	 * you can try but the lookup will definitely remain limited.
 	 * Our server knows if you have activated the license or not, so there will be a lot of
@@ -151,13 +153,13 @@ class CFGP_License extends CFGP_Global{
 		
 		if($activated !== NULL) return $activated;
 		
-		if(self::get('expire', 0) <= time()) {
+		if(self::expired()) {
 			$activated = false;
 			return $activated;
 		}
 		
 		foreach(array_keys(CFGP_Defaults::LICENSE) as $license_field){
-			if(empty(self::get($license_field)) && $license_field != 'expired'){
+			if($license_field != 'expired' && empty(self::get($license_field))){
 				$activated = false;
 				return $activated;
 			}
@@ -165,6 +167,54 @@ class CFGP_License extends CFGP_Global{
 		
 		$activated = true;
 		return $activated;
+	}
+	
+	/*
+	 * Is license expired
+	 * @return  true/false
+	 */
+	public static function expired(){
+		static $expired = NULL;
+		if(NULL === $expired) {
+			$expired = ((int)self::expire_date('YmdH') < (int)date('YmdH'));
+		}
+		return $expired;
+	}
+	
+	/*
+	 * Return expire date in proper format with fix for the 32bit PHP
+	 */
+	public static function expire_date($format = ''){
+		static $expire_date = NULL;
+		
+		if(empty($format)){
+			$format = get_option('date_format');
+		}
+		
+		if(isset($expire_date[$format])) {
+			return $expire_date[$format];
+		}
+		
+		$generate_date = function($format){
+			$ex_date = false;
+			if(self::get('expire') > 0) {
+				if((int)self::get('expire') < 0){
+					$date = new DateTime(self::get('expire_date'));
+					$ex_date = $date->format($format);
+				} else {
+					$ex_date = date($format, (int)self::get('expire'));
+				}
+			}
+			return $ex_date;
+		};
+		
+		if(NULL === $expire_date) {
+			$expire_date = array();
+		}
+		
+		$expire_date[$format] = $generate_date($format);
+		
+		return $expire_date[$format];
 	}
 	
 	/*

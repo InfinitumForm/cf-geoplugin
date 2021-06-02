@@ -44,14 +44,14 @@ if (!class_exists('CFGP_SEO_Table')):
         {
             if ($which === 'top')
             {
-                //The code that goes before the table is here
-				_e('Here you can setup default site redirection based on the geo-location of your visitors. This functionality allow you to redirect your visitors on the any custom location. Please use this carefuly and wise.', CFGP_NAME);
+				echo '<div class="alignleft actions bulkactions">';
+					printf('<button type="button" class="button button-cfgeo-seo-import-csv"><i class="fa fa-file"></i> %s</button> ', __('Import From CSV', CFGP_NAME));
+					printf('<button type="button" class="button button-cfgeo-seo-export-csv"><i class="fa fa-arrow-circle-right"></i> %s</button> ', __('Export CSV', CFGP_NAME));
+				echo '</div>';
             }
             if ($which === 'bottom')
             {
                 //The code that goes after the table is there
-				printf('<button type="button" class="button button-cfgeo-seo-import-csv"><i class="fa fa-file"></i> %s</button> ', __('Import From CSV', CFGP_NAME));
-				printf('<button type="button" class="button button-cfgeo-seo-export-csv"><i class="fa fa-arrow-circle-right"></i> %s</button> ', __('Export CSV', CFGP_NAME));
             }
         }
 
@@ -99,14 +99,29 @@ if (!class_exists('CFGP_SEO_Table')):
             /* -- Preparing your query -- */
             $seo_redirection_table = $wpdb->prefix . CFGP_Defaults::TABLE['seo_redirection'];
             $query = "SELECT * FROM {$seo_redirection_table}";
+			
+			/* -- Search -- */
+			if($s = CFGP_U::request_string('s', '')){
+				$query.=$wpdb->prepare(
+					" WHERE (url LIKE %s OR country LIKE %s OR region LIKE %s OR city LIKE %s OR postcode LIKE %s OR http_code = %d) ",
+					'%'.$s.'%',
+					'%'.$s.'%',
+					'%'.$s.'%',
+					'%'.$s.'%',
+					'%'.$s.'%',
+					$s
+				);
+			}
 
             /* -- Ordering parameters -- */
             //Parameters that are going to be used to order the result
             $orderby = CFGP_U::request_string('orderby', 'ID');
-            $order = CFGP_U::request_string('order', 'DESC');
+            $order = CFGP_U::request_string('order', 'desc');
             if (!empty($orderby) & !empty($order))
             {
-                $query .= " ORDER BY {$orderby} {$order}";
+				if(in_array(strtolower($order), array('asc', 'desc')) && in_array($orderby, array('ID', 'country', 'region', 'city', 'postcode', 'http_code', 'only_once'))){
+                	$query .= " ORDER BY `{$orderby}` {$order}";
+				}
             }
 
             /* -- Pagination parameters -- */
@@ -147,6 +162,7 @@ if (!class_exists('CFGP_SEO_Table')):
                 array() ,
                 $sortable
             );
+			
             $this->items = $wpdb->get_results($query);
         }
 

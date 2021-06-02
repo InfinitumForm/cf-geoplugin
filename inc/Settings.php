@@ -334,6 +334,9 @@ class CFGP_Settings extends CFGP_Global {
 	}
 	
 	public function seo_redirection__callback(){
+		include_once CFGP_INC . '/Filters/seo_redirection_table.php';
+		include_once CFGP_INC . '/Filters/seo_redirection_new.php';
+		include_once CFGP_INC . '/Filters/seo_redirection_edit.php';
 		include_once CFGP_INC . '/Settings/seo_redirection.php';
 	}
 	

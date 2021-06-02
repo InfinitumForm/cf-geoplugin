@@ -55,7 +55,6 @@ foreach(CFGP_License::get_product_data() as $i => $product){
 		(!empty($product['url']) ? (CFGP_DEV_MODE && $product['sku']=='CFGEODEV' ? __('You must become a developer for this license', CFGP_NAME) : __('Learn more about this product', CFGP_NAME)) : '')
 	);
 }
-
 ?>
 <form method="post" autocomplete="off"<?php echo (CFGP_License::activated() ? ' onsubmit="return confirm(\''.esc_attr__('Are you sure you want to deactivate your license? This decision can limit your plugin functions.', CFGP_NAME).'\');"' : ''); ?>>
 <div class="cfgp-license-container">
@@ -93,7 +92,18 @@ add_action('cfgp/page/license/sidebar', function(){
 <div class="postbox">
 	<h3 class="hndle" style="margin-bottom:0;padding-bottom:0;"><span><?php _e('License Information', CFGP_NAME); ?></span></h3><hr>
 	<div class="inside">
-    	<?php if(!CFGP_License::activated()) : ?>
+    	<?php if(CFGP_License::activated()) : ?>
+        	<p><?php printf(
+    __('Thank you for using an unlimited license. Your license is active until %1$s. It would be great to expand your license by that date. After expiration date you will experience plugin limitations.<br><br>To review or deactivate your license, please go to your %2$s.',CFGP_NAME),
+    '<strong>' . (CFGP_License::get('expire') == 0 ? __('never',CFGP_NAME) : CFGP_License::expire_date()) . '</strong>',
+	'<a href="' . CFGP_License::get('url') . '" target="_blank">' . __('CF Geo Plugin account',CFGP_NAME) . '</a>'
+); ?></p>
+			<p><?php printf(
+            __('Do not forget that by purchasing and using the license you have agreed to our %2$s in accordance with the %1$s.'),
+            '<strong><a href="https://cfgeoplugin.com/privacy-policy/" target="_blank">' . __('Privacy Policy', CFGP_NAME) . '</a></strong>',
+            '<strong><a href="https://cfgeoplugin.com/terms-and-conditions/" target="_blank">' . __('Terms & Conditions', CFGP_NAME) . '</a></strong>'
+        ); ?></p>
+        <?php else: ?>
         <p><?php printf(
             __('You currently use a free version of plugin with a limited number of lookups. Each free version of this plugin is limited to %1$s lookups per day and you have only %2$s lookups available for today. If you want to have unlimited lookup, please enter your license key. If you are unsure and do not understand what this is about, read %3$s.', CFGP_NAME),
             
