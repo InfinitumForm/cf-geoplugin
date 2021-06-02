@@ -378,6 +378,7 @@ class CFGP_License extends CFGP_Global{
 	public static function deactivate(){			
 		$post_data = array(
 			'license_key' => self::get('key'),
+			'activation_id' => self::get('id'),
 			'sku' => self::get('sku'),
 			'action' => 'license_key_deactivate',
 			'store_code' => CFGP_STORE_CODE,

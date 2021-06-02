@@ -18,12 +18,14 @@ class CFGP_Settings extends CFGP_Global {
 		$this->add_action( 'admin_enqueue_scripts', 'register_scripts_ctp' );
 		$this->add_action( 'admin_enqueue_scripts', 'register_style' );
 		$this->add_action( 'admin_init', 'admin_init' );
+		$this->add_action( 'admin_bar_menu', 'admin_bar_menu', 90, 1 );
 		
 		if(!class_exists('CFGP_Sidebar')) {
 			include_once CFGP_INC . '/Settings/sidebar.php';
 			CFGP_Sidebar::instance();
 		}
 	}
+	
 	// Initialize plugin settings
 	public function admin_init(){
 		$this->plugin_custom_menu_class();
@@ -45,9 +47,9 @@ class CFGP_Settings extends CFGP_Global {
 	public function save_settings(){
 		$parse_url = CFGP_U::parse_url();
 		$url = $parse_url['url'];
-		if(isset($_REQUEST['nonce']))
+		if($nonce = CFGP_U::request_string('nonce', false))
 		{
-			if(wp_verify_nonce(sanitize_text_field($_REQUEST['nonce']), CFGP_NAME.'-save-settings') !== false)
+			if(wp_verify_nonce($nonce, CFGP_NAME.'-save-settings') !== false)
 			{
 				if(isset($_POST['cf-geoplugin']))
 				{				
@@ -208,6 +210,63 @@ class CFGP_Settings extends CFGP_Global {
 			)
 		));
 		
+	}
+	
+	// Add admin top bar menu pages
+	public function admin_bar_menu($wp_admin_bar) {
+		$wp_admin_bar->add_node(array(
+			'id' => CFGP_NAME . '-admin-bar-link',
+			'title' => __('Geo Plugin', CFGP_NAME), 
+			'href' => esc_url(admin_url('admin.php?page=cf-geoplugin')), 
+			'meta' => array(
+				'class' => CFGP_NAME . ' ' . CFGP_NAME . '-admin-bar-link',
+				'title' => __('Geo Plugin', CFGP_NAME),
+			)
+		));
+		
+		$wp_admin_bar->add_menu(array(
+			'parent' => CFGP_NAME . '-admin-bar-link',
+			'id' => CFGP_NAME . '-admin-bar-shortcodes-link',
+			'title' => __('Shortcodes', CFGP_NAME), 
+			'href' => esc_url(admin_url('admin.php?page=cf-geoplugin')), 
+			'meta' => array(
+				'class' => CFGP_NAME . ' ' . CFGP_NAME . '-admin-bar-shortcodes-link',
+				'title' => __('Shortcodes', CFGP_NAME),
+			)
+		));
+		
+		$wp_admin_bar->add_menu(array(
+			'parent' => CFGP_NAME . '-admin-bar-link',
+			'id' => CFGP_NAME . '-admin-bar-settings-link',
+			'title' => __('Settings', CFGP_NAME), 
+			'href' => esc_url(admin_url('admin.php?page=cf-geoplugin-settings')), 
+			'meta' => array(
+				'class' => CFGP_NAME . ' ' . CFGP_NAME . '-admin-bar-settings-link',
+				'title' => __('Settings', CFGP_NAME),
+			)
+		));
+		
+		$wp_admin_bar->add_menu(array(
+			'parent' => CFGP_NAME . '-admin-bar-link',
+			'id' => CFGP_NAME . '-admin-bar-debug-link',
+			'title' => __('Debug Mode', CFGP_NAME), 
+			'href' => esc_url(admin_url('admin.php?page=cf-geoplugin-debug')), 
+			'meta' => array(
+				'class' => CFGP_NAME . ' ' . CFGP_NAME . '-admin-bar-debug-link',
+				'title' => __('Debug Mode', CFGP_NAME),
+			)
+		));
+		
+		$wp_admin_bar->add_menu(array(
+			'parent' => CFGP_NAME . '-admin-bar-link',
+			'id' => CFGP_NAME . '-admin-bar-activate-link',
+			'title' => __('License', CFGP_NAME), 
+			'href' => esc_url(admin_url('admin.php?page=cf-geoplugin-activate')), 
+			'meta' => array(
+				'class' => CFGP_NAME . ' ' . CFGP_NAME . '-admin-bar-activate-link',
+				'title' => __('License', CFGP_NAME),
+			)
+		));
 	}
 	
 	/* Add admin pages */
