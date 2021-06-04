@@ -32,6 +32,11 @@ else
 {
     if( isset( $_GET['action'] ) == 'delete' )
     {
+		if(wp_verify_nonce( $_GET['nonce'], 'cfgp-seo-delete' ) === false){
+			printf(__('Invalid nonce. Please %s the page.', CFGP_NAME), '<a href="'.admin_url('admin.php?page=cf-geoplugin-seo-redirection').'">'.__('refresh', CFGP_NAME).'</a>');
+			return;
+		}
+
         $id = $this->get( 'id', 'int' );
         $table_name = self::TABLE['seo_redirection'];
         $wpdb->query(
@@ -61,7 +66,7 @@ else
     </div>
     <div class="row">
 		<div class="col-12">
-        	<a class="btn btn-primary btn-sm" href="<?php echo CF_Geoplugin_Global::add_admin_url( 'admin.php?page='. $_GET['page'] .'&action=add-new&page_num='. $page_num ); ?>"><span class="fa fa-plus"></span> <?php _e( 'Add new redirection', CFGP_NAME ); ?></a>
+        	<a class="btn btn-primary btn-sm" href="<?php echo CF_Geoplugin_Global::add_admin_url( 'admin.php?page='. $_GET['page'] .'&action=add-new&page_num='. $page_num . '&nonce='.wp_create_nonce('cfgp-seo-edit') ); ?>"><span class="fa fa-plus"></span> <?php _e( 'Add new redirection', CFGP_NAME ); ?></a>
             <?php 
                 if( isset( $CF_GEOPLUGIN_OPTIONS['enable_beta_seo_csv'] ) && $CF_GEOPLUGIN_OPTIONS['enable_beta_seo_csv'] ) :
                     if(CF_Geoplugin_Global::access_level($CF_GEOPLUGIN_OPTIONS) > 0): ?>
@@ -125,8 +130,8 @@ else
 									<td class="text-center">%11$s</td>
 									<td class="text-center">%14$s</td>
                                     <td class="text-right">
-                                        <a class="btn btn-info btn-sm" href="%3$sadmin.php?page=%4$s&action=edit&id=%10$d&page_num=%13$d"><span class="fa fa-pencil"></span> %5$s</a>
-                                        <a class="btn btn-danger btn-sm cf_geo_redirect_delete" href="%3$sadmin.php?page=%4$s&action=delete&id=%10$d&page_num=%13$d"><span class="fa fa-ban"></span> %6$s</a>
+                                        <a class="btn btn-info btn-sm" href="%3$sadmin.php?page=%4$s&action=edit&id=%10$d&page_num=%13$d&nonce=%17$s"><span class="fa fa-pencil"></span> %5$s</a>
+                                        <a class="btn btn-danger btn-sm cf_geo_redirect_delete" href="%3$sadmin.php?page=%4$s&action=delete&id=%10$d&page_num=%13$d&nonce=%16$s"><span class="fa fa-ban"></span> %6$s</a>
                                     </td> 
                                 </tr>
 								',
@@ -144,7 +149,9 @@ else
 								$disabled,
 								$page_num,
 								($redirect['only_once'] ? __('Yes') : __('No')),
-								end($pc_name)
+								end($pc_name),
+								wp_create_nonce('cfgp-seo-delete'),
+								wp_create_nonce('cfgp-seo-edit')
 							);
                         }
                     }

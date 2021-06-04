@@ -43,7 +43,11 @@ class CF_Geoplugin_SEO_Redirection extends CF_Geoplugin_Global
 	 * Page SEO Redirection
 	 */
 	public function page_seo_redirection(){
-		$CFGEO = $GLOBALS['CFGEO'];
+		global $CFGEO;
+		
+		if(empty($CFGEO)){
+			$CFGEO = $GLOBALS['CFGEO'];
+		}
 		
 		if(parent::get_the_option('redirect_disable_bots', false) && parent::is_bot()) return;
 		

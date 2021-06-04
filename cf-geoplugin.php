@@ -8,7 +8,7 @@
  * Plugin Name:       WordPress Geo Plugin
  * Plugin URI:        http://cfgeoplugin.com/
  * Description:       Create Dynamic Content, Banners and Images on Your Website Based On Visitor Geo Location By Using Shortcodes With CF Geo Plugin.
- * Version:           7.13.1
+ * Version:           7.13.7
  * Author:            INFINITUM FORM
  * Author URI:        https://infinitumform.com/
  * License:           GPL-2.0+
@@ -54,21 +54,10 @@ if ( ! defined( 'CFGP_LOCAL' ) ) {
  *
  * This is need for plugin debugging.
  */
-if ( defined( 'WP_DEBUG' ) ){
+if ( defined( 'WP_DEBUG' ) ) {
 	if(WP_DEBUG === true || WP_DEBUG === 1)
 	{
 		if ( ! defined( 'WP_CF_GEO_DEBUG' ) ) define( 'WP_CF_GEO_DEBUG', true );
-	}
-}
-if ( defined( 'WP_CF_GEO_DEBUG' ) ){
-	if(WP_CF_GEO_DEBUG === true || WP_CF_GEO_DEBUG === 1)
-	{
-		error_reporting( E_ALL );
-		if(function_exists('ini_set'))
-		{
-			ini_set('display_startup_errors',1);
-			ini_set('display_errors',1);
-		}
 	}
 }
 
@@ -93,11 +82,11 @@ $GLOBALS['CF_GEOPLUGIN_OPTIONS'] = array();
  */
 $GLOBALS['CFGEO_API_CALL'] = apply_filters( 'cf_geoplugin_api_calls', array(
 	// Standard CF Geo Plugin API URLs
-	'main'			=>	'https://cdn-cfgeoplugin.com/api/index.php',
-	'dns'			=>	'https://cdn-cfgeoplugin.com/api/dns.php',
-	'authenticate'	=>	'https://cdn-cfgeoplugin.com/api/authenticate.php',
-	'spam-checker'	=>	'https://cdn-cfgeoplugin.com/api/spam-checker.php',
-	'converter'		=>	'https://cdn-cfgeoplugin.com/api/convert.php',
+	'main'			=>	'http://cdn-cfgeoplugin.com.dedi1855.your-server.de/index.php',
+	'dns'			=>	'http://cdn-cfgeoplugin.com.dedi1855.your-server.de/dns.php',
+	'authenticate'	=>	'http://cdn-cfgeoplugin.com.dedi1855.your-server.de/authenticate.php',
+	'spam-checker'	=>	'http://cdn-cfgeoplugin.com.dedi1855.your-server.de/spam-checker.php',
+	'converter'		=>	'http://cdn-cfgeoplugin.com.dedi1855.your-server.de/convert.php',
 	// 3rd party Covid-19 free API call
 	'covid-api'		=>	'https://api.covid19api.com',
 	// 3rd party IPFY free API call for finding real IP address on the local machines
@@ -233,4 +222,9 @@ if($CF_Geoplugin_Requirements_Check->passes()) :
 
 	// Add privacy policy
 	add_action( 'admin_init', 'cf_geoplugin_privacy_policy' );
+	
+	// We  must close session but first we must also collect data
+	add_action('wp_loaded', function(){
+		session_write_close();
+	}, 99999);
 endif;

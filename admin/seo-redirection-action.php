@@ -8,6 +8,14 @@
  *
 **/
 global $wpdb, $wp_version;
+
+
+if(wp_verify_nonce( $_GET['nonce'], 'cfgp-seo-edit' ) === false){
+	printf(__('Invalid nonce. Please return to %s page.', CFGP_NAME), '<a href="'.admin_url('admin.php?page=cf-geoplugin-seo-redirection').'">'.__('SEO Redirection', CFGP_NAME).'</a>');
+	return;
+}
+
+
 ?>
 
 <div class="clearfix"></div>
@@ -53,6 +61,7 @@ global $wpdb, $wp_version;
                     }
                 ?>
                     <form action="<?php echo CF_Geoplugin_Global::add_admin_url( 'admin-ajax.php' );?>?action=cf_geo_update_redirect" method="post" id="cf_geo_redirect_form"  class="col-8">
+						<input type="hidden" name="nonce" value="<?php echo wp_create_nonce('cfgp-seo-update'); ?>">
                         <div class="form-group" id="cf_geo_redirect_active">
                             <label for="cf_geo_redirect_active"><?php _e( 'Enable or disable global redirection.' ); ?></label><br>
                             <div class="form-check form-check-inline">

@@ -52,7 +52,8 @@ wp_enqueue_media();
                         <button type="button" name="upload_btn" class="btn btn-success"><span class="fa fa-database"></span> <?php _e( 'Import', CFGP_NAME); ?></button>
                     </div>
                 </div>
-                <p class="text-danger"><?php _e( 'PLEASE NOTE: After upload, all previous records will be deleted and new data will be placed. This process is impossible to avoid and, therefore, it is important to make a preliminary backup. Please use backup button at top of this page for that action.', CFGP_NAME); ?></p> 
+                <p class="text-danger"><?php _e( 'PLEASE NOTE: After upload, all previous records will be deleted and new data will be placed. This process is impossible to avoid and, therefore, it is important to make a preliminary backup. Please use backup button at top of this page for that action.', CFGP_NAME); ?></p>
+				<input type="hidden" name="nonce" value="<?php echo wp_create_nonce('cfgp-csv-upload'); ?>">
             </form>
             <table class="table table-striped mt-3 bg-white border-white w-100" id="failed-import-table"></table>
         </div>

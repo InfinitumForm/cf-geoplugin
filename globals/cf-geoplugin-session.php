@@ -26,8 +26,11 @@ if(!function_exists('clear_cf_geoplugin_session')) :
 						unset($_SESSION[ $key ]);
 					}
 				}
-				$_SESSION[CFGP_PREFIX . 'session_expire'] = (CFGP_SESSION <= 0 ? 0 : (CFGP_TIME + (60 * CFGP_SESSION)));
-				$_SESSION[CFGP_PREFIX . 'session_setup'] = CFGP_SESSION;
+				
+				session_start();
+					$_SESSION[CFGP_PREFIX . 'session_expire'] = (CFGP_SESSION <= 0 ? 0 : (CFGP_TIME + (60 * CFGP_SESSION)));
+					$_SESSION[CFGP_PREFIX . 'session_setup'] = CFGP_SESSION;
+				session_write_close();
 			}
 
 			do_action('clear_cf_geoplugin_session');
@@ -47,9 +50,11 @@ if(!function_exists('clear_cf_geoplugin_session')) :
 							unset($_SESSION[ $key ]);
 						}
 					}
-					$_SESSION[CFGP_PREFIX . 'session_expire'] = (CFGP_SESSION <= 0 ? 0 : (CFGP_TIME + (60 * CFGP_SESSION)));
-					$_SESSION[CFGP_PREFIX . 'session_setup'] = CFGP_SESSION;
 					
+					session_start();
+						$_SESSION[CFGP_PREFIX . 'session_expire'] = (CFGP_SESSION <= 0 ? 0 : (CFGP_TIME + (60 * CFGP_SESSION)));
+						$_SESSION[CFGP_PREFIX . 'session_setup'] = CFGP_SESSION;
+					session_write_close();
 					return true;
 				}
 			}
@@ -73,7 +78,7 @@ if(!function_exists('CF_Geoplugin_Session')) :
 				session_start(apply_filters( 'cf_geoplugin_php7_session_options', array(
 				  'cache_limiter' => 'private_no_expire',
 				  'read_and_close' => false
-			   )));
+				)));
 			}
 		}
 		else if (version_compare(PHP_VERSION, '5.4.0', '>=') && version_compare(PHP_VERSION, '7.0.0', '<'))
@@ -142,8 +147,8 @@ endif;
 CF_Geoplugin_Session();
 
 // We must keep session running on all levels (safe mode)
-add_action('init', 'CF_Geoplugin_Session');
-add_action('after_setup_theme', 'CF_Geoplugin_Session');
-add_action('wp_loaded', 'CF_Geoplugin_Session');
-add_action('send_headers', 'CF_Geoplugin_Session');
-add_action('template_redirect', 'CF_Geoplugin_Session');
+add_action('init', 'CF_Geoplugin_Session', 1);
+//add_action('after_setup_theme', 'CF_Geoplugin_Session');
+add_action('wp_loaded', 'CF_Geoplugin_Session', 1);
+//add_action('send_headers', 'CF_Geoplugin_Session');
+//add_action('template_redirect', 'CF_Geoplugin_Session');

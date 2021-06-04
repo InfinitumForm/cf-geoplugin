@@ -3,9 +3,9 @@ Contributors: ivijanstefan, creativform
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=creativform@gmail.com
 Tags: geolocation, locator, GeoIP, geo, geotargeting, seo, seo redirect, woocommerce, include exclude, content, remove content, show hide, covid
 Requires at least: 3.0
-Tested up to: 5.5
+Tested up to: 5.7
 Requires PHP: 5.6.0
-Stable tag: 7.13.1
+Stable tag: 7.13.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -13,17 +13,13 @@ All in one geolocation plugin that provides all geo functionality for the WordPr
 
 == Description ==
 
-> <strong>COVID-19 INFORMATIONS (Coronavirus informations)</strong><br>
-> Using this plugin you can display coronavirus (COVID-19) informations in the real time on the your website for FREE.
-> You can display country based information or global world wide information about coronavirus. [DEMO](https://cfgeoplugin.com/coronavirus-tracker-covid-19/)
-
 **[CF Geo Plugin](https://cfgeoplugin.com/)** is a GeoMarketing tool that allows you to have full geo control of your WordPress. **CF Geo Plugin** gives you ability to attach content, geographic information, geo tags, Google Maps to posts, pages, widgets and custom templates by using simple options, shortcodes, PHP code or JavaScript. It also lets you specify a default geographic location for your entire WordPress blog, do SEO redirection, spam protection, WooCommerce control and many more. **CF Geo Plugin** help you to increase conversion, do better SEO, capture leads on your blog or landing pages.
 
 = FREE AND PAID SERVICES =
 
 CF Geo Plugin is a free plugin which works with the **[free and paid services](https://cfgeoplugin.com/information/new-plugin-new-features-new-success/)** that return information about the locations.
 
-CF Geo Plugin is free by itself but API services are limited to **300 lookups per day** for the free users. If you like to have **UNLIMITED** lookup, **please visit [official website](https://cfgeoplugin.com/pricing/) for more informations**.
+CF Geo Plugin is free by itself but API services are limited to **1000 lookups per day** for the free users. If you like to have **UNLIMITED** lookup, **please visit [official website](https://cfgeoplugin.com/pricing/) for more informations**.
 
 **NOTE:** We do not place prices on this page because we reserve the right to change these prices and often have monthly promotions and discounts. Please, for more information **[look at our prices](https://cfgeoplugin.com/pricing/)** on the [official website](https://cfgeoplugin.com/).
 
@@ -31,7 +27,6 @@ This plugin works as a [service](https://en.wikipedia.org/wiki/Software_as_a_ser
 
 = BENEFITS =
 
-> <strong>COVID-19 INFORMATIONS (Coronavirus informations)</strong><br>
 > - **Country based** coronavirus informations via shortcode
 > - **World wide (global)** coronavirus informations via shortcode
 >
@@ -268,7 +263,7 @@ You must know when you uninstall CF Geo Plugin you will lose complete setup, lic
 
 CF Geo Plugin uses a combination of free and paid services that return information about the locations.
 
-CF Geo Plugin is free by itself but API lookup is limited to 300 lookups per day for the free users. If you need to have UNLIMITED lookup with NO RESTRICTIONS, please visit [official website](https://cfgeoplugin.com/pricing/) for more information regarding prices.
+CF Geo Plugin is free by itself but API lookup is limited to 1000 lookups per day for the free users. If you need to have UNLIMITED lookup with NO RESTRICTIONS, please visit [official website](https://cfgeoplugin.com/pricing/) for more information regarding prices.
 
 The reason for the payment of the license is obvious: -We have to pay the server we use to provide you information via API, development requires hours and hours of work at the daily level, the availability of the service must be 24/7 with no stop and for a lot of coffee.
 
@@ -397,6 +392,33 @@ Please inform us if any of these errors occur via contact form on our website [h
 14. Available SEO tags
 
 == Changelog ==
+
+= 7.13.7 =
+* Switched to new and faster API service
+
+= 7.13.6 =
+* Fixed problem with PHP notice
+* Fixed localhost detection
+
+= 7.13.5 =
+* Improved security
+* Fixed bugs in SEO redirection
+* Fixed WP nonce bugs
+* Added support for WordPress version 5.7
+* Plugin and installation preparation for future version 8.0.0
+
+= 7.13.4 =
+* Increased free lookup from 300 to 1000 lookop per day
+
+= 7.13.3 =
+* Fixed bug for unlimited license
+* Support WordPress version 5.6
+
+
+= 7.13.2 =
+* Fixed issue with losing active license
+* Fixed issue with `session_write_close()`
+* Fixed issue with SEO redirects
 
 = 7.13.1 =
 * Fixed SEO redirection errors
@@ -542,6 +564,29 @@ Please inform us if any of these errors occur via contact form on our website [h
 * Improved PHP code
 
 == Upgrade Notice ==
+
+= 7.13.6 =
+* Fixed problem with PHP notice
+* Fixed localhost detection
+
+= 7.13.5 =
+* Improved security
+* Fixed bugs in SEO redirection
+* Fixed WP nonce bugs
+* Added support for WordPress version 5.7
+* Plugin and installation preparation for future version 8.0.0
+
+= 7.13.4 =
+* Increased free lookup from 300 to 1000 lookop per day
+
+= 7.13.3 =
+* Fixed bug for unlimited license
+* Support WordPress version 5.6
+
+= 7.13.2 =
+* Fixed issue with losing active license
+* Fixed issue with `session_write_close()`
+* Fixed issue with SEO redirects
 
 = 7.13.1 =
 * Fixed SEO redirection errors

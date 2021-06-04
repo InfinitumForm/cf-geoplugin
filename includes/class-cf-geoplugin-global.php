@@ -160,6 +160,7 @@ class CF_Geoplugin_Global
 	const PERSONAL_LICENSE 		= 'CFGEOSWL';
 	const FREELANCER_LICENSE 	= 'CFGEO3WL';
 	const BUSINESS_LICENSE 		= 'CFGEODWL';
+	const LIFETIME_LICENSE		= 'LIFETIME';
 	const DEVELOPER_LICENSE 	= 'CFGEODEV';
 	
 	// PRIVATE - is proxy true/false (internal check)
@@ -171,7 +172,8 @@ class CF_Geoplugin_Global
 			self::BASIC_LICENSE			=> __('UNLIMITED Basic License (1 month)',CFGP_NAME),
 			self::PERSONAL_LICENSE		=> __('UNLIMITED Personal License',CFGP_NAME),
 			self::FREELANCER_LICENSE	=> __('UNLIMITED Freelancer License',CFGP_NAME),
-			self::BUSINESS_LICENSE		=> __('UNLIMITED Business License',CFGP_NAME)
+			self::BUSINESS_LICENSE		=> __('UNLIMITED Business License',CFGP_NAME),
+			self::LIFETIME_LICENSE		=> __('UNLIMITED Lifetime License',CFGP_NAME)
 		);
 		// Enable development mode
 		if( CFGP_DEV_MODE )
@@ -253,7 +255,8 @@ class CF_Geoplugin_Global
 	 * 2 - Personal
 	 * 3 - Freelancer
 	 * 4 - Business
-	 * 5 - Developer
+	 * 5 - Lifetime
+	 * 6 - Developer
 	*/
 	public static function access_level($level)
 	{
@@ -268,6 +271,7 @@ class CF_Geoplugin_Global
 			self::PERSONAL_LICENSE,
 			self::FREELANCER_LICENSE,
 			self::BUSINESS_LICENSE,
+			self::LIFETIME_LICENSE,
 			self::DEVELOPER_LICENSE
 		));
 		
@@ -1105,6 +1109,9 @@ class CF_Geoplugin_Global
 	 * @return   $string Server IP
 	 */
 	public function ip_server(){
+		
+		if(CFGP_LOCAL) return '127.0.0.1';
+		
 		$proxy = $this->proxy();
 		if($proxy) $_SERVER['SERVER_ADDR'] = $this->get_option("proxy_ip");
 	
@@ -1567,7 +1574,14 @@ class CF_Geoplugin_Global
 	 */
 	public static function validate()
 	{
+		global $CFGEO;
+		
+		if(empty($CFGEO)){
+			$CFGEO = $GLOBALS['CFGEO'];
+		}
+		
 		if(defined('CFGP_SKIP_VALIDATION') && CFGP_SKIP_VALIDATION === true) return true;
+		if(isset($CFGEO['lookup']) && $CFGEO['lookup'] == 'unlimited') return true;
 			
 		$instance = self::get_instance();
 		CF_Geoplugin_Debug::log( '------------ Validation started ------------' );
@@ -1609,7 +1623,10 @@ class CF_Geoplugin_Global
 				CF_Geoplugin_Debug::log( json_decode( $response ) );
 				if(isset($license->error) && $license->error === true)
 				{
-					$instance->update_option('license', 0, true);
+					if(isset($license->status) && $license->status == 404) {} else {
+						$instance->update_option('license', 0, true);
+					}
+					
 					CF_Geoplugin_Debug::log( 'Validation status: error' );
 					return false;
 				}

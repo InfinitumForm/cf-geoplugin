@@ -164,7 +164,7 @@ if( $global->get( 'action' ) == 'deactivate_license' && isset( $_GET['cfgp_licen
                 <p class="lead"><?php printf(
                     __('You currently use a free version of plugin with a limited number of lookups.<br>Each free version of this plugin is limited to %1$s lookups per day and you have only %2$s lookups available for today. If you want to have unlimited lookup, please enter your license key.<br>If you are unsure and do not understand what this is about, read %3$s.',CFGP_NAME),
                     
-                    '<strong>300</strong>',
+                    '<strong>'.CFGP_LIMIT.'</strong>',
                     '<strong>'.$CFGEO['lookup'].'</strong>',
                     '<strong><a href="https://cfgeoplugin.com/information/new-plugin-new-features-new-success/" target="_blank">' . __('this article',CFGP_NAME) . '</a></strong>'
                 ); ?></p>

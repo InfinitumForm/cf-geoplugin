@@ -61,7 +61,7 @@ if( $global->get( 'action' ) == 'deactivate_license' )
 			<h4 class="alert-heading">' . __('Attention!',CFGP_NAME) . '</h4>
 			<p>' . __('License deactivated successfully!',CFGP_NAME) . '</p>
 			<hr>
-			<p>' . __('Due to license deactivation your APi limitation will be 300 requests per day.',CFGP_NAME) . '</p>' .
+			<p>' . sprintf( __('Due to license deactivation your APi limitation will be %d requests per day.',CFGP_NAME), CFGP_LIMIT) . '</p>' .
 			'<button type="button" class="close" data-dismiss="alert" aria-label="'. __( 'Close', CFGP_NAME ) .'">
 				<span aria-hidden="true">&times;</span>
 			</button>

@@ -365,7 +365,10 @@ $.fn.alerts = function(text, type){
 					e.preventDefault();
 					var file = wp.media({
 						title: CFGP.label.csv.upload,
-						multiple: false
+						multiple: false,
+						library: {
+							type : 'text/csv'
+						}
 					}).open()
 					.on('select', function (e) {
 						var uploaded_file = file.state().get('selection').first();

@@ -52,9 +52,17 @@ class CF_Geoplugin_Notification extends CF_Geoplugin_Global
 
 	public function license_expire_soon()
 	{
+		global $CF_GEOPLUGIN_OPTIONS, $CFGEO;
+		
 		if( defined( 'CFGP_DISABLE_NOTIFICATION_EXPIRE_SOON' ) && CFGP_DISABLE_NOTIFICATION_EXPIRE_SOON ) return NULL;
 	
-		$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
+		if(empty($CFGEO)){
+			$CFGEO = $GLOBALS['CFGEO'];
+		}
+		
+		if(empty($CF_GEOPLUGIN_OPTIONS)){
+			$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
+		}
 		
 		$expire_time = WEEK_IN_SECONDS; // each 7 days
 		$time_defore = '-1 month';

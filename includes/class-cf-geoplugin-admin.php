@@ -467,34 +467,36 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 	{
 		// Session Type
 		$session_type = parent::get_the_option('session_type', 1);
-		
+		$print = [];
 		$items = parent::curl_get( CFGP_STORE . '/wp-ajax.php?action=cfgp_get_posts_data');
 		if ($items !== false)
 		{
 			$items = json_decode($items);
 			$i=0;
-			foreach($items->posts as $fetch)
-			{
-				$print[]=sprintf(
-					'<div class="mb-5">
-						<a href="%1$s" target="_blank" class="text-info">
-							<h4 class="h5">%2$s</h4>
-							<img src="%3$s" class="vw-100 mw-100 ml-auto mr-auto">
-						</a>
-						<br>
-						<p>%4$s</p>
-						<p class="mb-1"><a href="%5$s" target="_blank">%6$s</a></p>
-						<p><small>~%7$s</small></p>
-					</div>',
-					$fetch->post_url,
-					$fetch->post_title,
-					$fetch->post_image_medium,
-					$fetch->post_excerpt,
-					$fetch->post_url,
-					__('Read more at CF Geo Plugin', CFGP_NAME),
-					date('F j, Y', strtotime($fetch->post_date_gmt))
-				);
-				++$i;
+			if($items && isset($items->posts) && is_array($items->posts)) {
+				foreach($items->posts as $fetch)
+				{
+					$print[]=sprintf(
+						'<div class="mb-5">
+							<a href="%1$s" target="_blank" class="text-info">
+								<h4 class="h5">%2$s</h4>
+								<img src="%3$s" class="vw-100 mw-100 ml-auto mr-auto">
+							</a>
+							<br>
+							<p>%4$s</p>
+							<p class="mb-1"><a href="%5$s" target="_blank">%6$s</a></p>
+							<p><small>~%7$s</small></p>
+						</div>',
+						$fetch->post_url,
+						$fetch->post_title,
+						$fetch->post_image_medium,
+						$fetch->post_excerpt,
+						$fetch->post_url,
+						__('Read more at CF Geo Plugin', CFGP_NAME),
+						date('F j, Y', strtotime($fetch->post_date_gmt))
+					);
+					++$i;
+				}
 			}
 			
 			if(!empty($print))
@@ -505,7 +507,9 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 					set_transient(CFGP_PREFIX . 'rss', $print, (MINUTE_IN_SECONDS * CFGP_SESSION));
 				}
 				if(in_array($session_type, array(1,3)) !==  false) {
-					$_SESSION[CFGP_PREFIX . 'rss'] = $print;
+					session_start();
+						$_SESSION[CFGP_PREFIX . 'rss'] = $print;
+					session_write_close();
 				}
 				echo $print;
 				
@@ -547,7 +551,9 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 				set_transient(CFGP_PREFIX . 'rss', $print, (MINUTE_IN_SECONDS * CFGP_SESSION));
 			}
 			if(in_array($session_type, array(1,3)) !==  false) {
-				$_SESSION[CFGP_PREFIX . 'rss'] = $print;
+				session_start();
+					$_SESSION[CFGP_PREFIX . 'rss'] = $print;
+				session_write_close();
 			}
 			echo $print;
 		}
@@ -652,6 +658,11 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 	{
 		if( !check_admin_referer( 'cf_geo_update_redirect', 'cf_geo_update_redirect_nonce' ) )
 		{
+			echo 'error';
+			wp_die();
+		}
+		
+		if(wp_verify_nonce( $_REQUEST['nonce'], 'cfgp-seo-update' ) === false){
 			echo 'error';
 			wp_die();
 		}
@@ -954,21 +965,40 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 	// Import redirections from CSV
 	public function cf_geo_import_csv()
 	{
+		
+		if(wp_verify_nonce( $_POST['nonce'], 'cfgp-csv-upload' ) === false){
+			return wp_send_json(array(
+				'success'		=> 0,
+				'fail'			=> 1,
+				'fail_data'		=> '', 
+				'message'		=> __('Invalid Nonce!', CFGP_NAME)
+			));
+		}
+		
 		global $wpdb;
 
 		$result = array(
 			'success'		=> 0,
 			'fail'			=> 0,
 			'fail_data'		=> '', 
-			'message'		=> '',
+			'message'		=> ''
 		);
 
 		$attachment_url = ( isset( $_POST['import_file_url'] ) ) ? $_POST['import_file_url'] : false;
+		
+		$header=get_headers($attachment_url, 1);
 		
 		if( empty($attachment_url) )
 		{
 			$result['message'] = __('Failed to open file path', CFGP_NAME) . ' (' . $attachment_url . ')';
 			wp_send_json( $result );
+		}
+		
+	//	$attachment_url = str_replace(home_url(), rtrim(ABSPATH, '/'), $attachment_url);
+		
+		// Fix permission
+		if(!is_readable($attachment_url)){
+			chmod($attachment_url, '0755');
 		}
 
 		$query_data = $this->csv_to_array( $attachment_url );
@@ -993,7 +1023,17 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 			$value = array();
 			foreach( $queries as $query )
 			{
-				$value[] = sprintf("( '%s', '%s', '%s', '%s', '%s', %d, %d, %d )", $query['country'], $query['region'], $query['city'], $query['postcode'], $query['url'], $query['http_code'], (int)$query['active'], (int)$query['only_once']);
+				$value[] = sprintf(
+					'( \'%s\', \'%s\', \'%s\', \'%s\', \'%s\', %d, %d, %d )',
+					$query['country'],
+					$query['region'],
+					$query['city'],
+					$query['postcode'],
+					$query['url'],
+					$query['http_code'],
+					((int)$query['active']),
+					((int)$query['only_once'])
+				);
 			}	
 			$sql .= join( ',', $value );
 			$sql .= ';';
@@ -1004,6 +1044,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 		}
 		wp_send_json( $result );
 	}
+	
 
 	// Convert CSV file to PHP array
 	public function csv_to_array( $filename = '' )
@@ -1019,7 +1060,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 		
 		// setup our return data  
 		$return_data = array();
-		
+
 		if(isset($header['Content-Type']) && ($header['Content-Type'] == 'text/csv' || $header['Content-Type'] == 'application/vnd.ms-excel'))
 		{
 			
@@ -1031,7 +1072,7 @@ class CF_Geoplugin_Admin extends CF_Geoplugin_Global
 				$chunk = $offset;
 				
 				// while data exists loop over data
-				while ( ( $ceil = fgetcsv($handle, (isset($header['Content-Length']) ? $header['Content-Length'] : 2000), $analyse['delimiter']['value']) ) !== FALSE ) {
+				while ( ( $ceil = fgetcsv($handle, (isset($header['Content-Length']) ? $header['Content-Length'] : 2000), $analyse['delimiter']['value']) ) !== false ) {
 					if( count( $ceil ) <= 8 )
 					{
 						$data = array(
