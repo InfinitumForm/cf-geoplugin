@@ -1,4 +1,8 @@
 (function ($) {
+	var custom_uploader,
+		custom_uploader_timeout,
+		debounce;
+	
 	/**
 	 * Fix admin panels
 	**/
@@ -179,7 +183,62 @@
 			$target.trigger('chosen:updated');
 		});
 	});
+	
+	/* Prevent double submit */
+	$('form').submit(function(){
+		 $(this).find('[type="submit"]').prop('disabled',true);
+	});
+	
+	/*
+	 * Select CSV file
+	 */
+	$(document).on('click', '.button-cfgeo-seo-import-csv', function(e) {
+		e.preventDefault();
+		var $this = $(this);
 
+		//If the uploader object has already been created, reopen the dialog
+		if (custom_uploader) {
+			custom_uploader.open();
+			return;
+		}
+		//Extend the wp.media object
+		custom_uploader = wp.media.frames.file_frame = wp.media({
+			title: CFGP.label.upload_csv,
+			button: {
+				text: CFGP.label.upload_csv
+			},
+			multiple: false,
+			library: {
+				type : 'text/csv'
+			}
+		});
+
+		var upload_csv = function(){
+
+			if(custom_uploader_timeout) clearTimeout(custom_uploader_timeout);
+
+			attachment = custom_uploader.state().get('selection').first().toJSON();
+			
+			$this.val(attachment.url).attr('data-id', attachment.id);
+			
+			
+			/* TO DO - AJAX UPLOAD */
+			
+
+			custom_uploader_timeout = setTimeout(function(){
+				custom_uploader = null;
+			}, 5);
+		};
+
+		//When a file is selected, grab the URL and set it as the text field's value
+		custom_uploader.on({
+			'select': upload_csv,
+			'close': upload_csv
+		});
+		//Open the uploader dialog
+		custom_uploader.open();
+	});
+	
 	/**
 	 * Display Thank You footer
 	**/

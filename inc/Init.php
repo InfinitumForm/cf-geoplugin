@@ -22,6 +22,7 @@ final class CFGP_Init{
 			'CFGP_API',					// Main API class
 			'CFGP_Media',				// Media class
 			'CFGP_Settings',			// Settings class
+			'CFGP_Admin',				// Admin class
 			'CFGP_Shortcodes',			// Settings class
 			'CFGP_Defender',			// Defender class
 			'CFGP_Public',				// Public class
@@ -51,8 +52,10 @@ final class CFGP_Init{
 			CFGP_INC . '/OS.php',				// Operating System info and tool class
 			CFGP_INC . '/Defaults.php',			// Default values, data
 			CFGP_INC . '/Utilities.php',		// Utilities
+			CFGP_INC . '/Form.php',				// Form class
 			CFGP_INC . '/Options.php',			// Plugin option class
 			CFGP_INC . '/Global.php',			// Global class
+			CFGP_INC . '/Admin.php',			// Admin option class
 			CFGP_INC . '/IP.php',				// IP class
 			CFGP_INC . '/License.php',			// License class
 			CFGP_INC . '/Media.php',			// Media class

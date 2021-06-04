@@ -16,6 +16,33 @@ class CFGP_U {
 	private static $user;
 	
 	/*
+	 * Get HTTP codes
+	 * @return        object/null
+	 * @author        Ivijan-Stefan Stipic
+	*/
+	public static function get_http_codes(){
+		return apply_filters( 'cfgp_http_codes', array(
+			301 => __( '301 - Moved Permanently', CFGP_NAME ),
+			302 => __( '302 - Found (Moved temporarily)', CFGP_NAME ),
+			303 => __( '303 - See Other', CFGP_NAME ),
+			307 => __( '307 - Temporary Redirect (since HTTP/1.1)', CFGP_NAME ),
+			308 => __( '308 - Permanent Redirect', CFGP_NAME ),
+			404 => __( '404 - Not Found (not recommended)', CFGP_NAME )
+		));
+	}
+	
+	/*
+	 * Get HTTP code name
+	 * @return        object/null
+	 * @author        Ivijan-Stefan Stipic
+	*/
+	public static function get_http_code_name($code){
+		$code = (int)$code;
+		$http_codes = self::get_http_codes();
+		return (isset($http_codes[$code]) ? $http_codes[$code] : NULL);
+	}
+	
+	/*
 	 * Get user
 	 * @return        object/null
 	 * @author        Ivijan-Stefan Stipic
@@ -865,8 +892,8 @@ class CFGP_U {
 	 * Request Array
 	 */
 	public static function request_array($name, $sanitize = 'sanitize_text_field', $default = array()){
-		$request = isset( $_REQUEST[$name] ) ? ((array)$_REQUEST[$name]) : $default;
-		$request = array_map($sanitize, $request);		
+		$request = isset( $_REQUEST[$name] ) && !empty( $_REQUEST[$name] ) ? ((array)$_REQUEST[$name]) : $default;
+		$request = CFGP_Options::sanitize($request);
 		return $request;
 	}
 	

@@ -13,22 +13,16 @@ if(!class_exists('CFGP_Settings')) :
 class CFGP_Settings extends CFGP_Global {
 	
 	function __construct(){
-		$this->add_action( (CFGP_NETWORK_ADMIN ? 'network_admin_menu' : 'admin_menu'), 'add_pages',  11 );
-		$this->add_action( 'admin_enqueue_scripts', 'register_scripts' );
-		$this->add_action( 'admin_enqueue_scripts', 'register_scripts_ctp' );
-		$this->add_action( 'admin_enqueue_scripts', 'register_style' );
-		$this->add_action( 'admin_init', 'admin_init' );
-		$this->add_action( 'admin_bar_menu', 'admin_bar_menu', 90, 1 );
-		
 		if(!class_exists('CFGP_Sidebar')) {
 			include_once CFGP_INC . '/Settings/sidebar.php';
 			CFGP_Sidebar::instance();
 		}
+		$this->add_action( (CFGP_NETWORK_ADMIN ? 'network_admin_menu' : 'admin_menu'), 'add_pages',  11 );
+		$this->add_action( 'admin_init', 'admin_init' );
 	}
 	
 	// Initialize plugin settings
 	public function admin_init(){
-		$this->plugin_custom_menu_class();
 		
 		if(isset($_GET['rstr_response']) && $_GET['rstr_response'] == 'saved') {
 			$this->notices__saved();
@@ -117,156 +111,6 @@ class CFGP_Settings extends CFGP_Global {
 				);
 			}
 		else return; endif;
-	}
-	
-	public function register_style($page){
-		if(!$this->limit_scripts($page)) return;
-		
-		wp_enqueue_style( CFGP_NAME . '-fontawesome', CFGP_ASSETS . '/css/font-awesome.min.css', array(), (string)CFGP_VERSION );
-		wp_enqueue_style( CFGP_NAME . '-admin', CFGP_ASSETS . '/css/style-admin.css', array(CFGP_NAME . '-fontawesome'), (string)CFGP_VERSION );
-	}
-	
-	// Register CPT and taxonomies scripts
-	public function register_scripts_ctp( $page )
-	{
-		$post = '';
-		$url = '';
-		
-		if( isset( $_GET['taxonomy'] ) ) $post = $_GET['taxonomy'];
-		elseif( isset( $_GET['post'] ) )
-		{
-			$post = get_post( absint( $_GET['post'] ) );
-			$post = isset( $post->post_type ) ? $post->post_type : '';
-		}
-		elseif( isset( $_GET['post_type'] ) ) $post = $_GET['post_type'];
-
-		if( !$this->limit_scripts( $post ) ) return false;
-
-		if( $post === 'cf-geoplugin-banner' ) $url = sprintf( 'edit.php?post_type=%s', $post );
-		else $url = sprintf( 'edit-tags.php?taxonomy=%s&post_type=%s-banner', $post, CFGP_NAME );
-		
-		wp_enqueue_script( CFGP_NAME . '-cpt', CFGP_ASSETS . '/js/script-cpt.js', array('jquery'), (string)CFGP_VERSION, true );
-		wp_localize_script(CFGP_NAME . '-cpt', 'CFGP', array(
-			'ajaxurl' => admin_url('admin-ajax.php'),
-			'label' => array(
-				'loading' => esc_attr__('Loading...',CFGP_NAME),
-				'not_found' => esc_attr__('Not Found!',CFGP_NAME),
-				'placeholder' => esc_attr__('Search',CFGP_NAME)
-			),
-			'current_url'	=> $url
-		));
-	}
-	
-	public function register_scripts($page){
-		if(!$this->limit_scripts($page)) return;
-		
-		wp_enqueue_style( CFGP_NAME . '-choosen', CFGP_ASSETS . '/js/chosen_v1.8.7/chosen.min.css', 1,  '1.8.7' );
-		wp_enqueue_script( CFGP_NAME . '-choosen', CFGP_ASSETS . '/js/chosen_v1.8.7/chosen.jquery.min.js', array('jquery'), '1.8.7', true );
-		
-		wp_enqueue_script( CFGP_NAME . '-admin', CFGP_ASSETS . '/js/script-admin.js', array('jquery', CFGP_NAME . '-choosen'), (string)CFGP_VERSION, true );
-		wp_localize_script(CFGP_NAME . '-admin', 'CFGP', array(
-			'ajaxurl' => admin_url('admin-ajax.php'),
-			'adminurl' => self_admin_url('/'),
-			'label' => array(
-				'unload' => esc_attr__('Data will lost , Do you wish to continue?',CFGP_NAME),
-				'loading' => esc_attr__('Loading...',CFGP_NAME),
-				'not_found' => esc_attr__('Not Found!',CFGP_NAME),
-				'alert' => array(
-					'close' => esc_attr__('Close',CFGP_NAME)
-				),
-				'rss' => array(
-					'no_news' => esc_attr__('There are no news at the moment.',CFGP_NAME),
-					'error' => esc_attr__("ERROR! Can't load news feed.",CFGP_NAME)
-				),
-				'chosen' => array(
-					'not_found' => esc_attr__('Nothing found!',CFGP_NAME)
-				),
-				'settings' => array(
-					'saved' => esc_attr__('Option saved successfuly!',CFGP_NAME),
-					'fail' => esc_attr__('There was some unexpected system error. Changes not saved!',CFGP_NAME),
-					'false' => esc_attr__('Changes not saved for unexpected reasons. Try again!',CFGP_NAME),
-					'error' => esc_attr__('Option you provide not match to global variables. Permission denied!',CFGP_NAME)
-				),
-				'csv' => array(
-					'saved' => esc_attr__('Successfuly saved %d records.',CFGP_NAME),
-					'fail' => esc_attr__('Failed to add %d rows.',CFGP_NAME),
-					'upload' =>	esc_attr__('Upload CSV file.',CFGP_NAME),
-					'filetype' => esc_attr__('The file must be comma separated CSV type',CFGP_NAME),
-					'exit' => esc_attr__('Are you sure, you want to exit?\nChanges wont be saved!',CFGP_NAME),
-					'delete' =>	esc_attr__('Are you sure, you want to delete this redirection?',CFGP_NAME),
-					'missing_url' => esc_attr__('URL Missing. Please insert URL from your CSV file or choose file from the library.',CFGP_NAME),
-				),
-				'rest' => array(
-					'delete' => esc_attr__("Are you sure, you want to delete this access token?",CFGP_NAME),
-					'error' => esc_attr__("Can't delete access token because unexpected reasons.",CFGP_NAME),
-				),
-				'footer_menu' => array(
-					'documentation' =>	esc_attr__('Documentation',CFGP_NAME),
-					'contact' => esc_attr__('Contact',CFGP_NAME),
-					'blog' => esc_attr__('Blog',CFGP_NAME),
-					'faq' => esc_attr__('FAQ',CFGP_NAME),
-					'thank_you' => esc_attr__('Thank you for using',CFGP_NAME)
-				)
-			)
-		));
-		
-	}
-	
-	// Add admin top bar menu pages
-	public function admin_bar_menu($wp_admin_bar) {
-		$wp_admin_bar->add_node(array(
-			'id' => CFGP_NAME . '-admin-bar-link',
-			'title' => __('Geo Plugin', CFGP_NAME), 
-			'href' => esc_url(admin_url('admin.php?page=cf-geoplugin')), 
-			'meta' => array(
-				'class' => CFGP_NAME . ' ' . CFGP_NAME . '-admin-bar-link',
-				'title' => __('Geo Plugin', CFGP_NAME),
-			)
-		));
-		
-		$wp_admin_bar->add_menu(array(
-			'parent' => CFGP_NAME . '-admin-bar-link',
-			'id' => CFGP_NAME . '-admin-bar-shortcodes-link',
-			'title' => __('Shortcodes', CFGP_NAME), 
-			'href' => esc_url(admin_url('admin.php?page=cf-geoplugin')), 
-			'meta' => array(
-				'class' => CFGP_NAME . ' ' . CFGP_NAME . '-admin-bar-shortcodes-link',
-				'title' => __('Shortcodes', CFGP_NAME),
-			)
-		));
-		
-		$wp_admin_bar->add_menu(array(
-			'parent' => CFGP_NAME . '-admin-bar-link',
-			'id' => CFGP_NAME . '-admin-bar-settings-link',
-			'title' => __('Settings', CFGP_NAME), 
-			'href' => esc_url(admin_url('admin.php?page=cf-geoplugin-settings')), 
-			'meta' => array(
-				'class' => CFGP_NAME . ' ' . CFGP_NAME . '-admin-bar-settings-link',
-				'title' => __('Settings', CFGP_NAME),
-			)
-		));
-		
-		$wp_admin_bar->add_menu(array(
-			'parent' => CFGP_NAME . '-admin-bar-link',
-			'id' => CFGP_NAME . '-admin-bar-debug-link',
-			'title' => __('Debug Mode', CFGP_NAME), 
-			'href' => esc_url(admin_url('admin.php?page=cf-geoplugin-debug')), 
-			'meta' => array(
-				'class' => CFGP_NAME . ' ' . CFGP_NAME . '-admin-bar-debug-link',
-				'title' => __('Debug Mode', CFGP_NAME),
-			)
-		));
-		
-		$wp_admin_bar->add_menu(array(
-			'parent' => CFGP_NAME . '-admin-bar-link',
-			'id' => CFGP_NAME . '-admin-bar-activate-link',
-			'title' => __('License', CFGP_NAME), 
-			'href' => esc_url(admin_url('admin.php?page=cf-geoplugin-activate')), 
-			'meta' => array(
-				'class' => CFGP_NAME . ' ' . CFGP_NAME . '-admin-bar-activate-link',
-				'title' => __('License', CFGP_NAME),
-			)
-		));
 	}
 	
 	/* Add admin pages */
@@ -393,9 +237,9 @@ class CFGP_Settings extends CFGP_Global {
 	}
 	
 	public function seo_redirection__callback(){
+		include_once CFGP_INC . '/Filters/seo_redirection_form.php';
+		include_once CFGP_INC . '/Filters/seo_redirection_import.php';
 		include_once CFGP_INC . '/Filters/seo_redirection_table.php';
-		include_once CFGP_INC . '/Filters/seo_redirection_new.php';
-		include_once CFGP_INC . '/Filters/seo_redirection_edit.php';
 		include_once CFGP_INC . '/Settings/seo_redirection.php';
 	}
 	
@@ -412,34 +256,6 @@ class CFGP_Settings extends CFGP_Global {
 	public function license__callback(){
 		include_once CFGP_INC . '/Filters/license.php';
 		include_once CFGP_INC . '/Settings/license.php';
-	}
-	
-	/*
-	 * Limit scripts
-	 */
-	public function limit_scripts($page){
-		if(strpos($page, CFGP_NAME) !== false) return true;
-		return false;
-	}
-	
-	// Fix collapsing admin menu
-	public function plugin_custom_menu_class()
-	{
-		global $menu;
-
-		$show = false;
-		if( isset( $_GET['post_type'] ) ) $show = $this->limit_scripts( $_GET['post_type'] ); // This will also check for taxonomies
-
-		if( is_array( $menu ) && $show )
-		{
-			foreach( $menu as $key => $value )
-			{
-				if( $value[0] == 'Geo Plugin' )
-				{
-					$menu[$key][4] = 'wp-has-submenu wp-has-current-submenu wp-menu-open menu-top toplevel_page_cf-geoplugin menu-top-first wp-menu-open';
-				}
-			}
-		}
 	}
 	
 	/* 

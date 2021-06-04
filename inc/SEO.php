@@ -12,6 +12,277 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
 if(!class_exists('CFGP_SEO')) :
 class CFGP_SEO extends CFGP_Global {
 	
+	public function __construct(){
+		$this->add_action('init', 'export_csv');
+		$this->add_action('init', 'save_form');
+	}
+	
+	/*
+	 * Edit/Save form
+	 */
+	public function save_form(){
+		if($_SERVER['REQUEST_METHOD'] === 'POST')
+		{
+			if (CFGP_U::request_string('action') == 'new' && wp_verify_nonce(CFGP_U::request_string('nonce'), CFGP_NAME.'-seo-new') !== false) {
+				$action = CFGP_U::request_string('action');
+				$redirection_url = CFGP_U::request_string('url');
+			
+				if(empty($redirection_url)) {
+					set_transient('cfgp-seo-form-error', __('Redirect URL is a required field.', CFGP_NAME), YEAR_IN_SECONDS);
+				}
+				else
+				{
+					$select_country = CFGP_U::request_string('country');
+					$select_region = CFGP_U::request_string('region');
+					$select_city = CFGP_U::request_string('city');
+					$select_postcode = CFGP_U::request_string('postcode');
+					$http_code = CFGP_U::request_string('http_code', 302);
+					$only_once = CFGP_U::request_int('only_once', 0);
+					$redirect_enable = CFGP_U::request_int('redirect_enable', 1);
+					
+					$save = CFGP_SEO::save($redirection_url, $select_country, $select_region, $select_city, $select_postcode, $http_code, $only_once, $redirect_enable);
+					
+					if(is_wp_error($save))
+					{
+						set_transient('cfgp-seo-form-error', __('This redirection was not saved due to a database error. Please try again.', CFGP_NAME), YEAR_IN_SECONDS);
+					}
+					else
+					{
+						set_transient('cfgp-seo-form-success', __('Settings saved.', CFGP_NAME), YEAR_IN_SECONDS);
+						
+						$parse_url = CFGP_U::parse_url();
+						$url = $parse_url['url'];
+						
+						$url = remove_query_arg('action', $url);
+						$url = remove_query_arg('nonce', $url);
+						
+						if(!headers_sent()) {
+							wp_safe_redirect($url);
+						} else {
+							echo '
+							<meta http-equiv="refresh" content="0; URL='.$url.'" />
+							<script>if(!(window.location.href = "'.$url.'")){window.location.replace("'.$url.'");}</script>
+							';
+							exit;
+						}
+					}
+				}
+			} else if (CFGP_U::request_string('action') == 'edit' && wp_verify_nonce(CFGP_U::request_string('nonce'), CFGP_NAME.'-seo-edit') !== false) {
+				$redirection_url = CFGP_U::request_string('url');
+				
+				if(empty($redirection_url)) {
+					set_transient('cfgp-seo-form-error', __('Redirect URL is a required field.', CFGP_NAME), YEAR_IN_SECONDS);
+				}
+				else
+				{
+					$ID = CFGP_U::request_int('id', 0);
+					$select_country = CFGP_U::request_string('country');
+					$select_region = CFGP_U::request_string('region');
+					$select_city = CFGP_U::request_string('city');
+					$select_postcode = CFGP_U::request_string('postcode');
+					$http_code = CFGP_U::request_string('http_code', 302);
+					$only_once = CFGP_U::request_int('only_once', 0);
+					$redirect_enable = CFGP_U::request_int('redirect_enable', 1);
+					
+					$save = CFGP_SEO::update($ID, $redirection_url, $select_country, $select_region, $select_city, $select_postcode, $http_code, $only_once, $redirect_enable);
+					
+					if(is_wp_error($save))
+					{
+						set_transient('cfgp-seo-form-error', __('This redirection was not saved due to a database error. Please try again.', CFGP_NAME), YEAR_IN_SECONDS);
+					}
+					else
+					{
+						set_transient('cfgp-seo-form-success', __('Settings saved.', CFGP_NAME), YEAR_IN_SECONDS);
+					}
+				}
+			}
+		}
+		
+		if(CFGP_U::request_string('action') === 'delete' && wp_verify_nonce(CFGP_U::request_string('nonce'), CFGP_NAME.'-seo-delete') !== false)
+		{
+			$ID = CFGP_U::request_int('id', 0);
+			$delete = CFGP_SEO::delete($ID);
+			
+			$parse_url = CFGP_U::parse_url();
+			$url = $parse_url['url'];
+			
+			$url = remove_query_arg('action', $url);
+			$url = remove_query_arg('nonce', $url);
+			$url = remove_query_arg('id', $url);
+			
+			set_transient('cfgp-seo-form-success', __('Deleted.', CFGP_NAME), YEAR_IN_SECONDS);
+			
+			if(!headers_sent()) {
+				wp_safe_redirect($url);
+			} else {
+				echo '
+				<meta http-equiv="refresh" content="0; URL='.$url.'" />
+				<script>if(!(window.location.href = "'.$url.'")){window.location.replace("'.$url.'");}</script>
+				';
+				exit;
+			}
+		}
+	}
+	
+	/*
+	 * CSV Download
+	 */
+	public function export_csv(){
+		if(CFGP_U::request_string('action') === 'export' && wp_verify_nonce(CFGP_U::request_string('nonce'), CFGP_NAME.'-seo-export-csv') !== false){
+			global $wpdb;
+			$table = $wpdb->prefix . CFGP_Defaults::TABLE['seo_redirection'];
+			$result = $wpdb->get_results("SELECT country, region, city, postcode, url, http_code, active FROM {$table} WHERE 1", ARRAY_A);
+			
+			$num_fields = count($result); 
+			$headers = array(); 
+			foreach($result[0] as $header => $value) 
+			{     
+				$headers[] = $header; 
+			} 
+			$fp = fopen('php://output', 'w'); 
+			if ($fp && $result) 
+			{     
+				header('Content-Type: text/csv');
+				header('Content-Disposition: attachment; filename="cfgeo_seo_export_'.date('Y-m-d').'_'.time().'.csv"');
+				header('Pragma: no-cache');
+				header('Expires: 0');
+				fputcsv($fp, $headers); 
+				foreach($result as $i => $row) 
+				{
+					fputcsv($fp, array(
+						$row['country'],
+						$row['region'],
+						$row['city'],
+						$row['postcode'],
+						$row['url'],
+						$row['http_code'],
+						$row['active']
+					)); 
+				}
+				fclose($fp);
+				die; 
+			}
+		}
+	}
+	
+	// Response Error
+	public static function response_error(){
+		$response = get_transient('cfgp-seo-form-error');
+		if($response) {
+			printf(
+				'<div class="notice notice-error"><p>%s</p></div>',
+				$response
+			);
+			delete_transient('cfgp-seo-form-error');
+		}
+	}
+	
+	// Response Success
+	public static function response_success(){
+		$response = get_transient('cfgp-seo-form-success');
+		if($response) {
+			printf(
+				'<div class="notice notice-success is-dismissible"><p>%s</p></div>',
+				$response
+			);
+			delete_transient('cfgp-seo-form-success');
+		}
+	}
+	
+	/*
+	 * Get from the database by ID
+	 */
+	public static function get($ID){
+		global $wpdb;
+		$table = $wpdb->prefix . CFGP_Defaults::TABLE['seo_redirection'];
+		$get = $wpdb->get_row($wpdb->prepare(
+			"SELECT * FROM {$table} WHERE ID = %d",
+			$ID
+		));
+		return isset($get->ID) ? $get : false;
+	}
+	
+	/*
+	 * Save SEO redirection to the Database
+	 */
+	public static function save($url, $country = '', $region = '', $city = '', $postcode = '', $http_code = 302, $only_once = 0, $active = 1){
+		global $wpdb;
+		return $wpdb->insert(
+			$wpdb->prefix . CFGP_Defaults::TABLE['seo_redirection'],
+			array(
+				'url' => $url,
+				'country' => $country,
+				'region' => $region,
+				'city' => $city,
+				'postcode' => $postcode,
+				'http_code' => $http_code,
+				'only_once' => $only_once,
+				'active' => $active
+			),
+			array(
+				'%s',
+				'%s',
+				'%s',
+				'%s',
+				'%s',
+				'%d',
+				'%d',
+				'%d'
+			)
+		);
+	}
+	
+	/*
+	 * Delete SEO redirection from the Database
+	 */
+	public static function delete($ID){
+		global $wpdb;
+		return $wpdb->delete(
+			$wpdb->prefix . CFGP_Defaults::TABLE['seo_redirection'],
+			array(
+				'ID' => $ID
+			),
+			array(
+				'%d'
+			)
+		);
+	}
+	
+	/*
+	 * Update SEO redirection in the Database
+	 */
+	public static function update($ID, $url, $country = '', $region = '', $city = '', $postcode = '', $http_code = 302, $only_once = 0, $active = 1){
+		global $wpdb;
+		return $wpdb->update(
+			$wpdb->prefix . CFGP_Defaults::TABLE['seo_redirection'],
+			array(
+				'url' => $url,
+				'country' => $country,
+				'region' => $region,
+				'city' => $city,
+				'postcode' => $postcode,
+				'http_code' => $http_code,
+				'only_once' => $only_once,
+				'active' => $active
+			),
+			array(
+				'ID' => $ID
+			),
+			array(
+				'%s',
+				'%s',
+				'%s',
+				'%s',
+				'%s',
+				'%d',
+				'%d',
+				'%d'
+			),
+			array(
+				'%d'
+			)
+		);
+	}
 	
 	/*
 	 * Instance

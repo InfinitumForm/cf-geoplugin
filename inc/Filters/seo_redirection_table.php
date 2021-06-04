@@ -23,7 +23,9 @@ add_action('cfgp/page/seo_redirection/table', function(){ ?>
                     <input type="hidden" value="<?php echo wp_create_nonce(CFGP_NAME.'-seo-search') ?>" name="nonce">
                 </p>
             </form>
-            <?php CFGP_SEO_Table::print();	?>
+            <form method="post">
+            	<?php CFGP_SEO_Table::print();	?>
+            </form>
             <br class="clear">
         </div>
     </div>

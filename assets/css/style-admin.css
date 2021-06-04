@@ -400,4 +400,25 @@ pre.cfgp-dump + pre.cfgp-dump{
 	border-color:#900;
 }
 
-
+dl {
+	display: flex;
+	flex-flow: row wrap;
+	border: solid #2c3338;
+	border-width: 1px 1px 0 0;
+	font-size:14px;
+}
+dt {
+	flex-basis: 10%;
+	min-width:100px;
+	padding: 3px 10px 3px 4px;
+	background: #2c3338;
+	text-align: right;
+	color: #fff;
+}
+dd {
+	flex-basis: 80%;
+	flex-grow: 1;
+	margin: 0;
+	padding: 3px 4px 3px 5px;
+	border-bottom: 1px solid #2c3338;
+}

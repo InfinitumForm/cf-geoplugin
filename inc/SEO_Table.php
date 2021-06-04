@@ -35,6 +35,56 @@ if (!class_exists('CFGP_SEO_Table')):
             $this->prepare_items();
             $this->display();
         }
+		
+		public function get_bulk_actions() {
+
+			return array(
+				'delete' => __( 'Delete', 'your-textdomain' )
+			);
+	
+		}
+		
+		public function process_bulk_action() {
+
+			// security check!
+			if ( isset( $_POST['_wpnonce'] ) && ! empty( $_POST['_wpnonce'] ) ) {
+	
+				$nonce  = filter_input( INPUT_POST, '_wpnonce', FILTER_SANITIZE_STRING );
+				$action = 'bulk-' . $this->_args['plural'];
+	
+				if ( ! wp_verify_nonce( $nonce, $action ) )
+					wp_die( 'Nope! Security check failed!' );
+	
+			}
+	
+			$action = $this->current_action();
+	
+			switch ( $action ) {
+	
+				case 'delete':
+					$checkboxes = CFGP_U::request_array('seo_redirection');
+					if(!empty($checkboxes))
+					{
+						$checkboxes = array_map(function($id){
+							return "'{$id}'";
+						}, $checkboxes);
+						
+						$ids = join(',', $checkboxes);
+						
+						global $wpdb;
+						$table = $wpdb->prefix . CFGP_Defaults::TABLE['seo_redirection'];
+						$wpdb->query($query = "DELETE FROM `{$table}` WHERE `ID` IN ({$ids})");
+					}
+					break;
+	
+				default:
+					// do nothing or something else
+					return;
+					break;
+			}
+	
+			return;
+		}
 
         /**
          * Add extra markup in the toolbars before or after the list
@@ -44,9 +94,18 @@ if (!class_exists('CFGP_SEO_Table')):
         {
             if ($which === 'top')
             {
+				
+				global $wpdb;
+				$seo_redirection_table = $wpdb->prefix . CFGP_Defaults::TABLE['seo_redirection'];
+				$query = $wpdb->query("SELECT 1 FROM {$seo_redirection_table}");
+			
 				echo '<div class="alignleft actions bulkactions">';
-					printf('<button type="button" class="button button-cfgeo-seo-import-csv"><i class="fa fa-file"></i> %s</button> ', __('Import From CSV', CFGP_NAME));
-					printf('<button type="button" class="button button-cfgeo-seo-export-csv"><i class="fa fa-arrow-circle-right"></i> %s</button> ', __('Export CSV', CFGP_NAME));
+					printf('<a aria="button" href="%s" class="button"><i class="fa fa-file"></i> %s</a> ', admin_url('admin.php?page='.CFGP_U::request_string('page').'&action=import&nonce='.wp_create_nonce(CFGP_NAME.'-seo-import-csv')), __('Import From CSV', CFGP_NAME));
+					
+					if($query){
+						printf('<a aria="button" href="%s" class="button"><i class="fa fa-arrow-circle-right"></i> %s</a> ', admin_url('admin.php?page='.CFGP_U::request_string('page').'&action=export&nonce='.wp_create_nonce(CFGP_NAME.'-seo-export-csv')), __('Export CSV', CFGP_NAME));
+					}
+					
 				echo '</div>';
             }
             if ($which === 'bottom')
@@ -62,6 +121,7 @@ if (!class_exists('CFGP_SEO_Table')):
         function get_columns()
         {
             return array(
+				'cb'    => '<input type="checkbox">',
                 'cfgp_seo_url' => __('URL', CFGP_NAME),
                 'cfgp_seo_country' => __('Country', CFGP_NAME),
                 'cfgp_seo_region' => __('Region', CFGP_NAME),
@@ -93,6 +153,7 @@ if (!class_exists('CFGP_SEO_Table')):
          */
         function prepare_items()
         {
+			$this->process_bulk_action();
             global $wpdb, $_wp_column_headers;
             $screen = get_current_screen();
 
@@ -159,7 +220,7 @@ if (!class_exists('CFGP_SEO_Table')):
             /* -- Fetch the items -- */
             $this->_column_headers = array(
                 $columns,
-                array() ,
+                array('ID') ,
                 $sortable
             );
 			
@@ -217,16 +278,16 @@ if (!class_exists('CFGP_SEO_Table')):
 								echo '</td>';
                             break;
 							case "cfgp_seo_country":
-                                echo '<td ' . $attributes . '>'.$rec->country.'</td>';
+                                echo '<td ' . $attributes . '>' . ($rec->country ? $rec->country.' ('.get_term_by('name', $rec->country, 'cf-geoplugin-country')->description.')' : '-') . '</td>';
                             break;
                             case "cfgp_seo_region":
-                                echo '<td ' . $attributes . '>' . $rec->region . '</td>';
+                                echo '<td ' . $attributes . '>' . ($rec->region ? $rec->region . ' ('.get_term_by('name', $rec->region, 'cf-geoplugin-region')->description.')' : '-') . '</td>';
                             break;
                             case "cfgp_seo_city":
-                                echo '<td ' . $attributes . '>' . $rec->city . '</td>';
+                                echo '<td ' . $attributes . '>' . ($rec->city ? get_term_by('name', $rec->city, 'cf-geoplugin-city')->name : '-') . '</td>';
                             break;
                             case "cfgp_seo_postcode":
-                                echo '<td ' . $attributes . '>' . $rec->postcode . '</td>';
+                                echo '<td ' . $attributes . '>' . ($rec->postcode ? get_term_by('name', $rec->postcode, 'cf-geoplugin-postcode')->name : '-') . '</td>';
                             break;
 							case "cfgp_seo_http_code":
                                 echo '<td ' . $attributes . '>HTTP ' . $rec->http_code . '</td>';
@@ -234,6 +295,11 @@ if (!class_exists('CFGP_SEO_Table')):
 							case "cfgp_seo_only_once":
                                 echo '<td ' . $attributes . '>' . ($rec->only_once ? __('Only once', CFGP_NAME) : __('Always', CFGP_NAME) ). '</td>';
                             break;
+							case "cb":
+								echo '<th scope="row" class="check-column">' . sprintf(
+									'<input type="checkbox" id="cb-select-%1$d" name="seo_redirection[]" value="%1$d" />', $rec->ID
+								). '</th>';
+							break;
                         }
                     }
 
