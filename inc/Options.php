@@ -75,7 +75,8 @@ class CFGP_Options
 	 */
 	public static function get_beta($name = false, $default = NULL){
 		return self::get($name, $default);
-	}
+	}	
+	
 	
 	/*
 	 * Set plugin option
@@ -98,11 +99,16 @@ class CFGP_Options
 		// Collect and set new values
 		if(!empty($name_or_array))
 		{
+			$name_or_array = array_merge(CFGP_Defaults::OPTIONS, $name_or_array);
+			$name_or_array = apply_filters('cfgp/options/set/fields', $name_or_array, CFGP_Defaults::OPTIONS);
+			
 			if(is_array($name_or_array))
-			{				
+			{
 				foreach($name_or_array as $key => $val) {
 					if(in_array($key, $filter) !== false) {
 						$options[$key] = self::sanitize($val);
+					} else {
+						unset($name_or_array[$key]);
 					}
 				}
 			}

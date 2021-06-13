@@ -386,13 +386,17 @@ class CFGP_IP extends CFGP_Global {
 			}
 		}
 		
-		if (version_compare(PHP_VERSION, '5.3.0', '>=') && function_exists('gethostname'))
-			return $cfgp_cache->set('IP-server', gethostbyname(gethostname()));
-		else if(version_compare(PHP_VERSION, '5.3.0', '<') && function_exists('php_uname'))
-			return $cfgp_cache->set('IP-server', gethostbyname(php_uname("n")));
-		else
-			return $cfgp_cache->set('IP-server', gethostbyname(trim(`hostname`)));
-
+		if (version_compare(PHP_VERSION, '5.3.0', '>=') && function_exists('gethostname')) {
+			$gethostname = preg_replace(array('~https?:\/\/~','~^w{3}\.~'),'',gethostbyname(gethostname()));
+			return $cfgp_cache->set('IP-server', $gethostname);
+		} else if(version_compare(PHP_VERSION, '5.3.0', '<') && function_exists('php_uname')) {
+			$gethostbyname = preg_replace(array('~https?:\/\/~','~^w{3}\.~'),'',gethostbyname(php_uname("n")));
+			return $cfgp_cache->set('IP-server', $gethostbyname);
+		} else {
+			$hostname = preg_replace(array('~https?:\/\/~','~^w{3}\.~'),'',gethostbyname(trim(`hostname`)));
+			return $cfgp_cache->set('IP-server', $hostname);
+		}
+		
 		return false;
 	}
 	

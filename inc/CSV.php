@@ -9,6 +9,10 @@
 
 if ( ! defined( 'WPINC' ) ) { die( "Don't mess with us." ); }
 if ( ! defined( 'ABSPATH' ) ) { exit; }
+
+if(!class_exists('CFGP_Encoding')) {
+	include_once CFGP_INC . '/Encoding.php';
+}
  
 if(!class_exists('CFGP_CSV')) :
 class CFGP_CSV{
@@ -120,7 +124,7 @@ class CFGP_CSV{
 	public function remove_utf8_bom($str)
 	{
 		// Convert to UTF-8
-		$str = CERT_Encoding::toUTF8( $str );
+		$str = CFGP_Encoding::toUTF8( $str );
 		
 		// Remove multiple UTF-8 BOM sequences
 		$bom = pack('H*','EFBBBF');

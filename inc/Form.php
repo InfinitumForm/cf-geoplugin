@@ -39,12 +39,9 @@ class CFGP_Form {
 				$attr['data-placeholder'] = __( 'Choose countries...', CFGP_NAME );
 			}
 		}
-		if($data = get_terms(array(
-			'taxonomy'		=> 'cf-geoplugin-country',
-			'hide_empty'	=> false
-		))){
-			foreach( $data as $key => $fetch ){
-				$options[$fetch->slug] = $fetch->name.' - '.$fetch->description;
+		if($data = CFGP_Library::get_countries()){
+			foreach( $data as $country_code => $country ){
+				$options[$country_code] = strtoupper($country_code).' - '.$country;
 			}
 		}
 		if($multiple) {
@@ -81,6 +78,13 @@ class CFGP_Form {
 				$options[$fetch->slug] = $fetch->name.' - '.$fetch->description;
 			}
 		}
+		
+		if(isset($attr['class'])){
+			$attr['class'] = trim($attr['class']) . ' cfgp-fill-by-country';
+		} else {
+			$attr['class'] = 'cfgp-fill-by-country';
+		}
+		
 		if($multiple) {
 			$return = self::select_multiple($options, $attr, $selected, false);
 		} else {
@@ -115,6 +119,13 @@ class CFGP_Form {
 				$options[$fetch->slug] = $fetch->name;
 			}
 		}
+		
+		if(isset($attr['class'])){
+			$attr['class'] = trim($attr['class']) . ' cfgp-fill-by-region';
+		} else {
+			$attr['class'] = 'cfgp-fill-by-region';
+		}
+		
 		if($multiple) {
 			$return = self::select_multiple($options, $attr, $selected, false);
 		} else {
@@ -200,6 +211,7 @@ class CFGP_Form {
 		$options_render = apply_filters('cfgp/form/select_multiple/options', $options_render, $options);
 		$select = apply_filters('cfgp/form/select_multiple/raw', '<select %1$s multiple>%2$s</select>');
 		$attr = self::parse_attributes($attr);
+
 		$options_render = join(PHP_EOL, $options_render);
 		$select = apply_filters('cfgp/form/select_multiple', sprintf($select, $attr, $options_render), $attr, $options_render);
 		

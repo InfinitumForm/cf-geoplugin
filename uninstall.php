@@ -35,7 +35,7 @@ if(get_option(CFGP_NAME . '-rest')) {
 	delete_option(CFGP_NAME . '-rest');
 }
 if(get_option(CFGP_NAME . '-db-version')) {
-	add_option(CFGP_NAME . '-db-version');
+	delete_option(CFGP_NAME . '-db-version');
 }
 
 // Delete MySQL tables

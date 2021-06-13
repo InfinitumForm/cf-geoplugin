@@ -386,44 +386,128 @@ class CFGP_U {
 	
 	/*
 	 * Flush Cache
-	 * @verson    1.0.0
+	 * @verson    2.0.0
 	*/
 	public static function cache_flush () {
-		global $post, $user;
-		
+		global $post, $user, $w3_plugin_totalcache;
+
 		// Standard cache
-		header("Expires: Tue, 01 Jan 2000 00:00:00 GMT");
-		header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
-		header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
-		header("Cache-Control: post-check=0, pre-check=0", false);
-		header("Pragma: no-cache");
-		
+		header('Expires: Tue, 01 Jan 2000 00:00:00 GMT');
+		header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+		header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+		header('Cache-Control: post-check=0, pre-check=0', false);
+		header('Pragma: no-cache');
+
+		// Set nocache headers
 		if(function_exists('nocache_headers')) {
 			nocache_headers();
 		}
-		
+
 		// Flush WP cache
-		if (function_exists('w3tc_flush_all')) {
+		if (function_exists('wp_cache_flush')) {
 			wp_cache_flush();
 		}
-		
+
 		// W3 Total Cache
 		if (function_exists('w3tc_flush_all')) {
 			w3tc_flush_all();
+		} else if( $w3_plugin_totalcache ) {
+			$w3_plugin_totalcache->flush_all();
 		}
-		
+
 		// WP Fastest Cache
 		if (function_exists('wpfc_clear_all_cache')) {
 			wpfc_clear_all_cache(true);
 		}
-		
+
+		// WP Rocket
+		if ( function_exists( 'rocket_clean_domain' ) ) {
+			rocket_clean_domain();
+		}
+
+		// WP Super Cache
+		if(function_exists( 'prune_super_cache' ) && function_exists( 'get_supercache_dir' )) {
+			prune_super_cache( get_supercache_dir(), true );
+		}
+
+		// Cache Enabler.
+		if (function_exists( 'clear_site_cache' )) {
+			clear_site_cache();
+		}
+
 		// Clean stanrad WP cache
 		if($post && function_exists('clean_post_cache')) {
 			clean_post_cache( $post );
 		}
-		
-		if($user && function_exists('clean_post_cache')) {
+
+		// Comet Cache
+		if(class_exists('comet_cache') && method_exists('comet_cache', 'clear')) {
+			comet_cache::clear();
+		}
+
+		// Clean user cache
+		if($user && function_exists('clean_user_cache')) {
 			clean_user_cache( $user );
+		}
+	}
+	
+	/*
+	 * Safe and SEO redirections to new location
+	 * @verson    1.0.0
+	*/
+	public static function redirect($location, int $status=302, bool $safe=false){
+		$status = absint($status);
+		
+		if(defined('DOING_AJAX') && DOING_AJAX){
+			return false;
+		}
+		
+		if(CFGP_Options::get('cache-support', 'yes') == 'yes') {
+			self::cache_flush();
+		}
+		
+		if( CFGP_Options::get('hide_http_referer_headers', 0) ) {
+			header('Referrer-Policy: no-referrer');
+		}
+		
+		if (!filter_var($location, FILTER_VALIDATE_URL)){
+			return false;
+		}
+		
+		if ($safe && ($status < 300 || 399 < $status) ) {
+			new Exception( __( 'HTTP redirect status code must be a redirection code, 3xx.' ) );
+			return false;
+		}
+		
+		if (!headers_sent())
+		{			
+			if(function_exists('wp_redirect'))
+			{
+				if($safe) {
+					 $location = wp_validate_redirect( $location, apply_filters( 'cfgp/safe_redirect/fallback', site_url(), $status ) );
+				}
+				return wp_redirect( $location, $status, CFGP_NAME );
+			}
+			else
+			{
+				// Windows server need some nice touch
+				global $is_IIS;
+				if ( ! $is_IIS && function_exists('status_header') && defined('PHP_SAPI') && 'cgi-fcgi' !== PHP_SAPI ) {
+					status_header( $status ); // This causes problems on IIS and some FastCGI setups.
+				}
+				// Inform application who redirects
+				header('X-Redirect-By: ' . CFGP_NAME);
+				// Standard redirect
+				header("Location: {$location}", true, $status);
+				// Optional workaround for an IE bug (thanks Olav)
+				header('Connection: close');
+				
+				return true;
+			}
+		}
+		else
+		{
+			die('<meta http-equiv="refresh" content="time; URL=' . $location . '" />');
 		}
 	}
 	
@@ -446,7 +530,7 @@ class CFGP_U {
 	public static function get_host($clean=false){
 		$hostInfo = self::parse_url();
 		if($clean)
-			return str_replace('www.','',strtolower($hostInfo['domain']));
+			return preg_replace('/https?:\/\/|w{3}\./i','',strtolower($hostInfo['domain']));
 		else
 			return strtolower($hostInfo['domain']);
 	}
@@ -472,6 +556,27 @@ class CFGP_U {
 				'url'		=>	$url,
 				'domain'	=>	$domain,
 			]);
+		}
+		
+		return $parse_url;
+	}
+	
+	/**
+	 * Get URL
+	 * @verson    1.0.0
+	 */
+	public static function get_url(){
+		global $cfgp_cache;
+		
+		$parse_url = $cfgp_cache->get('current_url');
+		
+		if(!$parse_url) {
+			$http = 'http'.( self::is_ssl() ?'s':'');
+			$domain = preg_replace('%:/{3,}%i','://',rtrim($http,'/').'://'.$_SERVER['HTTP_HOST']);
+			$domain = rtrim($domain,'/');
+			$url = preg_replace('%:/{3,}%i','://',$domain.'/'.(isset($_SERVER['REQUEST_URI']) && !empty( $_SERVER['REQUEST_URI'] ) ? ltrim($_SERVER['REQUEST_URI'], '/'): ''));
+				
+			$parse_url = $cfgp_cache->set('current_url', $url);
 		}
 		
 		return $parse_url;
@@ -941,5 +1046,113 @@ class CFGP_U {
 		}
 		return $str;
 	}
+	
+	
+	/**
+	* Get current page ID
+	* @autor    Ivijan-Stefan Stipic
+	* @since    1.0.7
+	* @version  2.0.0
+	******************************************************************/
+	public static function get_page_ID(){
+		global $post, $cfgp_cache;
+
+		if($current_page_id = $cfgp_cache->get('current_page_id')){
+			return $current_page_id;
+		}
+
+		if($id = self::get_page_ID__private__wp_query())
+			return $cfgp_cache->set('current_page_id', $id);
+		else if($id = self::get_page_ID__private__get_the_id())
+			return $cfgp_cache->set('current_page_id', $id);
+		else if(!is_null($post) && isset($post->ID) && !empty($post->ID))
+			return $cfgp_cache->set('current_page_id', $post->ID);
+		else if($post = self::get_page_ID__private__GET_post())
+			return $cfgp_cache->set('current_page_id', $post);
+		else if($p = self::get_page_ID__private__GET_p())
+			return $cfgp_cache->set('current_page_id', $p);
+		else if($page_id = self::get_page_ID__private__GET_page_id())
+			return $cfgp_cache->set('current_page_id', $page_id);
+		else if(!is_admin() && $id = self::get_page_ID__private__query())
+			return $id;
+		else if($id = self::get_page_ID__private__page_for_posts())
+			return $cfgp_cache->set('current_page_id', get_option( 'page_for_posts' ));
+
+		return false;
+	}
+
+	// Get page ID by using get_the_id() function
+	protected static function get_page_ID__private__get_the_id(){
+		if(function_exists('get_the_id'))
+		{
+			if($id = get_the_id()) return $id;
+		}
+		return false;
+	}
+
+	// Get page ID by wp_query
+	protected static function get_page_ID__private__wp_query(){
+		global $wp_query;
+		return ((!is_null($wp_query) && isset($wp_query->post) && isset($wp_query->post->ID) && !empty($wp_query->post->ID)) ? $wp_query->post->ID : false);
+	}
+
+	// Get page ID by GET[post] in edit mode
+	protected static function get_page_ID__private__GET_post(){
+		return ((isset($_GET['action']) && sanitize_text_field($_GET['action']) == 'edit') && (isset($_GET['post']) && is_numeric($_GET['post'])) ? absint($_GET['post']) : false);
+	}
+
+	// Get page ID by GET[page_id]
+	protected static function get_page_ID__private__GET_page_id(){
+		return ((isset($_GET['page_id']) && is_numeric($_GET['page_id']))  ? absint($_GET['page_id']) : false);
+	}
+
+	// Get page ID by GET[p]
+	protected static function get_page_ID__private__GET_p(){
+		return ((isset($_GET['p']) && is_numeric($_GET['p']))  ? absint($_GET['p']) : false);
+	}
+
+	// Get page ID by OPTION[page_for_posts]
+	protected static function get_page_ID__private__page_for_posts(){
+		$page_for_posts = get_option( 'page_for_posts' );
+		return (!is_admin() && 'page' == get_option( 'show_on_front' ) && $page_for_posts ? absint($page_for_posts) : false);
+	}
+
+	// Get page ID by mySQL query
+	protected static function get_page_ID__private__query(){
+		global $wpdb, $cfgp_cache;
+		$actual_link = rtrim($_SERVER['REQUEST_URI'], '/');
+		$parts = self::explode('/', $actual_link);
+		if(!empty($parts))
+		{
+			$slug = end($parts);
+			if(!empty($slug))
+			{
+				if($post_id = $wpdb->get_var(
+					$wpdb->prepare(
+						"SELECT ID FROM {$wpdb->posts}
+						WHERE
+							`post_status` = %s
+						AND
+							`post_name` = %s
+						AND
+							TRIM(`post_name`) <> ''
+						LIMIT 1",
+						'publish',
+						sanitize_title($slug)
+					)
+				))
+				{
+					return $cfgp_cache->set('current_page_id', absint($post_id));
+				}
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	* END Get current page ID
+	*****************************************************************/
+	
 }
 endif;

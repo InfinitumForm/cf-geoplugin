@@ -14,24 +14,35 @@ final class CFGP_Init{
 	
 	public function __construct(){
 		// Do translations
-		add_action('plugins_loaded', [&$this, 'textdomain']);
+		add_action('plugins_loaded', array(&$this, 'textdomain'));
+		
 		// Call main classes
 		$classes = apply_filters('cfgp/init/classes', array(
 			'CFGP_Taxonomy',			// Register Taxonomy
 			'CFGP_Geo_Banner',			// Register Post Type
+			'CFGP_Metabox',				// Metabox class
 			'CFGP_API',					// Main API class
 			'CFGP_Media',				// Media class
 			'CFGP_Settings',			// Settings class
 			'CFGP_Admin',				// Admin class
+			'CFGP_Help',				// Contextual help class
 			'CFGP_Shortcodes',			// Settings class
 			'CFGP_Defender',			// Defender class
 			'CFGP_Public',				// Public class
-			'CFGP_REST',				// REST class
-			'CFGP_SEO',					// SEO class
 		));
-		if(!CFGP_Options::get('enable_rest',0)){
-			unset($classes['CFGP_REST']);
+		
+		// REST class
+		if(CFGP_Options::get('enable_rest',0)){
+			$classes = array_merge($classes, array('CFGP_REST'));
 		}
+		
+		// SEO Redirection class
+		if(CFGP_Options::get('enable_seo_redirection',0)){
+			$classes = array_merge($classes, array('CFGP_SEO', 'CFGP_SEO_Redirection'));
+		}
+		
+		$classes = apply_filters('cfgp/init/included/classes', $classes);
+		
 		foreach($classes as $class){
 			$class::instance();
 		}
@@ -52,18 +63,22 @@ final class CFGP_Init{
 			CFGP_INC . '/OS.php',				// Operating System info and tool class
 			CFGP_INC . '/Defaults.php',			// Default values, data
 			CFGP_INC . '/Utilities.php',		// Utilities
+			CFGP_INC . '/Library.php',			// Library, data
 			CFGP_INC . '/Form.php',				// Form class
 			CFGP_INC . '/Options.php',			// Plugin option class
 			CFGP_INC . '/Global.php',			// Global class
 			CFGP_INC . '/Admin.php',			// Admin option class
+			CFGP_INC . '/Help.php',				// Contextual help class
 			CFGP_INC . '/IP.php',				// IP class
 			CFGP_INC . '/License.php',			// License class
 			CFGP_INC . '/Media.php',			// Media class
 			CFGP_INC . '/Taxonomy.php',			// Taxonomy class
 			CFGP_INC . '/Geo_Banner.php',		// Post Type class
+			CFGP_INC . '/Metabox.php',			// Metabox class
 			CFGP_INC . '/API.php',				// API class
 			CFGP_INC . '/SEO.php',				// SEO class
-			CFGP_INC . '/SEO_Table.php',		// SEO_Table class
+			CFGP_INC . '/SEO_Redirection.php',	// SEO Redirection class
+			CFGP_INC . '/SEO_Table.php',		// SEO Table class
 			CFGP_INC . '/Settings.php',			// Settings class
 			CFGP_INC . '/Shortcodes.php',		// Shortcodes class
 			CFGP_INC . '/Defender.php',			// Defender class

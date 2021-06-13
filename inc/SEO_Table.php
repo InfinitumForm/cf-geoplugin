@@ -5,15 +5,9 @@
  * @version       2.0.0
  *
  */
-// If someone try to called this file directly via URL, abort.
-if (!defined('WPINC'))
-{
-    die("Don't mess with us.");
-}
-if (!defined('ABSPATH'))
-{
-    exit;
-}
+ // If someone try to called this file directly via URL, abort.
+if ( ! defined( 'WPINC' ) ) { die( "Don't mess with us." ); }
+if ( ! defined( 'ABSPATH' ) ) { exit; }
 
 if (!class_exists('WP_List_Table'))
 {
@@ -92,26 +86,20 @@ if (!class_exists('CFGP_SEO_Table')):
          */
         function extra_tablenav($which)
         {
-            if ($which === 'top')
-            {
-				
+			if(CFGP_Options::get('enable_seo_csv', 0) && in_array($which, array('top', 'bottom')))
+			{
 				global $wpdb;
 				$seo_redirection_table = $wpdb->prefix . CFGP_Defaults::TABLE['seo_redirection'];
 				$query = $wpdb->query("SELECT 1 FROM {$seo_redirection_table}");
-			
 				echo '<div class="alignleft actions bulkactions">';
-					printf('<a aria="button" href="%s" class="button"><i class="fa fa-file"></i> %s</a> ', admin_url('admin.php?page='.CFGP_U::request_string('page').'&action=import&nonce='.wp_create_nonce(CFGP_NAME.'-seo-import-csv')), __('Import From CSV', CFGP_NAME));
+					printf('<a aria="button" href="%s" class="button"><i class="fa fa-upload"></i> %s</a> ', admin_url('admin.php?page='.CFGP_U::request_string('page').'&action=import&nonce='.wp_create_nonce(CFGP_NAME.'-seo-import-csv')), __('Import From CSV', CFGP_NAME));
 					
 					if($query){
-						printf('<a aria="button" href="%s" class="button"><i class="fa fa-arrow-circle-right"></i> %s</a> ', admin_url('admin.php?page='.CFGP_U::request_string('page').'&action=export&nonce='.wp_create_nonce(CFGP_NAME.'-seo-export-csv')), __('Export CSV', CFGP_NAME));
+						printf('<a aria="button" href="%s" class="button"><i class="fa fa-table"></i> %s</a> ', admin_url('admin.php?page='.CFGP_U::request_string('page').'&action=export&nonce='.wp_create_nonce(CFGP_NAME.'-seo-export-csv')), __('Export CSV', CFGP_NAME));
 					}
 					
 				echo '</div>';
-            }
-            if ($which === 'bottom')
-            {
-                //The code that goes after the table is there
-            }
+			}
         }
 
         /**
@@ -155,7 +143,19 @@ if (!class_exists('CFGP_SEO_Table')):
         {
 			$this->process_bulk_action();
             global $wpdb, $_wp_column_headers;
-            $screen = get_current_screen();
+			
+			// get the current user ID
+			$user = get_current_user_id();
+			// get the current admin screen
+			$screen = get_current_screen();
+			// retrieve the "per_page" option
+			$screen_option = $screen->get_option('per_page', 'option');
+			// retrieve the value of the option stored for the current user
+			$perpage = get_user_meta($user, $screen_option, true);
+			if ( empty ( $perpage) || $perpage < 1 ) {
+				// get the default value if none is set
+				$perpage = $screen->get_option( 'per_page', 'default' );
+			}
 
             /* -- Preparing your query -- */
             $seo_redirection_table = $wpdb->prefix . CFGP_Defaults::TABLE['seo_redirection'];
@@ -188,8 +188,6 @@ if (!class_exists('CFGP_SEO_Table')):
             /* -- Pagination parameters -- */
             //Number of elements in your table?
             $totalitems = $wpdb->query($query); //return the total number of affected rows
-            //How many to display per page?
-            $perpage = 20;
             //Which page is this?
             $paged = CFGP_U::request_int('paged', 0);
             //Page Number

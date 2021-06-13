@@ -1,7 +1,8 @@
 (function ($) {
 	var custom_uploader,
 		custom_uploader_timeout,
-		debounce;
+		debounce,
+		loader = '<i class="fa fa-circle-o-notch fa-spin fa-fw"></i> ' + CFGP.label.loading;
 	
 	/**
 	 * Fix admin panels
@@ -194,7 +195,18 @@
 	 */
 	$(document).on('click', '.button-cfgeo-seo-import-csv', function(e) {
 		e.preventDefault();
-		var $this = $(this);
+		var $this = $(this),
+			$confirm = $this.attr('data-confirm'),
+			$label = $this.attr('data-label'),
+			$nonce = $this.attr('data-nonce'),
+			$callback = $this.attr('data-callback');
+
+		$this.html(loader).prop('disabled', true);
+		
+		if(!confirm($confirm)) {
+			$this.html($label).prop('disabled', false);
+			return;
+		}
 
 		//If the uploader object has already been created, reopen the dialog
 		if (custom_uploader) {
@@ -214,15 +226,48 @@
 		});
 
 		var upload_csv = function(){
+			
+			$this.html($label).prop('disabled', false);
 
 			if(custom_uploader_timeout) clearTimeout(custom_uploader_timeout);
 
 			attachment = custom_uploader.state().get('selection').first().toJSON();
 			
+			if(!attachment) return;
+			
 			$this.val(attachment.url).attr('data-id', attachment.id);
-			
-			
+		
 			/* TO DO - AJAX UPLOAD */
+			$this.html(loader).prop('disabled', true);
+			$.ajax({
+				url: (typeof ajaxurl !== 'undefined' ? ajaxurl : CFGP.ajaxurl),
+				method: 'post',
+				accept: 'application/json',
+				data: {
+					action : 'cfgp_seo_redirection_csv_upload',
+					attachment_id : attachment.id,
+					attachment_url : attachment.url,
+					nonce : $nonce
+				},
+				cache: false
+			}).done( function( data ) {
+				$this.html($label).prop('disabled', false);
+				if(data.return == true)
+				{
+					if(!window.location.href == $callback){
+						window.location.replace($callback);
+					}
+				}
+				else
+				{
+					alert(data.message);
+				}
+				return;
+			}).fail(function(a,b,c){
+				console.log(a,b,c);
+				alert(c);
+				$this.html($label).prop('disabled', false);
+			});
 			
 
 			custom_uploader_timeout = setTimeout(function(){
@@ -233,7 +278,7 @@
 		//When a file is selected, grab the URL and set it as the text field's value
 		custom_uploader.on({
 			'select': upload_csv,
-			'close': upload_csv
+			'close': function(){$this.html($label).prop('disabled', false);}
 		});
 		//Open the uploader dialog
 		custom_uploader.open();

@@ -75,7 +75,9 @@ $options = apply_filters('cfgp/settings', array());
 switch($input['type'])
 {
 	### RADIO
-	case 'radio': if(isset($input['options'])) : foreach($input['options'] as $value => $name) : ?>
+	case 'radio':
+	$default = CFGP_Options::get($input['name'], (isset($input['default']) ? $input['default'] : ''));
+	if(isset($input['options'])) : foreach($input['options'] as $value => $name) : ?>
     <span class="input-radio">
         <input type="radio" name="<?php
           echo CFGP_NAME;
@@ -92,7 +94,7 @@ switch($input['type'])
 					printf(' %s="%s"', $attr, esc_attr($attr_value));
 				}
 			}
-			echo (CFGP_Options::get($input['name'], (isset($input['default']) ? $input['default'] : '')) === $value ? ' checked' : '');
+			echo ($default === $value ? ' checked' : '');
 			echo (isset($input['readonly']) && $input['readonly'] ? ' readonly' : '');
 			echo (isset($input['disabled']) && $input['disabled'] ? ' disabled' : '');
         ?>><?php echo $name; ?>

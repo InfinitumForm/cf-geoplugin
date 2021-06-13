@@ -15,6 +15,130 @@ class CFGP_SEO extends CFGP_Global {
 	public function __construct(){
 		$this->add_action('init', 'export_csv');
 		$this->add_action('init', 'save_form');
+		$this->add_action('wp_ajax_cfgp_seo_redirection_csv_upload', 'ajax__csv_upload');
+	}
+	
+	/*
+	 * AJAX: CSV Upload
+	 */
+	public function ajax__csv_upload(){
+		if(wp_verify_nonce(CFGP_U::request_string('nonce'), CFGP_NAME.'-seo-import-csv') !== false)
+		{
+			if($url = CFGP_U::request_string('attachment_url'))
+			{
+				// Parse CSV
+				if(!class_exists('CFGP_CSV')) {
+					include_once CFGP_INC . '/CSV.php';
+				}
+				
+				if($csv = CFGP_CSV::import($url ,false, ','))
+				{
+					// We need time for this
+					if(function_exists('ignore_user_abort')) ignore_user_abort(true);
+					if(function_exists('set_time_limit')) set_time_limit(0);
+					if(function_exists('ini_set')) ini_set('max_execution_time', 0);
+				
+					// Active columns in the exact order
+					$columns = array('country', 'region', 'city', 'postcode', 'url', 'http_code', 'active', 'only_once');
+					$columns_max = count($columns);
+					
+					// Remove headers
+					foreach($csv as $i=>$column){
+						foreach($column as $val){
+							if(in_array($val, $columns, true) !== false) {
+								unset($csv[$i]);
+								break;
+							}
+						}
+					}
+					
+					// Asign fields
+					foreach($csv as $i=>$data){
+						// We need exact number of columns
+						if(count($data) !== $columns_max){
+							unset($csv[$i]);
+							continue;
+						}
+						// Now assign data to columns
+						foreach($columns as $x=>$column){
+							$csv[$i][$column]=CFGP_Options::sanitize($data[$x]);
+							unset($csv[$i][$x]);
+						}
+					}
+					
+					// Let's try clean database and add new data
+					if(!empty($csv))
+					{
+						global $wpdb;
+						// Define table name
+						$table = $wpdb->prefix . CFGP_Defaults::TABLE['seo_redirection'];
+						// We need old data prepared to return if we have some error
+						$original_data = $wpdb->query("SELECT * FROM `{$table}` WHERE 1;");
+						// Let's clean table
+						$wpdb->query("TRUNCATE TABLE {$table};");
+						// Now we can save new data
+						$num_saved=0;
+						foreach($csv as $save) {
+							if($wpdb->insert($table, $save, array('%s', '%s', '%s', '%s', '%s', '%d', '%d', '%d'))){
+								++$num_saved;
+							}
+						}
+						// Validate
+						if($num_saved > 0)
+						{
+						//	set_transient('cfgp-seo-form-success', __('CSV uploaded successfully.', CFGP_NAME), YEAR_IN_SECONDS);
+							
+							wp_send_json(array(
+								'return'=>true,
+								'message' => __('An error occurred while saving data to the database. We have restored your old parameters. There is no change here.', CFGP_NAME)
+							));
+						}
+						else
+						{
+							// We need old data back on the error
+							if(!empty($original_data)) {
+								foreach($original_data as $data){
+									$wpdb->insert($table, $data);
+								}
+							}
+							
+							wp_send_json(array(
+								'return'=>false,
+								'message' => __('An error occurred while saving data to the database. We have restored your old parameters. There is no change here.', CFGP_NAME)
+							));
+						}
+					}
+					else
+					{
+						wp_send_json(array(
+							'return'=>false,
+							'message' => sprintf(__('We did not find any valid CSV data. We did not make any changes. Make sure you have all %d columns properly defined.', CFGP_NAME), $columns_max)
+						));
+					}
+				}
+				else
+				{
+					wp_send_json(array(
+						'return'=>false,
+					'message' => __('There was an error unpacking the CSV file. Check the format of your CSV file.', CFGP_NAME)
+					));
+				}
+			}
+			else
+			{
+				wp_send_json(array(
+					'return'=>false,
+					'message' => __('CSV file not defined.', CFGP_NAME)
+				));
+			}
+		}
+		else
+		{
+			wp_send_json(array(
+				'return'=>false,
+				'message' => __('There was an error validating the data. Please refresh the page and try again.', CFGP_NAME)
+			));
+		}
 	}
 	
 	/*
@@ -129,9 +253,14 @@ class CFGP_SEO extends CFGP_Global {
 	 */
 	public function export_csv(){
 		if(CFGP_U::request_string('action') === 'export' && wp_verify_nonce(CFGP_U::request_string('nonce'), CFGP_NAME.'-seo-export-csv') !== false){
+			// We need time for this
+			if(function_exists('ignore_user_abort')) ignore_user_abort(true);
+			if(function_exists('set_time_limit')) set_time_limit(0);
+			if(function_exists('ini_set')) ini_set('max_execution_time', 0);
+					
 			global $wpdb;
 			$table = $wpdb->prefix . CFGP_Defaults::TABLE['seo_redirection'];
-			$result = $wpdb->get_results("SELECT country, region, city, postcode, url, http_code, active FROM {$table} WHERE 1", ARRAY_A);
+			$result = $wpdb->get_results("SELECT country, region, city, postcode, url, http_code, active, only_once FROM {$table} WHERE 1", ARRAY_A);
 			
 			$num_fields = count($result); 
 			$headers = array(); 
@@ -149,18 +278,10 @@ class CFGP_SEO extends CFGP_Global {
 				fputcsv($fp, $headers); 
 				foreach($result as $i => $row) 
 				{
-					fputcsv($fp, array(
-						$row['country'],
-						$row['region'],
-						$row['city'],
-						$row['postcode'],
-						$row['url'],
-						$row['http_code'],
-						$row['active']
-					)); 
+					fputcsv($fp, $row); 
 				}
 				fclose($fp);
-				die; 
+				exit;
 			}
 		}
 	}

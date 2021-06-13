@@ -39,6 +39,7 @@ class CFGP_API extends CFGP_Global {
 	 * @since    8.0.0
 	 */
 	public static function lookup($ip, $property = array()){
+		global $cfgp_cache;
 		if($ip = CFGP_IP::filter($ip)) {
 			$return = self::instance(true)->get('geo', $ip, $property);
 			if (CFGP_Options::get('enable_dns_lookup', 0)) {
@@ -133,9 +134,13 @@ class CFGP_API extends CFGP_Global {
 						$return = json_decode($return, true);
 						$return = apply_filters('cf_geoplugin_api_get_geodata', $return);
 						
-						if (is_array($return)) $return = array_merge($default_fields, $return);
+		
+							$return = array_merge($default_fields, $return);
+						
 	
-						if($return['error']===true) return $return;
+						if($return['error']===true) {
+							return $return;
+						}
 	
 						// Cloud Flare country code
 						if (CFGP_Options::get('enable_cloudflare') && isset($_SERVER["HTTP_CF_IPCOUNTRY"]) && !empty($_SERVER["HTTP_CF_IPCOUNTRY"])) {

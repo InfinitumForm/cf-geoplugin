@@ -301,7 +301,7 @@ add_filter('cfgp/settings', function($options=array()){
 							'default' => 1
 						),
 						array(
-							'name' => 'enable_beta_seo_csv',
+							'name' => 'enable_seo_csv',
 							'label' => __('Enable CSV in Site SEO Redirection', CFGP_NAME),
 							'desc' => __('This allow you to upload CSV to your SEO redirection or download/backup SEO redirection list in the CSV.', CFGP_NAME),
 							'type' => 'radio',
@@ -474,8 +474,9 @@ add_filter('cfgp/settings', function($options=array()){
 							),
 							'default' => 1
 						),
+						/*
 						array(
-							'name' => 'enable_seo_csv',
+							'name' => 'enable_logging',
 							'label' => __('Enable Advanced Logging', CFGP_NAME),
 							'desc' => __('This option will log any errors and warnings in your error_log file that you can later use during technical support.', CFGP_NAME),
 							'type' => 'radio',
@@ -485,6 +486,7 @@ add_filter('cfgp/settings', function($options=array()){
 							),
 							'default' => 1
 						),
+						*/
 					)
 				),
 				
