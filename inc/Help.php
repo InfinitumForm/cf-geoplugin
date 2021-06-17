@@ -113,12 +113,10 @@ class CFGP_Help extends CFGP_Global {
 		if(!is_admin()) {
 			return;
 		}
-		
-		global $cfgp_cache;
 		$class = self::class;
-		$instance = $cfgp_cache->get($class);
+		$instance = CFGP_Cache::get($class);
 		if ( !$instance ) {
-			$instance = $cfgp_cache->set($class, new self());
+			$instance = CFGP_Cache::set($class, new self());
 		}
 		return $instance;
 	}

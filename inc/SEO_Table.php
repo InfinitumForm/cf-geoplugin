@@ -66,7 +66,7 @@ if (!class_exists('CFGP_SEO_Table')):
 						$ids = join(',', $checkboxes);
 						
 						global $wpdb;
-						$table = $wpdb->prefix . CFGP_Defaults::TABLE['seo_redirection'];
+						$table = $wpdb->get_blog_prefix() . CFGP_Defaults::TABLE['seo_redirection'];
 						$wpdb->query($query = "DELETE FROM `{$table}` WHERE `ID` IN ({$ids})");
 					}
 					break;
@@ -89,7 +89,7 @@ if (!class_exists('CFGP_SEO_Table')):
 			if(CFGP_Options::get('enable_seo_csv', 0) && in_array($which, array('top', 'bottom')))
 			{
 				global $wpdb;
-				$seo_redirection_table = $wpdb->prefix . CFGP_Defaults::TABLE['seo_redirection'];
+				$seo_redirection_table = $wpdb->get_blog_prefix() . CFGP_Defaults::TABLE['seo_redirection'];
 				$query = $wpdb->query("SELECT 1 FROM {$seo_redirection_table}");
 				echo '<div class="alignleft actions bulkactions">';
 					printf('<a aria="button" href="%s" class="button"><i class="fa fa-upload"></i> %s</a> ', admin_url('admin.php?page='.CFGP_U::request_string('page').'&action=import&nonce='.wp_create_nonce(CFGP_NAME.'-seo-import-csv')), __('Import From CSV', CFGP_NAME));
@@ -158,7 +158,7 @@ if (!class_exists('CFGP_SEO_Table')):
 			}
 
             /* -- Preparing your query -- */
-            $seo_redirection_table = $wpdb->prefix . CFGP_Defaults::TABLE['seo_redirection'];
+            $seo_redirection_table = $wpdb->get_blog_prefix() . CFGP_Defaults::TABLE['seo_redirection'];
             $query = "SELECT * FROM {$seo_redirection_table}";
 			
 			/* -- Search -- */
@@ -241,12 +241,15 @@ if (!class_exists('CFGP_SEO_Table')):
             //Loop for each record
             if (!empty($records))
             {
+				$data_countries = CFGP_Library::get_countries();
+				
                 foreach ($records as $rec)
                 {
-
                     //Open the line
-                    echo '<tr id="cfgp_seo_row_' . $rec->ID . '">';
-                    foreach ($columns as $column_name => $column_display_name)
+                    echo '<tr id="cfgp_seo_row_' . $rec->ID . '"'.($rec->active ? '' : ' class="cfgp-seo-table-row-inactive"').'>';
+					
+                    
+					foreach ($columns as $column_name => $column_display_name)
                     {
 
                         //Style attributes for each col
@@ -271,18 +274,36 @@ if (!class_exists('CFGP_SEO_Table')):
                         {
                             case "cfgp_seo_url":
                                 echo '<td ' . $attributes . '>';
-									echo '<strong><a href="'.$rec->url.'" target="_blank" >'.$rec->url.'</a></strong>';
+									echo ($rec->active ? '' : '<sup>'.__('DISABLED', CFGP_NAME).'</sup> ').'<strong>'.$rec->url.'</strong>';
 									echo '<div class="row-actions"><span class="edit"><a href="'.$edit_link.'">'.__('Edit').'</a> | </span><span class="trash"><a href="'.$delete_link.'" class="submitdelete">'.__('Delete').'</a></span></div>';
 								echo '</td>';
                             break;
 							case "cfgp_seo_country":
-                                echo '<td ' . $attributes . '>' . ($rec->country ? $rec->country.' ('.get_term_by('name', $rec->country, 'cf-geoplugin-country')->description.')' : '-') . '</td>';
+                                $country_code = '';
+								if($term = get_term_by('name', $rec->country, 'cf-geoplugin-country')){
+									if(!empty($term->description)) $country_code = ' (' . $term->description . ') ';
+								} else {
+									if(isset($data_countries[$rec->country])) {
+										$country_code = ' (' . $data_countries[$rec->country] . ') ';
+									}
+								}
+								echo '<td ' . $attributes . '>' . ($rec->country ? $rec->country . $country_code : '-') . '</td>';
                             break;
                             case "cfgp_seo_region":
-                                echo '<td ' . $attributes . '>' . ($rec->region ? $rec->region . ' ('.get_term_by('name', $rec->region, 'cf-geoplugin-region')->description.')' : '-') . '</td>';
+								$region_code = '';
+								if($term = get_term_by('name', $rec->region, 'cf-geoplugin-region')){
+									if(!empty($term->description)) $region_code = ' (' . $term->description . ') ';
+								}
+                                echo '<td ' . $attributes . '>' . ($rec->region ? $rec->region . $region_code : '-') . '</td>';
                             break;
                             case "cfgp_seo_city":
-                                echo '<td ' . $attributes . '>' . ($rec->city ? get_term_by('name', $rec->city, 'cf-geoplugin-city')->name : '-') . '</td>';
+								$city_code = '';
+								$city_name = $rec->city;
+								if($term = get_term_by('name', $rec->city, 'cf-geoplugin-city')){
+									if(!empty($term->description)) $city_code = ' (' . $term->description . ') ';
+									$city_name = $term->name;
+								}
+                                echo '<td ' . $attributes . '>' . ($city_name ? $city_name.$city_code : '-') . '</td>';
                             break;
                             case "cfgp_seo_postcode":
                                 echo '<td ' . $attributes . '>' . ($rec->postcode ? get_term_by('name', $rec->postcode, 'cf-geoplugin-postcode')->name : '-') . '</td>';
@@ -313,12 +334,11 @@ if (!class_exists('CFGP_SEO_Table')):
         */
         public static function print ()
         {
-            global $cfgp_cache;
             $class = self::class;
-            $instance = $cfgp_cache->get($class);
+            $instance = CFGP_Cache::get($class);
             if (!$instance)
             {
-                $instance = $cfgp_cache->set($class, new self());
+                $instance = CFGP_Cache::set($class, new self());
             }
             return $instance;
         }

@@ -45,7 +45,7 @@ add_action('cfgp/page/seo_redirection/form/content', function(){
 	<h3 class="hndle" style="margin-bottom:0;padding-bottom:0;"><span><?php _e('SEO Redirection Global Params', CFGP_NAME); ?></span></h3><hr>
 	<div class="inside">
     	<?php CFGP_Form::input('hidden', array('name'=>'id','value'=>$ID)); ?>
-    	<table class="form-table cfgp-form-table" role="presentation" id="cfgp-new-seo-redirection">
+    	<table class="form-table cfgp-form-table cfgp-country-region-city-form" role="presentation" id="cfgp-new-seo-redirection">
         	<tbody>
                 <tr>
                     <th scope="row" valign="top" class="cfgp-label"><label><?php _e('Enable this redirection', CFGP_NAME); ?></label></th>
@@ -69,13 +69,13 @@ add_action('cfgp/page/seo_redirection/form/content', function(){
                 <tr>
                     <th scope="row" valign="top" class="cfgp-label"><label for="region"><?php _e('Select Region', CFGP_NAME); ?></label></th>
                     <td valign="top"><?php
-						CFGP_Form::select_regions(array('name'=>'region'), $select_region);
+						CFGP_Form::select_regions(array('name'=>'region', 'country_code' => $select_country), $select_region);
 					?></td>
                 </tr>
                 <tr>
                     <th scope="row" valign="top" class="cfgp-label"><label for="city"><?php _e('Select City', CFGP_NAME); ?></label></th>
                     <td valign="top"><?php
-						CFGP_Form::select_cities(array('name'=>'city'), $select_city);
+						CFGP_Form::select_cities(array('name'=>'city', 'country_code' => $select_country), $select_city);
 					?></td>
                 </tr>
                 <tr>

@@ -3,9 +3,7 @@
 if ( ! defined( 'WPINC' ) ) { die( "Don't mess with us." ); }
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-global $cfgp_cache;
-
-$API = $cfgp_cache->get('API');
+$API = CFGP_Cache::get('API');
 
 ?>
 <div class="wrap wrap-cfgp" id="<?php echo $_GET['page']; ?>">

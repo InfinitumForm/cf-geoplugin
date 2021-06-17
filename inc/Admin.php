@@ -22,6 +22,70 @@ class CFGP_Admin extends CFGP_Global {
 		$this->add_action('manage_edit-cf-geoplugin-region_columns', 'rename__cf_geoplugin_region__column');
 		$this->add_action('manage_edit-cf-geoplugin-city_columns', 'rename__cf_geoplugin_city__column');
 		$this->add_action('manage_edit-cf-geoplugin-postcode_columns', 'rename__cf_geoplugin_postcode__column');
+		
+		$this->add_action('wp_ajax_cfgp_load_regions', 'ajax__cfgp_load_regions');
+		$this->add_action('wp_ajax_cfgp_load_cities', 'ajax__cfgp_load_cities');
+	}
+	
+	public function ajax__cfgp_load_regions () {
+		
+		$country_code = CFGP_U::request('country_code');
+		$options = array();
+		
+		if(is_array($country_code))
+		{
+			foreach($country_code as $cc){
+				$regons = CFGP_Library::get_regions($cc);	
+				foreach( $regons as $key => $fetch ){
+					$options[]= array(
+						'key' => strtolower(sanitize_title($fetch['region'])),
+						'value' => $fetch['region']
+					);
+				}
+			}
+		}
+		else
+		{
+			$regons = CFGP_Library::get_regions($country_code);	
+			foreach( $regons as $key => $fetch ){
+				$options[]= array(
+					'key' => strtolower(sanitize_title($fetch['region'])),
+					'value' => $fetch['region']
+				);
+			}
+		}
+		
+		wp_send_json($options);
+	}
+	
+	public function ajax__cfgp_load_cities () {
+		$country_code = CFGP_U::request('country_code');
+		$options = array();
+		
+		if(is_array($country_code))
+		{
+			foreach($country_code as $cc){
+				$cities = CFGP_Library::get_cities($cc);
+				foreach( $cities as $fetch ){
+					$options[]= array(
+						'key' => strtolower(sanitize_title($fetch)),
+						'value' => $fetch
+					);
+				}
+			}
+		}
+		else
+		{
+			$cities = CFGP_Library::get_cities($country_code);
+			foreach( $cities as $fetch ){
+				$options[]= array(
+					'key' => strtolower(sanitize_title($fetch)),
+					'value' => $fetch
+				);
+			}
+		}
+		
+		wp_send_json($options);
 	}
 	
 	// Rename county table
@@ -314,11 +378,10 @@ class CFGP_Admin extends CFGP_Global {
 	 * @verson    1.0.0
 	 */
 	public static function instance() {
-		global $cfgp_cache;
 		$class = self::class;
-		$instance = $cfgp_cache->get($class);
+		$instance = CFGP_Cache::get($class);
 		if ( !$instance ) {
-			$instance = $cfgp_cache->set($class, new self());
+			$instance = CFGP_Cache::set($class, new self());
 		}
 		return $instance;
 	}

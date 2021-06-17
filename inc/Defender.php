@@ -19,7 +19,6 @@ class CFGP_Defender extends CFGP_Global {
 	// Protect site from visiting
     public function protect()
     {
-		global $cfgp_cache;
 		
 		$ip = CFGP_U::api('ip');
 		
@@ -119,7 +118,6 @@ class CFGP_Defender extends CFGP_Global {
 	 */
 	public function check_user_by_city( $city )
 	{
-		global $cfgp_cache;
 		if( is_array( $city ) )
 		{
 			$city = array_map( 'strtolower', $city );
@@ -138,7 +136,6 @@ class CFGP_Defender extends CFGP_Global {
 	 */
 	public function check_user_by_region( $region )
 	{
-		global $cfgp_cache;
 		if( is_array( $region ) )
 		{
 			if( isset( $region[0] ) && !empty( $region[0] ) )
@@ -167,7 +164,6 @@ class CFGP_Defender extends CFGP_Global {
 	 */
 	public function check_user_by_country( $country )
 	{
-		global $cfgp_cache;
 
 		if( is_array( $country ) )
 		{
@@ -196,17 +192,11 @@ class CFGP_Defender extends CFGP_Global {
 	 * Instance
 	 * @verson    1.0.0
 	 */
-	public static function instance() {
-		
-		if(!is_admin()) {
-			return;
-		}
-		
-		global $cfgp_cache;
+	public static function instance() {		
 		$class = self::class;
-		$instance = $cfgp_cache->get($class);
+		$instance = CFGP_Cache::get($class);
 		if ( !$instance ) {
-			$instance = $cfgp_cache->set($class, new self());
+			$instance = CFGP_Cache::set($class, new self());
 		}
 		return $instance;
 	}

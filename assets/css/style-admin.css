@@ -400,6 +400,17 @@ pre.cfgp-dump + pre.cfgp-dump{
 	border-color:#900;
 }
 
+.cfgp-seo-table-row-inactive sup{
+	color:#F00;
+	display:table;
+}
+
+.cfgp-seo-table-row-inactive td,
+.cfgp-seo-table-row-inactive th
+{
+	color:#919191;
+}
+
 dl {
 	display: flex;
 	flex-flow: row wrap;

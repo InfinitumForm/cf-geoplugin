@@ -111,10 +111,9 @@ class CFGP_U {
 	 */
 	public static function curl_get( $url, $headers = '', $new_params = array(), $json = false )
 	{
-		global $cfgp_cache;
 		
 		$cache_name = 'cfgp-curl_get-'.md5(serialize(array($url, $headers, $new_params, $json)));
-		if($cache = $cfgp_cache->get($cache_name)){
+		if($cache = CFGP_Cache::get($cache_name)){
 			return $cache;
 		}
 		
@@ -175,7 +174,7 @@ class CFGP_U {
 
 		if($json !== false) $output = json_decode($output, true);
 		
-		$cfgp_cache->set($cache_name, $output);
+		CFGP_Cache::set($cache_name, $output);
 		
 		return $output;
 	}
@@ -187,10 +186,9 @@ class CFGP_U {
 	 */
 	public static function curl_post( $url, $post_data = array(), $headers = '', $new_params = array(), $json = false )
 	{
-		global $cfgp_cache;
 		
 		$cache_name = 'cfgp-curl_post-'.md5(serialize(array($url, $headers, $new_params, $json)));
-		if($cache = $cfgp_cache->get($cache_name)){
+		if($cache = CFGP_Cache::get($cache_name)){
 			return $cache;
 		}
 		
@@ -253,7 +251,7 @@ class CFGP_U {
 
 		if($json !== false) $output = json_decode($output, true);
 		
-		$cfgp_cache->set($cache_name, $output);
+		CFGP_Cache::set($cache_name, $output);
 		
 		return $output;
 	}
@@ -314,7 +312,7 @@ class CFGP_U {
 		
 		$cache_name = CFGP_NAME . '-plugin_info-' . md5(serialize($fields));
 		
-		if($cache = wp_cache_get($cache_name, CFGP_NAME)) return $cache;
+		if($cache = CFGP_Cache::get($cache_name)) return $cache;
 		
         if ( is_admin() ) {
 			if ( ! function_exists( 'plugins_api' ) ) {
@@ -363,7 +361,7 @@ class CFGP_U {
 				], $fields)
 			]);
 		 	
-			wp_cache_set($cache_name, $plugin_data, CFGP_NAME);
+			CFGP_Cache::set($cache_name, $plugin_data);
 			
 			return $plugin_data;
 		}
@@ -540,22 +538,21 @@ class CFGP_U {
 	 * @verson    1.0.0
 	 */
 	public static function parse_url(){
-		global $cfgp_cache;
 		
-		$parse_url = $cfgp_cache->get('parse_url');
+		$parse_url = CFGP_Cache::get('parse_url');
 		
 		if(!$parse_url) {
 			$http = 'http'.( self::is_ssl() ?'s':'');
-			$domain = preg_replace('%:/{3,}%i','://',rtrim($http,'/').'://'.$_SERVER['HTTP_HOST']);
+			$domain = preg_replace('%:/{3,}%i','://',rtrim($http,'/').'://'.(isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : ''));
 			$domain = rtrim($domain,'/');
 			$url = preg_replace('%:/{3,}%i','://',$domain.'/'.(isset($_SERVER['REQUEST_URI']) && !empty( $_SERVER['REQUEST_URI'] ) ? ltrim($_SERVER['REQUEST_URI'], '/'): ''));
 				
-			$parse_url = $cfgp_cache->set('parse_url', [
+			$parse_url = CFGP_Cache::set('parse_url', array(
 				'method'	=>	$http,
 				'home_fold'	=>	str_replace($domain,'',home_url()),
 				'url'		=>	$url,
 				'domain'	=>	$domain,
-			]);
+			));
 		}
 		
 		return $parse_url;
@@ -566,9 +563,8 @@ class CFGP_U {
 	 * @verson    1.0.0
 	 */
 	public static function get_url(){
-		global $cfgp_cache;
 		
-		$parse_url = $cfgp_cache->get('current_url');
+		$parse_url = CFGP_Cache::get('current_url');
 		
 		if(!$parse_url) {
 			$http = 'http'.( self::is_ssl() ?'s':'');
@@ -576,7 +572,7 @@ class CFGP_U {
 			$domain = rtrim($domain,'/');
 			$url = preg_replace('%:/{3,}%i','://',$domain.'/'.(isset($_SERVER['REQUEST_URI']) && !empty( $_SERVER['REQUEST_URI'] ) ? ltrim($_SERVER['REQUEST_URI'], '/'): ''));
 				
-			$parse_url = $cfgp_cache->set('current_url', $url);
+			$parse_url = CFGP_Cache::set('current_url', $url);
 		}
 		
 		return $parse_url;
@@ -588,9 +584,8 @@ class CFGP_U {
 	 */
 	public static function is_ssl($url = false)
 	{
-		global $cfgp_cache;
 
-		$ssl = $cfgp_cache->get('is_ssl');
+		$ssl = CFGP_Cache::get('is_ssl');
 
 		if($url !== false && is_string($url)) {
 			return (preg_match('/(https|ftps)/Ui', $url) !== false);
@@ -604,7 +599,7 @@ class CFGP_U {
 				|| (isset($_SERVER['HTTP_X_FORWARDED_PORT']) && $_SERVER['HTTP_X_FORWARDED_PORT'] == 443)
 				|| (isset($_SERVER['REQUEST_SCHEME']) && $_SERVER['REQUEST_SCHEME'] == 'https')
 			) {
-				$ssl = $cfgp_cache->set('is_ssl', true);
+				$ssl = CFGP_Cache::set('is_ssl', true);
 			}
 		}
 		return $ssl;
@@ -616,9 +611,8 @@ class CFGP_U {
 	*/
 	public static function is_editor()
 	{
-		global $cfgp_cache;
 
-		$is_editor = $cfgp_cache->get('is_editor');
+		$is_editor = CFGP_Cache::get('is_editor');
 
 		if(empty($is_editor)) {
 			if (version_compare(get_bloginfo( 'version' ), '5.0', '>=')) {
@@ -627,10 +621,10 @@ class CFGP_U {
 				}
 				$get_current_screen = get_current_screen();
 				if(is_callable(array($get_current_screen, 'is_block_editor')) && method_exists($get_current_screen, 'is_block_editor')) {
-					$is_editor = $cfgp_cache->set('is_editor', $get_current_screen->is_block_editor());
+					$is_editor = CFGP_Cache::set('is_editor', $get_current_screen->is_block_editor());
 				}
 			} else {
-				$is_editor = $cfgp_cache->set('is_editor', ( isset($_GET['action']) && isset($_GET['post']) && $_GET['action'] == 'edit' && is_numeric($_GET['post']) ) );
+				$is_editor = CFGP_Cache::set('is_editor', ( isset($_GET['action']) && isset($_GET['post']) && $_GET['action'] == 'edit' && is_numeric($_GET['post']) ) );
 			}
 		}
 
@@ -644,9 +638,8 @@ class CFGP_U {
 	 */
 	public static function is_connected()
 	{
-		global $cfgp_cache;
 		
-		if($cfgp_cache->get('is_connected')){
+		if(CFGP_Cache::get('is_connected')){
 			return true;
 		}
 		
@@ -663,7 +656,7 @@ class CFGP_U {
 				$connected = fsockopen($url, $port);
 				if ($connected !== false){
 					fclose($connected);
-					return $cfgp_cache->set('is_connected', true);
+					return CFGP_Cache::set('is_connected', true);
 				}
 			}
 		}
@@ -858,11 +851,10 @@ class CFGP_U {
 	 * Print country flag
 	 */
 	public static function admin_country_flag($country_code = '', $size='21px'){
-		global $cfgp_cache;
 		
 		if(empty($country_code))
 		{
-			$API = $cfgp_cache->get('API');
+			$API = CFGP_Cache::get('API');
 			$country_code = $API['country_code'];
 		}
 		
@@ -870,7 +862,7 @@ class CFGP_U {
 		
 		$md5 = md5($flag_slug.$size);
 		
-		if($cache = $cfgp_cache->get("admin_country_flag_{$md5}")) {
+		if($cache = CFGP_Cache::get("admin_country_flag_{$md5}")) {
 			return $cache;
 		}
 				
@@ -879,7 +871,7 @@ class CFGP_U {
 			$flag = sprintf('<img src="%s" alt="%s" style="max-width:%s;">', CFGP_ASSETS.'/flags/4x3/'.$flag_slug.'.svg', $flag_slug, $size);
 		}
 		
-		$cfgp_cache->set("admin_country_flag_{$md5}", $flag);
+		CFGP_Cache::set("admin_country_flag_{$md5}", $flag);
 		
 		return $flag;
 	}
@@ -893,7 +885,7 @@ class CFGP_U {
 		
 		if( $session === true )
 		{
-			if($return = wp_cache_get($session_name, 'cfgp')){
+			if($return = CFGP_Cache::get($session_name)){
 				return $return;
 			}
 		}
@@ -910,7 +902,7 @@ class CFGP_U {
 		
 		if( $session === true )
 		{
-			wp_cache_set($session_name, $return, 'cfgp');
+			CFGP_Cache::set($session_name, $return);
 		}
 		
 		return $return;
@@ -924,7 +916,7 @@ class CFGP_U {
 		
 		if( $session === true )
 		{
-			if($return = wp_cache_get($session_name, 'cfgp')){
+			if($return = CFGP_Cache::get($session_name)){
 				return $return;
 			}
 		}
@@ -941,7 +933,7 @@ class CFGP_U {
 		
 		if( $session === true )
 		{
-			wp_cache_set($session_name, $return, 'cfgp');
+			CFGP_Cache::set($session_name, $return);
 		}
 		
 		return $return;
@@ -955,7 +947,7 @@ class CFGP_U {
 		
 		if( $session === true )
 		{
-			if($return = wp_cache_get($session_name, 'cfgp')){
+			if($return = CFGP_Cache::get($session_name)){
 				return $return;
 			}
 		}
@@ -972,7 +964,7 @@ class CFGP_U {
 		
 		if( $session === true )
 		{
-			wp_cache_set($session_name, $return, 'cfgp');
+			CFGP_Cache::set($session_name, $return);
 		}
 		
 		return $return;
@@ -1010,14 +1002,20 @@ class CFGP_U {
 	}
 	
 	/*
+	 * Request
+	 */
+	public static function request($name){
+		return (isset($_REQUEST[$name]) ?  $_REQUEST[$name] : '');
+	}
+	
+	/*
 	 * Returns API fields
 	 */
 	public static function api($name = false, $default = '') {
-		global $cfgp_cache;
 		if(empty($name)) {
-			return $cfgp_cache->get('API');
+			return CFGP_Cache::get('API');
 		} else {
-			return isset($cfgp_cache->get('API')[$name]) ? $cfgp_cache->get('API')[$name] : $default;
+			return isset(CFGP_Cache::get('API')[$name]) ? CFGP_Cache::get('API')[$name] : $default;
 		}
 	}
 	
@@ -1055,28 +1053,28 @@ class CFGP_U {
 	* @version  2.0.0
 	******************************************************************/
 	public static function get_page_ID(){
-		global $post, $cfgp_cache;
+		global $post;
 
-		if($current_page_id = $cfgp_cache->get('current_page_id')){
+		if($current_page_id = CFGP_Cache::get('current_page_id')){
 			return $current_page_id;
 		}
 
 		if($id = self::get_page_ID__private__wp_query())
-			return $cfgp_cache->set('current_page_id', $id);
+			return CFGP_Cache::set('current_page_id', $id);
 		else if($id = self::get_page_ID__private__get_the_id())
-			return $cfgp_cache->set('current_page_id', $id);
+			return CFGP_Cache::set('current_page_id', $id);
 		else if(!is_null($post) && isset($post->ID) && !empty($post->ID))
-			return $cfgp_cache->set('current_page_id', $post->ID);
+			return CFGP_Cache::set('current_page_id', $post->ID);
 		else if($post = self::get_page_ID__private__GET_post())
-			return $cfgp_cache->set('current_page_id', $post);
+			return CFGP_Cache::set('current_page_id', $post);
 		else if($p = self::get_page_ID__private__GET_p())
-			return $cfgp_cache->set('current_page_id', $p);
+			return CFGP_Cache::set('current_page_id', $p);
 		else if($page_id = self::get_page_ID__private__GET_page_id())
-			return $cfgp_cache->set('current_page_id', $page_id);
+			return CFGP_Cache::set('current_page_id', $page_id);
 		else if(!is_admin() && $id = self::get_page_ID__private__query())
 			return $id;
 		else if($id = self::get_page_ID__private__page_for_posts())
-			return $cfgp_cache->set('current_page_id', get_option( 'page_for_posts' ));
+			return CFGP_Cache::set('current_page_id', get_option( 'page_for_posts' ));
 
 		return false;
 	}
@@ -1119,7 +1117,7 @@ class CFGP_U {
 
 	// Get page ID by mySQL query
 	protected static function get_page_ID__private__query(){
-		global $wpdb, $cfgp_cache;
+		global $wpdb;
 		$actual_link = rtrim($_SERVER['REQUEST_URI'], '/');
 		$parts = self::explode('/', $actual_link);
 		if(!empty($parts))
@@ -1142,7 +1140,7 @@ class CFGP_U {
 					)
 				))
 				{
-					return $cfgp_cache->set('current_page_id', absint($post_id));
+					return CFGP_Cache::set('current_page_id', absint($post_id));
 				}
 			}
 		}

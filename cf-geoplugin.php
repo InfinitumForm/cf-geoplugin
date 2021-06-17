@@ -33,41 +33,28 @@ if ( ! defined( 'WPINC' ) ) { die( "Don't mess with us." ); }
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
 // Globals
-global $cfgp_cache, $cfgp_version;
+global $cfgp_version;
 
 /*
  * Main plugin constants
  */
 $CFGEO = array();
+
 // Main plugin file
 if ( ! defined( 'CFGP_FILE' ) ) define( 'CFGP_FILE', __FILE__ );
+
 /*
  * Require plugin general setup
  */
 include_once __DIR__ . '/constants.php';
+
 /*
  * Requirements
  */
 include_once CFGP_INC . '/Requirements.php';
-/*
- * Memory control class
- * @verson    1.0.0
- */
-include_once CFGP_INC . '/Cache.php';
-$cfgp_cache = new CFGP_Cache();
-
-if ( defined( 'CFGP_DEBUG_CACHE' ) && CFGP_DEBUG_CACHE === true ) {
-	add_action('admin_footer', function(){
-		if(is_user_logged_in() && current_user_can('administrator')) {
-			global $cfgp_cache;
-			$cfgp_cache->debug();
-		}
-	});
-}
 
 /*
  * Check requiremant
- * @verson    1.0.0
  */
 $CFGP_Requirements = new CFGP_Requirements(array('file' => CFGP_FILE));
 if($CFGP_Requirements->passes()) :
@@ -83,6 +70,8 @@ if($CFGP_Requirements->passes()) :
 	CFGP_Init::deactivation();
 	// Run plugin
 	CFGP_Init::run();
+	// Run plugin debug
+	CFGP_Init::debug();
 	// Dynamic action
 	do_action('cfgp/after_plugin_setup');
 endif;

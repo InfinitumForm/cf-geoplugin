@@ -180,11 +180,10 @@ class CFGP_Global {
 	 * @verson    1.0.0
 	 */
 	public static function __instance() {
-		global $cfgp_cache;
 		$class = self::class;
-		$instance = $cfgp_cache->get($class);
+		$instance = CFGP_Cache::get($class);
 		if ( !$instance ) {
-			$instance = $cfgp_cache->set($class, new self());
+			$instance = CFGP_Cache::set($class, new self());
 		}
 		return $instance;
 	}

@@ -51,7 +51,7 @@ class CFGP_SEO_Redirection extends CFGP_Global
 			$city = CFGP_U::api('city');
 			$postcode = CFGP_U::api('region_code');
 			
-			$where = array();
+			$where = $where_relative = array();
 			
 			if($country || $country_code)
 			{
@@ -61,23 +61,29 @@ class CFGP_SEO_Redirection extends CFGP_Global
 			
 			if($region || $region_code)
 			{
-				if($region) $where[]=$wpdb->prepare('TRIM(LOWER(region)) = %s', strtolower($region));
+				if($region){
+					$where[]=$wpdb->prepare('TRIM(LOWER(region)) = %s', strtolower($region));
+					$where_relative[]=$wpdb->prepare('TRIM(region) = %s', sanitize_title($region));
+				}
 				if($region_code) $where[]=$wpdb->prepare('TRIM(LOWER(region)) = %s', strtolower($region_code));
 			}
 			
-			if($city) $where[]=$wpdb->prepare('TRIM(LOWER(city)) = %s', strtolower($city));
+			if($city){
+				$where[]=$wpdb->prepare('TRIM(LOWER(city)) = %s', strtolower($city));
+				$where_relative[]=$wpdb->prepare('TRIM(city) = %s', sanitize_title($city));
+			}
 			
 			if($postcode) $where[]=$wpdb->prepare('TRIM(LOWER(postcode)) = %s', strtolower($postcode));
 			
 			if(!empty($where)) {
 				$where_exact = ' AND (' . join(' AND ', $where) . ')';
-				$where_relative = ' AND (' . join(' OR ', $where) . ')';
+				$where_relative = ' AND (' . join(' OR ', $where) . (!empty($where_relative) ? ' OR ' . join(' OR ', $where_relative) : '' ) . ')';
 			} else {
 				$where_exact = '';
 				$where_relative = '';
 			}
 			
-			$table = $wpdb->prefix . CFGP_Defaults::TABLE['seo_redirection'];
+			$table = $wpdb->get_blog_prefix() . CFGP_Defaults::TABLE['seo_redirection'];
 			$fields = "
 				TRIM(url) AS url,
 				TRIM(LOWER(country)) AS country,
@@ -245,11 +251,11 @@ class CFGP_SEO_Redirection extends CFGP_Global
 		if( is_array( $postcode ) )
 		{
 			$postcode = array_map( 'strtolower', $postcode );
-			if( isset( $postcode[0] ) && !empty( $postcode[0] ) && in_array( sanitize_title_with_dashes( CFGP_U::api('postcode')), $postcode, true ) ) return true;
+			if( isset( $postcode[0] ) && !empty( $postcode[0] ) && in_array( sanitize_title( CFGP_U::api('postcode')), $postcode, true ) ) return true;
 		}
 		elseif( is_string( $postcode ) )
 		{
-			if( !empty( $postcode ) && strtolower( $postcode ) === sanitize_title_with_dashes(CFGP_U::api('postcode')) ) return true;
+			if( !empty( $postcode ) && strtolower( $postcode ) === strtolower(sanitize_title(CFGP_U::api('postcode'))) ) return true;
 		}
 
 		return false;
@@ -264,11 +270,11 @@ class CFGP_SEO_Redirection extends CFGP_Global
 		if( is_array( $city ) )
 		{
 			$city = array_map( 'strtolower', $city );
-			if( isset( $city[0] ) && !empty( $city[0] ) && in_array( sanitize_title_with_dashes(CFGP_U::api('city')), $city, true ) ) return true;
+			if( isset( $city[0] ) && !empty( $city[0] ) && in_array( sanitize_title(CFGP_U::api('city')), $city, true ) ) return true;
 		}
 		elseif( is_string( $city ) )
 		{
-			if( !empty( $city ) && strtolower( $city ) === sanitize_title_with_dashes(CFGP_U::api('city')) ) return true;
+			if( !empty( $city ) && strtolower( $city ) === strtolower(sanitize_title(CFGP_U::api('city'))) ) return true;
 		}
 
 		return false;
@@ -286,7 +292,7 @@ class CFGP_SEO_Redirection extends CFGP_Global
 				$region = array_map( 'strtolower', $region );
 				// Supports region code and region name
 				if(in_array( strtolower( CFGP_U::api('region_code') ), $region, true ) ) return true; 
-				if(in_array( sanitize_title_with_dashes(CFGP_U::api('region')), $region, true ) ) return true;
+				if(in_array( sanitize_title(CFGP_U::api('region')), $region, true ) ) return true;
 			}
 		}
 		elseif( is_string( $region ) )
@@ -295,7 +301,7 @@ class CFGP_SEO_Redirection extends CFGP_Global
 			{
 				// Supports region code and region name
 				if( strtolower( $region ) === strtolower(CFGP_U::api('region_code')) ) return true; 
-				if( strtolower( $region ) === sanitize_title_with_dashes(CFGP_U::api('region')) ) return true;
+				if( strtolower( $region ) === strtolower(sanitize_title(CFGP_U::api('region'))) ) return true;
 			}
 		}
 
@@ -314,7 +320,7 @@ class CFGP_SEO_Redirection extends CFGP_Global
 				$country = array_map( 'strtolower', $country );
 				// Supports country code and name
 				if( in_array( strtolower(CFGP_U::api('country_code')), $country, true ) ) return true;
-				if( in_array( sanitize_title_with_dashes(CFGP_U::api('country')), $country, true ) ) return true;
+				if( in_array( sanitize_title(CFGP_U::api('country')), $country, true ) ) return true;
 			}
 		}
 		elseif( is_string( $country ) )
@@ -323,7 +329,7 @@ class CFGP_SEO_Redirection extends CFGP_Global
 			{
 				// Supports country code and name
 				if( strtolower( $country ) === strtolower(CFGP_U::api('country_code')) ) return true;
-				if( strtolower( $country ) === sanitize_title_with_dashes(CFGP_U::api('country')) ) return true;
+				if( strtolower( $country ) === strtolower(sanitize_title(CFGP_U::api('country'))) ) return true;
 			}
 		}
 
@@ -335,11 +341,10 @@ class CFGP_SEO_Redirection extends CFGP_Global
 	 * @verson    1.0.0
 	 */
 	public static function instance() {
-		global $cfgp_cache;
 		$class = self::class;
-		$instance = $cfgp_cache->get($class);
+		$instance = CFGP_Cache::get($class);
 		if ( !$instance ) {
-			$instance = $cfgp_cache->set($class, new self());
+			$instance = CFGP_Cache::set($class, new self());
 		}
 		return $instance;
 	}

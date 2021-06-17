@@ -3,11 +3,9 @@
 if ( ! defined( 'WPINC' ) ) { die( "Don't mess with us." ); }
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-global $cfgp_cache;
-
 $remove_tags = array();
 
-$API = $cfgp_cache->get('API');
+$API = CFGP_Cache::get('API');
 if($NEW_API = CFGP_API::lookup(CFGP_U::request_string('cfgp_lookup'))){
 	$API = $NEW_API;
 }

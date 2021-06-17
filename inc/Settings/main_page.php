@@ -3,15 +3,13 @@
 if ( ! defined( 'WPINC' ) ) { die( "Don't mess with us." ); }
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-global $cfgp_cache;
-
 $remove_tags = array(
 	'error',
 	'error_message',
 	'postcode'
 );
 
-$API = $cfgp_cache->get('API');
+$API = CFGP_Cache::get('API');
 
 ?>
 <div class="wrap cfgp-wrap" id="<?php echo $_GET['page']; ?>">

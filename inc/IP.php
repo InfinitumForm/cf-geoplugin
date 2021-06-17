@@ -21,9 +21,8 @@ class CFGP_IP extends CFGP_Global {
 	 */
 	public static function get()
 	{
-		global $cfgp_cache;
 		
-		if($ip = $cfgp_cache->get('IP')) return $ip;
+		if($ip = CFGP_Cache::get('IP')) return $ip;
 		
 		$findIP=array();
 		$blacklistIP = self::blocked( array( self::server() ) );
@@ -85,15 +84,15 @@ class CFGP_IP extends CFGP_Global {
 					{
 						if('HTTP_X_FORWARDED_FOR' == $http)
 						{
-							return $cfgp_cache->set('IP', $ipf[0]);
+							return CFGP_Cache::set('IP', $ipf[0]);
 						}
 						else
 						{
-							return $cfgp_cache->set('IP', end($ipf));
+							return CFGP_Cache::set('IP', end($ipf));
 						}
 					}
 					else
-						return $cfgp_cache->set('IP', $ipf[0]);
+						return CFGP_Cache::set('IP', $ipf[0]);
 				}
 				
 				$ips = $ipf = $ipx = $ipMAX = NULL;
@@ -101,7 +100,7 @@ class CFGP_IP extends CFGP_Global {
 			// Check if IP is real and valid
 			if(self::filter($ip, $blacklistIP)!==false)
 			{
-				return $cfgp_cache->set('IP', $ip);
+				return CFGP_Cache::set('IP', $ip);
 			}
 		}
 		// let's try hacking into apache?
@@ -133,7 +132,7 @@ class CFGP_IP extends CFGP_Global {
 					/*if($ipMAX > 1)
 						return end($ipf);
 					else*/
-					return $cfgp_cache->set('IP', $ipf[0]);
+					return CFGP_Cache::set('IP', $ipf[0]);
 				}
 				
 				$ips = $ipf = $ipx = $ipMAX = NULL;
@@ -157,7 +156,7 @@ class CFGP_IP extends CFGP_Global {
 					$ip = $result->ip;
 					if(self::filter($ip)!==false)
 					{
-						return $cfgp_cache->set('IP', $ip);
+						return CFGP_Cache::set('IP', $ip);
 					}
 				}
 			}
@@ -170,19 +169,19 @@ class CFGP_IP extends CFGP_Global {
 				$ip = shell_exec('powershell.exe -InputFormat none -ExecutionPolicy Unrestricted -NoProfile -Command "(Invoke-WebRequest https://api.ipify.org).Content.Trim()"');
 				if(self::filter($ip)!==false)
 				{
-					return $cfgp_cache->set('IP', $ip);
+					return CFGP_Cache::set('IP', $ip);
 				}
 				
 				$ip = shell_exec('powershell.exe -InputFormat none -ExecutionPolicy Unrestricted -NoProfile -Command "(Invoke-WebRequest https://smart-ip.net/myip).Content.Trim()"');
 				if(self::filter($ip)!==false)
 				{
-					return $cfgp_cache->set('IP', $ip);
+					return CFGP_Cache::set('IP', $ip);
 				}
 				
 				$ip = shell_exec('powershell.exe -InputFormat none -ExecutionPolicy Unrestricted -NoProfile -Command "(Invoke-WebRequest https://ident.me).Content.Trim()"');
 				if(self::filter($ip)!==false)
 				{
-					return $cfgp_cache->set('IP', $ip);
+					return CFGP_Cache::set('IP', $ip);
 				}
 			}
 		}
@@ -193,19 +192,19 @@ class CFGP_IP extends CFGP_Global {
 				$ip = shell_exec('curl https://api.ipify.org##*( )');
 				if(self::filter($ip)!==false)
 				{
-					return $cfgp_cache->set('IP', $ip);
+					return CFGP_Cache::set('IP', $ip);
 				}
 				
 				$ip = shell_exec('curl https://smart-ip.net/myip##*( )');
 				if(self::filter($ip)!==false)
 				{
-					return $cfgp_cache->set('IP', $ip);
+					return CFGP_Cache::set('IP', $ip);
 				}
 				
 				$ip = shell_exec('curl https://ident.me##*( )');
 				if(self::filter($ip)!==false)
 				{
-					return $cfgp_cache->set('IP', $ip);
+					return CFGP_Cache::set('IP', $ip);
 				}
 			}
 		}
@@ -224,9 +223,8 @@ class CFGP_IP extends CFGP_Global {
 	 */
 	public static function blocked($list=array())
 	{
-		global $cfgp_cache;
 		
-		if($ip_blocked = $cfgp_cache->get('IP-blocked')){
+		if($ip_blocked = CFGP_Cache::get('IP-blocked')){
 			return $ip_blocked;
 		}
 		
@@ -290,7 +288,7 @@ class CFGP_IP extends CFGP_Global {
 		}
 		if(!empty($blacklistIP)) $blacklistIP=array_map('trim', $blacklistIP);
 		
-		return $cfgp_cache->set('IP-blocked', $blacklistIP);
+		return CFGP_Cache::set('IP-blocked', $blacklistIP);
 	}
 	
 	/**
@@ -302,9 +300,7 @@ class CFGP_IP extends CFGP_Global {
 	 */
 	public static function server(){
 		
-		global $cfgp_cache;
-		
-		if($ip_server = $cfgp_cache->get('IP-server')){
+		if($ip_server = CFGP_Cache::get('IP-server')){
 			return $ip_server;
 		}
 		
@@ -333,12 +329,12 @@ class CFGP_IP extends CFGP_Global {
 			// Check if here is multiple IP's
 			if($http == 'SERVER_NAME')
 			{
-				$ip = gethostbyname($_SERVER['SERVER_NAME']);
+				$ip = (isset($_SERVER['SERVER_NAME']) && function_exists('gethostbyname') ? gethostbyname($_SERVER['SERVER_NAME']) : '');
 			}
 			// Check if IP is real and valid
 			if(self::validate_any($ip))
 			{
-				return $cfgp_cache->set('IP-server', $ip);
+				return CFGP_Cache::set('IP-server', $ip);
 			}
 		}
 		// Running CLI
@@ -357,7 +353,7 @@ class CFGP_IP extends CFGP_Global {
 						{
 							$ip = end($ips);
 							if(self::validate_any($ip) !== false) {
-								return $cfgp_cache->set('IP-server', $ip);
+								return CFGP_Cache::set('IP-server', $ip);
 							}
 						}
 					}
@@ -379,7 +375,7 @@ class CFGP_IP extends CFGP_Global {
 						{
 							$ip = end($ips);
 							if(self::validate_any($ip) !== false)
-								return $cfgp_cache->set('IP-server', $ip);
+								return CFGP_Cache::set('IP-server', $ip);
 						}
 					}
 				}
@@ -388,13 +384,13 @@ class CFGP_IP extends CFGP_Global {
 		
 		if (version_compare(PHP_VERSION, '5.3.0', '>=') && function_exists('gethostname')) {
 			$gethostname = preg_replace(array('~https?:\/\/~','~^w{3}\.~'),'',gethostbyname(gethostname()));
-			return $cfgp_cache->set('IP-server', $gethostname);
+			return CFGP_Cache::set('IP-server', $gethostname);
 		} else if(version_compare(PHP_VERSION, '5.3.0', '<') && function_exists('php_uname')) {
 			$gethostbyname = preg_replace(array('~https?:\/\/~','~^w{3}\.~'),'',gethostbyname(php_uname("n")));
-			return $cfgp_cache->set('IP-server', $gethostbyname);
+			return CFGP_Cache::set('IP-server', $gethostbyname);
 		} else {
 			$hostname = preg_replace(array('~https?:\/\/~','~^w{3}\.~'),'',gethostbyname(trim(`hostname`)));
-			return $cfgp_cache->set('IP-server', $hostname);
+			return CFGP_Cache::set('IP-server', $hostname);
 		}
 		
 		return false;
@@ -452,11 +448,10 @@ class CFGP_IP extends CFGP_Global {
 	 * @verson    1.0.0
 	 */
 	public static function instance() {
-		global $cfgp_cache;
 		$class = self::class;
-		$instance = $cfgp_cache->get($class);
+		$instance = CFGP_Cache::get($class);
 		if ( !$instance ) {
-			$instance = $cfgp_cache->set($class, new self());
+			$instance = CFGP_Cache::set($class, new self());
 		}
 		return $instance;
 	}

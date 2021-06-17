@@ -9,8 +9,6 @@ if( CFGP_U::request_bool('preview'))
 	exit;
 }
 
-global $cfgp_cache;
-
 $all_countries = get_terms(array(
 	'taxonomy'		=> 'cf-geoplugin-country',
 	'hide_empty'	=> false

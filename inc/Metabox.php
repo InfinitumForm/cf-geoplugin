@@ -19,7 +19,7 @@ class CFGP_Metabox extends CFGP_Global {
 	
 	public function register_style(){
 		$screen = get_current_screen();
-		if(isset( $screen->post_type ) && in_array($screen->post_type, CFGP_Options::get('enable_seo_posts', array()))){
+		if(isset( $screen->post_type ) && in_array($screen->post_type, CFGP_Options::get('enable_seo_posts', array())) || $screen->post_type === 'cf-geoplugin-banner'){
 			wp_enqueue_style( CFGP_NAME . '-fontawesome', CFGP_ASSETS . '/css/font-awesome.min.css', array(), (string)CFGP_VERSION );
 			wp_enqueue_style( CFGP_NAME . '-metabox', CFGP_ASSETS . '/css/style-metabox.css', array(CFGP_NAME . '-fontawesome'), (string)CFGP_VERSION, false );
 			wp_enqueue_style( CFGP_NAME . '-choosen', CFGP_ASSETS . '/js/chosen_v1.8.7/chosen.min.css', 1,  '1.8.7' );
@@ -60,13 +60,13 @@ class CFGP_Metabox extends CFGP_Global {
 		return;
 	}
 	
-	public function add_seo_redirection__callback(){
+	public function add_seo_redirection__callback( $post ){
 		
 		$metabox = 'cfgp-seo-redirection';
 		
-		$seo_redirection = get_post_meta(CFGP_U::get_page_ID(), $metabox, true);
+		$seo_redirection = get_post_meta($post->ID, $metabox, true);
 		if(empty($seo_redirection)){
-			$seo_redirection = get_post_meta(CFGP_U::get_page_ID(), CFGP_METABOX, true); // Depricated (it will be removed in the future)
+			$seo_redirection = get_post_meta($post->ID, CFGP_METABOX, true); // Depricated (it will be removed in the future)
 		}
 		if(empty($seo_redirection)){
 			$seo_redirection = array(
@@ -171,11 +171,10 @@ class CFGP_Metabox extends CFGP_Global {
 	 * @verson    1.0.0
 	 */
 	public static function instance() {
-		global $cfgp_cache;
 		$class = self::class;
-		$instance = $cfgp_cache->get($class);
+		$instance = CFGP_Cache::get($class);
 		if ( !$instance ) {
-			$instance = $cfgp_cache->set($class, new self());
+			$instance = CFGP_Cache::set($class, new self());
 		}
 		return $instance;
 	}

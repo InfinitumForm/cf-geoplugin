@@ -61,7 +61,7 @@ class CFGP_SEO extends CFGP_Global {
 						}
 						// Now assign data to columns
 						foreach($columns as $x=>$column){
-							$csv[$i][$column]=CFGP_Options::sanitize($data[$x]);
+							$csv[$i][$column]=CFGP_Options::sanitize(strtolower(sanitize_title($data[$x])));
 							unset($csv[$i][$x]);
 						}
 					}
@@ -71,7 +71,7 @@ class CFGP_SEO extends CFGP_Global {
 					{
 						global $wpdb;
 						// Define table name
-						$table = $wpdb->prefix . CFGP_Defaults::TABLE['seo_redirection'];
+						$table = $wpdb->get_blog_prefix() . CFGP_Defaults::TABLE['seo_redirection'];
 						// We need old data prepared to return if we have some error
 						$original_data = $wpdb->query("SELECT * FROM `{$table}` WHERE 1;");
 						// Let's clean table
@@ -156,9 +156,9 @@ class CFGP_SEO extends CFGP_Global {
 				}
 				else
 				{
-					$select_country = CFGP_U::request_string('country');
-					$select_region = CFGP_U::request_string('region');
-					$select_city = CFGP_U::request_string('city');
+					$select_country = strtolower(sanitize_title(CFGP_U::request_string('country')));
+					$select_region = strtolower(sanitize_title(CFGP_U::request_string('region')));
+					$select_city = strtolower(sanitize_title(CFGP_U::request_string('city')));
 					$select_postcode = CFGP_U::request_string('postcode');
 					$http_code = CFGP_U::request_string('http_code', 302);
 					$only_once = CFGP_U::request_int('only_once', 0);
@@ -200,9 +200,9 @@ class CFGP_SEO extends CFGP_Global {
 				else
 				{
 					$ID = CFGP_U::request_int('id', 0);
-					$select_country = CFGP_U::request_string('country');
-					$select_region = CFGP_U::request_string('region');
-					$select_city = CFGP_U::request_string('city');
+					$select_country = strtolower(sanitize_title(CFGP_U::request_string('country')));
+					$select_region = strtolower(sanitize_title(CFGP_U::request_string('region')));
+					$select_city = strtolower(sanitize_title(CFGP_U::request_string('city')));
 					$select_postcode = CFGP_U::request_string('postcode');
 					$http_code = CFGP_U::request_string('http_code', 302);
 					$only_once = CFGP_U::request_int('only_once', 0);
@@ -259,7 +259,7 @@ class CFGP_SEO extends CFGP_Global {
 			if(function_exists('ini_set')) ini_set('max_execution_time', 0);
 					
 			global $wpdb;
-			$table = $wpdb->prefix . CFGP_Defaults::TABLE['seo_redirection'];
+			$table = $wpdb->get_blog_prefix() . CFGP_Defaults::TABLE['seo_redirection'];
 			$result = $wpdb->get_results("SELECT country, region, city, postcode, url, http_code, active, only_once FROM {$table} WHERE 1", ARRAY_A);
 			
 			$num_fields = count($result); 
@@ -315,7 +315,7 @@ class CFGP_SEO extends CFGP_Global {
 	 */
 	public static function get($ID){
 		global $wpdb;
-		$table = $wpdb->prefix . CFGP_Defaults::TABLE['seo_redirection'];
+		$table = $wpdb->get_blog_prefix() . CFGP_Defaults::TABLE['seo_redirection'];
 		$get = $wpdb->get_row($wpdb->prepare(
 			"SELECT * FROM {$table} WHERE ID = %d",
 			$ID
@@ -329,7 +329,7 @@ class CFGP_SEO extends CFGP_Global {
 	public static function save($url, $country = '', $region = '', $city = '', $postcode = '', $http_code = 302, $only_once = 0, $active = 1){
 		global $wpdb;
 		return $wpdb->insert(
-			$wpdb->prefix . CFGP_Defaults::TABLE['seo_redirection'],
+			$wpdb->get_blog_prefix() . CFGP_Defaults::TABLE['seo_redirection'],
 			array(
 				'url' => $url,
 				'country' => $country,
@@ -359,7 +359,7 @@ class CFGP_SEO extends CFGP_Global {
 	public static function delete($ID){
 		global $wpdb;
 		return $wpdb->delete(
-			$wpdb->prefix . CFGP_Defaults::TABLE['seo_redirection'],
+			$wpdb->get_blog_prefix() . CFGP_Defaults::TABLE['seo_redirection'],
 			array(
 				'ID' => $ID
 			),
@@ -375,7 +375,7 @@ class CFGP_SEO extends CFGP_Global {
 	public static function update($ID, $url, $country = '', $region = '', $city = '', $postcode = '', $http_code = 302, $only_once = 0, $active = 1){
 		global $wpdb;
 		return $wpdb->update(
-			$wpdb->prefix . CFGP_Defaults::TABLE['seo_redirection'],
+			$wpdb->get_blog_prefix() . CFGP_Defaults::TABLE['seo_redirection'],
 			array(
 				'url' => $url,
 				'country' => $country,
@@ -410,11 +410,10 @@ class CFGP_SEO extends CFGP_Global {
 	 * @verson    1.0.0
 	 */
 	public static function instance() {
-		global $cfgp_cache;
 		$class = self::class;
-		$instance = $cfgp_cache->get($class);
+		$instance = CFGP_Cache::get($class);
 		if ( !$instance ) {
-			$instance = $cfgp_cache->set($class, new self());
+			$instance = CFGP_Cache::set($class, new self());
 		}
 		return $instance;
 	}

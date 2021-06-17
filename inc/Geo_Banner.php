@@ -18,6 +18,7 @@ class CFGP_Geo_Banner extends CFGP_Global {
 		$this->add_action('manage_posts_custom_column', 'columns_banner_content', 10, 2);
 		$this->add_action('delete_post', 'delete_post', 10);
 		$this->add_action('add_meta_boxes', 'add_meta_boxes', 1);
+		$this->add_action('save_post', 'save_post');
 	}
 	
 	/**
@@ -83,6 +84,32 @@ class CFGP_Geo_Banner extends CFGP_Global {
 	}
 	
 	/**
+	 * Hook for the post save/update
+	 */
+	public function save_post($post_id){
+		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+			return;
+		}
+		if ( ! current_user_can( 'edit_post', $post_id ) ) {
+			return;
+		}
+		
+		$post_type = get_post_type($post_id);
+		
+		if( $post_type !== 'cf-geoplugin-banner' ) {
+			return;
+		}
+		
+		update_post_meta( $post_id, 'cfgp-banner-location-country',  CFGP_Options::sanitize( CFGP_U::request('cfgp-banner-location-country', array()) ));
+		update_post_meta( $post_id, 'cfgp-banner-location-region',  CFGP_Options::sanitize( CFGP_U::request('cfgp-banner-location-region', array()) ));
+		update_post_meta( $post_id, 'cfgp-banner-location-city',  CFGP_Options::sanitize( CFGP_U::request('cfgp-banner-location-city', array()) ));
+		
+		wp_set_post_terms($post_id, '', 'cf-geoplugin-country');
+		wp_set_post_terms($post_id, '', 'cf-geoplugin-region');
+		wp_set_post_terms($post_id, '', 'cf-geoplugin-city');
+	}
+	
+	/**
 	 * Banner Head
 	 *
 	 * @since    4.0.0
@@ -106,6 +133,7 @@ class CFGP_Geo_Banner extends CFGP_Global {
 		$url=CFGP_U::parse_url();
 		if(strpos($url['url'],'post_type=cf-geoplugin-banner')!==false)
 		{
+
 			if ($column_name == 'cf_geo_banner_shortcode')
 			{
 				echo '<ul>';
@@ -114,33 +142,51 @@ class CFGP_Geo_Banner extends CFGP_Global {
 				echo '</ul>';
 			}
 			else if ($column_name == 'cf_geo_banner_locations')
-			{
-				// get all taxonomies
-				$taxonomy_list = array(
-					__('Countries',CFGP_NAME)	=>	'cf-geoplugin-country',
-					__('Regions',CFGP_NAME)		=>	'cf-geoplugin-region',
-					__('Cities',CFGP_NAME)		=>	'cf-geoplugin-city',
-					__('Postcodes',CFGP_NAME)	=>	'cf-geoplugin-postcode'
-				);
+			{				
 				$print=array();
-				// list taxonomies
-				foreach($taxonomy_list as $name=>$taxonomy)
+				
+				foreach(array(
+					__('Countries',CFGP_NAME)	=>	'country',
+					__('Regions',CFGP_NAME)		=>	'region',
+					__('Cities',CFGP_NAME)		=>	'city'
+				) as $name=>$field)
 				{
-					// list all terms
-					$all_terms = wp_get_post_terms($post_ID, $taxonomy, array("fields" => "all"));
-					$part=array();
-					foreach($all_terms as $i=>$fetch)
-					{
-						$edit_link = get_edit_term_link( $fetch->term_id, $taxonomy, 'cf-geoplugin-banner' );
-						$part[]='<a href="' . esc_url($edit_link) . '">' . $fetch->name . ( !empty($fetch->description) ? ' (' . $fetch->description . ')' : NULL ) . '</a>';
-					}
-					if(count($part)>0)
+					$get_post_meta = get_post_meta($post_ID, "cfgp-banner-location-{$field}", true);
+					
+					if(!empty($get_post_meta))
 					{
 						$print[]='<li><strong>' . $name . ':</strong><br>';
-							$print[]=join(",<br>", $part);
+							$print[]=join("<br>", $get_post_meta);
 						$print[]='<li>';
 					}
 				}
+				
+				if(empty($print))
+				{
+					// list taxonomies
+					foreach(array(
+						__('Countries',CFGP_NAME)	=>	'cf-geoplugin-country',
+						__('Regions',CFGP_NAME)		=>	'cf-geoplugin-region',
+						__('Cities',CFGP_NAME)		=>	'cf-geoplugin-city'
+					) as $name=>$taxonomy)
+					{
+						// list all terms
+						$all_terms = wp_get_post_terms($post_ID, $taxonomy, array("fields" => "all"));
+						$part=array();
+						foreach($all_terms as $i=>$fetch)
+						{
+							$edit_link = get_edit_term_link( $fetch->term_id, $taxonomy, 'cf-geoplugin-banner' );
+							$part[]='<a href="' . esc_url($edit_link) . '">' . $fetch->name . ( !empty($fetch->description) ? ' (' . $fetch->description . ')' : NULL ) . '</a>';
+						}
+						if(count($part)>0)
+						{
+							$print[]='<li><strong>' . $name . ':</strong><br>';
+								$print[]=join(",<br>", $part);
+							$print[]='<li>';
+						}
+					}
+				}
+				
 				// print terms
 				if(count($print)>0)
 				{
@@ -161,16 +207,92 @@ class CFGP_Geo_Banner extends CFGP_Global {
 		$screen = get_current_screen();
 		if(isset( $screen->post_type ) && $screen->post_type === 'cf-geoplugin-banner'){
 			$this->add_meta_box(
-				CFGP_NAME . '-banner-sc',								// Unique ID
-				__( 'Geo Banner Shortcode', CFGP_NAME ),				// Box title
-				'add_meta_box__shortcode',								// Content callback, must be of type callable
-				'cf-geoplugin-banner',									// Post type
+				CFGP_NAME . '-banner-sc',			// Unique ID
+				__( 'Shortcodes', CFGP_NAME ),		// Box title
+				'add_meta_box__shortcode',			// Content callback, must be of type callable
+				'cf-geoplugin-banner',				// Post type
 				'advanced',
 				'high'
+			);
+			$this->add_meta_box(
+				CFGP_NAME . '-banner-settings',		// Unique ID
+				__( 'Settings', CFGP_NAME ),		// Box title
+				'add_meta_box__settings',			// Content callback, must be of type callable
+				'cf-geoplugin-banner',				// Post type
+				'side'
 			);
 		}
 		
 		return;
+	}
+	
+	/**
+     * Geo banner settings
+     */
+	public function add_meta_box__settings( $post )
+	{
+		$country_code = array();
+
+		// Get old taxonomies from the prevous version and merge with new one
+		$taxonomy_list = array(
+			__('Select Country',CFGP_NAME)	=>	array(
+				'taxonomy' => 'cf-geoplugin-country',
+				'post_meta' => 'cfgp-banner-location',
+				'field' => 'country',
+				'function' => 'select_countries'
+			),
+			__('Select Region',CFGP_NAME)	=>	array(
+				'taxonomy' => 'cf-geoplugin-region',
+				'post_meta' => 'cfgp-banner-location',
+				'field' => 'region',
+				'function' => 'select_regions'
+			),
+			__('Select City',CFGP_NAME)		=>	array(
+				'taxonomy' => 'cf-geoplugin-city',
+				'post_meta' => 'cfgp-banner-location',
+				'field' => 'city',
+				'function' => 'select_cities'
+			)
+		);
+		
+		echo '<div class="cfgp-country-region-city-multiple-form">';
+		// list taxonomies
+		foreach($taxonomy_list as $name=>$option)
+		{
+			// list all terms
+			$all_terms = wp_get_post_terms($post->ID, $option['taxonomy'], array("fields" => "all"));
+			$data=array();
+			foreach($all_terms as $i=>$fetch)
+			{
+				$data[]=$fetch->slug;
+			}
+			
+			$get_post_meta = get_post_meta($post->ID, "{$option['post_meta']}-{$option['field']}", true);
+			
+			if(!empty($get_post_meta)){
+				$data = array_merge($data, $get_post_meta);
+			}
+			
+			if('cf-geoplugin-country' == $option['taxonomy']){
+				$country_code = $data;
+			}
+			
+			printf(
+				'<p class="post-attributes-label-wrapper cfgp-banner-label-wrapper-%s">%s%s</p>',
+				$option['field'],
+				sprintf(
+					'<label for="%s">%s</label>',
+					$option['taxonomy'],
+					$name
+				),
+				CFGP_Form::{$option['function']}(array(
+					'name'=>"{$option['post_meta']}-{$option['field']}",
+					'id' => $option['taxonomy'],
+					'country_code' => $country_code
+				), $data, true, false)
+			);
+		}
+		echo '</div>';
 	}
 	
 	/**
@@ -191,11 +313,10 @@ class CFGP_Geo_Banner extends CFGP_Global {
 	 * @verson    1.0.0
 	 */
 	public static function instance() {
-		global $cfgp_cache;
 		$class = self::class;
-		$instance = $cfgp_cache->get($class);
+		$instance = CFGP_Cache::get($class);
 		if ( !$instance ) {
-			$instance = $cfgp_cache->set($class, new self());
+			$instance = CFGP_Cache::set($class, new self());
 		}
 		return $instance;
 	}

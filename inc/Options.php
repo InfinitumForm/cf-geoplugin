@@ -25,13 +25,12 @@ class CFGP_Options
 	 */
 	public static function get($name = false, $default = NULL)
 	{
-		global $cfgp_cache;
 		// Get cache
-		$get_option = $cfgp_cache->get('options');
+		$get_option = CFGP_Cache::get('options');
 		
 		// If cache is empty, get from the database
 		if( !$get_option ){
-			$get_option = $cfgp_cache->set(
+			$get_option = CFGP_Cache::set(
 				'options',
 				wp_parse_args(
 					( CFGP_NETWORK_ADMIN ? get_site_option( CFGP_NAME ) : get_option( CFGP_NAME ) ),
@@ -88,7 +87,6 @@ class CFGP_Options
 	 */
 	public static function set($name_or_array=array(), $value=NULL)
 	{
-		global $cfgp_cache;
 		
 		// Get plugin options
 		$options = self::get();
@@ -131,7 +129,7 @@ class CFGP_Options
 		}
 		
 		// Save to cache
-		$cfgp_cache->set('options', $options);
+		CFGP_Cache::set('options', $options);
 		
 		return apply_filters( 'cfgp/options/set', $options, CFGP_Defaults::OPTIONS, $name_or_array, $value);
 	}
@@ -145,7 +143,6 @@ class CFGP_Options
 	 */
 	public static function delete($name_or_array)
 	{
-		global $cfgp_cache;
 		
 		// Get plugin options
 		$options = self::get();
@@ -180,7 +177,7 @@ class CFGP_Options
 		}
 		
 		// Save to cache
-		$cfgp_cache->set('options', $options);
+		CFGP_Cache::set('options', $options);
 		
 		return apply_filters( 'cfgp/options/delete', $options, CFGP_Defaults::OPTIONS, $name_or_array);
 	}

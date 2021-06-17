@@ -15,7 +15,6 @@ class CFGP_API extends CFGP_Global {
 	public function __construct( $dry_run = false ){
 		if($dry_run !== true)
 		{
-			global $cfgp_cache;
 			// Collect geo data & DNS
 			$return = $this->get('geo');
 			if (CFGP_Options::get('enable_dns_lookup', 0)) {
@@ -26,9 +25,9 @@ class CFGP_API extends CFGP_Global {
 				$return
 			);
 			// Clear cache
-			$cfgp_cache->delete('transfer_dns_records');
+			CFGP_Cache::delete('transfer_dns_records');
 			// Save API data to array
-			$cfgp_cache->set('API', $return);
+			CFGP_Cache::set('API', $return);
 		}
 	}
 	
@@ -39,12 +38,11 @@ class CFGP_API extends CFGP_Global {
 	 * @since    8.0.0
 	 */
 	public static function lookup($ip, $property = array()){
-		global $cfgp_cache;
 		if($ip = CFGP_IP::filter($ip)) {
 			$return = self::instance(true)->get('geo', $ip, $property);
 			if (CFGP_Options::get('enable_dns_lookup', 0)) {
 				$return = array_merge($return, self::instance(true)->get('dns', $ip));
-				$cfgp_cache->delete('transfer_dns_records');
+				CFGP_Cache::delete('transfer_dns_records');
 			}
 			
 			return $return;
@@ -59,7 +57,6 @@ class CFGP_API extends CFGP_Global {
 	 * @since    8.0.0
 	 */
 	public function get($name, $ip = NULL, $property = array()){
-		global $cfgp_cache;
 		
 		$default_fields = apply_filters( 'cf_geoplugin_api_default_fields', CFGP_Defaults::API_RETURN);
 		
@@ -101,7 +98,7 @@ class CFGP_API extends CFGP_Global {
 					$return['current_date']= date(get_option('date_format'), CFGP_TIME);
 					
 					// Save in the session DNS host
-					$cfgp_cache->set('transfer_dns_records', self::fix_dns_host($transient['dns']));
+					CFGP_Cache::set('transfer_dns_records', self::fix_dns_host($transient['dns']));
 				}
 				
 				// Get new data
@@ -235,8 +232,8 @@ class CFGP_API extends CFGP_Global {
 						$return['accuracy_radius'] = $m_accuracy.$m_unit;
 						
 						// Save in the session DNS host
-						$cfgp_cache->set('transfer_dns_records', self::fix_dns_host($return));
-						$DNS = $cfgp_cache->get('transfer_dns_records');
+						CFGP_Cache::set('transfer_dns_records', self::fix_dns_host($return));
+						$DNS = CFGP_Cache::get('transfer_dns_records');
 						
 						// Render response
 						$return = apply_filters( 'cf_geoplugin_api_render_response', array(
@@ -322,7 +319,7 @@ class CFGP_API extends CFGP_Global {
 				if($transient = get_transient("cfgp-api-{$ip_slug}-dns"))
 				{					
 					$return = apply_filters( 'cf_geoplugin_dns_render_response', $transient);
-					$cfgp_cache->delete('transfer_dns_records');
+					CFGP_Cache::delete('transfer_dns_records');
 				}
 				
 				if(empty($return))
@@ -348,8 +345,8 @@ class CFGP_API extends CFGP_Global {
 						
 						if($return['error']===true) return $return;
 						
-						$get = $cfgp_cache->get('transfer_dns_records');
-						$cfgp_cache->delete('transfer_dns_records');
+						$get = CFGP_Cache::get('transfer_dns_records');
+						CFGP_Cache::delete('transfer_dns_records');
 						
 						$return = array_merge($return, array(
 							'isp' => (isset($get['isp']) ? $get['isp'] : NULL),
@@ -483,10 +480,9 @@ class CFGP_API extends CFGP_Global {
 	 * @verson    1.0.0
 	 */
 	public static function instance() {
-		global $cfgp_cache;
-		$instance = $cfgp_cache->get(self::class);
+		$instance = CFGP_Cache::get(self::class);
 		if ( !$instance ) {
-			$instance = $cfgp_cache->set(self::class, new self());
+			$instance = CFGP_Cache::set(self::class, new self());
 		}
 		return $instance;
 	}

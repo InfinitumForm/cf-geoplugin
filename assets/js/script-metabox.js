@@ -36,6 +36,87 @@
 		}
 	}('.chosen-select'));
 	
+	/*
+	 * Select country, region, city (multiple)
+	 */
+	(function($form){
+		if($form.length > 0)
+		{
+			$($form).each(function(){
+				var $container = $(this),
+					$select_countries = $container.find('select.cfgp-select-country'),
+					$select_regions = $container.find('select.cfgp-select-region'),
+					$select_cities = $container.find('select.cfgp-select-city');
+				
+				$select_countries.on('change select', function(){
+					var $country_code = $(this).find('option:selected').map(function(_, e){return e.value}).get();
+					
+					$select_regions.next('.chosen-container').find('.chosen-search-input').prop('disabled', true);
+					$select_cities.next('.chosen-container').find('.chosen-search-input').prop('disabled', true);
+					
+					$.ajax({
+						url: (typeof ajaxurl !== 'undefined' ? ajaxurl : CFGP.ajaxurl),
+						method: 'post',
+						accept: 'application/json',
+						data: {
+							action : 'cfgp_load_regions',
+							country_code : $country_code
+						},
+						cache: true
+					}).done( function( data ) {
+						var options = '',
+							$regions_code = $select_regions.find('option:selected').map(function(_, e){return e.value}).get();
+						
+						for(key in data){
+							options+='<option value="' + data[key].key + '">' + data[key].value + '</option>';
+						}
+						
+						$select_regions.html(options);
+						
+						for (i in $regions_code) {
+							$select_regions.find('option[value="'+$regions_code[i]+'"]').prop('selected', true);
+						}
+						
+						$select_regions.next('.chosen-container').find('.chosen-search-input').prop('disabled', false);
+						$select_regions.trigger("chosen:updated");
+					}).fail(function(){
+						$select_regions.next('.chosen-container').find('.chosen-search-input').prop('disabled', false);
+					});
+					
+					$.ajax({
+						url: (typeof ajaxurl !== 'undefined' ? ajaxurl : CFGP.ajaxurl),
+						method: 'post',
+						accept: 'application/json',
+						data: {
+							action : 'cfgp_load_cities',
+							country_code : $country_code
+						},
+						cache: true
+					}).done( function( data ) {
+						var options = '',
+							$cities_code = $select_cities.find('option:selected').map(function(_, e){return e.value}).get();
+							
+						for(key in data){
+							options+='<option value="' + data[key].key + '">' + data[key].value + '</option>';
+						}
+						
+						$select_cities.html(options);
+						
+						for (i in $cities_code) {
+							$select_cities.find('option[value="'+$cities_code[i]+'"]').prop('selected', true);
+						}
+						
+						$select_cities.next('.chosen-container').find('.chosen-search-input').prop('disabled', false);
+						$select_cities.trigger("chosen:updated");
+					}).fail(function(){
+						$select_cities.next('.chosen-container').find('.chosen-search-input').prop('disabled', false);
+					});
+					
+				});
+			});
+		}
+	})($('.cfgp-country-region-city-multiple-form'));
+	
 	
 	$(document)
 	// Add SEO redirection

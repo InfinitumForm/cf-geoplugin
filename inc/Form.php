@@ -44,6 +44,13 @@ class CFGP_Form {
 				$options[$country_code] = strtoupper($country_code).' - '.$country;
 			}
 		}
+		
+		if(isset($attr['class'])){
+			$attr['class'] = trim($attr['class']) . ' cfgp-select-country';
+		} else {
+			$attr['class'] = 'cfgp-select-country';
+		}
+		
 		if($multiple) {
 			$return = self::select_multiple($options, $attr, $selected, false);
 		} else {
@@ -70,19 +77,35 @@ class CFGP_Form {
 				$attr['data-placeholder'] = __( 'Choose regions...', CFGP_NAME );
 			}
 		}
-		if($data = get_terms(array(
-			'taxonomy'		=> 'cf-geoplugin-region',
-			'hide_empty'	=> false
-		))){
-			foreach( $data as $key => $fetch ){
-				$options[$fetch->slug] = $fetch->name.' - '.$fetch->description;
+		
+		if(!isset($attr['country_code'])){
+			$attr['country_code'] = '';
+		}
+		
+		if(is_array($attr['country_code']))
+		{
+			foreach($attr['country_code'] as $country_code)
+			{
+				if($data = CFGP_Library::get_regions($country_code)){
+					foreach( $data as $key => $fetch ){
+						$options[strtolower(sanitize_title($fetch['region']))] = $fetch['region'];
+					}
+				}
+			}
+		}
+		else
+		{
+			if($data = CFGP_Library::get_regions($attr['country_code'])){
+				foreach( $data as $key => $fetch ){
+					$options[strtolower(sanitize_title($fetch['region']))] = $fetch['region'];
+				}
 			}
 		}
 		
 		if(isset($attr['class'])){
-			$attr['class'] = trim($attr['class']) . ' cfgp-fill-by-country';
+			$attr['class'] = trim($attr['class']) . ' cfgp-select-region';
 		} else {
-			$attr['class'] = 'cfgp-fill-by-country';
+			$attr['class'] = 'cfgp-select-region';
 		}
 		
 		if($multiple) {
@@ -90,6 +113,7 @@ class CFGP_Form {
 		} else {
 			$return = self::select($options, $attr, $selected, false);
 		}
+		
 		if($echo) {
 			echo $return;
 		} else {
@@ -111,19 +135,36 @@ class CFGP_Form {
 				$attr['data-placeholder'] = __( 'Choose cities...', CFGP_NAME );
 			}
 		}
-		if($data = get_terms(array(
-			'taxonomy'		=> 'cf-geoplugin-city',
-			'hide_empty'	=> false
-		))){
-			foreach( $data as $key => $fetch ){
-				$options[$fetch->slug] = $fetch->name;
+		
+		if(!isset($attr['country_code'])){
+			$attr['country_code'] = '';
+		}
+		
+		if(is_array($attr['country_code']))
+		{
+			foreach($attr['country_code'] as $country_code)
+			{
+				if($data = CFGP_Library::get_cities($country_code)){
+					foreach( $data as $fetch ){
+						$options[strtolower(sanitize_title($fetch))] = $fetch;
+					}
+				}
+			}
+		}
+		else
+		{
+			if($data = CFGP_Library::get_cities($attr['country_code'])){
+				foreach( $data as $fetch ){
+					$options[strtolower(sanitize_title($fetch))] = $fetch;
+				}
 			}
 		}
 		
+		
 		if(isset($attr['class'])){
-			$attr['class'] = trim($attr['class']) . ' cfgp-fill-by-region';
+			$attr['class'] = trim($attr['class']) . ' cfgp-select-city';
 		} else {
-			$attr['class'] = 'cfgp-fill-by-region';
+			$attr['class'] = 'cfgp-select-city';
 		}
 		
 		if($multiple) {
@@ -176,7 +217,11 @@ class CFGP_Form {
 	public static function select_multiple($options=array(), $attr = array(), $selected = '', $echo = true){
 		$options_render = array();
 		
-		if(!empty($options) && is_array($options))
+		if(empty($options)){
+			$options = array();
+		}
+		
+		if(is_array($options))
 		{
 			if(!isset($attr['data-placeholder'])) {
 				$attr['data-placeholder'] = __( 'Choose options...', CFGP_NAME );
@@ -195,14 +240,22 @@ class CFGP_Form {
 			$attr['name']=$attr['name'].'[]';
 			
 			if(isset($attr['class'])){
-				$attr['class'] = $attr['class'] . ' chosen-select';
+				$attr['class'] = trim($attr['class']) . ' chosen-select';
 			} else {
 				$attr['class'] = 'chosen-select';
 			}
-			
+
 			foreach($options as $val=>$name)
 			{
-				$find = array_map( 'trim', explode( ']|[', $selected ) );
+				if(is_array($selected)) {
+					$find = array_map( 'trim', $selected );
+				} else {
+					if(preg_match('/\]\|\[/', $selected)) {
+						$find = array_map( 'trim', explode( "]|[", $selected ) );
+					} else {
+						$find = array_map( 'trim', explode( ',', $selected ) );
+					}
+				}
 				$current = (in_array($val, $find) ? ' selected' : '');
 				$options_render[] = apply_filters('cfgp/form/select_multiple/option/raw', "<option value=\"{$val}\"{$current}>{$name}</option>", $val, $name, $selected);
 			}
@@ -351,6 +404,9 @@ class CFGP_Form {
 	
 	// Parse input attributes
 	public static function parse_attributes($attr, $quote='"', $echo = false){
+		
+		if(isset($attr['country_code'])) unset($attr['country_code']);
+		
 		$attributes = array();
 		if(!empty($attr) && is_array($attr))
 		{

@@ -204,7 +204,7 @@ endforeach;
                 </thead>
                 <tbody>
                 	<?php
-                    	$table = $wpdb->prefix.CFGP_Defaults::TABLE['rest_tokens'];
+                    	$table = $wpdb->get_blog_prefix().CFGP_Defaults::TABLE['rest_tokens'];
 						$tokens = $wpdb->get_results("SELECT * FROM {$table} WHERE 1");
 						if(count($tokens) > 0):
 						foreach($tokens as $i => $token):

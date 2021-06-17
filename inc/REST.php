@@ -324,13 +324,12 @@ class CFGP_REST extends CFGP_Global {
 	 */
 	public static function get($name = false, $default = NULL)
 	{
-		global $cfgp_cache;
 		// Get cache
-		$get_option = $cfgp_cache->get('rest');
+		$get_option = CFGP_Cache::get('rest');
 		
 		// If cache is empty, get from the database
 		if( !$get_option ){
-			$get_option = $cfgp_cache->set(
+			$get_option = CFGP_Cache::set(
 				'rest',
 				wp_parse_args(
 					( CFGP_NETWORK_ADMIN ? get_site_option( CFGP_NAME . '-rest' ) : get_option( CFGP_NAME . '-rest' ) ),
@@ -365,7 +364,6 @@ class CFGP_REST extends CFGP_Global {
 	 */
 	public static function set($name_or_array=array(), $value=NULL)
 	{
-		global $cfgp_cache;
 		
 		// Get plugin options
 		$options = self::get();
@@ -403,7 +401,7 @@ class CFGP_REST extends CFGP_Global {
 		}
 		
 		// Save to cache
-		$cfgp_cache->set('rest', $options);
+		CFGP_Cache::set('rest', $options);
 		
 		return apply_filters( 'cfgp/rest/set', $options, CFGP_Defaults::REST, $name_or_array, $value);
 	}
@@ -465,11 +463,10 @@ class CFGP_REST extends CFGP_Global {
 	 * @verson    1.0.0
 	 */
 	public static function instance() {
-		global $cfgp_cache;
 		$class = self::class;
-		$instance = $cfgp_cache->get($class);
+		$instance = CFGP_Cache::get($class);
 		if ( !$instance ) {
-			$instance = $cfgp_cache->set($class, new self());
+			$instance = CFGP_Cache::set($class, new self());
 		}
 		return $instance;
 	}

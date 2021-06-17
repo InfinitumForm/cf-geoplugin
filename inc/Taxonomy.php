@@ -46,7 +46,7 @@ class CFGP_Taxonomy extends CFGP_Global {
 						'parent_item_colon' 	=> __('Parent Country',CFGP_NAME),
 					),
 					'hierarchical'		=> true,
-					'show_ui'			=> true,
+					'show_ui'			=> false,
 					'public'		 	=> false,
 					'label'          	=> __('Countries',CFGP_NAME),
 					'singular_label' 	=> __('Country',CFGP_NAME),
@@ -77,7 +77,7 @@ class CFGP_Taxonomy extends CFGP_Global {
 						'parent_item_colon' 	=> __('Parent Region',CFGP_NAME),
 					),
 					'hierarchical'   	=> true,
-					'show_ui'			=> true,
+					'show_ui'			=> false,
 					'public'		 	=> false,
 					'label'          	=> __('Regions',CFGP_NAME),
 					'singular_label' 	=> __('Region',CFGP_NAME),
@@ -109,7 +109,7 @@ class CFGP_Taxonomy extends CFGP_Global {
 						'parent_item_colon' 	=> __('Parent City',CFGP_NAME),
 					),
 					'hierarchical'   	=> true,
-					'show_ui'			=> true,
+					'show_ui'			=> false,
 					'public'		 	=> false,
 					'label'          	=> __('Cities',CFGP_NAME),
 					'singular_label' 	=> __('City',CFGP_NAME),
@@ -141,7 +141,7 @@ class CFGP_Taxonomy extends CFGP_Global {
 						'parent_item_colon' 	=> __('Parent Postcode',CFGP_NAME),
 					),
 					'hierarchical'   	=> true,
-					'show_ui'			=> true,
+					'show_ui'			=> false,
 					'public'		 	=> false,
 					'label'          	=> __('Postcodes',CFGP_NAME),
 					'singular_label' 	=> __('Postcode',CFGP_NAME),
@@ -303,11 +303,10 @@ class CFGP_Taxonomy extends CFGP_Global {
 	 * @verson    1.0.0
 	 */
 	public static function instance() {
-		global $cfgp_cache;
 		$class = self::class;
-		$instance = $cfgp_cache->get($class);
+		$instance = CFGP_Cache::get($class);
 		if ( !$instance ) {
-			$instance = $cfgp_cache->set($class, new self());
+			$instance = CFGP_Cache::set($class, new self());
 		}
 		return $instance;
 	}

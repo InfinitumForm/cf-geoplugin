@@ -274,7 +274,7 @@
 				custom_uploader = null;
 			}, 5);
 		};
-
+		
 		//When a file is selected, grab the URL and set it as the text field's value
 		custom_uploader.on({
 			'select': upload_csv,
@@ -283,6 +283,66 @@
 		//Open the uploader dialog
 		custom_uploader.open();
 	});
+	
+	/*
+	 * Select country, region, city
+	 */
+	(function($form){
+		if($form.length > 0)
+		{
+			$($form).each(function(){
+				var $container = $(this),
+					$select_countries = $container.find('select.cfgp-select-country'),
+					$select_regions = $container.find('select.cfgp-select-region'),
+					$select_cities = $container.find('select.cfgp-select-city');
+		
+				$select_countries.on('change select', function(){
+					var $country_code = $(this).find('option:selected').attr('value');
+					$select_regions.prop('disabled', true);
+					$select_cities.prop('disabled', true);
+					
+					$.ajax({
+						url: (typeof ajaxurl !== 'undefined' ? ajaxurl : CFGP.ajaxurl),
+						method: 'post',
+						accept: 'application/json',
+						data: {
+							action : 'cfgp_load_regions',
+							country_code : $country_code
+						},
+						cache: true
+					}).done( function( data ) {
+						var options = '<option>-</option>';
+						for(key in data){
+							options+='<option value="' + data[key].key + '">' + data[key].value + '</option>';
+						}
+						$select_regions.html(options).prop('disabled', false);
+					}).fail(function(){
+						$select_regions.prop('disabled', false);
+					});
+					
+					$.ajax({
+						url: (typeof ajaxurl !== 'undefined' ? ajaxurl : CFGP.ajaxurl),
+						method: 'post',
+						accept: 'application/json',
+						data: {
+							action : 'cfgp_load_cities',
+							country_code : $country_code
+						},
+						cache: true
+					}).done( function( data ) {
+						var options = '<option>-</option>', i;
+						for(key in data){
+							options+='<option value="' + data[key].key + '">' + data[key].value + '</option>';
+						}
+						$select_cities.html(options).prop('disabled', false);
+					}).fail(function(){
+						$select_cities.prop('disabled', false);
+					});
+					
+				});
+			});
+		}
+	})($('.cfgp-country-region-city-form'));
 	
 	/**
 	 * Display Thank You footer

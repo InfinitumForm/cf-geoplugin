@@ -18,6 +18,7 @@ final class CFGP_Init{
 		
 		// Call main classes
 		$classes = apply_filters('cfgp/init/classes', array(
+			'CFGP_Cache',				// Register cache
 			'CFGP_Taxonomy',			// Register Taxonomy
 			'CFGP_Geo_Banner',			// Register Post Type
 			'CFGP_Metabox',				// Metabox class
@@ -60,6 +61,7 @@ final class CFGP_Init{
 		
 		// Include file classes
 		$includes = apply_filters('cfgp/init/include_classes', array(
+			CFGP_INC . '/Cache.php',			// Memory control class
 			CFGP_INC . '/OS.php',				// Operating System info and tool class
 			CFGP_INC . '/Defaults.php',			// Default values, data
 			CFGP_INC . '/Utilities.php',		// Utilities
@@ -112,6 +114,28 @@ final class CFGP_Init{
 			return $loaded;
 		} else {
 			load_plugin_textdomain( CFGP_NAME, FALSE, CFGP_ROOT . '/languages' );
+		}
+	}
+	
+	/**
+	 * Run debugging script
+	 * @since     8.0.0
+	 */
+	public static function debug() {
+		// Disable all debugs
+		if ( defined( 'CFGP_DEBUG_DISABLE' ) && CFGP_DEBUG_DISABLE === true ) return;
+		
+		if ( defined( 'CFGP_DEBUG_CACHE' ) && CFGP_DEBUG_CACHE === true ) {
+			add_action('wp_footer', function(){
+				if(is_user_logged_in() && current_user_can('administrator')) {
+					CFGP_Cache::debug();
+				}
+			});
+			add_action('admin_footer', function(){
+				if(is_user_logged_in() && current_user_can('administrator')) {
+					CFGP_Cache::debug();
+				}
+			});
 		}
 	}
 	
@@ -189,7 +213,7 @@ final class CFGP_Init{
 			}
 			
 			## Create database table for the SEO redirection
-			$seo_redirection_table = $wpdb->prefix . CFGP_Defaults::TABLE['seo_redirection'];
+			$seo_redirection_table = $wpdb->get_blog_prefix() . CFGP_Defaults::TABLE['seo_redirection'];
 			if($wpdb->get_var( "SHOW TABLES LIKE '{$seo_redirection_table}'" ) != $seo_redirection_table) 
 			{
 				dbDelta("
@@ -236,11 +260,10 @@ final class CFGP_Init{
 	 * @verson    8.0.0
 	 */
 	public static function instance() {
-		global $cfgp_cache;
 		$class = self::class;
-		$instance = $cfgp_cache->get($class);
+		$instance = CFGP_Cache::get($class);
 		if ( !$instance ) {
-			$instance = $cfgp_cache->set($class, new self());
+			$instance = CFGP_Cache::set($class, new self());
 		}
 		return $instance;
 	}

@@ -168,7 +168,7 @@ class CFGP_Settings extends CFGP_Global {
 				CFGP_NAME . '-seo-redirection',
 				'seo_redirection__callback'
 			);
-		}
+		}/*
 		$this->add_submenu_page(
 			CFGP_NAME,
 			__('Countries',CFGP_NAME),
@@ -196,7 +196,7 @@ class CFGP_Settings extends CFGP_Global {
 			__('Postcode',CFGP_NAME),
 			'manage_options',
 			admin_url('edit-tags.php?taxonomy=' . CFGP_NAME . '-postcode&post_type=' . CFGP_NAME . '-banner')
-		);
+		);*/
 		$this->add_submenu_page(
 			CFGP_NAME,
 			__('Debug Mode',CFGP_NAME),
@@ -267,12 +267,10 @@ class CFGP_Settings extends CFGP_Global {
 		if(!is_admin()) {
 			return;
 		}
-		
-		global $cfgp_cache;
 		$class = self::class;
-		$instance = $cfgp_cache->get($class);
+		$instance = CFGP_Cache::get($class);
 		if ( !$instance ) {
-			$instance = $cfgp_cache->set($class, new self());
+			$instance = CFGP_Cache::set($class, new self());
 		}
 		return $instance;
 	}
