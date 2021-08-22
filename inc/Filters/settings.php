@@ -291,7 +291,7 @@ add_filter('cfgp/settings', function($options=array()){
 					'inputs' => array(
 						array(
 							'name' => 'enable_seo_redirection',
-							'label' => __('Enable Site SEO Redirection', CFGP_NAME),
+							'label' => __('Enable Site Redirection', CFGP_NAME),
 							'desc' => __('You can redirect your visitors to other locations.', CFGP_NAME),
 							'type' => 'radio',
 							'options' => array(
@@ -302,7 +302,7 @@ add_filter('cfgp/settings', function($options=array()){
 						),
 						array(
 							'name' => 'enable_seo_csv',
-							'label' => __('Enable CSV in Site SEO Redirection', CFGP_NAME),
+							'label' => __('Enable CSV Import/Export in Site Redirection', CFGP_NAME),
 							'desc' => __('This allow you to upload CSV to your SEO redirection or download/backup SEO redirection list in the CSV.', CFGP_NAME),
 							'type' => 'radio',
 							'options' => array(
@@ -313,14 +313,14 @@ add_filter('cfgp/settings', function($options=array()){
 						),
 						array(
 							'name' => 'enable_seo_posts',
-							'label' => __('Enable Post SEO Redirection In', CFGP_NAME),
+							'label' => __('Enable SEO Redirection in Post Types', CFGP_NAME),
 							'desc' => '',
 							'type' => 'checkbox',
 							'options' => $seo_redirections
 						),
 						array(
 							'name' => 'redirect_disable_bots',
-							'label' => __('Disable redirection for the bots', CFGP_NAME),
+							'label' => __('Disable Redirection for the Bots', CFGP_NAME),
 							'desc' => __('Disable SEO redirection for the bots, crawlers, spiders and social network bots. This can be a special case that is very important for SEO.', CFGP_NAME),
 							'type' => 'radio',
 							'options' => array(

@@ -564,18 +564,16 @@ class CFGP_U {
 	 */
 	public static function get_url(){
 		
-		$parse_url = CFGP_Cache::get('current_url');
+		$current_url = CFGP_Cache::get('current_url');
 		
 		if(!$parse_url) {
-			$http = 'http'.( self::is_ssl() ?'s':'');
-			$domain = preg_replace('%:/{3,}%i','://',rtrim($http,'/').'://'.$_SERVER['HTTP_HOST']);
-			$domain = rtrim($domain,'/');
-			$url = preg_replace('%:/{3,}%i','://',$domain.'/'.(isset($_SERVER['REQUEST_URI']) && !empty( $_SERVER['REQUEST_URI'] ) ? ltrim($_SERVER['REQUEST_URI'], '/'): ''));
+			$url = self::parse_url();
+			$url = $url['url'];
 				
-			$parse_url = CFGP_Cache::set('current_url', $url);
+			$current_url = CFGP_Cache::set('current_url', $url);
 		}
 		
-		return $parse_url;
+		return $current_url;
 	}
 	
 	/*
