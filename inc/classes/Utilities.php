@@ -566,7 +566,7 @@ class CFGP_U {
 		
 		$current_url = CFGP_Cache::get('current_url');
 		
-		if(!$parse_url) {
+		if(!$current_url) {
 			$url = self::parse_url();
 			$url = $url['url'];
 				
