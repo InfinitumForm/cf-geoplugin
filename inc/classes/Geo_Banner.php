@@ -19,6 +19,138 @@ class CFGP_Geo_Banner extends CFGP_Global {
 		$this->add_action('delete_post', 'delete_post', 10);
 		$this->add_action('add_meta_boxes', 'add_meta_boxes', 1);
 		$this->add_action('save_post', 'save_post');
+		
+		$this->add_action('wp_ajax_cf_geoplugin_banner_cache', 'ajax__geoplugin_banner_cache');
+		$this->add_action('wp_ajax_nopriv_cf_geoplugin_banner_cache', 'ajax__geoplugin_banner_cache');
+	}
+	
+	/**
+     * AJAX - Fix cache on cached websites
+     */
+	public function ajax__geoplugin_banner_cache(){
+
+		$setup = array(
+			'id'				=>	CFGP_U::request_int('id'),
+			'posts_per_page'	=>	CFGP_U::request_int('posts_per_page'),
+			'class'				=>	sanitize_text_field(CFGP_U::request_string('class'))
+		);
+		
+		$cont = urldecode(base64_decode(sanitize_text_field(CFGP_U::request_string('default'))));
+		
+		$exact = CFGP_U::request_int('exact');
+		
+		$posts_per_page = absint($setup['posts_per_page']);
+	
+		// Main query
+		$query = array(
+			'post_type'		=> 'cf-geoplugin-banner',
+			'posts_per_page'	=>	$posts_per_page,
+			'post_status'		=> 'publish',
+			'post_in' => array($setup['id']),
+			'force_no_results' => true,
+			'meta_query' => array(),
+			'tax_query' => array()
+		);
+		
+		$country = CFGP_U::api('country_code');
+		$region = CFGP_U::api('region');
+		$city = CFGP_U::api('city');
+		
+		if($country){
+			// Search by meta
+			$query['meta_query'][]=array(
+				'key' => 'cfgp-banner-location-country',
+				'value' => '"'.strtolower($country).'"',
+				'compare' => 'LIKE',
+			);
+			// Search by taxonomy
+			$query['tax_query'][]=array(
+				'taxonomy'	=> 'cf-geoplugin-country',
+				'field'		=> 'slug',
+				'terms'		=> array($country),
+			);
+		}
+		
+		if($region){
+			// Search by meta
+			$query['meta_query'][]=array(
+				'key' => 'cfgp-banner-location-region',
+				'value' => '"'.strtolower(sanitize_title($country)).'"',
+				'compare' => 'LIKE',
+			);
+			// Search by taxonomy
+			$query['tax_query'][]=array(
+				'taxonomy'	=> 'cf-geoplugin-region',
+				'field'		=> 'slug',
+				'terms'		=> array($region),
+			);
+		}
+		
+		if($city){
+			// Search by meta
+			$query['meta_query'][]=array(
+				'key' => 'cfgp-banner-location-city',
+				'value' => '"'.strtolower(sanitize_title($city)).'"',
+				'compare' => 'LIKE',
+			);
+			// Search by taxonomy
+			$query['tax_query'][]=array(
+				'taxonomy'	=> 'cf-geoplugin-city',
+				'field'		=> 'slug',
+				'terms'		=> array($city),
+			);
+		}
+		
+		// Relative or exact search
+		if(!empty($query['meta_query'])){
+			$query['meta_query']['relation'] = ($exact ? 'AND' : 'OR');
+		}
+		
+		// Tax query
+		if(!empty($query['tax_query'])){
+			$query['tax_query']['relation'] = 'OR';
+		}
+		
+		// Search by tax (DEPRECATED)
+		$meta_query = $query['meta_query'];
+		unset($query['meta_query']);
+		
+		$posts = get_posts( $query );
+		
+		// Search by term
+		if(!$posts) {
+			unset($query['tax_query']);
+			$query['meta_query'] = $meta_query;
+			$meta_query = NULL;
+			$posts = get_posts( $query );
+		}
+		
+		$content = '';
+		$save = array();
+		
+		foreach($posts as $post) {
+			$post_id = $post->ID;
+			$post_content = $post->post_content;
+			$post_content = do_shortcode($post_content);
+			$post_content = apply_filters('the_content', $post_content);
+			
+			$save[]=$post_content;
+		}
+		
+		$save = array_filter($save);
+		
+		// Return banner
+		if(!empty($save)){
+			$content = CFGP_U::fragment_caching(trim(join(PHP_EOL, $save)), true);
+		}
+		
+		// Format defaults
+		if(!empty($cont) && empty($content)) {
+			$content = do_shortcode($cont);
+			$content = apply_filters('the_content', $content);
+		}
+		
+		echo $content; exit;
 	}
 	
 	/**

@@ -17,7 +17,7 @@ class CFGP_Library {
 	/*
 	 * Get Country Region Data
 	 */
-	static function get_country_region_data($json=false){
+	public static function get_country_region_data($json=false){
 		
 		if($json) {
 			if(!empty(self::$country_region_data) ){
@@ -53,7 +53,7 @@ class CFGP_Library {
 	/*
 	 * Get Country Data
 	 */
-	static function get_countries( $value = 'country_name', $id = 'country_code', $json = false ){
+	public static function get_countries( $value = 'country_name', $id = 'country_code', $json = false ){
 
 		if($data = self::get_country_region_data($json)) {
 			return wp_list_pluck( $data, $value, $id );
@@ -67,7 +67,7 @@ class CFGP_Library {
 	/*
 	 * Get regions by country
 	 */
-	static function get_regions( $country, $json = false ){
+	public static function get_regions( $country, $json = false ){
 		if(!empty($country) && $data = self::get_country_region_data())
 		{
 			$country = strtolower($country);
@@ -87,7 +87,7 @@ class CFGP_Library {
 	/*
 	 * Get cities by country
 	 */
-	static function get_cities( $country_code, $json = false ){
+	public static function get_cities( $country_code, $json = false ){
 		if(!empty($country_code))
 		{
 			$country_code = strtolower($country_code);
@@ -131,6 +131,40 @@ class CFGP_Library {
 		return '{}';
 	}
 	
+	
+	/*
+	 * Get cities by country
+	 */
+	public static function all_geodata( $json = false ){
+		
+		$geodata = get_option(CFGP_NAME . '-all-geodata', array());
+		
+		if(empty($geodata) || CFGP_LIBRARY_VERSION != get_option(CFGP_NAME . '-library-version', ''))
+		{
+			foreach(self::get_countries() as $country_code => $country){
+				$regions=array();
+				foreach(self::get_regions($country_code) as $region){
+					$regions[strtolower(sanitize_title($region['region']))] = $region['region'];
+				}
+				$cities=array();
+				foreach(self::get_cities($country_code) as $city){
+					$cities[strtolower(sanitize_title($city))] = $city;
+				}
+				$geodata[$country_code]=array(
+					'region' => $regions,
+					'city' => $cities
+				);
+			}
+			update_option(CFGP_NAME . '-all-geodata', $geodata, false);
+			update_option(CFGP_NAME . '-library-version', CFGP_LIBRARY_VERSION, false);
+		}
+		
+		if($json){
+			return json_encode($geodata);
+		} else {
+			return $geodata;
+		}
+	}
 	
 	
 	/*

@@ -1152,5 +1152,106 @@ class CFGP_U {
 	* END Get current page ID
 	*****************************************************************/
 	
+	
+	
+	/**
+	* Get current page object
+	* @autor    Ivijan-Stefan Stipic
+	* @since    8.0.0
+	* @version  1.0.0
+	******************************************************************/
+	public static function get_page() {
+		global $wp;
+		
+		$current_page = CFGP_Cache::get('get_page');
+		
+		// Get page by path
+		if(!$current_page) {
+			$current_page =  get_page_by_path($wp->request);
+		}
+		
+		// Get post by ID
+		if(!$current_page) {
+			$current_page = get_post(isset($wp->query_vars['p']) ? absint($wp->query_vars['p']) : NULL);
+		}
+		
+		// Get page by ID
+		if(!$current_page) {
+			$current_page = get_post(isset($wp->query_vars['page_id']) ? absint($wp->query_vars['page_id']) : NULL);
+		}
+		
+		// Get post by date/time
+		if(
+			!$current_page
+			&& (
+				isset($wp->query_vars['name'])
+				|| isset($wp->query_vars['year'])
+				|| isset($wp->query_vars['monthnum'])
+				|| isset($wp->query_vars['day'])
+				|| isset($wp->query_vars['hour'])
+				|| isset($wp->query_vars['minute'])
+				|| isset($wp->query_vars['second'])
+			)
+		) {
+			
+			$attr = array();
+			if(isset($wp->query_vars['name'])) {
+				$attr['name'] = $wp->query_vars['name'];
+			}
+			
+			if(
+				isset($wp->query_vars['year'])
+				|| isset($wp->query_vars['monthnum'])
+				|| isset($wp->query_vars['day'])
+				|| isset($wp->query_vars['hour'])
+				|| isset($wp->query_vars['minute'])
+				|| isset($wp->query_vars['second'])
+			){
+				$attr['date_query'] = array();
+				
+				if(isset($wp->query_vars['year'])){
+					$attr['date_query']['year']= $wp->query_vars['year'];
+				}
+				
+				if(isset($wp->query_vars['monthnum'])){
+					$attr['date_query']['month']= $wp->query_vars['monthnum'];
+				}
+				
+				if(isset($wp->query_vars['day'])){
+					$attr['date_query']['day']= $wp->query_vars['day'];
+				}
+				
+				if(isset($wp->query_vars['hour'])){
+					$attr['date_query']['hour']= $wp->query_vars['hour'];
+				}
+				
+				if(isset($wp->query_vars['minute'])){
+					$attr['date_query']['minute']= $wp->query_vars['minute'];
+				}
+				
+				if(isset($wp->query_vars['second'])){
+					$attr['date_query']['second']= $wp->query_vars['second'];
+				}
+			}
+			
+			$page = get_posts($attr);
+			if($page) {
+				$current_page = $page[0];
+			}
+		}
+		
+		// Get page by GET pharam
+		if(!$current_page) {
+			$current_page = get_post(isset($_GET['page_id']) ? absint($_GET['page_id']) : NULL);
+		}
+		
+		// Get post by GET pharam
+		if(!$current_page) {
+			$current_page = get_post(isset($_GET['p']) ? absint($_GET['p']) : NULL);
+		}
+
+		return CFGP_Cache::set('get_page', $current_page);
+	}
+	
 }
 endif;

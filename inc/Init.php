@@ -61,31 +61,31 @@ final class CFGP_Init{
 		
 		// Include file classes
 		$includes = apply_filters('cfgp/init/include_classes', array(
-			CFGP_INC . '/Cache.php',			// Memory control class
-			CFGP_INC . '/OS.php',				// Operating System info and tool class
-			CFGP_INC . '/Defaults.php',			// Default values, data
-			CFGP_INC . '/Utilities.php',		// Utilities
-			CFGP_INC . '/Library.php',			// Library, data
-			CFGP_INC . '/Form.php',				// Form class
-			CFGP_INC . '/Options.php',			// Plugin option class
-			CFGP_INC . '/Global.php',			// Global class
-			CFGP_INC . '/Admin.php',			// Admin option class
-			CFGP_INC . '/Help.php',				// Contextual help class
-			CFGP_INC . '/IP.php',				// IP class
-			CFGP_INC . '/License.php',			// License class
-			CFGP_INC . '/Media.php',			// Media class
-			CFGP_INC . '/Taxonomy.php',			// Taxonomy class
-			CFGP_INC . '/Geo_Banner.php',		// Post Type class
-			CFGP_INC . '/Metabox.php',			// Metabox class
-			CFGP_INC . '/API.php',				// API class
-			CFGP_INC . '/SEO.php',				// SEO class
-			CFGP_INC . '/SEO_Redirection.php',	// SEO Redirection class
-			CFGP_INC . '/SEO_Table.php',		// SEO Table class
-			CFGP_INC . '/Settings.php',			// Settings class
-			CFGP_INC . '/Shortcodes.php',		// Shortcodes class
-			CFGP_INC . '/Defender.php',			// Defender class
-			CFGP_INC . '/Public.php',			// Public class
-			CFGP_INC . '/REST.php',				// REST class
+			CFGP_CLASS . '/Cache.php',				// Memory control class
+			CFGP_CLASS . '/OS.php',					// Operating System info and tool class
+			CFGP_CLASS . '/Defaults.php',			// Default values, data
+			CFGP_CLASS . '/Utilities.php',			// Utilities
+			CFGP_CLASS . '/Library.php',			// Library, data
+			CFGP_CLASS . '/Form.php',				// Form class
+			CFGP_CLASS . '/Options.php',			// Plugin option class
+			CFGP_CLASS . '/Global.php',				// Global class
+			CFGP_CLASS . '/Admin.php',				// Admin option class
+			CFGP_CLASS . '/Help.php',				// Contextual help class
+			CFGP_CLASS . '/IP.php',					// IP class
+			CFGP_CLASS . '/License.php',			// License class
+			CFGP_CLASS . '/Media.php',				// Media class
+			CFGP_CLASS . '/Taxonomy.php',			// Taxonomy class
+			CFGP_CLASS . '/Geo_Banner.php',			// Post Type class
+			CFGP_CLASS . '/Metabox.php',			// Metabox class
+			CFGP_CLASS . '/API.php',				// API class
+			CFGP_CLASS . '/SEO.php',				// SEO class
+			CFGP_CLASS . '/SEO_Redirection.php',	// SEO Redirection class
+			CFGP_CLASS . '/SEO_Table.php',			// SEO Table class
+			CFGP_CLASS . '/Settings.php',			// Settings class
+			CFGP_CLASS . '/Shortcodes.php',			// Shortcodes class
+			CFGP_CLASS . '/Defender.php',			// Defender class
+			CFGP_CLASS . '/Public.php',				// Public class
+			CFGP_CLASS . '/REST.php',				// REST class
 		));
 		foreach($includes as $include){
 			include_once $include;
@@ -177,14 +177,14 @@ final class CFGP_Init{
 			// Add activation date
 			if($activation = get_option(CFGP_NAME . '-activation')) {
 				$activation[] = date('Y-m-d H:i:s');
-				update_option(CFGP_NAME . '-activation', $activation);
+				update_option(CFGP_NAME . '-activation', $activation, false);
 			} else {
-				add_option(CFGP_NAME . '-activation', array(date('Y-m-d H:i:s')));
+				add_option(CFGP_NAME . '-activation', array(date('Y-m-d H:i:s')), false);
 			}
 
 			// Generate unique ID
 			if(!get_option(CFGP_NAME . '-ID')) {
-				add_option(CFGP_NAME . '-ID', 'cfgp_'.CFGP_U::generate_token(55).'_'.CFGP_U::generate_token(4));
+				add_option(CFGP_NAME . '-ID', 'cfgp_'.CFGP_U::generate_token(55).'_'.CFGP_U::generate_token(4), false);
 			}
 			
 			$charset_collate = $wpdb->get_charset_collate();
@@ -209,7 +209,7 @@ final class CFGP_Init{
 					KEY `secret_key` (`secret_key`)
 				) {$charset_collate}
 				");
-				add_option(CFGP_NAME . '-db-version', $database_version);
+				add_option(CFGP_NAME . '-db-version', $database_version, false);
 			}
 			
 			## Create database table for the SEO redirection
@@ -248,9 +248,9 @@ final class CFGP_Init{
 			// Add deactivation date
 			if($deactivation = get_option(CFGP_NAME . '-deactivation')) {
 				$deactivation[] = date('Y-m-d H:i:s');
-				update_option(CFGP_NAME . '-deactivation', $deactivation);
+				update_option(CFGP_NAME . '-deactivation', $deactivation, false);
 			} else {
-				add_option(CFGP_NAME . '-deactivation', array(date('Y-m-d H:i:s')));
+				add_option(CFGP_NAME . '-deactivation', array(date('Y-m-d H:i:s')), false);
 			}
 		});
 	}

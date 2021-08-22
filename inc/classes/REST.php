@@ -395,9 +395,9 @@ class CFGP_REST extends CFGP_Global {
 		
 		// Save new options
 		if(CFGP_NETWORK_ADMIN){
-			update_site_option(CFGP_NAME . '-rest', $options, true);
+			update_site_option(CFGP_NAME . '-rest', $options, false);
 		}else{
-			update_option(CFGP_NAME . '-rest', $options, true);
+			update_option(CFGP_NAME . '-rest', $options, false);
 		}
 		
 		// Save to cache

@@ -141,7 +141,7 @@ class CFGP_Taxonomy extends CFGP_Global {
 						'parent_item_colon' 	=> __('Parent Postcode',CFGP_NAME),
 					),
 					'hierarchical'   	=> true,
-					'show_ui'			=> false,
+					'show_ui'			=> true,
 					'public'		 	=> false,
 					'label'          	=> __('Postcodes',CFGP_NAME),
 					'singular_label' 	=> __('Postcode',CFGP_NAME),

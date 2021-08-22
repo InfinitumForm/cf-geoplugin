@@ -14,7 +14,7 @@ class CFGP_Settings extends CFGP_Global {
 	
 	function __construct(){
 		if(!class_exists('CFGP_Sidebar')) {
-			include_once CFGP_INC . '/Settings/sidebar.php';
+			include_once CFGP_INC . '/settings/sidebar.php';
 			CFGP_Sidebar::instance();
 		}
 		$this->add_action( (CFGP_NETWORK_ADMIN ? 'network_admin_menu' : 'admin_menu'), 'add_pages',  11 );
@@ -115,8 +115,10 @@ class CFGP_Settings extends CFGP_Global {
 	
 	/* Add admin pages */
 	public function add_pages(){
-		// Only admins and editors
-		if ( !(current_user_can( 'edit_pages' ) && current_user_can( 'edit_posts' )) ) return;
+		// Only admins
+		if ( !(current_user_can( 'update_plugins' ) && current_user_can( 'delete_plugins' ) && current_user_can( 'install_plugins' )) ){
+			return;
+		}
 		
 		$this->add_menu_page(
 			__( 'Geo Plugin', CFGP_NAME ),
@@ -189,14 +191,14 @@ class CFGP_Settings extends CFGP_Global {
 			__('Cities',CFGP_NAME),
 			'manage_options',
 			admin_url('edit-tags.php?taxonomy=' . CFGP_NAME . '-city&post_type=' . CFGP_NAME . '-banner')
-		);
+		);*/
 		$this->add_submenu_page(
 			CFGP_NAME,
 			__('Postcode',CFGP_NAME),
-			__('Postcode',CFGP_NAME),
+			__('Postcodes',CFGP_NAME),
 			'manage_options',
 			admin_url('edit-tags.php?taxonomy=' . CFGP_NAME . '-postcode&post_type=' . CFGP_NAME . '-banner')
-		);*/
+		);
 		$this->add_submenu_page(
 			CFGP_NAME,
 			__('Debug Mode',CFGP_NAME),
@@ -225,37 +227,37 @@ class CFGP_Settings extends CFGP_Global {
 	}
 	
 	public function main_page__callback(){
-		include_once CFGP_INC . '/Settings/main_page.php';
+		include_once CFGP_INC . '/settings/main_page.php';
 	}
 	
 	public function google_map__callback(){
-		include_once CFGP_INC . '/Settings/google_map.php';
+		include_once CFGP_INC . '/settings/google_map.php';
 	}
 	
 	public function defender__callback(){
-		include_once CFGP_INC . '/Settings/defender.php';
+		include_once CFGP_INC . '/settings/defender.php';
 	}
 	
 	public function seo_redirection__callback(){
-		include_once CFGP_INC . '/Filters/seo_redirection_form.php';
-		include_once CFGP_INC . '/Filters/seo_redirection_import.php';
-		include_once CFGP_INC . '/Filters/seo_redirection_table.php';
-		include_once CFGP_INC . '/Settings/seo_redirection.php';
+		include_once CFGP_INC . '/filters/seo_redirection_form.php';
+		include_once CFGP_INC . '/filters/seo_redirection_import.php';
+		include_once CFGP_INC . '/filters/seo_redirection_table.php';
+		include_once CFGP_INC . '/settings/seo_redirection.php';
 	}
 	
 	public function debug__callback(){
-		include_once CFGP_INC . '/Settings/debug.php';
+		include_once CFGP_INC . '/settings/debug.php';
 	}
 	
 	public function settings__callback(){
-		include_once CFGP_INC . '/Filters/settings.php';
-		include_once CFGP_INC . '/Filters/settings-rest.php';
-		include_once CFGP_INC . '/Settings/settings.php';
+		include_once CFGP_INC . '/filters/settings.php';
+		include_once CFGP_INC . '/filters/settings-rest.php';
+		include_once CFGP_INC . '/settings/settings.php';
 	}
 	
 	public function license__callback(){
-		include_once CFGP_INC . '/Filters/license.php';
-		include_once CFGP_INC . '/Settings/license.php';
+		include_once CFGP_INC . '/filters/license.php';
+		include_once CFGP_INC . '/settings/license.php';
 	}
 	
 	/* 

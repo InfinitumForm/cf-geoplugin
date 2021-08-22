@@ -64,6 +64,8 @@ if( ! defined( 'CFGP_DISABLE_NOTIFICATION_LOOKUP_EXPIRED' ) )	define('CFGP_DISAB
 if( ! defined( 'CFGP_DISABLE_NOTIFICATION_LOOKUP_EXPIRE_SOON' ) )	define('CFGP_DISABLE_NOTIFICATION_LOOKUP_EXPIRE_SOON', false);
 // Includes directory
 if ( ! defined( 'CFGP_INC' ) )			define( 'CFGP_INC', CFGP_ROOT . '/inc' );
+// Classes directory
+if ( ! defined( 'CFGP_CLASS' ) )		define( 'CFGP_CLASS', CFGP_INC . '/classes' );
 // Plugin URL root
 if ( ! defined( 'CFGP_URL' ) )			define( 'CFGP_URL', rtrim(plugin_dir_url( CFGP_FILE ), '/') );
 // Assets URL
@@ -72,10 +74,14 @@ if ( ! defined( 'CFGP_ASSETS' ) )		define( 'CFGP_ASSETS', CFGP_URL.'/assets' );
 if ( ! defined( 'CFGP_NAME' ) )			define( 'CFGP_NAME', 'cf-geoplugin');
 // Current plugin version ( if change, clear also session cache )
 global $cfgp_version;
-if(function_exists('get_file_data') && $plugin_data = get_file_data( CFGP_FILE, array('Version' => 'Version'), false ))
-	$cfgp_version = $plugin_data['Version'];
-if(!$cfgp_version && preg_match('/\*[\s\t]+?version:[\s\t]+?([0-9.]+)/i', file_get_contents( CFGP_FILE ), $v))
-	$cfgp_version = $v[1];
+$cfgp_version = get_option(CFGP_NAME.'-version');
+if(empty($cfgp_version)){
+	if(function_exists('get_file_data') && $plugin_data = get_file_data( CFGP_FILE, array('Version' => 'Version'), false ))
+		$cfgp_version = $plugin_data['Version'];
+	if(!$cfgp_version && preg_match('/\*[\s\t]+?version:[\s\t]+?([0-9.]+)/i', file_get_contents( CFGP_FILE ), $v))
+		$cfgp_version = $v[1];
+	update_option(CFGP_NAME.'-version', $cfgp_version, true);
+}
 if ( ! defined( 'CFGP_VERSION' ) )		define( 'CFGP_VERSION', $cfgp_version);
 // Plugin metabox prefix
 if ( ! defined( 'CFGP_METABOX' ) )		define( 'CFGP_METABOX', 'cf_geo_metabox_');

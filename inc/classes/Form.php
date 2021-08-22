@@ -302,37 +302,59 @@ class CFGP_Form {
 	}
 	
 	// Checkbox
-	public static function checkbox($options=array(), $attr = array(), $checked = '', $disabled = '', $echo = true){
+	public static function checkbox($options=array(), $echo = true){
 		$input_radio = array();
 		
 		if(!empty($options) && is_array($options))
 		{
-			if(!isset($attr['id'])){
-				if(!isset($attr['name'])){
-					$attr['name']='cfgp_form_checkbox_'.CFGP_U::generate_token(mt_rand(10,15));
-				}
-				$attr['id'] = $attr['name'];	
-			}
-			
-			$attr['type'] = 'checkbox';
-			
-			$id = $attr['id'];
 			$i = 0;
-			foreach($options as $val=>$name)
+			foreach($options as $name=>$option)
 			{
-				$attr['id'] = $id . '-' . $i;
-				$attr['value'] = $val;
+				$attr = array();
+				
+				$attr['type'] = 'checkbox';
+				$attr['name'] = $name;
+				
+				$name = $option['label'];
+				
+				$checked = false;
+				if(isset($option['checked'])){
+					$checked = $option['checked'];
+				}
+				
+				$disabled = false;
+				if(isset($option['disabled'])){
+					$disabled = $option['disabled'];
+				}
+				
+				$attr['value'] = '';
+				if(isset($option['value'])){
+					$attr['value'] = $option['value'];
+				}
+				
+				if(isset($option['id'])){
+					$attr['id'] = $option['id'];
+				} else {
+					$attr['id'] = 'cfgp_form_checkbox_' . CFGP_U::generate_token(mt_rand(10,15)) . "-{$i}";
+				}
+				
+				$label = '';
+				if(isset($option['label'])){
+					$label = $option['label'];
+				}
+				
 				$attributes = self::parse_attributes($attr);
-				$control = ($checked === $val ? ' checked' : '').(($disabled === true) || ($disabled === $val) ? ' disabled' : '');
-				$radio = "<input {$attributes}{$control}> <span>{$name}</span>";
-				$input_radio[] = apply_filters('cfgp/form/checkbox/input/raw', $radio, $val, $name, $control);
+
+				$control = ($checked ? ' checked' : '').(($disabled === true) ? ' disabled' : '');
+				$radio = "<input {$attributes}{$control}> <span>{$label}</span>";
+				$input_radio[] = apply_filters('cfgp/form/checkbox/input/raw', $radio, $attr['value'], $name, $control);
 				++$i;
 			}
 		}
 		
 		$options_render = apply_filters('cfgp/form/checkbox/inputs', $input_radio, $options);
 		$input_radio = join(PHP_EOL, $input_radio);
-		$return = apply_filters('cfgp/form/checkbox', "<span class=\"input-checkbox\">{$input_radio}</span>", $attr, $input_radio);
+		$return = apply_filters('cfgp/form/checkbox', "<span class=\"input-checkbox\">{$input_radio}</span>", $options, $input_radio);
 
 		if($echo) {
 			echo $return;

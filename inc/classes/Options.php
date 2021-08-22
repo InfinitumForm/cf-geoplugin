@@ -96,12 +96,12 @@ class CFGP_Options
 		
 		// Collect and set new values
 		if(!empty($name_or_array))
-		{
-			$name_or_array = array_merge(CFGP_Defaults::OPTIONS, $name_or_array);
-			$name_or_array = apply_filters('cfgp/options/set/fields', $name_or_array, CFGP_Defaults::OPTIONS);
-			
+		{			
 			if(is_array($name_or_array))
 			{
+				$name_or_array = array_merge(CFGP_Defaults::OPTIONS, $name_or_array);
+				$name_or_array = apply_filters('cfgp/options/set/fields', $name_or_array, CFGP_Defaults::OPTIONS);
+			
 				foreach($name_or_array as $key => $val) {
 					if(in_array($key, $filter) !== false) {
 						$options[$key] = self::sanitize($val);
@@ -112,8 +112,10 @@ class CFGP_Options
 			}
 			else if(!is_numeric($name_or_array) && is_string($name_or_array))
 			{
-				if(in_array($name_or_array, $filter) !== false) {
-					$options[$name_or_array] = self::sanitize($value);
+				$name = $name_or_array;
+				$name = apply_filters("cfgp/options/set/field/{$name}", $name, CFGP_Defaults::OPTIONS);
+				if(in_array($name, $filter) !== false) {
+					$options[$name] = self::sanitize($value);
 				}
 			}
 		}

@@ -76,10 +76,25 @@ class CFGP_Defender extends CFGP_Global {
 
         if( $flag === false )
         {
+			$block_country = CFGP_Options::get('block_country');
+			if(!empty($block_country) && !is_array($block_country) && preg_match('/\]|\[/', $block_country)){
+				$block_country = explode(']|[', $block_country);
+			}
+			
+			$block_region = CFGP_Options::get('block_region');
+			if(!empty($block_region) && !is_array($block_region) && preg_match('/\]|\[/', $block_region)){
+				$block_region = explode(']|[', $block_region);
+			}
+			
+			$block_city = CFGP_Options::get('block_city');
+			if(!empty($block_city) && !is_array($block_city) && preg_match('/\]|\[/', $block_city)){
+				$block_city = explode(']|[', $block_city);
+			}
+			
             $geo = array(
-                'country_code'  => array_map( 'trim', explode( "]|[", CFGP_Options::get('block_country') ) ),
-                'region_code'   => array_map( 'trim', explode( "]|[", CFGP_Options::get('block_region') ) ),
-                'city'          => array_map( 'trim', explode( "]|[", CFGP_Options::get('block_city') ) )
+                'country_code'  => $block_country,
+                'region_code'   => $block_region,
+                'city'          => $block_city
             );
 
             $country_check = $this->check_user_by_country( $geo['country_code'] );

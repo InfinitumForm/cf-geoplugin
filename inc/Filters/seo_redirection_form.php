@@ -63,25 +63,25 @@ add_action('cfgp/page/seo_redirection/form/content', function(){
                 <tr>
                     <th scope="row" valign="top" class="cfgp-label"><label for="country"><?php _e('Select Country', CFGP_NAME); ?></label></th>
                     <td valign="top"><?php 
-						CFGP_Form::select_countries(array('name'=>'country'), $select_country);
+						CFGP_Form::select_countries(array('name'=>'country', 'class'=>'chosen-select'), $select_country);
 					?></td>
                 </tr>
                 <tr>
                     <th scope="row" valign="top" class="cfgp-label"><label for="region"><?php _e('Select Region', CFGP_NAME); ?></label></th>
                     <td valign="top"><?php
-						CFGP_Form::select_regions(array('name'=>'region', 'country_code' => $select_country), $select_region);
+						CFGP_Form::select_regions(array('name'=>'region', 'country_code' => $select_country, 'class'=>'chosen-select'), $select_region);
 					?></td>
                 </tr>
                 <tr>
                     <th scope="row" valign="top" class="cfgp-label"><label for="city"><?php _e('Select City', CFGP_NAME); ?></label></th>
                     <td valign="top"><?php
-						CFGP_Form::select_cities(array('name'=>'city', 'country_code' => $select_country), $select_city);
+						CFGP_Form::select_cities(array('name'=>'city', 'country_code' => $select_country, 'class'=>'chosen-select'), $select_city);
 					?></td>
                 </tr>
                 <tr>
                     <th scope="row" valign="top" class="cfgp-label"><label for="postcode"><?php _e('Select Postcode', CFGP_NAME); ?></label></th>
                     <td valign="top"><?php
-						CFGP_Form::select_postcodes(array('name'=>'postcode'), $select_postcode);
+						CFGP_Form::select_postcodes(array('name'=>'postcode', 'class'=>'chosen-select'), $select_postcode);
 					?></td>
                 </tr>
                 <tr>

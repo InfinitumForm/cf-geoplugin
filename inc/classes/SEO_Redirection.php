@@ -186,7 +186,7 @@ class CFGP_SEO_Redirection extends CFGP_Global
 			
 			$expire = apply_filters(
 				'cfgp/seo/control_redirection/cookie/expire',
-				absint(time()+strtotime('+2 years')),
+				(YEAR_IN_SECONDS*2),
 				time()
 			);
 			
@@ -194,14 +194,14 @@ class CFGP_SEO_Redirection extends CFGP_Global
 				$expire = apply_filters(
 					'cfgp/seo/control_redirection/cookie/expire/page/' . $redirect['page_id'],
 					$expire,
-					time()
+					CFGP_TIME
 				);
 			}
 			
 			if(isset($_COOKIE[$cookie_name]) && !empty($_COOKIE[$cookie_name])){
 				return false;
 			} else {
-				CFGP_U::setcookie($cookie_name, (string)$expire, $expire);
+				CFGP_U::setcookie($cookie_name, (CFGP_TIME.'_'.$expire), $expire);
 			}
 		}
 		

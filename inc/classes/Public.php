@@ -20,6 +20,18 @@ class CFGP_Public extends CFGP_Global{
 		if(CFGP_Options::get('enable_js', 0) || is_admin()){
 			$this->add_action('wp_head', 'javascript_support', 1);
 		}
+		
+		$this->add_action( 'wp_enqueue_scripts', 'enqueue_scripts' );
+	}
+	
+	public function enqueue_scripts($page) {
+		wp_enqueue_style( CFGP_NAME . '-public', CFGP_ASSETS . '/css/style-public.css', 1, (string)CFGP_VERSION );
+		
+		wp_enqueue_script( CFGP_NAME . '-public', CFGP_ASSETS . '/js/script-public.js', array('jquery'), (string)CFGP_VERSION );
+		wp_localize_script(CFGP_NAME . '-public', 'CFGP', array(
+			'ajaxurl' => admin_url('admin-ajax.php'),
+			'cache' => (CFGP_Options::get('enable_cache', 0) ? '1' : '0')
+		));
 	}
 	
 	/*

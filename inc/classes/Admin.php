@@ -143,6 +143,10 @@ class CFGP_Admin extends CFGP_Global {
 	
 	// Add admin top bar menu pages
 	public function admin_bar_menu($wp_admin_bar) {
+		if ( !(current_user_can( 'update_plugins' ) && current_user_can( 'delete_plugins' ) && current_user_can( 'install_plugins' )) ) {
+			return $wp_admin_bar;
+		}
+		
 		$wp_admin_bar->add_node(array(
 			'id' => CFGP_NAME . '-admin-bar-link',
 			'title' => __('Geo Plugin', CFGP_NAME), 
@@ -308,6 +312,10 @@ class CFGP_Admin extends CFGP_Global {
 			),
 			'current_url'	=> $url
 		));
+		// Load geodata
+		if(strpos($url, 'post-new.php') !== false || strpos($url, 'post=') !== false){
+			wp_localize_script(CFGP_NAME . '-cpt', 'CFGP_GEODATA', CFGP_Library::all_geodata());
+		}
 	}
 	
 	public function register_scripts($page){
@@ -363,6 +371,11 @@ class CFGP_Admin extends CFGP_Global {
 				)
 			)
 		));
+		
+		// Load geodata
+		if(CFGP_U::request_string('page') == 'cf-geoplugin-defender'){
+			wp_localize_script(CFGP_NAME . '-admin', 'CFGP_GEODATA', CFGP_Library::all_geodata());
+		}
 	}
 	
 	/*

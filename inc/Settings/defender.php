@@ -24,7 +24,7 @@ $all_cities = get_terms(array(
 	'hide_empty'	=> false
 ));
 
-if(CFGP_U::request_bool('save_defender') && wp_verify_nonce(sanitize_text_field($_REQUEST['nonce']), CFGP_NAME.'-save-defender') !== false)
+if(CFGP_U::request_bool('save_defender') && wp_verify_nonce(sanitize_text_field($_REQUEST['nonce']), CFGP_NAME.'-save-defender') !== false && isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'POST')
 {
 	if( !isset( $_POST['block_country'] ) )
 	{
@@ -44,18 +44,9 @@ if(CFGP_U::request_bool('save_defender') && wp_verify_nonce(sanitize_text_field(
 	{
 		if($key == 'submit') continue;
 		
-		if( $key == 'block_country' || $key=='block_region' || $key=='block_city' )
-		{
-			$value = implode( ']|[', $value );
-			$updated = CFGP_Options::set( $key, esc_attr( $value ) );
-			$updates[] = (string) $updated[$key];
-		}
-		else
-		{
-			$updated = CFGP_Options::set( $key, $value );
-			$updates[] = (string) $updated[$key];
-		}
+		$updates[] = CFGP_Options::set( $key, $value );
 	}
+	
 	if( in_array( 'false', $updates ) !== false || count( $updates ) == 0 )
 	{
 		printf(
@@ -70,6 +61,21 @@ if(CFGP_U::request_bool('save_defender') && wp_verify_nonce(sanitize_text_field(
 			__('Settings saved.', CFGP_NAME)
 		);
 	}
+}
+
+$block_country = CFGP_Options::get('block_country');
+if(!empty($block_country) && !is_array($block_country) && preg_match('/\]|\[/', $block_country)){
+	$block_country = explode(']|[', $block_country);
+}
+
+$block_region = CFGP_Options::get('block_region');
+if(!empty($block_region) && !is_array($block_region) && preg_match('/\]|\[/', $block_region)){
+	$block_region = explode(']|[', $block_region);
+}
+
+$block_city = CFGP_Options::get('block_city');
+if(!empty($block_city) && !is_array($block_city) && preg_match('/\]|\[/', $block_city)){
+	$block_city = explode(']|[', $block_city);
 }
 
 ?>
@@ -98,7 +104,7 @@ if(CFGP_U::request_bool('save_defender') && wp_verify_nonce(sanitize_text_field(
                             <div class="cfgp-tab-panel cfgp-tab-panel-active" id="defender-settings">
                             	<p><?php _e('With Anti Spam Protection you can block the access from the specific IP, country, state and city to your site. Names of countries, states, regions or cities are not case sensitive, but the name must be entered correctly (in English) to get this feature work correctly. This feature is very safe and does not affect SEO.', CFGP_NAME); ?></p>
                                 
-                                <div class="nav-tab-wrapper-chosen">
+                                <div class="nav-tab-wrapper-chosen cfgp-country-region-city-multiple-form-no-ajax">
                                     <nav class="nav-tab-wrapper">
                                         <a href="javascript:void(0);" class="nav-tab nav-tab-active" data-id="#ip-restriction"><i class="fa fa-shield"></i><span class="label"> <?php _e('IP Restriction', CFGP_NAME); ?></span></a>
                                         <a href="javascript:void(0);" class="nav-tab" data-id="#country-restriction"><i class="fa fa-globe"></i><span class="label"> <?php _e('Country Restriction', CFGP_NAME); ?></span></a>
@@ -114,81 +120,53 @@ if(CFGP_U::request_bool('save_defender') && wp_verify_nonce(sanitize_text_field(
                                     <div class="cfgp-tab-panel" id="country-restriction">
                                     	<div class="cfgp-form-group">
                                             <label for="block_country"><?php _e('Choose Countries',CFGP_NAME); ?>:</label>
-                                            <select class="chosen-select" data-placeholder="<?php _e( 'Choose countries...', CFGP_NAME ); ?>" id="block_country" aria-describedby="countryHelp" name="block_country[]" multiple >
-                                            <?php
-                                                if( is_array( $all_countries ) && !empty( $all_countries ) )
-                                                {
-                                                    $find = array_map( "trim", explode( "]|[", CFGP_Options::get('block_country') ) );
-                                                    foreach( $all_countries as $key => $country )
-                                                    {
-                                                        echo '<option id="'
-                                                        .$country->slug
-                                                        .'" value="'
-                                                        .$country->slug
-                                                        .'"'
-                                                        .(in_array($country->slug, $find)!==false?' selected':'')
-                                                        .'>'
-                                                        .$country->name
-                                                        .' - '.$country->description.'</option>';
-                                                    }
-                                                }
-                                            ?>
-                                            </select>
-                                            <p><?php printf(__('To set up a list of countries, you need to go to the Geo Plugin -> %s',CFGP_NAME), '<a href="' . admin_url('edit-tags.php?taxonomy=cf-geoplugin-country&post_type=cf-geoplugin-banner') . '" target="_blank">' . __('Countries',CFGP_NAME) . '</a>'); ?></p>
+											<?php
+												CFGP_Form::select_countries(
+													array(
+														'name'=>'block_country',
+														'id' => 'block_country'
+													),
+													$block_country,
+													true
+												);
+											?>
+                                            <br>
                                             <button type="button" class="button cfgp-select-all" data-target="block_country"><object data="<?php echo CFGP_ASSETS . '/images/select.svg'; ?>" width="15" height="15"></object> <?php esc_attr_e( 'Select/Deselect all', CFGP_NAME ); ?></button>
                                         </div>
                                     </div>
                                     <div class="cfgp-tab-panel" id="region-restriction">
                                     	<div class="cfgp-form-group">
                                             <label for="block_region"><?php _e('Choose Region',CFGP_NAME); ?>:</label>
-                                            <select class="chosen-select" data-placeholder="<?php _e( 'Choose regions...', CFGP_NAME ); ?>" id="block_region" aria-describedby="regionHelp" name="block_region[]" multiple >
                                             <?php
-                                                if( is_array( $all_regions ) && !empty( $all_regions ) )
-                                                {
-                                                    $find = array_map( "trim", explode( "]|[", CFGP_Options::get('block_region') ) );
-                                                    foreach( $all_regions as $key => $country )
-                                                    {
-                                                        echo '<option id="'
-                                                        .$country->slug
-                                                        .'" value="'
-                                                        .$country->slug
-                                                        .'"'
-                                                        .(in_array($country->slug, $find)!==false?' selected':'')
-                                                        .'>'
-                                                        .$country->name
-                                                        .' - '.$country->description.'</option>';
-                                                    }
-                                                }
-                                            ?>
-                                            </select>
-                                            <p><?php printf(__('To set up a list of regions, you need to go to the Geo Plugin -> %s',CFGP_NAME), '<a href="' . admin_url('edit-tags.php?taxonomy=cf-geoplugin-region&post_type=cf-geoplugin-banner') . '" target="_blank">' . __('Regions',CFGP_NAME) . '</a>'); ?></p>
+												CFGP_Form::select_regions(
+													array(
+														'name'=>'block_region',
+														'id' => 'block_region',
+														'country_code' => $block_country
+													),
+													$block_region,
+													true
+												);
+											?>
+											<br>
                                             <button type="button" class="button cfgp-select-all" data-target="block_region"><object data="<?php echo CFGP_ASSETS . '/images/select.svg'; ?>" width="15" height="15"></object> <?php esc_attr_e( 'Select/Deselect all', CFGP_NAME ); ?></button>
                                         </div>
                                     </div>
                                     <div class="cfgp-tab-panel" id="city-restriction">
                                     	<div class="cfgp-form-group">
                                             <label for="block_city"><?php _e('Choose Cities',CFGP_NAME); ?>:</label>
-                                            <select class="chosen-select" data-placeholder="<?php _e( 'Choose cities...', CFGP_NAME ); ?>" id="block_city" aria-describedby="cityHelp" name="block_city[]" multiple >
                                             <?php
-                                                if( is_array( $all_regions ) && !empty( $all_regions ) )
-                                                {
-                                                    $find = array_map( "trim", explode( "]|[", CFGP_Options::get('block_city') ) );
-                                                    foreach( $all_regions as $key => $country )
-                                                    {
-                                                        echo '<option id="'
-                                                        .$country->slug
-                                                        .'" value="'
-                                                        .$country->slug
-                                                        .'"'
-                                                        .(in_array($country->slug, $find)!==false?' selected':'')
-                                                        .'>'
-                                                        .$country->name
-                                                        .' - '.$country->description.'</option>';
-                                                    }
-                                                }
-                                            ?>
-                                            </select>
-                                            <p><?php printf(__('To set up a list of cities, you need to go to the Geo Plugin -> %s',CFGP_NAME), '<a href="' . admin_url('edit-tags.php?taxonomy=cf-geoplugin-city&post_type=cf-geoplugin-banner') . '" target="_blank">' . __('City',CFGP_NAME) . '</a>'); ?></p>
+												CFGP_Form::select_cities(
+													array(
+														'name'=>'block_city',
+														'id' => 'block_city',
+														'country_code' => $block_country
+													),
+													$block_city,
+													true
+												);
+											?>
+											<br>
                                             <button type="button" class="button cfgp-select-all" data-target="block_city"><object data="<?php echo CFGP_ASSETS . '/images/select.svg'; ?>" width="15" height="15"></object> <?php esc_attr_e( 'Select/Deselect all', CFGP_NAME ); ?></button>
                                         </div>
                                     </div>

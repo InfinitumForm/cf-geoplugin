@@ -32,6 +32,12 @@
 if ( ! defined( 'WPINC' ) ) { die( "Don't mess with us." ); }
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
+// Library version
+if ( ! defined( 'CFGP_LIBRARY_VERSION' ) ) define( 'CFGP_LIBRARY_VERSION', '1.0.0');
+
+// Database version
+if ( ! defined( 'CFGP_DATABASE_VERSION' ) ) define( 'CFGP_DATABASE_VERSION', '1.0.0');
+
 // Globals
 global $cfgp_version;
 
@@ -51,7 +57,7 @@ include_once __DIR__ . '/constants.php';
 /*
  * Requirements
  */
-include_once CFGP_INC . '/Requirements.php';
+include_once CFGP_CLASS . '/Requirements.php';
 
 /*
  * Check requiremant
