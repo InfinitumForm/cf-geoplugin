@@ -685,41 +685,152 @@ class CFGP_U {
 			$ip = CFGP_IP::get();
 		}
 		
-		$bots = apply_filters( 'cf_geoplugin_bot_ip_list', array(
-			'65.214.45.143',	// Ask
-			'65.214.45.148',	// Ask
-			'66.235.124.192',	// Ask
-			'66.235.124.7',		// Ask
-			'66.235.124.101',	// Ask
-			'66.235.124.193',	// Ask
-			'66.235.124.73',	// Ask
-			'66.235.124.196',	// Ask
-			'66.235.124.74',	// Ask
-			'63.123.238.8',		// Ask
-			'202.143.148.61',	// Ask
-			
-			'66.249.66.1',		// Google
-			
-			'157.55.33.18',		// Bing
-			'123.125.66.120',	// Baidu
-			'141.8.142.60',		// Yandex
-			
-			'72.94.249.34',		// DuckDuckGo
-			'72.94.249.35',		// DuckDuckGo
-			'72.94.249.36',		// DuckDuckGo
-			'72.94.249.37',		// DuckDuckGo
-			'72.94.249.38',		// DuckDuckGo
-			
-			'68.180.228.178'	// Yahoo
+		$range = apply_filters( 'cfgp/crawler/ip/range', array(
+			// Google
+			'64.18.0.0'			=>	'64.18.15.255',
+			'64.233.160.0'		=>	'64.233.191.255',
+			'66.249.64.0'		=>	'66.249.95.255 ',
+			'66.102.0.0'		=>	'66.102.15.255',
+			'72.14.192.0'		=>	'72.14.255.255',
+			'74.125.0.0'		=>	'74.125.255.255',
+			'108.177.8.0'		=>	'108.177.15.255',
+			'172.217.0.0'		=>	'172.217.31.255',
+			'173.194.0.0'		=>	'173.194.255.255',
+			'207.126.144.0'		=>	'207.126.159.255',
+			'209.85.128.0'		=>	'209.85.255.255',
+			'216.58.192.0'		=>	'216.58.223.255',
+			'216.239.32.0'		=>	'216.239.63.255',
+			// MSN
+			'64.4.0.0'			=>	'64.4.63.255 ',
+			'65.52.0.0'			=>	'65.55.255.255 ',
+			'131.253.21.0'		=>	'131.253.47.255',
+			'157.54.0.0'		=>	'157.60.255.255',
+			'207.46.0.0'		=>	'207.46.255.255',
+			'207.68.128.0'		=>	'207.68.207.255',
+			// Yahoo
+			'8.12.144.0'		=>	'8.12.144.255 ',
+			'66.196.64.0'		=>	'66.196.127.255 ',
+			'66.228.160.0'		=>	'66.228.191.255 ',
+			'67.195.0.0'		=>	'67.195.255.255 ',
+			'68.142.192.0'		=>	'68.142.255.255 ',
+			'72.30.0.0'			=>	'72.30.255.255',
+			'74.6.0.0'			=>	'74.6.255.255',
+			'98.136.0.0'		=>	'98.139.255.255',
+			'202.160.176.0'		=>	'202.160.191.255',
+			'209.191.64.0'		=>	'209.191.127.255',
+			// Bing
+			'104.146.0.0'		=>	'104.146.63.255',
+			'104.146.100.0'		=>	'104.146.113.255',
+			// Yandex
+			'100.43.64.0'		=>	'100.43.79.255',
+			'100.43.80.0'		=>	'100.43.83.255',
+			// Baidu
+			'103.6.76.0'		=>	'103.6.79.255',
+			'104.193.88.0'		=>	'104.193.91.255',
+			'106.12.0.0'		=>	'106.13.255.255',
+			'115.231.36.136'	=>	'115.231.36.159',
+			'39.156.69.79',
+			'220.181.38.148',
+			// DuckDuckGo
+			'50.16.241.113'		=>	'50.16.241.117',
+			'54.208.100.253'	=>	'54.208.102.37',
+			'72.94.249.34'		=>	'72.94.249.38',
+			'23.21.227.69',
+			'40.88.21.235',
+			'50.16.247.234',
+			'52.204.97.54',
+			'52.5.190.19',
+			'54.197.234.188',
+			'107.21.1.8',
+			// Sogou
+			'118.191.216.42'	=>	'118.191.216.57',
+			'119.28.109.132',
+			// Ask
+			'65.214.45.143'		=>	'65.214.45.148',
+			'66.235.124.7',
+			'66.235.124.101',
+			'66.235.124.193',
+			'66.235.124.73',
+			'66.235.124.196',
+			'66.235.124.74',
+			'63.123.238.8',
+			'202.143.148.61',
+			// Pinterest
+			'54.236.1.1'		=>	'54.236.1.255',
+			'54.82.14.182',
+			'54.81.171.36',
+			'23.20.24.147',
+			'54.237.150.66',
+			'54.237.197.55',
+			'54.211.68.214',
+			'54.234.164.192',
+			'50.16.155.205',
+			'23.20.84.153',
+			'54.224.131.213',
+			// Facebook
+			'69.63.176.0'		=>	'69.63.176.21',
+			'69.63.184.0'		=>	'69.63.184.21',
+			'66.220.144.0'		=>	'66.220.144.21',
+			'69.63.176.0'		=>	'69.63.176.20',
+			'31.13.24.0'		=>	'31.13.24.21',
+			'31.13.64.0'		=>	'31.13.64.18',
+			'69.171.224.0'		=>	'69.171.224.19',
+			'74.119.76.0'		=>	'74.119.76.22',
+			'103.4.96.0'		=>	'103.4.96.22',
+			'173.252.64.0'		=>	'173.252.64.18',
+			'204.15.20.0'		=>	'204.15.20.22',
+			// Twitter
+			'199.59.156.0'		=>	'199.59.156.255',
+			// Linkedin
+			'144.2.22.0'		=>	'144.2.22.24',
+			'144.2.224.0'		=>	'144.2.224.24',
+			'144.2.225.0'		=>	'144.2.225.24',
+			'144.2.228.0'		=>	'144.2.228.24',
+			'144.2.229.0'		=>	'144.2.229.24',
+			'144.2.233.0'		=>	'144.2.233.24',
+			'144.2.237.0'		=>	'144.2.237.24',
+			'216.52.16.0'		=>	'216.52.16.24',
+			'216.52.17.0'		=>	'216.52.17.24',
+			'216.52.18.0'		=>	'216.52.18.24',
+			'216.52.20.0'		=>	'216.52.20.24',
+			'216.52.21.0'		=>	'216.52.21.24',
+			'216.52.22.0'		=>	'216.52.22.24',
+			'65.156.227.0'		=>	'65.156.227.24',
+			'8.39.53.0'			=>	'8.39.53.24'
 		));
 		
-		if($ip && in_array($ip, $bots, true)) return true;
+		$ip2long = sprintf('%u', ip2long($ip));
+			
+		if($ip2long !== false)
+		{
+			foreach($range as $start => $end)
+			{
+				$end = sprintf('%u', ip2long($end));
+				$start = sprintf('%u', ip2long($start));
+				
+				$is_key = ($start === false || $start == 0);
+				
+				if($end === false || $end == 0) continue;
+				
+				if(is_numeric($start) && $is_key && $end == $ip2long)
+				{
+					return true;
+				}
+				else
+				{
+					if(!$is_key && $ip2long >= $start && $ip2long <= $end)
+					{
+						return true;
+					}
+				}
+			}
+		}
 		
 		
 		// Get by user agent (wide range)
 		if(isset($_SERVER['HTTP_USER_AGENT']) && !empty($_SERVER['HTTP_USER_AGENT']))
 		{
-			return (preg_match('/rambler|abacho|acoi|accona|aspseek|altavista|estyle|scrubby|lycos|geona|ia_archiver|alexa|sogou|skype|facebook|duckduckbot|duckduck|twitter|pinterest|linkedin|skype|naver|bing|google|yahoo|duckduckgo|yandex|baidu|baiduspider|teoma|xing|java\/1.7.0_45|bot|crawl|slurp|spider|mediapartners|\sask\s|\saol\s/i', $_SERVER['HTTP_USER_AGENT']) ? true : false);
+			return (preg_match('/rambler|abacho|ac(oi|cona)|aspseek|al(tavista|exa)|estyle|scrubby|lycos|geona|ia_archiver|sogou|facebook|duckduck(bot|go)?|twitter|pinterest|linkedin|skype|naver|bing(bot)?|google|ya(hoo|ndex)|baidu(spider)?|teoma|xing|java\/1\.7\.0_45|crawl|slurp|spider|mediapartners|\sbot\s|\sask\s|\saol\s/i', $_SERVER['HTTP_USER_AGENT']) ? true : false);
 		}
 		
 		return false;
@@ -1051,7 +1162,7 @@ class CFGP_U {
 	* @version  2.0.0
 	******************************************************************/
 	public static function get_page_ID(){
-		global $post;
+		global $post, $wp;
 
 		if($current_page_id = CFGP_Cache::get('current_page_id')){
 			return $current_page_id;
@@ -1069,6 +1180,8 @@ class CFGP_U {
 			return CFGP_Cache::set('current_page_id', $p);
 		else if($page_id = self::get_page_ID__private__GET_page_id())
 			return CFGP_Cache::set('current_page_id', $page_id);
+		else if($wp && isset($wp->request) && function_exists('get_page_by_path') && ($current_page=get_page_by_path($wp->request)))
+			$page_id = CFGP_Cache::set('current_page_id', $current_page->ID);
 		else if(!is_admin() && $id = self::get_page_ID__private__query())
 			return $id;
 		else if($id = self::get_page_ID__private__page_for_posts())
@@ -1099,12 +1212,12 @@ class CFGP_U {
 
 	// Get page ID by GET[page_id]
 	protected static function get_page_ID__private__GET_page_id(){
-		return ((isset($_GET['page_id']) && is_numeric($_GET['page_id']))  ? absint($_GET['page_id']) : false);
+		return ((isset($_GET['page_id']) && is_numeric($_GET['page_id'])) ? absint($_GET['page_id']) : false);
 	}
 
 	// Get page ID by GET[p]
 	protected static function get_page_ID__private__GET_p(){
-		return ((isset($_GET['p']) && is_numeric($_GET['p']))  ? absint($_GET['p']) : false);
+		return ((isset($_GET['p']) && is_numeric($_GET['p'])) ? absint($_GET['p']) : false);
 	}
 
 	// Get page ID by OPTION[page_for_posts]
@@ -1145,7 +1258,6 @@ class CFGP_U {
 
 		return false;
 	}
-
 	/**
 	* END Get current page ID
 	*****************************************************************/
