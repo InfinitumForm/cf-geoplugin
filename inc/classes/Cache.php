@@ -10,7 +10,9 @@
 if(!class_exists('CFGP_Cache')) :
 class CFGP_Cache
 {
+	// Cache prefix (right now is empty but can be used if there is needs)
 	const PREFIX = '';
+	// Cache group
 	const GROUP = 'cf-geoplugin';
 	
 	/*
