@@ -44,6 +44,11 @@ class CFGP_SEO_Redirection extends CFGP_Global
 	public function seo_redirection(){
 		global $wpdb;
 		
+		// Stop if API have error
+		if(CFGP_U::api('error')){
+			return;
+		}
+		
 		$country = CFGP_U::api('country');
 		$country_code = CFGP_U::api('country_code');
 		
@@ -120,6 +125,34 @@ class CFGP_SEO_Redirection extends CFGP_Global
 			}
 		}
 	}
+	
+	/*
+	 * Get current URL or match current URL
+	 */
+	private static function current_url ($url = NULL, $avoid_protocol = false) {
+		$get_url = CFGP_U::get_url();
+		
+		if( $avoid_protocol )
+		{
+			if(!empty($url)) {
+				$url = preg_replace('/(https?\:\/\/)/i', '', $url);
+			}
+			$get_url = preg_replace('/(https?\:\/\/)/i', '', $get_url);
+		}
+
+		if(empty($url)) {
+			return $get_url;
+		} else {
+			$url = rtrim($url, '/');
+			$get_url = rtrim($get_url, '/');
+			
+			if(strtolower($url) == strtolower($get_url)) {
+				return $url;
+			}
+		}
+		
+		return false;
+	}
 
 	/*
 	 * Redirection for the enthire website
@@ -164,7 +197,7 @@ class CFGP_SEO_Redirection extends CFGP_Global
 	private function control_redirection( $redirect )
 	{	
 		// Forbid infinity loop
-		if($this->current_url( $redirect['url'], true ))
+		if(self::current_url( $redirect['url'], true ))
 		{
 			return false;
 		}
@@ -175,7 +208,7 @@ class CFGP_SEO_Redirection extends CFGP_Global
 			
 			if(isset($redirect['page_id']) && isset($redirect['ID']) && !empty($redirect['page_id'])) {
 				$cookie_name = apply_filters(
-					'cfgp/seo/control_redirection/cookie/page/' . $redirect['page_id'],
+					'cfgp/seo/control_redirection/cookie/page/',
 					'__cfgp_seo_' . md5($redirect['page_id'] . '_once_' . $redirect['ID']),
 					$redirect['page_id'],
 					$redirect['ID']
@@ -219,33 +252,6 @@ class CFGP_SEO_Redirection extends CFGP_Global
 		return ( ( isset( $obj[$name][0] ) && empty( $obj[$name][0] ) ) || ( empty( $obj[$name] ) ) );
 	}
 	
-	/*
-	 * Get current URL or match current URL
-	 */
-	private function current_url ($url = NULL, $avoid_protocol = false) {
-		$get_url = CFGP_U::get_url();
-		
-		if( $avoid_protocol )
-		{
-			if(!empty($url)) {
-				$url = preg_replace('/(https?\:\/\/)/i', '', $url);
-			}
-			$get_url = preg_replace('/(https?\:\/\/)/i', '', $get_url);
-		}
-
-		if(empty($url)) {
-			return $get_url;
-		} else {
-			$url = rtrim($url, '/');
-			$get_url = rtrim($get_url, '/');
-			
-			if(strtolower($url) == strtolower($get_url)) {
-				return $url;
-			}
-		}
-		
-		return false;
-	}
 	
 	/**
 	 * Check user's postcode for defender or seo redirection

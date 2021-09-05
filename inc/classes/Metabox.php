@@ -264,19 +264,7 @@ class CFGP_Metabox extends CFGP_Global {
                 );
             ?>
         </div>
-        <div class="cfgp-col cfgp-col-sm-6 cfgp-col-3 input-radio">
-        	<label><?php _e('Search type', CFGP_NAME); ?></label>
-            <?php
-                CFGP_Form::radio(
-                    array(
-                        'exact' => __('Exact match', CFGP_NAME),
-                        'relative' => __('Relative match', CFGP_NAME)
-                    ),
-                    array('name'=>"{$this->metabox}[{$i}][search_type]"),
-                    $search_type
-                );
-            ?>
-        </div>
+        <div class="cfgp-col cfgp-col-sm-6 cfgp-col-3 input-radio"></div>
         <div class="cfgp-col cfgp-col-sm-6 cfgp-col-3 cfgp-col-content-right cfgp-repeater-actions">
         	<button type="button" class="button button-link cfgp-remove-seo-redirection"><i class="fa fa-times"></i> <?php _e( 'Remove', CFGP_NAME ); ?></button>
         	<button type="button" class="button button-primary cfgp-add-seo-redirection"><i class="fa fa-plus"></i> <?php _e( 'Add New Redirection', CFGP_NAME ); ?></button>

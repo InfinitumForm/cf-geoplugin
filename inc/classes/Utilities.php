@@ -1276,7 +1276,7 @@ class CFGP_U {
 		$current_page = CFGP_Cache::get('get_page');
 		
 		// Get page by path
-		if(!$current_page) {
+		if(!$current_page && isset($wp->request)) {
 			$current_page =  get_page_by_path($wp->request);
 		}
 		

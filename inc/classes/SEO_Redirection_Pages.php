@@ -37,25 +37,24 @@ class CFGP_SEO_Redirection_Pages extends CFGP_Global
 		/**
 		 * Fire WordPress redirecion ASAP
 		 =======================================*/
-		/* 01 */ $this->add_action( 'plugins_loaded',		'seo_redirection', 1);
-		/* 02 */ $this->add_action( 'wp',					'seo_redirection', 1);
-		/* 03 */ $this->add_action( 'send_headers',			'seo_redirection', 1);
-		/* 04 */ $this->add_action( 'posts_selection',		'seo_redirection', 1);
+	//	/* 01 */ $this->add_action( 'plugins_loaded',		'seo_redirection', 1);
+	//	/* 02 */ $this->add_action( 'wp',					'seo_redirection', 1);
+	//	/* 03 */ $this->add_action( 'send_headers',			'seo_redirection', 1);
+	//	/* 04 */ $this->add_action( 'posts_selection',		'seo_redirection', 1);
 		/* 05 */ $this->add_action( 'template_redirect',	'seo_redirection', 1);
 	}
 	
 	public function seo_redirection(){
 		if(!is_admin()){
 			
-			$current_page = CFGP_U::get_page();
-			
-			if(!$current_page) {
+			// Stop if API have error
+			if(CFGP_U::api('error')){
 				return;
 			}
 			
-			$cookie_name = apply_filters("cfgp/metabox/seo_redirection/only_once/cookie_name/{$current_page->ID}", '__cfgp_seo_' . md5($current_page->ID . '_once'), $current_page->ID);
+			$current_page = CFGP_U::get_page();
 			
-			if(isset($_COOKIE[$cookie_name]) && !empty($_COOKIE[$cookie_name])){
+			if(!$current_page) {
 				return;
 			}
 			
@@ -75,85 +74,123 @@ class CFGP_SEO_Redirection_Pages extends CFGP_Global
 			$current_city = strtolower(CFGP_U::api('city'));
 			$current_postcode = strtolower(CFGP_U::api('region_code'));
 			
-			foreach($seo_redirection as $data) {
-				
-				if((isset($data['active']) ? $data['active'] : 1) !== 1) {
-					continue;
-				}
-				
-				if(isset($data['exclude_country']) ? $data['exclude_country'] : false) {
-					$data['country']=array();
-				}
-				if(isset($data['exclude_region']) ? $data['exclude_region'] : false) {
-					$data['region']=array();
-				}
-				if(isset($data['exclude_city']) ? $data['exclude_city'] : false) {
-					$data['city']=array();
-				}
-				if(isset($data['exclude_postcode']) ? $data['exclude_postcode'] : false) {
-					$data['postcode']=array();
-				}
-				
-				$country 	= array_map('strtolower', isset($data['country']) ? $data['country'] : array());
-				$region 	= array_map('strtolower', isset($data['region']) ? $data['region'] : array());
-				$city 		= array_map('strtolower', isset($data['city']) ? $data['city'] : array());
-				$postcode 	= array_map('strtolower', isset($data['postcode']) ? $data['postcode'] : array());
-				
-				$url 		= (isset($data['url']) ? $data['url'] : '');
-				$http_code 	= (isset($data['http_code']) ? $data['http_code'] : 302);
-				
-				$search_type = (isset($data['search_type']) ? $data['search_type'] : 'exact');
-				
-				// Let's check number of 
-				
-				// Search by values
-				$redirect = array();
-				
-				if(empty($current_country)) {
-					foreach($country as $c){
-						if(!empty($r) && in_array($c, $current_country) !== false){
-							$redirect[] = 1;
-							break;
+			if($seo_redirection && is_array($seo_redirection))
+			{
+				foreach($seo_redirection as $data) {
+					
+					$cookie_name = apply_filters("cfgp/metabox/seo_redirection/only_once/cookie_name/{$current_page->ID}", '__cfgp_seo_' . md5(serialize($data)), $data, $current_page->ID);
+					
+					if(isset($_COOKIE[$cookie_name]) && !empty($_COOKIE[$cookie_name])){
+						continue;
+					}
+					
+					$url = (isset($data['url']) ? $data['url'] : '');
+					
+					if($url && self::current_url($url, true)){
+						continue;
+					}
+					
+					if((isset($data['active']) ? $data['active'] : 1) !== 1) {
+						continue;
+					}
+					
+					$country 	= array_map('strtolower', (isset($data['country']) ? $data['country'] : array()));
+					$region 	= array_map('strtolower', (isset($data['region']) ? $data['region'] : array()));
+					$city 		= array_map('strtolower', (isset($data['city']) ? $data['city'] : array()));
+					$postcode 	= array_map('strtolower', (isset($data['postcode']) ? $data['postcode'] : array()));
+					
+					if(isset($data['exclude_country']) ? $data['exclude_country'] : false) {
+						$country=array();
+					}
+					if(isset($data['exclude_region']) ? $data['exclude_region'] : false) {
+						$region=array();
+					}
+					if(isset($data['exclude_city']) ? $data['exclude_city'] : false) {
+						$city=array();
+					}
+					if(isset($data['exclude_postcode']) ? $data['exclude_postcode'] : false) {
+						$postcode=array();
+					}
+					
+					$http_code 	= (isset($data['http_code']) ? $data['http_code'] : 302);
+					
+					$search_type = (isset($data['search_type']) ? $data['search_type'] : 'exact');
+					
+					// Let's check number of 
+					
+					// Search by values
+					$redirect = array();
+					
+					if(!empty($current_country)) {
+						foreach($country as $c){
+							if(!empty($c) && in_array($c, $current_country) !== false){
+								$redirect[] = 1;
+								break;
+							}
 						}
 					}
-				}
-				
-				if(empty($current_region)) {
-					foreach($region as $r){
-						if(!empty($r) && in_array($r, $current_region) !== false){
-							$redirect[] = 1;
-							break;
+					
+					if(!empty($current_region)) {
+						foreach($region as $r){
+							if(!empty($r) && in_array($r, $current_region) !== false){
+								$redirect[] = 1;
+								break;
+							}
 						}
 					}
-				}
-				
-				if(!empty($current_city) && !empty($city) && in_array($current_city, $city) !== false){
-					$redirect[] = 1;
-				}
-				
-				if(!empty($current_postcode) && !empty($postcode) && in_array($current_postcode, $postcode) !== false){
-					$redirect[] = 1;
-				}
-				
-				if($search_type == 'exact') {
-					//-EXACT MATCH
 					
+					if(!empty($current_city) && !empty($city) && in_array($current_city, $city) !== false){
+						$redirect[] = 1;
+					}
 					
-				} else {
-					//-RELATIVE MATCH
+					if(!empty($current_postcode) && !empty($postcode) && in_array($current_postcode, $postcode) !== false){
+						$redirect[] = 1;
+					}
+
+					$redirect = count($redirect);
+
+					if( $redirect > 0 )
+					{
+						// Redirect only once
+						if(isset($data['only_once']) ? $data['only_once'] : 0) {
+							$expire = apply_filters('cfgp/metabox/seo_redirection_pages/only_once/cookie_expire', (YEAR_IN_SECONDS*2), CFGP_TIME);
+							CFGP_U::setcookie ($cookie_name, (CFGP_TIME.'_'.$expire), $expire);
+						}
+
+						// Redirections
+						CFGP_U::redirect( $url, $http_code );
+					}
 				}
-				
-				/*
-				if(isset($data['only_once']) ? $data['only_once'] : 0) {	
-					$expire = apply_filters('cfgp/metabox/seo_redirection/only_once/cookie_expire', (YEAR_IN_SECONDS*2), CFGP_TIME);
-					CFGP_U::setcookie ($cookie_name, (CFGP_TIME.'_'.$expire), $expire);
-				}
-				*/
-				
 			}
-			
-		//	echo '<pre>', var_dump($seo_redirection), '</pre>';
 		}
+	}
+	
+	/*
+	 * Get current URL or match current URL
+	 */
+	private static function current_url ($url = NULL, $avoid_protocol = false) {
+		$get_url = CFGP_U::get_url();
+		
+		if( $avoid_protocol )
+		{
+			if(!empty($url)) {
+				$url = preg_replace('/(https?\:\/\/)/i', '', $url);
+			}
+			$get_url = preg_replace('/(https?\:\/\/)/i', '', $get_url);
+		}
+
+		if(empty($url)) {
+			return $get_url;
+		} else {
+			$url = rtrim($url, '/');
+			$get_url = rtrim($get_url, '/');
+			
+			if(strtolower($url) == strtolower($get_url)) {
+				return $url;
+			}
+		}
+		
+		return false;
 	}
 	
 	public static function instance() {
