@@ -455,12 +455,13 @@ class CFGP_U {
 	*/
 	public static function redirect($location, int $status=302, bool $safe=false){
 		$status = absint($status);
+		$cache_suport = (CFGP_Options::get('cache-support', 'yes') == 'yes');
 		
 		if(defined('DOING_AJAX') && DOING_AJAX){
 			return false;
 		}
 		
-		if(CFGP_Options::get('cache-support', 'yes') == 'yes') {
+		if($cache_suport) {
 			self::cache_flush();
 		}
 		
@@ -482,7 +483,10 @@ class CFGP_U {
 			if(function_exists('wp_redirect'))
 			{
 				if($safe) {
-					 $location = wp_validate_redirect( $location, apply_filters( 'cfgp/safe_redirect/fallback', site_url(), $status ) );
+					$location = wp_validate_redirect( $location, apply_filters( 'cfgp/safe_redirect/fallback', site_url(), $status ) );
+				}
+				if($cache_suport) {
+					nocache_headers();
 				}
 				return wp_redirect( $location, $status, CFGP_NAME );
 			}
@@ -493,6 +497,12 @@ class CFGP_U {
 				if ( ! $is_IIS && function_exists('status_header') && defined('PHP_SAPI') && 'cgi-fcgi' !== PHP_SAPI ) {
 					status_header( $status ); // This causes problems on IIS and some FastCGI setups.
 				}
+				
+				// Delete cache
+				if($cache_suport) {
+					header("cache-control: must-revalidate, max-age=0, no-cache");
+				}
+				
 				// Inform application who redirects
 				header('X-Redirect-By: ' . CFGP_NAME);
 				// Standard redirect
