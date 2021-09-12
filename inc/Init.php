@@ -20,8 +20,8 @@ final class CFGP_Init{
 		$classes = apply_filters('cfgp/init/classes', array(
 			'CFGP_Cache',					// Register cache
 			'CFGP_Taxonomy',				// Register Taxonomy
-			'CFGP_Geo_Banner',				// Register Post Type
 			'CFGP_Metabox',					// Metabox class
+			'CFGP_Geo_Banner',				// Register Post Type
 			'CFGP_API',						// Main API class
 			'CFGP_Media',					// Media class
 			'CFGP_Settings',				// Settings class

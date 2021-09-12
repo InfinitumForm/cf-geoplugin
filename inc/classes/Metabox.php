@@ -70,7 +70,7 @@ class CFGP_Metabox extends CFGP_Global {
 					'loading' => esc_attr__('Loading...',CFGP_NAME),
 					'not_found' => esc_attr__('Not Found!',CFGP_NAME),
 					'chosen' => array(
-						'not_found' => esc_attr__('Nothing found!',CFGP_NAME),
+						'not_found' 		=> esc_attr__('Nothing found!',CFGP_NAME),
 						'choose' 			=> esc_attr__('Choose...',CFGP_NAME),
 						'choose_first' 		=> esc_attr__('Choose countries first!',CFGP_NAME),
 						'choose_countries' 	=> esc_attr__('Choose countries...',CFGP_NAME),

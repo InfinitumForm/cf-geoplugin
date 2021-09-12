@@ -284,6 +284,16 @@ class CFGP_Admin extends CFGP_Global {
 		wp_localize_script(CFGP_NAME . '-cpt', 'CFGP', array(
 			'ajaxurl' => admin_url('admin-ajax.php'),
 			'label' => array(
+				'unload' => esc_attr__('Data will lost , Do you wish to continue?',CFGP_NAME),
+				'chosen' => array(
+					'not_found' 		=> esc_attr__('Nothing found!',CFGP_NAME),
+					'choose' 			=> esc_attr__('Choose...',CFGP_NAME),
+					'choose_first' 		=> esc_attr__('Choose countries first!',CFGP_NAME),
+					'choose_countries' 	=> esc_attr__('Choose countries...',CFGP_NAME),
+					'choose_regions' 	=> esc_attr__('Choose regions...',CFGP_NAME),
+					'choose_cities' 	=> esc_attr__('Choose cities...',CFGP_NAME),
+					'choose_postcodes' 	=> esc_attr__('Choose postcodes...',CFGP_NAME),
+				),
 				'loading' => esc_attr__('Loading...',CFGP_NAME),
 				'not_found' => esc_attr__('Not Found!',CFGP_NAME),
 				'placeholder' => esc_attr__('Search',CFGP_NAME),
