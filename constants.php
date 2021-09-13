@@ -36,13 +36,16 @@ if ( ! defined( 'CFGP_STORE' ) )		define( 'CFGP_STORE', 'https://cfgeoplugin.com
 if ( ! defined( 'CFGP_STORE_CODE' ) )	define( 'CFGP_STORE_CODE', 'YR5pv3FU8l78v3N'); // DON'T TOUCH!!!
 // Plugin root
 if ( ! defined( 'CFGP_ROOT' ) )			define( 'CFGP_ROOT', rtrim(plugin_dir_path(CFGP_FILE), '/') );
-// Globals directory
-if ( ! defined( 'CFGP_GLOBALS' ) )		define( 'CFGP_GLOBALS', CFGP_ROOT . '/globals' );
 // Shell
 if ( ! defined( 'CFGP_SHELL' ) )		define( 'CFGP_SHELL', CFGP_ROOT . '/shell' );
 // Library
 if ( ! defined( 'CFGP_LIBRARY' ) )		define( 'CFGP_LIBRARY', CFGP_ROOT . '/library' );
-
+// Includes directory
+if ( ! defined( 'CFGP_INC' ) )			define( 'CFGP_INC', CFGP_ROOT . '/inc' );
+// Classes directory
+if ( ! defined( 'CFGP_CLASS' ) )		define( 'CFGP_CLASS', CFGP_INC . '/classes' );
+// Plugins directory
+if ( ! defined( 'CFGP_PLUGINS' ) )		define( 'CFGP_PLUGINS', CFGP_INC . '/plugins' );
 // If someone try to called this file directly via URL, abort.
 if ( ! defined( 'WPINC' ) ) { die( "Don't mess with us." ); }
 if ( ! defined( 'ABSPATH' ) ) { exit; }
@@ -62,10 +65,6 @@ if( ! defined( 'CFGP_DISABLE_NOTIFICATION_EXPIRE_SOON' ) )	define('CFGP_DISABLE_
 if( ! defined( 'CFGP_DISABLE_NOTIFICATION_LOOKUP_EXPIRED' ) )	define('CFGP_DISABLE_NOTIFICATION_LOOKUP_EXPIRED', false);
 // Disable notification for the "Lookup expires soon"
 if( ! defined( 'CFGP_DISABLE_NOTIFICATION_LOOKUP_EXPIRE_SOON' ) )	define('CFGP_DISABLE_NOTIFICATION_LOOKUP_EXPIRE_SOON', false);
-// Includes directory
-if ( ! defined( 'CFGP_INC' ) )			define( 'CFGP_INC', CFGP_ROOT . '/inc' );
-// Classes directory
-if ( ! defined( 'CFGP_CLASS' ) )		define( 'CFGP_CLASS', CFGP_INC . '/classes' );
 // Plugin URL root
 if ( ! defined( 'CFGP_URL' ) )			define( 'CFGP_URL', rtrim(plugin_dir_url( CFGP_FILE ), '/') );
 // Assets URL
