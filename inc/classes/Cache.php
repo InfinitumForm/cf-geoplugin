@@ -2,24 +2,39 @@
 /**
  * Cache Control
  *
- * @link              http://infinitumform.com/
- * @since             1.0.0
- * @package           Serbian_Transliteration
- * @autor             Ivijan-Stefan Stipic
+ * @link          http://infinitumform.com/
+ * @since         8.0.0
+ * @package       cf-geoplugin
+ * @author        Ivijan-Stefan Stipic
+ * @version       1.0.0
  */
 if(!class_exists('CFGP_Cache')) :
 class CFGP_Cache
 {
-	// Cache prefix (right now is empty but can be used if there is needs)
-	const PREFIX = '';
 	// Cache group
-	const GROUP = 'cf-geoplugin';
+	const GROUP = 'cf_geoplugin';
 	
 	/*
 	 * Add a group to the list of global groups
 	 */
 	public static function instance(){
 		wp_cache_add_global_groups(self::GROUP);
+	}
+	
+	/*
+	 * Cache prefix
+	 */
+	public static function prefix($key = '') {
+		$key = trim($key);
+		$name = self::GROUP . '_cache_prefix__';
+		$prefix = wp_cache_get( $name, self::GROUP );
+
+		if ( false === $prefix ) {
+			$prefix = str_replace('.', '', (string)microtime(true));
+			wp_cache_set( $name, $prefix, self::GROUP );
+		}
+
+		return "cfgp_cache_{$prefix}__{$key}";
 	}
 
 	/*
@@ -29,7 +44,7 @@ class CFGP_Cache
 	 */
     public static function get($key, $force = false, $found = NULL)
     {
-        return wp_cache_get(self::PREFIX.$key, self::GROUP, $force, $found);
+        return wp_cache_get(self::prefix($key), self::GROUP, $force, $found);
     }
 	
 	/*
@@ -40,7 +55,7 @@ class CFGP_Cache
 	 */
     public static function add($key, $value, $expire=0)
     {   
-		return (wp_cache_add( self::PREFIX.$key, $value, self::GROUP, $expire )!==false ? $value : false);
+		return (wp_cache_add( self::prefix($key), $value, self::GROUP, $expire )!==false ? $value : false);
     }
 
 	/*
@@ -51,7 +66,7 @@ class CFGP_Cache
 	 */
     public static function set($key, $value, $expire=0)
     {   
-		return (wp_cache_set( self::PREFIX.$key, $value, self::GROUP, $expire )!==false ? $value : false);
+		return (wp_cache_set( self::prefix($key), $value, self::GROUP, $expire )!==false ? $value : false);
     }
 	
 	/*
@@ -61,7 +76,7 @@ class CFGP_Cache
 	 */
     public static function replace($key, $value, $expire=0)
     {
-        return (wp_cache_replace( self::PREFIX.$key, $value, self::GROUP, $expire )!==false ? $value : false);
+        return (wp_cache_replace( self::prefix($key), $value, self::GROUP, $expire )!==false ? $value : false);
     }
 	
 	/*
@@ -71,7 +86,7 @@ class CFGP_Cache
 	 */
 	public static function delete($key)
     {
-		return wp_cache_delete(self::PREFIX.$key, self::GROUP)!==false;
+		return wp_cache_delete(self::prefix($key), self::GROUP)!==false;
     }
 	
 	/*

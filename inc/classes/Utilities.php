@@ -4,7 +4,11 @@
  *
  * Main global classes with active hooks
  *
- * @version       3.0.0
+ * @link            http://infinitumform.com/
+ * @since           8.0.0
+ * @package         cf-geoplugin
+ * @author          Ivijan-Stefan Stipic
+ * @version       	3.0.0
  *
  */
  // If someone try to called this file directly via URL, abort.
@@ -1123,8 +1127,8 @@ class CFGP_U {
 	/*
 	 * Request
 	 */
-	public static function request($name){
-		return (isset($_REQUEST[$name]) ?  $_REQUEST[$name] : '');
+	public static function request($name, $default = ''){
+		return (isset($_REQUEST[$name]) ?  $_REQUEST[$name] : $default);
 	}
 	
 	/*

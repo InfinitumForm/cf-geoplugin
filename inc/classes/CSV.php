@@ -3,8 +3,11 @@
  * CSV Parser
  * Import or export CSV class
  *
- * @version       1.0.7
+ * @link          http://infinitumform.com/
+ * @since         8.0.0
+ * @package       cf-geoplugin
  * @author        Ivijan-Stefan Stipic
+ * @version       1.0.7
  */
 
 if ( ! defined( 'WPINC' ) ) { die( "Don't mess with us." ); }

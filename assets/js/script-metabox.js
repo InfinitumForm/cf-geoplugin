@@ -40,7 +40,7 @@
 							$regions_code = $select_regions.find('option:selected').map(function(_, e){return e.value}).get(),
 							$cities_code = $select_cities.find('option:selected').map(function(_, e){return e.value}).get(),
 							$regions = [], $cities = [], r=0, c=0;
-							
+
 							if($country_codes.length === 0) {
 								$select_regions.attr('data-placeholder', CFGP.label.chosen.choose_countries).prop('disabled', true).trigger("chosen:updated");
 								$select_cities.attr('data-placeholder', CFGP.label.chosen.choose_countries).prop('disabled', true).trigger("chosen:updated");

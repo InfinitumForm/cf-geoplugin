@@ -2,6 +2,10 @@
 /**
  * Contextual Help
  *
+ * @link          http://infinitumform.com/
+ * @since         8.0.0
+ * @package       cf-geoplugin
+ * @author        Ivijan-Stefan Stipic
  * @version       1.0.0
  *
  */

@@ -397,8 +397,35 @@
 	})($('.cfgp-country-region-city-form'));
 	
 	/**
+	 * Tooltip
+	 */
+/*
+	var tooltip_debounce;
+	$(document).on('focus hover', '.cfgp-help', function(e){
+		e.prevetDefault();
+		if(tooltip_debounce) clearTimeout(tooltip_debounce);
+		var $this = $(this);
+		tooltip_debounce = setTimeout(function(){
+			var $help = $this.data('help'),
+				$text = $this.attr('title'),
+				$tooltip = $('<div/>',{
+					'class' : 'cfgp-tooltip'
+				}).text($text);
+			$('.cfgp-tooltip', $this).remove();
+			$this.append($tooltip);
+		}, 300);
+	}).on('blur', '.cfgp-help', function(e){
+		e.prevetDefault();
+		if(tooltip_debounce) clearTimeout(tooltip_debounce);
+		var $this = $(this);
+		tooltip_debounce = setTimeout(function(){
+			$this.find('.cfgp-tooltip').remove();
+		}, 300);
+	});
+*/
+	/**
 	 * Display Thank You footer
 	**/
 	$('#footer-left').html('<div>'+CFGP.label.footer_menu.thank_you+' <a href="https://cfgeoplugin.com" target="_blank">CF Geo Plugin</a></div><div class="alignleft"><a href="https://cfgeoplugin.com/documentation" target="_blank">'+CFGP.label.footer_menu.documentation+'</a> | <a href="https://cfgeoplugin.com/faq" target="_blank">'+CFGP.label.footer_menu.faq+'</a> | <a href="https://cfgeoplugin.com/contact" target="_blank">'+CFGP.label.footer_menu.contact+'</a> | <a href="https://cfgeoplugin.com/blog" target="_blank">'+CFGP.label.footer_menu.blog+'</a></div>');
-	$('#footer-upgrade').remove();
+	$('#footer-upgrade').remove();	
 })(jQuery || window.jQuery || Zepto || window.Zepto);

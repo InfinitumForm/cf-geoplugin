@@ -2,9 +2,11 @@
 /**
  * Data Encoding
  *
- * @link              http://infinitumform.com/
- * @since             1.0.0
- * @autor             Ivijan-Stefan Stipic
+ * @link          http://infinitumform.com/
+ * @since         8.0.0
+ * @package       cf-geoplugin
+ * @author        Ivijan-Stefan Stipic
+ * @since         1.0.0
  */
  
 if ( ! defined( 'WPINC' ) ) { die( "Don't mess with us." ); }

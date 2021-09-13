@@ -2,9 +2,10 @@
 /**
  * Generate Texteditor Shortcode Buttons
  *
- * @since      7.0.0
- * @package    CF_Geoplugin
- * @author     Ivijan-Stefan Stipic
+ * @link          http://infinitumform.com/
+ * @since         8.0.0
+ * @package       cf-geoplugin
+ * @author        Ivijan-Stefan Stipic
  */
 if(!class_exists('CFGP_REST')) :
 class CFGP_REST extends CFGP_Global {

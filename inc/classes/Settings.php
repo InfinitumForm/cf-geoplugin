@@ -2,6 +2,10 @@
 /**
  * Settings page
  *
+ * @link          http://infinitumform.com/
+ * @since         8.0.0
+ * @package       cf-geoplugin
+ * @author        Ivijan-Stefan Stipic
  * @version       3.0.0
  *
  */

@@ -2,6 +2,10 @@
 /**
  * Metaboxes
  *
+ * @link          http://infinitumform.com/
+ * @since         8.0.0
+ * @package       cf-geoplugin
+ * @author        Ivijan-Stefan Stipic
  * @version       1.0.0
  *
  */
@@ -37,10 +41,17 @@ class CFGP_Metabox extends CFGP_Global {
 		}
 		
 		$save = array(); $i=0;
-		foreach(CFGP_U::request($this->metabox, array()) as $data){
-			if(!empty($data['url'])) {
-				$save[$i]=CFGP_Options::sanitize($data);
-				++$i;
+		if($prepared_data = CFGP_U::request($this->metabox, array()))
+		{
+			if(is_array($prepared_data))
+			{
+				$prepared_data = array_filter($prepared_data);
+				foreach($prepared_data as $data){
+					if(isset($data['url']) && !empty($data['url'])) {
+						$save[$i]=CFGP_Options::sanitize($data);
+						++$i;
+					}
+				}
 			}
 		}
 		

@@ -19,10 +19,10 @@ final class CFGP_Init{
 		// Call main classes
 		$classes = apply_filters('cfgp/init/classes', array(
 			'CFGP_Cache',					// Register cache
+			'CFGP_API',						// Main API class
 			'CFGP_Taxonomy',				// Register Taxonomy
 			'CFGP_Metabox',					// Metabox class
 			'CFGP_Geo_Banner',				// Register Post Type
-			'CFGP_API',						// Main API class
 			'CFGP_Media',					// Media class
 			'CFGP_Settings',				// Settings class
 			'CFGP_Admin',					// Admin class
@@ -77,8 +77,8 @@ final class CFGP_Init{
 			CFGP_CLASS . '/Media.php',					// Media class
 			CFGP_CLASS . '/Taxonomy.php',				// Taxonomy class
 			CFGP_CLASS . '/Geo_Banner.php',				// Post Type class
-			CFGP_CLASS . '/Metabox.php',				// Metabox class
 			CFGP_CLASS . '/API.php',					// API class
+			CFGP_CLASS . '/Metabox.php',				// Metabox class
 			CFGP_CLASS . '/SEO.php',					// SEO class
 			CFGP_CLASS . '/SEO_Redirection.php',		// SEO Redirection class
 			CFGP_CLASS . '/SEO_Redirection_Pages.php',	// SEO Redirection for pages class

@@ -433,3 +433,16 @@ dd {
 	padding: 3px 4px 3px 5px;
 	border-bottom: 1px solid #2c3338;
 }
+
+.cfgp-help{
+	position: relative;
+}
+.cfgp-help > .cfgp-tooltip{
+	position:absolute;
+}
+.fa-cfgeo-help{
+	font-size: 1.1em;
+    top: 3px;
+	margin-left: 1px;
+	cursor: help;
+}

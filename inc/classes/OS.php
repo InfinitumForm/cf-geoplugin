@@ -2,10 +2,11 @@
 /**
  * Find details of the operating system
  *
- * @since      7.0.0
- * @package    CF_Geoplugin
- * @author     Ivijan-Stefan Stipic
- * @url        https://github.com/CreativForm/PHP-Solutions/blob/master/class.os.php
+ * @link          http://infinitumform.com/
+ * @since         8.0.0
+ * @package       cf-geoplugin
+ * @author        Ivijan-Stefan Stipic
+ * @url           https://github.com/CreativForm/PHP-Solutions/blob/master/class.os.php
  */
 if (!class_exists('CFGP_OS')):
     class CFGP_OS

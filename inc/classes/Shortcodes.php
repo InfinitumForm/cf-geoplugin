@@ -2,6 +2,10 @@
 /**
  * Shortcodes
  *
+ * @link          http://infinitumform.com/
+ * @since         8.0.0
+ * @package       cf-geoplugin
+ * @author        Ivijan-Stefan Stipic
  * @version       3.0.0
  *
  */
@@ -249,6 +253,10 @@ class CFGP_Shortcodes extends CFGP_Global {
 	 */
 	public function shortcode_automat_setup($atts){
 		$CFGEO = CFGP_Cache::get('API');
+
+		if(empty($CFGEO)){
+			return;
+		}
 
 		$nonce = wp_create_nonce( 'cfgeo-process-cache-ajax' );
 		
