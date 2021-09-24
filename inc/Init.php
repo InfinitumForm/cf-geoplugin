@@ -30,6 +30,7 @@ final class CFGP_Init{
 			'CFGP_Shortcodes',				// Settings class
 			'CFGP_Defender',				// Defender class
 			'CFGP_Public',					// Public class
+			'CFGP_Plugins',					// Plugins class
 			'CFGP_SEO_Redirection_Pages',	// SEO redirection for the individual pages
 		));
 		
@@ -87,6 +88,7 @@ final class CFGP_Init{
 			CFGP_CLASS . '/Shortcodes.php',				// Shortcodes class
 			CFGP_CLASS . '/Defender.php',				// Defender class
 			CFGP_CLASS . '/Public.php',					// Public class
+			CFGP_CLASS . '/Plugins.php',				// Plugins class
 			CFGP_CLASS . '/REST.php',					// REST class
 		));
 		foreach($includes as $include){

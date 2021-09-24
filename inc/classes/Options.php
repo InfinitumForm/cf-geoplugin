@@ -38,7 +38,7 @@ class CFGP_Options
 				'options',
 				wp_parse_args(
 					( CFGP_NETWORK_ADMIN ? get_site_option( CFGP_NAME ) : get_option( CFGP_NAME ) ),
-					CFGP_Defaults::OPTIONS
+					apply_filters( 'cfgp/settings/default', CFGP_Defaults::OPTIONS)
 				)
 			);
 		}
@@ -95,16 +95,19 @@ class CFGP_Options
 		// Get plugin options
 		$options = self::get();
 		
+		// Get default options
+		$default_options = apply_filters( 'cfgp/settings/default', CFGP_Defaults::OPTIONS);
+		
 		// Get default keys
-		$filter = apply_filters('cfgp/options/set/filter', array_keys(CFGP_Defaults::OPTIONS));
+		$filter = apply_filters('cfgp/options/set/filter', array_keys($default_options));
 		
 		// Collect and set new values
 		if(!empty($name_or_array))
 		{			
 			if(is_array($name_or_array))
 			{
-				$name_or_array = array_merge(CFGP_Defaults::OPTIONS, $name_or_array);
-				$name_or_array = apply_filters('cfgp/options/set/fields', $name_or_array, CFGP_Defaults::OPTIONS);
+				$name_or_array = array_merge($default_options, $name_or_array);
+				$name_or_array = apply_filters('cfgp/options/set/fields', $name_or_array, $default_options);
 			
 				foreach($name_or_array as $key => $val) {
 					if(in_array($key, $filter) !== false) {
@@ -117,7 +120,7 @@ class CFGP_Options
 			else if(!is_numeric($name_or_array) && is_string($name_or_array))
 			{
 				$name = $name_or_array;
-				$name = apply_filters("cfgp/options/set/field/{$name}", $name, CFGP_Defaults::OPTIONS);
+				$name = apply_filters("cfgp/options/set/field/{$name}", $name, $default_options);
 				if(in_array($name, $filter) !== false) {
 					$options[$name] = self::sanitize($value);
 				}
@@ -137,7 +140,7 @@ class CFGP_Options
 		// Save to cache
 		CFGP_Cache::set('options', $options);
 		
-		return apply_filters( 'cfgp/options/set', $options, CFGP_Defaults::OPTIONS, $name_or_array, $value);
+		return apply_filters( 'cfgp/options/set', $options, $default_options, $name_or_array, $value);
 	}
 	
 	/*
@@ -153,8 +156,11 @@ class CFGP_Options
 		// Get plugin options
 		$options = self::get();
 		
+		// Get default options
+		$default_options = apply_filters( 'cfgp/settings/default', CFGP_Defaults::OPTIONS);
+		
 		// Get default keys
-		$filter = apply_filters('cfgp/options/delete/filter', array_keys(CFGP_Defaults::OPTIONS));
+		$filter = apply_filters('cfgp/options/delete/filter', array_keys($default_options));
 		
 		// Remove options
 		if(is_array($name_or_array))
@@ -173,7 +179,7 @@ class CFGP_Options
 		}
 		
 		// Set defaults
-		$options = array_merge(CFGP_Defaults::OPTIONS, $options);
+		$options = array_merge($default_options, $options);
 		
 		// Update options
 		if(CFGP_NETWORK_ADMIN){
@@ -185,7 +191,7 @@ class CFGP_Options
 		// Save to cache
 		CFGP_Cache::set('options', $options);
 		
-		return apply_filters( 'cfgp/options/delete', $options, CFGP_Defaults::OPTIONS, $name_or_array);
+		return apply_filters( 'cfgp/options/delete', $options, $default_options, $name_or_array);
 	}
 	
 	/**

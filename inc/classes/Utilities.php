@@ -312,9 +312,9 @@ class CFGP_U {
 	 * @return        array/object
 	 * @author        Ivijan-Stefan Stipic
 	*/
-	public static function plugin_info(array $fields = []) {
+	public static function plugin_info(array $fields = [], $slug = false) {
 		
-		$cache_name = CFGP_NAME . '-plugin_info-' . md5(serialize($fields));
+		$cache_name = CFGP_NAME . '-plugin_info-' . md5(serialize($fields) . ($slug!==false ? $slug : CFGP_NAME));
 		
 		if($cache = CFGP_Cache::get($cache_name)) return $cache;
 		
@@ -326,7 +326,7 @@ class CFGP_U {
 			//donate_link
 			//versions
 			$plugin_data = plugins_api( 'plugin_information', [
-				'slug' => CFGP_NAME,
+				'slug' => ($slug!==false ? $slug : CFGP_NAME),
 				'fields' => array_merge([
 					'active_installs' => false,           // rounded int
 					'added' => false,                     // date
@@ -1368,6 +1368,98 @@ class CFGP_U {
 		}
 
 		return CFGP_Cache::set('get_page', $current_page);
+	}
+	
+	/**
+	 * Check user's city for defender or seo redirection
+	 */
+	public static function check_user_by_city( $city )
+	{
+		if( is_array( $city ) )
+		{
+			$city = array_map( 'strtolower', $city );
+			if( isset( $city[0] ) && !empty( $city[0] ) && in_array( sanitize_title(self::api('city')), $city, true ) ) return true;
+		}
+		elseif( is_string( $city ) )
+		{
+			if( !empty( $city ) && strtolower( $city ) === strtolower(sanitize_title(self::api('city'))) ) return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Check user's region for defender or seo redirection
+	 */
+	public static function check_user_by_region( $region )
+	{
+		if( is_array( $region ) )
+		{
+			if( isset( $region[0] ) && !empty( $region[0] ) )
+			{
+				$region = array_map( 'strtolower', $region );
+				// Supports region code and region name
+				if(in_array( strtolower( self::api('region_code') ), $region, true ) ) return true; 
+				if(in_array( sanitize_title(self::api('region')), $region, true ) ) return true;
+			}
+		}
+		elseif( is_string( $region ) )
+		{
+			if( !empty( $region ) )
+			{
+				// Supports region code and region name
+				if( strtolower( $region ) === strtolower(self::api('region_code')) ) return true; 
+				if( strtolower( $region ) === strtolower(sanitize_title(self::api('region'))) ) return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Check user's country for defender or seo redirection
+	 */
+	public static function check_user_by_country( $country )
+	{
+		if( is_array( $country ) )
+		{
+			if( isset( $country[0] ) && !empty( $country[0] ) )
+			{
+				$country = array_map( 'strtolower', $country );
+				// Supports country code and name
+				if( in_array( strtolower(self::api('country_code')), $country, true ) ) return true;
+				if( in_array( sanitize_title(self::api('country')), $country, true ) ) return true;
+			}
+		}
+		elseif( is_string( $country ) )
+		{
+			if( !empty( $country ) )
+			{
+				// Supports country code and name
+				if( strtolower( $country ) === strtolower(self::api('country_code')) ) return true;
+				if( strtolower( $country ) === strtolower(sanitize_title(self::api('country'))) ) return true;
+			}
+		}
+
+		return false;
+	}
+	
+	/**
+	 * Check user's postcode for defender or seo redirection
+	 */
+	public static function check_user_by_postcode( $postcode )
+	{
+		if( is_array( $postcode ) )
+		{
+			$postcode = array_map( 'strtolower', $postcode );
+			if( isset( $postcode[0] ) && !empty( $postcode[0] ) && in_array( sanitize_title( self::api('postcode')), $postcode, true ) ) return true;
+		}
+		elseif( is_string( $postcode ) )
+		{
+			if( !empty( $postcode ) && strtolower( $postcode ) === strtolower(sanitize_title(self::api('postcode'))) ) return true;
+		}
+
+		return false;
 	}
 	
 }
