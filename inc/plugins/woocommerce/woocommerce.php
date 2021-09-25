@@ -10,7 +10,7 @@ if( !class_exists( 'CFGP__Plugin__woocommerce' ) ):
 class CFGP__Plugin__woocommerce extends CFGP_Global
 {	
     /**
-     * CF GeoPlugin converter option
+     * CF Geo Plugin converter option
      */
     private $cf_conversion					= 'original';
 	private $cf_conversion_rounded 			= 0;
@@ -32,13 +32,20 @@ class CFGP__Plugin__woocommerce extends CFGP_Global
 		
 		if($this->woocommerce_currency)
 		{
-		
 			$this->add_filter('cf_geoplugin_api_run_options', 'change_api_run_options', 1);
 			$this->add_filter('cf_geoplugin_default_options', 'change_api_run_options', 1);
 			$this->add_filter('cf_geoplugin_get_option', 'change_api_run_options', 1);
+		}
 		
+		if(is_admin())
+		{
+			$this->add_action( 'admin_footer', 'admin_footer', 10 );
 		}
     }
+	
+	public function admin_footer(){ ?>
+	<style>.woocommerce-converted-price{display: block;color: darkorange;}</style>
+	<?php }
 	
 	public function change_api_run_options($options){
 		
@@ -52,8 +59,7 @@ class CFGP__Plugin__woocommerce extends CFGP_Global
     // Check if woocommerce is installed and active
     public function check_woocommerce_instalation()
     {
-		$CFGEO = CFGP_U::api();
-		if( isset( $CFGEO['currency_converter'] ) && $CFGEO['currency_converter'] > 0)
+		if( CFGP_U::api('currency_converter') > 0 )
 		{
 			if($this->cf_conversion != 'original')
 			{
@@ -360,12 +366,10 @@ class CFGP__Plugin__woocommerce extends CFGP_Global
     // Returns array of currency code ( 3 letters ) and converted rate
     public function get_currency_and_symbol()
     {
-        $CFGEO = CFGP_U::api();
-
         $return_value = array();
 
-        $currency_code =  ( isset( $CFGEO['currency'] ) ? strtoupper( (string)$CFGEO['currency'] ) : '' );
-        $currency_converted = ( isset( $CFGEO['currency_converter'] ) && (float)$CFGEO['currency_converter'] > 0 ? (float)$CFGEO['currency_converter'] : 1 );
+        $currency_code =  (CFGP_U::api('currency') ? strtoupper( (string)CFGP_U::api('currency') ) : '' );
+        $currency_converted = ( (float)CFGP_U::api('currency_converter') > 0 ? (float)CFGP_U::api('currency_converter') : 1 );
         if( !empty( $currency_code )  && !empty( $currency_converted ) && $currency_code !== get_woocommerce_currency() )
         {
             $return_value['currency_code'] = $currency_code;
@@ -414,8 +418,6 @@ class CFGP__Plugin__woocommerce extends CFGP_Global
         if( !empty( $enabled_gateways ) && is_array( $enabled_gateways ) )
         {
 			$all_countries = CFGP_Library::get_countries();
-			
-	//		echo '<pre>', var_dump($all_countries), '</pre>';
             
             if( !empty( $all_countries ) && is_array( $all_countries ) )
             {
@@ -425,7 +427,7 @@ class CFGP__Plugin__woocommerce extends CFGP_Global
                     $countries_options[ $country_code ] = sprintf( '%s - %s', $country_code, $country_name );
                 }
 
-                $CF_GEOPLUGIN_OPTIONS = CFGP_Options::get();
+
                 $custom_attributes = array();
                 if( CFGP_License::level() < 2)
                 {
@@ -436,8 +438,8 @@ class CFGP__Plugin__woocommerce extends CFGP_Global
 					unset($custom_attributes['disabled']);
 				}
                 
-                $settings[] = array( 'name' => __( 'CF Geoplugin Payments Control', CFGP_NAME ), 'type' => 'title', 'desc' => __( 'Configure payment methods for each country. Show or hide payment methods by country to prevent unwanted transactions.', CFGP_NAME ) . (
-				isset($custom_attributes['disabled']) && $custom_attributes['disabled']
+                $settings[] = array( 'name' => __( 'CF Geo Plugin Payments Control', CFGP_NAME ), 'type' => 'title', 'desc' => __( 'Configure payment methods for each country. Show or hide payment methods by country to prevent unwanted transactions.', CFGP_NAME ) . (
+				(isset($custom_attributes['disabled']) && $custom_attributes['disabled']) || (defined('CFGP_DEV_MODE') && CFGP_DEV_MODE)
 				? ' <br><span style="color:#dc3545;">' . sprintf(__('This option is only enabled with the licensed version of the %s. You must use 1 year license or above.', CFGP_NAME), '<a href="' . admin_url('admin.php?page=cf-geoplugin-activate') . '">WordPress Geo Plugin</a>') . '</span>'
 				: ''
 				) . '<hr>', 'id' => 'cf_geoplugin_payment_restriction' );
@@ -495,14 +497,14 @@ class CFGP__Plugin__woocommerce extends CFGP_Global
             }
             else 
             {
-                $settings[] = array( 'name' => __( 'CF Geoplugin Payments Control', CFGP_NAME ), 'type' => 'title', 'desc' => '<b>' . __( 'Currently we are not able to show desired options. Please try again later.', CFGP_NAME ) . '</b>', 'id' => 'cf_geoplugin_payment_restriction' );
+                $settings[] = array( 'name' => __( 'CF Geo Plugin Payments Control', CFGP_NAME ), 'type' => 'title', 'desc' => '<b>' . __( 'Currently we are not able to show desired options. Please try again later.', CFGP_NAME ) . '</b>', 'id' => 'cf_geoplugin_payment_restriction' );
                 $settings[] = array( 'type' => 'sectionend', 'id' => 'cf_geoplugin_payment_restriction' );
                 return apply_filters( 'cf_geoplugin_payment_restriction_settings', $settings );
             }
         }
         else 
         {
-            $settings[] = array( 'name' => __( 'CF Geoplugin Payments Control', CFGP_NAME ), 'type' => 'title', 'desc' => '<b>' . __( 'No enabled woocommerce payments yet.', CFGP_NAME ), 'id' => 'cf_geoplugin_payment_restriction' . '</b>' );
+            $settings[] = array( 'name' => __( 'CF Geo Plugin Payments Control', CFGP_NAME ), 'type' => 'title', 'desc' => '<b>' . __( 'No enabled woocommerce payments yet.', CFGP_NAME ), 'id' => 'cf_geoplugin_payment_restriction' . '</b>' );
             $settings[] = array( 'type' => 'sectionend', 'id' => 'cf_geoplugin_payment_restriction' );
             return apply_filters( 'cf_geoplugin_payment_restriction_settings', $settings );
         }
@@ -518,10 +520,8 @@ class CFGP__Plugin__woocommerce extends CFGP_Global
     public function cfgp_woocommerce_payment_disable( $gateways )
     {
 		$original_gateways = $gateways;
-		
-        $CFGEO = CFGP_U::api();
         
-		if( ( !isset( $CFGEO['country_code'] ) || empty( $CFGEO['country_code'] ) ) && ( !isset( $CFGEO['country'] ) ) || empty( $CFGEO['country'] ) ) return $gateways;
+		if( !CFGP_U::api('country_code', NULL) || !CFGP_U::api('country', NULL) ) return $gateways;
         
         if( is_admin() ) return $gateways; // Very important check othervise will delete from settings and throw fatal error
 
@@ -544,7 +544,7 @@ class CFGP__Plugin__woocommerce extends CFGP_Global
                 }
             }
         }
-        return apply_filters( 'cf_geoplugin_woocommerce_payment_disable', $gateways, $original_gateways, $CFGEO ); 
+        return apply_filters( 'cf_geoplugin_woocommerce_payment_disable', $gateways, $original_gateways, CFGP_U::api() ); 
     }
 	
 	/* 

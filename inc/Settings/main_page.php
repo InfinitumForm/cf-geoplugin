@@ -49,10 +49,11 @@ $API = CFGP_Cache::get('API');
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php foreach(array_merge(
+                                	<?php do_action('cfgp/table/before/shortcodes', $API); ?>
+                                    <?php foreach(apply_filters('cfgp/table/shortcodes', array_merge(
 										array('cfgeo_flag' => CFGP_U::admin_country_flag($API['country_code'])), 
 										$API
-									) as $key => $value) : if(in_array($key, $remove_tags)) continue; ?>
+									), $API) as $key => $value) : if(in_array($key, $remove_tags)) continue; ?>
                                     <tr>
                                     <?php if(in_array($key, array('cfgeo_flag'))) : ?>
                                     	<td><code>[<?php echo $key; ?>]</code></td>
@@ -62,6 +63,7 @@ $API = CFGP_Cache::get('API');
                                         <td><?php echo $value; ?></td>
                                     </tr>
                                     <?php endforeach; ?>
+                                    <?php do_action('cfgp/table/after/shortcodes', $API); ?>
                                 </tbody>
                                 <tfoot>
                                     <tr>
@@ -85,15 +87,17 @@ $API = CFGP_Cache::get('API');
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <?php foreach(array_merge(
+                                    	<?php do_action('cfgp/table/before/simple_shortcodes', $API); ?>
+                                        <?php foreach(apply_filters('cfgp/table/simple_shortcodes', array_merge(
                                                 array('country_flag' => CFGP_U::admin_country_flag($API['country_code'])), 
                                                 $API
-                                            ) as $key => $value) : if(in_array($key, $remove_tags)) continue; ?>
+                                            ), $API) as $key => $value) : if(in_array($key, $remove_tags)) continue; ?>
                                         <tr>
                                             <td><code>[<?php echo $key; ?>]</code></td>
                                             <td><?php echo $value; ?></td>
                                         </tr>
                                         <?php endforeach; ?>
+                                        <?php do_action('cfgp/table/after/simple_shortcodes', $API); ?>
                                     </tbody>
                                     <tfoot>
                                         <tr>
@@ -116,12 +120,14 @@ $API = CFGP_Cache::get('API');
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php foreach($API as $key => $value) : if(in_array($key, $remove_tags)) continue; ?>
+                                	<?php do_action('cfgp/table/before/tags', $API); ?>
+                                    <?php foreach(apply_filters('cfgp/table/tags', $API) as $key => $value) : if(in_array($key, $remove_tags)) continue; ?>
                                     <tr>
                                         <td><code>%%<?php echo $key; ?>%%</code></td>
                                         <td><?php echo $value; ?></td>
                                     </tr>
                                     <?php endforeach; ?>
+                                    <?php do_action('cfgp/table/after/tags', $API); ?>
                                 </tbody>
                                 <tfoot>
                                     <tr>

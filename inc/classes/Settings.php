@@ -231,6 +231,7 @@ class CFGP_Settings extends CFGP_Global {
 	}
 	
 	public function main_page__callback(){
+		include_once CFGP_INC . '/filters/main_page.php';
 		include_once CFGP_INC . '/settings/main_page.php';
 	}
 	

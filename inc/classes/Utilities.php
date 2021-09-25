@@ -1462,5 +1462,71 @@ class CFGP_U {
 		return false;
 	}
 	
+	/**
+	 * Replacemant for the mb_convert_encoding - Setup for the UCS-4
+	 */
+	public static function mb_convert_encoding($string, $from='UTF-8', $to='UCS-4'){
+		return preg_replace_callback('/[\x{80}-\x{10FFFF}]/u', function ($m) {
+			$char = current($m);
+			$utf = iconv( $from, $to, $char);
+			return sprintf('&#x%s;', ltrim(strtoupper(bin2hex($utf)), '0'));
+		}, $string);
+	}
+	
+	/**
+	 * Generate convert outoput
+	 */
+	public static function generate_converter_output( $amount, $symbol, $position = 'L', $separator = '' )
+	{
+		if( strtoupper( $position ) === 'L' || strtoupper( $position ) == 'LEFT' ) return sprintf( '%s%s%s', $symbol, $separator, $amount );
+		else return sprintf( '%s%s%s', $amount, $separator, $symbol );
+	}
+	
+	/*
+	 * Check is plugin active
+	 */
+	public static function is_plugin_active($plugin)
+	{
+		if(!function_exists('is_plugin_active')){
+			include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+		}
+		
+		return is_plugin_active($plugin);
+	}
+	
+	/*
+	 * Hook for the admin URL
+	 * @author        Ivijan-Stefan Stipic
+	 * @version       1.0.2
+	 * @since         7.11.3
+	*/
+	public static function admin_url( $str = '' )
+	{
+		if(defined('CFGP_MULTISITE') && CFGP_MULTISITE)
+		{
+			if( self::is_network_admin() )
+			{
+				return self_admin_url($str);
+			}
+			else
+			{
+				return admin_url($str);
+			}
+		}
+		else
+		{
+			return admin_url($str);
+		}
+	}
+	
+	/*
+	 * Hook is network admin
+	 * @author        Ivijan-Stefan Stipic
+	 * @return        boolean true/false
+	*/
+	public static function is_network_admin() {
+		return function_exists('is_network_admin') && is_network_admin();
+	}
+	
 }
 endif;

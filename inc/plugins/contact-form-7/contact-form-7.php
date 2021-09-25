@@ -15,15 +15,35 @@ class CFGP__Plugin__contact_form_7 extends CFGP_Global{
 	private function __construct(){
 		$this->add_filter( 'wpcf7_init', 'add_wpcf7_shortcode', 99, 3 );
 		$this->add_action( 'wpcf7_admin_init', 'tag_generator', 999 );
+		$this->add_filter( 'wpcf7_form_elements', 'cf7_support', 10 );
 	}
 	
-	function get_excluded(){
+	/**
+	 * Add support for Contact Form 7
+	 *
+	 * @since    4.0.0
+	 */
+	public function cf7_support( $form ) {
+		return do_shortcode( $form );
+	}
+	
+	/**
+	 * Excluded shortcodes
+	 *
+	 * @since    4.0.0
+	 */
+	public function get_excluded(){
 		if(!$this->excluded)
 			$this->excluded = array_filter(array_map('trim', explode(',',$this->remove)));
 		return $this->excluded;
 	}
 	
-	function add_wpcf7_shortcode() {
+	/**
+	 * Contact Form 7 Shortcodes
+	 *
+	 * @since    4.0.0
+	 */
+	public function add_wpcf7_shortcode() {
 		if(function_exists('wpcf7_add_form_tag'))
 		{
 			$CFGEO = CFGP_U::api();
@@ -74,7 +94,12 @@ class CFGP__Plugin__contact_form_7 extends CFGP_Global{
 		}
 	}
 	
-	function tag_generator() {
+	/**
+	 * Contact Form 7 tags
+	 *
+	 * @since    4.0.0
+	 */
+	public function tag_generator() {
 		$CFGEO = CFGP_U::api();
 		
 		$tag_generator = WPCF7_TagGenerator::get_instance();
