@@ -9,7 +9,7 @@ $remove_tags = array(
 	'postcode'
 );
 
-$API = CFGP_Cache::get('API');
+$API = CFGP_U::api();
 
 ?>
 <div class="wrap cfgp-wrap" id="<?php echo $_GET['page']; ?>">

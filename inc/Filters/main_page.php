@@ -8,7 +8,12 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
  *
  * @since    8.0.0
  **/
-add_action('cfgp/table/after/simple_shortcodes', function($API){ ?>
+add_action('cfgp/table/after/shortcodes', function($API){ ?>
+<tr>
+	<th colspan="2">
+		<h3><?php _e('Special dedicated short codes', CFGP_NAME); ?></h3>
+	</th>
+</tr>
 <tr>
     <td><code>[is_not_vat]<?php _e('You are NOT under VAT', CFGP_NAME); ?>[/is_not_vat]</code></td>
     <td><?php echo do_shortcode('[is_not_vat]' .__('You are NOT under VAT', CFGP_NAME). '[/is_not_vat]'); ?></td>

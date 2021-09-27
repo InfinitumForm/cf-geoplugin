@@ -17,6 +17,8 @@ if(!class_exists('CFGP_Public')) :
 class CFGP_Public extends CFGP_Global{
 	
 	public function __construct(){
+		if(is_admin()) return;
+		
 		if(CFGP_Options::get('enable_css', 0)){
 			$this->add_action('wp_head', 'css_suppport', 1);
 		}
@@ -26,6 +28,9 @@ class CFGP_Public extends CFGP_Global{
 		}
 		
 		$this->add_action( 'wp_enqueue_scripts', 'enqueue_scripts' );
+		
+		$this->add_action('wp_loaded', 'output_buffer_start', 100);
+		$this->add_action('shutdown', 'output_buffer_end', 100);
 	}
 	
 	public function enqueue_scripts($page) {
@@ -129,6 +134,36 @@ class CFGP_Public extends CFGP_Global{
 
 	<?php }
 	
+	// Output buffer start
+	public function output_buffer_start() {
+		ob_start(array(&$this, 'output_buffer_callback'), 0, PHP_OUTPUT_HANDLER_REMOVABLE);
+	}
+
+	// Output buffer end
+	public function output_buffer_end() {
+		ob_get_clean();
+	}
+	
+	// Output buffer callback
+	public function output_buffer_callback($content) {
+		
+		// Let's do a tags
+		if($API = CFGP_U::api())
+		{
+			$remove_tags = array(
+				'error',
+				'error_message',
+				'postcode'
+			);
+			foreach(apply_filters('cfgp/render/tags', $API) as $key => $value)
+			{
+				if(in_array($key, $remove_tags)) continue;
+				$content = str_replace('%%'.$key.'%%', $value, $content);
+			}
+		}
+		
+		return $content;
+	}
 	
 	/*
 	 * Instance

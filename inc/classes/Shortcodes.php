@@ -74,7 +74,7 @@ class CFGP_Shortcodes extends CFGP_Global {
 		
 		// Geo Banner
 		if( CFGP_Options::get_beta('enable_banner', 0) ) {
-			// Official Google Map Shortcode
+			// Official Geo Banner Shortcode
 			$this->add_shortcode( 'cfgeo_banner', 'geo_banner' );
 		}
 		
@@ -84,10 +84,7 @@ class CFGP_Shortcodes extends CFGP_Global {
 		// Escape shortcodes
 		$this->add_shortcode( 'escape_shortcode', 'cfgeo_escape_shortcode' );
 		
-		// AJAX - Fix shortcode cache
-		$this->add_action('wp_ajax_cf_geoplugin_shortcode_cache', 'ajax__shortcode_cache');
-		$this->add_action('wp_ajax_nopriv_cf_geoplugin_shortcode_cache', 'ajax__shortcode_cache');
-		
+
 		// IS VAT
 		$this->add_shortcode( 'cfgeo_is_vat', 'is_vat' );
 		$this->add_shortcode( 'is_vat', 'is_vat' );
@@ -115,6 +112,12 @@ class CFGP_Shortcodes extends CFGP_Global {
 		// GPS
 		$this->add_shortcode( 'cfgeo_gps', 'cfgeo_gps' );
 		
+		
+		
+		// AJAX - Fix shortcode cache
+		$this->add_action('wp_ajax_cf_geoplugin_shortcode_cache', 'ajax__shortcode_cache');
+		$this->add_action('wp_ajax_nopriv_cf_geoplugin_shortcode_cache', 'ajax__shortcode_cache');
+		
 	}
 	
 	/**
@@ -124,56 +127,17 @@ class CFGP_Shortcodes extends CFGP_Global {
 	 * @version    7.4.3
 	*/
 	public function cfgeo_escape_shortcode($attr, $content=''){
+		$cache = CFGP_U::is_attribute_exists('cache', $atts);
+		if(CFGP_Options::get('enable_cache', 0)) $cache = true;
+		if(CFGP_U::is_attribute_exists('no_cache', $atts)) $cache = false;
 		
 		if(!empty($content)){
 			$content = preg_replace('%\[(.*?)\]%i','&lsqb;$1&rsqb;',$content);
 		}
 		
-		return $content;
+		return self::__cache('escape_shortcode', $content, (array)$attr, $content, $cache);;
 	}
 	
-	/**
-	 * Fix cache fro the shortcode
-	 * 
-	 * @since 7.4.0
-	 */
-	public function ajax__shortcode_cache(){
-		
-		$shortcode = trim(CFGP_U::request_string('shortcode'));
-		
-		if( !(strpos($shortcode, 'cfgeo') !== false) ) echo 'false', exit;
-		
-		$options = unserialize(urldecode(base64_decode(sanitize_text_field(CFGP_U::request_string('options')))));
-		
-		$attr = array();
-		if(!empty($options) && is_array($options))
-		{
-			foreach($options as $key => $value) {
-				if(!is_numeric($key)) {
-					$attr[] = $key . '="' . esc_attr($value) . '"';
-				} else {
-					$attr[] = $value;
-				}
-			}
-		}
-		$attr = (!empty($attr) ? ' ' . join(' ', $attr) : '');
-		
-		if($default = CFGP_U::request_string('default')) {
-			$content = urldecode(base64_decode(sanitize_text_field($default)));
-			$content = trim($defaucontentlt);
-			$default = $content;
-		} else {
-			$default = $content = '';
-		}
-		
-		if(empty($default)) {
-			echo do_shortcode("[{$shortcode}{$attr}]");
-		} else {
-			echo do_shortcode("[{$shortcode}{$attr}]{$content}[/{$shortcode}]");
-		}
-		
-		exit;
-	}
 	
 	/**
 	 * Main CF GeoPlugin Shortcode
@@ -920,7 +884,7 @@ class CFGP_Shortcodes extends CFGP_Global {
 	{
 		if( empty( $content ) ) return '';
 		
-		if(CFGP_U::api('currency_converter', false) && CFGP_U::api('currency_converter') != 0) return $content;
+		if(CFGP_U::api('currency_converter', 0) == 0) return $content;
 		
 		$atts = shortcode_atts(
 			array(
@@ -951,7 +915,7 @@ class CFGP_Shortcodes extends CFGP_Global {
 		
 		$atts['align'] = strtoupper( $atts['align'] );
 		if( !isset( $symbols[ $from ] ) || !isset( $symbols[ $to ] ) ) return $content;
- 
+
 		if(function_exists('mb_convert_encoding'))
 		{
 			$symbol_from = mb_convert_encoding( $symbols[ $from ], 'UTF-8' );
@@ -968,7 +932,7 @@ class CFGP_Shortcodes extends CFGP_Global {
 		{
 			return CFGP_U::generate_converter_output( $content, $symbol_to, $atts['align'], $atts['separator'] );
 		}
-
+		
 		if( CFGP_Options::get('base_currency') && CFGP_U::api('currency') && CFGP_U::api('currency_converter') && strtoupper( CFGP_Options::get('base_currency') ) == $from && CFGP_U::api('currency') == $to )
 		{
 			if(preg_match('/([0-9\.\,]+)/i',$content, $match))
@@ -1376,7 +1340,7 @@ class CFGP_Shortcodes extends CFGP_Global {
 		return self::__cache('is_not_vat', $default, (array)$array, $content, $cache);
 	}
 	
-	/* Content wrapper */
+	/* Content wrapper DEPRECATED */
 	private static function __wrap($content, $cache = false, $shortcode = true) {
 		if($cache)
 		{
@@ -1397,6 +1361,7 @@ class CFGP_Shortcodes extends CFGP_Global {
 		}
 	}
 	
+	/* Cache content wrapper */
 	private static function __cache($shortcode, $content, $options=array(), $default = '', $cache = false) {
 		if( $cache ) {
 			$shortcode = esc_attr($shortcode);
@@ -1411,7 +1376,50 @@ class CFGP_Shortcodes extends CFGP_Global {
 		} else {
 			return $content;
 		}
-	}	
+	}
+
+	/**
+	 * Fix cache for the shortcode
+	 * 
+	 * @since 7.4.0
+	 */
+	public function ajax__shortcode_cache(){
+		
+		$shortcode = trim(CFGP_U::request_string('shortcode'));
+		
+	//	if( !(strpos($shortcode, 'cfgeo') !== false) ) echo 'false', exit;
+		
+		$options = unserialize(urldecode(base64_decode(sanitize_text_field(CFGP_U::request_string('options')))));
+		
+		$attr = array();
+		if(!empty($options) && is_array($options))
+		{
+			foreach($options as $key => $value) {
+				if(!is_numeric($key)) {
+					$attr[] = $key . '="' . esc_attr($value) . '"';
+				} else {
+					$attr[] = $value;
+				}
+			}
+		}
+		$attr = (!empty($attr) ? ' ' . join(' ', $attr) : '');
+		
+		if($default = CFGP_U::request_string('default')) {
+			$content = urldecode(base64_decode(sanitize_text_field($default)));
+			$content = trim($defaucontentlt);
+			$default = $content;
+		} else {
+			$default = $content = '';
+		}
+		
+		if(empty($default)) {
+			echo do_shortcode("[{$shortcode}{$attr}]");
+		} else {
+			echo do_shortcode("[{$shortcode}{$attr}]{$content}[/{$shortcode}]");
+		}
+		
+		exit;
+	}
 	
 	/* 
 	 * Instance
