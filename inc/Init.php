@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
 if(!class_exists('CFGP_Init')) :
 final class CFGP_Init{
 	
-	public function __construct(){
+	private function __construct(){
 		// Do translations
 		add_action('plugins_loaded', array(&$this, 'textdomain'));
 		
@@ -32,6 +32,7 @@ final class CFGP_Init{
 			'CFGP_Public',					// Public class
 			'CFGP_Plugins',					// Plugins class
 			'CFGP_SEO_Redirection_Pages',	// SEO redirection for the individual pages
+			'CFGP_Widgets'	                // Widgets class
 		));
 		
 		// REST class
@@ -90,6 +91,7 @@ final class CFGP_Init{
 			CFGP_CLASS . '/Public.php',					// Public class
 			CFGP_CLASS . '/Plugins.php',				// Plugins class
 			CFGP_CLASS . '/REST.php',					// REST class
+			CFGP_CLASS . '/Widgets.php'					// Widgets class
 		));
 		foreach($includes as $include){
 			include_once $include;
