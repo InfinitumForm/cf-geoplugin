@@ -48,7 +48,9 @@ final class CFGP_Init{
 		$classes = apply_filters('cfgp/init/included/classes', $classes);
 		
 		foreach($classes as $class){
-			$class::instance();
+			if( method_exists($class, 'instance') ){
+				$class::instance();
+			}
 		}
 		// Dynamic action
 		do_action('cfgp/init', $this);

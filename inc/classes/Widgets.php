@@ -21,14 +21,26 @@ class CFGP_Widgets extends CFGP_Global {
 			'CFGP_Widget_Currency_Converter',
 		));
 		
+		global $class;
+		
 		foreach($classes as $i => $class){
-			$filename = str_replace('CFGP_Widget_', '', $class) . 'php';
-			if(file_exists(CFGP_INC . "/widgets/{$filename}")) {
-				include_once CFGP_INC . "/widgets/{$filename}";
-				add_action( 'widgets_init', function() in ($class){
-					register_widget( $class );
+			
+			if(!class_exists($class)) {
+				$filename = str_replace('CFGP_Widget_', '', $class) . '.php';
+				if(file_exists(CFGP_INC . "/widgets/{$filename}")) {
+					include_once CFGP_INC . "/widgets/{$filename}";
+				}
+			}
+			
+			if(class_exists($class)) {
+				add_action( 'widgets_init', function(){
+					global $class;
+					if($class){
+						register_widget( $class );
+					}
 				} );
 			}
+			
 		}
 	}
 	

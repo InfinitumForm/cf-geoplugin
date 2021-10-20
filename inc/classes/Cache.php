@@ -11,40 +11,18 @@
 if(!class_exists('CFGP_Cache')) :
 class CFGP_Cache
 {
-	// Cache group
-	const GROUP = 'cf_geoplugin';
-	
 	/*
-	 * Add a group to the list of global groups
+	 * Save all cached objcts to this variable
 	 */
-	public static function instance(){
-		wp_cache_add_global_groups(self::GROUP);
-	}
-	
-	/*
-	 * Cache prefix
-	 */
-	public static function prefix($key = '') {
-		$key = trim($key);
-		$name = self::GROUP . '_cache_prefix__';
-		$prefix = wp_cache_get( $name, self::GROUP );
-
-		if ( false === $prefix ) {
-			$prefix = str_replace('.', '', (string)microtime(true));
-			wp_cache_set( $name, $prefix, self::GROUP );
-		}
-
-		return "cfgp_cache_{$prefix}__{$key}";
-	}
+	private static $cache = NULL;
 
 	/*
 	 * Get cached object
 	 *
 	 * Returns the value of the cached object, or false if the cache key doesn’t exist
 	 */
-    public static function get($key, $force = false, $found = NULL)
-    {
-        return wp_cache_get(self::prefix($key), self::GROUP, $force, $found);
+    public static function get($key) {
+        return self::$cache[ self::key($key) ] ?? NULL;
     }
 	
 	/*
@@ -53,9 +31,11 @@ class CFGP_Cache
 	 * This function adds data to the cache if the cache key doesn’t already exist.
 	 * If it does exist, the data is not added and the function returns
 	 */
-    public static function add($key, $value, $expire=0)
-    {   
-		return (wp_cache_add( self::prefix($key), $value, self::GROUP, $expire )!==false ? $value : false);
+    public static function add($key, $value) {   
+		if(!isset(self::$cache[ self::key($key) ])) {
+			self::$cache[ self::key($key) ] = $value;
+		}
+		return self::$cache[ self::key($key) ];
     }
 
 	/*
@@ -64,9 +44,9 @@ class CFGP_Cache
 	 * Adds data to the cache. If the cache key already exists, then it will be overwritten;
 	 * if not then it will be created.
 	 */
-    public static function set($key, $value, $expire=0)
-    {   
-		return (wp_cache_set( self::prefix($key), $value, self::GROUP, $expire )!==false ? $value : false);
+    public static function set($key, $value, $expire=0) {
+		self::$cache[ self::key($key) ] = $value;
+		return self::$cache[ self::key($key) ];
     }
 	
 	/*
@@ -74,9 +54,11 @@ class CFGP_Cache
 	 *
 	 * Replaces the given cache if it exists, returns false otherwise.
 	 */
-    public static function replace($key, $value, $expire=0)
-    {
-        return (wp_cache_replace( self::prefix($key), $value, self::GROUP, $expire )!==false ? $value : false);
+    public static function replace($key, $value, $expire=0) {
+        if(isset(self::$cache[ self::key($key) ])) {
+			self::$cache[ self::key($key) ] = $value;
+		}
+		return self::$cache[ self::key($key) ];
     }
 	
 	/*
@@ -84,41 +66,47 @@ class CFGP_Cache
 	 *
 	 * Clears data from the cache for the given key.
 	 */
-	public static function delete($key)
-    {
-		return wp_cache_delete(self::prefix($key), self::GROUP)!==false;
+	public static function delete($key) {
+		if(isset(self::$cache[ self::key($key) ])) {
+			unset(self::$cache[ self::key($key) ]);
+		}
     }
 	
 	/*
 	 * Clears all cached data
 	 */
-	public static function flush()
-    {
-		global $wp_object_cache;
-		if($wp_object_cache && isset($wp_object_cache->cache[self::GROUP])){
-			unset($wp_object_cache->cache[self::GROUP]);
-			return true;
-		}
-		return false;
+	public static function flush() {
+		self::$cache=NULL;
+		return true;
     }
 	
 	/*
 	 * Debug cache
 	 */
-	public static function debug()
-	{
-		global $wp_object_cache;
-		$debug = array();
-		if(isset($wp_object_cache->cache[self::GROUP])) {
-			ob_start();
-				var_dump($wp_object_cache->cache[self::GROUP]);
-			$debug = ob_get_clean();
-		}
+	public static function debug() {
+		ob_start();
+			var_dump(self::$cache);
+		$debug = ob_get_clean();
 		echo '<pre class="cfgp-cache-debug">' . htmlspecialchars(preg_replace(
 			array('/(\=\>\n\s{2,4})/'),
 			array(' => '),
 			$debug
 		)) . '</pre>';
+	}
+	
+	/*
+	 * Cache key
+	 */
+	private static function key($key) {
+		static $suffix;
+
+		if ( empty($suffix) ) {
+			$suffix = str_replace('.', '', (string)microtime(true));
+		}
+
+		$key = trim($key);
+
+		return "{$key}__{$suffix}";
 	}
 }
 endif;
