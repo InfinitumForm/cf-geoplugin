@@ -875,7 +875,7 @@ class CFGP_U {
 				if (count($sub)) {
 					return $sub;
 				}
-			} elseif ($value === $search) {
+			} elseif (strtolower($value) === strtolower($search)) {
 				return array_merge($keys, array($key));
 			}
 		}
@@ -899,7 +899,7 @@ class CFGP_U {
 				if ($found !== false) {
 					return $found;
 				}
-			} else if ($key === $needle) {
+			} else if (strtolower($key) === strtolower($needle)) {
 				return $parent;
 			}
 		}
@@ -913,14 +913,14 @@ class CFGP_U {
 	 * @since    4.2.0
 	 * @version  1.3.1
 	 */
-	public static function recursive_array_search($needle,$haystack) {
+	public static function recursive_array_search($needle, $haystack, $relative = false) {
 		if(!empty($needle) && !empty($haystack) && is_array($haystack))
 		{
 			foreach($haystack as $key=>$value)
 			{
 				if(is_array($value)===true)
 				{
-					return self::recursive_array_search($needle,$value);
+					return self::recursive_array_search($needle, $value, $relative);
 				}
 				else
 				{
@@ -929,9 +929,16 @@ class CFGP_U {
 					$needed = array_filter(array_map('trim',explode(',',$needle)));
 					foreach($needed as $need)
 					{
-						if(strtolower($need)==strtolower($value))
-						{
-							return $value;
+						if($relative === true) {							
+							if(stripos($value, $need, 0) !== false)
+							{
+								return $value;
+							}
+						} else {
+							if(strtolower($need) == strtolower($value))
+							{
+								return $value;
+							}
 						}
 					}
 				}

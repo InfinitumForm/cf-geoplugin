@@ -135,7 +135,7 @@ class CFGP_Shortcodes extends CFGP_Global {
 			$content = preg_replace('%\[(.*?)\]%i','&lsqb;$1&rsqb;',$content);
 		}
 		
-		return self::__cache('escape_shortcode', $content, (array)$attr, $content, $cache);;
+		return self::__cache('escape_shortcode', $content, (array)$attr, $content, $cache);
 	}
 	
 	
@@ -150,6 +150,7 @@ class CFGP_Shortcodes extends CFGP_Global {
 		$cache = CFGP_U::is_attribute_exists('cache', $atts);
 		if(CFGP_Options::get('enable_cache', 0)) $cache = true;
 		if(CFGP_U::is_attribute_exists('no_cache', $atts)) $cache = false;
+		$relative_match = (CFGP_U::is_attribute_exists('relative_match', $atts) ? true : false);
 		
 		$array = shortcode_atts( array(
 			'return' 	=>  'ip',
@@ -188,7 +189,7 @@ class CFGP_Shortcodes extends CFGP_Global {
 				// Include
 				if(!empty($include))
 				{
-					if(CFGP_U::recursive_array_search($include, $CFGEO))
+					if(CFGP_U::recursive_array_search($include, $CFGEO, $relative_match))
 					{
 						return self::__cache('cfgeo', do_shortcode($content), (array)$array, $content, $cache);
 					}
@@ -200,7 +201,7 @@ class CFGP_Shortcodes extends CFGP_Global {
 				// Exclude
 				if(!empty($exclude))
 				{
-					if(CFGP_U::recursive_array_search($exclude, $CFGEO))
+					if(CFGP_U::recursive_array_search($exclude, $CFGEO, $relative_match))
 					{
 						return self::__cache('cfgeo', $default, (array)$array, $content, $cache);
 					}
@@ -222,7 +223,7 @@ class CFGP_Shortcodes extends CFGP_Global {
 				// Include
 				if(!empty($include))
 				{
-					if(CFGP_U::recursive_array_search($include, $CFGEO))
+					if(CFGP_U::recursive_array_search($include, $CFGEO, $relative_match))
 					{
 						if(isset($CFGEO[$return]))
 						{
@@ -234,7 +235,7 @@ class CFGP_Shortcodes extends CFGP_Global {
 				// Exclude
 				if(!empty($exclude))
 				{
-					if(CFGP_U::recursive_array_search($exclude, $CFGEO))
+					if(CFGP_U::recursive_array_search($exclude, $CFGEO, $relative_match))
 					{
 						return self::__cache('cfgeo', $default, (array)$array, $content, $cache);
 					}
@@ -310,6 +311,7 @@ class CFGP_Shortcodes extends CFGP_Global {
 		$cache = CFGP_U::is_attribute_exists('cache', $atts);
 		if(CFGP_Options::get('enable_cache', 0)) $cache = true;
 		if(CFGP_U::is_attribute_exists('no_cache', $atts)) $cache = false;
+		$relative_match = (CFGP_U::is_attribute_exists('relative_match', $atts) ? true : false);
 		
 		wp_enqueue_style( CFGP_NAME . '-flag' );
 		
@@ -351,12 +353,16 @@ class CFGP_Shortcodes extends CFGP_Global {
 		if(!empty($exclude) || !empty($include)) {
 			if(!empty($include))
 			{
-				if(!CFGP_U::recursive_array_search($include, $CFGEO)) return self::__cache('cfgeo_flag', '', (array)$arg, '', $cache);
+				if(!CFGP_U::recursive_array_search($include, $CFGEO, $relative_match)){
+					return self::__cache('cfgeo_flag', '', (array)$arg, '', $cache);
+				}
 			}
 			
 			if(!empty($exclude))
 			{
-				if(CFGP_U::recursive_array_search($exclude, $CFGEO)) return self::__cache('cfgeo_flag', '', (array)$arg, '', $cache);
+				if(CFGP_U::recursive_array_search($exclude, $CFGEO, $relative_match)){
+					return self::__cache('cfgeo_flag', '', (array)$arg, '', $cache);
+				}
 			}
 		}
 		
@@ -1001,6 +1007,7 @@ class CFGP_Shortcodes extends CFGP_Global {
 		
 		$cache = CFGP_U::is_attribute_exists('cache', $attr);
 		if(CFGP_U::is_attribute_exists('no_cache', $attr)) $cache = false;
+		$relative_match = (CFGP_U::is_attribute_exists('relative_match', $attr) ? true : false);
 		
 		$array = shortcode_atts( array(
 			'ip'		=>	false,
@@ -1023,14 +1030,14 @@ class CFGP_Shortcodes extends CFGP_Global {
 		if(!empty($exclude) || !empty($include)) {
 			if(!empty($include))
 			{
-				if(!CFGP_U::recursive_array_search($include, $CFGEO)){
+				if(!CFGP_U::recursive_array_search($include, $CFGEO, $relative_match)){
 					return self::__cache('is_proxy', $default, (array)$array, $content, $cache);
 				}
 			}
 			
 			if(!empty($exclude))
 			{
-				if(CFGP_U::recursive_array_search($exclude, $CFGEO)){
+				if(CFGP_U::recursive_array_search($exclude, $CFGEO, $relative_match)){
 					return self::__cache('is_proxy', $default, (array)$array, $content, $cache);
 				}
 			}
@@ -1049,6 +1056,7 @@ class CFGP_Shortcodes extends CFGP_Global {
 
 		$cache = CFGP_U::is_attribute_exists('cache', $attr);
 		if(CFGP_U::is_attribute_exists('no_cache', $attr)) $cache = false;
+		$relative_match = (CFGP_U::is_attribute_exists('relative_match', $attr) ? true : false);
 		
 		$array = shortcode_atts( array(
 			'ip'		=>	false,
@@ -1071,14 +1079,14 @@ class CFGP_Shortcodes extends CFGP_Global {
 		if(!empty($exclude) || !empty($include)) {
 			if(!empty($include))
 			{
-				if(!CFGP_U::recursive_array_search($include, $CFGEO)){
+				if(!CFGP_U::recursive_array_search($include, $CFGEO, $relative_match)){
 					return self::__cache('is_not_proxy', $content, (array)$array, $default, $cache);
 				}
 			}
 			
 			if(!empty($exclude))
 			{
-				if(CFGP_U::recursive_array_search($exclude, $CFGEO)){
+				if(CFGP_U::recursive_array_search($exclude, $CFGEO, $relative_match)){
 					return self::__cache('is_not_proxy', $content, (array)$array, $default, $cache);
 				}
 			}
@@ -1100,6 +1108,7 @@ class CFGP_Shortcodes extends CFGP_Global {
 
 		$cache = CFGP_U::is_attribute_exists('cache', $attr);
 		if(CFGP_U::is_attribute_exists('no_cache', $attr)) $cache = false;
+		$relative_match = (CFGP_U::is_attribute_exists('relative_match', $attr) ? true : false);
 		
 		$array = shortcode_atts( array(
 			'ip'		=>	false,
@@ -1122,14 +1131,14 @@ class CFGP_Shortcodes extends CFGP_Global {
 		if(!empty($exclude) || !empty($include)) {
 			if(!empty($include))
 			{
-				if(!CFGP_U::recursive_array_search($include, $CFGEO)){
+				if(!CFGP_U::recursive_array_search($include, $CFGEO, $relative_match)){
 					return self::__cache('cfgeo_gps', $default, (array)$array, $content, $cache);
 				}
 			}
 			
 			if(!empty($exclude))
 			{
-				if(CFGP_U::recursive_array_search($exclude, $CFGEO)){
+				if(CFGP_U::recursive_array_search($exclude, $CFGEO, $relative_match)){
 					return self::__cache('cfgeo_gps', $default, (array)$array, $content, $cache);
 				}
 			}
@@ -1148,6 +1157,7 @@ class CFGP_Shortcodes extends CFGP_Global {
 
 		$cache = CFGP_U::is_attribute_exists('cache', $attr);
 		if(CFGP_U::is_attribute_exists('no_cache', $attr)) $cache = false;
+		$relative_match = (CFGP_U::is_attribute_exists('relative_match', $attr) ? true : false);
 		
 		$array = shortcode_atts( array(
 			'ip'		=>	false,
@@ -1170,14 +1180,14 @@ class CFGP_Shortcodes extends CFGP_Global {
 		if(!empty($exclude) || !empty($include)) {
 			if(!empty($include))
 			{
-				if(!CFGP_U::recursive_array_search($include, $CFGEO)){
+				if(!CFGP_U::recursive_array_search($include, $CFGEO, $relative_match)){
 					return self::__cache('in_eu', $default, (array)$array, $content, $cache);
 				}
 			}
 			
 			if(!empty($exclude))
 			{
-				if(CFGP_U::recursive_array_search($exclude, $CFGEO)){
+				if(CFGP_U::recursive_array_search($exclude, $CFGEO, $relative_match)){
 					return self::__cache('in_eu', $default, (array)$array, $content, $cache);
 				}
 			}
@@ -1196,6 +1206,7 @@ class CFGP_Shortcodes extends CFGP_Global {
 
 		$cache = CFGP_U::is_attribute_exists('cache', $attr);
 		if(CFGP_U::is_attribute_exists('no_cache', $attr)) $cache = false;
+		$relative_match = (CFGP_U::is_attribute_exists('relative_match', $attr) ? true : false);
 		
 		$array = shortcode_atts( array(
 			'ip'		=>	false,
@@ -1218,14 +1229,14 @@ class CFGP_Shortcodes extends CFGP_Global {
 		if(!empty($exclude) || !empty($include)) {
 			if(!empty($include))
 			{
-				if(!CFGP_U::recursive_array_search($include, $CFGEO)){
+				if(!CFGP_U::recursive_array_search($include, $CFGEO, $relative_match)){
 					return self::__cache('not_in_eu', $content, (array)$array, $default, $cache);
 				}
 			}
 			
 			if(!empty($exclude))
 			{
-				if(CFGP_U::recursive_array_search($exclude, $CFGEO)){
+				if(CFGP_U::recursive_array_search($exclude, $CFGEO, $relative_match)){
 					return self::__cache('not_in_eu', $content, (array)$array, $default, $cache);
 				}
 			}
@@ -1247,6 +1258,7 @@ class CFGP_Shortcodes extends CFGP_Global {
 
 		$cache = CFGP_U::is_attribute_exists('cache', $attr);
 		if(CFGP_U::is_attribute_exists('no_cache', $attr)) $cache = false;
+		$relative_match = (CFGP_U::is_attribute_exists('relative_match', $attr) ? true : false);
 		
 		$array = shortcode_atts( array(
 			'ip'		=>	false,
@@ -1269,14 +1281,14 @@ class CFGP_Shortcodes extends CFGP_Global {
 		if(!empty($exclude) || !empty($include)) {
 			if(!empty($include))
 			{
-				if(!CFGP_U::recursive_array_search($include, $CFGEO)){
+				if(!CFGP_U::recursive_array_search($include, $CFGEO, $relative_match)){
 					return self::__cache('is_vat', $default, (array)$array, $content, $cache);
 				}
 			}
 			
 			if(!empty($exclude))
 			{
-				if(CFGP_U::recursive_array_search($exclude, $CFGEO)){
+				if(CFGP_U::recursive_array_search($exclude, $CFGEO, $relative_match)){
 					return self::__cache('is_vat', $default, (array)$array, $content, $cache);
 				}
 			}
@@ -1296,6 +1308,7 @@ class CFGP_Shortcodes extends CFGP_Global {
 
 		$cache = CFGP_U::is_attribute_exists('cache', $attr);
 		if(CFGP_U::is_attribute_exists('no_cache', $attr)) $cache = false;
+		$relative_match = (CFGP_U::is_attribute_exists('relative_match', $attr) ? true : false);
 		
 		$array = shortcode_atts( array(
 			'ip'		=>	false,
@@ -1318,14 +1331,14 @@ class CFGP_Shortcodes extends CFGP_Global {
 		if(!empty($exclude) || !empty($include)) {
 			if(!empty($include))
 			{
-				if(!CFGP_U::recursive_array_search($include, $CFGEO)) {
+				if(!CFGP_U::recursive_array_search($include, $CFGEO, $relative_match)) {
 					return self::__cache('is_not_vat', $content, (array)$array, $default, $cache);
 				}
 			}
 			
 			if(!empty($exclude))
 			{
-				if(CFGP_U::recursive_array_search($exclude, $CFGEO)) {
+				if(CFGP_U::recursive_array_search($exclude, $CFGEO, $relative_match)) {
 					return self::__cache('is_not_vat', $content, (array)$array, $default, $cache);
 				}
 			}
