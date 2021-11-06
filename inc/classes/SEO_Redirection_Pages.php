@@ -32,10 +32,18 @@ class CFGP_SEO_Redirection_Pages extends CFGP_Global
 		if(isset($_GET['geo']) && ($_GET['geo'] === false || $_GET['geo'] === 'false')){
 			return;
 		}
+		// Prevent using REQUEST
 		if(isset($_REQUEST['stop_redirection']) && ($_REQUEST['stop_redirection'] === true || $_REQUEST['stop_redirection'] === 'true')){
 			return;
 		}
-		
+		// Prevent by custom filter
+		$API = CFGP_U::api();
+		$stop_redirection_filter = apply_filters('cfgp/seo/stop_redirection', false, $API);
+		if( !empty($CFGEO) && $stop_redirection_filter ){
+			if(CFGP_U::recursive_array_search($stop_redirection_filter, $API, true)){
+				return;
+			}
+		}
 		$this->metabox=CFGP_Metabox::instance()->metabox;
 		
 		/**
