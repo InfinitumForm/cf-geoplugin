@@ -223,6 +223,21 @@ class CFGP_Options
 				else
 					$str = sanitize_text_field( $str );
 			}
+			else if (filter_var($str, FILTER_VALIDATE_URL) !== false)
+			{
+				return esc_url($str);
+			}
+			else if(preg_match('/([0-9a-z-_.]+@[0-9a-z-_.]+.[a-z]{2,8})/i', $str))
+			{
+				$str = trim($str, "&$%#?!.;:,");
+				$str = sanitize_email($str);
+				
+				if(function_exists('mb_strtolower')){
+					return mb_strtolower($str);
+				} else {
+					return strtolower($str);
+				}
+			}
 			else if(is_bool($str))
 			{
 				$str = $str ? true : false;

@@ -228,15 +228,19 @@ final class CFGP_Init{
 				CREATE TABLE {$seo_redirection_table} (
 					ID int(11) NOT NULL AUTO_INCREMENT,
 					`only_once` tinyint(1) NOT NULL DEFAULT 0,
-					`country` varchar(100) NOT NULL,
-					`region` varchar(100) NOT NULL,
-					`city` varchar(100) NOT NULL,
-					`postcode` varchar(100) NOT NULL,
-					`url` varchar(100) NOT NULL,
+					`country` varchar(100) DEFAULT NULL,
+					`region` varchar(100) DEFAULT NULL,
+					`city` varchar(100) DEFAULT NULL,
+					`postcode` varchar(100) DEFAULT NULL,
+					`url` tinytext NOT NULL,
 					`http_code` smallint(3) NOT NULL DEFAULT 302,
 					`active` tinyint(1) NOT NULL DEFAULT 1,
 					`date` timestamp NOT NULL DEFAULT current_timestamp(),
-					PRIMARY KEY (ID)
+					PRIMARY KEY (ID),
+					KEY `country` (`country`),
+					KEY `region` (`region`),
+					KEY `city` (`city`),
+					KEY `postcode` (`postcode`)
 				) {$charset_collate}
 				");
 			}

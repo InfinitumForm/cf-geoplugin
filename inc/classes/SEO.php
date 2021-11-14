@@ -32,7 +32,7 @@ class CFGP_SEO extends CFGP_Global {
 			{
 				// Parse CSV
 				if(!class_exists('CFGP_CSV')) {
-					include_once CFGP_INC . '/CSV.php';
+					include_once CFGP_CLASS . '/CSV.php';
 				}
 				
 				if($csv = CFGP_CSV::import($url ,false, ','))
@@ -65,7 +65,11 @@ class CFGP_SEO extends CFGP_Global {
 						}
 						// Now assign data to columns
 						foreach($columns as $x=>$column){
-							$csv[$i][$column]=CFGP_Options::sanitize(strtolower(sanitize_title($data[$x])));
+							if (filter_var($data[$x], FILTER_VALIDATE_URL) !== false || is_numeric($data[$x])){
+								$csv[$i][$column]=CFGP_Options::sanitize($data[$x]);
+							} else {
+								$csv[$i][$column]=CFGP_Options::sanitize(strtolower(sanitize_title($data[$x])));
+							}
 							unset($csv[$i][$x]);
 						}
 					}

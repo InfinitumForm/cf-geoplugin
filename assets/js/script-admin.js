@@ -305,7 +305,7 @@
 				$this.html($label).prop('disabled', false);
 				if(data.return == true)
 				{
-					if(!window.location.href == $callback){
+					if(!(window.location.href = $callback)){
 						window.location.replace($callback);
 					}
 				}

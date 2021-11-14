@@ -1,0 +1,3077 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: WordPress Geo Plugin\n"
+"POT-Creation-Date: 2021-11-14 23:19+0100\n"
+"PO-Revision-Date: 2021-11-14 23:28+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: sr_RS\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.0\n"
+"X-Poedit-Basepath: ..\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
+"X-Poedit-Flags-xgettext: --add-comments=translators:\n"
+"X-Poedit-WPHeader: cf-geoplugin.php\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
+"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.min.js\n"
+
+#: inc/classes/API.php:229 inc/filters/settings.php:128
+msgid "km"
+msgstr ""
+
+#: inc/classes/API.php:232 inc/filters/settings.php:129
+msgid "mile"
+msgstr ""
+
+#: inc/classes/Admin.php:97 inc/classes/Admin.php:329
+msgid "Country code"
+msgstr ""
+
+#: inc/classes/Admin.php:98 inc/classes/Admin.php:331
+msgid "Country full name"
+msgstr ""
+
+#: inc/classes/Admin.php:104 inc/classes/Admin.php:335
+msgid "Region code"
+msgstr ""
+
+#: inc/classes/Admin.php:105 inc/classes/Admin.php:337
+msgid "Region full name"
+msgstr ""
+
+#: inc/classes/Admin.php:111 inc/classes/Admin.php:341
+msgid "City name"
+msgstr ""
+
+#: inc/classes/Admin.php:118 inc/classes/Admin.php:345
+#: inc/classes/SEO_Table.php:121 inc/classes/Settings.php:201
+#: inc/classes/Taxonomy.php:136 inc/classes/Taxonomy.php:151
+msgid "Postcode"
+msgstr "Поштански број"
+
+#: inc/classes/Admin.php:136
+#, php-format
+msgid ""
+"This site uses the WordPress Geo Plugin (formerly: CF Geo Plugin) to display "
+"public visitor information based on IP addresses that can then be collected "
+"or used for various purposes depending on the settings of the plugin.\n"
+"\t\t\t\n"
+"\t\t\tCF Geo Plugin is a GeoMarketing tool that allows you to have full geo "
+"control of your WordPress. CF Geo Plugin gives you ability to attach "
+"content, geographic information, geo tags, Google Maps to posts, pages, "
+"widgets and custom templates by using simple options, shortcodes, PHP code "
+"or JavaScript. It also lets you specify a default geographic location for "
+"your entire WordPress blog, do SEO redirection, spam protection, WooCommerce "
+"control and many more. CF Geo Plugin help you to increase conversion, do "
+"better SEO, capture leads on your blog or landing pages.\n"
+"\t\t\t\n"
+"\t\t\tThis website uses API services, technology and goods from the "
+"WordPress Geo Plugin and that part belongs to the <a href=\"%1$s\" target="
+"\"_blank\">WordPress Geo Plugin Privacy Policy</a>."
+msgstr ""
+
+#: inc/classes/Admin.php:179 inc/classes/Admin.php:183
+#: inc/classes/Settings.php:128 inc/classes/Settings.php:129
+msgid "Geo Plugin"
+msgstr ""
+
+#: inc/classes/Admin.php:190 inc/classes/Admin.php:194
+#: inc/classes/Geo_Banner.php:347 inc/settings/main_page.php:33
+msgid "Shortcodes"
+msgstr "Кратки кодови"
+
+#: inc/classes/Admin.php:202 inc/classes/Admin.php:206
+#: inc/classes/Settings.php:140 inc/classes/Settings.php:141
+#: inc/filters/settings.php:593 inc/settings/google_map.php:10
+msgid "Google Map"
+msgstr "Google мапа"
+
+#: inc/classes/Admin.php:215 inc/classes/Admin.php:219
+#: inc/classes/Settings.php:151 inc/classes/Settings.php:152
+msgid "Site Protection"
+msgstr "Заштита сајта"
+
+#: inc/classes/Admin.php:227 inc/classes/Admin.php:231
+#: inc/classes/Geo_Banner.php:166 inc/classes/Geo_Banner.php:167
+#: inc/classes/Settings.php:161 inc/classes/Settings.php:162
+msgid "Geo Banner"
+msgstr "Гео Банер"
+
+#: inc/classes/Admin.php:240 inc/classes/Admin.php:244
+#: inc/classes/Metabox.php:112 inc/classes/Settings.php:171
+#: inc/classes/Settings.php:172 inc/filters/seo_redirection_table.php:8
+#: inc/filters/settings.php:289
+msgid "SEO Redirection"
+msgstr "СЕО Редирекција"
+
+#: inc/classes/Admin.php:252 inc/classes/Admin.php:256
+#: inc/classes/Geo_Banner.php:355 inc/classes/Settings.php:216
+#: inc/classes/Settings.php:217 inc/settings/settings.php:9
+msgid "Settings"
+msgstr "Подешавања"
+
+#: inc/classes/Admin.php:263 inc/classes/Admin.php:267
+#: inc/classes/Settings.php:208 inc/classes/Settings.php:209
+msgid "Debug Mode"
+msgstr "Дебаговање"
+
+#: inc/classes/Admin.php:274 inc/classes/Admin.php:278
+#: inc/settings/debug.php:131
+msgid "License"
+msgstr "Лиценца"
+
+#: inc/classes/Admin.php:314 inc/classes/Admin.php:370
+#: inc/classes/Metabox.php:80
+msgid "Data will lost , Do you wish to continue?"
+msgstr "Податци ће се изгубити. Да ли желите наставити?"
+
+#: inc/classes/Admin.php:316 inc/classes/Admin.php:381
+#: inc/classes/Metabox.php:84
+msgid "Nothing found!"
+msgstr "Није нађено!"
+
+#: inc/classes/Admin.php:317 inc/classes/Metabox.php:85
+msgid "Choose..."
+msgstr "Одабери..."
+
+#: inc/classes/Admin.php:318 inc/classes/Metabox.php:86
+msgid "Choose countries first!"
+msgstr ""
+
+#: inc/classes/Admin.php:319 inc/classes/Form.php:43 inc/classes/Metabox.php:87
+msgid "Choose countries..."
+msgstr "Одабери државе..."
+
+#: inc/classes/Admin.php:320 inc/classes/Form.php:81 inc/classes/Metabox.php:88
+msgid "Choose regions..."
+msgstr "Одабери регионе..."
+
+#: inc/classes/Admin.php:321 inc/classes/Form.php:139
+#: inc/classes/Metabox.php:89
+msgid "Choose cities..."
+msgstr "Одабери градове..."
+
+#: inc/classes/Admin.php:322 inc/classes/Form.php:197
+#: inc/classes/Metabox.php:90
+msgid "Choose postcodes..."
+msgstr ""
+
+#: inc/classes/Admin.php:324 inc/classes/Admin.php:371
+#: inc/classes/Metabox.php:81
+msgid "Loading..."
+msgstr "Причекајте..."
+
+#: inc/classes/Admin.php:325 inc/classes/Admin.php:372
+#: inc/classes/Metabox.php:82
+msgid "Not Found!"
+msgstr "Није пронађено"
+
+#: inc/classes/Admin.php:326
+msgid "Search"
+msgstr "Претрага"
+
+#: inc/classes/Admin.php:330
+msgid ""
+"Country codes are short (2 letters) alphabetic or numeric geographical codes "
+"developed to represent countries and dependent areas, for use in data "
+"processing and communications."
+msgstr ""
+
+#: inc/classes/Admin.php:332
+msgid ""
+"The name of the country must be written in English without spelling errors."
+msgstr ""
+
+#: inc/classes/Admin.php:336
+msgid ""
+"Region codes are short (2 letters) alphabetic or numeric geographical codes "
+"developed to represent countries and dependent areas, for use in data "
+"processing and communications."
+msgstr ""
+
+#: inc/classes/Admin.php:338
+msgid ""
+"The name of the region must be written in English without spelling errors."
+msgstr ""
+
+#: inc/classes/Admin.php:342
+msgid "The city name must be written in the original city name."
+msgstr ""
+
+#: inc/classes/Admin.php:346
+msgid "The postcode name must be written in the original international format."
+msgstr ""
+
+#: inc/classes/Admin.php:369
+msgid "Select or Upload CSV file"
+msgstr ""
+
+#: inc/classes/Admin.php:374
+msgid "Close"
+msgstr "Zatvori"
+
+#: inc/classes/Admin.php:377
+msgid "There are no news at the moment."
+msgstr ""
+
+#: inc/classes/Admin.php:378
+msgid "ERROR! Can't load news feed."
+msgstr ""
+
+#: inc/classes/Admin.php:384
+msgid "Option saved successfuly!"
+msgstr ""
+
+#: inc/classes/Admin.php:385
+msgid "There was some unexpected system error. Changes not saved!"
+msgstr ""
+
+#: inc/classes/Admin.php:386
+msgid "Changes not saved for unexpected reasons. Try again!"
+msgstr ""
+
+#: inc/classes/Admin.php:387
+msgid "Option you provide not match to global variables. Permission denied!"
+msgstr ""
+
+#: inc/classes/Admin.php:390
+#, php-format
+msgid "Successfuly saved %d records."
+msgstr ""
+
+#: inc/classes/Admin.php:391
+#, php-format
+msgid "Failed to add %d rows."
+msgstr ""
+
+#: inc/classes/Admin.php:392
+msgid "Upload CSV file."
+msgstr ""
+
+#: inc/classes/Admin.php:393
+msgid "The file must be comma separated CSV type"
+msgstr ""
+
+#: inc/classes/Admin.php:394
+msgid "Are you sure, you want to exit?\\nChanges wont be saved!"
+msgstr ""
+
+#: inc/classes/Admin.php:395
+msgid "Are you sure, you want to delete this redirection?"
+msgstr ""
+
+#: inc/classes/Admin.php:396
+msgid ""
+"URL Missing. Please insert URL from your CSV file or choose file from the "
+"library."
+msgstr ""
+
+#: inc/classes/Admin.php:399
+msgid "Are you sure, you want to delete this access token?"
+msgstr ""
+
+#: inc/classes/Admin.php:400
+msgid "Can't delete access token because unexpected reasons."
+msgstr ""
+
+#: inc/classes/Admin.php:403 inc/filters/settings-rest.php:27
+msgid "Documentation"
+msgstr "Документација"
+
+#: inc/classes/Admin.php:404
+msgid "Contact"
+msgstr "Контакт"
+
+#: inc/classes/Admin.php:405
+msgid "Blog"
+msgstr "Блог"
+
+#: inc/classes/Admin.php:406
+msgid "FAQ"
+msgstr "Често постављана питања"
+
+#: inc/classes/Admin.php:407
+msgid "Thank you for using"
+msgstr ""
+
+#: inc/classes/Form.php:231
+msgid "Choose options..."
+msgstr ""
+
+#: inc/classes/Geo_Banner.php:168 inc/classes/Geo_Banner.php:169
+msgid "Add New Banner"
+msgstr ""
+
+#: inc/classes/Geo_Banner.php:170
+msgid "Edit Banner"
+msgstr ""
+
+#: inc/classes/Geo_Banner.php:171
+msgid "New Banner"
+msgstr ""
+
+#: inc/classes/Geo_Banner.php:172
+msgid "View Banner"
+msgstr ""
+
+#: inc/classes/Geo_Banner.php:173
+msgid "Search Banner"
+msgstr ""
+
+#: inc/classes/Geo_Banner.php:174
+msgid "No Banner Found"
+msgstr ""
+
+#: inc/classes/Geo_Banner.php:175
+msgid "No Banner Found in Trash"
+msgstr ""
+
+#: inc/classes/Geo_Banner.php:177
+msgid "Banner Image"
+msgstr ""
+
+#: inc/classes/Geo_Banner.php:178
+msgid "Select Banner Image"
+msgstr ""
+
+#: inc/classes/Geo_Banner.php:179
+msgid "Remove Banner Image"
+msgstr ""
+
+#: inc/classes/Geo_Banner.php:180
+msgid "Use Banner Image"
+msgstr ""
+
+#: inc/classes/Geo_Banner.php:181
+msgid "Insert Into Banner"
+msgstr ""
+
+#: inc/classes/Geo_Banner.php:257 inc/settings/main_page.php:47
+#: inc/settings/main_page.php:70 inc/settings/main_page.php:85
+#: inc/settings/main_page.php:104 inc/settings/main_page.php:118
+#: inc/settings/main_page.php:134
+msgid "Shortcode"
+msgstr "Кратки код"
+
+#: inc/classes/Geo_Banner.php:258
+msgid "Locations"
+msgstr "Локације"
+
+#: inc/classes/Geo_Banner.php:276 inc/classes/Geo_Banner.php:440
+msgid "Standard"
+msgstr "Standard"
+
+#: inc/classes/Geo_Banner.php:277 inc/classes/Geo_Banner.php:441
+msgid "Advanced"
+msgstr "Напредно"
+
+#: inc/classes/Geo_Banner.php:277 inc/classes/Geo_Banner.php:441
+#: inc/classes/Geo_Banner.php:442
+msgid "Default content"
+msgstr ""
+
+#: inc/classes/Geo_Banner.php:285 inc/classes/Geo_Banner.php:304
+#: inc/classes/Taxonomy.php:40 inc/classes/Taxonomy.php:42
+#: inc/classes/Taxonomy.php:55
+msgid "Countries"
+msgstr "Земље"
+
+#: inc/classes/Geo_Banner.php:286 inc/classes/Geo_Banner.php:305
+#: inc/classes/Taxonomy.php:71 inc/classes/Taxonomy.php:73
+#: inc/classes/Taxonomy.php:86
+msgid "Regions"
+msgstr "Regioni"
+
+#: inc/classes/Geo_Banner.php:287 inc/classes/Geo_Banner.php:306
+#: inc/classes/Taxonomy.php:103 inc/classes/Taxonomy.php:105
+#: inc/classes/Taxonomy.php:118
+msgid "Cities"
+msgstr "Gradovi"
+
+#: inc/classes/Geo_Banner.php:333
+msgid "undefined"
+msgstr ""
+
+#: inc/classes/Geo_Banner.php:374 inc/filters/seo_redirection_form.php:64
+msgid "Select Country"
+msgstr "Изабери државу"
+
+#: inc/classes/Geo_Banner.php:380 inc/filters/seo_redirection_form.php:70
+msgid "Select Region"
+msgstr ""
+
+#: inc/classes/Geo_Banner.php:386 inc/filters/seo_redirection_form.php:76
+msgid "Select City"
+msgstr ""
+
+#: inc/classes/Geo_Banner.php:442
+msgid "Enable Cache"
+msgstr ""
+
+#: inc/classes/Help.php:45
+msgid "Number of items per page"
+msgstr ""
+
+#: inc/classes/Help.php:50
+msgid "Intro"
+msgstr "Увод"
+
+#: inc/classes/Help.php:52
+msgid "How this SEO redirection work?"
+msgstr ""
+
+#: inc/classes/Help.php:53
+msgid ""
+"On this settings you can set SEO redirection for the whole WordPress "
+"installation"
+msgstr ""
+
+#: inc/classes/Help.php:54
+msgid ""
+"This functionality allows you to apply redirects from your site to other "
+"sites for your visitors, based on their geo location."
+msgstr ""
+
+#: inc/classes/Help.php:55
+msgid ""
+"It is important to be careful with this functionality because you can fall "
+"into an endless loop or block yourself from accessing the site."
+msgstr ""
+
+#: inc/classes/Help.php:61
+msgid "Setup"
+msgstr ""
+
+#: inc/classes/Help.php:63
+msgid "SEO Redirection Setup"
+msgstr ""
+
+#: inc/classes/Help.php:64
+msgid ""
+"In order to set the SEO redirection of your entire site you need to define "
+"the location from which you want to redirect your visitors to another "
+"location."
+msgstr ""
+
+#: inc/classes/Help.php:65
+msgid ""
+"In the settings you can set the HTTP code that is sent to the browser and "
+"which is also understood by Google."
+msgstr ""
+
+#: inc/classes/Help.php:66
+#, php-format
+msgid ""
+"This HTTP code is a key part of SEO settings because with it you can have "
+"complete control over your content. You can read more about HTTP codes in "
+"our article: %s"
+msgstr ""
+
+#: inc/classes/Help.php:66
+msgid "SEO Redirection in WordPress"
+msgstr ""
+
+#: inc/classes/Help.php:67
+msgid ""
+"You also have the option to redirect only once in a visitor session. This "
+"allows you to allow later access to the site to your visitor after "
+"redirecting to another location."
+msgstr ""
+
+#: inc/classes/Help.php:75
+msgid "Import from CSV"
+msgstr ""
+
+#: inc/classes/Help.php:77
+msgid "To make our job easier, we made the possibility of CSV upload"
+msgstr ""
+
+#: inc/classes/Help.php:78 inc/filters/seo_redirection_import.php:11
+msgid ""
+"If you want to make large amounts of redirects easier, we give you this "
+"option. Here you can easily enter a thousand redirects by the rules you "
+"define in your CSV file with just a few clicks. Before proceeding with this, "
+"you need to be informed about the structure of the CSV file that we expect."
+msgstr ""
+
+#: inc/classes/Help.php:79 inc/filters/seo_redirection_import.php:13
+msgid ""
+"The file must be a standard comma separated CSV with exactly 8 columns. The "
+"order of the column is extremely important and its content is strict. If you "
+"do not follow the format and column order, CSV will be rejected."
+msgstr ""
+
+#: inc/classes/Help.php:82 inc/filters/seo_redirection_import.php:17
+msgid "Country Code - standard 2 letter country code (example: RS)"
+msgstr ""
+
+#: inc/classes/Help.php:84 inc/filters/seo_redirection_import.php:19
+msgid "Region Name (example: Belgrade)"
+msgstr ""
+
+#: inc/classes/Help.php:86 inc/filters/seo_redirection_import.php:21
+msgid "City Name (example: Belgrade)"
+msgstr ""
+
+#: inc/classes/Help.php:88 inc/filters/seo_redirection_import.php:23
+msgid "Postcode Name (example: 1210)"
+msgstr ""
+
+#: inc/classes/Help.php:90 inc/filters/seo_redirection_import.php:25
+msgid "Redirect URL - valid URL format"
+msgstr ""
+
+#: inc/classes/Help.php:92 inc/filters/seo_redirection_import.php:27
+msgid "HTTP Status Code - Accept 301, 302, 303 and 404"
+msgstr ""
+
+#: inc/classes/Help.php:94 inc/filters/seo_redirection_import.php:29
+msgid "Active - Optional, accept integer (1-Enable, 0-Disable)"
+msgstr ""
+
+#: inc/classes/Help.php:96 inc/filters/seo_redirection_import.php:31
+msgid "Redirect only once - Optional, accept integer (1-Enable, 0-Disable)"
+msgstr ""
+
+#: inc/classes/Help.php:102
+msgid "Export in CSV file"
+msgstr ""
+
+#: inc/classes/Help.php:104
+msgid "You can always back up your data"
+msgstr ""
+
+#: inc/classes/Help.php:105
+msgid ""
+"You can back up your redirects at any time and then edit or supplement them "
+"in a single file and restore them to the server."
+msgstr ""
+
+#: inc/classes/License.php:24
+msgid "UNLIMITED Basic License (1 month)"
+msgstr ""
+
+#: inc/classes/License.php:25
+msgid "UNLIMITED Personal License (1 year)"
+msgstr ""
+
+#: inc/classes/License.php:26
+msgid "UNLIMITED Personal License (4 years)"
+msgstr ""
+
+#: inc/classes/License.php:27
+msgid "UNLIMITED Freelancer License (1 year)"
+msgstr ""
+
+#: inc/classes/License.php:28
+msgid "UNLIMITED Freelancer License (4 years)"
+msgstr ""
+
+#: inc/classes/License.php:29
+msgid "UNLIMITED Business License (1 year)"
+msgstr ""
+
+#: inc/classes/License.php:30
+msgid "UNLIMITED Business License (4 years)"
+msgstr ""
+
+#: inc/classes/License.php:31
+msgid "UNLIMITED Lifetime License"
+msgstr ""
+
+#: inc/classes/License.php:36
+msgid "UNLIMITED Developer License"
+msgstr ""
+
+#: inc/classes/License.php:233 inc/filters/license.php:66
+msgid "License Key"
+msgstr ""
+
+#: inc/classes/License.php:234
+msgid "Activation ID"
+msgstr ""
+
+#: inc/classes/License.php:235
+msgid "Domain"
+msgstr "Домен"
+
+#: inc/classes/License.php:236
+msgid "SKU"
+msgstr "Šifra proizvoda"
+
+#: inc/classes/License.php:237
+msgid "Store Code"
+msgstr ""
+
+#: inc/classes/License.php:238
+msgid "No Connection"
+msgstr ""
+
+#: inc/classes/License.php:239
+msgid "API Error"
+msgstr ""
+
+#: inc/classes/License.php:240
+msgid "Input Field"
+msgstr ""
+
+#: inc/classes/License.php:246 inc/classes/License.php:249
+msgid "Licensing Error"
+msgstr ""
+
+#: inc/classes/License.php:256
+msgid ""
+"You must enter a valid license key in order to continue with licensing your "
+"plugin installation."
+msgstr ""
+
+#: inc/classes/License.php:257
+msgid ""
+"Second reason why this may happen can be that you must choose a valid "
+"\"License Type\". If you purchase a \"Personal License\" and get a license "
+"key, you must enter that license key and choose license type to validate "
+"your key. If the key does not match your type you are not able to finish "
+"activation."
+msgstr ""
+
+#: inc/classes/License.php:259
+msgid ""
+"One of the reasons why this may happen can be that you must choose a valid "
+"\"License Type\". If you purchase a \"Personal License\" and get a license "
+"key, you must enter that license key and choose license type to validate "
+"your key. If the key does not match your type you are not able to finish "
+"activation."
+msgstr ""
+
+#: inc/classes/License.php:280
+msgid "Activation succeeded"
+msgstr ""
+
+#: inc/classes/License.php:300
+msgid "You have not selected your license."
+msgstr ""
+
+#: inc/classes/License.php:305
+msgid "License key field is empty."
+msgstr ""
+
+#: inc/classes/License.php:309 inc/classes/License.php:350
+msgid ""
+"Make sure you select the license you purchased and enter the correct license "
+"key."
+msgstr ""
+
+#: inc/classes/License.php:332 inc/classes/License.php:397
+msgid "Unable to connect to server."
+msgstr ""
+
+#: inc/classes/License.php:523
+msgid "Invalid code"
+msgstr ""
+
+#: inc/classes/License.php:524
+msgid "Store code provided do not match the one set for the API."
+msgstr ""
+
+#: inc/classes/License.php:527 inc/classes/License.php:531
+#: inc/classes/License.php:535 inc/classes/License.php:539
+msgid "Invalid license key"
+msgstr ""
+
+#: inc/classes/License.php:528
+msgid ""
+"License key provided do not match the license key string format established "
+"by the API. (regex validation)."
+msgstr ""
+
+#: inc/classes/License.php:532
+msgid ""
+"SKU provided do not match the product SKU associated with the license key."
+msgstr ""
+
+#: inc/classes/License.php:536
+msgid ""
+"License key provided do not match the license key string format established "
+"by the API. (missing dash validation)."
+msgstr ""
+
+#: inc/classes/License.php:540
+msgid "License key provided was not found in the database."
+msgstr ""
+
+#: inc/classes/License.php:543 inc/classes/License.php:547
+#: inc/classes/License.php:551 inc/classes/License.php:555
+#: inc/classes/License.php:559
+msgid "Required"
+msgstr "Обавезно"
+
+#: inc/classes/License.php:544
+msgid "No SKU was provided in the request."
+msgstr ""
+
+#: inc/classes/License.php:548
+msgid "No license key code was provided in the request."
+msgstr ""
+
+#: inc/classes/License.php:552
+msgid "No store code was provided in the request."
+msgstr ""
+
+#: inc/classes/License.php:556
+msgid "No activation ID was provided in the request."
+msgstr ""
+
+#: inc/classes/License.php:560
+msgid "No domain was provided in the request."
+msgstr ""
+
+#: inc/classes/License.php:563
+msgid "License key has expired"
+msgstr ""
+
+#: inc/classes/License.php:564
+msgid "License key provided has expired."
+msgstr ""
+
+#: inc/classes/License.php:567
+msgid ""
+"License key activation limit reached. Deactivate one of the registered "
+"activations to proceed"
+msgstr ""
+
+#: inc/classes/License.php:568
+msgid "License key provided has reached the limit of activations allowed."
+msgstr ""
+
+#: inc/classes/License.php:571
+msgid ""
+"License key domain activation limit reached. Deactivate one or more of the "
+"registered activations to proceed"
+msgstr ""
+
+#: inc/classes/License.php:572
+msgid "License key provided has reached the domain limit allowed."
+msgstr ""
+
+#: inc/classes/License.php:575
+msgid "Invalid activation"
+msgstr ""
+
+#: inc/classes/License.php:576
+msgid "Activation ID provided was not found."
+msgstr ""
+
+#: inc/classes/License.php:587
+msgid "Undefined error"
+msgstr ""
+
+#: inc/classes/License.php:588
+msgid ""
+"This error is not defined and you need to contact the author of the plugin "
+"for more information."
+msgstr ""
+
+#: inc/classes/Metabox.php:167 inc/settings/defender.php:122
+msgid "Choose Countries"
+msgstr "Одабери државе"
+
+#: inc/classes/Metabox.php:169
+msgid "Select the countries you want to redirect."
+msgstr ""
+
+#: inc/classes/Metabox.php:170 inc/classes/Metabox.php:189
+#: inc/classes/Metabox.php:208 inc/classes/Metabox.php:227
+msgid "Select all"
+msgstr "Odaberi sve "
+
+#: inc/classes/Metabox.php:175 inc/classes/Metabox.php:194
+#: inc/classes/Metabox.php:213 inc/classes/Metabox.php:232
+msgid "Exclude from redirection"
+msgstr ""
+
+#: inc/classes/Metabox.php:186
+msgid "Choose Regions"
+msgstr "Одабери регионе"
+
+#: inc/classes/Metabox.php:188
+msgid "Select the regions you want to redirect."
+msgstr ""
+
+#: inc/classes/Metabox.php:205 inc/settings/defender.php:157
+msgid "Choose Cities"
+msgstr "Одабери градове"
+
+#: inc/classes/Metabox.php:207
+msgid "Select the cities you want to redirect."
+msgstr ""
+
+#: inc/classes/Metabox.php:224
+msgid "Choose Postcodes"
+msgstr ""
+
+#: inc/classes/Metabox.php:226
+msgid "Select the postcodes you want to redirect."
+msgstr ""
+
+#: inc/classes/Metabox.php:243
+msgid "Define Redirect URL"
+msgstr ""
+
+#: inc/classes/Metabox.php:245
+msgid "URL where you want to redirect."
+msgstr ""
+
+#: inc/classes/Metabox.php:248 inc/filters/seo_redirection_form.php:92
+msgid "HTTP Code"
+msgstr ""
+
+#: inc/classes/Metabox.php:250
+msgid "Select the desired HTTP redirection."
+msgstr ""
+
+#: inc/classes/Metabox.php:253 inc/filters/seo_redirection_form.php:51
+msgid "Enable this redirection"
+msgstr ""
+
+#: inc/classes/Metabox.php:257 inc/classes/Metabox.php:270
+#: inc/filters/seo_redirection_form.php:55
+#: inc/filters/seo_redirection_form.php:100
+msgid "Enable"
+msgstr "Uključi"
+
+#: inc/classes/Metabox.php:258 inc/classes/Metabox.php:271
+#: inc/filters/seo_redirection_form.php:56
+#: inc/filters/seo_redirection_form.php:101
+msgid "Disable"
+msgstr "Isključi"
+
+#: inc/classes/Metabox.php:266 inc/filters/seo_redirection_form.php:96
+msgid "Redirect only once"
+msgstr ""
+
+#: inc/classes/Metabox.php:280 inc/filters/settings-rest.php:216
+msgid "Remove"
+msgstr "Уклони"
+
+#: inc/classes/Metabox.php:281
+msgid "Add New Redirection"
+msgstr ""
+
+#: inc/classes/Plugins.php:48
+#, php-format
+msgid "Enable %s integration."
+msgstr ""
+
+#: inc/classes/Plugins.php:51 inc/filters/settings.php:63
+#: inc/filters/settings.php:74 inc/filters/settings.php:96
+#: inc/filters/settings.php:107 inc/filters/settings.php:118
+#: inc/filters/settings.php:147 inc/filters/settings.php:158
+#: inc/filters/settings.php:176 inc/filters/settings.php:187
+#: inc/filters/settings.php:201 inc/filters/settings.php:212
+#: inc/filters/settings.php:226 inc/filters/settings.php:240
+#: inc/filters/settings.php:254 inc/filters/settings.php:269
+#: inc/filters/settings.php:280 inc/filters/settings.php:298
+#: inc/filters/settings.php:309 inc/filters/settings.php:327
+#: inc/filters/settings.php:338 inc/filters/settings.php:359
+#: inc/filters/settings.php:370 inc/filters/settings.php:461
+#: inc/filters/settings.php:472 inc/filters/settings.php:510
+#: inc/filters/settings.php:669 inc/filters/settings.php:680
+#: inc/filters/settings.php:691 inc/filters/settings.php:702
+#: inc/filters/settings.php:713
+msgid "Yes"
+msgstr "Да"
+
+#: inc/classes/Plugins.php:52 inc/filters/settings.php:64
+#: inc/filters/settings.php:75 inc/filters/settings.php:97
+#: inc/filters/settings.php:108 inc/filters/settings.php:119
+#: inc/filters/settings.php:148 inc/filters/settings.php:159
+#: inc/filters/settings.php:177 inc/filters/settings.php:188
+#: inc/filters/settings.php:202 inc/filters/settings.php:213
+#: inc/filters/settings.php:227 inc/filters/settings.php:241
+#: inc/filters/settings.php:255 inc/filters/settings.php:270
+#: inc/filters/settings.php:281 inc/filters/settings.php:299
+#: inc/filters/settings.php:310 inc/filters/settings.php:328
+#: inc/filters/settings.php:339 inc/filters/settings.php:360
+#: inc/filters/settings.php:371 inc/filters/settings.php:462
+#: inc/filters/settings.php:473 inc/filters/settings.php:511
+#: inc/filters/settings.php:670 inc/filters/settings.php:681
+#: inc/filters/settings.php:692 inc/filters/settings.php:703
+#: inc/filters/settings.php:714
+msgid "No"
+msgstr "Не"
+
+#: inc/classes/Plugins.php:65
+msgid "Plugin Support"
+msgstr ""
+
+#: inc/classes/Plugins.php:70
+msgid "Enable Plugins"
+msgstr ""
+
+#: inc/classes/Plugins.php:71
+msgid "Allow CF Geo Plugin to integrate with existing installed plugins."
+msgstr ""
+
+#: inc/classes/Public.php:80
+msgid "CF Geo Plugin CSS Classes"
+msgstr ""
+
+#: inc/classes/Public.php:93 inc/classes/Public.php:130
+msgid "CF Geoplugin JavaScript Objects"
+msgstr ""
+
+#: inc/classes/REST.php:146
+msgid "Access token is invalid."
+msgstr ""
+
+#: inc/classes/REST.php:153 inc/classes/REST.php:257
+msgid "API key is invalid."
+msgstr ""
+
+#: inc/classes/REST.php:250
+msgid "Secret key is invalid."
+msgstr ""
+
+#: inc/classes/REST.php:264
+msgid "Required fields are not defined."
+msgstr ""
+
+#: inc/classes/REST.php:272
+msgid ""
+"You do not have the appropriate CF GeoPlugin license. REST API is allowed "
+"only for the BUSINESS LICENSE."
+msgstr ""
+
+#: inc/classes/Requirements.php:61
+#, php-format
+msgid "Important upgrade notice for the version %s:"
+msgstr "Важно обавештење о надоградњи за верзију %s:"
+
+#: inc/classes/Requirements.php:75
+msgid ""
+"NOTE: Before doing the update, it would be a good idea to backup your "
+"WordPress installations and settings."
+msgstr ""
+"НАПОМЕНА: Пре него што извршите ажурирање, било би добро да направите "
+"резервне копије ваших WordPress инсталација и подешавања."
+
+#: inc/classes/Requirements.php:110
+#, php-format
+msgid ""
+"The %1$s cannot run on PHP versions older than PHP %2$s. Please contact your "
+"host and ask them to upgrade."
+msgstr ""
+"%1$s не може да се покреће на PHP верзијама старијим од PHP%2$s. Молимо "
+"контактирајте свог сервер администратора и замолите га да изврши надоградњу."
+
+#: inc/classes/Requirements.php:129
+#, php-format
+msgid ""
+"The %1$s cannot run on WordPress versions older than %2$s. Please update "
+"your WordPress installation."
+msgstr ""
+"%1$s не може да се покреће за верзије WordPress-а старије од %2$s. "
+"Ажурирајте своју WordPress инсталацију."
+
+#: inc/classes/SEO.php:101 inc/classes/SEO.php:115
+msgid ""
+"An error occurred while saving data to the database. We have restored your "
+"old parameters. There is no change here."
+msgstr ""
+
+#: inc/classes/SEO.php:123
+#, php-format
+msgid ""
+"We did not find any valid CSV data. We did not make any changes. Make sure "
+"you have all %d columns properly defined."
+msgstr ""
+
+#: inc/classes/SEO.php:131
+msgid ""
+"There was an error unpacking the CSV file. Check the format of your CSV file."
+msgstr ""
+
+#: inc/classes/SEO.php:139
+msgid "CSV file not defined."
+msgstr ""
+
+#: inc/classes/SEO.php:147
+msgid ""
+"There was an error validating the data. Please refresh the page and try "
+"again."
+msgstr ""
+
+#: inc/classes/SEO.php:163 inc/classes/SEO.php:206
+msgid "Redirect URL is a required field."
+msgstr ""
+
+#: inc/classes/SEO.php:179 inc/classes/SEO.php:223
+msgid ""
+"This redirection was not saved due to a database error. Please try again."
+msgstr ""
+
+#: inc/classes/SEO.php:183 inc/classes/SEO.php:227 inc/classes/Settings.php:87
+#: inc/settings/defender.php:61
+msgid "Settings saved."
+msgstr "Подешавања су сачувана."
+
+#: inc/classes/SEO.php:245
+msgid "Deleted."
+msgstr ""
+
+#: inc/classes/SEO_Table.php:40 inc/classes/SEO_Table.php:282
+msgid "Delete"
+msgstr "Брисање"
+
+#: inc/classes/SEO_Table.php:99
+msgid "Import From CSV"
+msgstr ""
+
+#: inc/classes/SEO_Table.php:102 inc/filters/seo_redirection_import.php:34
+msgid "Export CSV"
+msgstr ""
+
+#: inc/classes/SEO_Table.php:117
+msgid "URL"
+msgstr "URL"
+
+#: inc/classes/SEO_Table.php:118 inc/classes/Taxonomy.php:41
+#: inc/classes/Taxonomy.php:56
+msgid "Country"
+msgstr "Држава"
+
+#: inc/classes/SEO_Table.php:119 inc/classes/Taxonomy.php:72
+#: inc/classes/Taxonomy.php:87
+msgid "Region"
+msgstr "Regija"
+
+#: inc/classes/SEO_Table.php:120 inc/classes/Taxonomy.php:104
+#: inc/classes/Taxonomy.php:119
+msgid "City"
+msgstr "Grad"
+
+#: inc/classes/SEO_Table.php:122
+msgid "Status Code"
+msgstr ""
+
+#: inc/classes/SEO_Table.php:123
+msgid "Redirect"
+msgstr ""
+
+#: inc/classes/SEO_Table.php:281
+msgid "DISABLED"
+msgstr ""
+
+#: inc/classes/SEO_Table.php:282
+msgid "Edit"
+msgstr "Уреди"
+
+#: inc/classes/SEO_Table.php:319
+msgid "Only once"
+msgstr ""
+
+#: inc/classes/SEO_Table.php:319
+msgid "Always"
+msgstr "Uvek"
+
+#: inc/classes/Settings.php:97
+msgid "NONCE ERROR!"
+msgstr ""
+
+#: inc/classes/Settings.php:98
+msgid ""
+"Nonce is incorrect or has expired. Please refresh the page and try again. "
+"Unable to save settings."
+msgstr ""
+
+#: inc/classes/Settings.php:105 inc/classes/Settings.php:113
+msgid "FORM ERROR!"
+msgstr ""
+
+#: inc/classes/Settings.php:106 inc/classes/Settings.php:114
+msgid "The form was not submitted regularly. Unable to save settings."
+msgstr ""
+
+#: inc/classes/Settings.php:202 inc/classes/Taxonomy.php:135
+#: inc/classes/Taxonomy.php:137 inc/classes/Taxonomy.php:150
+msgid "Postcodes"
+msgstr ""
+
+#: inc/classes/Settings.php:225 inc/classes/Settings.php:226
+msgid "Activate Unlimited"
+msgstr ""
+
+#: inc/classes/Shortcodes.php:216
+msgid ""
+"CF GEOPLUGIN NOTICE: -Please define \"include\" or \"exclude\" attributes "
+"inside your shortcode on this shortcode mode."
+msgstr ""
+
+#: inc/classes/Taxonomy.php:43
+msgid "All Countries"
+msgstr ""
+
+#: inc/classes/Taxonomy.php:44
+msgid "Edit Country"
+msgstr ""
+
+#: inc/classes/Taxonomy.php:45
+msgid "View Country"
+msgstr ""
+
+#: inc/classes/Taxonomy.php:46
+msgid "Update Country"
+msgstr ""
+
+#: inc/classes/Taxonomy.php:47
+msgid "Add New Country"
+msgstr ""
+
+#: inc/classes/Taxonomy.php:48
+msgid "New Country Name"
+msgstr ""
+
+#: inc/classes/Taxonomy.php:49 inc/classes/Taxonomy.php:50
+msgid "Parent Country"
+msgstr ""
+
+#: inc/classes/Taxonomy.php:74
+msgid "All Regions"
+msgstr ""
+
+#: inc/classes/Taxonomy.php:75
+msgid "Edit Region"
+msgstr ""
+
+#: inc/classes/Taxonomy.php:76
+msgid "View Region"
+msgstr ""
+
+#: inc/classes/Taxonomy.php:77
+msgid "Update Region"
+msgstr ""
+
+#: inc/classes/Taxonomy.php:78
+msgid "Add New Region"
+msgstr ""
+
+#: inc/classes/Taxonomy.php:79
+msgid "New Region Name"
+msgstr ""
+
+#: inc/classes/Taxonomy.php:80 inc/classes/Taxonomy.php:81
+msgid "Parent Region"
+msgstr ""
+
+#: inc/classes/Taxonomy.php:106
+msgid "All Cities"
+msgstr "Svi gradovi"
+
+#: inc/classes/Taxonomy.php:107
+msgid "Edit City"
+msgstr ""
+
+#: inc/classes/Taxonomy.php:108
+msgid "View City"
+msgstr ""
+
+#: inc/classes/Taxonomy.php:109
+msgid "Update City"
+msgstr ""
+
+#: inc/classes/Taxonomy.php:110
+msgid "Add New City"
+msgstr "Додај нови град"
+
+#: inc/classes/Taxonomy.php:111
+msgid "New City Name"
+msgstr ""
+
+#: inc/classes/Taxonomy.php:112 inc/classes/Taxonomy.php:113
+msgid "Parent City"
+msgstr ""
+
+#: inc/classes/Taxonomy.php:138
+msgid "All Postcodes"
+msgstr ""
+
+#: inc/classes/Taxonomy.php:139
+msgid "Edit Postcode"
+msgstr ""
+
+#: inc/classes/Taxonomy.php:140
+msgid "View Postcode"
+msgstr ""
+
+#: inc/classes/Taxonomy.php:141
+msgid "Update Postcode"
+msgstr ""
+
+#: inc/classes/Taxonomy.php:142
+msgid "Add New Postcode"
+msgstr ""
+
+#: inc/classes/Taxonomy.php:143
+msgid "New Postcode Name"
+msgstr ""
+
+#: inc/classes/Taxonomy.php:144 inc/classes/Taxonomy.php:145
+msgid "Parent Postcode"
+msgstr ""
+
+#: inc/classes/Taxonomy.php:279
+msgid "Invalid taxonomy."
+msgstr ""
+
+#: inc/classes/Utilities.php:29
+msgid "301 - Moved Permanently"
+msgstr ""
+
+#: inc/classes/Utilities.php:30
+msgid "302 - Found (Moved temporarily)"
+msgstr ""
+
+#: inc/classes/Utilities.php:31
+msgid "303 - See Other"
+msgstr ""
+
+#: inc/classes/Utilities.php:32
+msgid "307 - Temporary Redirect (since HTTP/1.1)"
+msgstr ""
+
+#: inc/classes/Utilities.php:33
+msgid "308 - Permanent Redirect"
+msgstr ""
+
+#: inc/classes/Utilities.php:34
+msgid "404 - Not Found (not recommended)"
+msgstr ""
+
+#: inc/classes/Utilities.php:481
+msgid "HTTP redirect status code must be a redirection code, 3xx."
+msgstr "Kod statusa HTTP preusmeravanja mora biti kod za preusmeravanje, 3kk."
+
+#: inc/filters/license.php:54
+msgid "Price"
+msgstr "Cena"
+
+#: inc/filters/license.php:55
+msgid "You must become a developer for this license"
+msgstr ""
+
+#: inc/filters/license.php:55
+msgid "Learn more about this product"
+msgstr ""
+
+#: inc/filters/license.php:59
+msgid ""
+"Are you sure you want to deactivate your license? This decision can limit "
+"your plugin functions."
+msgstr ""
+
+#: inc/filters/license.php:67
+msgid "Insert your license key here"
+msgstr ""
+
+#: inc/filters/license.php:69
+msgid "License type must match to your license key that you ordered."
+msgstr ""
+
+#: inc/filters/license.php:70
+msgid "Activate your license"
+msgstr ""
+
+#: inc/filters/license.php:73
+msgid "Dectivate current license"
+msgstr ""
+
+#: inc/filters/license.php:93
+msgid "License Information"
+msgstr ""
+
+#: inc/filters/license.php:97
+#, php-format
+msgid ""
+"Thank you for using an unlimited license. Your license is active until %1$s. "
+"It would be great to expand your license by that date. After expiration date "
+"you will experience plugin limitations.<br><br>To review or deactivate your "
+"license, please go to your %2$s."
+msgstr ""
+
+#: inc/filters/license.php:98
+msgid "never"
+msgstr "Никад"
+
+#: inc/filters/license.php:99
+msgid "CF Geo Plugin account"
+msgstr ""
+
+#: inc/filters/license.php:102
+#, php-format
+msgid ""
+"Do not forget that by purchasing and using the license you have agreed to "
+"our %2$s in accordance with the %1$s."
+msgstr ""
+
+#: inc/filters/license.php:103 inc/filters/license.php:116
+#: inc/settings/debug.php:87
+msgid "Privacy Policy"
+msgstr "Политика Приватности"
+
+#: inc/filters/license.php:104 inc/filters/license.php:117
+msgid "Terms & Conditions"
+msgstr ""
+
+#: inc/filters/license.php:108
+#, php-format
+msgid ""
+"You currently use a free version of plugin with a limited number of lookups. "
+"Each free version of this plugin is limited to %1$s lookups per day and you "
+"have only %2$s lookups available for today. If you want to have unlimited "
+"lookup, please enter your license key. If you are unsure and do not "
+"understand what this is about, read %3$s."
+msgstr ""
+
+#: inc/filters/license.php:112
+msgid "this article"
+msgstr ""
+
+#: inc/filters/license.php:115
+#, php-format
+msgid "Before any action don't forget to read and agree with %1$s and %2$s."
+msgstr ""
+
+#: inc/filters/main_page.php:14
+msgid "Special dedicated short codes"
+msgstr ""
+
+#: inc/filters/main_page.php:18 inc/filters/main_page.php:19
+msgid "You are NOT under VAT"
+msgstr ""
+
+#: inc/filters/main_page.php:22 inc/filters/main_page.php:23
+msgid "You are from the EU"
+msgstr ""
+
+#: inc/filters/main_page.php:26 inc/filters/main_page.php:27
+msgid "You are NOT from the EU"
+msgstr ""
+
+#: inc/filters/main_page.php:30
+msgid "GPS is enabled"
+msgstr ""
+
+#: inc/filters/main_page.php:32
+msgid "GPS is enabled."
+msgstr ""
+
+#: inc/filters/main_page.php:45
+#, php-format
+msgid "GPS is enabled only with %s extension"
+msgstr ""
+
+#: inc/filters/main_page.php:47
+msgid "CF Geo Plugin GPS"
+msgstr ""
+
+#: inc/filters/main_page.php:57 inc/filters/main_page.php:58
+msgid "Proxy connection"
+msgstr ""
+
+#: inc/filters/main_page.php:61 inc/filters/main_page.php:62
+msgid "Is not proxy connection"
+msgstr ""
+
+#: inc/filters/seo_redirection_form.php:45
+msgid "SEO Redirection Global Params"
+msgstr ""
+
+#: inc/filters/seo_redirection_form.php:82
+msgid "Select Postcode"
+msgstr ""
+
+#: inc/filters/seo_redirection_form.php:88
+msgid "Redirect URL"
+msgstr "URLпреусмеравања"
+
+#: inc/filters/seo_redirection_form.php:110
+msgid "Save Redirection"
+msgstr ""
+
+#: inc/filters/seo_redirection_form.php:110
+msgid "Go back to list"
+msgstr ""
+
+#: inc/filters/seo_redirection_form.php:121
+msgid "Edit SEO redirection"
+msgstr ""
+
+#: inc/filters/seo_redirection_form.php:123
+msgid "Add new SEO redirection"
+msgstr ""
+
+#: inc/filters/seo_redirection_form.php:131
+#: inc/filters/seo_redirection_table.php:12
+msgid "New SEO redirection"
+msgstr ""
+
+#: inc/filters/seo_redirection_import.php:9
+msgid "SEO Redirection CSV Upload"
+msgstr ""
+
+#: inc/filters/seo_redirection_import.php:12
+msgid ""
+"Please carefully follow this manual to avoid unnecessary problems and waste "
+"of time."
+msgstr ""
+
+#: inc/filters/seo_redirection_import.php:34
+msgid "Click Here to Upload CSV"
+msgstr ""
+
+#: inc/filters/seo_redirection_import.php:34
+msgid ""
+"Are you sure? Once you start the import you will not be able to stop it. You "
+"must know that this operation deletes all existing data and replaces it with "
+"new one. We strongly recommend that you export the existing data first and "
+"then continue with this operation."
+msgstr ""
+
+#: inc/filters/seo_redirection_import.php:42
+msgid "SEO redirection - Upload CSV file"
+msgstr ""
+
+#: inc/filters/seo_redirection_table.php:19
+#: inc/filters/seo_redirection_table.php:21
+msgid "Search Redirections"
+msgstr ""
+
+#: inc/filters/settings-rest.php:7
+msgid "REST API"
+msgstr ""
+
+#: inc/filters/settings-rest.php:18
+msgid "REST API Setup"
+msgstr ""
+
+#: inc/filters/settings-rest.php:20
+msgid "NOTE: The REST API is only functional for the Business License"
+msgstr ""
+
+#: inc/filters/settings-rest.php:22
+msgid ""
+"The CF Geo Plugin REST API allows external apps to use geo information and "
+"make your WordPress like a geo information provider."
+msgstr ""
+
+#: inc/filters/settings-rest.php:23 inc/filters/settings-rest.php:60
+#: inc/filters/settings-rest.php:142
+msgid "API KEY"
+msgstr ""
+
+#: inc/filters/settings-rest.php:25 inc/filters/settings-rest.php:66
+msgid "Secret API KEY"
+msgstr ""
+
+#: inc/filters/settings-rest.php:26
+msgid "Generate Secret Key"
+msgstr ""
+
+#: inc/filters/settings-rest.php:26
+msgid ""
+"Are you sure you want to regenerate the secret key? If you do this, all your "
+"connections will be lost."
+msgstr ""
+
+#: inc/filters/settings-rest.php:28
+msgid ""
+"This API is designed to provide easy and secure access to geo information on "
+"your site sending simple POST or GET requests and receiving JSON formatted "
+"data. Through this API, you can easily connect via any programming language "
+"that allows cross domain communication."
+msgstr ""
+
+#: inc/filters/settings-rest.php:33
+msgid "Authentication"
+msgstr "Провера идентитета"
+
+#: inc/filters/settings-rest.php:34 inc/settings/debug.php:32
+#: inc/settings/sidebar.php:69 inc/settings/sidebar.php:91
+msgid "Lookup"
+msgstr "Преглед"
+
+#: inc/filters/settings-rest.php:35 inc/filters/settings-rest.php:194
+msgid "Available Tokens"
+msgstr ""
+
+#: inc/filters/settings-rest.php:39
+msgid "Authentication endpoint"
+msgstr ""
+
+#: inc/filters/settings-rest.php:40
+msgid ""
+"Endpoint used to authenticate connection between CF Geo Plugin on your site "
+"and your external app."
+msgstr ""
+
+#: inc/filters/settings-rest.php:42 inc/filters/settings-rest.php:124
+msgid "Expected GET or POST parameters."
+msgstr ""
+
+#: inc/filters/settings-rest.php:45 inc/filters/settings-rest.php:86
+#: inc/filters/settings-rest.php:127
+msgid "Parameter"
+msgstr "Атрибут"
+
+#: inc/filters/settings-rest.php:46 inc/filters/settings-rest.php:87
+#: inc/filters/settings-rest.php:128
+msgid "Type"
+msgstr "Тип"
+
+#: inc/filters/settings-rest.php:47 inc/filters/settings-rest.php:129
+msgid "Obligation"
+msgstr ""
+
+#: inc/filters/settings-rest.php:48 inc/filters/settings-rest.php:88
+#: inc/filters/settings-rest.php:130
+msgid "Description"
+msgstr "Opis"
+
+#: inc/filters/settings-rest.php:53 inc/filters/settings-rest.php:59
+#: inc/filters/settings-rest.php:65 inc/filters/settings-rest.php:71
+#: inc/filters/settings-rest.php:135 inc/filters/settings-rest.php:141
+#: inc/filters/settings-rest.php:147 inc/filters/settings-rest.php:153
+msgid "required"
+msgstr "обавезно"
+
+#: inc/filters/settings-rest.php:54
+msgid ""
+"Endpoint action. Should always be: <strong>cf_geoplugin_authenticate</strong>"
+msgstr ""
+
+#: inc/filters/settings-rest.php:72
+msgid "Your external application name."
+msgstr ""
+
+#: inc/filters/settings-rest.php:75 inc/filters/settings-rest.php:163
+msgid "Return standard JSON API response format"
+msgstr ""
+
+#: inc/filters/settings-rest.php:98
+msgid "Return only when error exists"
+msgstr ""
+
+#: inc/filters/settings-rest.php:103
+msgid "HTTP status code"
+msgstr ""
+
+#: inc/filters/settings-rest.php:108
+msgid "Return access token only when authentication is successful"
+msgstr ""
+
+#: inc/filters/settings-rest.php:113
+msgid "Return only when authentication is successful"
+msgstr ""
+
+#: inc/filters/settings-rest.php:116
+msgid ""
+"When you receive your access token, you need to save it in a database or "
+"integrate it within the code in your external app and it serves for further "
+"linking to your site."
+msgstr ""
+
+#: inc/filters/settings-rest.php:121
+msgid "Lookup endpoint"
+msgstr ""
+
+#: inc/filters/settings-rest.php:122
+msgid ""
+"Endpoint used to look up IP address information. To make this work properly, "
+"you must have a valid KEY and Access Token API."
+msgstr ""
+
+#: inc/filters/settings-rest.php:136
+msgid "Endpoint action. Should always be: <strong>cf_geoplugin_lookup</strong>"
+msgstr ""
+
+#: inc/filters/settings-rest.php:148
+msgid "Generated access token"
+msgstr ""
+
+#: inc/filters/settings-rest.php:154
+msgid "Client IP address"
+msgstr ""
+
+#: inc/filters/settings-rest.php:159
+msgid "optional"
+msgstr "opciono"
+
+#: inc/filters/settings-rest.php:160
+msgid ""
+"The base currency (transaction currency) - The currency by which conversion "
+"is checked by geo location. Default: <strong>"
+msgstr ""
+
+#: inc/filters/settings-rest.php:189
+msgid ""
+"You can use these JSON information in your external app anywhere. TIP: In "
+"order for your external app to be fast, it would be good to make this call "
+"once and record in a temporary session that will expire after a few minutes."
+msgstr ""
+
+#: inc/filters/settings-rest.php:195
+msgid ""
+"Here is a list of registered access tokens that are active on your site. You "
+"can also disable any active access token."
+msgstr ""
+
+#: inc/filters/settings-rest.php:199
+msgid "Access Token"
+msgstr ""
+
+#: inc/filters/settings-rest.php:200
+msgid "App name"
+msgstr ""
+
+#: inc/filters/settings-rest.php:201
+msgid "Date"
+msgstr "Datum"
+
+#: inc/filters/settings-rest.php:216
+msgid "Are you sure you want to remove this access token?"
+msgstr ""
+
+#: inc/filters/settings-rest.php:220
+msgid "There are no registered applications yet."
+msgstr ""
+
+#: inc/filters/settings.php:49
+msgid "General settings"
+msgstr ""
+
+#: inc/filters/settings.php:54
+msgid "WordPress Settings"
+msgstr ""
+
+#: inc/filters/settings.php:55
+msgid ""
+"These settings only affect CF Geo Plugin functionality and connection "
+"between plugin and WordPress setup. Use it smart and careful."
+msgstr ""
+
+#: inc/filters/settings.php:59
+msgid "Enable Plugin Auto Update"
+msgstr ""
+
+#: inc/filters/settings.php:60
+msgid "Allow your plugin to be up to date."
+msgstr ""
+
+#: inc/filters/settings.php:70
+msgid "Enable Dashboard Widget"
+msgstr ""
+
+#: inc/filters/settings.php:71
+msgid "Enable CF Geo Plugin widget in the dashboard area."
+msgstr ""
+
+#: inc/filters/settings.php:81
+msgid "Dashboard Widget Type"
+msgstr ""
+
+#: inc/filters/settings.php:82
+msgid ""
+"Dashboard widget comming in 2 types. You can choose that best fit to you."
+msgstr ""
+
+#: inc/filters/settings.php:85
+msgid "Advanced (recommended)"
+msgstr ""
+
+#: inc/filters/settings.php:86
+msgid "Basic"
+msgstr "Основни"
+
+#: inc/filters/settings.php:92
+msgid "Enable Cloudflare"
+msgstr ""
+
+#: inc/filters/settings.php:93
+msgid ""
+"Enable this option only when you use Cloudflare services on your website."
+msgstr ""
+
+#: inc/filters/settings.php:103
+msgid "Enable SSL"
+msgstr ""
+
+#: inc/filters/settings.php:104
+msgid "This option force plugin to use SSL connection."
+msgstr ""
+
+#: inc/filters/settings.php:114
+msgid "Enable Caching"
+msgstr ""
+
+#: inc/filters/settings.php:115
+msgid ""
+"This option allows caching. Usually used in combination with a cache plugin. "
+"If you do not want your redirects to be cached, leave this field disabled."
+msgstr ""
+
+#: inc/filters/settings.php:125
+msgid "Measurement Unit"
+msgstr ""
+
+#: inc/filters/settings.php:138
+msgid "Plugin Settings"
+msgstr "Поставке додатка"
+
+#: inc/filters/settings.php:139
+msgid "These settings enable advanced lookup and functionality of plugin."
+msgstr ""
+
+#: inc/filters/settings.php:143
+msgid "Enable DNS/ISP Lookup"
+msgstr ""
+
+#: inc/filters/settings.php:144
+msgid "Activate DNS/ISP lookup to be able to provide this information."
+msgstr ""
+
+#: inc/filters/settings.php:154
+msgid "Enable Country Flags"
+msgstr ""
+
+#: inc/filters/settings.php:155
+msgid "Display country flag SVG or PNG image on your website."
+msgstr ""
+
+#: inc/filters/settings.php:167
+msgid "Plugin Features"
+msgstr ""
+
+#: inc/filters/settings.php:168
+msgid ""
+"Here you can enable or disable features that you need. This is useful "
+"because you can disable functionality that you do not need."
+msgstr ""
+
+#: inc/filters/settings.php:172
+msgid "Enable Geo Banner"
+msgstr ""
+
+#: inc/filters/settings.php:173
+msgid "Display content to user by geo location."
+msgstr ""
+
+#: inc/filters/settings.php:183
+msgid "Enable Google Map"
+msgstr ""
+
+#: inc/filters/settings.php:184
+msgid "Place simple Google Map to your page."
+msgstr ""
+
+#: inc/filters/settings.php:197
+msgid "Enable CSS property"
+msgstr ""
+
+#: inc/filters/settings.php:198
+msgid ""
+"The CF Geo Plugin has dynamic CSS settings that can hide or display some "
+"content if you use it properly."
+msgstr ""
+
+#: inc/filters/settings.php:208
+msgid "Enable JavaScript property"
+msgstr ""
+
+#: inc/filters/settings.php:209
+msgid "Enable CF Geo Plugin JavaScript support."
+msgstr ""
+
+#: inc/filters/settings.php:222
+msgid "WooCommerce integration"
+msgstr ""
+
+#: inc/filters/settings.php:223
+msgid "For more options visit WooCommerce Settings."
+msgstr ""
+
+#: inc/filters/settings.php:236
+msgid "Wooplatnica integration"
+msgstr ""
+
+#: inc/filters/settings.php:237
+msgid ""
+"If you want to CF Geo Plugin take control over Woocommerce addon "
+"\"Wooplatnica\", activate this option."
+msgstr ""
+
+#: inc/filters/settings.php:250
+msgid "Contact Form 7 integration"
+msgstr ""
+
+#: inc/filters/settings.php:251
+msgid ""
+"If you want to CF Geo Plugin add new options to your Contact Form 7, "
+"activate this option."
+msgstr ""
+
+#: inc/filters/settings.php:265
+msgid "Elementor integration"
+msgstr ""
+
+#: inc/filters/settings.php:266
+msgid ""
+"If you want to CF Geo Plugin add new options to your Elementor, activate "
+"this option."
+msgstr ""
+
+#: inc/filters/settings.php:276
+msgid "Enable REST API"
+msgstr ""
+
+#: inc/filters/settings.php:277
+msgid ""
+"The CF Geo Plugin REST API allows external apps to use geo informations from "
+"your website."
+msgstr ""
+
+#: inc/filters/settings.php:294
+msgid "Enable Site Redirection"
+msgstr ""
+
+#: inc/filters/settings.php:295
+msgid "You can redirect your visitors to other locations."
+msgstr ""
+
+#: inc/filters/settings.php:305
+msgid "Enable CSV Import/Export in Site Redirection"
+msgstr ""
+
+#: inc/filters/settings.php:306
+msgid ""
+"This allow you to upload CSV to your SEO redirection or download/backup SEO "
+"redirection list in the CSV."
+msgstr ""
+
+#: inc/filters/settings.php:316
+msgid "Enable SEO Redirection in Post Types"
+msgstr ""
+
+#: inc/filters/settings.php:323
+msgid "Disable Redirection for the Bots"
+msgstr ""
+
+#: inc/filters/settings.php:324
+msgid ""
+"Disable SEO redirection for the bots, crawlers, spiders and social network "
+"bots. This can be a special case that is very important for SEO."
+msgstr ""
+
+#: inc/filters/settings.php:334
+msgid "Hide HTTP referer headers data"
+msgstr ""
+
+#: inc/filters/settings.php:335
+msgid ""
+"You can tell the browser to not send a referrer by enabling this option for "
+"all SEO redirections."
+msgstr ""
+
+#: inc/filters/settings.php:347
+msgid "Spam Protection"
+msgstr ""
+
+#: inc/filters/settings.php:349
+msgid ""
+"With Anti Spam Protection you can enable anti spam filters and block access "
+"from the specific IP, country, state and city to your site."
+msgstr ""
+
+#: inc/filters/settings.php:350
+msgid ""
+"This feature is very safe and does not affect the SEO. By enabling this "
+"feature, you get full spam protection from over 60.000 blacklisted IP "
+"addresses."
+msgstr ""
+
+#: inc/filters/settings.php:355
+msgid "Enable Spam Protection"
+msgstr ""
+
+#: inc/filters/settings.php:356
+msgid ""
+"Protect your website from the unwanted visitors by geo location or ip "
+"address."
+msgstr ""
+
+#: inc/filters/settings.php:366
+msgid "Enable Automatic IP Address Blacklist Check"
+msgstr ""
+
+#: inc/filters/settings.php:367
+msgid ""
+"Protect your website from bots, crawlers and other unwanted visitors that "
+"are found in our blacklist."
+msgstr ""
+
+#: inc/filters/settings.php:380
+msgid "Geo Tag"
+msgstr ""
+
+#: inc/filters/settings.php:381
+msgid ""
+"The Geo Tag will help you to create your own geotags in a simple interactive "
+"way without having to deal with latitude or longitude degrees or the syntax "
+"of meta tags. Here you can enable GeoTag generators inside any post type on "
+"the your WordPress website."
+msgstr ""
+
+#: inc/filters/settings.php:385
+msgid "Enable Geo Tag In"
+msgstr ""
+
+#: inc/filters/settings.php:395
+msgid "Special Settings"
+msgstr "Специјална подешавања"
+
+#: inc/filters/settings.php:396
+msgid ""
+"Special plugin settings that, in some cases, need to be changed to make some "
+"plugin systems to work properly. Many of these settings depends of your "
+"server."
+msgstr ""
+
+#: inc/filters/settings.php:400
+msgid "Set HTTP API timeout in seconds"
+msgstr ""
+
+#: inc/filters/settings.php:402
+msgid "Set maximum time the request is allowed to take."
+msgstr ""
+
+#: inc/filters/settings.php:415
+msgid "E-mail Notification Settings"
+msgstr ""
+
+#: inc/filters/settings.php:417
+msgid ""
+"CF Geo Plugin sends notifications in 3 cases: 1) When you reach less than 50 "
+"lookups, 2) When the lookup expires, 3) When the license expires."
+msgstr ""
+
+#: inc/filters/settings.php:419
+#, php-format
+msgid ""
+"This option is very important and cannot be turned off via these settings. "
+"But if you want to turn off this notifications, %s."
+msgstr ""
+
+#: inc/filters/settings.php:420
+msgid "read this documentation"
+msgstr ""
+
+#: inc/filters/settings.php:426
+msgid "Who receives notifications?"
+msgstr ""
+
+#: inc/filters/settings.php:427
+msgid "Select who receives notifications."
+msgstr ""
+
+#: inc/filters/settings.php:430
+msgid "All administrators on this site"
+msgstr ""
+
+#: inc/filters/settings.php:431
+msgid "All email addresses from the list below"
+msgstr ""
+
+#: inc/filters/settings.php:437
+msgid "Recipient Emails"
+msgstr ""
+
+#: inc/filters/settings.php:439
+msgid "You can always add multiple email addresses separated by comma."
+msgstr ""
+
+#: inc/filters/settings.php:452
+msgid "BETA Testing & Advanced Features"
+msgstr ""
+
+#: inc/filters/settings.php:453
+msgid ""
+"Here you can enable BETA functionality and test it. In many cases, normally "
+"you should not have any problems but some functionality is new and "
+"experimental that means if any conflict happens, you must be aware of this. "
+"If many users find this functionality useful we may keep this functionality "
+"and include it as standard functionality of CF Geo Plugin."
+msgstr ""
+
+#: inc/filters/settings.php:457
+msgid "Enable BETA Features"
+msgstr ""
+
+#: inc/filters/settings.php:458
+msgid "This enable/disable all BETA functionality by default."
+msgstr ""
+
+#: inc/filters/settings.php:468
+msgid "Enable Simple Shortcodes"
+msgstr ""
+
+#: inc/filters/settings.php:469
+msgid "This allow you to use additional simple shortcode formats."
+msgstr ""
+
+#: inc/filters/settings.php:495
+msgid "Proxy Settings"
+msgstr ""
+
+#: inc/filters/settings.php:498
+#, php-format
+msgid ""
+"Some servers do not share real IP because of security reasons or IP is "
+"blocked from geolocation. Using proxy you can bypass that protocol and "
+"enable geoplugin to work properly. Also, this option on individual servers "
+"can cause inaccurate geo information, and because of that this option is "
+"disabled by default. You need to test this option on your side and use wise. "
+"Need proxy service? %s."
+msgstr ""
+
+#: inc/filters/settings.php:499
+msgid "We have Recommended Service For You"
+msgstr ""
+
+#: inc/filters/settings.php:501
+msgid ""
+"This is usually good if you use some Onion domain or you are a general user "
+"of the private web and all your websites are in the private networks."
+msgstr ""
+
+#: inc/filters/settings.php:506
+msgid "Enable Proxy"
+msgstr ""
+
+#: inc/filters/settings.php:520
+msgid "Proxy IP/Host"
+msgstr ""
+
+#: inc/filters/settings.php:532
+msgid "Proxy Port"
+msgstr ""
+
+#: inc/filters/settings.php:546
+msgid "Proxy Username"
+msgstr ""
+
+#: inc/filters/settings.php:558
+msgid "Proxy Password"
+msgstr ""
+
+#: inc/filters/settings.php:598
+msgid "Google Map Settings"
+msgstr "Подешавања Гугл мапе"
+
+#: inc/filters/settings.php:599
+msgid "This settings is for Google Map API services."
+msgstr ""
+
+#: inc/filters/settings.php:603
+msgid "Google Map API Key"
+msgstr ""
+
+#: inc/filters/settings.php:605
+msgid ""
+"In some countries Google Maps JavaScript API applications require "
+"authentication."
+msgstr ""
+
+#: inc/filters/settings.php:613
+msgid "Default Latitude"
+msgstr "Подразумевана Латитуде"
+
+#: inc/filters/settings.php:615 inc/filters/settings.php:626
+msgid "Leave blank for CF Geo Plugin default support or place custom value."
+msgstr ""
+
+#: inc/filters/settings.php:624
+msgid "Default Longitude"
+msgstr "Дефаулт Лонгитуде"
+
+#: inc/filters/settings.php:635
+msgid "Default Map Width"
+msgstr ""
+
+#: inc/filters/settings.php:637 inc/filters/settings.php:648
+#, php-format
+msgid "Accept numeric value in percentage or pixels (% or px)."
+msgstr ""
+
+#: inc/filters/settings.php:646
+msgid "Default Map Height"
+msgstr ""
+
+#: inc/filters/settings.php:657
+msgid "Default Max Zoom"
+msgstr ""
+
+#: inc/filters/settings.php:659 inc/settings/google_map.php:70
+msgid "Most roadmap imagery is available from zoom levels 0 to 18."
+msgstr ""
+
+#: inc/filters/settings.php:665
+msgid "Zooming"
+msgstr ""
+
+#: inc/filters/settings.php:666
+msgid "If disabled, disables scrollwheel zooming on the map."
+msgstr ""
+
+#: inc/filters/settings.php:676
+msgid "Navigation"
+msgstr "Навигација"
+
+#: inc/filters/settings.php:677
+msgid ""
+"If disabled, disables navigation on the map. The initial enabled/disabled "
+"state of the Map type control."
+msgstr ""
+
+#: inc/filters/settings.php:687
+msgid "Map Type Control"
+msgstr ""
+
+#: inc/filters/settings.php:688 inc/settings/google_map.php:90
+msgid "The initial enabled/disabled state of the Map type control."
+msgstr ""
+
+#: inc/filters/settings.php:698
+msgid "Scale Control"
+msgstr ""
+
+#: inc/filters/settings.php:699
+msgid "The initial display options for the scale control."
+msgstr ""
+
+#: inc/filters/settings.php:709
+msgid "Draggable"
+msgstr "Draggable"
+
+#: inc/filters/settings.php:710
+msgid ""
+"If disabled, the object can be dragged across the map and the underlying "
+"feature will have its geometry updated."
+msgstr ""
+
+#: inc/filters/settings.php:720
+msgid "Info Box Max Width"
+msgstr ""
+
+#: inc/filters/settings.php:722
+msgid "Maximum width of info popup inside map (integer from 0 to 600)."
+msgstr ""
+
+#: inc/plugins/contact-form-7/contact-form-7.php:120
+#, php-format
+msgid ""
+"To use \"%s\" tag added by CF Geo Plugin, you need to define tag name and "
+"use it into your form. This tag will create hidden input field what will "
+"pickup geo information from the your visitor."
+msgstr ""
+
+#: inc/plugins/contact-form-7/contact-form-7.php:126 inc/settings/debug.php:92
+msgid "Name"
+msgstr "Име"
+
+#: inc/plugins/contact-form-7/contact-form-7.php:130
+msgid "Id attribute"
+msgstr ""
+
+#: inc/plugins/contact-form-7/contact-form-7.php:134
+msgid "Class attribute"
+msgstr ""
+
+#. translators: Insert shortcode tag into the page content
+#: inc/plugins/contact-form-7/contact-form-7.php:149
+msgid "Insert Tag"
+msgstr "Убаци ознаку"
+
+#: inc/plugins/woocommerce/woocommerce.php:251
+msgid "Currency conversion options"
+msgstr ""
+
+#: inc/plugins/woocommerce/woocommerce.php:252
+msgid "This controls WordPress Geo Plugin conversion system"
+msgstr ""
+
+#: inc/plugins/woocommerce/woocommerce.php:259
+msgid "Show original price only"
+msgstr ""
+
+#: inc/plugins/woocommerce/woocommerce.php:260
+msgid "Show converted price only"
+msgstr ""
+
+#: inc/plugins/woocommerce/woocommerce.php:261
+msgid "Show original and converted price"
+msgstr ""
+
+#: inc/plugins/woocommerce/woocommerce.php:262
+msgid "Show converted and original price"
+msgstr ""
+
+#: inc/plugins/woocommerce/woocommerce.php:268
+msgid "Convert to round price"
+msgstr ""
+
+#: inc/plugins/woocommerce/woocommerce.php:269
+msgid "Force all converted prices to be round number."
+msgstr ""
+
+#: inc/plugins/woocommerce/woocommerce.php:274
+#: inc/plugins/woocommerce/woocommerce.php:290
+#: inc/plugins/woocommerce/woocommerce.php:307
+#: inc/plugins/woocommerce/woocommerce.php:317
+msgid "These option is added by the WordPress Geo Plugin."
+msgstr ""
+
+#: inc/plugins/woocommerce/woocommerce.php:278
+msgid "Round price option"
+msgstr ""
+
+#: inc/plugins/woocommerce/woocommerce.php:279
+msgid "Set the round price to the desired increase."
+msgstr ""
+
+#: inc/plugins/woocommerce/woocommerce.php:286
+msgid "Round up"
+msgstr ""
+
+#: inc/plugins/woocommerce/woocommerce.php:287
+msgid "Round nearest"
+msgstr ""
+
+#: inc/plugins/woocommerce/woocommerce.php:288
+msgid "Round down"
+msgstr ""
+
+#: inc/plugins/woocommerce/woocommerce.php:294
+msgid "Currency converter adjust"
+msgstr ""
+
+#: inc/plugins/woocommerce/woocommerce.php:295
+msgid ""
+"Put the number in percent (%) to regulate the converted price. (This "
+"increase price by ##%)"
+msgstr ""
+
+#: inc/plugins/woocommerce/woocommerce.php:311
+msgid "Not convert in wp-admin"
+msgstr ""
+
+#: inc/plugins/woocommerce/woocommerce.php:312
+msgid "Remove conversion price from admin panel and show only original prices."
+msgstr ""
+
+#: inc/plugins/woocommerce/woocommerce.php:385
+msgid "Payments Control"
+msgstr ""
+
+#: inc/plugins/woocommerce/woocommerce.php:441
+#: inc/plugins/woocommerce/woocommerce.php:500
+#: inc/plugins/woocommerce/woocommerce.php:507
+msgid "CF Geo Plugin Payments Control"
+msgstr ""
+
+#: inc/plugins/woocommerce/woocommerce.php:441
+msgid ""
+"Configure payment methods for each country. Show or hide payment methods by "
+"country to prevent unwanted transactions."
+msgstr ""
+
+#: inc/plugins/woocommerce/woocommerce.php:443
+#, php-format
+msgid ""
+"This option is only enabled with the licensed version of the %s. You must "
+"use 1 year license or above."
+msgstr ""
+
+#: inc/plugins/woocommerce/woocommerce.php:456
+msgid "Choose desired method"
+msgstr ""
+
+#: inc/plugins/woocommerce/woocommerce.php:463
+msgid "Woocommerce Default"
+msgstr ""
+
+#: inc/plugins/woocommerce/woocommerce.php:464
+msgid "Enable only in selected countries"
+msgstr ""
+
+#: inc/plugins/woocommerce/woocommerce.php:465
+msgid "Disable only for selected countries"
+msgstr ""
+
+#: inc/plugins/woocommerce/woocommerce.php:471
+msgid "Select countries"
+msgstr ""
+
+#: inc/plugins/woocommerce/woocommerce.php:500
+msgid ""
+"Currently we are not able to show desired options. Please try again later."
+msgstr ""
+
+#: inc/plugins/woocommerce/woocommerce.php:507
+msgid "No enabled woocommerce payments yet."
+msgstr ""
+
+#: inc/settings/debug.php:15
+msgid "Debug"
+msgstr "Дебаговање"
+
+#: inc/settings/debug.php:31
+msgid "IP Lookup"
+msgstr ""
+
+#: inc/settings/debug.php:41
+msgid "Recived data"
+msgstr "Примлјенј податци"
+
+#: inc/settings/debug.php:42
+msgid "Sent data"
+msgstr "Послати податци"
+
+#: inc/settings/debug.php:43
+msgid "Server statistics"
+msgstr "Статистика сервера"
+
+#: inc/settings/debug.php:45
+msgid "Google map"
+msgstr "Гоогле Мапа"
+
+#: inc/settings/debug.php:47
+msgid "Debugger"
+msgstr "Откривање грешака"
+
+#: inc/settings/debug.php:51
+#, php-format
+msgid "Information that the CF Geo Plugin API ver.%s receives"
+msgstr ""
+
+#: inc/settings/debug.php:56 inc/settings/debug.php:77
+msgid "Return Field"
+msgstr ""
+
+#: inc/settings/debug.php:57 inc/settings/debug.php:78
+msgid "Return Value"
+msgstr ""
+
+#: inc/settings/debug.php:86
+msgid ""
+"This information are sent to CF Geo Plugin API. All of this informations "
+"(hostname, IP and timezone) are available for general public, world wide and "
+"we only use them for API purpose which helps plugin to determine the exact "
+"location of the visitors and prevent accidental collapse between the IP "
+"address. Your IP and email address is also a guarantee that you're not a "
+"robot or some spamming software."
+msgstr ""
+
+#: inc/settings/debug.php:87
+#, php-format
+msgid ""
+"If you are concerned about your private informations, please read the %s"
+msgstr ""
+
+#: inc/settings/debug.php:93 inc/settings/debug.php:159
+msgid "Value"
+msgstr "Вредност"
+
+#: inc/settings/debug.php:94 inc/settings/google_map.php:52
+#: inc/settings/google_map.php:108
+msgid "Info"
+msgstr "Информације"
+
+#: inc/settings/debug.php:99
+msgid "IP"
+msgstr "IP"
+
+#: inc/settings/debug.php:101
+msgid "Your or Visitor's IP Address"
+msgstr ""
+
+#: inc/settings/debug.php:104
+msgid "Timestamp"
+msgstr ""
+
+#: inc/settings/debug.php:106
+msgid "Server Current Unix Timestamp"
+msgstr ""
+
+#: inc/settings/debug.php:109
+msgid "SIP"
+msgstr ""
+
+#: inc/settings/debug.php:110
+msgid "Proxy Enabled"
+msgstr ""
+
+#: inc/settings/debug.php:111
+msgid "Server IP Address"
+msgstr ""
+
+#: inc/settings/debug.php:114
+msgid "Host"
+msgstr ""
+
+#: inc/settings/debug.php:118
+msgid "Server Host Name"
+msgstr ""
+
+#: inc/settings/debug.php:121
+msgid "Version"
+msgstr "Верзија"
+
+#: inc/settings/debug.php:123
+msgid "CF Geo Plugin Version"
+msgstr ""
+
+#: inc/settings/debug.php:126
+msgid "Email"
+msgstr "Е-пошта"
+
+#: inc/settings/debug.php:128
+msgid "Admin e-mail address."
+msgstr ""
+
+#: inc/settings/debug.php:128
+msgid ""
+"Only reason why we collect your email address is because plugin support and "
+"robot prevention. Your email address will NOT be spammed or shared with 3rd "
+"party in any case and you can any time request from us on email <a href="
+"\"mailto:support@cfgeoplugin.com\">support@cfgeoplugin.com</a> to remove "
+"your all personal data from our system by GDPR rules."
+msgstr ""
+
+#: inc/settings/debug.php:139
+msgid "CF Geo Plugin License Key"
+msgstr ""
+
+#: inc/settings/debug.php:142
+msgid "Lifetime"
+msgstr "Življenje"
+
+#: inc/settings/debug.php:144
+msgid "License Expire"
+msgstr "Лиценца истиче"
+
+#: inc/settings/debug.php:154
+msgid "Information of your WordPress installation, server and browser"
+msgstr ""
+
+#: inc/settings/debug.php:158
+msgid "Field"
+msgstr "Поље"
+
+#: inc/settings/debug.php:164
+msgid "Plugin ID"
+msgstr "Индентификација додатка"
+
+#: inc/settings/debug.php:168
+msgid "Plugin installed"
+msgstr ""
+
+#: inc/settings/debug.php:181
+msgid "Plugin updated"
+msgstr ""
+
+#: inc/settings/debug.php:193
+msgid "Site title"
+msgstr "Наслов сајта"
+
+#: inc/settings/debug.php:197
+msgid "Tagline"
+msgstr "Слоган"
+
+#: inc/settings/debug.php:201
+msgid "WordPress address (URL)"
+msgstr "WordPress адреса (URL)"
+
+#: inc/settings/debug.php:205
+msgid "WordPress host"
+msgstr ""
+
+#: inc/settings/debug.php:209
+msgid "WordPress multisite"
+msgstr "WordPress мулти сајт"
+
+#: inc/settings/debug.php:210
+msgid "Enabled"
+msgstr "Омогућено"
+
+#: inc/settings/debug.php:210
+msgid "Disabled"
+msgstr "Онемогућено"
+
+#: inc/settings/debug.php:213
+msgid "Admin email"
+msgstr "Е-маил администратора"
+
+#: inc/settings/debug.php:217
+msgid "Encoding for pages and feeds"
+msgstr "Енкодирање за странице и храниоце (feeds)"
+
+#: inc/settings/debug.php:221
+msgid "WordPress version"
+msgstr "WordPress верзија"
+
+#: inc/settings/debug.php:225
+msgid "Content-Type"
+msgstr "Тип садржаја"
+
+#: inc/settings/debug.php:229
+msgid "Language"
+msgstr "Језик"
+
+#: inc/settings/debug.php:233
+msgid "Server time"
+msgstr "Време сервера"
+
+#: inc/settings/debug.php:237
+msgid "WordPress directory path"
+msgstr "Путања WordPress директоријума"
+
+#: inc/settings/debug.php:241
+msgid "PHP version"
+msgstr "PHP верзија"
+
+#: inc/settings/debug.php:245
+msgid "PHP version ID"
+msgstr "Индентификатор PHP верзије"
+
+#: inc/settings/debug.php:249
+msgid "PHP architecture"
+msgstr "PHP архитектура"
+
+#: inc/settings/debug.php:250 inc/settings/debug.php:254
+#, php-format
+msgid "%dbit"
+msgstr ""
+
+#: inc/settings/debug.php:253
+msgid "Operting system"
+msgstr "Оперативни систем"
+
+#: inc/settings/debug.php:257
+msgid "User agent"
+msgstr "Кориснички агент"
+
+#: inc/settings/debug.php:261
+msgid "WordPress debug"
+msgstr "WordPress отклањање грешака"
+
+#: inc/settings/debug.php:262
+msgid "On"
+msgstr "Укључено"
+
+#: inc/settings/debug.php:262
+msgid "Off"
+msgstr "Угашено"
+
+#: inc/settings/debug.php:265
+msgid "Plugin directory path"
+msgstr "Путања директоријума додатака"
+
+#: inc/settings/debug.php:269
+msgid "Session API expire"
+msgstr ""
+
+#: inc/settings/debug.php:270
+#, php-format
+msgid "%d minutes"
+msgstr ""
+
+#: inc/settings/debug.php:273
+msgid "Local or live server"
+msgstr ""
+
+#: inc/settings/debug.php:274
+msgid "Local server"
+msgstr ""
+
+#: inc/settings/debug.php:274
+msgid "Live server"
+msgstr ""
+
+#: inc/settings/defender.php:54
+msgid "There is an error. Settings not saved."
+msgstr ""
+
+#: inc/settings/defender.php:83
+msgid "Anti Spam Protection & Site Restriction"
+msgstr ""
+
+#: inc/settings/defender.php:99
+msgid "General Defender Settings"
+msgstr ""
+
+#: inc/settings/defender.php:100
+msgid "Defender page"
+msgstr ""
+
+#: inc/settings/defender.php:101 inc/settings/google_map.php:28
+msgid "Preview"
+msgstr "Pregledaj"
+
+#: inc/settings/defender.php:105
+msgid ""
+"With Anti Spam Protection you can block the access from the specific IP, "
+"country, state and city to your site. Names of countries, states, regions or "
+"cities are not case sensitive, but the name must be entered correctly (in "
+"English) to get this feature work correctly. This feature is very safe and "
+"does not affect SEO."
+msgstr ""
+
+#: inc/settings/defender.php:109
+msgid "IP Restriction"
+msgstr ""
+
+#: inc/settings/defender.php:110
+msgid "Country Restriction"
+msgstr ""
+
+#: inc/settings/defender.php:111
+msgid "Region Restriction"
+msgstr ""
+
+#: inc/settings/defender.php:112
+msgid "City Restriction"
+msgstr ""
+
+#: inc/settings/defender.php:116
+msgid "IP address separated by comma"
+msgstr ""
+
+#: inc/settings/defender.php:134 inc/settings/defender.php:152
+#: inc/settings/defender.php:170
+msgid "Select/Deselect all"
+msgstr ""
+
+#: inc/settings/defender.php:139
+msgid "Choose Region"
+msgstr "Izaberite regiju"
+
+#: inc/settings/defender.php:176
+#, php-format
+msgid ""
+"Automatic IP Address Blacklist Check is enabled. All of these IPs are from a "
+"safe source and most of them are bots and crawlers. Blacklisted IPs will be "
+"automatically recognized and blocked. If you don't want this kind of "
+"protection %s."
+msgstr ""
+
+#: inc/settings/defender.php:178
+msgid "disable it in plugin settings"
+msgstr ""
+
+#: inc/settings/defender.php:181
+#, php-format
+msgid ""
+"Automatic IP address blacklist check is NOT ENABLED. If you want additional "
+"protection %s."
+msgstr ""
+
+#: inc/settings/defender.php:183
+msgid "enable it in settings"
+msgstr ""
+
+#: inc/settings/defender.php:187
+msgid ""
+"These options will remove all your content, template, design and display "
+"custom messages to your visitors."
+msgstr ""
+
+#: inc/settings/defender.php:192
+msgid "Message that is displayed to a blocked visitor (HTML allowed)"
+msgstr ""
+
+#: inc/settings/google_map.php:26
+msgid "Property List"
+msgstr ""
+
+#: inc/settings/google_map.php:27
+msgid "Info & Examples"
+msgstr "Информације и примери"
+
+#: inc/settings/google_map.php:35
+msgid ""
+"Google Maps is a desktop web mapping service developed by Google. It offers "
+"satellite imagery, street maps, 360° panoramic views of streets (Street "
+"View), real-time traffic conditions (Google Traffic), and route planning for "
+"traveling by foot, car, bicycle (in beta), or public transportation."
+msgstr ""
+
+#: inc/settings/google_map.php:37
+#, php-format
+msgid ""
+"CF GeoPlugin allows you to place google maps easily in your WordPress blog "
+"using simple shortcode %s."
+msgstr ""
+
+#: inc/settings/google_map.php:44
+#, php-format
+msgid "In the list below are all settings for the %s shortcode."
+msgstr ""
+
+#: inc/settings/google_map.php:51 inc/settings/google_map.php:107
+msgid "Shortcode settings"
+msgstr ""
+
+#: inc/settings/google_map.php:58
+msgid "String"
+msgstr "Стринг"
+
+#: inc/settings/google_map.php:58
+msgid "Mouse hover title"
+msgstr ""
+
+#: inc/settings/google_map.php:62 inc/settings/google_map.php:66
+msgid "Number"
+msgstr "Број"
+
+#: inc/settings/google_map.php:62
+#, php-format
+msgid ""
+"Latitude is an angle (defined below) which ranges from 0° at the Equator to "
+"90° (North or South) at the poles.%s"
+msgstr ""
+
+#: inc/settings/google_map.php:62
+msgid "By default is pointed to visitors city or address automatically."
+msgstr ""
+
+#: inc/settings/google_map.php:66
+msgid ""
+"Longitude (shown as a vertical line) is the angular distance, in degrees, "
+"minutes, and seconds, of a point east or west of the Prime (Greenwich) "
+"Meridian."
+msgstr ""
+
+#: inc/settings/google_map.php:66
+msgid "By default is pointed to visitors city or address automatically"
+msgstr ""
+
+#: inc/settings/google_map.php:70
+msgid "Integer"
+msgstr ""
+
+#: inc/settings/google_map.php:70 inc/settings/google_map.php:74
+#: inc/settings/google_map.php:78 inc/settings/google_map.php:82
+#: inc/settings/google_map.php:86 inc/settings/google_map.php:90
+#: inc/settings/google_map.php:94 inc/settings/google_map.php:98
+#: inc/settings/google_map.php:102
+msgid "Default is"
+msgstr ""
+
+#: inc/settings/google_map.php:74 inc/settings/google_map.php:78
+#, php-format
+msgid "Accept numeric value in percentage or pixels (% or px)"
+msgstr ""
+
+#: inc/settings/google_map.php:74
+msgid "Width of your map."
+msgstr ""
+
+#: inc/settings/google_map.php:78
+msgid "Height of your map."
+msgstr ""
+
+#: inc/settings/google_map.php:82 inc/settings/google_map.php:86
+#: inc/settings/google_map.php:90 inc/settings/google_map.php:94
+#: inc/settings/google_map.php:98
+msgid "Integer 1 or 0"
+msgstr "Цели број 1 или 0"
+
+#: inc/settings/google_map.php:82 inc/settings/google_map.php:86
+#: inc/settings/google_map.php:98
+msgid "If"
+msgstr "Ако"
+
+#: inc/settings/google_map.php:82
+msgid "disables scrollwheel zooming on the map."
+msgstr ""
+
+#: inc/settings/google_map.php:86
+msgid ""
+"disables navigation on the map. The initial enabled/disabled state of the "
+"Map type control."
+msgstr ""
+
+#: inc/settings/google_map.php:94
+msgid "The initial display options for the Scale control."
+msgstr ""
+
+#: inc/settings/google_map.php:98
+msgid ""
+"the object can be dragged across the map and the underlying feature will "
+"have its geometry updated."
+msgstr ""
+
+#: inc/settings/google_map.php:102
+msgid "Integer from 0 to 600"
+msgstr ""
+
+#: inc/settings/google_map.php:102
+msgid "Maximum width of info popup inside map."
+msgstr ""
+
+#: inc/settings/google_map.php:118
+msgid "Usage, additional attributes and settings"
+msgstr ""
+
+#: inc/settings/google_map.php:123
+#, php-format
+msgid ""
+"If you want to place a simple google map in your post or page, you just need "
+"to place a shortcode like this: %s - what will show place on Google map by "
+"visitors location."
+msgstr ""
+
+#: inc/settings/google_map.php:126
+#, php-format
+msgid ""
+"If you want to display your own company street address inside Google map, "
+"you can do that by adding optional attributes %s like on example: %s - what "
+"will show your company on Google map."
+msgstr ""
+
+#: inc/settings/google_map.php:130 inc/settings/google_map.php:132
+msgid "My Company Name"
+msgstr ""
+
+#: inc/settings/google_map.php:134
+msgid "We have what you need"
+msgstr ""
+
+#: inc/settings/google_map.php:138
+#, php-format
+msgid "If you want to use HTML inside map and display info bar: <br><br>%s"
+msgstr ""
+
+#: inc/settings/license.php:10
+msgid "Select the desired license and activate the plugin"
+msgstr ""
+
+#: inc/settings/main_page.php:16
+msgid "CF Geo Plugin"
+msgstr ""
+
+#: inc/settings/main_page.php:35
+msgid "Simple Shortcodes"
+msgstr "Једноставан кратки код"
+
+#: inc/settings/main_page.php:37
+msgid "Tags"
+msgstr "Ознаке"
+
+#: inc/settings/main_page.php:42 inc/settings/main_page.php:79
+msgid ""
+"These are short codes available for use in places where short codes can be "
+"executed."
+msgstr ""
+
+#: inc/settings/main_page.php:42 inc/settings/main_page.php:79
+#, php-format
+msgid "The use and functionality of these short codes are described in our %s."
+msgstr ""
+
+#: inc/settings/main_page.php:42 inc/settings/main_page.php:79
+msgid "documentation"
+msgstr ""
+
+#: inc/settings/main_page.php:48 inc/settings/main_page.php:71
+#: inc/settings/main_page.php:86 inc/settings/main_page.php:105
+#: inc/settings/main_page.php:119 inc/settings/main_page.php:135
+msgid "Return"
+msgstr "Вратите се на Dev4Press инсталацију"
+
+#: inc/settings/main_page.php:80
+msgid ""
+"These shortcodes only have the purpose to return available geo-information. "
+"You can't include, exclude or add default values. Just display geodata "
+"following with appropriate shortcodes."
+msgstr ""
+
+#: inc/settings/main_page.php:113
+msgid ""
+"These special tags are intended for quick insertion of geo information into "
+"pages and posts. These tags allow the use of geo information in the titles & "
+"content of pages, categories and other taxonomy. It can also be used in "
+"widgets, various page builders and supports several SEO plugins like Yoast, "
+"All in One Seo Pack, SEO Framework and WordPress SEO Plugin by Rank Math."
+msgstr ""
+
+#: inc/settings/sidebar.php:33
+msgid "Statistic"
+msgstr ""
+
+#: inc/settings/sidebar.php:38 inc/settings/sidebar.php:63
+msgid "ERROR!"
+msgstr ""
+
+#: inc/settings/sidebar.php:39
+msgid "API no longer supports this version of CF Geo Plugin"
+msgstr ""
+
+#: inc/settings/sidebar.php:41
+msgid "NOT VALID!"
+msgstr ""
+
+#: inc/settings/sidebar.php:42
+msgid "Your IP address is not valid or is in the private range."
+msgstr ""
+
+#: inc/settings/sidebar.php:44
+msgid "BANNED!"
+msgstr ""
+
+#: inc/settings/sidebar.php:45
+msgid "Your domain is banned!"
+msgstr ""
+
+#: inc/settings/sidebar.php:47
+msgid "API is limited"
+msgstr ""
+
+#: inc/settings/sidebar.php:48
+msgid "No Information"
+msgstr ""
+
+#: inc/settings/sidebar.php:50
+msgid "DISABLED!"
+msgstr "ОНЕМОГУЋЕНО!"
+
+#: inc/settings/sidebar.php:51
+msgid "The API key is disabled because of unauthorized use!"
+msgstr ""
+
+#: inc/settings/sidebar.php:64
+msgid "There was an error communicating with the server."
+msgstr ""
+
+#: inc/settings/sidebar.php:71
+msgid "Congratulations, you have an unlimited lookup that you can use until:"
+msgstr ""
+
+#: inc/settings/sidebar.php:73
+msgid "Congratulations, your license has provided you with a lifetime lookup."
+msgstr ""
+
+#: inc/settings/sidebar.php:76
+#, php-format
+msgid "You currently spent %1$d lookup of the %2$d lookup available."
+msgstr ""
+
+#: inc/settings/sidebar.php:78
+msgid ""
+"Your lookup expires soon, the site may be left without important "
+"functionality."
+msgstr ""
+
+#: inc/settings/sidebar.php:81
+msgid "You spent the entire lookup. It will be available again the next day."
+msgstr ""
+
+#: inc/settings/sidebar.php:84
+#, php-format
+msgid "If you want to have an %1$s, you need to %2$s."
+msgstr ""
+
+#: inc/settings/sidebar.php:85
+msgid "unlimited lookup"
+msgstr ""
+
+#: inc/settings/sidebar.php:86
+msgid "activate the license"
+msgstr ""
+
+#: inc/settings/sidebar.php:92
+msgid "Lookup not available."
+msgstr ""
+
+#: inc/settings/sidebar.php:96
+msgid "Quality"
+msgstr "Квалитет"
+
+#: inc/settings/sidebar.php:111
+msgid "Exellent"
+msgstr "ОДЛИЧАН!"
+
+#: inc/settings/sidebar.php:114
+msgid "Perfect"
+msgstr "Perfektno"
+
+#: inc/settings/sidebar.php:117
+msgid "Good"
+msgstr "Dobro"
+
+#: inc/settings/sidebar.php:120
+msgid "Week"
+msgstr "Недеља"
+
+#: inc/settings/sidebar.php:123
+msgid "Bad"
+msgstr "Лоше"
+
+#: inc/settings/sidebar.php:135
+msgid "UNLIMITED"
+msgstr "НЕОГРАНИЧЕНО"
+
+#: inc/settings/sidebar.php:138
+msgid "EXPIRED"
+msgstr "Istekle"
+
+#: inc/settings/sidebar.php:141 inc/settings/sidebar.php:144
+#: inc/settings/sidebar.php:147
+msgid "Available"
+msgstr "Dostupno"
+
+#: inc/widgets/Currency_Converter.php:23
+msgid "Currency Converter"
+msgstr ""
+
+#: inc/widgets/Currency_Converter.php:24
+msgid "Convert any currency."
+msgstr ""
+
+#. Plugin Name of the plugin/theme
+msgid "WordPress Geo Plugin"
+msgstr ""
+
+#. Plugin URI of the plugin/theme
+msgid "https://cfgeoplugin.com/"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid ""
+"Create Dynamic Content, Banners and Images on Your Website Based On Visitor "
+"Geo Location By Using Shortcodes With CF Geo Plugin."
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "INFINITUM FORM"
+msgstr "INFINITUM FORM"
+
+#. Author URI of the plugin/theme
+msgid "https://infinitumform.com/"
+msgstr "https://infinitumform.com/"

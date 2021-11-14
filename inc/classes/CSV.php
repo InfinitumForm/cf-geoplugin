@@ -14,7 +14,7 @@ if ( ! defined( 'WPINC' ) ) { die( "Don't mess with us." ); }
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
 if(!class_exists('CFGP_Encoding')) {
-	include_once CFGP_INC . '/Encoding.php';
+	include_once CFGP_CLASS . '/Encoding.php';
 }
  
 if(!class_exists('CFGP_CSV')) :
@@ -155,6 +155,10 @@ class CFGP_CSV{
 			if($str != 0 && empty($str))
 			{
 				return NULL;
+			}
+			else if (filter_var($str, FILTER_VALIDATE_URL) !== false)
+			{
+				return esc_url($str);
 			}
 			else if(preg_match('/([0-9a-z-_.]+@[0-9a-z-_.]+.[a-z]{2,8})/i', $str))
 			{
