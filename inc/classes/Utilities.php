@@ -66,12 +66,10 @@ class CFGP_U {
 		// If function is called
 		if($user_id_or_email)
 		{
-			if(is_numeric($user_id_or_email) && $user = get_user_by('ID', absint($user_id_or_email)))
-			{
+			if(is_numeric($user_id_or_email) && $user = get_user_by('ID', absint($user_id_or_email))) {
 				self::$user = $user;
 			}
-			else if (!filter_var($user_id_or_email, FILTER_VALIDATE_EMAIL) && $user = get_user_by('email', $user_id_or_email))
-			{
+			else if (!filter_var($user_id_or_email, FILTER_VALIDATE_EMAIL) && $user = get_user_by('email', $user_id_or_email)) {
 				self::$user = $user;
 			}
 		}
@@ -83,23 +81,19 @@ class CFGP_U {
 			{
 				global $current_user;
 				
-				if($current_user && $user = get_user_by('ID', $current_user->ID))
-				{
+				if($current_user && $user = get_user_by('ID', $current_user->ID)) {
 					self::$user = $user;
 				}
-				else if($author_id = get_query_var( 'author' ))
-				{
+				else if($author_id = get_query_var( 'author' )) {
 					self::$user = get_user_by( 'id', $author_id );
 				}
-				else if($author_name = get_query_var( 'author_name' ))
-				{
+				else if($author_name = get_query_var( 'author_name' )) {
 					self::$user = get_user_by( 'slug', $author_name );
 				}
 			}
 			else if(is_user_logged_in())
 			{
-				if($user = wp_get_current_user())
-				{
+				if($user = wp_get_current_user()) {
 					self::$user = $user;
 				}
 			}
@@ -121,8 +115,7 @@ class CFGP_U {
 			return $cache;
 		}
 		
-		if( empty( $headers ) )
-		{
+		if( empty( $headers ) ) {
 			$headers = array( 'Accept: application/json' );
 		}
 
@@ -159,8 +152,7 @@ class CFGP_U {
 		if( !is_wp_error( $request ) )
 		{
 			$output = wp_remote_retrieve_body( $request );
-			if( is_wp_error( $output ) || empty( $output ) )
-			{
+			if( is_wp_error( $output ) || empty( $output ) ) {
 				$output = false;
 			}
 		}
@@ -174,9 +166,13 @@ class CFGP_U {
 			}
 		}
 		
-		if( empty( $output ) ) return false;
+		if( empty( $output ) ) {
+			return false;
+		}
 
-		if($json !== false) $output = json_decode($output, true);
+		if($json !== false) {
+			$output = json_decode($output, true);
+		}
 		
 		CFGP_Cache::set($cache_name, $output);
 		
@@ -196,8 +192,7 @@ class CFGP_U {
 			return $cache;
 		}
 		
-		if( empty( $headers ) )
-		{
+		if( empty( $headers ) ) {
 			$headers = array( 'Accept: application/json' );
 		}
 
@@ -236,8 +231,7 @@ class CFGP_U {
 		if( !is_wp_error( $request ) )
 		{
 			$output = wp_remote_retrieve_body( $request );
-			if( is_wp_error( $output ) || empty( $output ) )
-			{
+			if( is_wp_error( $output ) || empty( $output ) ) {
 				$output = false;
 			}
 		}
@@ -251,9 +245,13 @@ class CFGP_U {
 			}
 		}
 		
-		if( empty( $output ) ) return false;
+		if( empty( $output ) ) {
+			return false;
+		}
 
-		if($json !== false) $output = json_decode($output, true);
+		if($json !== false) {
+			$output = json_decode($output, true);
+		}
 		
 		CFGP_Cache::set($cache_name, $output);
 		
@@ -296,10 +294,11 @@ class CFGP_U {
 	public static function generate_token(int $length=16){
 		if(function_exists('openssl_random_pseudo_bytes') || function_exists('random_bytes'))
 		{
-			if (version_compare(PHP_VERSION, '7.0.0', '>='))
+			if (version_compare(PHP_VERSION, '7.0.0', '>=')) {
 				return substr(str_rot13(bin2hex(random_bytes(ceil($length * 2)))), 0, $length);
-			else
+			} else {
 				return substr(str_rot13(bin2hex(openssl_random_pseudo_bytes(ceil($length * 2)))), 0, $length);
+			}
 		}
 		else
 		{
@@ -316,7 +315,9 @@ class CFGP_U {
 		
 		$cache_name = CFGP_NAME . '-plugin_info-' . md5(serialize($fields) . ($slug!==false ? $slug : CFGP_NAME));
 		
-		if($cache = CFGP_Cache::get($cache_name)) return $cache;
+		if($cache = CFGP_Cache::get($cache_name)) {
+			return $cache;
+		}
 		
         if ( is_admin() ) {
 			if ( ! function_exists( 'plugins_api' ) ) {
@@ -534,10 +535,11 @@ class CFGP_U {
 	 **/
 	public static function get_host($clean=false){
 		$hostInfo = self::parse_url();
-		if($clean)
+		if($clean) {
 			return preg_replace('/https?:\/\/|w{3}\./i','',strtolower($hostInfo['domain']));
-		else
+		} else {
 			return strtolower($hostInfo['domain']);
+		}
 	}
 	
 	/**
@@ -839,7 +841,6 @@ class CFGP_U {
 		{
 			return (preg_match('/rambler|abacho|ac(oi|cona)|aspseek|al(tavista|exa)|estyle|scrubby|lycos|geona|ia_archiver|sogou|facebook|duckduck(bot|go)?|twitter|pinterest|linkedin|skype|naver|bing(bot)?|google|ya(hoo|ndex)|baidu(spider)?|teoma|xing|java\/1\.7\.0_45|crawl|slurp|spider|mediapartners|\sbot\s|\sask\s|\saol\s/i', $_SERVER['HTTP_USER_AGENT']) ? true : false);
 		}
-		
 		return false;
 	}
 	
@@ -879,7 +880,6 @@ class CFGP_U {
 				return array_merge($keys, array($key));
 			}
 		}
-
 		return array();
 	}
 	
@@ -903,7 +903,6 @@ class CFGP_U {
 				return $parent;
 			}
 		}
-	
 		return false;
 	}
 	
@@ -958,15 +957,18 @@ class CFGP_U {
 			{
 				if(is_numeric($key))
 				{
-					if($val === $find) return true;
+					if($val === $find) {
+						return true;
+					}
 				}
 				else
 				{
-					if($key === $find) return true;
+					if($key === $find) {
+						return true;
+					}
 				}
 			}
 		}
-		
 		return false;
 	}
 	
@@ -1385,11 +1387,15 @@ class CFGP_U {
 		if( is_array( $city ) )
 		{
 			$city = array_map( 'strtolower', $city );
-			if( isset( $city[0] ) && !empty( $city[0] ) && in_array( sanitize_title(self::api('city')), $city, true ) ) return true;
+			if( isset( $city[0] ) && !empty( $city[0] ) && in_array( sanitize_title(self::api('city')), $city, true ) ) {
+				return true;
+			}
 		}
 		elseif( is_string( $city ) )
 		{
-			if( !empty( $city ) && strtolower( $city ) === strtolower(sanitize_title(self::api('city'))) ) return true;
+			if( !empty( $city ) && strtolower( $city ) === strtolower(sanitize_title(self::api('city'))) ) {
+				return true;
+			}
 		}
 
 		return false;
@@ -1406,8 +1412,12 @@ class CFGP_U {
 			{
 				$region = array_map( 'strtolower', $region );
 				// Supports region code and region name
-				if(in_array( strtolower( self::api('region_code') ), $region, true ) ) return true; 
-				if(in_array( sanitize_title(self::api('region')), $region, true ) ) return true;
+				if(in_array( strtolower( self::api('region_code') ), $region, true ) ) {
+					return true;
+				}
+				if(in_array( sanitize_title(self::api('region')), $region, true ) ) {
+					return true;
+				}
 			}
 		}
 		elseif( is_string( $region ) )
@@ -1415,8 +1425,12 @@ class CFGP_U {
 			if( !empty( $region ) )
 			{
 				// Supports region code and region name
-				if( strtolower( $region ) === strtolower(self::api('region_code')) ) return true; 
-				if( strtolower( $region ) === strtolower(sanitize_title(self::api('region'))) ) return true;
+				if( strtolower( $region ) === strtolower(self::api('region_code')) ) {
+					return true;
+				}
+				if( strtolower( $region ) === strtolower(sanitize_title(self::api('region'))) ) {
+					return true;
+				}
 			}
 		}
 
@@ -1434,8 +1448,12 @@ class CFGP_U {
 			{
 				$country = array_map( 'strtolower', $country );
 				// Supports country code and name
-				if( in_array( strtolower(self::api('country_code')), $country, true ) ) return true;
-				if( in_array( sanitize_title(self::api('country')), $country, true ) ) return true;
+				if( in_array( strtolower(self::api('country_code')), $country, true ) ) {
+					return true;
+				}
+				if( in_array( sanitize_title(self::api('country')), $country, true ) ) {
+					return true;
+				}
 			}
 		}
 		elseif( is_string( $country ) )
@@ -1443,8 +1461,12 @@ class CFGP_U {
 			if( !empty( $country ) )
 			{
 				// Supports country code and name
-				if( strtolower( $country ) === strtolower(self::api('country_code')) ) return true;
-				if( strtolower( $country ) === strtolower(sanitize_title(self::api('country'))) ) return true;
+				if( strtolower( $country ) === strtolower(self::api('country_code')) ) {
+					return true;
+				}
+				if( strtolower( $country ) === strtolower(sanitize_title(self::api('country'))) ) {
+					return true;
+				}
 			}
 		}
 
@@ -1459,11 +1481,15 @@ class CFGP_U {
 		if( is_array( $postcode ) )
 		{
 			$postcode = array_map( 'strtolower', $postcode );
-			if( isset( $postcode[0] ) && !empty( $postcode[0] ) && in_array( sanitize_title( self::api('postcode')), $postcode, true ) ) return true;
+			if( isset( $postcode[0] ) && !empty( $postcode[0] ) && in_array(sanitize_title(self::api('postcode')), $postcode, true) ) {
+				return true;
+			}
 		}
 		elseif( is_string( $postcode ) )
 		{
-			if( !empty( $postcode ) && strtolower( $postcode ) === strtolower(sanitize_title(self::api('postcode'))) ) return true;
+			if( !empty( $postcode ) && strtolower( $postcode ) === strtolower(sanitize_title(self::api('postcode'))) ) {
+				return true;
+			}
 		}
 
 		return false;

@@ -37,7 +37,7 @@ if (!class_exists('CFGP_SEO_Table')):
 		public function get_bulk_actions() {
 
 			return array(
-				'delete' => __( 'Delete', 'your-textdomain' )
+				'delete' => __( 'Delete', CFGP_NAME )
 			);
 	
 		}
@@ -51,7 +51,7 @@ if (!class_exists('CFGP_SEO_Table')):
 				$action = 'bulk-' . $this->_args['plural'];
 	
 				if ( ! wp_verify_nonce( $nonce, $action ) )
-					wp_die( 'Nope! Security check failed!' );
+					wp_die( __( 'Nope! Security check failed!', CFGP_NAME ) );
 	
 			}
 	
@@ -63,15 +63,12 @@ if (!class_exists('CFGP_SEO_Table')):
 					$checkboxes = CFGP_U::request_array('seo_redirection');
 					if(!empty($checkboxes))
 					{
-						$checkboxes = array_map(function($id){
-							return "'{$id}'";
-						}, $checkboxes);
-						
-						$ids = join(',', $checkboxes);
+						$checkboxes = array_map('absint', $checkboxes);
 						
 						global $wpdb;
 						$table = $wpdb->get_blog_prefix() . CFGP_Defaults::TABLE['seo_redirection'];
-						$wpdb->query($query = "DELETE FROM `{$table}` WHERE `ID` IN ({$ids})");
+						$checkboxes_prepare = implode( ',', array_fill( 0, count( $checkboxes ), '%d' ) );
+						$wpdb->query( $wpdb->prepare($query = "DELETE FROM `{$table}` WHERE `{$table}`.`ID` IN ({$checkboxes_prepare})", $checkboxes) );
 					}
 					break;
 	
@@ -94,7 +91,7 @@ if (!class_exists('CFGP_SEO_Table')):
 			{
 				global $wpdb;
 				$seo_redirection_table = $wpdb->get_blog_prefix() . CFGP_Defaults::TABLE['seo_redirection'];
-				$query = $wpdb->query("SELECT 1 FROM {$seo_redirection_table}");
+				$query = $wpdb->query("SELECT 1 FROM `{$seo_redirection_table}` WHERE 1=1 LIMIT 1");
 				echo '<div class="alignleft actions bulkactions">';
 					printf('<a aria="button" href="%s" class="button"><i class="fa fa-upload"></i> %s</a> ', admin_url('admin.php?page='.CFGP_U::request_string('page').'&action=import&nonce='.wp_create_nonce(CFGP_NAME.'-seo-import-csv')), __('Import From CSV', CFGP_NAME));
 					
@@ -160,15 +157,29 @@ if (!class_exists('CFGP_SEO_Table')):
 				// get the default value if none is set
 				$perpage = $screen->get_option( 'per_page', 'default' );
 			}
-
+			
+			// Make it absolute integer
+			if( empty($perpage) ) {
+				$perpage = 0;
+			} else {
+				$perpage = (int)$perpage;
+			}
+			
             /* -- Preparing your query -- */
             $seo_redirection_table = $wpdb->get_blog_prefix() . CFGP_Defaults::TABLE['seo_redirection'];
-            $query = "SELECT * FROM {$seo_redirection_table}";
+            $query = "SELECT * FROM `{$seo_redirection_table}`";
 			
 			/* -- Search -- */
 			if($s = CFGP_U::request_string('s', '')){
 				$query.=$wpdb->prepare(
-					" WHERE (url LIKE %s OR country LIKE %s OR region LIKE %s OR city LIKE %s OR postcode LIKE %s OR http_code = %d) ",
+					" WHERE (
+						`{$seo_redirection_table}`.`url` LIKE %s 
+						OR `{$seo_redirection_table}`.`country` LIKE %s 
+						OR `{$seo_redirection_table}`.`region` LIKE %s 
+						OR `{$seo_redirection_table}`.`city` LIKE %s 
+						OR `{$seo_redirection_table}`.`postcode` LIKE %s 
+						OR `{$seo_redirection_table}`.`http_code` = %d
+					) ",
 					'%'.$s.'%',
 					'%'.$s.'%',
 					'%'.$s.'%',
@@ -184,8 +195,19 @@ if (!class_exists('CFGP_SEO_Table')):
             $order = CFGP_U::request_string('order', 'desc');
             if (!empty($orderby) & !empty($order))
             {
-				if(in_array(strtolower($order), array('asc', 'desc')) && in_array($orderby, array('ID', 'country', 'region', 'city', 'postcode', 'http_code', 'only_once'))){
-                	$query .= " ORDER BY `{$orderby}` {$order}";
+				if(
+					in_array(strtolower($order), array('asc', 'desc'))
+					&& in_array($orderby, array(
+						'ID',
+						'country',
+						'region',
+						'city',
+						'postcode',
+						'http_code',
+						'only_once'
+					))
+				){
+                	$query .= " ORDER BY `{$seo_redirection_table}`.`{$orderby}` {$order}";
 				}
             }
 
@@ -204,8 +226,8 @@ if (!class_exists('CFGP_SEO_Table')):
             //adjust the query to take pagination into account
             if (!empty($paged) && !empty($perpage))
             {
-                $offset = ($paged - 1) * $perpage;
-                $query .= ' LIMIT ' . (int)$offset . ',' . (int)$perpage;
+                $offset = (int)(($paged - 1) * $perpage);
+				$query .= " LIMIT {$offset},{$perpage}";
             }
             /* -- Register the pagination -- */
             $this->set_pagination_args(array(
@@ -250,7 +272,7 @@ if (!class_exists('CFGP_SEO_Table')):
                 foreach ($records as $rec)
                 {
                     //Open the line
-                    echo '<tr id="cfgp_seo_row_' . $rec->ID . '"'.($rec->active ? '' : ' class="cfgp-seo-table-row-inactive"').'>';
+                    echo '<tr id="cfgp_seo_row_' . (int)$rec->ID . '"'.($rec->active ? '' : ' class="cfgp-seo-table-row-inactive"').'>';
 					
                     
 					foreach ($columns as $column_name => $column_display_name)
@@ -258,9 +280,9 @@ if (!class_exists('CFGP_SEO_Table')):
 
                         //Style attributes for each col
 						if($column_name == 'cfgp_seo_url')
-                       	 	$class = "class='$column_name column-$column_name has-row-actions column-primary'";
+                       	 	$class = 'class="'.esc_attr($column_name).' column-'.esc_attr($column_name).' has-row-actions column-primary"';
 						else
-							$class = "class='$column_name column-$column_name'";
+							$class = 'class="'.esc_attr($column_name).' column-'.esc_attr($column_name).'"';
                         $style = ' style="';
 						if($column_name == 'cb'){
 							$style.=  'width:10%;';
@@ -270,16 +292,16 @@ if (!class_exists('CFGP_SEO_Table')):
                         $attributes = $class . $style;
 											
                         //edit link
-                        $edit_link = admin_url('admin.php?page='.CFGP_U::request_string('page').'&action=edit&id=' . (int)$rec->ID . '&nonce='.wp_create_nonce(CFGP_NAME.'-seo-edit'));
-						$delete_link = admin_url('admin.php?page='.CFGP_U::request_string('page').'&action=delete&id=' . (int)$rec->ID . '&nonce='.wp_create_nonce(CFGP_NAME.'-seo-delete'));
+                        $edit_link = admin_url('admin.php?page='.esc_attr(CFGP_U::request_string('page')).'&action=edit&id=' . (int)$rec->ID . '&nonce='.wp_create_nonce(CFGP_NAME.'-seo-edit'));
+						$delete_link = admin_url('admin.php?page='.esc_attr(CFGP_U::request_string('page')).'&action=delete&id=' . (int)$rec->ID . '&nonce='.wp_create_nonce(CFGP_NAME.'-seo-delete'));
 
                         //Display the cell
                         switch ($column_name)
                         {
                             case "cfgp_seo_url":
                                 echo '<td ' . $attributes . '>';
-									echo ($rec->active ? '' : '<sup>'.__('DISABLED', CFGP_NAME).'</sup> ').'<strong>'.$rec->url.'</strong>';
-									echo '<div class="row-actions"><span class="edit"><a href="'.$edit_link.'">'.__('Edit').'</a> | </span><span class="trash"><a href="'.$delete_link.'" class="submitdelete">'.__('Delete').'</a></span></div>';
+									echo ($rec->active ? '' : '<sup>'.__('DISABLED', CFGP_NAME).'</sup> ').'<strong>'.esc_url($rec->url).'</strong>';
+									echo '<div class="row-actions"><span class="edit"><a href="'.esc_url($edit_link).'">'.__('Edit', CFGP_NAME).'</a> | </span><span class="trash"><a href="'.esc_url($delete_link).'" class="submitdelete">'.__('Delete', CFGP_NAME).'</a></span></div>';
 								echo '</td>';
                             break;
 							case "cfgp_seo_country":
@@ -291,14 +313,14 @@ if (!class_exists('CFGP_SEO_Table')):
 										$country_code = ' (' . $data_countries[$rec->country] . ') ';
 									}
 								}
-								echo '<td ' . $attributes . '>' . ($rec->country ? $rec->country . $country_code : '-') . '</td>';
+								echo '<td ' . $attributes . '>' . esc_html($rec->country ? $rec->country . $country_code : '-') . '</td>';
                             break;
                             case "cfgp_seo_region":
 								$region_code = '';
 								if($term = get_term_by('name', $rec->region, 'cf-geoplugin-region')){
 									if(!empty($term->description)) $region_code = ' (' . $term->description . ') ';
 								}
-                                echo '<td ' . $attributes . '>' . ($rec->region ? $rec->region . $region_code : '-') . '</td>';
+                                echo '<td ' . $attributes . '>' . esc_html($rec->region ? $rec->region . $region_code : '-') . '</td>';
                             break;
                             case "cfgp_seo_city":
 								$city_code = '';
@@ -307,16 +329,16 @@ if (!class_exists('CFGP_SEO_Table')):
 									if(!empty($term->description)) $city_code = ' (' . $term->description . ') ';
 									$city_name = $term->name;
 								}
-                                echo '<td ' . $attributes . '>' . ($city_name ? $city_name.$city_code : '-') . '</td>';
+                                echo '<td ' . $attributes . '>' . esc_html($city_name ? $city_name.$city_code : '-') . '</td>';
                             break;
                             case "cfgp_seo_postcode":
-                                echo '<td ' . $attributes . '>' . ($rec->postcode ? get_term_by('name', $rec->postcode, 'cf-geoplugin-postcode')->name : '-') . '</td>';
+                                echo '<td ' . $attributes . '>' . esc_html($rec->postcode ? get_term_by('name', $rec->postcode, 'cf-geoplugin-postcode')->name : '-') . '</td>';
                             break;
 							case "cfgp_seo_http_code":
-                                echo '<td ' . $attributes . '>HTTP ' . $rec->http_code . '</td>';
+                                echo '<td ' . $attributes . '>HTTP ' . esc_html($rec->http_code) . '</td>';
                             break;
 							case "cfgp_seo_only_once":
-                                echo '<td ' . $attributes . '>' . ($rec->only_once ? __('Only once', CFGP_NAME) : __('Always', CFGP_NAME) ). '</td>';
+                                echo '<td ' . $attributes . '>' . esc_html($rec->only_once ? __('Only once', CFGP_NAME) : __('Always', CFGP_NAME) ). '</td>';
                             break;
 							case "cb":
 								echo '<th scope="row" class="check-column">' . sprintf(

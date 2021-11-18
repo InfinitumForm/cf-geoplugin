@@ -25,6 +25,10 @@ class CFGP_Help extends CFGP_Global {
 		if(method_exists($this, "screen_option__{$function}")){
 			$this->add_action('set-screen-option', "screen_option__{$function}", 10, 3);
 		}
+		
+		if(CFGP_U::request_string('post_type') == 'cf-geoplugin-banner') {
+			$this->add_action('current_screen', 'help__cf_geoplugin_banner');
+		}
 	}
 	
 	/*
@@ -32,6 +36,47 @@ class CFGP_Help extends CFGP_Global {
 	 */
 	public function screen_option__cf_geoplugin_seo_redirection($status, $option, $value) {
 		if ( 'cfgp_seo_redirection_num_rows' == $option ) return $value;
+	}
+	
+	/*
+	 * Geo Plugin help
+	 */
+	public function help__cf_geoplugin() {
+		ob_start(); ?>
+<ul>
+	<li><a href="https://cfgeoplugin.com/documentation/quick-start/how-to-use-cf-geoplugin" target="_blank"><?php _e('How to use CF Geo Plugin', CFGP_NAME); ?></a></li>
+	<li><a href="https://cfgeoplugin.com/documentation/quick-start/what-information-cf-geoplugin-returns" target="_blank"><?php _e('What Information CF Geo Plugin returns?', CFGP_NAME); ?></a></li>
+	<li><a href="https://cfgeoplugin.com/documentation/quick-start/cf-geoplugin-shortcodes" target="_blank"><?php _e('CF Geo Plugin Shortcodes', CFGP_NAME); ?></a></li>
+	<li><a href="https://cfgeoplugin.com/documentation/quick-start/cf-geo-plugin-tags" target="_blank"><?php _e('CF Geo Plugin Tags', CFGP_NAME); ?></a></li>
+	<li><a href="https://cfgeoplugin.com/documentation/quick-start/wordpress-geo-plugin-compatibility" target="_blank"><?php _e('CF Geo Plugin Compatibility', CFGP_NAME); ?></a></li>
+	<li><a href="https://cfgeoplugin.com/documentation/quick-start/what-do-i-get-from-unlimited-license" target="_blank"><?php _e('What do I get from Unlimited License', CFGP_NAME); ?></a></li>
+	<li><a href="https://cfgeoplugin.com/documentation/quick-start/frequently-asked-questions" target="_blank"><?php _e('Frequently Asked Questions', CFGP_NAME); ?></a></li>
+</ul>
+		<?php
+		$links = ob_get_clean();
+		get_current_screen()->add_help_tab( array(
+			'id'       => 'cfgp-plugin-usage',
+			'title'    => __( 'Documentation', CFGP_NAME ),
+			'content'  => '<h3>' . __( 'Documentation', CFGP_NAME) . '</h3>' . $links
+		));
+	}
+	
+	/*
+	 * Geo Banner help
+	 */
+	public function help__cf_geoplugin_banner() {
+		get_current_screen()->add_help_tab( array(
+			'id'       => 'cfgp-banner-usage',
+			'title'    => __( 'Geo Banner Usage', CFGP_NAME ),
+			'content'  => '
+				<h3>' . __( 'Geo Banner Usage', CFGP_NAME) . '</h3>
+				<p>' . __( 'Geo Banner allows you to place dynamic content, images, videos and pages using shortcodes for specfic audience target by geo location.', CFGP_NAME) . '</p>
+				<p>' . __( 'Geo Banner in its setting works as a standard page or post that allows easy and familiar use.', CFGP_NAME) . '</p>
+				<p>' . __( 'When you create your banner, whether text, image, HTML or video, you need to save and publish content to get an adequate shortcode.', CFGP_NAME) . '</p>
+				<p>' . __( 'You can place this shortcode into any page or post and when a visitor comes from the US, the content you defined will appear.', CFGP_NAME) . '</p>
+				<p>' . __( 'You can also define inside shortcode “default content” that is visible to all non-defined visitors by geo location. On this way you can always change the content of the entire site, depending on your visitors location.', CFGP_NAME) . '</p>
+			'
+		));
 	}
 	
 	/*

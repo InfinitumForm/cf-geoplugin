@@ -86,7 +86,7 @@ final class CFGP_Init{
 			CFGP_CLASS . '/SEO.php',					// SEO class
 			CFGP_CLASS . '/SEO_Redirection.php',		// SEO Redirection class
 			CFGP_CLASS . '/SEO_Redirection_Pages.php',	// SEO Redirection for pages class
-			CFGP_CLASS . '/SEO_Table.php',				// SEO Table class
+			CFGP_CLASS . '/SEO_Redirection_Table.php',	// SEO Table class
 			CFGP_CLASS . '/Settings.php',				// Settings class
 			CFGP_CLASS . '/Shortcodes.php',				// Shortcodes class
 			CFGP_CLASS . '/Defender.php',				// Defender class
@@ -118,10 +118,10 @@ final class CFGP_Init{
 	 */
 	public function textdomain() {
 		$locale = apply_filters( 'cfgp_plugin_locale', get_locale(), CFGP_NAME );
-		if ( $loaded = load_textdomain( CFGP_NAME, CFGP_ROOT . '/languages' . '/' . $locale . '.mo' ) ) {
+		if ( $loaded = load_textdomain( CFGP_NAME, CFGP_ROOT . '/languages/' . $locale . '.mo' ) ) {
 			return $loaded;
 		} else {
-			load_plugin_textdomain( CFGP_NAME, FALSE, CFGP_ROOT . '/languages' );
+			load_plugin_textdomain( CFGP_NAME, false, CFGP_ROOT . '/languages' );
 		}
 	}
 	
