@@ -37,6 +37,10 @@ if (!class_exists('CFGP_SEO_Table')):
 		public function get_bulk_actions() {
 
 			return array(
+				'enable' => __( 'Enable Redirection', CFGP_NAME ),
+				'disable' => __( 'Disable Redirection', CFGP_NAME ),
+				'only_once' => __( 'Redirect Only Once', CFGP_NAME ),
+				'always' => __( 'Always Redirect', CFGP_NAME ),
 				'delete' => __( 'Delete', CFGP_NAME )
 			);
 	
@@ -64,11 +68,47 @@ if (!class_exists('CFGP_SEO_Table')):
 					if(!empty($checkboxes))
 					{
 						$checkboxes = array_map('absint', $checkboxes);
-						
-						global $wpdb;
-						$table = $wpdb->get_blog_prefix() . CFGP_Defaults::TABLE['seo_redirection'];
-						$checkboxes_prepare = implode( ',', array_fill( 0, count( $checkboxes ), '%d' ) );
-						$wpdb->query( $wpdb->prepare($query = "DELETE FROM `{$table}` WHERE `{$table}`.`ID` IN ({$checkboxes_prepare})", $checkboxes) );
+						if($checkboxes = array_filter($checkboxes))
+						{						
+							global $wpdb;
+							$table = $wpdb->get_blog_prefix() . CFGP_Defaults::TABLE['seo_redirection'];
+							$checkboxes_prepare = implode( ',', array_fill( 0, count( $checkboxes ), '%d' ) );
+							$wpdb->query( $wpdb->prepare($query = "DELETE FROM `{$table}` WHERE `{$table}`.`ID` IN ({$checkboxes_prepare})", $checkboxes) );
+						}
+					}
+					break;
+					
+				case 'enable':
+				case 'disable':
+					$checkboxes = CFGP_U::request_array('seo_redirection');
+					if(!empty($checkboxes))
+					{
+						$checkboxes = array_map('absint', $checkboxes);
+						if($checkboxes = array_filter($checkboxes))
+						{
+							global $wpdb;
+							$table = $wpdb->get_blog_prefix() . CFGP_Defaults::TABLE['seo_redirection'];
+							$checkboxes_prepare = implode( ',', array_fill( 0, count( $checkboxes ), '%d' ) );
+							$enable_disable = ($action === 'enable' ? 1 : 0);
+							$wpdb->query( $wpdb->prepare($query = "UPDATE `{$table}` SET `active` = {$enable_disable} WHERE `{$table}`.`ID` IN ({$checkboxes_prepare})", $checkboxes) );
+						}
+					}
+					break;
+				
+				case 'only_once':
+				case 'always':
+					$checkboxes = CFGP_U::request_array('seo_redirection');
+					if(!empty($checkboxes))
+					{
+						$checkboxes = array_map('absint', $checkboxes);
+						if($checkboxes = array_filter($checkboxes))
+						{
+							global $wpdb;
+							$table = $wpdb->get_blog_prefix() . CFGP_Defaults::TABLE['seo_redirection'];
+							$checkboxes_prepare = implode( ',', array_fill( 0, count( $checkboxes ), '%d' ) );
+							$enable_disable = ($action === 'only_once' ? 1 : 0);
+							$wpdb->query( $wpdb->prepare($query = "UPDATE `{$table}` SET `only_once` = {$enable_disable} WHERE `{$table}`.`ID` IN ({$checkboxes_prepare})", $checkboxes) );
+						}
 					}
 					break;
 	
@@ -142,9 +182,9 @@ if (!class_exists('CFGP_SEO_Table')):
          */
         function prepare_items()
         {
-			$this->process_bulk_action();
             global $wpdb, $_wp_column_headers;
-			
+			// Set bulk actions
+			$this->process_bulk_action();
 			// get the current user ID
 			$user = get_current_user_id();
 			// get the current admin screen
@@ -301,7 +341,7 @@ if (!class_exists('CFGP_SEO_Table')):
                             case "cfgp_seo_url":
                                 echo '<td ' . $attributes . '>';
 									echo ($rec->active ? '' : '<sup>'.__('DISABLED', CFGP_NAME).'</sup> ').'<strong>'.esc_url($rec->url).'</strong>';
-									echo '<div class="row-actions"><span class="edit"><a href="'.esc_url($edit_link).'">'.__('Edit', CFGP_NAME).'</a> | </span><span class="trash"><a href="'.esc_url($delete_link).'" class="submitdelete">'.__('Delete', CFGP_NAME).'</a></span></div>';
+									echo '<div class="row-actions"><span class="edit"><a href="'.esc_url($edit_link).'">'.__('Edit', CFGP_NAME).'</a> | </span><span class="trash"><a href="'.esc_url($delete_link).'" class="submitdelete"  onclick="if (confirm(\''.esc_attr__('Are you sure you want to delete this redirection?', CFGP_NAME).'\')){return true;}else{event.stopPropagation(); event.preventDefault();};">'.__('Delete', CFGP_NAME).'</a></span></div>';
 								echo '</td>';
                             break;
 							case "cfgp_seo_country":

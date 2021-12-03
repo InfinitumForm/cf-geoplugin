@@ -117,7 +117,7 @@ class CFGP_API extends CFGP_Global {
 						'{M}' => get_bloginfo("admin_email"),
 						'{P}' => get_option('cf_geo_defender_api_key'), // we need to keep in track some old activation keys
 						'{CURRENCY}' => $base_currency,
-						'{REVERSE}' => (CFGP_Options::get('enable_dns_lookup') && CFGP_License::level() >= 1 ? '1' : '0')
+						'{REVERSE}' => (CFGP_Options::get('enable_dns_lookup') && CFGP_License::level() >= 1 ? 1 : 0)
 					);
 				
 					$url = str_replace(
@@ -282,11 +282,11 @@ class CFGP_API extends CFGP_Global {
 							'current_time' => date(get_option('time_format'), CFGP_TIME),
 							'current_date' => date(get_option('date_format'), CFGP_TIME),
 							'version' => CFGP_VERSION,
-							'is_proxy' => $return['proxy'] ? '1' : '0',
-							'is_vat' => $return['isVAT'] ? '1' : '0',
+							'is_proxy' => ( $return['proxy'] ? 1 : (CFGP_IP::is_proxy() ? 1 : 0) ),
+							'is_vat' => $return['isVAT'] ? 1 : 0,
 							'vat_rate'	=> $return['VATrate'],
-							'in_eu'	=> $return['inEU'] ? '1' : '0',
-							'gps'	=> $return['gps'] ? '1' : '0',
+							'in_eu'	=> $return['inEU'] ? 1 : 0,
+							'gps'	=> $return['gps'] ? 1 : 0,
 							'accuracy_radius' => $return['accuracy_radius'],
 							'runtime' => abs($return['runtime']),
 							'status' => $return['status'],

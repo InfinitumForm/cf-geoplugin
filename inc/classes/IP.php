@@ -142,6 +142,40 @@ class CFGP_IP extends CFGP_Global {
 				$ips = $ipf = $ipx = $ipMAX = NULL;
 			}
 		}
+		
+		// Let's ask server?
+		$external_servers = apply_filters('cfgp/ip/external_servers', array(
+			'https://api.ipify.org',
+			'https://smart-ip.net/myip',
+			'https://ident.me'
+		));
+		if(stristr(PHP_OS, 'WIN') !== false)
+		{
+			if(function_exists('shell_exec'))
+			{
+				foreach($external_servers as $server) {
+					$ip = shell_exec('powershell.exe -InputFormat none -ExecutionPolicy Unrestricted -NoProfile -Command "(Invoke-WebRequest '.$server.').Content.Trim()"');
+					if(self::filter($ip)!==false)
+					{
+						return CFGP_Cache::set('IP', $ip);
+					}
+				}
+			}
+		}
+		else
+		{
+			if(function_exists('shell_exec'))
+			{
+				foreach($external_servers as $server) {
+					$ip = shell_exec('curl '.$server.'##*( )');
+					if(self::filter($ip)!==false)
+					{
+						return CFGP_Cache::set('IP', $ip);
+					}
+				}
+			}
+		}
+		
 		// let's try the last thing, why not?
 		if( CFGP_U::is_connected() )
 		{
@@ -162,53 +196,6 @@ class CFGP_IP extends CFGP_Global {
 					{
 						return CFGP_Cache::set('IP', $ip);
 					}
-				}
-			}
-		}
-		// Let's ask server?
-		if(stristr(PHP_OS, 'WIN'))
-		{
-			if(function_exists('shell_exec'))
-			{
-				$ip = shell_exec('powershell.exe -InputFormat none -ExecutionPolicy Unrestricted -NoProfile -Command "(Invoke-WebRequest https://api.ipify.org).Content.Trim()"');
-				if(self::filter($ip)!==false)
-				{
-					return CFGP_Cache::set('IP', $ip);
-				}
-				
-				$ip = shell_exec('powershell.exe -InputFormat none -ExecutionPolicy Unrestricted -NoProfile -Command "(Invoke-WebRequest https://smart-ip.net/myip).Content.Trim()"');
-				if(self::filter($ip)!==false)
-				{
-					return CFGP_Cache::set('IP', $ip);
-				}
-				
-				$ip = shell_exec('powershell.exe -InputFormat none -ExecutionPolicy Unrestricted -NoProfile -Command "(Invoke-WebRequest https://ident.me).Content.Trim()"');
-				if(self::filter($ip)!==false)
-				{
-					return CFGP_Cache::set('IP', $ip);
-				}
-			}
-		}
-		else
-		{
-			if(function_exists('shell_exec'))
-			{
-				$ip = shell_exec('curl https://api.ipify.org##*( )');
-				if(self::filter($ip)!==false)
-				{
-					return CFGP_Cache::set('IP', $ip);
-				}
-				
-				$ip = shell_exec('curl https://smart-ip.net/myip##*( )');
-				if(self::filter($ip)!==false)
-				{
-					return CFGP_Cache::set('IP', $ip);
-				}
-				
-				$ip = shell_exec('curl https://ident.me##*( )');
-				if(self::filter($ip)!==false)
-				{
-					return CFGP_Cache::set('IP', $ip);
 				}
 			}
 		}
@@ -311,7 +298,7 @@ class CFGP_IP extends CFGP_Global {
 		$proxy = CFGP_U::proxy();
 		if($proxy) $_SERVER['SERVER_ADDR'] = CFGP_Options::get('proxy_ip');
 	
-		$findIP=apply_filters( 'cf_geoplugin_server_ip_constants', array(
+		$findIP=apply_filters( 'cfgp/ip/server_constants', array(
 			'SERVER_ADDR',
 			'LOCAL_ADDR',
 			'SERVER_NAME',
@@ -405,7 +392,9 @@ class CFGP_IP extends CFGP_Global {
 	 */
 	public static function validate_any( $ip ){
 		
-		$ip = str_replace(array("\r", "\n", "\r\n", "\s"), '', $ip);
+		$ip = str_replace(array("\r", "\n", "\r\n", "\s", PHP_EOL), '', $ip);
+		
+		do_action('cfgp/ip/validate_any', $ip);
 		
 		if(function_exists("filter_var") && !empty($ip) && filter_var($ip, FILTER_VALIDATE_IP) !== false)
 		{
@@ -420,7 +409,47 @@ class CFGP_IP extends CFGP_Global {
 	}
 	
 	/**
-	 * PRIVATE: Check is IP valid or not
+	 * Detect is client using proxy
+	 *
+	 * @since    8.0.0
+	 * @author   Ivijan-Stefan Stipic <creativform@gmail.com>
+	 * @return   (bool)   true/false
+	 */
+	public static function is_proxy(){
+		static $proxy = NULL;
+		
+		// Return cached proxy
+		if(NULL !== $proxy) return $proxy;
+		
+		$proxy = false;
+		
+		// Check is proxy using HTTP headers
+		$proxy_headers = apply_filters('cfgp/ip/proxy_headers', array(
+			'HTTP_VIA', 'VIA', 'Proxy-Connection', 'HTTP_X_FORWARDED_FOR', 'HTTP_FORWARDED_FOR', 'HTTP_X_FORWARDED', 'HTTP_FORWARDED', 'HTTP_CLIENT_IP', 'HTTP_FORWARDED_FOR_IP', 'X-PROXY-ID', 'MT-PROXY-ID', 'X-TINYPROXY', 'X_FORWARDED_FOR', 'FORWARDED_FOR', 'X_FORWARDED', 'FORWARDED', 'CLIENT-IP', 'CLIENT_IP', 'PROXY-AGENT', 'HTTP_X_CLUSTER_CLIENT_IP', 'FORWARDED_FOR_IP', 'HTTP_PROXY_CONNECTION'
+		));
+		foreach($proxy_headers as $header){
+			if (isset($_SERVER[$header])) {
+				$proxy = true;
+				break;
+			}
+		}
+		
+		// Use Internet or Unix domain socket connection to check proxy
+		if($proxy === false && function_exists('fsockopen')) {
+			$proxy_ports = apply_filters('cfgp/ip/proxy_ports', array(80,81,8080,443,1080,6588,3128));
+			foreach($proxy_ports as $test_port) {
+				if(@fsockopen(self::get(), $test_port, $errno, $errstr, 1)) {
+					$proxy = true;
+					break;
+				}
+			}
+		}
+		
+		return $proxy;
+	}
+	
+	/**
+	 * Check is IP valid or not
 	 *
 	 * @since	1.3.5
 	 * @author  Ivijan-Stefan Stipic <creativform@gmail.com>
@@ -428,6 +457,8 @@ class CFGP_IP extends CFGP_Global {
 	 */
 	public static function filter($ip, $blacklistIP=array())
 	{
+		do_action('cfgp/ip/filter/before', $ip, $blacklistIP);
+		
 		if(
 			function_exists('filter_var') 
 			&& !empty($ip) 
@@ -442,6 +473,8 @@ class CFGP_IP extends CFGP_Global {
 		) {
 			return $ip;
 		}
+		
+		do_action('cfgp/ip/filter/after', $ip, $blacklistIP);
 		
 		return false;
 	}

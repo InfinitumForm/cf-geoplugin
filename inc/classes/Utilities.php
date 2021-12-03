@@ -682,6 +682,7 @@ class CFGP_U {
 		return (CFGP_Options::get('proxy', false) ? true : false);
 	}
 	
+	
 	/**
 	 * Check is bot, search engine or crawler
 	 *
