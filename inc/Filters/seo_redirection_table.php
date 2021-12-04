@@ -14,7 +14,7 @@ add_action('cfgp/page/seo_redirection/table', function(){ ?>
     <hr class="wp-header-end">
     <div id="post">
     	<div id="poststuff">
-            <form method="get">
+            <form method="get" id="seo-redirection-table-search">
                 <p class="search-box">
                     <label class="screen-reader-text" for="post-search-input"><?php _e('Search Redirections', CFGP_NAME); ?>:</label>
                     <input type="search" id="post-search-input" name="s" value="<?php echo CFGP_U::request_string('s'); ?>">
@@ -23,7 +23,7 @@ add_action('cfgp/page/seo_redirection/table', function(){ ?>
                     <input type="hidden" value="<?php echo wp_create_nonce(CFGP_NAME.'-seo-search') ?>" name="nonce">
                 </p>
             </form>
-            <form method="post">
+            <form method="post" id="seo-redirection-table-form">
             	<?php CFGP_SEO_Table::print();	?>
             </form>
             <br class="clear">

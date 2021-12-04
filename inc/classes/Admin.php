@@ -311,39 +311,39 @@ class CFGP_Admin extends CFGP_Global {
 		wp_localize_script(CFGP_NAME . '-cpt', 'CFGP', array(
 			'ajaxurl' => admin_url('admin-ajax.php'),
 			'label' => array(
-				'unload' => esc_attr__('Data will lost , Do you wish to continue?',CFGP_NAME),
+				'unload' => __('Data will lost , Do you wish to continue?',CFGP_NAME),
 				'chosen' => array(
-					'not_found' 		=> esc_attr__('Nothing found!',CFGP_NAME),
-					'choose' 			=> esc_attr__('Choose...',CFGP_NAME),
-					'choose_first' 		=> esc_attr__('Choose countries first!',CFGP_NAME),
-					'choose_countries' 	=> esc_attr__('Choose countries...',CFGP_NAME),
-					'choose_regions' 	=> esc_attr__('Choose regions...',CFGP_NAME),
-					'choose_cities' 	=> esc_attr__('Choose cities...',CFGP_NAME),
-					'choose_postcodes' 	=> esc_attr__('Choose postcodes...',CFGP_NAME),
+					'not_found' 		=> __('Nothing found!',CFGP_NAME),
+					'choose' 			=> __('Choose...',CFGP_NAME),
+					'choose_first' 		=> __('Choose countries first!',CFGP_NAME),
+					'choose_countries' 	=> __('Choose countries...',CFGP_NAME),
+					'choose_regions' 	=> __('Choose regions...',CFGP_NAME),
+					'choose_cities' 	=> __('Choose cities...',CFGP_NAME),
+					'choose_postcodes' 	=> __('Choose postcodes...',CFGP_NAME),
 				),
-				'loading' => esc_attr__('Loading...',CFGP_NAME),
-				'not_found' => esc_attr__('Not Found!',CFGP_NAME),
-				'placeholder' => esc_attr__('Search',CFGP_NAME),
+				'loading' => __('Loading...',CFGP_NAME),
+				'not_found' => __('Not Found!',CFGP_NAME),
+				'placeholder' => __('Search',CFGP_NAME),
 				'taxonomy' => array(
 					'country' => array(
-						'name' => esc_attr__('Country code',CFGP_NAME),
-						'name_info' => esc_attr__('Country codes are short (2 letters) alphabetic or numeric geographical codes developed to represent countries and dependent areas, for use in data processing and communications.',CFGP_NAME),
-						'description' => esc_attr__('Country full name',CFGP_NAME),
-						'description_info' => esc_attr__('The name of the country must be written in English without spelling errors.',CFGP_NAME),
+						'name' => __('Country code',CFGP_NAME),
+						'name_info' => __('Country codes are short (2 letters) alphabetic or numeric geographical codes developed to represent countries and dependent areas, for use in data processing and communications.',CFGP_NAME),
+						'description' => __('Country full name',CFGP_NAME),
+						'description_info' => __('The name of the country must be written in English without spelling errors.',CFGP_NAME),
 					),
 					'region' => array(
-						'name' => esc_attr__('Region code',CFGP_NAME),
-						'name_info' => esc_attr__('Region codes are short (2 letters) alphabetic or numeric geographical codes developed to represent countries and dependent areas, for use in data processing and communications.',CFGP_NAME),
-						'description' => esc_attr__('Region full name',CFGP_NAME),
-						'description_info' => esc_attr__('The name of the region must be written in English without spelling errors.',CFGP_NAME),
+						'name' => __('Region code',CFGP_NAME),
+						'name_info' => __('Region codes are short (2 letters) alphabetic or numeric geographical codes developed to represent countries and dependent areas, for use in data processing and communications.',CFGP_NAME),
+						'description' => __('Region full name',CFGP_NAME),
+						'description_info' => __('The name of the region must be written in English without spelling errors.',CFGP_NAME),
 					),
 					'city' => array(
-						'name' => esc_attr__('City name',CFGP_NAME),
-						'name_info' => esc_attr__('The city name must be written in the original city name.',CFGP_NAME),
+						'name' => __('City name',CFGP_NAME),
+						'name_info' => __('The city name must be written in the original city name.',CFGP_NAME),
 					),
 					'postcode' => array(
-						'name' => esc_attr__('Postcode',CFGP_NAME),
-						'name_info' => esc_attr__('The postcode name must be written in the original international format.',CFGP_NAME),
+						'name' => __('Postcode',CFGP_NAME),
+						'name_info' => __('The postcode name must be written in the original international format.',CFGP_NAME),
 					)
 				)
 			),
@@ -366,45 +366,49 @@ class CFGP_Admin extends CFGP_Global {
 			'ajaxurl' => admin_url('admin-ajax.php'),
 			'adminurl' => self_admin_url('/'),
 			'label' => array(
-				'upload_csv' => esc_attr__('Select or Upload CSV file',CFGP_NAME),
-				'unload' => esc_attr__('Data will lost , Do you wish to continue?',CFGP_NAME),
-				'loading' => esc_attr__('Loading...',CFGP_NAME),
-				'not_found' => esc_attr__('Not Found!',CFGP_NAME),
+				'upload_csv' => __('Select or Upload CSV file',CFGP_NAME),
+				'unload' => __('Data will lost , Do you wish to continue?',CFGP_NAME),
+				'loading' => __('Loading...',CFGP_NAME),
+				'not_found' => __('Not Found!',CFGP_NAME),
 				'alert' => array(
-					'close' => esc_attr__('Close',CFGP_NAME)
+					'close' => __('Close',CFGP_NAME)
 				),
 				'rss' => array(
-					'no_news' => esc_attr__('There are no news at the moment.',CFGP_NAME),
-					'error' => esc_attr__("ERROR! Can't load news feed.",CFGP_NAME)
+					'no_news' => __('There are no news at the moment.',CFGP_NAME),
+					'error' => __("ERROR! Can't load news feed.",CFGP_NAME)
 				),
 				'chosen' => array(
-					'not_found' => esc_attr__('Nothing found!',CFGP_NAME)
+					'not_found' => __('Nothing found!',CFGP_NAME)
 				),
 				'settings' => array(
-					'saved' => esc_attr__('Option saved successfuly!',CFGP_NAME),
-					'fail' => esc_attr__('There was some unexpected system error. Changes not saved!',CFGP_NAME),
-					'false' => esc_attr__('Changes not saved for unexpected reasons. Try again!',CFGP_NAME),
-					'error' => esc_attr__('Option you provide not match to global variables. Permission denied!',CFGP_NAME)
+					'saved' => __('Option saved successfuly!',CFGP_NAME),
+					'fail' => __('There was some unexpected system error. Changes not saved!',CFGP_NAME),
+					'false' => __('Changes not saved for unexpected reasons. Try again!',CFGP_NAME),
+					'error' => __('Option you provide not match to global variables. Permission denied!',CFGP_NAME)
 				),
 				'csv' => array(
-					'saved' => esc_attr__('Successfuly saved %d records.',CFGP_NAME),
-					'fail' => esc_attr__('Failed to add %d rows.',CFGP_NAME),
-					'upload' =>	esc_attr__('Upload CSV file.',CFGP_NAME),
-					'filetype' => esc_attr__('The file must be comma separated CSV type',CFGP_NAME),
-					'exit' => esc_attr__('Are you sure, you want to exit?\nChanges wont be saved!',CFGP_NAME),
-					'delete' =>	esc_attr__('Are you sure, you want to delete this redirection?',CFGP_NAME),
-					'missing_url' => esc_attr__('URL Missing. Please insert URL from your CSV file or choose file from the library.',CFGP_NAME),
+					'saved' => __('Successfuly saved %d records.',CFGP_NAME),
+					'fail' => __('Failed to add %d rows.',CFGP_NAME),
+					'upload' =>	__('Upload CSV file.',CFGP_NAME),
+					'filetype' => __('The file must be comma separated CSV type',CFGP_NAME),
+					'exit' => __('Are you sure, you want to exit?\nChanges wont be saved!',CFGP_NAME),
+					'delete' =>	__('Are you sure, you want to delete this redirection?',CFGP_NAME),
+					'missing_url' => __('URL Missing. Please insert URL from your CSV file or choose file from the library.',CFGP_NAME),
 				),
 				'rest' => array(
-					'delete' => esc_attr__("Are you sure, you want to delete this access token?",CFGP_NAME),
-					'error' => esc_attr__("Can't delete access token because unexpected reasons.",CFGP_NAME),
+					'delete' => __("Are you sure, you want to delete this access token?",CFGP_NAME),
+					'error' => __("Can't delete access token because unexpected reasons.",CFGP_NAME),
 				),
 				'footer_menu' => array(
-					'documentation' =>	esc_attr__('Documentation',CFGP_NAME),
-					'contact' => esc_attr__('Contact',CFGP_NAME),
-					'blog' => esc_attr__('Blog',CFGP_NAME),
-					'faq' => esc_attr__('FAQ',CFGP_NAME),
-					'thank_you' => esc_attr__('Thank you for using',CFGP_NAME)
+					'documentation' =>	__('Documentation',CFGP_NAME),
+					'contact' => __('Contact',CFGP_NAME),
+					'blog' => __('Blog',CFGP_NAME),
+					'faq' => __('FAQ',CFGP_NAME),
+					'thank_you' => __('Thank you for using',CFGP_NAME)
+				),
+				'seo_redirection' => array(
+					'bulk_delete' => __('Are you sure you want to delete all these SEO redirects? You will no longer be able to recover data. We suggest to you made a backup before deleting.',CFGP_NAME),
+					'not_selected' => __('You didn\'t select anything.',CFGP_NAME)
 				)
 			)
 		));

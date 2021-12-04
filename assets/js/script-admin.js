@@ -396,33 +396,34 @@
 		}
 	})($('.cfgp-country-region-city-form'));
 	
-	/**
-	 * Tooltip
+	/*
+	 * SEO Redirection bulk actions
 	 */
-/*
-	var tooltip_debounce;
-	$(document).on('focus hover', '.cfgp-help', function(e){
-		e.prevetDefault();
-		if(tooltip_debounce) clearTimeout(tooltip_debounce);
-		var $this = $(this);
-		tooltip_debounce = setTimeout(function(){
-			var $help = $this.data('help'),
-				$text = $this.attr('title'),
-				$tooltip = $('<div/>',{
-					'class' : 'cfgp-tooltip'
-				}).text($text);
-			$('.cfgp-tooltip', $this).remove();
-			$this.append($tooltip);
-		}, 300);
-	}).on('blur', '.cfgp-help', function(e){
-		e.prevetDefault();
-		if(tooltip_debounce) clearTimeout(tooltip_debounce);
-		var $this = $(this);
-		tooltip_debounce = setTimeout(function(){
-			$this.find('.cfgp-tooltip').remove();
-		}, 300);
+	var bulk_action_seo_redirection;
+	$('#cf-geoplugin-seo-redirection #bulk-action-selector-top').on('change select', function(){
+		bulk_action_seo_redirection = $(this).val();
 	});
-*/
+	$('#cf-geoplugin-seo-redirection #doaction').attr('type', 'button').on('click', function(e){
+		console.log(e);
+		if( bulk_action_seo_redirection ){
+			if(bulk_action_seo_redirection === 'delete') {
+				if( $('#cf-geoplugin-seo-redirection #seo-redirection-table-form input[name="seo_redirection[]"]').is(':checked') ) {
+					if( confirm(CFGP.label.seo_redirection.bulk_delete) ){
+						$('#cf-geoplugin-seo-redirection #seo-redirection-table-form').submit();
+					}
+				} else {
+					alert(CFGP.label.seo_redirection.not_selected);
+				}
+			} else {
+				if( $('#cf-geoplugin-seo-redirection #seo-redirection-table-form input[name="seo_redirection[]"]').is(':checked') ) {
+					$('#cf-geoplugin-seo-redirection #seo-redirection-table-form').submit();
+				} else {
+					alert(CFGP.label.seo_redirection.not_selected);
+				}
+			}
+		}
+	});
+
 	/**
 	 * Display Thank You footer
 	**/
