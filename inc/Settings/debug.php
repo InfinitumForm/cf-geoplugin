@@ -180,7 +180,7 @@ if($NEW_API = CFGP_API::lookup(CFGP_U::request_string('cfgp_lookup'))){
                                     <tr>
                                         <td><strong><?php _e( 'Plugin updated', CFGP_NAME ); ?></strong></td>
                                         <td><?php
-											$plugin_activation = get_option(CFGP_NAME . '-activation'); 
+											$plugin_activation = get_option(CFGP_NAME . '-activation');
 											if($plugin_activation && is_array($plugin_activation)){
 												$plugin_activation = end($plugin_activation);
 												if($plugin_activation != $plugin_installed) {
@@ -190,6 +190,16 @@ if($NEW_API = CFGP_API::lookup(CFGP_U::request_string('cfgp_lookup'))){
 										?></td>
                                     </tr>
                                     <tr>
+                                        <td><strong><?php _e( 'Server type', CFGP_NAME ); ?></strong></td>
+                                        <td>
+										<?php if(CFGP_IP::is_localhost()) : ?>
+											<strong class="text-danger"><?php _e( 'Local Server', CFGP_NAME ); ?></strong>
+										<?php else : ?>
+											<strong class="text-success"><?php _e( 'Production Server', CFGP_NAME ); ?></strong>
+										<?php endif; ?>
+										</td>
+                                    </tr>
+									<tr>
                                         <td><strong><?php _e( 'Site title', CFGP_NAME ); ?></strong></td>
                                         <td><?php echo get_bloginfo( 'name' ); ?></td>
                                     </tr>
@@ -268,10 +278,6 @@ if($NEW_API = CFGP_API::lookup(CFGP_U::request_string('cfgp_lookup'))){
                                     <tr>
                                         <td><strong><?php _e( 'Session API expire', CFGP_NAME ); ?></strong></td>
                                         <td><?php printf(__('%d minutes', CFGP_NAME), CFGP_SESSION); ?></td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong><?php _e( 'Local or live server', CFGP_NAME ); ?></strong></td>
-                                        <td><?php (CFGP_LOCAL ? _e('Local server', CFGP_NAME) : _e('Live server', CFGP_NAME)); ?></td>
                                     </tr>
                                 </tbody>
                         	</table>

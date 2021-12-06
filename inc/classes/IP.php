@@ -239,11 +239,8 @@ class CFGP_IP extends CFGP_Global {
 			'255.255.255.0'	=>	255,
 		));
 		
-		if(!empty($list) && is_array($list))
-		{
-			foreach($list as $k => $v){
-				$blacklist[$k]=$v;
-			}
+		if(!empty($list) && is_array($list)){
+			$blacklist = array_merge($blacklist);
 		}
 		
 		$blacklistIP=array();
@@ -277,7 +274,8 @@ class CFGP_IP extends CFGP_Global {
 				$breakIP = $lastNum = $connectIP = NULL;
 			}
 		}
-		if(!empty($blacklistIP)) $blacklistIP=array_map('trim', $blacklistIP);
+		$blacklistIP=array_map('trim', $blacklistIP);
+		$blacklistIP=array_filter($blacklistIP);
 		
 		return CFGP_Cache::set('IP-blocked', $blacklistIP);
 	}
@@ -419,14 +417,15 @@ class CFGP_IP extends CFGP_Global {
 		static $proxy = NULL;
 		
 		// Return cached proxy
-		if(NULL !== $proxy) return $proxy;
+		if(NULL !== $proxy) {
+			return $proxy;
+		}
 		
 		$proxy = false;
 		
 		// Check is proxy using HTTP headers
-		$proxy_headers = apply_filters('cfgp/ip/proxy_headers', array(
-			'HTTP_VIA', 'VIA', 'Proxy-Connection', 'HTTP_X_FORWARDED_FOR', 'HTTP_FORWARDED_FOR', 'HTTP_X_FORWARDED', 'HTTP_FORWARDED', 'HTTP_CLIENT_IP', 'HTTP_FORWARDED_FOR_IP', 'X-PROXY-ID', 'MT-PROXY-ID', 'X-TINYPROXY', 'X_FORWARDED_FOR', 'FORWARDED_FOR', 'X_FORWARDED', 'FORWARDED', 'CLIENT-IP', 'CLIENT_IP', 'PROXY-AGENT', 'HTTP_X_CLUSTER_CLIENT_IP', 'FORWARDED_FOR_IP', 'HTTP_PROXY_CONNECTION'
-		));
+		$proxy_headers = apply_filters('cfgp/ip/proxy_headers', array('HTTP_X_REAL_IP','HTTP_X_PROXY_ID','CLIENT_IP','FORWARDED','FORWARDED_FOR','FORWARDED_FOR_IP','VIA','X_FORWARDED','X_FORWARDED_FOR','HTTP_CLIENT_IP','HTTP_FORWARDED','HTTP_FORWARDED_FOR','HTTP_FORWARDED_FOR_IP','HTTP_PROXY_CONNECTION','HTTP_VIA','HTTP_X_FORWARDED','Proxy-Connection','X-PROXY-ID','MT-PROXY-ID','X-TINYPROXY','PROXY-AGENT','CLIENT-IP','HTTP_X_CLUSTER_CLIENT_IP'));
+		
 		foreach($proxy_headers as $header){
 			if (isset($_SERVER[$header])) {
 				$proxy = true;
@@ -436,16 +435,105 @@ class CFGP_IP extends CFGP_Global {
 		
 		// Use Internet or Unix domain socket connection to check proxy
 		if($proxy === false && function_exists('fsockopen')) {
-			$proxy_ports = apply_filters('cfgp/ip/proxy_ports', array(80,81,8080,443,1080,6588,3128));
+			$proxy_ports = apply_filters('cfgp/ip/proxy_ports', array(80,81,443,553,554,1080,3128,4480,6588,8000,8080));
 			foreach($proxy_ports as $test_port) {
-				if(@fsockopen(self::get(), $test_port, $errno, $errstr, 1)) {
+				$ip = $_SERVER['REMOTE_ADDR'] ?? $_SERVER['HTTP_CLIENT_IP'] ?? $_SERVER['HTTP_CF_CONNECTING_IP'] ?? NULL;
+				if($ip && @fsockopen($ip, $test_port, $errno, $errstr, 1)) {
 					$proxy = true;
 					break;
 				}
 			}
 		}
 		
+		do_action('cfgp/is_proxy', $proxy);
+		
 		return $proxy;
+	}
+	
+	/**
+	 * Detect is running on the local machine
+	 *
+	 * @since    8.0.0
+	 * @author   Ivijan-Stefan Stipic <creativform@gmail.com>
+	 * @return   (bool)   true/false
+	 */
+	public static function is_localhost(){		
+		$server_ip = self::server();
+		
+		$cache_name = CFGP_NAME . '_is_localhost_'. $server_ip;
+
+		// Return cached proxy
+		if(NULL !== ($is_localhost = get_option($cache_name, NULL))) {
+			return $is_localhost;
+		}
+		
+		$localhost = false;
+		
+		$blacklist=array(
+			'127.0.0.0'		=>	255,
+			'192.168.0.0'	=>	8,
+			'192.168.1.0'	=>	255,
+			'192.168.2.0'	=>	255,
+			'192.168.3.0'	=>	255,
+		);
+		
+		if(!empty($list) && is_array($list)){
+			$blacklist = array_merge($blacklist);
+		}
+		
+		$whitelist=array();
+		foreach($blacklist as $key=>$num)
+		{
+			// if address is not in range
+			if(is_int($key))
+			{
+				$whitelist[]=$num;
+			}
+			// addresses in range
+			else
+			{
+				// Parse IP and extract last number for mathing
+				$breakIP = explode('.', $key);
+				$lastNum = ((int)end($breakIP));
+				array_pop($breakIP);
+				$connectIP=join('.', $breakIP).'.';
+				
+				if($lastNum>=$num)
+				{
+					$whitelist[]=$key;
+				}
+				else
+				{
+					for($i=$lastNum; $i<=$num; $i++)
+					{
+						$whitelist[]=$connectIP.$i;
+					}
+				}
+				$breakIP = $lastNum = $connectIP = NULL;
+			}
+		}
+		$whitelist=array_map('trim', $whitelist);
+		$whitelist=array_filter($whitelist);
+		
+		$whitelist = array_merge(array('::1', 'localhost'), $whitelist);
+		
+		$remote_addr = $_SERVER['REMOTE_ADDR'] ?? NULL;
+		if($remote_addr && in_array($remote_addr, $whitelist)){
+			$localhost = true;
+		}
+		
+		$host = $_SERVER['HTTP_HOST'] ?? NULL;
+		if($host && in_array($host, $whitelist)){
+			$localhost = true;
+		}
+		
+		if(in_array($server_ip, $whitelist)){
+			$localhost = true;
+		}
+		
+		update_option($cache_name, $localhost);
+
+		return $localhost;
 	}
 	
 	/**

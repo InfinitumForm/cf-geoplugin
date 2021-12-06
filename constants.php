@@ -9,19 +9,6 @@
 if ( ! defined( 'WPINC' ) ) { die( "Don't mess with us." ); }
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-// Find is localhost or not
-if ( ! defined( 'CFGP_LOCAL' ) ) {
-	if(isset($_SERVER['REMOTE_ADDR'])) {
-		define('CFGP_LOCAL', in_array($_SERVER['REMOTE_ADDR'], array(
-			'127.0.0.1',
-			'::1',
-			'localhost'
-		)));
-	} else {
-		define('CFGP_LOCAL', false);
-	}
-}
-
 // Find wp-admin file path
 if ( strrpos(WP_CONTENT_DIR, '/wp-content/', 1) !== false) {
     $WP_ADMIN_DIR = substr(WP_CONTENT_DIR, 0, -10) . 'wp-admin';

@@ -134,10 +134,8 @@ class CFGP_API extends CFGP_Global {
 						// Convert and merge
 						$return = json_decode($return, true);
 						$return = apply_filters('cf_geoplugin_api_get_geodata', $return);
-						
-		
-							$return = array_merge($default_fields, $return);
-						
+
+						$return = array_merge($default_fields, $return);
 	
 						if($return['error']===true) {
 							return $return;

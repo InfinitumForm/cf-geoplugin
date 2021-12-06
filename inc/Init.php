@@ -52,6 +52,10 @@ final class CFGP_Init{
 				$class::instance();
 			}
 		}
+		
+		// Delete expired transients
+		self::delete_expired_transients();
+		
 		// Dynamic action
 		do_action('cfgp/init', $this);
 	}
@@ -265,6 +269,61 @@ final class CFGP_Init{
 				add_option(CFGP_NAME . '-deactivation', array(date('Y-m-d H:i:s')), false);
 			}
 		});
+	}
+	
+	/**
+	 * Delete Expired CF Geo Plugin Transients
+	 * @since     8.0.0
+	 */
+	private static function delete_expired_transients( $force_db = false ) {
+		global $wpdb;
+	 
+		if ( ! $force_db && wp_using_ext_object_cache() ) {
+			return;
+		}
+	 
+		$wpdb->query(
+			$wpdb->prepare(
+				"DELETE a, b FROM {$wpdb->options} a, {$wpdb->options} b
+				WHERE a.option_name LIKE %s
+				AND a.option_name NOT LIKE %s
+				AND b.option_name = CONCAT( '_transient_timeout_cfgp-', SUBSTRING( a.option_name, 12 ) )
+				AND b.option_value < %d",
+				$wpdb->esc_like( '_transient_cfgp-' ) . '%',
+				$wpdb->esc_like( '_transient_timeout_cfgp-' ) . '%',
+				time()
+			)
+		);
+	 
+		if ( ! is_multisite() ) {
+			// Single site stores site transients in the options table.
+			$wpdb->query(
+				$wpdb->prepare(
+					"DELETE a, b FROM {$wpdb->options} a, {$wpdb->options} b
+					WHERE a.option_name LIKE %s
+					AND a.option_name NOT LIKE %s
+					AND b.option_name = CONCAT( '_site_transient_timeout_cfgp-', SUBSTRING( a.option_name, 17 ) )
+					AND b.option_value < %d",
+					$wpdb->esc_like( '_site_transient_cfgp-' ) . '%',
+					$wpdb->esc_like( '_site_transient_timeout_cfgp-' ) . '%',
+					time()
+				)
+			);
+		} elseif ( is_multisite() && is_main_site() && is_main_network() ) {
+			// Multisite stores site transients in the sitemeta table.
+			$wpdb->query(
+				$wpdb->prepare(
+					"DELETE a, b FROM {$wpdb->sitemeta} a, {$wpdb->sitemeta} b
+					WHERE a.meta_key LIKE %s
+					AND a.meta_key NOT LIKE %s
+					AND b.meta_key = CONCAT( '_site_transient_timeout_cfgp-', SUBSTRING( a.meta_key, 17 ) )
+					AND b.meta_value < %d",
+					$wpdb->esc_like( '_site_transient_cfgp-' ) . '%',
+					$wpdb->esc_like( '_site_transient_timeout_cfgp-' ) . '%',
+					time()
+				)
+			);
+		}
 	}
 	
 	/* 

@@ -446,3 +446,11 @@ dd {
 	margin-left: 1px;
 	cursor: help;
 }
+
+.cfgp-tab-panel .text-danger{
+	color: #cc0000;
+}
+
+.cfgp-tab-panel .text-success{
+	color: #007820;
+}

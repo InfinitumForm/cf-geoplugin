@@ -534,6 +534,10 @@ class CFGP_U {
 	 * @since    6.0.1
 	 **/
 	public static function get_host($clean=false){
+		if(CFGP_IP::is_localhost()) {
+			return 'localhost';
+		}
+			
 		$hostInfo = self::parse_url();
 		if($clean) {
 			return preg_replace('/https?:\/\/|w{3}\./i','',strtolower($hostInfo['domain']));
