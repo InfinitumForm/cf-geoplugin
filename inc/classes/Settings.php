@@ -161,7 +161,7 @@ class CFGP_Settings extends CFGP_Global {
 				__('Geo Banner',CFGP_NAME),
 				__('Geo Banner',CFGP_NAME),
 				'manage_options',
-				admin_url('edit.php?post_type=' . CFGP_NAME . '-banner')
+				CFGP_U::admin_url('edit.php?post_type=' . CFGP_NAME . '-banner')
 			);
 		}
 		if(CFGP_Options::get('enable_seo_redirection', 1))
@@ -180,28 +180,28 @@ class CFGP_Settings extends CFGP_Global {
 			__('Countries',CFGP_NAME),
 			__('Countries',CFGP_NAME),
 			'manage_options',
-			admin_url('edit-tags.php?taxonomy=' . CFGP_NAME . '-country&post_type=' . CFGP_NAME . '-banner')
+			CFGP_U::admin_url('edit-tags.php?taxonomy=' . CFGP_NAME . '-country&post_type=' . CFGP_NAME . '-banner')
 		);
 		$this->add_submenu_page(
 			CFGP_NAME,
 			__('Regions',CFGP_NAME),
 			__('Regions',CFGP_NAME),
 			'manage_options',
-			admin_url('edit-tags.php?taxonomy=' . CFGP_NAME . '-region&post_type=' . CFGP_NAME . '-banner')
+			CFGP_U::admin_url('edit-tags.php?taxonomy=' . CFGP_NAME . '-region&post_type=' . CFGP_NAME . '-banner')
 		);
 		$this->add_submenu_page(
 			CFGP_NAME,
 			__('Cities',CFGP_NAME),
 			__('Cities',CFGP_NAME),
 			'manage_options',
-			admin_url('edit-tags.php?taxonomy=' . CFGP_NAME . '-city&post_type=' . CFGP_NAME . '-banner')
+			CFGP_U::admin_url('edit-tags.php?taxonomy=' . CFGP_NAME . '-city&post_type=' . CFGP_NAME . '-banner')
 		);*/
 		$this->add_submenu_page(
 			CFGP_NAME,
 			__('Postcode',CFGP_NAME),
 			__('Postcodes',CFGP_NAME),
 			'manage_options',
-			admin_url('edit-tags.php?taxonomy=' . CFGP_NAME . '-postcode&post_type=' . CFGP_NAME . '-banner')
+			CFGP_U::admin_url('edit-tags.php?taxonomy=' . CFGP_NAME . '-postcode&post_type=' . CFGP_NAME . '-banner')
 		);
 		$this->add_submenu_page(
 			CFGP_NAME,

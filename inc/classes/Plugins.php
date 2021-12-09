@@ -58,6 +58,10 @@ if(!class_exists('CFGP_Plugins')) :
 				}
 			}
 			
+			if(empty($plugin_options)){
+				return $options;
+			}
+			
 			return array_merge($options, array(
 				// Tab
 				array(

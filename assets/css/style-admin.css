@@ -447,10 +447,113 @@ dd {
 	cursor: help;
 }
 
+.cfgp-statistic-plugin-details .text-danger,
 .cfgp-tab-panel .text-danger{
 	color: #cc0000;
 }
 
+.cfgp-statistic-plugin-details .text-success,
 .cfgp-tab-panel .text-success{
 	color: #007820;
+}
+
+#dashboard-widgets #cf-geoplugin-dashboard-statistic .inside{
+	padding:0;
+}
+
+#dashboard-widgets #cf-geoplugin-dashboard-statistic .inside #cfgp-statistic{
+	padding:0 12px 0 12px;
+}
+
+#dashboard-widgets #cf-geoplugin-dashboard-statistic .inside h3{
+	color: #1d2327;
+    font-size: 1.3em;
+    margin: 1em 0;
+	font-weight:500;
+}
+
+#dashboard-widgets #cf-geoplugin-dashboard-statistic .inside h4{
+	font-size: 1em;
+    margin: 1.33em 0;
+	font-weight:500;
+}
+
+#dashboard-widgets #cf-geoplugin-dashboard-statistic .inside .cf-geoplugin-dashboard-details-copyright-column{
+	margin-top:1em;
+	color:#1d2327;
+}
+
+#cf-geoplugin-dashboard-statistic .inside .cfgp-statistic-plugin-details > ul{
+	list-style:none;
+	display:block;
+	padding:0;
+	margin:0;
+	width:100%;
+}
+
+#cf-geoplugin-dashboard-statistic .inside .cfgp-statistic-plugin-details > ul > li{
+	display:block;
+	padding:0;
+	margin:0;
+	width:100%;
+}
+
+#cf-geoplugin-dashboard-statistic .inside .cfgp-statistic-plugin-details > ul > li+li{
+	margin-top:5px;
+}
+
+#cf-geoplugin-dashboard-statistic .inside .cfgp-statistic-plugin-details > ul > li > strong{
+	display: inline-block;
+    vertical-align: top;
+	width: 25%;
+}
+
+#cf-geoplugin-dashboard-statistic .inside .cfgp-statistic-plugin-details > ul > li > span{
+	display: inline-block;
+    vertical-align: top;
+	width: 72%;
+}
+
+#cf-geoplugin-dashboard-statistic .inside .cfgp-statistic-plugin-details.changelog{
+	padding-bottom:5px;
+}
+
+#cf-geoplugin-dashboard-statistic .inside .cfgp-statistic-plugin-details.changelog.has-update {
+	color: #000000 !important;
+	font-weight:500;
+}
+
+#cf-geoplugin-dashboard-statistic .inside .cfgp-statistic-plugin-details.changelog.has-update h3{
+	color: #cc0000 !important;
+}
+
+#cf-geoplugin-dashboard-statistic .inside .cfgp-statistic-separator{
+	border-top: 1px solid #eee;
+	margin-top: 20px;
+}
+
+#cf-geoplugin-dashboard-statistic .inside .cfgp-statistic-plugin-details .cfgp-statistic-plugin-changelog{
+	list-style: square;
+    display: inherit;
+    margin-left: 15px;
+}
+
+@media all and (max-width:1100px){
+	#cf-geoplugin-dashboard-statistic .inside .cfgp-statistic-plugin-details > ul > li > strong{
+		width: 25%;
+	}
+
+	#cf-geoplugin-dashboard-statistic .inside .cfgp-statistic-plugin-details > ul > li > span{
+		width: 70%;
+	}
+}
+
+@media all and (max-width:420px){
+	#cf-geoplugin-dashboard-statistic .inside .cfgp-statistic-plugin-details > ul > li > strong{
+		width: 100%;
+	}
+
+	#cf-geoplugin-dashboard-statistic .inside .cfgp-statistic-plugin-details > ul > li > span{
+		width: 100%;
+	}
 }

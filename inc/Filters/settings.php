@@ -54,7 +54,7 @@ add_filter('cfgp/settings', function($options=array()){
 					'title' => __('WordPress Settings', CFGP_NAME),
 					'desc' => __('These settings only affect CF Geo Plugin functionality and connection between plugin and WordPress setup. Use it smart and careful.', CFGP_NAME),
 					'inputs' => array(
-						array(
+						/*array(
 							'name' => 'enable_update',
 							'label' => __('Enable Plugin Auto Update', CFGP_NAME),
 							'desc' => __('Allow your plugin to be up to date.', CFGP_NAME),
@@ -64,8 +64,8 @@ add_filter('cfgp/settings', function($options=array()){
 								0 => __('No', CFGP_NAME)
 							),
 							'default' => 1
-						),
-						array(
+						),*/
+						/*array(
 							'name' => 'enable_dashboard_widget',
 							'label' => __('Enable Dashboard Widget', CFGP_NAME),
 							'desc' => __('Enable CF Geo Plugin widget in the dashboard area.', CFGP_NAME),
@@ -86,7 +86,7 @@ add_filter('cfgp/settings', function($options=array()){
 								0 => __('Basic', CFGP_NAME)
 							),
 							'default' => 1
-						),
+						),*/
 						array(
 							'name' => 'enable_cloudflare',
 							'label' => __('Enable Cloudflare', CFGP_NAME),
@@ -149,7 +149,7 @@ add_filter('cfgp/settings', function($options=array()){
 							),
 							'default' => 0
 						),
-						array(
+						/*array(
 							'name' => 'enable_flag',
 							'label' => __('Enable Country Flags', CFGP_NAME),
 							'desc' => __('Display country flag SVG or PNG image on your website.', CFGP_NAME),
@@ -159,7 +159,7 @@ add_filter('cfgp/settings', function($options=array()){
 								0 => __('No', CFGP_NAME)
 							),
 							'default' => 1
-						),
+						),*/
 					)
 				),
 				array(
@@ -330,8 +330,8 @@ add_filter('cfgp/settings', function($options=array()){
 							'default' => 1
 						),
 						array(
-							'name' => 'hide_http_referer_headers',
-							'label' => __('Hide HTTP referer headers data', CFGP_NAME),
+							'name' => 'hide_http_referrer_headers',
+							'label' => __('Hide HTTP referrer headers data', CFGP_NAME),
 							'desc' => __('You can tell the browser to not send a referrer by enabling this option for all SEO redirections.', CFGP_NAME),
 							'type' => 'radio',
 							'options' => array(

@@ -18,12 +18,8 @@ class CFGP_SEO_Redirection extends CFGP_Global
 {
 	public function __construct()
 	{
-		// Stop on ajax
-		if(wp_doing_ajax()){
-			return;
-		}
-		// Stop if is admin
-		if(is_admin()){
+		// Prevent redirection for the crawlers and bots
+		if(CFGP_Options::get('redirect_disable_bots', 0) && CFGP_U::is_bot()){
 			return;
 		}
 		// Prevent redirection using GET parametter
@@ -34,10 +30,18 @@ class CFGP_SEO_Redirection extends CFGP_Global
 		if(isset($_REQUEST['stop_redirection']) && ($_REQUEST['stop_redirection'] === true || $_REQUEST['stop_redirection'] === 'true')){
 			return;
 		}
+		// Stop on ajax
+		if(wp_doing_ajax()){
+			return;
+		}
+		// Stop if is admin
+		if(is_admin()){
+			return;
+		}
 		// Prevent by custom filter
 		$API = CFGP_U::api();
 		$stop_redirection_filter = apply_filters('cfgp/seo/stop_redirection', false, $API);
-		if( !empty($CFGEO) && $stop_redirection_filter ){
+		if( $stop_redirection_filter ){
 			if(CFGP_U::recursive_array_search($stop_redirection_filter, $API, true)){
 				return;
 			}

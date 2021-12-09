@@ -458,29 +458,38 @@ class CFGP_U {
 	 * Safe and SEO redirections to new location
 	 * @verson    1.0.0
 	*/
-	public static function redirect($location, int $status=302, bool $safe=false){
+	public static function redirect($location, int $status=302, bool $safe=NULL){
 		$status = absint($status);
-		$cache_suport = (CFGP_Options::get('cache-support', 'yes') == 'yes');
 		
+		// Prevent AJAX
 		if(defined('DOING_AJAX') && DOING_AJAX){
 			return false;
 		}
 		
-		if($cache_suport) {
-			self::cache_flush();
-		}
-		
-		if( CFGP_Options::get('hide_http_referer_headers', 0) ) {
-			header('Referrer-Policy: no-referrer');
-		}
-		
+		// Validate URL
 		if (!filter_var($location, FILTER_VALIDATE_URL)){
 			return false;
 		}
 		
+		// Automatic switch to safe redirection
+		if( NULL === $safe ){
+			$safe = (strpos($location, self::parse_url()['domain']) !== false);
+		}
+		
+		// Check good status code
 		if ($safe && ($status < 300 || 399 < $status) ) {
 			new Exception( __( 'HTTP redirect status code must be a redirection code, 3xx.' ) );
 			return false;
+		}
+		
+		// Cache control
+		if( CFGP_Options::get('cache-support', 'yes') == 'yes' ) {
+			self::cache_flush();
+		}
+		
+		// Disable referrer
+		if( CFGP_Options::get('hide_http_referrer_headers', 0) ) {
+			header('Referrer-Policy: no-referrer');
 		}
 		
 		if (!headers_sent())
@@ -513,7 +522,7 @@ class CFGP_U {
 		}
 		else
 		{
-			die('<meta http-equiv="refresh" content="time; URL=' . $location . '" />');
+			die('<meta http-equiv="refresh" content="time; URL=' . esc_url($location) . '" />');
 		}
 	}
 	
@@ -846,6 +855,7 @@ class CFGP_U {
 		{
 			return (preg_match('/rambler|abacho|ac(oi|cona)|aspseek|al(tavista|exa)|estyle|scrubby|lycos|geona|ia_archiver|sogou|facebook|duckduck(bot|go)?|twitter|pinterest|linkedin|skype|naver|bing(bot)?|google|ya(hoo|ndex)|baidu(spider)?|teoma|xing|java\/1\.7\.0_45|crawl|slurp|spider|mediapartners|\sbot\s|\sask\s|\saol\s/i', $_SERVER['HTTP_USER_AGENT']) ? true : false);
 		}
+		
 		return false;
 	}
 	
@@ -1391,14 +1401,14 @@ class CFGP_U {
 	{
 		if( is_array( $city ) )
 		{
-			$city = array_map( 'strtolower', $city );
-			if( isset( $city[0] ) && !empty( $city[0] ) && in_array( sanitize_title(self::api('city')), $city, true ) ) {
+			$city = array_map( 'sanitize_title', $city );
+			if( isset( $city[0] ) && !empty( $city[0] ) && in_array(sanitize_title(self::api('city')), $city, true ) ) {
 				return true;
 			}
 		}
 		elseif( is_string( $city ) )
 		{
-			if( !empty( $city ) && strtolower( $city ) === strtolower(sanitize_title(self::api('city'))) ) {
+			if( !empty( $city ) && sanitize_title( $city ) === sanitize_title(self::api('city')) ) {
 				return true;
 			}
 		}
@@ -1415,9 +1425,9 @@ class CFGP_U {
 		{
 			if( isset( $region[0] ) && !empty( $region[0] ) )
 			{
-				$region = array_map( 'strtolower', $region );
+				$region = array_map( 'sanitize_title', $region );
 				// Supports region code and region name
-				if(in_array( strtolower( self::api('region_code') ), $region, true ) ) {
+				if(in_array( sanitize_title( self::api('region_code') ), $region, true ) ) {
 					return true;
 				}
 				if(in_array( sanitize_title(self::api('region')), $region, true ) ) {
@@ -1430,10 +1440,10 @@ class CFGP_U {
 			if( !empty( $region ) )
 			{
 				// Supports region code and region name
-				if( strtolower( $region ) === strtolower(self::api('region_code')) ) {
+				if( sanitize_title( $region ) === sanitize_title(self::api('region_code')) ) {
 					return true;
 				}
-				if( strtolower( $region ) === strtolower(sanitize_title(self::api('region'))) ) {
+				if( sanitize_title( $region ) === sanitize_title(self::api('region')) ) {
 					return true;
 				}
 			}
@@ -1451,9 +1461,9 @@ class CFGP_U {
 		{
 			if( isset( $country[0] ) && !empty( $country[0] ) )
 			{
-				$country = array_map( 'strtolower', $country );
+				$country = array_map( 'sanitize_title', $country );
 				// Supports country code and name
-				if( in_array( strtolower(self::api('country_code')), $country, true ) ) {
+				if( in_array( sanitize_title(self::api('country_code')), $country, true ) ) {
 					return true;
 				}
 				if( in_array( sanitize_title(self::api('country')), $country, true ) ) {
@@ -1466,10 +1476,10 @@ class CFGP_U {
 			if( !empty( $country ) )
 			{
 				// Supports country code and name
-				if( strtolower( $country ) === strtolower(self::api('country_code')) ) {
+				if( sanitize_title( $country ) === sanitize_title(self::api('country_code')) ) {
 					return true;
 				}
-				if( strtolower( $country ) === strtolower(sanitize_title(self::api('country'))) ) {
+				if( sanitize_title( $country ) === sanitize_title(self::api('country')) ) {
 					return true;
 				}
 			}
@@ -1485,14 +1495,14 @@ class CFGP_U {
 	{
 		if( is_array( $postcode ) )
 		{
-			$postcode = array_map( 'strtolower', $postcode );
+			$postcode = array_map( 'sanitize_title', $postcode );
 			if( isset( $postcode[0] ) && !empty( $postcode[0] ) && in_array(sanitize_title(self::api('postcode')), $postcode, true) ) {
 				return true;
 			}
 		}
 		elseif( is_string( $postcode ) )
 		{
-			if( !empty( $postcode ) && strtolower( $postcode ) === strtolower(sanitize_title(self::api('postcode'))) ) {
+			if( !empty( $postcode ) && sanitize_title( $postcode ) === sanitize_title(self::api('postcode')) ) {
 				return true;
 			}
 		}
@@ -1535,26 +1545,17 @@ class CFGP_U {
 	/*
 	 * Hook for the admin URL
 	 * @author        Ivijan-Stefan Stipic
-	 * @version       1.0.2
+	 * @version       2.0.0
 	 * @since         7.11.3
 	*/
 	public static function admin_url( $str = '' )
 	{
-		if(defined('CFGP_MULTISITE') && CFGP_MULTISITE)
+		if(defined('CFGP_MULTISITE') && CFGP_MULTISITE && self::is_network_admin())
 		{
-			if( self::is_network_admin() )
-			{
-				return self_admin_url($str);
-			}
-			else
-			{
-				return admin_url($str);
-			}
+			return self_admin_url($str);
 		}
-		else
-		{
-			return admin_url($str);
-		}
+
+		return admin_url($str);
 	}
 	
 	/*

@@ -29,6 +29,29 @@ class CFGP_Admin extends CFGP_Global {
 		
 		$this->add_action('wp_ajax_cfgp_load_regions', 'ajax__cfgp_load_regions');
 		$this->add_action('wp_ajax_cfgp_load_cities', 'ajax__cfgp_load_cities');
+		
+		$this->add_action( 'wp_network_dashboard_setup', 'register_dashboard_widget' );
+		$this->add_action( 'wp_dashboard_setup', 'register_dashboard_widget' );
+	}
+	
+	public function register_dashboard_widget(){
+		if ( get_current_screen()->base !== 'dashboard' ) {
+			return;
+		}
+		
+		wp_add_dashboard_widget(
+			CFGP_NAME . '-dashboard-statistic', 
+			__( 'CF Geo Plugin', CFGP_NAME ),
+			array( &$this, 'dashboard_widget' ),
+			NULL,
+			NULL,
+			'normal',
+			'high'
+		);
+	}
+	
+	public function dashboard_widget(){
+		do_action('cfgp/dashboard/widget');
 	}
 	
 	public function ajax__cfgp_load_regions () {
@@ -177,7 +200,7 @@ class CFGP_Admin extends CFGP_Global {
 		$wp_admin_bar->add_node(array(
 			'id' => CFGP_NAME . '-admin-bar-link',
 			'title' => __('Geo Plugin', CFGP_NAME), 
-			'href' => esc_url(admin_url('admin.php?page=cf-geoplugin')), 
+			'href' => esc_url(CFGP_U::admin_url('admin.php?page=cf-geoplugin')), 
 			'meta' => array(
 				'class' => CFGP_NAME . ' ' . CFGP_NAME . '-admin-bar-link',
 				'title' => __('Geo Plugin', CFGP_NAME),
@@ -188,7 +211,7 @@ class CFGP_Admin extends CFGP_Global {
 			'parent' => CFGP_NAME . '-admin-bar-link',
 			'id' => CFGP_NAME . '-admin-bar-shortcodes-link',
 			'title' => __('Shortcodes', CFGP_NAME), 
-			'href' => esc_url(admin_url('admin.php?page=' . CFGP_NAME)), 
+			'href' => esc_url(CFGP_U::admin_url('admin.php?page=' . CFGP_NAME)), 
 			'meta' => array(
 				'class' => CFGP_NAME . ' ' . CFGP_NAME . '-admin-bar-shortcodes-link',
 				'title' => __('Shortcodes', CFGP_NAME),
@@ -200,7 +223,7 @@ class CFGP_Admin extends CFGP_Global {
 				'parent' => CFGP_NAME . '-admin-bar-link',
 				'id' => CFGP_NAME . '-admin-bar-google-map-link',
 				'title' => __('Google Map', CFGP_NAME), 
-				'href' => esc_url(admin_url('admin.php?page=' . CFGP_NAME . '-google-map')), 
+				'href' => esc_url(CFGP_U::admin_url('admin.php?page=' . CFGP_NAME . '-google-map')), 
 				'meta' => array(
 					'class' => CFGP_NAME . ' ' . CFGP_NAME . '-admin-bar-google-map-link',
 					'title' => __('Google Map', CFGP_NAME),
@@ -213,7 +236,7 @@ class CFGP_Admin extends CFGP_Global {
 				'parent' => CFGP_NAME . '-admin-bar-link',
 				'id' => CFGP_NAME . '-admin-bar-defender-link',
 				'title' => __('Site Protection', CFGP_NAME), 
-				'href' => esc_url(admin_url('admin.php?page=' . CFGP_NAME . '-defender')), 
+				'href' => esc_url(CFGP_U::admin_url('admin.php?page=' . CFGP_NAME . '-defender')), 
 				'meta' => array(
 					'class' => CFGP_NAME . ' ' . CFGP_NAME . '-admin-bar-defender-link',
 					'title' => __('Site Protection', CFGP_NAME),
@@ -225,7 +248,7 @@ class CFGP_Admin extends CFGP_Global {
 				'parent' => CFGP_NAME . '-admin-bar-link',
 				'id' => CFGP_NAME . '-admin-bar-banner-link',
 				'title' => __('Geo Banner', CFGP_NAME), 
-				'href' => esc_url(admin_url('admin.php?page=' . CFGP_NAME . '-banner')), 
+				'href' => esc_url(CFGP_U::admin_url('admin.php?page=' . CFGP_NAME . '-banner')), 
 				'meta' => array(
 					'class' => CFGP_NAME . ' ' . CFGP_NAME . '-admin-bar-banner-link',
 					'title' => __('Geo Banner', CFGP_NAME),
@@ -238,7 +261,7 @@ class CFGP_Admin extends CFGP_Global {
 				'parent' => CFGP_NAME . '-admin-bar-link',
 				'id' => CFGP_NAME . '-admin-bar-seo-redirection-link',
 				'title' => __('SEO Redirection', CFGP_NAME), 
-				'href' => esc_url(admin_url('admin.php?page=' . CFGP_NAME . '-seo-redirection')), 
+				'href' => esc_url(CFGP_U::admin_url('admin.php?page=' . CFGP_NAME . '-seo-redirection')), 
 				'meta' => array(
 					'class' => CFGP_NAME . ' ' . CFGP_NAME . '-admin-bar-seo-redirection-link',
 					'title' => __('SEO Redirection', CFGP_NAME),
@@ -250,7 +273,7 @@ class CFGP_Admin extends CFGP_Global {
 			'parent' => CFGP_NAME . '-admin-bar-link',
 			'id' => CFGP_NAME . '-admin-bar-settings-link',
 			'title' => __('Settings', CFGP_NAME), 
-			'href' => esc_url(admin_url('admin.php?page=' . CFGP_NAME . '-settings')), 
+			'href' => esc_url(CFGP_U::admin_url('admin.php?page=' . CFGP_NAME . '-settings')), 
 			'meta' => array(
 				'class' => CFGP_NAME . ' ' . CFGP_NAME . '-admin-bar-settings-link',
 				'title' => __('Settings', CFGP_NAME),
@@ -261,7 +284,7 @@ class CFGP_Admin extends CFGP_Global {
 			'parent' => CFGP_NAME . '-admin-bar-link',
 			'id' => CFGP_NAME . '-admin-bar-debug-link',
 			'title' => __('Debug Mode', CFGP_NAME), 
-			'href' => esc_url(admin_url('admin.php?page=' . CFGP_NAME . '-debug')), 
+			'href' => esc_url(CFGP_U::admin_url('admin.php?page=' . CFGP_NAME . '-debug')), 
 			'meta' => array(
 				'class' => CFGP_NAME . ' ' . CFGP_NAME . '-admin-bar-debug-link',
 				'title' => __('Debug Mode', CFGP_NAME),
@@ -272,7 +295,7 @@ class CFGP_Admin extends CFGP_Global {
 			'parent' => CFGP_NAME . '-admin-bar-link',
 			'id' => CFGP_NAME . '-admin-bar-activate-link',
 			'title' => __('License', CFGP_NAME), 
-			'href' => esc_url(admin_url('admin.php?page=' . CFGP_NAME . '-activate')), 
+			'href' => esc_url(CFGP_U::admin_url('admin.php?page=' . CFGP_NAME . '-activate')), 
 			'meta' => array(
 				'class' => CFGP_NAME . ' ' . CFGP_NAME . '-admin-bar-activate-link',
 				'title' => __('License', CFGP_NAME),
@@ -281,7 +304,8 @@ class CFGP_Admin extends CFGP_Global {
 	}
 	
 	public function register_style($page){
-		if(!$this->limit_scripts($page)) return;
+		
+		if(!$this->limit_scripts($page) && $page != 'index.php') return;
 		
 		wp_enqueue_style( CFGP_NAME . '-fontawesome', CFGP_ASSETS . '/css/font-awesome.min.css', array(), (string)CFGP_VERSION );
 		wp_enqueue_style( CFGP_NAME . '-admin', CFGP_ASSETS . '/css/style-admin.css', array(CFGP_NAME . '-fontawesome'), (string)CFGP_VERSION );
@@ -309,7 +333,7 @@ class CFGP_Admin extends CFGP_Global {
 		wp_enqueue_style( CFGP_NAME . '-cpt', CFGP_ASSETS . '/css/style-cpt.css', 1, (string)CFGP_VERSION, false );
 		wp_enqueue_script( CFGP_NAME . '-cpt', CFGP_ASSETS . '/js/script-cpt.js', array('jquery'), (string)CFGP_VERSION, true );
 		wp_localize_script(CFGP_NAME . '-cpt', 'CFGP', array(
-			'ajaxurl' => admin_url('admin-ajax.php'),
+			'ajaxurl' => CFGP_U::admin_url('admin-ajax.php'),
 			'label' => array(
 				'unload' => __('Data will lost , Do you wish to continue?',CFGP_NAME),
 				'chosen' => array(
@@ -363,7 +387,7 @@ class CFGP_Admin extends CFGP_Global {
 		
 		wp_enqueue_script( CFGP_NAME . '-admin', CFGP_ASSETS . '/js/script-admin.js', array('jquery', CFGP_NAME . '-choosen'), (string)CFGP_VERSION, true );
 		wp_localize_script(CFGP_NAME . '-admin', 'CFGP', array(
-			'ajaxurl' => admin_url('admin-ajax.php'),
+			'ajaxurl' => CFGP_U::admin_url('admin-ajax.php'),
 			'adminurl' => self_admin_url('/'),
 			'label' => array(
 				'upload_csv' => __('Select or Upload CSV file',CFGP_NAME),

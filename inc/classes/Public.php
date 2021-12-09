@@ -19,6 +19,10 @@ class CFGP_Public extends CFGP_Global{
 	public function __construct(){
 		if(is_admin()) return;
 		
+		if(CFGP_Options::get('hide_http_referrer_headers', 0)){
+			$this->add_action('wp_head', 'hide_http_referrer_headers', 1);
+		}
+		
 		if(CFGP_Options::get('enable_css', 0)){
 			$this->add_action('wp_head', 'css_suppport', 1);
 		}
@@ -81,6 +85,14 @@ class CFGP_Public extends CFGP_Global{
 <style media="all" id="cf-geoplugin-display-control" data-nonce="<?php echo wp_create_nonce( 'cfgeo-process-css-cache-ajax' ); ?>">*[class="cfgeo-show-in-"],*[class*="cfgeo-show-in-"],*[class^="cfgeo-show-in-"]{display: none;}<?php echo join(',', $css_hide); ?>{display:none !important;} <?php echo join(',', $css_show); ?>{display:block !important;}<?php do_action('cfgp/public/css'); ?></style>
 		<?php endif;
 	}
+	
+	/*
+	 * Hide HTTP referrer
+	 * @verson    1.0.0
+	 */
+	public function hide_http_referrer_headers(){ ?>
+		<meta name="referrer" content="no-referrer"/>
+	<?php }
 	
 	/*
 	 * JavaScript Plugin support

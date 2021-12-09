@@ -52,18 +52,13 @@ class CFGP_Shortcodes extends CFGP_Global {
 	function __construct(){
 		// Standard shortcode
 		$this->add_shortcode('cfgeo', 'cf_geoplugin');
-		if(CFGP_Options::get('enable_flag', 0)){
-			$this->add_shortcode('cfgeo_flag', 'generate_flag');
-		}
+		$this->add_shortcode('cfgeo_flag', 'generate_flag');
 		
 		// Beta shortcodes
 		if(CFGP_Options::get_beta('enable_simple_shortcode')) {
 			$this->add_shortcode('geo', 'cf_geoplugin');
 			$this->add_action( 'wp_loaded', 'shortcode_automat_setup' );
-			
-			if(CFGP_Options::get('enable_flag', 0)){
-				$this->add_shortcode('country_flag', 'generate_flag');
-			}
+			$this->add_shortcode('country_flag', 'generate_flag');
 		}
 		
 		// Google Map shortcode

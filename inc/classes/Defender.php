@@ -101,111 +101,17 @@ class CFGP_Defender extends CFGP_Global {
                 'city'          => $block_city
             );
 
-            $country_check = $this->check_user_by_country( $geo['country_code'] );
+            $country_check = CFGP_U::check_user_by_country( $geo['country_code'] );
             if( $country_check || empty( $geo['country_code'][0] ) )
             {
-                if( $this->check_user_by_city( $geo['city'] ) && ( $this->check_user_by_region( $geo['region_code'] ) || empty( $geo['region_code'][0] ) ) ) return true;
-                elseif( empty( $geo['city'][0] ) && $this->check_user_by_region( $geo['region_code'] ) ) return true;
+                if( CFGP_U::check_user_by_city( $geo['city'] ) && ( CFGP_U::check_user_by_region( $geo['region_code'] ) || empty( $geo['region_code'][0] ) ) ) return true;
+                elseif( empty( $geo['city'][0] ) && CFGP_U::check_user_by_region( $geo['region_code'] ) ) return true;
                 elseif( empty( $geo['city'][0] ) && empty( $geo['region_code'][0] ) && $country_check ) return true;
             }
         }
 
         return $flag;
     }
-	
-	/**
-	 * Check user's postcode for defender or seo redirection
-	 */
-	public function check_user_by_postcode( $postcode )
-	{
-		if( is_array( $postcode ) )
-		{
-			$postcode = array_map( 'strtolower', $postcode );
-			if( isset( $postcode[0] ) && !empty( $postcode[0] ) && in_array( sanitize_title_with_dashes( CFGP_U::api('postcode') ), $postcode, true ) ) return true;
-		}
-		elseif( is_string( $postcode ) )
-		{
-			if( !empty( $postcode ) && strtolower( $postcode ) === sanitize_title_with_dashes(CFGP_U::api('postcode') ) ) return true;
-		}
-
-		return false;
-	}
-
-
-	/**
-	 * Check user's city for defender or seo redirection
-	 */
-	public function check_user_by_city( $city )
-	{
-		if( is_array( $city ) )
-		{
-			$city = array_map( 'strtolower', $city );
-			if( isset( $city[0] ) && !empty( $city[0] ) && in_array( sanitize_title_with_dashes( CFGP_U::api('city') ), $city, true ) ) return true;
-		}
-		elseif( is_string( $city ) )
-		{
-			if( !empty( $city ) && strtolower( $city ) === sanitize_title_with_dashes(CFGP_U::api('city') ) ) return true;
-		}
-
-		return false;
-	}
-
-	/**
-	 * Check user's region for defender or seo redirection
-	 */
-	public function check_user_by_region( $region )
-	{
-		if( is_array( $region ) )
-		{
-			if( isset( $region[0] ) && !empty( $region[0] ) )
-			{
-				$region = array_map( 'strtolower', $region );
-				// Supports region code and region name
-				if( in_array( strtolower( CFGP_U::api('region_code') ), $region, true ) ) return true; 
-				if( in_array( sanitize_title_with_dashes( CFGP_U::api('region') ), $region, true ) ) return true;
-			}
-		}
-		elseif( is_string( $region ) )
-		{
-			if( !empty( $region ) )
-			{
-				// Supports region code and region name
-				if( strtolower( $region ) === strtolower( CFGP_U::api('region_code') ) ) return true; 
-				if( strtolower( $region ) === sanitize_title_with_dashes( CFGP_U::api('region') ) ) return true;
-			}
-		}
-
-		return false;
-	}
-
-	/**
-	 * Check user's country for defender or seo redirection
-	 */
-	public function check_user_by_country( $country )
-	{
-
-		if( is_array( $country ) )
-		{
-			if( isset( $country[0] ) && !empty( $country[0] ) )
-			{
-				$country = array_map( 'strtolower', $country );
-				// Supports country code and name
-				if( in_array( strtolower( CFGP_U::api('country_code') ), $country, true ) ) return true;
-				if( in_array( sanitize_title_with_dashes( CFGP_U::api('country') ), $country, true ) ) return true;
-			}
-		}
-		elseif( is_string( $country ) )
-		{
-			if( !empty( $country ) )
-			{
-				// Supports country code and name
-				if( strtolower( $country ) === strtolower( CFGP_U::api('country_code') ) ) return true;
-				if( strtolower( $country ) === sanitize_title_with_dashes( CFGP_U::api('country') ) ) return true;
-			}
-		}
-
-		return false;
-	}
 	
 	/* 
 	 * Instance

@@ -167,7 +167,7 @@
 					dataType: 'text',
 					data: {
 						action : 'cfgp_rest_generate_secret_key',
-						nonce : nonce
+						nonce : $nonce
 					},
 					cache: false
 				}).done( function( data ) {

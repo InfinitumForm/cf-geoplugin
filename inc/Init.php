@@ -56,6 +56,13 @@ final class CFGP_Init{
 		// Delete expired transients
 		self::delete_expired_transients();
 		
+		// Disable plugin updates
+		/*
+		 * NOTE: Right now is not used
+		 *
+		 * add_filter( 'site_transient_update_plugins', array($this, 'disable_plugin_updates') );
+		 */
+		
 		// Dynamic action
 		do_action('cfgp/init', $this);
 	}
@@ -324,6 +331,20 @@ final class CFGP_Init{
 				)
 			);
 		}
+	}
+	
+	/**
+	 * Disable Geo Plugin updates
+	 * @since     8.0.0
+	 */
+	function disable_plugin_updates( $value ) {
+		if ( isset($value) && is_object($value) ) {
+			$plugin = dirname(CFGP_FILE).'/'.basename(CFGP_FILE);
+			if ( isset( $value->response[$plugin] ) ) {
+				unset( $value->response[$plugin] );
+			}
+		}
+		return $value;
 	}
 	
 	/* 
