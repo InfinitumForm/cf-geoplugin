@@ -15,8 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
 
 if(!class_exists('CFGP_Metabox')) :
 class CFGP_Metabox extends CFGP_Global {
-	public $metabox_seo_redirection = 'cfgp-seo-redirection';
-	public $metabox_geo_tag = 'cfgp-geo-tag';
+	public $metabox = 'cfgp-seo-redirection';
 	
 	public function __construct(){
 		$this->add_action('add_meta_boxes', 'add_seo_redirection', 1);
@@ -41,7 +40,7 @@ class CFGP_Metabox extends CFGP_Global {
 		// SEO Redirection
 		if(in_array($post_type, CFGP_Options::get('enable_seo_posts', array()))) {
 			$save = array(); $i=0;
-			if($prepared_data = CFGP_U::request($this->metabox_seo_redirection, array()))
+			if($prepared_data = CFGP_U::request($this->metabox, array()))
 			{
 				if(is_array($prepared_data))
 				{
@@ -55,8 +54,8 @@ class CFGP_Metabox extends CFGP_Global {
 				}
 			}
 			
-			update_post_meta( $post_id, "{$this->metabox_seo_redirection}-enabled", !empty($save));
-			update_post_meta( $post_id, $this->metabox_seo_redirection, $save);
+			update_post_meta( $post_id, "{$this->metabox}-enabled", !empty($save));
+			update_post_meta( $post_id, $this->metabox, $save);
 			
 			delete_post_meta($post_id, CFGP_METABOX . 'redirection');
 		}
@@ -358,7 +357,7 @@ function CF_GeoPlugin_Google_Map_GeoTag() {
 	 */
 	public function add_seo_redirection__callback( $post ){
 		
-		$seo_redirection = get_post_meta($post->ID, $this->metabox_seo_redirection, true);
+		$seo_redirection = get_post_meta($post->ID, $this->metabox, true);
 		if(empty($seo_redirection)){
 			$seo_redirection = get_post_meta($post->ID, CFGP_METABOX . 'redirection', true); // Depricated (it will be removed in the future)
 		}
@@ -399,17 +398,17 @@ function CF_GeoPlugin_Google_Map_GeoTag() {
     <div class="cfgp-row cfgp-repeater-item cfgp-country-region-city-multiple-form">
         <div class="cfgp-col cfgp-col-4">
             <label for="country"><?php _e('Choose Countries', CFGP_NAME); ?></label>
-            <?php CFGP_Form::select_countries(array('name'=>"{$this->metabox_seo_redirection}[{$i}][country]", 'id'=>"{$this->metabox_seo_redirection}-{$i}-country"), $country, true);?>
+            <?php CFGP_Form::select_countries(array('name'=>"{$this->metabox}[{$i}][country]", 'id'=>"{$this->metabox}-{$i}-country"), $country, true);?>
             <span class="description"><?php _e( 'Select the countries you want to redirect.', CFGP_NAME ); ?></span>
-            <button type="button" class="cfgp-select-all" data-target="<?php echo "{$this->metabox_seo_redirection}-{$i}-country"; ?>"><object data="<?php echo CFGP_ASSETS . '/images/select.svg'; ?>" width="15" height="15"></object> <?php esc_attr_e( 'Select all', CFGP_NAME ); ?></button>&nbsp;&nbsp;&nbsp;&nbsp;
+            <button type="button" class="cfgp-select-all" data-target="<?php echo "{$this->metabox}-{$i}-country"; ?>"><object data="<?php echo CFGP_ASSETS . '/images/select.svg'; ?>" width="15" height="15"></object> <?php esc_attr_e( 'Select all', CFGP_NAME ); ?></button>&nbsp;&nbsp;&nbsp;&nbsp;
 			<?php
 				CFGP_Form::checkbox(
 					array(
-						"{$this->metabox_seo_redirection}[{$i}][exclude_country]" => array(
+						"{$this->metabox}[{$i}][exclude_country]" => array(
 							'label' => __('Exclude from redirection', CFGP_NAME),
 							'value' => 1,
 							'checked' => $exclude_country,
-							'id' => "{$this->metabox_seo_redirection}-{$i}-exclude_country",
+							'id' => "{$this->metabox}-{$i}-exclude_country",
 						)
 					),
 					true
@@ -418,17 +417,17 @@ function CF_GeoPlugin_Google_Map_GeoTag() {
         </div>
         <div class="cfgp-col cfgp-col-4">
             <label for="region"><?php _e('Choose Regions', CFGP_NAME); ?></label>
-            <?php CFGP_Form::select_regions(array('name'=>"{$this->metabox_seo_redirection}[{$i}][region]", 'id'=>"{$this->metabox_seo_redirection}-{$i}-region", 'country_code' => $country), $region, true); ?>
+            <?php CFGP_Form::select_regions(array('name'=>"{$this->metabox}[{$i}][region]", 'id'=>"{$this->metabox}-{$i}-region", 'country_code' => $country), $region, true); ?>
             <span class="description"><?php _e( 'Select the regions you want to redirect.', CFGP_NAME ); ?></span>
-            <button type="button" class="cfgp-select-all" data-target="<?php echo "{$this->metabox_seo_redirection}-{$i}-region"; ?>"><object data="<?php echo CFGP_ASSETS . '/images/select.svg'; ?>" width="15" height="15"></object> <?php esc_attr_e( 'Select all', CFGP_NAME ); ?></button>&nbsp;&nbsp;&nbsp;&nbsp;
+            <button type="button" class="cfgp-select-all" data-target="<?php echo "{$this->metabox}-{$i}-region"; ?>"><object data="<?php echo CFGP_ASSETS . '/images/select.svg'; ?>" width="15" height="15"></object> <?php esc_attr_e( 'Select all', CFGP_NAME ); ?></button>&nbsp;&nbsp;&nbsp;&nbsp;
 			<?php
 				CFGP_Form::checkbox(
 					array(
-						"{$this->metabox_seo_redirection}[{$i}][exclude_region]" => array(
+						"{$this->metabox}[{$i}][exclude_region]" => array(
 							'label' => __('Exclude from redirection', CFGP_NAME),
 							'value' => 1,
 							'checked' => $exclude_region,
-							'id' => "{$this->metabox_seo_redirection}-{$i}-exclude_region",
+							'id' => "{$this->metabox}-{$i}-exclude_region",
 						)
 					),
 					true
@@ -437,17 +436,17 @@ function CF_GeoPlugin_Google_Map_GeoTag() {
         </div>
         <div class="cfgp-col cfgp-col-4">
             <label for="city"><?php _e('Choose Cities', CFGP_NAME); ?></label>
-            <?php CFGP_Form::select_cities(array('name'=>"{$this->metabox_seo_redirection}[{$i}][city]", 'id'=>"{$this->metabox_seo_redirection}-{$i}-city", 'country_code' => $country), $city, true); ?>
+            <?php CFGP_Form::select_cities(array('name'=>"{$this->metabox}[{$i}][city]", 'id'=>"{$this->metabox}-{$i}-city", 'country_code' => $country), $city, true); ?>
             <span class="description"><?php _e( 'Select the cities you want to redirect.', CFGP_NAME ); ?></span>
-            <button type="button" class="cfgp-select-all" data-target="<?php echo "{$this->metabox_seo_redirection}-{$i}-city"; ?>"><object data="<?php echo CFGP_ASSETS . '/images/select.svg'; ?>" width="15" height="15"></object> <?php esc_attr_e( 'Select all', CFGP_NAME ); ?></button>&nbsp;&nbsp;&nbsp;&nbsp;
+            <button type="button" class="cfgp-select-all" data-target="<?php echo "{$this->metabox}-{$i}-city"; ?>"><object data="<?php echo CFGP_ASSETS . '/images/select.svg'; ?>" width="15" height="15"></object> <?php esc_attr_e( 'Select all', CFGP_NAME ); ?></button>&nbsp;&nbsp;&nbsp;&nbsp;
 			<?php
 				CFGP_Form::checkbox(
 					array(
-						"{$this->metabox_seo_redirection}[{$i}][exclude_city]" => array(
+						"{$this->metabox}[{$i}][exclude_city]" => array(
 							'label' => __('Exclude from redirection', CFGP_NAME),
 							'value' => 1,
 							'checked' => $exclude_city,
-							'id' => "{$this->metabox_seo_redirection}-{$i}-exclude_city",
+							'id' => "{$this->metabox}-{$i}-exclude_city",
 						)
 					),
 					true
@@ -456,17 +455,17 @@ function CF_GeoPlugin_Google_Map_GeoTag() {
         </div>
         <div class="cfgp-col cfgp-col-4">
             <label for="postcode"><?php _e('Choose Postcodes', CFGP_NAME); ?></label>
-            <?php CFGP_Form::select_postcodes(array('name'=>"{$this->metabox_seo_redirection}[{$i}][postcode]", 'id'=>"{$this->metabox_seo_redirection}-{$i}-postcode"), $postcode, true); ?>
+            <?php CFGP_Form::select_postcodes(array('name'=>"{$this->metabox}[{$i}][postcode]", 'id'=>"{$this->metabox}-{$i}-postcode"), $postcode, true); ?>
             <span class="description"><?php _e( 'Select the postcodes you want to redirect.', CFGP_NAME ); ?></span>
-            <button type="button" class="cfgp-select-all" data-target="<?php echo "{$this->metabox_seo_redirection}-{$i}-postcode"; ?>"><object data="<?php echo CFGP_ASSETS . '/images/select.svg'; ?>" width="15" height="15"></object> <?php esc_attr_e( 'Select all', CFGP_NAME ); ?></button>&nbsp;&nbsp;&nbsp;&nbsp;
+            <button type="button" class="cfgp-select-all" data-target="<?php echo "{$this->metabox}-{$i}-postcode"; ?>"><object data="<?php echo CFGP_ASSETS . '/images/select.svg'; ?>" width="15" height="15"></object> <?php esc_attr_e( 'Select all', CFGP_NAME ); ?></button>&nbsp;&nbsp;&nbsp;&nbsp;
 			<?php
 				CFGP_Form::checkbox(
 					array(
-						"{$this->metabox_seo_redirection}[{$i}][exclude_postcode]" => array(
+						"{$this->metabox}[{$i}][exclude_postcode]" => array(
 							'label' => __('Exclude from redirection', CFGP_NAME),
 							'value' => 1,
 							'checked' => $exclude_postcode,
-							'id' => "{$this->metabox_seo_redirection}-{$i}-exclude_postcode",
+							'id' => "{$this->metabox}-{$i}-exclude_postcode",
 						)
 					),
 					true
@@ -475,12 +474,12 @@ function CF_GeoPlugin_Google_Map_GeoTag() {
         </div>
         <div class="cfgp-col cfgp-col-4">
             <label for="url"><?php _e('Define Redirect URL', CFGP_NAME); ?></label>
-            <?php CFGP_Form::input('url', array('name'=>"{$this->metabox_seo_redirection}[{$i}][url]",'value'=>$url, 'id'=>"{$this->metabox_seo_redirection}-{$i}-url", 'class'=>'required-field')); ?>
+            <?php CFGP_Form::input('url', array('name'=>"{$this->metabox}[{$i}][url]",'value'=>$url, 'id'=>"{$this->metabox}-{$i}-url", 'class'=>'required-field')); ?>
             <span class="description"><?php _e( 'URL where you want to redirect.', CFGP_NAME ); ?></span>
         </div>
         <div class="cfgp-col cfgp-col-4">
             <label for="http_code"><?php _e('HTTP Code', CFGP_NAME); ?></label>
-            <?php CFGP_Form::select_http_code(array('name'=>"{$this->metabox_seo_redirection}[{$i}][http_code]", 'id'=>"{$this->metabox_seo_redirection}-{$i}-http_code"), $http_code); ?>
+            <?php CFGP_Form::select_http_code(array('name'=>"{$this->metabox}[{$i}][http_code]", 'id'=>"{$this->metabox}-{$i}-http_code"), $http_code); ?>
             <span class="description"><?php _e( 'Select the desired HTTP redirection.', CFGP_NAME ); ?></span>
         </div>
         <div class="cfgp-col cfgp-col-3 input-radio">
@@ -491,7 +490,7 @@ function CF_GeoPlugin_Google_Map_GeoTag() {
                         1 => __('Enable', CFGP_NAME),
                         0 => __('Disable', CFGP_NAME)
                     ),
-                    array('name'=>"{$this->metabox_seo_redirection}[{$i}][active]", 'id'=>"{$this->metabox_seo_redirection}-{$i}-active"),
+                    array('name'=>"{$this->metabox}[{$i}][active]", 'id'=>"{$this->metabox}-{$i}-active"),
                     $active
                 );
             ?>
@@ -504,7 +503,7 @@ function CF_GeoPlugin_Google_Map_GeoTag() {
                         1 => __('Enable', CFGP_NAME),
                         0 => __('Disable', CFGP_NAME)
                     ),
-                    array('name'=>"{$this->metabox_seo_redirection}[{$i}][only_once]"),
+                    array('name'=>"{$this->metabox}[{$i}][only_once]"),
                     $only_once
                 );
             ?>

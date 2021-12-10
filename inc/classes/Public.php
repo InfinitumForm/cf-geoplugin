@@ -31,6 +31,8 @@ class CFGP_Public extends CFGP_Global{
 			$this->add_action('wp_head', 'javascript_support', 1);
 		}
 		
+		$this->add_action('wp_head', 'append_geo_tags', 1);
+		
 		$this->add_action( 'wp_enqueue_scripts', 'enqueue_scripts' );
 		
 		$this->add_action('wp_loaded', 'output_buffer_start', 100);
@@ -90,9 +92,7 @@ class CFGP_Public extends CFGP_Global{
 	 * Hide HTTP referrer
 	 * @verson    1.0.0
 	 */
-	public function hide_http_referrer_headers(){ ?>
-		<meta name="referrer" content="no-referrer"/>
-	<?php }
+	public function hide_http_referrer_headers(){ ?><meta name="referrer" content="no-referrer"/><?php }
 	
 	/*
 	 * JavaScript Plugin support
@@ -145,6 +145,47 @@ class CFGP_Public extends CFGP_Global{
 </script>
 
 	<?php }
+	
+	/*
+	 * Add Geo Tag
+	 * @verson    2.0.0
+	 */
+	public function append_geo_tags() {
+		$post = get_post();
+
+		if($post && is_object($post) && in_array($post->post_type, CFGP_Options::get('enable_geo_tag', array())))
+		{
+			$geo_data = apply_filters( 'cfgp/public/geo_tags', array(
+				'geo.enable'	=> get_post_meta( $post->ID, 'cfgp-geotag-enable',	true ),
+				'geo.address' 	=> get_post_meta( $post->ID, 'cfgp-dc-title',		true ),
+				'geo.region'	=> get_post_meta( $post->ID, 'cfgp-region',			true ),
+				'geo.placename'	=> get_post_meta( $post->ID, 'cfgp-placename',		true ),
+				'geo.latitude'	=> get_post_meta( $post->ID, 'cfgp-latitude',		true ),
+				'geo.longitude'	=> get_post_meta( $post->ID, 'cfgp-longitude',		true )
+			), $post);
+
+			if( $geo_data['geo.enable'] )
+			{
+				if( !empty( $geo_data['geo.region'] ) && !empty( $geo_data['geo.placename'] ) )
+				{
+					printf( '<meta name="geo.region" content="%s-%s" />' . PHP_EOL, $geo_data['geo.region'], $geo_data['geo.placename'] );
+				}
+				if( !empty( $geo_data['geo.address'] ) )
+				{
+					printf( '<meta name="DC.title" content="%s" />' . PHP_EOL, $geo_data['geo.address'] );
+				}
+				if( !empty( $geo_data['geo.placename'] ) )
+				{
+					printf( '<meta name="geo.placename" content="%s" />' . PHP_EOL, $geo_data['geo.placename'] );
+				}
+				if( !empty( $geo_data['geo.longitude'] ) && !empty( $geo_data['geo.latitude'] ) )
+				{
+					printf( '<meta name="geo.position" content="%s;%s" />' . PHP_EOL, $geo_data['geo.latitude'], $geo_data['geo.longitude'] );
+					printf( '<meta name="ICBM" content="%s;%s" />' . PHP_EOL, $geo_data['geo.latitude'], $geo_data['geo.longitude'] );
+				}
+			}
+		}
+	}
 	
 	// Output buffer start
 	public function output_buffer_start() {
