@@ -311,12 +311,18 @@ class CFGP_U {
 	 * @return        array/object
 	 * @author        Ivijan-Stefan Stipic
 	*/
-	public static function plugin_info(array $fields = [], $slug = false) {
+	public static function plugin_info(array $fields = [], $slug = false, $force_cache = true) {
 		
 		$cache_name = CFGP_NAME . '-plugin_info-' . md5(serialize($fields) . ($slug!==false ? $slug : CFGP_NAME));
 		
 		if($cache = CFGP_Cache::get($cache_name)) {
 			return $cache;
+		}
+		
+		if($force_cache === true) {
+			if($cache = get_transient("cfgp-{$cache_name}")) {
+				return $cache;
+			}
 		}
 		
         if ( is_admin() ) {
@@ -366,7 +372,13 @@ class CFGP_U {
 				], $fields)
 			]);
 		 	
+			// Save into current cache
 			CFGP_Cache::set($cache_name, $plugin_data);
+			
+			// Because is expencive function, we need to store data to transients
+			if($force_cache === true) {
+				set_transient("cfgp-{$cache_name}", $plugin_data, DAY_IN_SECONDS);
+			}
 			
 			return $plugin_data;
 		}

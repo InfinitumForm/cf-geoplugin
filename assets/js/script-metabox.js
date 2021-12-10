@@ -173,6 +173,19 @@
 		var $this = $(this),
 			$item = $this.closest('.cfgp-repeater-item');
 		$item.remove();
+	})
+	
+	// Enable GEO Tags
+	.on('change', '#cfgp-geo-tag-container input[name^="cfgp-geotag-enable"]', function(e){
+		if( $(this).is(':checked') ) {
+			$('#cfgp-geo-tag-map-container').show(1, function(){
+				$(this).find('input').prop('disabled', false);
+			});
+		} else  {
+			$('#cfgp-geo-tag-map-container').hide(1, function(){
+				$(this).find('input').prop('disabled', true);
+			});
+		}
 	});
 		
 })(jQuery || window.jQuery || Zepto || window.Zepto);

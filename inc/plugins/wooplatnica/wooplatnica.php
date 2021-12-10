@@ -19,7 +19,11 @@ class CFGP__Plugin__wooplatnica extends CFGP_Global
     }
 	
 	function conversion($total) {
-		return do_shortcode("[cfgeo_converter auto=1 no-symbol=1]{$total}[/cfgeo_converter]");
+		if(CFGP_U::api('currency') == 'RSD' && CFGP_U::api('base_currency') == 'RSD') {
+			return $total;
+		}
+		
+		return do_shortcode("[cfgeo_converter to='RSD' auto=1 no-symbol=1]{$total}[/cfgeo_converter]");
 	}
 	
 	/* 

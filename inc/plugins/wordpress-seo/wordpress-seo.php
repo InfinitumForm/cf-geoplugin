@@ -2,7 +2,7 @@
 /**
  * WooCommerce integration
  *
- * @since      7.0.0
+ * @since      8.0.0
  * @package    CF_Geoplugin
  * @author     Ivijan-Stefan Stipic
  */
@@ -11,7 +11,19 @@ class CFGP__Plugin__wordpress_seo extends CFGP_Global
 {
 	private function __construct()
     {
-		
+		$this->add_action('wpseo_register_extra_replacements', 'register_vars');
+	}
+	
+	/* 
+	 * Register custom variables
+	 * @verson    1.0.0
+	 */
+	public function register_vars (){
+		foreach(CFGP_U::api() as $key=>$value) {
+			wpseo_register_var_replacement("%%{$key}%%", function () use ($value) {
+				return $value;
+			}, 'advanced');
+		}
 	}
 	
 	/* 

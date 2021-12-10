@@ -19,7 +19,8 @@ if(!class_exists('CFGP_Plugins')) :
 			'woocommerce' => 'woocommerce',
 			'wooplatnica' => 'wooplatnica',
 			'contact-form-7' => 'wp-contact-form-7',
-			'wordpress-seo' => 'wp-seo'		
+			'wordpress-seo' => 'wp-seo',
+			'elementor' => 'elementor'
 		);
 		
 		function __construct( $options=array(), $only_object = false ) {
