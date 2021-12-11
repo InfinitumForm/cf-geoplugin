@@ -76,6 +76,10 @@ class CFGP_Shortcodes extends CFGP_Global {
 		// Currency converter
 		$this->add_shortcode( 'cfgeo_converter', 'cfgeo_converter' );
 		
+		// Full converter shortcode
+		$this->add_shortcode( 'cfgeo_full_converter', 'cfgeo_full_converter' );
+		$this->add_action( 'wp_ajax_cfgeo_full_currency_converter', 'ajax__cfgeo_full_currency_converter' );
+		
 		// Escape shortcodes
 		$this->add_shortcode( 'escape_shortcode', 'cfgeo_escape_shortcode' );
 		
@@ -995,6 +999,200 @@ class CFGP_Shortcodes extends CFGP_Global {
 			}
 			return CFGP_U::generate_converter_output( $result['to_amount'], $symbol_to, $atts['align'], $atts['separator'] );
 		}
+	}
+	
+	/**
+	 * Full converter shortcode
+	 * 
+	 * @since 7.4.2
+	 */
+	public function cfgeo_full_converter( $atts, $content = '' )
+	{
+		wp_enqueue_style( CFGP_NAME . '-widget-converter' );
+		$currency_symbols = CFGP_Defaults::CURRENCY_SYMBOL;
+
+		$CFGEO = CFGP_U::api();
+
+		$instance = shortcode_atts(
+			array(
+				'title'	=> __( 'Currency converter', CFGP_NAME ),
+				'before_title' => '',
+				'after_title'	=> '',
+				'amount'	=> 1,
+				'from'		=> __( 'From', CFGP_NAME ),
+				'to'		=> __( 'To', CFGP_NAME ),
+				'convert'	=> __( 'Convert', CFGP_NAME ),
+			), 
+			$atts, 
+			'cfgeo_full_converter'
+		);
+		?>
+		<div class="cfgp-container-fluid">
+			<div class="cfgp-currency-converter-card">
+				<div class="cfgp-currency-converter-card-body">
+					<?php 
+						$title = isset( $instance['title'] ) && !empty( $instance['title'] ) ? esc_html( $instance['title'] ) : '';
+						echo html_entity_decode($instance['before_title']);
+						printf( '%s', apply_filters( 'widget_title', $title ) ); 
+						echo html_entity_decode ($instance['after_title']);
+					?>
+					<div class="cfgp-row">
+						<div class="cfgp-col-12">
+						<form action="<?php admin_url( 'admin-ajax.php?action=cfgeo_full_currency_converter' ); ?>" class="cfgp-currency-form" method="post" autocomplete="off">
+							<div class="form-group cfgp-form-group cfgp-form-group-amount">
+								<?php 
+									$label_amount = sprintf( '%s-%s', 'cfgp-currency-amount', CFGP_U::generate_token(5) );
+									$amount = ( isset( $instance['amount'] ) && !empty( $instance['amount'] ) ) ? esc_html( $instance['amount'] ) : esc_html__( 'Amount', CFGP_NAME );
+								?>
+								<label class="form-label cfgp-form-label" for="<?php echo $label_amount; ?>"><?php echo $amount ?></label>
+								<input type="text" name="cfgp_currency_amount" class="form-control cfgp-form-control" id="<?php echo $label_amount; ?>" placeholder="<?php echo $amount; ?>" autocomplete="off">
+							</div>
+							
+							<?php $label_from = sprintf( '%s-%s', 'cfgp-currency-from', CFGP_U::generate_token(5) ); ?>
+							<div class="form-group cfgp-form-group cfgp-form-group-from">
+								<label class="form-label cfgp-form-label" for="<?php echo $label_from; ?>"><?php echo ( isset( $instance['from'] ) && !empty( $instance['from'] ) ) ? esc_html( $instance['from'] ) : esc_html__( 'From', CFGP_NAME ); ?></label>
+								<select name="cfgp_currency_from" class="form-control cfgp-form-control cfgp-custom-select cfgp-col-10 cfgp-currency-from" id="<?php echo $label_from; ?>" data-show-subtext="true">
+									<?php
+										foreach( $currency_symbols as $key => $countries )
+										{
+											$selected = '';
+											if( CFGP_Options::get('base_currency') == $key ) $selected = ' selected';
+
+											$symbol = '';
+											if( isset( $currency_symbols[ $key ] ) && !empty( $currency_symbols[ $key ] ) ) $symbol = sprintf( '- %s', $currency_symbols[ $key ] );
+											printf( '<option value="%s" %s>%s %s</option>', $key, $selected, $key, $symbol );
+										}
+									?>
+								</select>
+							</div>
+	
+							<?php $label_to = sprintf( '%s-%s', 'cfgp-currency-to', CFGP_U::generate_token(5) ); ?>
+							<div class="form-group cfgp-form-group cfgp-form-group-to">
+								<label class="form-label cfgp-form-label" for="<?php echo $label_to; ?>"><?php echo ( isset( $instance['to'] ) && !empty( $instance['to'] ) ) ? esc_html( $instance['to'] ) : esc_html__( 'To', CFGP_NAME ); ?></label>
+								<select name="cfgp_currency_to" class="form-control cfgp-form-control cfgp-custom-select cfgp-col-10 cfgp-currency-to" id="<?php echo $label_to; ?>" data-show-subtext="true">
+									<?php
+										foreach( $currency_symbols as $key => $countries )
+										{
+											$selected = '';
+											if( isset( $CFGEO['currency'] ) && $CFGEO['currency'] == $key ) $selected = ' selected';
+
+											$symbol = '';
+											if( isset( $currency_symbols[ $key ] ) && !empty( $currency_symbols[ $key ] ) ) $symbol = sprintf( '- %s', $currency_symbols[ $key ] );
+											printf( '<option value="%s" %s>%s %s</option>', $key, $selected, $key, $symbol );
+										}
+									?>
+								</select>
+							</div>
+							<div class="cfgp-form-group cfgp-form-group-result">
+								<p class="cfgp-currency-converted"></p>
+							</div>
+							<div class="cfgp-form-group cfgp-form-group-submit">
+								<button type="submit" class="button submit cfgp-btn cfgp-btn-calculate"><?php esc_html_e( $instance['convert'], CFGP_NAME ); ?></button>
+								<button type="button" class="button submit cfgp-btn cfgp-exchange-currency">&#8646;</button> 
+							</div>
+                            <?php wp_nonce_field( 'cfgeo_full_currency_converter', 'cfgeo_currency_converter_nonce__' ); ?>
+						</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<?php
+	}
+	
+	/**
+	 * Ajax call for currency conversion
+	 */
+	public function ajax__cfgeo_full_currency_converter()
+	{
+		if( !isset( $_REQUEST['cfgeo_currency_converter_nonce__'] ) || !wp_verify_nonce( $_REQUEST['cfgeo_currency_converter_nonce__'], 'cfgeo_full_currency_converter' ) )
+		{
+			$this->show_conversion_card_message( 'error_direct' );
+			wp_die();
+		}
+
+		$amount = filter_var( $_REQUEST['cfgp_currency_amount'], FILTER_SANITIZE_NUMBER_FLOAT,  FILTER_FLAG_ALLOW_FRACTION );
+
+		if( empty( $amount ) )
+		{
+			$this->show_conversion_card_message( 'error_user' );
+			wp_die();
+		}
+
+		$amount = str_replace( '-', '', $amount );
+		$api_params = array(
+			'from'		=> strtoupper( $_REQUEST['cfgp_currency_from'] ),
+			'to'		=> strtoupper( $_REQUEST['cfgp_currency_to'] ),
+			'amount'	=> $amount
+		);
+		$api_url = add_query_arg( $api_params, CFGP_Defaults::API['converter'] );
+
+		$result = CFGP_U::curl_get( $api_url );
+		
+		$result = json_decode( $result, true );
+
+		if( isset( $result['return'] ) )
+		{
+			if( $result['return'] == false ) $this->show_conversion_card_message( 'error_api' );
+			else
+			{
+				$this->show_conversion_card_message( 'success', $result );
+			}
+		}
+		else $this->show_conversion_card_message( 'error_api' );
+		exit;
+	}
+	
+	/**
+	 * Show conversion card message
+	 */
+	public function show_conversion_card_message( $message_type, $result = array() )
+	{
+		$class = 'cfgp-error';
+		switch( $message_type )
+		{
+			case 'error_direct':
+				$message = '<b>' . esc_html__( 'Direct access is forbidden!', CFGP_NAME ) . '</b>';
+			break;
+			case 'error_user': 
+				$message = '<b>' . esc_html__( 'Please enter valid decimal or integer format.', CFGP_NAME ) . '</b>';
+			break;
+			case 'error_api':
+				$message = '<b>' . esc_html__( 'Sorry currently we are not able to do conversion. Please try again later.', CFGP_NAME ) . '</b>';
+			break;
+			case 'success':
+				$class = 'cfgp-success';
+				
+				if( !isset( $result['from_amount'] ) || empty( $result['from_amount'] ) ) 
+				{
+					$result['from_amount'] = '1';
+					$result['to_amount'] = '1';
+				}
+				if( !isset( $result['to_amount'] ) || empty( $result['to_amount'] ) )
+				{
+					$result['from_amount'] = '1';
+					$result['to_amount'] = '1';
+				}
+		
+				if( !isset( $result['from_name'] ) || empty( $result['from_name'] ) ) $result['from_name'] = esc_html__( 'Undefined', CFGP_NAME );
+				if( !isset( $result['to_name'] ) || empty( $result['to_name'] ) ) $result['to_name'] = esc_html__( 'Undefined', CFGP_NAME );;
+		
+				if( !isset( $result['from_code'] ) || empty( $result['from_code'] ) ) $result['from_code'] = 'X';
+				if( !isset( $result['to_code'] ) || empty( $result['to_code'] ) ) $result['to_code'] = 'X';
+
+				$message = sprintf( '<p class="cfgp-currency-results-amount"><span class="cfgp-currency-results-amount-current">%s %s</span><span class="cfgp-currency-results-amount-separator"> = </span><span class="cfgp-currency-results-amount-converted">%s %s</span></p><p class="cfgp-currency-results-info">%s &rarr; %s</p>', $result['from_amount'], $result['from_code'], $result['to_amount'], $result['to_code'], $result['from_name'], $result['to_name'] );
+			break;
+			default:
+				$message = '<b>' . esc_html__( 'Sorry currently we are not able to do conversion. Please try again later.', CFGP_NAME ) . '</b>';
+			break;
+		}
+		?>
+		<div class="cfgp-card <?php echo esc_attr($class); ?>">
+			<div class="cfgp-card-body">
+				<p class="cfgp-card-text"><?php echo $message; ?></p>
+			</div>
+		</div>
+		<?php
 	}
 	
 	// IS PROXY

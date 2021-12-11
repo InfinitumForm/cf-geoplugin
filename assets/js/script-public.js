@@ -8,7 +8,7 @@ jQ(document).ready(function($){
 		if(banner.length > 0)
 		{
 			banner.each(function(){
-				var $this = $(this);
+				var $this = jQ(this);
 				jQ.ajax({
 					type: "POST",
 					url: (typeof ajaxurl !== 'undefined' ? ajaxurl : CFGP.ajaxurl),
@@ -33,7 +33,7 @@ jQ(document).ready(function($){
 				
 			});
 		}
-	}( $('.cf-geoplugin-banner.cache') ));
+	}( jQ('.cf-geoplugin-banner.cache') ));
 	
 	
 	/*
@@ -43,7 +43,7 @@ jQ(document).ready(function($){
 		if(sc.length > 0)
 		{
 			sc.each(function(){
-				var $this = $(this);
+				var $this = jQ(this);
 				jQ.ajax({
 					type: "POST",
 					url: (typeof ajaxurl !== 'undefined' ? ajaxurl : CFGP.ajaxurl),
@@ -67,7 +67,63 @@ jQ(document).ready(function($){
 				
 			});
 		}
-	}( $('.cf-geoplugin-shortcode.cache') ));
+	}( jQ('.cf-geoplugin-shortcode.cache') ));
+	
+	/**
+     * Exchange currencies
+     */
+	(function(sc){
+		if(sc.length > 0)
+		{
+			sc.on( 'click', function( e ) {
+				e.preventDefault();
+				var $this = jQ( this );
+
+				var fromVal = jQ( $this ).closest( 'form' ).find( 'select.cfgp-currency-from option:selected' ).val();
+				var fromText = jQ( $this ).closest( 'form' ).find( 'select.cfgp-currency-from option:selected' ).text();
+
+				var toVal = jQ( $this ).closest( 'form' ).find( 'select.cfgp-currency-to option:selected' ).val();
+				var toText = jQ( $this ).closest( 'form' ).find( 'select.cfgp-currency-to option:selected' ).text();
+
+				jQ( 'select.cfgp-currency-from option:selected' ).val( toVal ).text( toText );
+				jQ( 'select.cfgp-currency-to option:selected' ).val( fromVal ).text( fromText );
+			});
+		}
+	}( jQ( '.cfgp-exchange-currency' ) ));
+
+    /**
+     * Ajax for conversion
+     */
+	(function(sc){
+		if(sc.length > 0)
+		{
+			sc.on( 'submit', function( e ) {
+				e.preventDefault();
+				var $this = jQ( this );
+
+				var formData = $this.serialize();
+
+				jQ.ajax({
+					method : 'POST',
+					data : formData,
+					cache  : false,
+					url : (typeof ajaxurl !== 'undefined' ? ajaxurl : CFGP.ajaxurl) + '?action=cfgeo_full_currency_converter',
+					beforeSend: function()
+					{
+						jQ( $this )
+							.find( 'p.cfgp-currency-converted' )
+								.html( '<div class="cfgp-card"><div class="cfgp-card-body"><img src="' + CFGP.loading_gif + '" class="cfgp-loader" /></div></div>' );
+					} 
+				}).done( function( d ) {
+					jQ( $this ).find( 'p.cfgp-currency-converted' ).html( d );
+				}).fail( function( jqXHR, error, textStatus ) {
+					console.log( jqXHR );
+					console.log( error );
+					console.log( textStatus );
+				});
+			});
+		}
+	}( jQ( 'form.cfgp-currency-form' ) ));
 	
 });
 })(jQuery || window.jQuery || Zepto || window.Zepto);

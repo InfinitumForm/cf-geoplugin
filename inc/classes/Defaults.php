@@ -183,11 +183,11 @@ class CFGP_Defaults {
 	 */
 	const API = array(
 		// Standard CF Geo Plugin API URLs
-		'main'			=>	'http://cdn-cfgeoplugin.com.dedi1855.your-server.de/index.php',
-		'dns'			=>	'http://cdn-cfgeoplugin.com.dedi1855.your-server.de/dns.php',
-		'authenticate'	=>	'http://cdn-cfgeoplugin.com.dedi1855.your-server.de/authenticate.php',
-		'spam-checker'	=>	'http://cdn-cfgeoplugin.com.dedi1855.your-server.de/spam-checker.php',
-		'converter'		=>	'http://cdn-cfgeoplugin.com.dedi1855.your-server.de/convert.php',
+		'main'			=>	'http://159.203.47.151/api/index.php',
+		'dns'			=>	'http://159.203.47.151/api/dns.php',
+		'authenticate'	=>	'http://159.203.47.151/api/authenticate.php',
+		'spam-checker'	=>	'http://159.203.47.151/api/spam-checker.php',
+		'converter'		=>	'http://159.203.47.151/api/convert.php',
 		// 3rd party Covid-19 free API call
 		'covid-api'		=>	'https://api.covid19api.com',
 		// 3rd party IPFY free API call for finding real IP address on the local machines
@@ -195,8 +195,8 @@ class CFGP_Defaults {
 		'smartIP'		=>	'https://smart-ip.net/myip',
 		'indent'		=>	'https://ident.me',
 		// Alternate URL
-		'dns-alternate'	=>	'https://cdn-cfgeoplugin.com/api/dns.php',
-		'main-alternate'	=>	'https://cdn-cfgeoplugin.com/api/index.php'
+		'dns-alternate'	=>	'http://cdn-cfgeoplugin.com.dedi1855.your-server.de/dns.php',
+		'main-alternate'	=>	'http://cdn-cfgeoplugin.com.dedi1855.your-server.de/index.php'
 	);
 	
 	/*

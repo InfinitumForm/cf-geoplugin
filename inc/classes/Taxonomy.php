@@ -19,15 +19,6 @@ class CFGP_Taxonomy extends CFGP_Global {
 	function __construct(){
 		$this->add_action( 'registered_taxonomy', 'register' );
 		$this->add_action( 'plugins_loaded', 'load' );
-		$this->add_action( 'nav_menu_meta_box_object', 'fix_menu_metaboxes' );
-	}
-	
-	public function fix_menu_metaboxes( $tax ){
-		if ( $tax->name === 'cf-geoplugin-country' ) {
-			$tax->labels->name = "Product Categories";
-		}
-		CFGP_U::dump($tax->labels);
-		return $tax;
 	}
 	
 	public function register(){
