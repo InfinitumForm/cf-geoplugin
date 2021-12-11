@@ -57,7 +57,7 @@ class CFGP_License extends CFGP_Global{
 			{
 				if($return['error'] === false && $return['lenght'] > 0){
 					$response = $return['products'];
-					set_transient('cfgp-get-product-data', $response, (MINUTE_IN_SECONDS * CFGP_SESSION));
+					set_transient('cfgp-get-product-data', $response, DAY_IN_SECONDS);
 				}
 			}
 		}
