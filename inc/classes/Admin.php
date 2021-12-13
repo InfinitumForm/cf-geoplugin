@@ -57,6 +57,7 @@ class CFGP_Admin extends CFGP_Global {
 	public function ajax__cfgp_load_regions () {
 		
 		$country_code = CFGP_U::request('country_code');
+		$country_code = sanitize_text_field($country_code);
 		$options = array();
 		
 		if(is_array($country_code))
@@ -87,6 +88,7 @@ class CFGP_Admin extends CFGP_Global {
 	
 	public function ajax__cfgp_load_cities () {
 		$country_code = CFGP_U::request('country_code');
+		$country_code = sanitize_text_field($country_code);
 		$options = array();
 		
 		if(is_array($country_code))

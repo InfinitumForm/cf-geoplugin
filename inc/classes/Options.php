@@ -216,20 +216,19 @@ class CFGP_Options
 		{			
 			if(is_numeric($str))
 			{
-				if(intval( $str ) == $str)
+				if(is_int( $str ))
 					$str = intval( $str );
-				else if(floatval($str) == $str)
+				else if(is_float($str))
 					$str = floatval( $str );
 				else
 					$str = sanitize_text_field( $str );
 			}
-			else if (filter_var($str, FILTER_VALIDATE_URL) !== false)
+			else if(filter_var($str, FILTER_VALIDATE_URL) !== false)
 			{
 				return esc_url($str);
 			}
-			else if(preg_match('/([0-9a-z-_.]+@[0-9a-z-_.]+.[a-z]{2,8})/i', $str))
+			else if(is_email($str))
 			{
-				$str = trim($str, "&$%#?!.;:,");
 				$str = sanitize_email($str);
 				
 				if(function_exists('mb_strtolower')){
@@ -251,7 +250,7 @@ class CFGP_Options
 				$str = html_entity_decode($str);
 				if(preg_match('/<\/?[a-z][\s\S]*>/i', $str))
 				{
-					$str = wp_kses($str, wp_kses_allowed_html('post'));
+					$str = wp_kses_post($str);
 				} else {
 					$str = sanitize_text_field( $str );
 				}

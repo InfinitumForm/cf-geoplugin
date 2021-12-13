@@ -17,21 +17,25 @@ if(!class_exists('CFGP_API')) :
 class CFGP_API extends CFGP_Global {
 	
 	public function __construct( $dry_run = false ){
-		if($dry_run !== true)
-		{
-			// Collect geo data & DNS
-			$return = $this->get('geo');
-			if (CFGP_Options::get('enable_dns_lookup', 0)) {
-				$return = array_merge($return, $this->get('dns'));
+		try {
+			if($dry_run !== true)
+			{
+				// Collect geo data & DNS
+				$return = $this->get('geo');
+				if (CFGP_Options::get('enable_dns_lookup', 0)) {
+					$return = array_merge($return, $this->get('dns'));
+				}
+				$return = array_merge(
+					apply_filters( 'cf_geoplugin_api_default_fields', CFGP_Defaults::API_RETURN),
+					$return
+				);
+				// Clear cache
+				CFGP_Cache::delete('transfer_dns_records');
+				// Save API data to array
+				CFGP_Cache::set('API', $return);
 			}
-			$return = array_merge(
-				apply_filters( 'cf_geoplugin_api_default_fields', CFGP_Defaults::API_RETURN),
-				$return
-			);
-			// Clear cache
-			CFGP_Cache::delete('transfer_dns_records');
-			// Save API data to array
-			CFGP_Cache::set('API', $return);
+		} catch (Exception $e) {
+			throw new ErrorException('CFGP ERROR: ' . $e->getMessage());
 		}
 	}
 	
