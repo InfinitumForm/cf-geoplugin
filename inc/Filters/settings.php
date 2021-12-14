@@ -214,7 +214,7 @@ add_filter('cfgp/settings', function($options=array()){
 							),
 							'default' => 1
 						),
-						array(
+						/*array(
 							'plugin_active' => array(
 								'woocommerce/woocommerce'
 							),
@@ -270,7 +270,7 @@ add_filter('cfgp/settings', function($options=array()){
 								0 => __('No', CFGP_NAME)
 							),
 							'default' => 1
-						),
+						),*/
 						array(
 							'name' => 'enable_rest',
 							'label' => __('Enable REST API', CFGP_NAME),

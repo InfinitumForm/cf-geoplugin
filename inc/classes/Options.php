@@ -216,9 +216,9 @@ class CFGP_Options
 		{			
 			if(is_numeric($str))
 			{
-				if(is_int( $str ))
+				if(intval( $str ) == $str)
 					$str = intval( $str );
-				else if(is_float($str))
+				else if(floatval($str) == $str)
 					$str = floatval( $str );
 				else
 					$str = sanitize_text_field( $str );
@@ -227,8 +227,9 @@ class CFGP_Options
 			{
 				return esc_url($str);
 			}
-			else if(is_email($str))
+			else if(preg_match('/([0-9a-z-_.]+@[0-9a-z-_.]+.[a-z]{2,8})/i', $str))
 			{
+				$str = trim($str, "&$%#?!.;:,");
 				$str = sanitize_email($str);
 				
 				if(function_exists('mb_strtolower')){
@@ -250,7 +251,7 @@ class CFGP_Options
 				$str = html_entity_decode($str);
 				if(preg_match('/<\/?[a-z][\s\S]*>/i', $str))
 				{
-					$str = wp_kses_post($str);
+					$str = wp_kses($str, wp_kses_allowed_html('post'));
 				} else {
 					$str = sanitize_text_field( $str );
 				}
@@ -258,6 +259,48 @@ class CFGP_Options
 		}
 		
 		return $str;
+	}
+	
+	/**
+	 * Sync with the old version of the plugin
+	 * This functionality do automatization for the certain type of data expected in this plugin
+	 */
+	public static function sync_with_the_old_version_of_the_plugin(){
+		// Get old options before version 8.0.0
+		if( CFGP_U::is_network_admin() ) {
+			$old_options = get_site_option('cf_geoplugin');
+		} else {
+			$old_options = get_option( 'cf_geoplugin' );
+		}
+		// IF options exists, we must append it to new one
+		if( $old_options )
+		{
+			// First collect license data and try to activate it			
+			if(
+				isset($old_options['license'])
+				&& $old_options['license'] === 1
+				&& isset($old_options['license_key'])
+				&& !empty($old_options['license_key'])
+				&& isset($old_options['license_sku']) 
+				&& !empty($old_options['license_sku'])
+			) {
+				CFGP_License::activate($old_options['license_key'], $old_options['license_sku']);
+			}
+			// Set the other options properly
+			$new_options = array();
+			foreach($old_options as $option => $value){
+				if( in_array($option, CFGP_Defaults::OPTIONS) ) {
+					$new_options[$option] = $value;
+				}
+			}
+			// Be sure all fields are in the place
+			$new_options = array_merge(CFGP_Defaults::OPTIONS, $new_options);
+			// Save
+			self::set($new_options);
+			// Remove old one
+			delete_site_option('cf_geoplugin');
+			delete_option( 'cf_geoplugin' );
+		}
 	}
 }
 endif;

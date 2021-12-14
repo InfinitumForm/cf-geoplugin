@@ -1,16 +1,15 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: WordPress Geo Plugin\n"
-"POT-Creation-Date: 2021-12-13 10:48+0100\n"
-"PO-Revision-Date: 2021-12-13 10:48+0100\n"
+"POT-Creation-Date: 2021-12-13 10:42+0100\n"
+"PO-Revision-Date: 2021-12-13 10:43+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
-"Language: sr_RS\n"
+"Language: en_US\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 3.0.1\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-Flags-xgettext: --add-comments=translators:\n"
@@ -61,7 +60,7 @@ msgstr ""
 #: inc/classes/SEO_Redirection_Table.php:158 inc/classes/Settings.php:201
 #: inc/classes/Taxonomy.php:127 inc/classes/Taxonomy.php:142
 msgid "Postcode"
-msgstr "Поштански број"
+msgstr ""
 
 #: inc/classes/Admin.php:161
 #, php-format
@@ -92,61 +91,61 @@ msgstr ""
 #: inc/classes/Admin.php:215 inc/classes/Admin.php:219
 #: inc/classes/Geo_Banner.php:347 inc/settings/main_page.php:33
 msgid "Shortcodes"
-msgstr "Кратки кодови"
+msgstr ""
 
 #: inc/classes/Admin.php:227 inc/classes/Admin.php:231
 #: inc/classes/Settings.php:140 inc/classes/Settings.php:141
 #: inc/filters/settings.php:593 inc/settings/google_map.php:10
 msgid "Google Map"
-msgstr "Google мапа"
+msgstr ""
 
 #: inc/classes/Admin.php:240 inc/classes/Admin.php:244
 #: inc/classes/Settings.php:151 inc/classes/Settings.php:152
 msgid "Site Protection"
-msgstr "Заштита сајта"
+msgstr ""
 
 #: inc/classes/Admin.php:252 inc/classes/Admin.php:256
 #: inc/classes/Geo_Banner.php:166 inc/classes/Geo_Banner.php:167
 #: inc/classes/Settings.php:161 inc/classes/Settings.php:162
 msgid "Geo Banner"
-msgstr "Гео Банер"
+msgstr ""
 
 #: inc/classes/Admin.php:265 inc/classes/Admin.php:269
 #: inc/classes/Metabox.php:91 inc/classes/Settings.php:171
 #: inc/classes/Settings.php:172 inc/filters/seo_redirection_table.php:8
 #: inc/filters/settings.php:289
 msgid "SEO Redirection"
-msgstr "СЕО Редирекција"
+msgstr ""
 
 #: inc/classes/Admin.php:277 inc/classes/Admin.php:281
 #: inc/classes/Geo_Banner.php:355 inc/classes/Settings.php:216
 #: inc/classes/Settings.php:217 inc/settings/settings.php:9
 msgid "Settings"
-msgstr "Подешавања"
+msgstr ""
 
 #: inc/classes/Admin.php:288 inc/classes/Admin.php:292
 #: inc/classes/Settings.php:208 inc/classes/Settings.php:209
 msgid "Debug Mode"
-msgstr "Дебаговање"
+msgstr ""
 
 #: inc/classes/Admin.php:299 inc/classes/Admin.php:303
 #: inc/settings/debug.php:131
 msgid "License"
-msgstr "Лиценца"
+msgstr ""
 
 #: inc/classes/Admin.php:340 inc/classes/Admin.php:396
 #: inc/classes/Metabox.php:547
 msgid "Data will lost , Do you wish to continue?"
-msgstr "Податци ће се изгубити. Да ли желите наставити?"
+msgstr ""
 
 #: inc/classes/Admin.php:342 inc/classes/Admin.php:407
 #: inc/classes/Metabox.php:551
 msgid "Nothing found!"
-msgstr "Није нађено!"
+msgstr ""
 
 #: inc/classes/Admin.php:343 inc/classes/Metabox.php:552
 msgid "Choose..."
-msgstr "Одабери..."
+msgstr ""
 
 #: inc/classes/Admin.php:344 inc/classes/Metabox.php:553
 msgid "Choose countries first!"
@@ -155,17 +154,17 @@ msgstr ""
 #: inc/classes/Admin.php:345 inc/classes/Form.php:43
 #: inc/classes/Metabox.php:554
 msgid "Choose countries..."
-msgstr "Одабери државе..."
+msgstr ""
 
 #: inc/classes/Admin.php:346 inc/classes/Form.php:81
 #: inc/classes/Metabox.php:555
 msgid "Choose regions..."
-msgstr "Одабери регионе..."
+msgstr ""
 
 #: inc/classes/Admin.php:347 inc/classes/Form.php:139
 #: inc/classes/Metabox.php:556
 msgid "Choose cities..."
-msgstr "Одабери градове..."
+msgstr ""
 
 #: inc/classes/Admin.php:348 inc/classes/Form.php:197
 #: inc/classes/Metabox.php:557
@@ -175,16 +174,16 @@ msgstr ""
 #: inc/classes/Admin.php:350 inc/classes/Admin.php:397
 #: inc/classes/Metabox.php:548
 msgid "Loading..."
-msgstr "Причекајте..."
+msgstr ""
 
 #: inc/classes/Admin.php:351 inc/classes/Admin.php:398
 #: inc/classes/Metabox.php:549
 msgid "Not Found!"
-msgstr "Није пронађено"
+msgstr ""
 
 #: inc/classes/Admin.php:352
 msgid "Search"
-msgstr "Претрага"
+msgstr ""
 
 #: inc/classes/Admin.php:356
 msgid ""
@@ -224,7 +223,7 @@ msgstr ""
 
 #: inc/classes/Admin.php:400
 msgid "Close"
-msgstr "Zatvori"
+msgstr ""
 
 #: inc/classes/Admin.php:403
 msgid "There are no news at the moment."
@@ -293,19 +292,19 @@ msgstr ""
 #: inc/classes/Admin.php:429 inc/classes/Help.php:59 inc/classes/Help.php:60
 #: inc/filters/settings-rest.php:27 inc/settings/sidebar.php:140
 msgid "Documentation"
-msgstr "Документација"
+msgstr ""
 
 #: inc/classes/Admin.php:430
 msgid "Contact"
-msgstr "Контакт"
+msgstr ""
 
 #: inc/classes/Admin.php:431 inc/settings/sidebar.php:142
 msgid "Blog"
-msgstr "Блог"
+msgstr ""
 
 #: inc/classes/Admin.php:432
 msgid "FAQ"
-msgstr "Често постављана питања"
+msgstr ""
 
 #: inc/classes/Admin.php:433
 msgid "Thank you for using"
@@ -378,19 +377,19 @@ msgstr ""
 #: inc/settings/main_page.php:104 inc/settings/main_page.php:118
 #: inc/settings/main_page.php:134
 msgid "Shortcode"
-msgstr "Кратки код"
+msgstr ""
 
 #: inc/classes/Geo_Banner.php:258
 msgid "Locations"
-msgstr "Локације"
+msgstr ""
 
 #: inc/classes/Geo_Banner.php:276 inc/classes/Geo_Banner.php:440
 msgid "Standard"
-msgstr "Standard"
+msgstr ""
 
 #: inc/classes/Geo_Banner.php:277 inc/classes/Geo_Banner.php:441
 msgid "Advanced"
-msgstr "Напредно"
+msgstr ""
 
 #: inc/classes/Geo_Banner.php:277 inc/classes/Geo_Banner.php:441
 #: inc/classes/Geo_Banner.php:442
@@ -401,19 +400,19 @@ msgstr ""
 #: inc/classes/Taxonomy.php:31 inc/classes/Taxonomy.php:33
 #: inc/classes/Taxonomy.php:46
 msgid "Countries"
-msgstr "Земље"
+msgstr ""
 
 #: inc/classes/Geo_Banner.php:286 inc/classes/Geo_Banner.php:305
 #: inc/classes/Taxonomy.php:62 inc/classes/Taxonomy.php:64
 #: inc/classes/Taxonomy.php:77
 msgid "Regions"
-msgstr "Regioni"
+msgstr ""
 
 #: inc/classes/Geo_Banner.php:287 inc/classes/Geo_Banner.php:306
 #: inc/classes/Taxonomy.php:94 inc/classes/Taxonomy.php:96
 #: inc/classes/Taxonomy.php:109
 msgid "Cities"
-msgstr "Gradovi"
+msgstr ""
 
 #: inc/classes/Geo_Banner.php:333
 msgid "undefined"
@@ -421,7 +420,7 @@ msgstr ""
 
 #: inc/classes/Geo_Banner.php:374 inc/filters/seo_redirection_form.php:64
 msgid "Select Country"
-msgstr "Изабери државу"
+msgstr ""
 
 #: inc/classes/Geo_Banner.php:380 inc/filters/seo_redirection_form.php:70
 msgid "Select Region"
@@ -464,10 +463,8 @@ msgid "Frequently Asked Questions"
 msgstr ""
 
 #: inc/classes/Help.php:70 inc/classes/Help.php:72
-#, fuzzy
-#| msgid "Geo Banner"
 msgid "Geo Banner Usage"
-msgstr "Гео Банер"
+msgstr ""
 
 #: inc/classes/Help.php:73
 msgid ""
@@ -506,7 +503,7 @@ msgstr ""
 
 #: inc/classes/Help.php:95
 msgid "Intro"
-msgstr "Увод"
+msgstr ""
 
 #: inc/classes/Help.php:97
 msgid "How this SEO redirection work?"
@@ -685,11 +682,11 @@ msgstr ""
 
 #: inc/classes/License.php:235
 msgid "Domain"
-msgstr "Домен"
+msgstr ""
 
 #: inc/classes/License.php:236
 msgid "SKU"
-msgstr "Šifra proizvoda"
+msgstr ""
 
 #: inc/classes/License.php:237
 msgid "Store Code"
@@ -795,7 +792,7 @@ msgstr ""
 #: inc/classes/License.php:551 inc/classes/License.php:555
 #: inc/classes/License.php:559
 msgid "Required"
-msgstr "Обавезно"
+msgstr ""
 
 #: inc/classes/License.php:544
 msgid "No SKU was provided in the request."
@@ -864,10 +861,8 @@ msgid ""
 msgstr ""
 
 #: inc/classes/Metabox.php:110
-#, fuzzy
-#| msgid "Tags"
 msgid "Geo Tags"
-msgstr "Ознаке"
+msgstr ""
 
 #: inc/classes/Metabox.php:169
 msgid "Enable Geo Tag on this page"
@@ -901,23 +896,19 @@ msgstr ""
 #: inc/classes/Metabox.php:183 inc/classes/SEO_Redirection_Table.php:156
 #: inc/classes/Taxonomy.php:63 inc/classes/Taxonomy.php:78
 msgid "Region"
-msgstr "Regija"
+msgstr ""
 
 #: inc/classes/Metabox.php:186
-#, fuzzy
-#| msgid "Default Latitude"
 msgid "Latitude"
-msgstr "Подразумевана Латитуде"
+msgstr ""
 
 #: inc/classes/Metabox.php:189
-#, fuzzy
-#| msgid "Default Longitude"
 msgid "Longitude"
-msgstr "Дефаулт Лонгитуде"
+msgstr ""
 
 #: inc/classes/Metabox.php:400 inc/settings/defender.php:122
 msgid "Choose Countries"
-msgstr "Одабери државе"
+msgstr ""
 
 #: inc/classes/Metabox.php:402
 msgid "Select the countries you want to redirect."
@@ -926,7 +917,7 @@ msgstr ""
 #: inc/classes/Metabox.php:403 inc/classes/Metabox.php:422
 #: inc/classes/Metabox.php:441 inc/classes/Metabox.php:460
 msgid "Select all"
-msgstr "Odaberi sve "
+msgstr ""
 
 #: inc/classes/Metabox.php:408 inc/classes/Metabox.php:427
 #: inc/classes/Metabox.php:446 inc/classes/Metabox.php:465
@@ -935,7 +926,7 @@ msgstr ""
 
 #: inc/classes/Metabox.php:419
 msgid "Choose Regions"
-msgstr "Одабери регионе"
+msgstr ""
 
 #: inc/classes/Metabox.php:421
 msgid "Select the regions you want to redirect."
@@ -943,7 +934,7 @@ msgstr ""
 
 #: inc/classes/Metabox.php:438 inc/settings/defender.php:157
 msgid "Choose Cities"
-msgstr "Одабери градове"
+msgstr ""
 
 #: inc/classes/Metabox.php:440
 msgid "Select the cities you want to redirect."
@@ -981,13 +972,13 @@ msgstr ""
 #: inc/filters/seo_redirection_form.php:55
 #: inc/filters/seo_redirection_form.php:100
 msgid "Enable"
-msgstr "Uključi"
+msgstr ""
 
 #: inc/classes/Metabox.php:491 inc/classes/Metabox.php:504
 #: inc/filters/seo_redirection_form.php:56
 #: inc/filters/seo_redirection_form.php:101
 msgid "Disable"
-msgstr "Isključi"
+msgstr ""
 
 #: inc/classes/Metabox.php:499 inc/filters/seo_redirection_form.php:96
 msgid "Redirect only once"
@@ -995,7 +986,7 @@ msgstr ""
 
 #: inc/classes/Metabox.php:513 inc/filters/settings-rest.php:216
 msgid "Remove"
-msgstr "Уклони"
+msgstr ""
 
 #: inc/classes/Metabox.php:514
 msgid "Add New Redirection"
@@ -1023,7 +1014,7 @@ msgstr ""
 #: inc/plugins/elementor/widgets/cfgp-elementor-content-widget.php:142
 #: inc/plugins/elementor/widgets/cfgp-elementor-image-widget.php:175
 msgid "Yes"
-msgstr "Да"
+msgstr ""
 
 #: inc/classes/Plugins.php:53 inc/filters/settings.php:97
 #: inc/filters/settings.php:108 inc/filters/settings.php:119
@@ -1042,7 +1033,7 @@ msgstr "Да"
 #: inc/plugins/elementor/widgets/cfgp-elementor-content-widget.php:143
 #: inc/plugins/elementor/widgets/cfgp-elementor-image-widget.php:176
 msgid "No"
-msgstr "Не"
+msgstr ""
 
 #: inc/classes/Plugins.php:70
 msgid "Plugin Support"
@@ -1089,15 +1080,13 @@ msgstr ""
 #: inc/classes/Requirements.php:61
 #, php-format
 msgid "Important upgrade notice for the version %s:"
-msgstr "Важно обавештење о надоградњи за верзију %s:"
+msgstr ""
 
 #: inc/classes/Requirements.php:75
 msgid ""
 "NOTE: Before doing the update, it would be a good idea to backup your "
 "WordPress installations and settings."
 msgstr ""
-"НАПОМЕНА: Пре него што извршите ажурирање, било би добро да направите "
-"резервне копије ваших WordPress инсталација и подешавања."
 
 #: inc/classes/Requirements.php:110
 #, php-format
@@ -1105,8 +1094,6 @@ msgid ""
 "The %1$s cannot run on PHP versions older than PHP %2$s. Please contact your "
 "host and ask them to upgrade."
 msgstr ""
-"%1$s не може да се покреће на PHP верзијама старијим од PHP%2$s. Молимо "
-"контактирајте свог сервер администратора и замолите га да изврши надоградњу."
 
 #: inc/classes/Requirements.php:129
 #, php-format
@@ -1114,8 +1101,6 @@ msgid ""
 "The %1$s cannot run on WordPress versions older than %2$s. Please update "
 "your WordPress installation."
 msgstr ""
-"%1$s не може да се покреће за верзије WordPress-а старије од %2$s. "
-"Ажурирајте своју WordPress инсталацију."
 
 #: inc/classes/SEO.php:101 inc/classes/SEO.php:115
 msgid ""
@@ -1157,40 +1142,32 @@ msgstr ""
 #: inc/classes/SEO.php:183 inc/classes/SEO.php:227 inc/classes/Settings.php:87
 #: inc/settings/defender.php:61
 msgid "Settings saved."
-msgstr "Подешавања су сачувана."
+msgstr ""
 
 #: inc/classes/SEO.php:245
 msgid "Deleted."
 msgstr ""
 
 #: inc/classes/SEO_Redirection_Table.php:40
-#, fuzzy
-#| msgid "SEO Redirection"
 msgid "Enable Redirection"
-msgstr "СЕО Редирекција"
+msgstr ""
 
 #: inc/classes/SEO_Redirection_Table.php:41
-#, fuzzy
-#| msgid "SEO Redirection"
 msgid "Disable Redirection"
-msgstr "СЕО Редирекција"
+msgstr ""
 
 #: inc/classes/SEO_Redirection_Table.php:42
-#, fuzzy
-#| msgid "Redirect URL"
 msgid "Redirect Only Once"
-msgstr "URLпреусмеравања"
+msgstr ""
 
 #: inc/classes/SEO_Redirection_Table.php:43
-#, fuzzy
-#| msgid "SEO Redirection"
 msgid "Always Redirect"
-msgstr "СЕО Редирекција"
+msgstr ""
 
 #: inc/classes/SEO_Redirection_Table.php:44
 #: inc/classes/SEO_Redirection_Table.php:344
 msgid "Delete"
-msgstr "Брисање"
+msgstr ""
 
 #: inc/classes/SEO_Redirection_Table.php:58
 msgid "Nope! Security check failed!"
@@ -1207,17 +1184,17 @@ msgstr ""
 
 #: inc/classes/SEO_Redirection_Table.php:154
 msgid "URL"
-msgstr "URL"
+msgstr ""
 
 #: inc/classes/SEO_Redirection_Table.php:155 inc/classes/Taxonomy.php:32
 #: inc/classes/Taxonomy.php:47
 msgid "Country"
-msgstr "Држава"
+msgstr ""
 
 #: inc/classes/SEO_Redirection_Table.php:157 inc/classes/Taxonomy.php:95
 #: inc/classes/Taxonomy.php:110
 msgid "City"
-msgstr "Grad"
+msgstr ""
 
 #: inc/classes/SEO_Redirection_Table.php:159
 msgid "Status Code"
@@ -1233,7 +1210,7 @@ msgstr ""
 
 #: inc/classes/SEO_Redirection_Table.php:344
 msgid "Edit"
-msgstr "Уреди"
+msgstr ""
 
 #: inc/classes/SEO_Redirection_Table.php:344
 msgid "Are you sure you want to delete this redirection?"
@@ -1245,7 +1222,7 @@ msgstr ""
 
 #: inc/classes/SEO_Redirection_Table.php:381
 msgid "Always"
-msgstr "Uvek"
+msgstr ""
 
 #: inc/classes/Settings.php:97
 msgid "NONCE ERROR!"
@@ -1300,10 +1277,8 @@ msgstr ""
 
 #: inc/classes/Shortcodes.php:1045 inc/widgets/Currency_Converter.php:46
 #: inc/widgets/Currency_Converter.php:74
-#, fuzzy
-#| msgid "Country"
 msgid "Amount"
-msgstr "Држава"
+msgstr ""
 
 #: inc/classes/Shortcodes.php:1155
 msgid "Direct access is forbidden!"
@@ -1380,7 +1355,7 @@ msgstr ""
 
 #: inc/classes/Taxonomy.php:97
 msgid "All Cities"
-msgstr "Svi gradovi"
+msgstr ""
 
 #: inc/classes/Taxonomy.php:98
 msgid "Edit City"
@@ -1396,7 +1371,7 @@ msgstr ""
 
 #: inc/classes/Taxonomy.php:101
 msgid "Add New City"
-msgstr "Додај нови град"
+msgstr ""
 
 #: inc/classes/Taxonomy.php:102
 msgid "New City Name"
@@ -1464,11 +1439,11 @@ msgstr ""
 
 #: inc/classes/Utilities.php:493
 msgid "HTTP redirect status code must be a redirection code, 3xx."
-msgstr "Kod statusa HTTP preusmeravanja mora biti kod za preusmeravanje, 3kk."
+msgstr ""
 
 #: inc/filters/license.php:54
 msgid "Price"
-msgstr "Cena"
+msgstr ""
 
 #: inc/filters/license.php:55
 msgid "You must become a developer for this license"
@@ -1515,7 +1490,7 @@ msgstr ""
 
 #: inc/filters/license.php:98
 msgid "never"
-msgstr "Никад"
+msgstr ""
 
 #: inc/filters/license.php:99
 msgid "CF Geo Plugin account"
@@ -1531,7 +1506,7 @@ msgstr ""
 #: inc/filters/license.php:103 inc/filters/license.php:116
 #: inc/settings/debug.php:87 inc/settings/sidebar.php:146
 msgid "Privacy Policy"
-msgstr "Политика Приватности"
+msgstr ""
 
 #: inc/filters/license.php:104 inc/filters/license.php:117
 #: inc/settings/sidebar.php:145
@@ -1608,7 +1583,7 @@ msgstr ""
 
 #: inc/filters/seo_redirection_form.php:88
 msgid "Redirect URL"
-msgstr "URLпреусмеравања"
+msgstr ""
 
 #: inc/filters/seo_redirection_form.php:110
 msgid "Save Redirection"
@@ -1709,12 +1684,12 @@ msgstr ""
 
 #: inc/filters/settings-rest.php:33
 msgid "Authentication"
-msgstr "Провера идентитета"
+msgstr ""
 
 #: inc/filters/settings-rest.php:34 inc/settings/debug.php:32
 #: inc/settings/sidebar.php:90 inc/settings/sidebar.php:112
 msgid "Lookup"
-msgstr "Преглед"
+msgstr ""
 
 #: inc/filters/settings-rest.php:35 inc/filters/settings-rest.php:194
 msgid "Available Tokens"
@@ -1737,12 +1712,12 @@ msgstr ""
 #: inc/filters/settings-rest.php:45 inc/filters/settings-rest.php:86
 #: inc/filters/settings-rest.php:127
 msgid "Parameter"
-msgstr "Атрибут"
+msgstr ""
 
 #: inc/filters/settings-rest.php:46 inc/filters/settings-rest.php:87
 #: inc/filters/settings-rest.php:128
 msgid "Type"
-msgstr "Тип"
+msgstr ""
 
 #: inc/filters/settings-rest.php:47 inc/filters/settings-rest.php:129
 msgid "Obligation"
@@ -1751,14 +1726,14 @@ msgstr ""
 #: inc/filters/settings-rest.php:48 inc/filters/settings-rest.php:88
 #: inc/filters/settings-rest.php:130
 msgid "Description"
-msgstr "Opis"
+msgstr ""
 
 #: inc/filters/settings-rest.php:53 inc/filters/settings-rest.php:59
 #: inc/filters/settings-rest.php:65 inc/filters/settings-rest.php:71
 #: inc/filters/settings-rest.php:135 inc/filters/settings-rest.php:141
 #: inc/filters/settings-rest.php:147 inc/filters/settings-rest.php:153
 msgid "required"
-msgstr "обавезно"
+msgstr ""
 
 #: inc/filters/settings-rest.php:54
 msgid ""
@@ -1820,7 +1795,7 @@ msgstr ""
 
 #: inc/filters/settings-rest.php:159
 msgid "optional"
-msgstr "opciono"
+msgstr ""
 
 #: inc/filters/settings-rest.php:160
 msgid ""
@@ -1851,7 +1826,7 @@ msgstr ""
 
 #: inc/filters/settings-rest.php:201
 msgid "Date"
-msgstr "Datum"
+msgstr ""
 
 #: inc/filters/settings-rest.php:216
 msgid "Are you sure you want to remove this access token?"
@@ -1908,7 +1883,7 @@ msgstr ""
 
 #: inc/filters/settings.php:138
 msgid "Plugin Settings"
-msgstr "Поставке додатка"
+msgstr ""
 
 #: inc/filters/settings.php:139
 msgid "These settings enable advanced lookup and functionality of plugin."
@@ -2111,7 +2086,7 @@ msgstr ""
 
 #: inc/filters/settings.php:395
 msgid "Special Settings"
-msgstr "Специјална подешавања"
+msgstr ""
 
 #: inc/filters/settings.php:396
 msgid ""
@@ -2249,7 +2224,7 @@ msgstr ""
 
 #: inc/filters/settings.php:598
 msgid "Google Map Settings"
-msgstr "Подешавања Гугл мапе"
+msgstr ""
 
 #: inc/filters/settings.php:599
 msgid "This settings is for Google Map API services."
@@ -2267,7 +2242,7 @@ msgstr ""
 
 #: inc/filters/settings.php:613
 msgid "Default Latitude"
-msgstr "Подразумевана Латитуде"
+msgstr ""
 
 #: inc/filters/settings.php:615 inc/filters/settings.php:626
 msgid "Leave blank for CF Geo Plugin default support or place custom value."
@@ -2275,7 +2250,7 @@ msgstr ""
 
 #: inc/filters/settings.php:624
 msgid "Default Longitude"
-msgstr "Дефаулт Лонгитуде"
+msgstr ""
 
 #: inc/filters/settings.php:635
 msgid "Default Map Width"
@@ -2308,7 +2283,7 @@ msgstr ""
 
 #: inc/filters/settings.php:676
 msgid "Navigation"
-msgstr "Навигација"
+msgstr ""
 
 #: inc/filters/settings.php:677
 msgid ""
@@ -2334,7 +2309,7 @@ msgstr ""
 
 #: inc/filters/settings.php:709
 msgid "Draggable"
-msgstr "Draggable"
+msgstr ""
 
 #: inc/filters/settings.php:710
 msgid ""
@@ -2360,7 +2335,7 @@ msgstr ""
 
 #: inc/plugins/contact-form-7/contact-form-7.php:126 inc/settings/debug.php:92
 msgid "Name"
-msgstr "Име"
+msgstr ""
 
 #: inc/plugins/contact-form-7/contact-form-7.php:130
 msgid "Id attribute"
@@ -2373,7 +2348,7 @@ msgstr ""
 #. translators: Insert shortcode tag into the page content
 #: inc/plugins/contact-form-7/contact-form-7.php:149
 msgid "Insert Tag"
-msgstr "Убаци ознаку"
+msgstr ""
 
 #. translators: 1: Plugin name 2: Elementor 3: Required Elementor version
 #. translators: 1: Plugin name 2: PHP 3: Required PHP version
@@ -2397,10 +2372,8 @@ msgstr ""
 
 #: inc/plugins/elementor/widgets/cfgp-elementor-content-widget.php:90
 #: inc/plugins/elementor/widgets/cfgp-elementor-image-widget.php:90
-#, fuzzy
-#| msgid "Settings"
 msgid "Image settings"
-msgstr "Подешавања"
+msgstr ""
 
 #: inc/plugins/elementor/widgets/cfgp-elementor-content-widget.php:100
 #: inc/plugins/elementor/widgets/cfgp-elementor-content-widget.php:152
@@ -2414,10 +2387,8 @@ msgstr ""
 
 #: inc/plugins/elementor/widgets/cfgp-elementor-content-widget.php:110
 #: inc/plugins/elementor/widgets/cfgp-elementor-image-widget.php:121
-#, fuzzy
-#| msgid "Locations"
 msgid "Display Location"
-msgstr "Локације"
+msgstr ""
 
 #: inc/plugins/elementor/widgets/cfgp-elementor-content-widget.php:112
 #: inc/plugins/elementor/widgets/cfgp-elementor-image-widget.php:123
@@ -2437,24 +2408,18 @@ msgstr ""
 
 #: inc/plugins/elementor/widgets/cfgp-elementor-content-widget.php:131
 #: inc/plugins/elementor/widgets/cfgp-elementor-image-widget.php:164
-#, fuzzy
-#| msgid "Default Latitude"
 msgid "Default Options"
-msgstr "Подразумевана Латитуде"
+msgstr ""
 
 #: inc/plugins/elementor/widgets/cfgp-elementor-content-widget.php:140
-#, fuzzy
-#| msgid "Default Longitude"
 msgid "Enable Default Content"
-msgstr "Дефаулт Лонгитуде"
+msgstr ""
 
 #: inc/plugins/elementor/widgets/cfgp-elementor-content-widget.php:173
 #: inc/plugins/elementor/widgets/cfgp-elementor-eu-widget.php:125
 #: inc/plugins/elementor/widgets/cfgp-elementor-vat-widget.php:125
-#, fuzzy
-#| msgid "Content-Type"
 msgid "Content style"
-msgstr "Тип садржаја"
+msgstr ""
 
 #: inc/plugins/elementor/widgets/cfgp-elementor-content-widget.php:181
 #: inc/plugins/elementor/widgets/cfgp-elementor-eu-widget.php:133
@@ -2498,10 +2463,8 @@ msgstr ""
 
 #: inc/plugins/elementor/widgets/cfgp-elementor-eu-widget.php:76
 #: inc/plugins/elementor/widgets/cfgp-elementor-vat-widget.php:76
-#, fuzzy
-#| msgid "optional"
 msgid "Options"
-msgstr "opciono"
+msgstr ""
 
 #: inc/plugins/elementor/widgets/cfgp-elementor-eu-widget.php:83
 #: inc/plugins/elementor/widgets/cfgp-elementor-vat-widget.php:83
@@ -2526,10 +2489,8 @@ msgstr ""
 
 #: inc/plugins/elementor/widgets/cfgp-elementor-eu-widget.php:96
 #: inc/plugins/elementor/widgets/cfgp-elementor-vat-widget.php:96
-#, fuzzy
-#| msgid "Content-Type"
 msgid "Content"
-msgstr "Тип садржаја"
+msgstr ""
 
 #: inc/plugins/elementor/widgets/cfgp-elementor-eu-widget.php:98
 #: inc/plugins/elementor/widgets/cfgp-elementor-vat-widget.php:98
@@ -2543,16 +2504,14 @@ msgstr ""
 
 #: inc/plugins/elementor/widgets/cfgp-elementor-eu-widget.php:106
 #: inc/plugins/elementor/widgets/cfgp-elementor-vat-widget.php:106
-#, fuzzy
-#| msgid "Preview"
 msgid "Preview mode"
-msgstr "Pregledaj"
+msgstr ""
 
 #: inc/plugins/elementor/widgets/cfgp-elementor-eu-widget.php:108
 #: inc/plugins/elementor/widgets/cfgp-elementor-vat-widget.php:108
 #: inc/settings/defender.php:101 inc/settings/google_map.php:28
 msgid "Preview"
-msgstr "Pregledaj"
+msgstr ""
 
 #: inc/plugins/elementor/widgets/cfgp-elementor-eu-widget.php:109
 #: inc/plugins/elementor/widgets/cfgp-elementor-vat-widget.php:109
@@ -2590,16 +2549,12 @@ msgid "Blockquote"
 msgstr ""
 
 #: inc/plugins/elementor/widgets/cfgp-elementor-image-widget.php:31
-#, fuzzy
-#| msgid "Geo Banner"
 msgid "Geo Image"
-msgstr "Гео Банер"
+msgstr ""
 
 #: inc/plugins/elementor/widgets/cfgp-elementor-image-widget.php:100
-#, fuzzy
-#| msgid "Choose Cities"
 msgid "Choose Image"
-msgstr "Одабери градове"
+msgstr ""
 
 #: inc/plugins/elementor/widgets/cfgp-elementor-image-widget.php:111
 msgid "Image Size"
@@ -2631,38 +2586,28 @@ msgid "Enable Default Image"
 msgstr ""
 
 #: inc/plugins/elementor/widgets/cfgp-elementor-image-widget.php:185
-#, fuzzy
-#| msgid "Default Latitude"
 msgid "Default Image"
-msgstr "Подразумевана Латитуде"
+msgstr ""
 
 #: inc/plugins/elementor/widgets/cfgp-elementor-image-widget.php:196
-#, fuzzy
-#| msgid "Default Latitude"
 msgid "Default Image Size"
-msgstr "Подразумевана Латитуде"
+msgstr ""
 
 #: inc/plugins/elementor/widgets/cfgp-elementor-image-widget.php:206
-#, fuzzy
-#| msgid "Default Latitude"
 msgid "Default Alt"
-msgstr "Подразумевана Латитуде"
+msgstr ""
 
 #: inc/plugins/elementor/widgets/cfgp-elementor-image-widget.php:208
 msgid "Default alternate image title."
 msgstr ""
 
 #: inc/plugins/elementor/widgets/cfgp-elementor-image-widget.php:215
-#, fuzzy
-#| msgid "Default Latitude"
 msgid "Default Link"
-msgstr "Подразумевана Латитуде"
+msgstr ""
 
 #: inc/plugins/elementor/widgets/cfgp-elementor-image-widget.php:235
-#, fuzzy
-#| msgid "Settings"
 msgid "Image Settings"
-msgstr "Подешавања"
+msgstr ""
 
 #: inc/plugins/elementor/widgets/cfgp-elementor-image-widget.php:243
 msgid "Image Alignment"
@@ -2836,7 +2781,7 @@ msgstr ""
 
 #: inc/settings/debug.php:15
 msgid "Debug"
-msgstr "Дебаговање"
+msgstr ""
 
 #: inc/settings/debug.php:31
 msgid "IP Lookup"
@@ -2844,23 +2789,23 @@ msgstr ""
 
 #: inc/settings/debug.php:41
 msgid "Recived data"
-msgstr "Примлјенј податци"
+msgstr ""
 
 #: inc/settings/debug.php:42
 msgid "Sent data"
-msgstr "Послати податци"
+msgstr ""
 
 #: inc/settings/debug.php:43
 msgid "Server statistics"
-msgstr "Статистика сервера"
+msgstr ""
 
 #: inc/settings/debug.php:45
 msgid "Google map"
-msgstr "Гоогле Мапа"
+msgstr ""
 
 #: inc/settings/debug.php:47
 msgid "Debugger"
-msgstr "Откривање грешака"
+msgstr ""
 
 #: inc/settings/debug.php:51
 #, php-format
@@ -2893,16 +2838,16 @@ msgstr ""
 
 #: inc/settings/debug.php:93 inc/settings/debug.php:159
 msgid "Value"
-msgstr "Вредност"
+msgstr ""
 
 #: inc/settings/debug.php:94 inc/settings/google_map.php:52
 #: inc/settings/google_map.php:108
 msgid "Info"
-msgstr "Информације"
+msgstr ""
 
 #: inc/settings/debug.php:99
 msgid "IP"
-msgstr "IP"
+msgstr ""
 
 #: inc/settings/debug.php:101
 msgid "Your or Visitor's IP Address"
@@ -2938,7 +2883,7 @@ msgstr ""
 
 #: inc/settings/debug.php:121
 msgid "Version"
-msgstr "Верзија"
+msgstr ""
 
 #: inc/settings/debug.php:123
 msgid "CF Geo Plugin Version"
@@ -2946,7 +2891,7 @@ msgstr ""
 
 #: inc/settings/debug.php:126
 msgid "Email"
-msgstr "Е-пошта"
+msgstr ""
 
 #: inc/settings/debug.php:128
 msgid "Admin e-mail address."
@@ -2967,11 +2912,11 @@ msgstr ""
 
 #: inc/settings/debug.php:142
 msgid "Lifetime"
-msgstr "Življenje"
+msgstr ""
 
 #: inc/settings/debug.php:144
 msgid "License Expire"
-msgstr "Лиценца истиче"
+msgstr ""
 
 #: inc/settings/debug.php:154
 msgid "Information of your WordPress installation, server and browser"
@@ -2979,11 +2924,11 @@ msgstr ""
 
 #: inc/settings/debug.php:158
 msgid "Field"
-msgstr "Поље"
+msgstr ""
 
 #: inc/settings/debug.php:164
 msgid "Plugin ID"
-msgstr "Индентификација додатка"
+msgstr ""
 
 #: inc/settings/debug.php:168
 msgid "Plugin installed"
@@ -2994,10 +2939,8 @@ msgid "Plugin updated"
 msgstr ""
 
 #: inc/settings/debug.php:193
-#, fuzzy
-#| msgid "Server time"
 msgid "Server type"
-msgstr "Време сервера"
+msgstr ""
 
 #: inc/settings/debug.php:196
 msgid "Local Server"
@@ -3009,15 +2952,15 @@ msgstr ""
 
 #: inc/settings/debug.php:203
 msgid "Site title"
-msgstr "Наслов сајта"
+msgstr ""
 
 #: inc/settings/debug.php:207
 msgid "Tagline"
-msgstr "Слоган"
+msgstr ""
 
 #: inc/settings/debug.php:211
 msgid "WordPress address (URL)"
-msgstr "WordPress адреса (URL)"
+msgstr ""
 
 #: inc/settings/debug.php:215
 msgid "WordPress host"
@@ -3025,55 +2968,55 @@ msgstr ""
 
 #: inc/settings/debug.php:219
 msgid "WordPress multisite"
-msgstr "WordPress мулти сајт"
+msgstr ""
 
 #: inc/settings/debug.php:220
 msgid "Enabled"
-msgstr "Омогућено"
+msgstr ""
 
 #: inc/settings/debug.php:220
 msgid "Disabled"
-msgstr "Онемогућено"
+msgstr ""
 
 #: inc/settings/debug.php:223
 msgid "Admin email"
-msgstr "Е-маил администратора"
+msgstr ""
 
 #: inc/settings/debug.php:227
 msgid "Encoding for pages and feeds"
-msgstr "Енкодирање за странице и храниоце (feeds)"
+msgstr ""
 
 #: inc/settings/debug.php:231
 msgid "WordPress version"
-msgstr "WordPress верзија"
+msgstr ""
 
 #: inc/settings/debug.php:235
 msgid "Content-Type"
-msgstr "Тип садржаја"
+msgstr ""
 
 #: inc/settings/debug.php:239
 msgid "Language"
-msgstr "Језик"
+msgstr ""
 
 #: inc/settings/debug.php:243
 msgid "Server time"
-msgstr "Време сервера"
+msgstr ""
 
 #: inc/settings/debug.php:247
 msgid "WordPress directory path"
-msgstr "Путања WordPress директоријума"
+msgstr ""
 
 #: inc/settings/debug.php:251
 msgid "PHP version"
-msgstr "PHP верзија"
+msgstr ""
 
 #: inc/settings/debug.php:255
 msgid "PHP version ID"
-msgstr "Индентификатор PHP верзије"
+msgstr ""
 
 #: inc/settings/debug.php:259
 msgid "PHP architecture"
-msgstr "PHP архитектура"
+msgstr ""
 
 #: inc/settings/debug.php:260 inc/settings/debug.php:264
 #, php-format
@@ -3082,27 +3025,27 @@ msgstr ""
 
 #: inc/settings/debug.php:263
 msgid "Operting system"
-msgstr "Оперативни систем"
+msgstr ""
 
 #: inc/settings/debug.php:267
 msgid "User agent"
-msgstr "Кориснички агент"
+msgstr ""
 
 #: inc/settings/debug.php:271
 msgid "WordPress debug"
-msgstr "WordPress отклањање грешака"
+msgstr ""
 
 #: inc/settings/debug.php:272
 msgid "On"
-msgstr "Укључено"
+msgstr ""
 
 #: inc/settings/debug.php:272
 msgid "Off"
-msgstr "Угашено"
+msgstr ""
 
 #: inc/settings/debug.php:275
 msgid "Plugin directory path"
-msgstr "Путања директоријума додатака"
+msgstr ""
 
 #: inc/settings/debug.php:279
 msgid "Session API expire"
@@ -3165,7 +3108,7 @@ msgstr ""
 
 #: inc/settings/defender.php:139
 msgid "Choose Region"
-msgstr "Izaberite regiju"
+msgstr ""
 
 #: inc/settings/defender.php:176
 #, php-format
@@ -3207,7 +3150,7 @@ msgstr ""
 
 #: inc/settings/google_map.php:27
 msgid "Info & Examples"
-msgstr "Информације и примери"
+msgstr ""
 
 #: inc/settings/google_map.php:35
 msgid ""
@@ -3235,7 +3178,7 @@ msgstr ""
 
 #: inc/settings/google_map.php:58
 msgid "String"
-msgstr "Стринг"
+msgstr ""
 
 #: inc/settings/google_map.php:58
 msgid "Mouse hover title"
@@ -3243,7 +3186,7 @@ msgstr ""
 
 #: inc/settings/google_map.php:62 inc/settings/google_map.php:66
 msgid "Number"
-msgstr "Број"
+msgstr ""
 
 #: inc/settings/google_map.php:62
 #, php-format
@@ -3296,12 +3239,12 @@ msgstr ""
 #: inc/settings/google_map.php:90 inc/settings/google_map.php:94
 #: inc/settings/google_map.php:98
 msgid "Integer 1 or 0"
-msgstr "Цели број 1 или 0"
+msgstr ""
 
 #: inc/settings/google_map.php:82 inc/settings/google_map.php:86
 #: inc/settings/google_map.php:98
 msgid "If"
-msgstr "Ако"
+msgstr ""
 
 #: inc/settings/google_map.php:82
 msgid "disables scrollwheel zooming on the map."
@@ -3370,11 +3313,11 @@ msgstr ""
 
 #: inc/settings/main_page.php:35
 msgid "Simple Shortcodes"
-msgstr "Једноставан кратки код"
+msgstr ""
 
 #: inc/settings/main_page.php:37
 msgid "Tags"
-msgstr "Ознаке"
+msgstr ""
 
 #: inc/settings/main_page.php:42 inc/settings/main_page.php:79
 msgid ""
@@ -3395,7 +3338,7 @@ msgstr ""
 #: inc/settings/main_page.php:86 inc/settings/main_page.php:105
 #: inc/settings/main_page.php:119 inc/settings/main_page.php:135
 msgid "Return"
-msgstr "Вратите се на Dev4Press инсталацију"
+msgstr ""
 
 #: inc/settings/main_page.php:80
 msgid ""
@@ -3451,7 +3394,7 @@ msgstr ""
 
 #: inc/settings/sidebar.php:71
 msgid "DISABLED!"
-msgstr "ОНЕМОГУЋЕНО!"
+msgstr ""
 
 #: inc/settings/sidebar.php:72
 msgid "The API key is disabled because of unauthorized use!"
@@ -3503,7 +3446,7 @@ msgstr ""
 
 #: inc/settings/sidebar.php:117
 msgid "Quality"
-msgstr "Квалитет"
+msgstr ""
 
 #: inc/settings/sidebar.php:130
 msgid ""
@@ -3523,20 +3466,16 @@ msgid "(opens in a new tab)"
 msgstr ""
 
 #: inc/settings/sidebar.php:141
-#, fuzzy
-#| msgid "Price"
 msgid "Pricing"
-msgstr "Cena"
+msgstr ""
 
 #: inc/settings/sidebar.php:147
 msgid "Cookie Policy"
 msgstr ""
 
 #: inc/settings/sidebar.php:174
-#, fuzzy
-#| msgid "Plugin Settings"
 msgid "CF Geo Plugin details"
-msgstr "Поставке додатка"
+msgstr ""
 
 #: inc/settings/sidebar.php:176
 msgid "Last Update"
@@ -3590,36 +3529,36 @@ msgstr ""
 
 #: inc/settings/sidebar.php:227
 msgid "Exellent"
-msgstr "ОДЛИЧАН!"
+msgstr ""
 
 #: inc/settings/sidebar.php:230
 msgid "Perfect"
-msgstr "Perfektno"
+msgstr ""
 
 #: inc/settings/sidebar.php:233
 msgid "Good"
-msgstr "Dobro"
+msgstr ""
 
 #: inc/settings/sidebar.php:236
 msgid "Week"
-msgstr "Недеља"
+msgstr ""
 
 #: inc/settings/sidebar.php:239
 msgid "Bad"
-msgstr "Лоше"
+msgstr ""
 
 #: inc/settings/sidebar.php:251
 msgid "UNLIMITED"
-msgstr "НЕОГРАНИЧЕНО"
+msgstr ""
 
 #: inc/settings/sidebar.php:254
 msgid "EXPIRED"
-msgstr "Istekle"
+msgstr ""
 
 #: inc/settings/sidebar.php:257 inc/settings/sidebar.php:260
 #: inc/settings/sidebar.php:263
 msgid "Available"
-msgstr "Dostupno"
+msgstr ""
 
 #: inc/widgets/Currency_Converter.php:23 inc/widgets/Currency_Converter.php:45
 #: inc/widgets/Currency_Converter.php:73
@@ -3662,11 +3601,8 @@ msgstr ""
 
 #. Author of the plugin/theme
 msgid "INFINITUM FORM"
-msgstr "INFINITUM FORM"
+msgstr ""
 
 #. Author URI of the plugin/theme
 msgid "https://infinitumform.com/"
-msgstr "https://infinitumform.com/"
-
-#~ msgid "Basic"
-#~ msgstr "Основни"
+msgstr ""

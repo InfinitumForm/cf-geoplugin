@@ -55,6 +55,8 @@ final class CFGP_Init{
 		
 		// Delete expired transients
 		self::delete_expired_transients();
+		// Synchronize with old version of the plugin
+		CFGP_Options::sync_with_the_old_version_of_the_plugin();
 		
 		// Disable plugin updates
 		/*
@@ -128,12 +130,42 @@ final class CFGP_Init{
 	 * @since     8.0.0
 	 */
 	public function textdomain() {
-		$locale = apply_filters( 'cfgp_plugin_locale', get_locale(), CFGP_NAME );
-		if ( $loaded = load_textdomain( CFGP_NAME, CFGP_ROOT . '/languages/' . $locale . '.mo' ) ) {
-			return $loaded;
-		} else {
-			load_plugin_textdomain( CFGP_NAME, false, CFGP_ROOT . '/languages' );
+		if ( is_textdomain_loaded( CFGP_NAME ) ) {
+			unload_textdomain( CFGP_NAME );
 		}
+		
+		// Get locale
+		$locale = apply_filters( 'cfgp_plugin_locale', get_locale(), CFGP_NAME );
+		
+		// We need standard file
+		$mofile = sprintf( '%s-%s.mo', CFGP_NAME, $locale );
+		
+		// Check first inside `/wp-content/languages/plugins`
+		$domain_path = path_join( WP_LANG_DIR, 'plugins' );
+		$loaded = load_textdomain( CFGP_NAME, path_join( $domain_path, $mofile ) );
+		
+		// Or inside `/wp-content/languages`
+		if ( ! $loaded ) {
+			$loaded = load_textdomain( CFGP_NAME, path_join( WP_LANG_DIR, $mofile ) );
+		}
+		
+		// Or inside `/wp-content/plugin/cf-geoplugin/languages`
+		if ( ! $loaded ) {
+			$domain_path = CFGP_ROOT . '/languages';
+			$loaded = load_textdomain( CFGP_NAME, path_join( $domain_path, $mofile ) );
+			
+			// Or load with only locale without prefix
+			if ( ! $loaded ) {
+				$loaded = load_textdomain( CFGP_NAME, path_join( $domain_path, "{$locale}.mo" ) );
+			}
+
+			// Or old fashion way
+			if ( ! $loaded && function_exists('load_plugin_textdomain') ) {
+				load_plugin_textdomain( CFGP_NAME, false, $domain_path );
+			}
+		}
+		
+		
 	}
 	
 	/**

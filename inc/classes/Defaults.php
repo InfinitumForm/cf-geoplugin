@@ -61,7 +61,6 @@ class CFGP_Defaults {
 	
 	// Plugin options
 	const OPTIONS = array(
-		'id'							=> '',
 		'enable_beta'					=>	1,
 		'enable_simple_shortcode'		=>	1,
 		'enable_seo_csv'				=>	1,
@@ -110,8 +109,8 @@ class CFGP_Defaults {
 		'measurement_unit'				=>	'km',
 		'redirect_http_code'			=>	302,
 		'base_currency'					=>	'USD',
-		'enable_woocommerce'			=>	0,
-		'woocommerce_active'			=>	0,
+	//	'enable_woocommerce'			=>	0,
+	//	'woocommerce_active'			=>	0,
 		'rest_secret'					=>	'',
 		'plugin_activated'				=>	'',
 		'enable_spam_ip'				=> 0,
@@ -119,12 +118,12 @@ class CFGP_Defaults {
 		'log_errors'					=> 0,
 		'enable_seo_posts'				=> array('post', 'page'),
 		'enable_geo_tag'				=> array('post', 'page'),
-		'enable_cf7'					=> 0,
+	//	'enable_cf7'					=> 0,
 		'enable_css'					=> 1,
 		'enable_js'						=> 1,
-		'enable_wooplatnica'			=> 0,
+	//	'enable_wooplatnica'			=> 0,
 		'hide_http_referrer_headers' 	=> 0,
-		'covid19'						=> 0,
+	//	'covid19'						=> 0,
 		// 1-transient; 2-session
 		//'session_type'					=> 'transient',
 		'notification_recipient_emails'	=> '',

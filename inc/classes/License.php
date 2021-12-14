@@ -150,6 +150,8 @@ class CFGP_License extends CFGP_Global{
 	 * of work, and for that I need developers who also know how to hack.
 	 * Because only a hacker can write good protection against hackers. ;)
 	 *
+	 * I'm expecting you.
+	 *
 	 * Cheers!
 	 */
 	public static function activated(){
