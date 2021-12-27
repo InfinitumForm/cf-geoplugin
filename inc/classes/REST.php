@@ -107,9 +107,8 @@ class CFGP_REST extends CFGP_Global {
 		{
 			global $wpdb;
 			
-			$table = $wpdb->prefix.CFGP_Defaults::TABLE['rest_tokens'];
 			$confirm_token = $wpdb->get_row($wpdb->prepare(
-				"SELECT ID, token, lookup FROM {$table} WHERE secret_key = %s AND token = %s",
+				"SELECT ID, token, lookup FROM {$wpdb->cfgp_rest_access_token} WHERE secret_key = %s AND token = %s",
 				$secret_key,
 				$GET['access_token']
 			));
@@ -119,7 +118,7 @@ class CFGP_REST extends CFGP_Global {
 				$api = CFGP_API::lookup($GET['ip'], $GET);
 				
 				$wpdb->update(
-					$table,
+					$wpdb->cfgp_rest_access_token,
 					array(
 						'lookup' => (intval($confirm_token->lookup)+1),
 					),
@@ -194,9 +193,8 @@ class CFGP_REST extends CFGP_Global {
 					$app_name = sanitize_title($GET['app_name']);
 					
 					global $wpdb;
-					$table = $wpdb->prefix.CFGP_Defaults::TABLE['rest_tokens'];
 					$get_token = $wpdb->get_row($wpdb->prepare(
-						"SELECT ID, token, lookup FROM {$table} WHERE secret_key = %s AND app_name = %s",
+						"SELECT ID, token, lookup FROM {$wpdb->cfgp_rest_access_token} WHERE secret_key = %s AND app_name = %s",
 						$secret_key,
 						$app_name
 					));
@@ -204,7 +202,7 @@ class CFGP_REST extends CFGP_Global {
 					if(isset($get_token->token)){
 						$access_token = $get_token->token;
 						$wpdb->update(
-							$table,
+							$wpdb->cfgp_rest_access_token,
 							array(
 								'lookup' => (intval($get_token->lookup)+1),
 							),
@@ -221,7 +219,7 @@ class CFGP_REST extends CFGP_Global {
 					} else {
 						$access_token = CFGP_U::generate_token(mt_rand(mt_rand(10,20),32)) .'_'. CFGP_U::generate_token(mt_rand(10,32));
 						$wpdb->insert(
-							$table,
+							$wpdb->cfgp_rest_access_token,
 							array(
 								'secret_key' => $secret_key,
 								'token' => $access_token,
@@ -282,9 +280,8 @@ class CFGP_REST extends CFGP_Global {
 			
 			// Delete all access tokens
 			global $wpdb;
-			$table = $wpdb->prefix.CFGP_Defaults::TABLE['rest_tokens'];
 			$wpdb->query($wpdb->prepare(
-				"DELETE FROM {$table} WHERE secret_key NOT LIKE %s",
+				"DELETE FROM {$wpdb->cfgp_rest_access_token} WHERE secret_key NOT LIKE %s",
 				$secret_key
 			));
 			
@@ -301,9 +298,8 @@ class CFGP_REST extends CFGP_Global {
 		if(wp_verify_nonce(CFGP_U::request_string('nonce'), CFGP_NAME.'-token-remove') !== false)
 		{
 			global $wpdb;
-			$table = $wpdb->prefix.CFGP_Defaults::TABLE['rest_tokens'];
 			$wpdb->query($wpdb->prepare(
-				"DELETE FROM {$table} WHERE ID = %d",
+				"DELETE FROM {$wpdb->cfgp_rest_access_token} WHERE ID = %d",
 				CFGP_U::request_int('token_id')
 			));
 			echo 1;

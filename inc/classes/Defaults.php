@@ -29,12 +29,6 @@ class CFGP_Defaults {
 	const LIFETIME_LICENSE		= 'LIFETIME';
 	const DEVELOPER_LICENSE 	= 'CFGEODEV';
 	
-	// Database tables
-	const TABLE = array(
-		'seo_redirection' 	=> 'cfgp_seo_redirection',
-		'rest_tokens' 		=> 'cfgp_rest_access_token'
-	);
-	
 	// Database deprecated tables
 	const DEPRECATED_TABLE = array(
 		'seo_redirection' 	=> 'cf_geo_seo_redirection',

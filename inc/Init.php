@@ -241,11 +241,10 @@ final class CFGP_Init{
 			$charset_collate = $wpdb->get_charset_collate();
 			
 			## Create database table for the REST tokens
-			$rest_tokens_table = $wpdb->prefix . CFGP_Defaults::TABLE['rest_tokens'];
-			if($wpdb->get_var( "SHOW TABLES LIKE '{$rest_tokens_table}'" ) != $rest_tokens_table) 
+			if($wpdb->get_var( "SHOW TABLES LIKE '{$wpdb->cfgp_rest_access_token}'" ) != $wpdb->cfgp_rest_access_token) 
 			{
 				dbDelta("
-				CREATE TABLE {$rest_tokens_table} (
+				CREATE TABLE {$wpdb->cfgp_rest_access_token} (
 					ID bigint(20) NOT NULL AUTO_INCREMENT,
 					`secret_key` varchar(45) NOT NULL,
 					`token` varchar(65) NOT NULL,
@@ -264,11 +263,10 @@ final class CFGP_Init{
 			}
 			
 			## Create database table for the SEO redirection
-			$seo_redirection_table = $wpdb->get_blog_prefix() . CFGP_Defaults::TABLE['seo_redirection'];
-			if($wpdb->get_var( "SHOW TABLES LIKE '{$seo_redirection_table}'" ) != $seo_redirection_table) 
+			if($wpdb->get_var( "SHOW TABLES LIKE '{$wpdb->cfgp_seo_redirection}'" ) != $wpdb->cfgp_seo_redirection) 
 			{
 				dbDelta("
-				CREATE TABLE {$seo_redirection_table} (
+				CREATE TABLE {$wpdb->cfgp_seo_redirection} (
 					ID int(11) NOT NULL AUTO_INCREMENT,
 					`only_once` tinyint(1) NOT NULL DEFAULT 0,
 					`country` varchar(100) DEFAULT NULL,

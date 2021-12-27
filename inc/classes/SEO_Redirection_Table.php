@@ -69,11 +69,10 @@ if (!class_exists('CFGP_SEO_Table')):
 					{
 						$checkboxes = array_map('absint', $checkboxes);
 						if($checkboxes = array_filter($checkboxes))
-						{						
+						{
 							global $wpdb;
-							$table = $wpdb->get_blog_prefix() . CFGP_Defaults::TABLE['seo_redirection'];
 							$checkboxes_prepare = implode( ',', array_fill( 0, count( $checkboxes ), '%d' ) );
-							$wpdb->query( $wpdb->prepare($query = "DELETE FROM `{$table}` WHERE `{$table}`.`ID` IN ({$checkboxes_prepare})", $checkboxes) );
+							$wpdb->query( $wpdb->prepare($query = "DELETE FROM `{$wpdb->cfgp_seo_redirection}` WHERE `{$wpdb->cfgp_seo_redirection}`.`ID` IN ({$checkboxes_prepare})", $checkboxes) );
 						}
 					}
 					break;
@@ -87,10 +86,9 @@ if (!class_exists('CFGP_SEO_Table')):
 						if($checkboxes = array_filter($checkboxes))
 						{
 							global $wpdb;
-							$table = $wpdb->get_blog_prefix() . CFGP_Defaults::TABLE['seo_redirection'];
 							$checkboxes_prepare = implode( ',', array_fill( 0, count( $checkboxes ), '%d' ) );
 							$enable_disable = ($action === 'enable' ? 1 : 0);
-							$wpdb->query( $wpdb->prepare($query = "UPDATE `{$table}` SET `active` = {$enable_disable} WHERE `{$table}`.`ID` IN ({$checkboxes_prepare})", $checkboxes) );
+							$wpdb->query( $wpdb->prepare($query = "UPDATE `{$wpdb->cfgp_seo_redirection}` SET `active` = {$enable_disable} WHERE `{$wpdb->cfgp_seo_redirection}`.`ID` IN ({$checkboxes_prepare})", $checkboxes) );
 						}
 					}
 					break;
@@ -104,10 +102,9 @@ if (!class_exists('CFGP_SEO_Table')):
 						if($checkboxes = array_filter($checkboxes))
 						{
 							global $wpdb;
-							$table = $wpdb->get_blog_prefix() . CFGP_Defaults::TABLE['seo_redirection'];
 							$checkboxes_prepare = implode( ',', array_fill( 0, count( $checkboxes ), '%d' ) );
 							$enable_disable = ($action === 'only_once' ? 1 : 0);
-							$wpdb->query( $wpdb->prepare($query = "UPDATE `{$table}` SET `only_once` = {$enable_disable} WHERE `{$table}`.`ID` IN ({$checkboxes_prepare})", $checkboxes) );
+							$wpdb->query( $wpdb->prepare($query = "UPDATE `{$wpdb->cfgp_seo_redirection}` SET `only_once` = {$enable_disable} WHERE `{$wpdb->cfgp_seo_redirection}`.`ID` IN ({$checkboxes_prepare})", $checkboxes) );
 						}
 					}
 					break;
@@ -130,8 +127,7 @@ if (!class_exists('CFGP_SEO_Table')):
 			if(CFGP_Options::get('enable_seo_csv', 0) && in_array($which, array('top', 'bottom')))
 			{
 				global $wpdb;
-				$seo_redirection_table = $wpdb->get_blog_prefix() . CFGP_Defaults::TABLE['seo_redirection'];
-				$query = $wpdb->query("SELECT 1 FROM `{$seo_redirection_table}` WHERE 1=1 LIMIT 1");
+				$query = $wpdb->query("SELECT 1 FROM `{$wpdb->cfgp_seo_redirection}` WHERE 1=1 LIMIT 1");
 				echo '<div class="alignleft actions bulkactions">';
 					printf('<a aria="button" href="%s" class="button"><i class="fa fa-upload"></i> %s</a> ', admin_url('admin.php?page='.CFGP_U::request_string('page').'&action=import&nonce='.wp_create_nonce(CFGP_NAME.'-seo-import-csv')), __('Import From CSV', CFGP_NAME));
 					
@@ -206,19 +202,18 @@ if (!class_exists('CFGP_SEO_Table')):
 			}
 			
             /* -- Preparing your query -- */
-            $seo_redirection_table = $wpdb->get_blog_prefix() . CFGP_Defaults::TABLE['seo_redirection'];
-            $query = "SELECT * FROM `{$seo_redirection_table}`";
+            $query = "SELECT * FROM `{$wpdb->cfgp_seo_redirection}`";
 			
 			/* -- Search -- */
 			if($s = CFGP_U::request_string('s', '')){
 				$query.=$wpdb->prepare(
 					" WHERE (
-						`{$seo_redirection_table}`.`url` LIKE %s 
-						OR `{$seo_redirection_table}`.`country` LIKE %s 
-						OR `{$seo_redirection_table}`.`region` LIKE %s 
-						OR `{$seo_redirection_table}`.`city` LIKE %s 
-						OR `{$seo_redirection_table}`.`postcode` LIKE %s 
-						OR `{$seo_redirection_table}`.`http_code` = %d
+						`{$wpdb->cfgp_seo_redirection}`.`url` LIKE %s 
+						OR `{$wpdb->cfgp_seo_redirection}`.`country` LIKE %s 
+						OR `{$wpdb->cfgp_seo_redirection}`.`region` LIKE %s 
+						OR `{$wpdb->cfgp_seo_redirection}`.`city` LIKE %s 
+						OR `{$wpdb->cfgp_seo_redirection}`.`postcode` LIKE %s 
+						OR `{$wpdb->cfgp_seo_redirection}`.`http_code` = %d
 					) ",
 					'%'.$s.'%',
 					'%'.$s.'%',
@@ -247,7 +242,7 @@ if (!class_exists('CFGP_SEO_Table')):
 						'only_once'
 					))
 				){
-                	$query .= " ORDER BY `{$seo_redirection_table}`.`{$orderby}` {$order}";
+                	$query .= " ORDER BY `{$wpdb->cfgp_seo_redirection}`.`{$orderby}` {$order}";
 				}
             }
 

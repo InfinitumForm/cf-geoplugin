@@ -16,6 +16,8 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
 if(!class_exists('CFGP_License')) :
 class CFGP_License extends CFGP_Global{
 	
+	private static $activated = NULL;
+	
 	/*
 	 * License names
 	 */
@@ -155,24 +157,24 @@ class CFGP_License extends CFGP_Global{
 	 * Cheers!
 	 */
 	public static function activated(){
-		static $activated = NULL;
-		
-		if($activated !== NULL) return $activated;
+		if(self::$activated !== NULL){
+			return self::$activated;
+		}
 		
 		if(self::expired()) {
-			$activated = false;
-			return $activated;
+			self::$activated = false;
+			return self::$activated;
 		}
 		
 		foreach(array_keys(CFGP_Defaults::LICENSE) as $license_field){
 			if($license_field != 'expired' && empty(self::get($license_field))){
-				$activated = false;
-				return $activated;
+				self::$activated = false;
+				return self::$activated;
 			}
 		}
 		
-		$activated = true;
-		return $activated;
+		self::$activated = true;
+		return self::$activated;
 	}
 	
 	/*

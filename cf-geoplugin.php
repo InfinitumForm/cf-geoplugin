@@ -64,6 +64,12 @@ include_once CFGP_CLASS . '/Requirements.php';
  */
 $CFGP_Requirements = new CFGP_Requirements(array('file' => CFGP_FILE));
 if($CFGP_Requirements->passes()) :
+	// GLOBAL: Register database tables
+	global $wpdb;
+	// Seo redirection table
+	$wpdb->cfgp_seo_redirection   = $wpdb->prefix . 'cfgp_seo_redirection';
+	// REST token table
+	$wpdb->cfgp_rest_access_token = $wpdb->prefix . 'cfgp_rest_access_token';
 	// Dynamic action
 	do_action('cfgp/before_plugin_setup');
 	// Initializing class
