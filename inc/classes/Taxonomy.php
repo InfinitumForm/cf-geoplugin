@@ -17,8 +17,8 @@ if(!class_exists('CFGP_Taxonomy')) :
 class CFGP_Taxonomy extends CFGP_Global {
 	
 	function __construct(){
-		$this->add_action( 'registered_taxonomy', 'register' );
-		$this->add_action( 'plugins_loaded', 'load' );
+		$this->add_action( 'init', 'register' );
+		//	$this->add_action( 'plugins_loaded', 'load' );
 	}
 	
 	public function register(){

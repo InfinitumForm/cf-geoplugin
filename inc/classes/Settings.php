@@ -29,14 +29,14 @@ class CFGP_Settings extends CFGP_Global {
 	public function admin_init(){
 		
 		if(isset($_GET['rstr_response']) && $_GET['rstr_response'] == 'saved') {
-			$this->notices__saved();
+			$this->add_action( 'admin_notices', 'notices__saved' );
 		}
 		
 		if(isset($_GET['save_settings'])){
 			if($_GET['save_settings'] == 'true') {
 				$this->save_settings();
 			} else if($_GET['save_settings'] == 'false') {
-				$this->notices__error();
+				$this->add_action( 'admin_notices', 'notices__error' );
 			}
 		}
 	}

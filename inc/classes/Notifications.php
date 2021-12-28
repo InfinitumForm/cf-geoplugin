@@ -32,7 +32,7 @@ class CFGP_Notifications extends CFGP_Global{
 		if( defined( 'CFGP_DISABLE_NOTIFICATION_LOOKUP_EXPIRE_SOON' ) && CFGP_DISABLE_NOTIFICATION_LOOKUP_EXPIRE_SOON ) return;
 		
 		$transient = 'cfgp-notification-lookup-expire-soon';
-		
+
 		if( get_transient($transient) ) return;
 		
 		if( CFGP_U::api('lookup') != 'unlimited' && CFGP_U::api('lookup') <= 100 && ($emails = $this->get_admins()))
@@ -46,7 +46,7 @@ class CFGP_Notifications extends CFGP_Global{
 			) . '</p>';
 			$message[]= '<p>' . sprintf(
 				__('You currently have %1$d lookups available and need to %2$s so that all services work smoothly.', CFGP_NAME),
-				$CFGEO['lookup'],
+				CFGP_U::api('lookup'),
 				'<a href="' . CFGP_STORE . '/pricing/" target="_blank">' . __('extend your license', CFGP_NAME) . '</a>'
 			) . '</p>';
 			

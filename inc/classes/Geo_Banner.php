@@ -17,7 +17,8 @@ if(!class_exists('CFGP_Geo_Banner')) :
 class CFGP_Geo_Banner extends CFGP_Global {
 	
 	function __construct(){
-		$this->add_action('registered_post_type', 'register');
+		$this->add_action('init', 'register');
+		
 		$this->add_filter('manage_posts_columns', 'columns_banner');
 		$this->add_action('manage_posts_custom_column', 'columns_banner_content', 10, 2);
 		$this->add_action('delete_post', 'delete_post', 10);
@@ -25,7 +26,7 @@ class CFGP_Geo_Banner extends CFGP_Global {
 		$this->add_action('save_post', 'save_post');
 		
 		$this->add_action('wp_ajax_cf_geoplugin_banner_cache', 'ajax__geoplugin_banner_cache');
-		$this->add_action('wp_ajax_nopriv_cf_geoplugin_banner_cache', 'ajax__geoplugin_banner_cache');
+		$this->add_action('wp_ajax_nopriv_cf_geoplugin_banner_cache', 'ajax__geoplugin_banner_cache');		
 	}
 	
 	/**

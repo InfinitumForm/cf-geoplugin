@@ -32,7 +32,8 @@ final class CFGP_Init{
 			'CFGP_Public',					// Public class
 			'CFGP_Plugins',					// Plugins class
 			'CFGP_SEO_Redirection_Pages',	// SEO redirection for the individual pages
-			'CFGP_Widgets'	                // Widgets class
+			'CFGP_Widgets',	                // Widgets class
+			'CFGP_Notifications'	        // Notifications class
 		));
 		
 		// REST class
@@ -106,7 +107,8 @@ final class CFGP_Init{
 			CFGP_CLASS . '/Public.php',					// Public class
 			CFGP_CLASS . '/Plugins.php',				// Plugins class
 			CFGP_CLASS . '/REST.php',					// REST class
-			CFGP_CLASS . '/Widgets.php'					// Widgets class
+			CFGP_CLASS . '/Widgets.php',				// Widgets class
+			CFGP_CLASS . '/Notifications.php'			// Notifications class
 		));
 		foreach($includes as $include){
 			include_once $include;
@@ -123,6 +125,18 @@ final class CFGP_Init{
 		$instance = self::instance();
 		// Dynamic run
 		do_action('cfgp/init/run');
+	}
+	
+	/**
+	 * Register database tables
+	 * @since     8.0.0
+	 */
+	public static function wpdb_tables(){
+		global $wpdb;
+		// Seo redirection table
+		$wpdb->cfgp_seo_redirection   = $wpdb->prefix . 'cfgp_seo_redirection';
+		// REST token table
+		$wpdb->cfgp_rest_access_token = $wpdb->prefix . 'cfgp_rest_access_token';
 	}
 	
 	/**
