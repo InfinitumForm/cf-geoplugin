@@ -52,10 +52,10 @@ class CFGP_Options
 					// Enable beta options
 					if (in_array($name, CFGP_Defaults::BETA_OPTIONS)) {
 						if(!isset($get_option['enable_beta'])) {
-							return apply_filters( 'cfgp/options/get', $default, $default);
+							return apply_filters( 'cfgp/options/get', $get_option, $default);
 						}
 						if($get_option['enable_beta'] == 0) {
-							return apply_filters( 'cfgp/options/get', $default, $default);
+							return apply_filters( 'cfgp/options/get', $get_option, $default);
 						}
 					}
 					// Return values
@@ -69,7 +69,7 @@ class CFGP_Options
 	}
 	
 	/*
-	 * Get plugin BETA options - TO DO
+	 * Get plugin BETA options
 	 *
 	 * @pharam   (string)   $name                        If exists, return value for single option, if empty return all options
 	 * @pharam   (string)   $default                     Default values
@@ -77,7 +77,11 @@ class CFGP_Options
 	 * @return   (array|string|int|bloat|bool)           plugin option/s
 	 */
 	public static function get_beta($name = false, $default = NULL){
-		return self::get($name, $default);
+		$return = NULL;
+		if (in_array($name, CFGP_Defaults::BETA_OPTIONS)) {
+			$return = self::get($name, $default);
+		}
+		return apply_filters( 'cfgp/option/get_beta', $return, $name, $default, CFGP_Defaults::BETA_OPTIONS, CFGP_Defaults::OPTIONS );
 	}	
 	
 	
@@ -106,9 +110,11 @@ class CFGP_Options
 		{			
 			if(is_array($name_or_array))
 			{
-				$name_or_array = array_merge($default_options, $name_or_array);
-				$name_or_array = apply_filters('cfgp/options/set/fields', $name_or_array, $default_options);
-			
+				$name_or_array = array_merge(
+					(!empty($options) ? $options : $default_options),
+					$name_or_array
+				);
+				$name_or_array = apply_filters('cfgp/options/set/fields', $name_or_array, $options, $default_options);
 				foreach($name_or_array as $key => $val) {
 					if(in_array($key, $filter) !== false) {
 						$options[$key] = self::sanitize($val);

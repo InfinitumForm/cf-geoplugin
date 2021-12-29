@@ -215,11 +215,11 @@ if (!class_exists('CFGP_SEO_Table')):
 						OR `{$wpdb->cfgp_seo_redirection}`.`postcode` LIKE %s 
 						OR `{$wpdb->cfgp_seo_redirection}`.`http_code` = %d
 					) ",
-					'%'.$s.'%',
-					'%'.$s.'%',
-					'%'.$s.'%',
-					'%'.$s.'%',
-					'%'.$s.'%',
+					'%'.$wpdb->esc_like($s).'%',
+					'%'.$wpdb->esc_like($s).'%',
+					'%'.$wpdb->esc_like($s).'%',
+					'%'.$wpdb->esc_like($s).'%',
+					'%'.$wpdb->esc_like($s).'%',
 					$s
 				);
 			}
