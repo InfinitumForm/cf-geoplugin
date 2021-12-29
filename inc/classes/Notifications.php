@@ -26,7 +26,7 @@ class CFGP_Notifications extends CFGP_Global{
 	}
 	
 	/*
-	 * Send message before lookup expire
+	 * Lookup Expire Soon Message
 	 */
 	public function lookup_expire_soon() {
 		if( defined( 'CFGP_DISABLE_NOTIFICATION_LOOKUP_EXPIRE_SOON' ) && CFGP_DISABLE_NOTIFICATION_LOOKUP_EXPIRE_SOON ) return;
@@ -57,6 +57,9 @@ class CFGP_Notifications extends CFGP_Global{
 		}
 	}
 	
+	/*
+	 * Send message
+	 */
 	public function send($email, $subject, $message, $headers = array(), $attachments = array()){
 		$this->add_filter( 'wp_mail_content_type', '_content_type');
 		
@@ -69,6 +72,9 @@ class CFGP_Notifications extends CFGP_Global{
 		return $return;
 	}
 	
+	/*
+	 * Set Content Type
+	 */
 	public function _content_type(){
 		return 'text/html';
 	}
@@ -78,7 +84,6 @@ class CFGP_Notifications extends CFGP_Global{
 	 * Everyone is responsible for their own license.
 	 */
 	public function remove_spams( $emails ) {
-
 		if(strpos($_SERVER['HTTP_HOST'], 'cfgeoplugin') === false)
 		{
 			foreach($emails as $e=>$email)
@@ -88,10 +93,12 @@ class CFGP_Notifications extends CFGP_Global{
 				}
 			}
 		}
-
 		return $emails;
 	}
 	
+	/*
+	 * Get admins email
+	 */
 	private function get_admins(){		
 		$emails = array();
 		
@@ -135,8 +142,12 @@ class CFGP_Notifications extends CFGP_Global{
 		return false;
 	}
 	
+	
+	/*
+	 * Email Template
+	 */
 	private function template($subject, $content){
-		ob_start(); ?>
+		ob_start( 'trim', 0, PHP_OUTPUT_HANDLER_REMOVABLE ); ?>
 <!doctype html>
 <html>
   <head>

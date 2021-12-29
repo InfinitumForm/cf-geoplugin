@@ -95,16 +95,12 @@ class CFGP_Options
 	 */
 	public static function set($name_or_array=array(), $value=NULL)
 	{
-		
 		// Get plugin options
 		$options = self::get();
-		
 		// Get default options
 		$default_options = apply_filters( 'cfgp/settings/default', CFGP_Defaults::OPTIONS);
-		
 		// Get default keys
 		$filter = apply_filters('cfgp/options/set/filter', array_keys($default_options));
-		
 		// Collect and set new values
 		if(!empty($name_or_array))
 		{			
@@ -132,20 +128,17 @@ class CFGP_Options
 				}
 			}
 		}
-		
 		// Return on the bad data
 		if(empty($options)) return false;
-		
 		// Save new options
 		if(CFGP_NETWORK_ADMIN){
 			update_site_option(CFGP_NAME, $options, true);
 		}else{
 			update_option(CFGP_NAME, $options, true);
 		}
-		
 		// Save to cache
 		CFGP_Cache::set('options', $options);
-		
+		// Return
 		return apply_filters( 'cfgp/options/set', $options, $default_options, $name_or_array, $value);
 	}
 	
@@ -158,16 +151,12 @@ class CFGP_Options
 	 */
 	public static function delete($name_or_array)
 	{
-		
 		// Get plugin options
 		$options = self::get();
-		
 		// Get default options
 		$default_options = apply_filters( 'cfgp/settings/default', CFGP_Defaults::OPTIONS);
-		
 		// Get default keys
 		$filter = apply_filters('cfgp/options/delete/filter', array_keys($default_options));
-		
 		// Remove options
 		if(is_array($name_or_array))
 		{
@@ -183,20 +172,17 @@ class CFGP_Options
 		{
 			unset($options[$name_or_array]);
 		}
-		
 		// Set defaults
 		$options = array_merge($default_options, $options);
-		
 		// Update options
 		if(CFGP_NETWORK_ADMIN){
 			update_site_option(CFGP_NAME, $options, true);
 		}else{
 			update_option(CFGP_NAME, $options, true);
 		}
-		
 		// Save to cache
 		CFGP_Cache::set('options', $options);
-		
+		// Return
 		return apply_filters( 'cfgp/options/delete', $options, $default_options, $name_or_array);
 	}
 	
