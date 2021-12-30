@@ -77,7 +77,7 @@ class CFGP_Options
 	 * @return   (array|string|int|bloat|bool)           plugin option/s
 	 */
 	public static function get_beta($name = false, $default = NULL){
-		$return = NULL;
+		$return = $default;
 		if (in_array($name, CFGP_Defaults::BETA_OPTIONS)) {
 			$return = self::get($name, $default);
 		}

@@ -41,7 +41,7 @@ if($NEW_API = CFGP_API::lookup(CFGP_U::request_string('cfgp_lookup'))){
                         	<a href="javascript:void(0);" class="nav-tab nav-tab-active" data-id="#recived-data"><i class="fa fa-database"></i><span class="label"> <?php _e('Recived data', CFGP_NAME); ?></span></a>
                             <a href="javascript:void(0);" class="nav-tab" data-id="#sent-data"><i class="fa fa-share-square"></i><span class="label"> <?php _e('Sent data', CFGP_NAME); ?></span></a>
                             <a href="javascript:void(0);" class="nav-tab" data-id="#server-statistics"><i class="fa fa-server"></i><span class="label"> <?php _e('Server statistics', CFGP_NAME); ?></span></a>
-                            <?php if( CFGP_Options::get_beta('enable_gmap', 0) ): ?>
+                            <?php if( CFGP_Options::get('enable_gmap', 0) ): ?>
                             <a href="javascript:void(0);" class="nav-tab" data-id="#google-map"><i class="fa fa-globe"></i><span class="label"> <?php _e('Google map', CFGP_NAME); ?></span></a>
                             <?php endif; ?>
                        <!--     <a href="javascript:void(0);" class="nav-tab" data-id="#debugger"><i class="fa fa-bug"></i><span class="label"> <?php _e('Debugger', CFGP_NAME); ?></span></a>  -->
@@ -282,7 +282,7 @@ if($NEW_API = CFGP_API::lookup(CFGP_U::request_string('cfgp_lookup'))){
                                 </tbody>
                         	</table>
                         </div>
-                        <?php if( CFGP_Options::get_beta('enable_gmap', 0) ): ?>
+                        <?php if( CFGP_Options::get('enable_gmap', 0) ): ?>
                         <div class="cfgp-tab-panel" id="google-map">
                         <?php
                         	echo do_shortcode( '[cfgeo_map width="100%" height="600px" longitude="'.$API['longitude'].'" latitude="'.$API['latitude'].'"]

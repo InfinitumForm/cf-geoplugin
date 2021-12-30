@@ -62,13 +62,13 @@ class CFGP_Shortcodes extends CFGP_Global {
 		}
 		
 		// Google Map shortcode
-		if( CFGP_Options::get_beta('enable_gmap', 0) ) {
+		if( CFGP_Options::get('enable_gmap', 0) ) {
 			// Official Google Map Shortcode
 			$this->add_shortcode( 'cfgeo_map', 'google_map' );
 		}
 		
 		// Geo Banner
-		if( CFGP_Options::get_beta('enable_banner', 0) ) {
+		if( CFGP_Options::get('enable_banner', 0) ) {
 			// Official Geo Banner Shortcode
 			$this->add_shortcode( 'cfgeo_banner', 'geo_banner' );
 		}
