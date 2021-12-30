@@ -1618,6 +1618,8 @@ class CFGP_Shortcodes extends CFGP_Global {
 			$default = $content = '';
 		}
 		
+		$attr = str_replace(' cache', '', $attr) . ' no_cache';
+		
 		if(empty($default)) {
 			echo do_shortcode("[{$shortcode}{$attr}]");
 		} else {
