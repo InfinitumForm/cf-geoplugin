@@ -45,8 +45,8 @@ class CFGP_Defender extends CFGP_Global {
 			
 			if($ip)
 			{
-				$url = add_query_arg( 'ip', $ip, CFGP_U::API['spam-checker'] );
-				$response = $this->curl_get( $url );
+				$url = add_query_arg( 'ip', $ip, CFGP_Defaults::API['spam-checker'] );
+				$response = CFGP_U::curl_get( $url );
             }
 			
             if( $response !== false )
