@@ -93,7 +93,7 @@ $API = CFGP_U::api();
                                                 $API
                                             ), $API) as $key => $value) : if(in_array($key, $remove_tags)) continue; ?>
                                         <tr>
-                                            <td><code>[<?php echo $key; ?>]</code></td>
+                                            <td><code>[cfgeo_<?php echo $key; ?>]</code></td>
                                             <td><?php echo $value; ?></td>
                                         </tr>
                                         <?php endforeach; ?>

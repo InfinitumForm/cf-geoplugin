@@ -293,16 +293,29 @@ class CFGP_Admin extends CFGP_Global {
 			)
 		));
 		
-		$wp_admin_bar->add_menu(array(
-			'parent' => CFGP_NAME . '-admin-bar-link',
-			'id' => CFGP_NAME . '-admin-bar-activate-link',
-			'title' => __('License', CFGP_NAME), 
-			'href' => esc_url(CFGP_U::admin_url('admin.php?page=' . CFGP_NAME . '-activate')), 
-			'meta' => array(
-				'class' => CFGP_NAME . ' ' . CFGP_NAME . '-admin-bar-activate-link',
-				'title' => __('License', CFGP_NAME),
-			)
-		));
+		if(CFGP_License::activated()) {
+			$wp_admin_bar->add_menu(array(
+				'parent' => CFGP_NAME . '-admin-bar-link',
+				'id' => CFGP_NAME . '-admin-bar-activate-link',
+				'title' => __('License', CFGP_NAME), 
+				'href' => esc_url(CFGP_U::admin_url('admin.php?page=' . CFGP_NAME . '-activate')), 
+				'meta' => array(
+					'class' => CFGP_NAME . ' ' . CFGP_NAME . '-admin-bar-activate-link',
+					'title' => __('License', CFGP_NAME),
+				)
+			));
+		} else {
+			$wp_admin_bar->add_menu(array(
+				'parent' => CFGP_NAME . '-admin-bar-link',
+				'id' => CFGP_NAME . '-admin-bar-activate-link',
+				'title' => __('Activate Unlimited', CFGP_NAME), 
+				'href' => esc_url(CFGP_U::admin_url('admin.php?page=' . CFGP_NAME . '-activate')), 
+				'meta' => array(
+					'class' => CFGP_NAME . ' ' . CFGP_NAME . '-admin-bar-activate-link',
+					'title' => __('Activate Unlimited', CFGP_NAME),
+				)
+			));
+		}
 	}
 	
 	public function register_style($page){

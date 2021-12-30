@@ -220,14 +220,26 @@ class CFGP_Settings extends CFGP_Global {
 			'settings__callback'
 		);
 		
-		$this->add_submenu_page(
-			CFGP_NAME,
-			__('Activate Unlimited',CFGP_NAME),
-			'<span class="dashicons dashicons-star-filled"></span> '.__('Activate Unlimited',CFGP_NAME),
-			'manage_options',
-			CFGP_NAME . '-activate',
-			'license__callback'
-		);
+		
+		if(CFGP_License::activated()) {
+			$this->add_submenu_page(
+				CFGP_NAME,
+				__('License',CFGP_NAME),
+				__('License',CFGP_NAME),
+				'manage_options',
+				CFGP_NAME . '-activate',
+				'license__callback'
+			);
+		} else {		
+			$this->add_submenu_page(
+				CFGP_NAME,
+				__('Activate Unlimited',CFGP_NAME),
+				'<span class="dashicons dashicons-star-filled"></span> '.__('Activate Unlimited',CFGP_NAME),
+				'manage_options',
+				CFGP_NAME . '-activate',
+				'license__callback'
+			);
+		}
 	}
 	
 	public function main_page__callback(){

@@ -64,7 +64,7 @@ foreach(CFGP_License::get_product_data() as $i => $product){
         <div class="cfgp-form-product-license">
         	<div class="cfgp-form-product-license-item">
             	<label for="license_key"><?php _e('License Key', CFGP_NAME); ?></label>
-                <input type="text" name="license_key" id="license_key" value="<?php echo CFGP_License::get('key', CFGP_U::request_string('license_key')); ?>" placeholder="<?php esc_attr_e('Insert your license key here', CFGP_NAME); ?>" autocomplete="off"<?php echo (CFGP_License::activated() ? ' disabled' : ''); ?>>
+                <input type="text" name="license_key" id="license_key" value="<?php echo esc_attr(CFGP_License::get('key', CFGP_U::request_string('license_key'))); ?>" placeholder="<?php esc_attr_e('Insert your license key here', CFGP_NAME); ?>" autocomplete="off"<?php echo (CFGP_License::activated() ? ' disabled' : ''); ?>>
                 <?php if(!CFGP_License::activated()) : ?>
                 	<p>(<?php _e('License type must match to your license key that you ordered.', CFGP_NAME); ?>)</p>
                     <button type="submit" class="button button-primary cfgp-activate-license"><?php _e('Activate your license', CFGP_NAME); ?></button>
