@@ -79,7 +79,7 @@ class CFGP_SEO extends CFGP_Global {
 					{
 						global $wpdb;
 						// Define table name
-						$table = $wpdb->get_blog_prefix() . CFGP_Defaults::TABLE['seo_redirection'];
+						$table = $wpdb->cfgp_seo_redirection;
 						// We need old data prepared to return if we have some error
 						$original_data = $wpdb->query("SELECT * FROM `{$table}` WHERE 1;");
 						// Let's clean table
@@ -267,7 +267,7 @@ class CFGP_SEO extends CFGP_Global {
 			if(function_exists('ini_set')) ini_set('max_execution_time', 0);
 					
 			global $wpdb;
-			$table = $wpdb->get_blog_prefix() . CFGP_Defaults::TABLE['seo_redirection'];
+			$table = $wpdb->cfgp_seo_redirection;
 			$result = $wpdb->get_results("SELECT country, region, city, postcode, url, http_code, active, only_once FROM {$table} WHERE 1", ARRAY_A);
 			
 			$num_fields = count($result); 
@@ -323,9 +323,8 @@ class CFGP_SEO extends CFGP_Global {
 	 */
 	public static function get($ID){
 		global $wpdb;
-		$table = $wpdb->get_blog_prefix() . CFGP_Defaults::TABLE['seo_redirection'];
 		$get = $wpdb->get_row($wpdb->prepare(
-			"SELECT * FROM {$table} WHERE ID = %d",
+			"SELECT * FROM {$wpdb->cfgp_seo_redirection} WHERE ID = %d",
 			$ID
 		));
 		return isset($get->ID) ? $get : false;
@@ -337,7 +336,7 @@ class CFGP_SEO extends CFGP_Global {
 	public static function save($url, $country = '', $region = '', $city = '', $postcode = '', $http_code = 302, $only_once = 0, $active = 1){
 		global $wpdb;
 		return $wpdb->insert(
-			$wpdb->get_blog_prefix() . CFGP_Defaults::TABLE['seo_redirection'],
+			$wpdb->cfgp_seo_redirection,
 			array(
 				'url' => $url,
 				'country' => $country,
@@ -367,7 +366,7 @@ class CFGP_SEO extends CFGP_Global {
 	public static function delete($ID){
 		global $wpdb;
 		return $wpdb->delete(
-			$wpdb->get_blog_prefix() . CFGP_Defaults::TABLE['seo_redirection'],
+			$wpdb->cfgp_seo_redirection,
 			array(
 				'ID' => $ID
 			),
@@ -383,7 +382,7 @@ class CFGP_SEO extends CFGP_Global {
 	public static function update($ID, $url, $country = '', $region = '', $city = '', $postcode = '', $http_code = 302, $only_once = 0, $active = 1){
 		global $wpdb;
 		return $wpdb->update(
-			$wpdb->get_blog_prefix() . CFGP_Defaults::TABLE['seo_redirection'],
+			$wpdb->cfgp_seo_redirection,
 			array(
 				'url' => $url,
 				'country' => $country,

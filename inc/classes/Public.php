@@ -46,7 +46,7 @@ class CFGP_Public extends CFGP_Global{
 		wp_localize_script(CFGP_NAME . '-public', 'CFGP', array(
 			'ajaxurl' => admin_url('admin-ajax.php'),
 			'cache' => (CFGP_Options::get('enable_cache', 0) ? '1' : '0'),
-			'loading_gif' => CFGP_ASSETS . '/images/loading.gif'
+			'loading_gif' => apply_filters( 'cfgp/public/js/loading_image_url', (CFGP_ASSETS . '/images/loading.gif'), (CFGP_ASSETS . '/images/loading.gif') )
 		));
 	}
 	

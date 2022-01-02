@@ -17,13 +17,15 @@ if(!class_exists('CFGP_Help')) :
 class CFGP_Help extends CFGP_Global {
 	
 	function __construct(){
+		
 		$page = CFGP_U::request_string('page');
 		$function = str_replace('-', '_', $page);
 		if(method_exists($this, "help__{$function}")){
 			$this->add_action('current_screen', "help__{$function}");
 		}
+		
 		if(method_exists($this, "screen_option__{$function}")){
-			$this->add_action('set-screen-option', "screen_option__{$function}", 10, 3);
+			$this->add_filter('set-screen-option', "screen_option__{$function}", 10, 3);
 		}
 		
 		if(CFGP_U::request_string('post_type') == 'cf-geoplugin-banner') {
@@ -35,7 +37,9 @@ class CFGP_Help extends CFGP_Global {
 	 * SEO redirection screen option
 	 */
 	public function screen_option__cf_geoplugin_seo_redirection($status, $option, $value) {
-		if ( 'cfgp_seo_redirection_num_rows' == $option ) return $value;
+		if ( 'cfgp_seo_redirection_num_rows' == $option ){
+			return $value;
+		}
 	}
 	
 	/*

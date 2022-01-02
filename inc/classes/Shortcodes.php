@@ -495,17 +495,39 @@ class CFGP_Shortcodes extends CFGP_Global {
 		$ID = CFGP_U::generate_token(16); // Let's made this realy hard
 	
 		$setup = shortcode_atts(array(
-			'id'				=>	$ID,
+			'id'				=>	-1,
 			'posts_per_page'	=>	1,
 			'class'				=>	''
 		), $setup);
 		
-		$class			=	sanitize_html_class($setup['class']);
-		$classes	=	(empty($class) ? array() : array_map("trim",explode(" ", $class)));
+		// Stop if ID is not good
+		if( ! (intval($setup['id']) > 0) ) {
+			return $cont;
+		} else {
+			$setup['id'] = absint($setup['id']);
+		}
+		
+		// Get defaults
+		if( empty($cont) ) {
+			$banner_default = get_post_meta( $setup['id'], 'cfgp-banner-default', true ); 
+			
+			if( !$banner_default ) {
+				$banner_default = get_post_meta( $setup['id'], CFGP_METABOX . 'banner_default', true );
+			}
+			
+			if( $banner_default ){
+				$cont = $banner_default;
+			}
+		}
+		
+		$class		=	sanitize_html_class($setup['class']);
+		$classes	=	(empty($class) ? array() : array_map('trim',explode(' ', $class)));
 		$classes[]	=	'cf-geoplugin-banner';
+		
 		if($cache != false){
 			$classes[]	=	'cache';
 		}
+		
 		$posts_per_page = absint($setup['posts_per_page']);
 		
 		// Main query
@@ -513,7 +535,7 @@ class CFGP_Shortcodes extends CFGP_Global {
 			'post_type'		=> 'cf-geoplugin-banner',
 			'posts_per_page'	=>	$posts_per_page,
 			'post_status'		=> 'publish',
-			'post_in' => array(absint($setup['id'])),
+			'post_in' => array($setup['id']),
 			'force_no_results' => true,
 			'meta_query' => array(),
 			'tax_query' => array()
@@ -626,13 +648,11 @@ class CFGP_Shortcodes extends CFGP_Global {
 			$content = apply_filters('the_content', $content);
 		}
 		
-		$post_id = absint($setup['id']);
-		
 		// Return defaults
 		return CFGP_U::fragment_caching(
-			'<div id="cf-geoplugin-banner-'.$post_id.'" class="'.join(' ',get_post_class($classes, $post_id)).' cf-geoplugin-banner-'.$post_id.'"'
+			'<div id="cf-geoplugin-banner-'.$setup['id'].'" class="'.join(' ',get_post_class($classes, $setup['id'])).' cf-geoplugin-banner-'.$setup['id'].'"'
 			
-				. ($cache ? ' data-id="' . $post_id . '"' : '')
+				. ($cache ? ' data-id="' . $setup['id'] . '"' : '')
 				. ($cache ? ' data-posts_per_page="' . esc_attr($posts_per_page) . '"' : '')
 				. ($cache ? ' data-class="' . esc_attr($class) . '"' : '')
 				. ($cache ? ' data-exact="' . ($exact ? 1 : 0) . '"' : '')

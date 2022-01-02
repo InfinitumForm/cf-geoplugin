@@ -17,6 +17,7 @@ if(!class_exists('CFGP_Geo_Banner')) :
 class CFGP_Geo_Banner extends CFGP_Global {
 	
 	function __construct(){
+		
 		$this->add_action('init', 'register');
 		
 		$this->add_filter('manage_posts_columns', 'columns_banner');
@@ -41,6 +42,11 @@ class CFGP_Geo_Banner extends CFGP_Global {
 		);
 		
 		$cont = urldecode(base64_decode(sanitize_text_field(CFGP_U::request_string('default'))));
+		
+		// Stop if ID is not good
+		if( ! (intval($setup['id']) > 0) ) {
+			return $cont;
+		}
 		
 		$exact = CFGP_U::request_int('exact');
 		
@@ -237,13 +243,16 @@ class CFGP_Geo_Banner extends CFGP_Global {
 			return;
 		}
 		
-		update_post_meta( $post_id, 'cfgp-banner-location-country',  CFGP_Options::sanitize( CFGP_U::request('cfgp-banner-location-country', array()) ));
-		update_post_meta( $post_id, 'cfgp-banner-location-region',  CFGP_Options::sanitize( CFGP_U::request('cfgp-banner-location-region', array()) ));
-		update_post_meta( $post_id, 'cfgp-banner-location-city',  CFGP_Options::sanitize( CFGP_U::request('cfgp-banner-location-city', array()) ));
+		update_post_meta( $post_id, 'cfgp-banner-default', wp_kses_post(CFGP_U::request('cfgp-banner-default-content', NULL)) );
+		delete_post_meta( $post_id, CFGP_METABOX . 'banner_default' );
 		
-		wp_set_post_terms($post_id, '', 'cf-geoplugin-country');
-		wp_set_post_terms($post_id, '', 'cf-geoplugin-region');
-		wp_set_post_terms($post_id, '', 'cf-geoplugin-city');
+		update_post_meta( $post_id, 'cfgp-banner-location-country',  CFGP_Options::sanitize( CFGP_U::request('cfgp-banner-location-country', array()) ) );
+		update_post_meta( $post_id, 'cfgp-banner-location-region',  CFGP_Options::sanitize( CFGP_U::request('cfgp-banner-location-region', array()) ) );
+		update_post_meta( $post_id, 'cfgp-banner-location-city',  CFGP_Options::sanitize( CFGP_U::request('cfgp-banner-location-city', array()) ) );
+		
+		wp_set_post_terms( $post_id, '', 'cf-geoplugin-country' );
+		wp_set_post_terms( $post_id, '', 'cf-geoplugin-region' );
+		wp_set_post_terms( $post_id, '', 'cf-geoplugin-city' );
 	}
 	
 	/**
@@ -344,6 +353,15 @@ class CFGP_Geo_Banner extends CFGP_Global {
 		$screen = get_current_screen();
 		if(isset( $screen->post_type ) && $screen->post_type === 'cf-geoplugin-banner'){
 			$this->add_meta_box(
+				CFGP_NAME . '-banner-default-content',					// Unique ID
+				__('Geo Banner default content', CFGP_NAME),			// Box title
+				'add_meta_box__default_content',						// Content callback, must be of type callable
+				'cf-geoplugin-banner',									// Post type
+				'advanced',
+				'high'
+			);
+			
+			$this->add_meta_box(
 				CFGP_NAME . '-banner-sc',			// Unique ID
 				__( 'Shortcodes', CFGP_NAME ),		// Box title
 				'add_meta_box__shortcode',			// Content callback, must be of type callable
@@ -361,6 +379,19 @@ class CFGP_Geo_Banner extends CFGP_Global {
 		}
 		
 		return;
+	}
+	
+	/**
+     * Default banner content
+     */
+	public function add_meta_box__default_content( $post ) {
+		$banner = get_post_meta( $post->ID, 'cfgp-banner-default', true ); 
+		if( !$banner ) {
+			$banner = get_post_meta( $post->ID, CFGP_METABOX . 'banner_default', true );
+		}
+		?>
+<p style="color:#550000;"><?php _e( 'This content is shown only when the selected location is not found. This means that anyone who is not from the set location will see this content.', CFGP_NAME ); ?></p>
+<?php wp_editor( $banner, 'cfgp-banner-default-content', $settings = array('textarea_name'=>'cfgp-banner-default-content') );
 	}
 	
 	/**

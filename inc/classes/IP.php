@@ -25,7 +25,6 @@ class CFGP_IP extends CFGP_Global {
 	 */
 	public static function get()
 	{
-		
 		if($ip = CFGP_Cache::get('IP')) return $ip;
 		
 		$findIP=array();
