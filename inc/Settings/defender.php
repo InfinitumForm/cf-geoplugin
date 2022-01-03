@@ -26,17 +26,17 @@ $all_cities = get_terms(array(
 
 if(CFGP_U::request_bool('save_defender') && wp_verify_nonce(sanitize_text_field($_REQUEST['nonce']), CFGP_NAME.'-save-defender') !== false && isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'POST')
 {
-	if( !isset( $_POST['block_country'] ) )
-	{
+	if( !isset( $_POST['block_country'] ) ) {
 		CFGP_Options::set( 'block_country', '' );
 	}
-	if( !isset( $_POST['block_region'] ) )
-	{
+	if( !isset( $_POST['block_region'] ) ) {
 		CFGP_Options::set( 'block_region', '' );
 	}
-	if( !isset( $_POST['block_city'] ) )
-	{
+	if( !isset( $_POST['block_city'] ) ) {
 		CFGP_Options::set( 'block_city', '' );
+	}
+	if( !isset( $_POST['block_proxy'] ) ) {
+		CFGP_Options::set( 'block_proxy', 0 );
 	}
 
 	$updates = array();
@@ -110,6 +110,7 @@ if(!empty($block_city) && !is_array($block_city) && preg_match('/\]|\[/', $block
                                         <a href="javascript:void(0);" class="nav-tab" data-id="#country-restriction"><i class="fa fa-globe"></i><span class="label"> <?php _e('Country Restriction', CFGP_NAME); ?></span></a>
                                         <a href="javascript:void(0);" class="nav-tab" data-id="#region-restriction"><i class="fa fa-map-marker"></i><span class="label"> <?php _e('Region Restriction', CFGP_NAME); ?></span></a>
                                         <a href="javascript:void(0);" class="nav-tab" data-id="#city-restriction"><i class="fa fa-building-o"></i><span class="label"> <?php _e('City Restriction', CFGP_NAME); ?></span></a>
+										<a href="javascript:void(0);" class="nav-tab" data-id="#proxy-restriction"><i class="fa fa-sitemap"></i><span class="label"> <?php _e('Proxy Restriction', CFGP_NAME); ?></span></a>
                                     </nav>
                                     <div class="cfgp-tab-panel cfgp-tab-panel-active" id="ip-restriction">
                                     	<div class="cfgp-form-group">
@@ -170,6 +171,30 @@ if(!empty($block_city) && !is_array($block_city) && preg_match('/\]|\[/', $block
                                             <button type="button" class="button cfgp-select-all" data-target="block_city"><object data="<?php echo CFGP_ASSETS . '/images/select.svg'; ?>" width="15" height="15"></object> <?php esc_attr_e( 'Select/Deselect all', CFGP_NAME ); ?></button>
                                         </div>
                                     </div>
+									<div class="cfgp-tab-panel" id="proxy-restriction">
+										<div class="cfgp-form-group">
+											<p><?php _e( 'Protect your site from unwanted visitors using proxies and VPNs with just one click.', CFGP_NAME ); ?></p>
+											<p><strong><?php _e( 'Warning: This option may also block your access to the site if your ISP uses a proxy to serve internet information. Therefore, you must place one cookie in your browser to avoid this problem for you.', CFGP_NAME ); ?></strong></p>
+											<p><?php _e( 'Copy this link and keep it in a secret and safe place:', CFGP_NAME ); ?></p>
+											<p><strong><code><?php echo home_url( '?cfgp_admin_access=' . CFGP_U::ID() ); ?></code></strong></p>
+											<p><?php _e( 'When you check this option, we will set a cookie for you automatically but you can use this link whenever the plugin blocks you from accessing your site.', CFGP_NAME ); ?></p>
+											<div class="cfgp-form-group-checkboxes">
+												<?php
+													CFGP_Form::radio(
+														array(
+															1 => esc_html__('Block Proxy', CFGP_NAME),
+															0 => esc_html__('Do not block Proxy', CFGP_NAME)
+														),
+														array(
+															'name'=>'block_proxy',
+															'id'=>'block_proxy_enable'
+														),
+														CFGP_Options::get('block_proxy', 0)
+													);
+												?>
+											</div>
+										</div>
+									</div>
                                  </div>
                                  
                                  <?php if(CFGP_Options::get('enable_spam_ip')): ?>

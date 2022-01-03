@@ -94,6 +94,7 @@ class CFGP_Defaults {
 		'block_ip'						=>	'',
 		'block_city'					=>	'',
 		'block_country_messages'		=>	'',
+		'block_proxy'					=>	0,
 		'redirect_enable'				=>	0,
 		'redirect_disable_bots'			=>	0,
 		'redirect_country'				=>	'',

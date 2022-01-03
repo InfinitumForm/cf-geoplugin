@@ -20,6 +20,19 @@ class CFGP_U {
 	private static $user;
 	
 	/*
+	 * Get plugin ID
+	 * @return        NULL/string
+	 * @author        Ivijan-Stefan Stipic
+	*/
+	public static function ID() {
+		static $ID = NULL;
+		if( NULL === $ID ) {
+			$ID = get_option(CFGP_NAME . '-ID');
+		}
+		return $ID;
+	}
+	
+	/*
 	 * Get HTTP codes
 	 * @return        object/null
 	 * @author        Ivijan-Stefan Stipic
@@ -396,7 +409,40 @@ class CFGP_U {
 			if(CFGP_Options::get('cache-support', 'yes') == 'yes') {
 				self::cache_flush();
 			}
+			
+			return true;
 		}
+		
+		return false;
+	}
+	
+	/*
+	 * Set defender cookie
+	 * @verson    1.0.0
+	*/
+	public static function set_defender_cookie (){
+		$token = self::ID();
+		$cookie_name = 'cfgp__' . str_rot13(substr( $token, 3, 6 ));
+		$time = (YEAR_IN_SECONDS*2);
+		return self::setcookie($cookie_name, $token, $time);
+	}
+	
+	/*
+	 * Check defender cookie
+	 * @verson    1.0.0
+	*/
+	public static function check_defender_cookie (){
+		static $check_defender_cookie = NULL;
+		
+		if(NULL !== $check_defender_cookie){
+			return $check_defender_cookie;
+		}
+		
+		$token = self::ID();
+		$cookie_name = 'cfgp__' . str_rot13(substr( $token, 3, 6 ));
+		$check_defender_cookie = (isset($_COOKIE[$cookie_name]) && $_COOKIE[$cookie_name] === $token);
+		
+		return $check_defender_cookie;
 	}
 	
 	/*

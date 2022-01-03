@@ -1,6 +1,6 @@
 <?php
 /**
- * Certificate setup
+ * Initialize settings
  *
  * @version       8.0.0
  *
@@ -134,9 +134,9 @@ final class CFGP_Init{
 	public static function wpdb_tables(){
 		global $wpdb;
 		// Seo redirection table
-		$wpdb->cfgp_seo_redirection   = $wpdb->prefix . 'cfgp_seo_redirection';
+		$wpdb->cfgp_seo_redirection   = $wpdb->get_blog_prefix() . 'cfgp_seo_redirection';
 		// REST token table
-		$wpdb->cfgp_rest_access_token = $wpdb->prefix . 'cfgp_rest_access_token';
+		$wpdb->cfgp_rest_access_token = $wpdb->get_blog_prefix() . 'cfgp_rest_access_token';
 	}
 	
 	/**

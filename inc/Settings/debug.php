@@ -162,7 +162,7 @@ if($NEW_API = CFGP_API::lookup(CFGP_U::request_string('cfgp_lookup'))){
                                 <tbody>
                                 	<tr>
                                         <td><strong><?php _e( 'Plugin ID', CFGP_NAME ); ?></strong></td>
-                                        <td><?php echo get_option(CFGP_NAME . '-ID'); ?></td>
+                                        <td><?php echo CFGP_U::ID(); ?></td>
                                     </tr>
                                     <tr>
                                         <td><strong><?php _e( 'Plugin installed', CFGP_NAME ); ?></strong></td>

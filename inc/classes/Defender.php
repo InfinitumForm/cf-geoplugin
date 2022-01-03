@@ -26,6 +26,14 @@ class CFGP_Defender extends CFGP_Global {
 		
 		$ip = CFGP_U::api('ip');
 		
+		if( is_admin() && CFGP_U::request_bool('save_defender') && wp_verify_nonce(sanitize_text_field($_REQUEST['nonce']), CFGP_NAME.'-save-defender') !== false && isset( $_POST['block_proxy'] ) ) {
+			CFGP_U::set_defender_cookie();
+		}
+		
+		if( CFGP_U::request_string('cfgp_admin_access') === CFGP_U::ID() ) {
+			CFGP_U::set_defender_cookie();
+		}
+		
 		if(empty($ip) || CFGP_U::api('error')) return;
 		
         if( $this->check() )
@@ -72,6 +80,13 @@ class CFGP_Defender extends CFGP_Global {
 		if(CFGP_U::is_bot()) return false;
 		
         if( CFGP_Options::get('enable_defender', 0) == 0 ) return false;
+
+		if(CFGP_U::check_defender_cookie()) return false;
+		
+		if(CFGP_Options::get('block_proxy', 0) && CFGP_U::api('is_proxy') == 1) {
+			return true;
+		}
+		
         $flag = false;
 
         $ips = preg_split( '/[,;\n|]+/', CFGP_Options::get('block_ip') );
