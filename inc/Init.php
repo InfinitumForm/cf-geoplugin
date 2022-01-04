@@ -234,6 +234,9 @@ final class CFGP_Init{
 			// Get global variables
 			global $wpdb;
 			
+			// clear old cache
+			CFGP_U::flush_plugin_cache();
+			
 			// Include important library
 			if(!function_exists('dbDelta')){
 				require_once ABSPATH . '/wp-admin/includes/upgrade.php';
