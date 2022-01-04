@@ -119,7 +119,7 @@ class CFGP_Admin extends CFGP_Global {
 	}
 	
 	public function ajax__rss_feed () {
-		$RSS = get_transient(CFGP_NAME . '-rss');
+		$RSS = get_transient('cfgp-rss');
 		if( !empty($RSS) ) {
 			echo $RSS;
 			exit;
@@ -145,8 +145,8 @@ class CFGP_Admin extends CFGP_Global {
 									<div class="cfgp-rss-excerpt">
 										%4$s
 									</div>
-									<small class="cfgp-rss-date">~ %7$s</small><br>
-									<a href="%1$s" target="_blank" class="cfgp-rss-link">%6$s</a>
+									<a href="%1$s" target="_blank" class="cfgp-rss-link">%6$s</a><br>
+									<small class="cfgp-rss-date">~ %7$s</small>
 								</div>',
 								$post->post_url,
 								$post->post_title,
@@ -174,7 +174,7 @@ class CFGP_Admin extends CFGP_Global {
 			if(!empty($RSS))
 			{
 				$RSS = join("\r\n", $RSS);
-				set_transient(CFGP_NAME . '-rss', $RSS, (MINUTE_IN_SECONDS * CFGP_SESSION));
+				set_transient('cfgp-rss', $RSS, (MINUTE_IN_SECONDS * CFGP_SESSION));
 				echo $RSS;
 				exit;
 			}

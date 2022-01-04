@@ -445,11 +445,43 @@ class CFGP_U {
 		return $check_defender_cookie;
 	}
 	
+	
+	/*
+	 * Flush Plugin cache
+	 * @verson    1.0.0
+	*/
+	public static function flush_plugin_cache() {
+		global $wpdb;
+		
+		if ( is_multisite() && is_main_site() && is_main_network() ) {
+			$wpdb->query("DELETE FROM
+				`{$wpdb->sitemeta}`
+			WHERE (
+					`{$wpdb->sitemeta}`.`option_name` LIKE '_site_transient_cfgp-%'
+				OR
+					`{$wpdb->sitemeta}`.`option_name` LIKE '_site_transient_timeout_cfgp-%'
+			)");
+		} else {
+			$wpdb->query("DELETE FROM
+				`{$wpdb->options}`
+			WHERE (
+					`{$wpdb->sitemeta}`.`option_name` LIKE '_transient_cfgp-%'
+				OR
+					`{$wpdb->sitemeta}`.`option_name` LIKE '_transient_timeout_cfgp-%'
+				OR
+					`{$wpdb->sitemeta}`.`option_name` LIKE '_site_transient_cfgp-%'
+				OR
+					`{$wpdb->sitemeta}`.`option_name` LIKE '_site_transient_timeout_cfgp-%'
+			)");
+		}
+		
+	}
+	
 	/*
 	 * Flush Cache
 	 * @verson    2.0.0
 	*/
-	public static function cache_flush () {
+	public static function cache_flush ( $force = false ) {
 		global $post, $user, $w3_plugin_totalcache;
 
 		// Standard cache
@@ -509,6 +541,10 @@ class CFGP_U {
 		// Clean user cache
 		if($user && function_exists('clean_user_cache')) {
 			clean_user_cache( $user );
+		}
+		
+		if( $force ) {
+			self::flush_plugin_cache();
 		}
 	}
 	

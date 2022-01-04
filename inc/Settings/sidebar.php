@@ -48,8 +48,8 @@ class CFGP_Sidebar extends CFGP_Global {
 	 * @since    8.0.0
 	 **/
 	public function rss_feed(){
-	//	delete_transient(CFGP_NAME . '-rss');
-		$RSS = get_transient(CFGP_NAME . '-rss');
+	//	delete_transient('cfgp-rss');
+		$RSS = get_transient('cfgp-rss');
 	?>
 <div class="postbox">
 	<h3 class="hndle" style="margin-bottom:0;padding-bottom:0;"><span><?php _e('Live News & info', CFGP_NAME); ?></span></h3><hr>
