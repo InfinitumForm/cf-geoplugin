@@ -452,7 +452,7 @@ class CFGP_U {
 	*/
 	public static function flush_plugin_cache() {
 		global $wpdb;
-		
+		// Remove all transients
 		if ( is_multisite() && is_main_site() && is_main_network() ) {
 			$wpdb->query("DELETE FROM
 				`{$wpdb->sitemeta}`
@@ -474,7 +474,8 @@ class CFGP_U {
 					`{$wpdb->sitemeta}`.`option_name` LIKE '_site_transient_timeout_cfgp-%'
 			)");
 		}
-		
+		// Remove current cache
+		CFGP_Cache::flush();
 	}
 	
 	/*
@@ -1363,13 +1364,13 @@ class CFGP_U {
 			{
 				if($post_id = $wpdb->get_var(
 					$wpdb->prepare(
-						"SELECT ID FROM {$wpdb->posts}
+						"SELECT `{$wpdb->posts}`.`ID` FROM `{$wpdb->posts}`
 						WHERE
-							`post_status` = %s
+							`{$wpdb->posts}`.`post_status` = %s
 						AND
-							`post_name` = %s
+							`{$wpdb->posts}`.`post_name` = %s
 						AND
-							TRIM(`post_name`) <> ''
+							TRIM(`{$wpdb->posts}`.`post_name`) <> ''
 						LIMIT 1",
 						'publish',
 						sanitize_title($slug)

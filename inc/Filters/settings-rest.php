@@ -3,9 +3,9 @@
 if ( ! defined( 'WPINC' ) ) { die( "Don't mess with us." ); }
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-add_action('cfgp/settings/nav-tab/after', function(){ if(CFGP_Options::get('enable_rest',0)) :; ?>
-	<a href="javascript:void(0);" class="nav-tab" data-id="#rest-api"><span class="fa fa-code"></span><span class="label"> <?php _e('REST API', CFGP_NAME); ?></span></a>
-<?php endif; });
+add_action('cfgp/settings/nav-tab/after', function(){ ?>
+	<a href="javascript:void(0);" class="nav-tab" data-id="#rest-api"<?php echo (CFGP_Options::get('enable_rest',0) ? '' : ' style="display: none;"'); ?>><span class="fa fa-code"></span><span class="label"> <?php _e('REST API', CFGP_NAME); ?></span></a>
+<?php  });
 
 
 add_action('cfgp/settings/tab-panel/after', function(){ if(CFGP_Options::get('enable_rest',0)) :

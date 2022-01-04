@@ -87,32 +87,52 @@
 	/**
 	 * Detect form changing, fix things and prevent lost data
 	**/
-	(function(f){
+	(function(f){		
 		if(f.length > 0)
 		{
 			var formChangeFlag = false;
-			f.on('input change keyup', 'input, select, textarea', function(e){ 
+			
+			$(document).ready(function(){
+				if( $( '.enable-disable-proxy:checked' ).val() == 1 ) {
+					$('.proxy-disable').prop('disabled',false).removeClass('disabled');
+				} else {
+					$('.proxy-disable').prop('disabled',true).addClass('disabled');
+				}
+
+				if( $( '.enable-disable-gmap:checked' ).val() == 1 ) {
+					$('.nav-tab-wrapper > a[data-id="#google-map"]').show();
+				} else {
+					$('.nav-tab-wrapper > a[data-id="#google-map"]').hide();
+				}
+				
+				if( $( '.enable-disable-rest:checked' ).val() == 1 ) {
+					$('.nav-tab-wrapper > a[data-id="#rest-api"]').show();
+				} else {
+					$('.nav-tab-wrapper > a[data-id="#rest-api"]').hide();
+				}
+			});
+			
+			f.on('input change keyup', 'input, select, textarea', function(e){
 				formChangeFlag = true;
 			});
 			
 			f.on( 'change', function( e ) {
-				if( $( '.enable-disable-proxy:checked' ).val() == 1 )
-				{
+				if( $( '.enable-disable-proxy:checked' ).val() == 1 ) {
 					$('.proxy-disable').prop('disabled',false).removeClass('disabled');
-				}
-				else
-				{
+				} else {
 					$('.proxy-disable').prop('disabled',true).addClass('disabled');
 				}
 
-				if( $( '.enable-disable-gmap:checked' ).val() == 1 )
-				{
-					
+				if( $( '.enable-disable-gmap:checked' ).val() == 1 ) {
 					$('.nav-tab-wrapper > a[data-id="#google-map"]').show();
-				}
-				else
-				{
+				} else {
 					$('.nav-tab-wrapper > a[data-id="#google-map"]').hide();
+				}
+				
+				if( $( '.enable-disable-rest:checked' ).val() == 1 ) {
+					$('.nav-tab-wrapper > a[data-id="#rest-api"]').show();
+				} else {
+					$('.nav-tab-wrapper > a[data-id="#rest-api"]').hide();
 				}
 			});
 			

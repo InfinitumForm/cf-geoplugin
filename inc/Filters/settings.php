@@ -214,63 +214,6 @@ add_filter('cfgp/settings', function($options=array()){
 							),
 							'default' => 1
 						),
-						/*array(
-							'plugin_active' => array(
-								'woocommerce/woocommerce'
-							),
-							'name' => 'enable_woocommerce',
-							'label' => __('WooCommerce integration', CFGP_NAME),
-							'desc' => __('For more options visit WooCommerce Settings.', CFGP_NAME),
-							'type' => 'radio',
-							'options' => array(
-								1 => __('Yes', CFGP_NAME),
-								0 => __('No', CFGP_NAME)
-							),
-							'default' => 1
-						),
-						array(
-							'plugin_active' => array(
-								'wooplatnica/wooplatnica'
-							),
-							'name' => 'enable_wooplatnica',
-							'label' => __('Wooplatnica integration', CFGP_NAME),
-							'desc' => __('If you want to CF Geo Plugin take control over Woocommerce addon "Wooplatnica", activate this option.', CFGP_NAME),
-							'type' => 'radio',
-							'options' => array(
-								1 => __('Yes', CFGP_NAME),
-								0 => __('No', CFGP_NAME)
-							),
-							'default' => 1
-						),
-						array(
-							'plugin_active' => array(
-								'contact-form-7/contact-form-7'
-							),
-							'name' => 'enable_cf7',
-							'label' => __('Contact Form 7 integration', CFGP_NAME),
-							'desc' => __('If you want to CF Geo Plugin add new options to your Contact Form 7, activate this option.', CFGP_NAME),
-							'type' => 'radio',
-							'options' => array(
-								1 => __('Yes', CFGP_NAME),
-								0 => __('No', CFGP_NAME)
-							),
-							'default' => 1
-						),
-						array(
-							'plugin_active' => array(
-								'elementor/elementor',
-								'elementor-pro/elementor-pro'
-							),
-							'name' => 'enable_elementor',
-							'label' => __('Elementor integration', CFGP_NAME),
-							'desc' => __('If you want to CF Geo Plugin add new options to your Elementor, activate this option.', CFGP_NAME),
-							'type' => 'radio',
-							'options' => array(
-								1 => __('Yes', CFGP_NAME),
-								0 => __('No', CFGP_NAME)
-							),
-							'default' => 1
-						),*/
 						array(
 							'name' => 'enable_rest',
 							'label' => __('Enable REST API', CFGP_NAME),
@@ -280,7 +223,10 @@ add_filter('cfgp/settings', function($options=array()){
 								1 => __('Yes', CFGP_NAME),
 								0 => __('No', CFGP_NAME)
 							),
-							'default' => 0
+							'default' => 0,
+							'attr' => array(
+								'class' => 'enable-disable-rest'
+							)
 						),
 					)
 				),
