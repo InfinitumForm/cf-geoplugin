@@ -557,3 +557,9 @@ dd {
 		width: 100%;
 	}
 }
+
+.img-fluid{
+	display:block;
+	max-width: 100%;
+	height:auto;
+}

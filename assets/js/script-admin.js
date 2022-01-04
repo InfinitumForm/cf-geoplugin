@@ -336,6 +336,26 @@
 	});
 	
 	/*
+	 * Set RSS Feed
+	 */
+	(function($feed){
+		if( $feed.length > 0 )
+		{
+			$.ajax({
+				url: (typeof ajaxurl !== 'undefined' ? ajaxurl : CFGP.ajaxurl),
+				method: 'post',
+				accept: 'text/html',
+				data: {
+					action : 'cfgp_rss_feed'
+				},
+				cache: true
+			}).done( function( data ) {
+				$feed.html(data).removeClass('cfgp-load-rss-feed');
+			});
+		}
+	}( $('.cfgp-load-rss-feed') ));
+	
+	/*
 	 * Select country, region, city
 	 */
 	(function($form){

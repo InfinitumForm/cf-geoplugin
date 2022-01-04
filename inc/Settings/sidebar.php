@@ -13,20 +13,53 @@ if(!class_exists('CFGP_Sidebar')) :
 class CFGP_Sidebar extends CFGP_Global {
 	
 	function __construct(){
-		$this->add_action('cfgp/page/main_page/sidebar', 'statistic', 30);
-		$this->add_action('cfgp/page/defender/sidebar', 'statistic', 30);
-		$this->add_action('cfgp/page/google_map/sidebar', 'statistic', 30);
-		$this->add_action('cfgp/page/seo_redirection/sidebar', 'statistic', 30);
-		$this->add_action('cfgp/page/debug/sidebar', 'statistic', 30);
-		$this->add_action('cfgp/page/settings/sidebar', 'statistic', 30);
-		$this->add_action('cfgp/page/license/sidebar', 'statistic', 30);
+		$this->add_action('cfgp/page/main_page/sidebar', 'statistic', 10);
+		$this->add_action('cfgp/page/defender/sidebar', 'statistic', 10);
+		$this->add_action('cfgp/page/google_map/sidebar', 'statistic', 10);
+		$this->add_action('cfgp/page/seo_redirection/sidebar', 'statistic', 10);
+		$this->add_action('cfgp/page/debug/sidebar', 'statistic', 10);
+		$this->add_action('cfgp/page/settings/sidebar', 'statistic', 10);
+		$this->add_action('cfgp/page/license/sidebar', 'statistic', 10);
 		
+		$this->add_action('cfgp/page/main_page/sidebar', 'rss_feed', 10);
+		$this->add_action('cfgp/page/defender/sidebar', 'rss_feed', 10);
+		$this->add_action('cfgp/page/google_map/sidebar', 'rss_feed', 10);
+		$this->add_action('cfgp/page/seo_redirection/sidebar', 'rss_feed', 10);
+		$this->add_action('cfgp/page/debug/sidebar', 'rss_feed', 10);
+		$this->add_action('cfgp/page/settings/sidebar', 'rss_feed', 10);
+		$this->add_action('cfgp/page/license/sidebar', 'rss_feed', 10);
 		
-		$this->add_action('cfgp/dashboard/widget', 'sidebar_statistic', 30);
-		$this->add_action('cfgp/dashboard/widget', 'dashboard_footer', 30);
-		$this->add_action('cfgp/sidebar_statistic/list/after/dashboard', 'sidebar_statistic_plugin_info', 30);
+		$this->add_action('cfgp/page/main_page/sidebar', 'sidebar_digital_ocean', 40);
+		$this->add_action('cfgp/page/defender/sidebar', 'sidebar_digital_ocean', 40);
+		$this->add_action('cfgp/page/google_map/sidebar', 'sidebar_digital_ocean', 40);
+		$this->add_action('cfgp/page/seo_redirection/sidebar', 'sidebar_digital_ocean', 40);
+		$this->add_action('cfgp/page/debug/sidebar', 'sidebar_digital_ocean', 40);
+		$this->add_action('cfgp/page/settings/sidebar', 'sidebar_digital_ocean', 40);
+		$this->add_action('cfgp/page/license/sidebar', 'sidebar_digital_ocean', 40);
+		
+		$this->add_action('cfgp/dashboard/widget', 'sidebar_statistic', 10);
+		$this->add_action('cfgp/dashboard/widget', 'dashboard_footer', 10);
+		$this->add_action('cfgp/sidebar_statistic/list/after/dashboard', 'sidebar_statistic_plugin_info', 10);
 	}	
 	
+	/**
+	 * RSS Feed sidebar
+	 *
+	 * @since    8.0.0
+	 **/
+	public function rss_feed(){
+	//	delete_transient(CFGP_NAME . '-rss');
+		$RSS = get_transient(CFGP_NAME . '-rss');
+	?>
+<div class="postbox">
+	<h3 class="hndle" style="margin-bottom:0;padding-bottom:0;"><span><?php _e('Live News & info', CFGP_NAME); ?></span></h3><hr>
+	<div class="inside<?php echo (empty($RSS) ? ' cfgp-load-rss-feed' : ''); ?>">
+		<?php echo ($RSS ? $RSS : __('Loading...', CFGP_NAME)); ?>
+	</div>
+</div>
+	<?php }
+
+
 	/**
 	 * Statistic sidebar container
 	 *
@@ -40,7 +73,6 @@ class CFGP_Sidebar extends CFGP_Global {
 		<?php $this->sidebar_statistic(); ?>
 	</div>
 </div>
-<?php $this->sidebar_digital_ocean(); ?>
 	<?php }
 	
 	/**

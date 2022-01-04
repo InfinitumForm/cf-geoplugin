@@ -423,7 +423,7 @@ class CFGP_IP extends CFGP_Global {
 		$proxy = false;
 		
 		// Check is proxy using HTTP headers
-		$proxy_headers = apply_filters('cfgp/ip/proxy_headers', array('HTTP_X_REAL_IP','HTTP_X_PROXY_ID','CLIENT_IP','FORWARDED','FORWARDED_FOR','FORWARDED_FOR_IP','VIA','X_FORWARDED','X_FORWARDED_FOR','HTTP_CLIENT_IP','HTTP_FORWARDED','HTTP_FORWARDED_FOR','HTTP_FORWARDED_FOR_IP','HTTP_PROXY_CONNECTION','HTTP_VIA','HTTP_X_FORWARDED','Proxy-Connection','X-PROXY-ID','MT-PROXY-ID','X-TINYPROXY','PROXY-AGENT','CLIENT-IP','HTTP_X_CLUSTER_CLIENT_IP'));
+		$proxy_headers = apply_filters('cfgp/ip/proxy_headers', array('HTTP_X_REAL_IP','HTTP_X_PROXY_ID','CLIENT_IP','FORWARDED','FORWARDED_FOR','FORWARDED_FOR_IP','VIA','X_FORWARDED','X_FORWARDED_FOR','HTTP_CLIENT_IP','HTTP_FORWARDED','HTTP_FORWARDED_FOR','HTTP_FORWARDED_FOR_IP','HTTP_PROXY_CONNECTION','HTTP_VIA','HTTP_X_FORWARDED','Proxy-Connection','X-PROXY-ID','MT-PROXY-ID','X-TINYPROXY','PROXY-AGENT','CLIENT-IP','HTTP_X_CLUSTER_CLIENT_IP','HTTP_X_FORWARDED_FOR'));
 		
 		foreach($proxy_headers as $header){
 			if (isset($_SERVER[$header])) {
@@ -432,19 +432,7 @@ class CFGP_IP extends CFGP_Global {
 			}
 		}
 		
-		// Use Internet or Unix domain socket connection to check proxy
-		if($proxy === false && function_exists('fsockopen')) {
-			$proxy_ports = apply_filters('cfgp/ip/proxy_ports', array(80,81,443,553,554,1080,3128,4480,6588,8000,8080));
-			foreach($proxy_ports as $test_port) {
-				$ip = $_SERVER['REMOTE_ADDR'] ?? $_SERVER['HTTP_CLIENT_IP'] ?? $_SERVER['HTTP_CF_CONNECTING_IP'] ?? NULL;
-				if($ip && @fsockopen($ip, $test_port, $errno, $errstr, 1)) {
-					$proxy = true;
-					break;
-				}
-			}
-		}
-		
-		do_action('cfgp/is_proxy', $proxy);
+		do_action('cfgp/ip/is_proxy', $proxy);
 		
 		return $proxy;
 	}

@@ -29,6 +29,7 @@ class CFGP_Admin extends CFGP_Global {
 		
 		$this->add_action('wp_ajax_cfgp_load_regions', 'ajax__cfgp_load_regions');
 		$this->add_action('wp_ajax_cfgp_load_cities', 'ajax__cfgp_load_cities');
+		$this->add_action( 'wp_ajax_cfgp_rss_feed', 'ajax__rss_feed' );
 		
 		$this->add_action( 'wp_network_dashboard_setup', 'register_dashboard_widget' );
 		$this->add_action( 'wp_dashboard_setup', 'register_dashboard_widget' );
@@ -115,6 +116,72 @@ class CFGP_Admin extends CFGP_Global {
 		}
 		
 		wp_send_json($options);
+	}
+	
+	public function ajax__rss_feed () {
+		$RSS = get_transient(CFGP_NAME . '-rss');
+		if( !empty($RSS) ) {
+			echo $RSS;
+			exit;
+		} else {
+			$RSS = [];
+			$data = CFGP_U::curl_get( CFGP_STORE . '/wp-ajax.php?action=cfgp_get_posts_data', '', array(), true);
+			if($data)
+			{
+				$data = (object)$data;
+				if(isset($data->posts) && is_array($data->posts))
+				{
+					$date_format = get_option('date_format');
+					foreach($data->posts as $i => $post)
+					{
+						$post = (object)$post;
+						
+						if($i === 0) {
+							$RSS[]=sprintf('<div class="cfgp-rss-container">
+									<a href="%1$s" target="_blank" class="cfgp-rss-img">
+										<img src="%3$s" class="img-fluid">
+									</a>
+									<h3>%2$s</h3>
+									<div class="cfgp-rss-excerpt">
+										%4$s
+									</div>
+									<small class="cfgp-rss-date">~ %7$s</small><br>
+									<a href="%1$s" target="_blank" class="cfgp-rss-link">%6$s</a>
+								</div>',
+								$post->post_url,
+								$post->post_title,
+								$post->post_image_medium,
+								$post->post_excerpt,
+								$post->post_url,
+								__('Read more at CF Geo Plugin', CFGP_NAME),
+								date($date_format, strtotime($post->post_date_gmt))
+							);
+						} else {
+							$RSS[]=sprintf('<p class="cfgp-rss-container"><a href="%1$s" target="_blank" class="cfgp-rss-link">%2$s</a><br><small class="cfgp-rss-date">~ %7$s</small></p>',
+								$post->post_url,
+								$post->post_title,
+								$post->post_image_medium,
+								$post->post_excerpt,
+								$post->post_url,
+								__('Read more at CF Geo Plugin', CFGP_NAME),
+								date($date_format, strtotime($post->post_date_gmt))
+							);
+						}
+					}
+				}
+			}
+			
+			if(!empty($RSS))
+			{
+				$RSS = join("\r\n", $RSS);
+				set_transient(CFGP_NAME . '-rss', $RSS, (MINUTE_IN_SECONDS * CFGP_SESSION));
+				echo $RSS;
+				exit;
+			}
+		}
+		
+		_e('No news for today.', CFGP_NAME);
+		exit;
 	}
 	
 	// Rename county table
