@@ -59,16 +59,12 @@ class CFGP_Defaults {
 		'enable_simple_shortcode'		=>	1,
 		'enable_seo_csv'				=>	1,
 		'enable_seo_redirection'		=>	1,
-	//	'enable_flag'					=>	1,
 		'enable_defender'				=>	1,
 		'enable_gmap'					=>	0,
 		'enable_cache'					=>	0,
 		'enable_banner'					=>	1,
 		'enable_cloudflare'				=>	0,
 		'enable_dns_lookup'				=>	0,
-	//	'enable_update'					=>	0,
-	//	'enable_dashboard_widget'		=>	1,
-	//	'enable_advanced_dashboard_widget'	=>	1,
 		'enable_rest'					=>	1,
 		'proxy_ip'						=>	'',
 		'proxy_port'					=>	'',
@@ -104,8 +100,6 @@ class CFGP_Defaults {
 		'measurement_unit'				=>	'km',
 		'redirect_http_code'			=>	302,
 		'base_currency'					=>	'USD',
-	//	'enable_woocommerce'			=>	0,
-	//	'woocommerce_active'			=>	0,
 		'rest_secret'					=>	'',
 		'plugin_activated'				=>	'',
 		'enable_spam_ip'				=> 0,
@@ -113,14 +107,9 @@ class CFGP_Defaults {
 		'log_errors'					=> 0,
 		'enable_seo_posts'				=> array('post', 'page'),
 		'enable_geo_tag'				=> array('post', 'page'),
-	//	'enable_cf7'					=> 0,
 		'enable_css'					=> 1,
 		'enable_js'						=> 1,
-	//	'enable_wooplatnica'			=> 0,
 		'hide_http_referrer_headers' 	=> 0,
-	//	'covid19'						=> 0,
-		// 1-transient; 2-session
-		//'session_type'					=> 'transient',
 		'notification_recipient_emails'	=> '',
 		'notification_recipient_type' 	=> 'all'
 	);
@@ -177,19 +166,19 @@ class CFGP_Defaults {
 	 */
 	const API = array(
 		// Standard CF Geo Plugin API URLs
-		'main'			=>	'http://159.203.47.151/api/index.php',
-		'dns'			=>	'http://159.203.47.151/api/dns.php',
-		'authenticate'	=>	'http://159.203.47.151/api/authenticate.php',
-		'spam-checker'	=>	'http://159.203.47.151/api/spam-checker.php',
-		'converter'		=>	'http://159.203.47.151/api/convert.php',
+		'main'				=>	'http://159.203.47.151/api/index.php',
+		'dns'				=>	'http://159.203.47.151/api/dns.php',
+		'authenticate'		=>	'http://159.203.47.151/api/authenticate.php',
+		'spam-checker'		=>	'http://159.203.47.151/api/spam-checker.php',
+		'converter'			=>	'http://159.203.47.151/api/convert.php',
 		// 3rd party Covid-19 free API call
-		'covid-api'		=>	'https://api.covid19api.com',
+		'covid-api'			=>	'https://api.covid19api.com',
 		// 3rd party IPFY free API call for finding real IP address on the local machines
-		'ipfy'			=>	'https://api.ipify.org',
-		'smartIP'		=>	'https://smart-ip.net/myip',
-		'indent'		=>	'https://ident.me',
+		'ipfy'				=>	'https://api.ipify.org',
+		'smartIP'			=>	'https://smart-ip.net/myip',
+		'indent'			=>	'https://ident.me',
 		// Alternate URL
-		'dns-alternate'	=>	'http://cdn-cfgeoplugin.com.dedi1855.your-server.de/dns.php',
+		'dns-alternate'		=>	'http://cdn-cfgeoplugin.com.dedi1855.your-server.de/dns.php',
 		'main-alternate'	=>	'http://cdn-cfgeoplugin.com.dedi1855.your-server.de/index.php'
 	);
 	
@@ -273,10 +262,7 @@ class CFGP_Defaults {
 		'zip' 					=> '',
 		'postcode' 				=> '',
 		'base_convert'			=> '',
-	//	'continentCode' 		=> '',
 		'address' 				=> '',
-	//	'areaCode'				=> '',
-	//	'dmaCode'				=> '',
 		'latitude' 				=> 0,
 		'longitude' 			=> 0,
 		'timezone' 				=> '',
@@ -286,7 +272,6 @@ class CFGP_Defaults {
 		'base_currency'			=> '',
 		'base_currency_symbol'	=> '',
 		'base_currency_name'	=> '',
-	//	'currencySymbol' 		=> '',
 		'proxy' 				=> 0,
 		'currency_symbol' 		=> '',
 		'currency_converter' 	=> 0,

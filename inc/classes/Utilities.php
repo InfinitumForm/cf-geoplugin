@@ -25,11 +25,11 @@ class CFGP_U {
 	 * @author        Ivijan-Stefan Stipic
 	*/
 	public static function ID() {
-		static $ID = NULL;
-		if( NULL === $ID ) {
-			$ID = get_option(CFGP_NAME . '-ID');
+		if($ID = CFGP_Cache::get('ID')) {
+			return $ID;
 		}
-		return $ID;
+
+		return CFGP_Cache::set('ID', get_option(CFGP_NAME . '-ID'));
 	}
 	
 	/*
@@ -199,7 +199,6 @@ class CFGP_U {
 	 */
 	public static function curl_post( $url, $post_data = array(), $headers = '', $new_params = array(), $json = false )
 	{
-		
 		$cache_name = 'cfgp-curl_post-'.md5(serialize(array($url, $headers, $new_params, $json)));
 		if($cache = CFGP_Cache::get($cache_name)){
 			return $cache;
@@ -355,15 +354,15 @@ class CFGP_U {
 					'author_block_rating' => false,       // int
 					'author_profile' => false,            // url
 					'banners' => false,                   // array( [low], [high] )
-					'compatibility' => false,            // empty array?
+					'compatibility' => false,             // empty array?
 					'contributors' => false,              // array( array( [profile], [avatar], [display_name] )
-					'description' => false,              // string
+					'description' => false,               // string
 					'donate_link' => false,               // url
 					'download_link' => false,             // url
-					'downloaded' => false,               // int
-					// 'group' => false,                 // n/a 
+					'downloaded' => false,                // int
+					// 'group' => false,                  // n/a 
 					'homepage' => false,                  // url
-					'icons' => false,                    // array( [1x] url, [2x] url )
+					'icons' => false,                     // array( [1x] url, [2x] url )
 					'last_updated' => false,              // datetime
 					'name' => false,                      // string
 					'num_ratings' => false,               // int
@@ -371,10 +370,10 @@ class CFGP_U {
 					'ratings' => false,                   // array( [5..0] )
 					'requires' => false,                  // version string
 					'requires_php' => false,              // version string
-					// 'reviews' => false,               // n/a, part of 'sections'
+					// 'reviews' => false,                // n/a, part of 'sections'
 					'screenshots' => false,               // array( array( [src],  ) )
 					'sections' => false,                  // array( [description], [installation], [changelog], [reviews], ...)
-					'short_description' => false,        // string
+					'short_description' => false,         // string
 					'slug' => false,                      // string
 					'support_threads' => false,           // int
 					'support_threads_resolved' => false,  // int
@@ -422,7 +421,7 @@ class CFGP_U {
 	*/
 	public static function set_defender_cookie (){
 		$token = self::ID();
-		$cookie_name = 'cfgp__' . str_rot13(substr( $token, 3, 6 ));
+		$cookie_name = 'cfgp__' . str_rot13(substr( $token, 6, 8 ));
 		$time = (YEAR_IN_SECONDS*2);
 		return self::setcookie($cookie_name, $token, $time);
 	}
@@ -431,18 +430,26 @@ class CFGP_U {
 	 * Check defender cookie
 	 * @verson    1.0.0
 	*/
-	public static function check_defender_cookie (){
-		static $check_defender_cookie = NULL;
-		
-		if(NULL !== $check_defender_cookie){
+	public static function check_defender_cookie (){		
+		if($check_defender_cookie = CFGP_Cache::get('check_defender_cookie')){
 			return $check_defender_cookie;
 		}
 		
 		$token = self::ID();
-		$cookie_name = 'cfgp__' . str_rot13(substr( $token, 3, 6 ));
-		$check_defender_cookie = (isset($_COOKIE[$cookie_name]) && $_COOKIE[$cookie_name] === $token);
+		$cookie_name = 'cfgp__' . str_rot13(substr( $token, 6, 8 ));
 		
-		return $check_defender_cookie;
+		return CFGP_Cache::set( 'check_defender_cookie', (isset($_COOKIE[$cookie_name]) && $_COOKIE[$cookie_name] === $token) );
+	}
+
+	/*
+	 * Delete defender cookie
+	 * @verson    1.0.0
+	*/
+	public static function delete_defender_cookie (){
+		$token = self::ID();
+		$cookie_name = 'cfgp__' . str_rot13(substr( $token, 6, 8 ));
+		$time = absint((YEAR_IN_SECONDS*2)-time());
+		return self::setcookie($cookie_name, $token, $time);
 	}
 	
 	

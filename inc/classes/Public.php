@@ -17,18 +17,20 @@ if(!class_exists('CFGP_Public')) :
 class CFGP_Public extends CFGP_Global{
 	
 	public function __construct(){
+		if(CFGP_Options::get('enable_css', 0)){
+			$this->add_action('wp_head', 'css_suppport', 1);
+			$this->add_action('admin_head', 'css_suppport', 1);
+		}
+		
+		if(CFGP_Options::get('enable_js', 0)){
+			$this->add_action('wp_head', 'javascript_support', 1);
+			$this->add_action('admin_head', 'javascript_support', 1);
+		}		
+
 		if(is_admin()) return;
 		
 		if(CFGP_Options::get('hide_http_referrer_headers', 0)){
 			$this->add_action('wp_head', 'hide_http_referrer_headers', 1);
-		}
-		
-		if(CFGP_Options::get('enable_css', 0)){
-			$this->add_action('wp_head', 'css_suppport', 1);
-		}
-		
-		if(CFGP_Options::get('enable_js', 0) || is_admin()){
-			$this->add_action('wp_head', 'javascript_support', 1);
 		}
 		
 		$this->add_action('wp_head', 'append_geo_tags', 1);
@@ -61,7 +63,7 @@ class CFGP_Public extends CFGP_Global{
 		
 		$css_show = $css_hide = array();
 		
-		$allowed_css = array(
+		$allowed_css = apply_filters( 'cfgp/public/css/allowed', array(
 			'country',
 			'country_code',
 			'region',
@@ -70,10 +72,10 @@ class CFGP_Public extends CFGP_Global{
 			'continent_code',
 			'currency',
 			'base_currency'
-		);
+		));
 
 		foreach($CFGEO as $key=>$geo){
-			if( empty($geo) || !in_array($key, apply_filters( 'cfgp/public/css/allowed', $allowed_css),true)!==false ) continue;
+			if( empty($geo) || !in_array($key, $allowed_css,true)!==false ) continue;
 			$geo = sanitize_title($geo);
 			$css_show[$geo]= '.cfgeo-show-in-' . $geo;
 			$css_hide[$geo]= '.cfgeo-hide-from-' . $geo;
@@ -122,14 +124,25 @@ class CFGP_Public extends CFGP_Global{
 		if( isset( $CFGEO['country_code'] ) && !empty( $CFGEO['country_code'] ) )
 		{
 			$CFGEO = array_merge($CFGEO,array(
-				'flag' => CFGP_ASSETS . '/flags/4x3/'.strtolower($CFGEO['country_code']) . '.svg'
+				'flag' => apply_filters(
+					'cfgp/javascript_support/flag', 
+					CFGP_ASSETS . '/flags/4x3/'.strtolower($CFGEO['country_code']) . '.svg',
+					array(
+						'root' => CFGP_ASSETS . '/flags',
+						'path' => CFGP_ASSETS . '/flags/4x3',
+						'file' => strtolower($CFGEO['country_code']) . '.svg',
+						'filename' => strtolower($CFGEO['country_code']),
+						'extension' => 'svg',
+						'url' => CFGP_ASSETS . '/flags/4x3/'.strtolower($CFGEO['country_code']) . '.svg'
+					)
+				)
 			));
 		}
 		
 		foreach($CFGEO as $name=>$value)
 		{
 			if(in_array($name, $exclude, true) === false){
-				$js[]=sprintf('%1$s:"%2$s"',$name,esc_attr($value));
+				$js[]=sprintf('%1$s:"%2$s"', $name, esc_attr($value));
 			}
 		}
 		
@@ -144,7 +157,6 @@ class CFGP_Public extends CFGP_Global{
 <?php endif; ?>
 /* ]]> */
 </script>
-
 	<?php }
 	
 	/*

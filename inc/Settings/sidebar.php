@@ -168,15 +168,18 @@ class CFGP_Sidebar extends CFGP_Global {
 	 * @since    8.0.0
 	 **/
 	public function dashboard_footer(){ ?>
-	<p class="community-events-footer" id="cf-geoplugin-dashboard-footer">
+	<p class="community-events-footer" id="cf-geoplugin-dashboard-footer" style="text-align:center;">
 		<a href="<?php echo CFGP_STORE; ?>/documentation/" target="_blank"><?php _e( 'Documentation', CFGP_NAME ); ?><span class="screen-reader-text"><?php _e('(opens in a new tab)', CFGP_NAME); ?></span><span aria-hidden="true" class="dashicons dashicons-external"></span></a> 
 		| <a href="<?php echo CFGP_STORE; ?>/pricing/" target="_blank"><?php _e( 'Pricing', CFGP_NAME ); ?><span class="screen-reader-text"><?php _e('(opens in a new tab)', CFGP_NAME); ?></span><span aria-hidden="true" class="dashicons dashicons-external"></span></a> 
 		| <a href="<?php echo CFGP_STORE; ?>/blog/" target="_blank"><?php _e( 'Blog', CFGP_NAME ); ?><span class="screen-reader-text"><?php _e('(opens in a new tab)', CFGP_NAME); ?></span><span aria-hidden="true" class="dashicons dashicons-external"></span></a>
 	</p>
-	<p class="community-events-footer" id="cf-geoplugin-dashboard-footer">
+	<p class="community-events-footer" id="cf-geoplugin-dashboard-footer" style="text-align:center;">
 		<a href="<?php echo CFGP_STORE; ?>/terms-and-conditions/" target="_blank"><?php _e( 'Terms & Conditions', CFGP_NAME ); ?><span class="screen-reader-text"><?php _e('(opens in a new tab)', CFGP_NAME); ?></span><span aria-hidden="true" class="dashicons dashicons-external"></span></a>
 		| <a href="<?php echo CFGP_STORE; ?>/privacy-policy/" target="_blank"><?php _e( 'Privacy Policy', CFGP_NAME ); ?><span class="screen-reader-text"><?php _e('(opens in a new tab)', CFGP_NAME); ?></span><span aria-hidden="true" class="dashicons dashicons-external"></span></a>
 		| <a href="<?php echo CFGP_STORE; ?>/cookie-policy/" target="_blank"><?php _e( 'Cookie Policy', CFGP_NAME ); ?><span class="screen-reader-text"><?php _e('(opens in a new tab)', CFGP_NAME); ?></span><span aria-hidden="true" class="dashicons dashicons-external"></span></a>
+	</p>
+	<p class="community-events-footer" id="cf-geoplugin-copyright" style="font-size:0.85em; text-align:center;">
+		<?php printf(__('Copyright © %d-%d CF Geo Plugin. All rights reserved.', CFGP_NAME), 2015, date('Y')); ?>
 	</p>
 	<?php }
 	

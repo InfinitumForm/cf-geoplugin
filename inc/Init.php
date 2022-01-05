@@ -56,6 +56,7 @@ final class CFGP_Init{
 		
 		// Delete expired transients
 		self::delete_expired_transients();
+		
 		// Synchronize with old version of the plugin
 		CFGP_Options::sync_with_the_old_version_of_the_plugin();
 		

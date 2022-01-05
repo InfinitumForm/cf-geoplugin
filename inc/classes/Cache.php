@@ -31,11 +31,12 @@ class CFGP_Cache
 	 * This function adds data to the cache if the cache key doesn’t already exist.
 	 * If it does exist, the data is not added and the function returns
 	 */
-    public static function add($key, $value) {   
-		if(!isset(self::$cache[ self::key($key) ])) {
-			self::$cache[ self::key($key) ] = $value;
+    public static function add($key, $value) {
+		$key = self::key($key);
+		if(!isset(self::$cache[ $key ])) {
+			self::$cache[ $key ] = $value;
 		}
-		return self::$cache[ self::key($key) ];
+		return self::$cache[ $key ];
     }
 
 	/*
@@ -45,8 +46,9 @@ class CFGP_Cache
 	 * if not then it will be created.
 	 */
     public static function set($key, $value, $expire=0) {
-		self::$cache[ self::key($key) ] = $value;
-		return self::$cache[ self::key($key) ];
+		$key = self::key($key);
+		self::$cache[ $key ] = $value;
+		return self::$cache[ $key ];
     }
 	
 	/*
@@ -55,10 +57,11 @@ class CFGP_Cache
 	 * Replaces the given cache if it exists, returns false otherwise.
 	 */
     public static function replace($key, $value, $expire=0) {
-        if(isset(self::$cache[ self::key($key) ])) {
-			self::$cache[ self::key($key) ] = $value;
+		$key = self::key($key);
+        if(isset(self::$cache[ $key ])) {
+			self::$cache[ $key ] = $value;
 		}
-		return self::$cache[ self::key($key) ];
+		return self::$cache[ $key ];
     }
 	
 	/*
@@ -67,8 +70,9 @@ class CFGP_Cache
 	 * Clears data from the cache for the given key.
 	 */
 	public static function delete($key) {
-		if(isset(self::$cache[ self::key($key) ])) {
-			unset(self::$cache[ self::key($key) ]);
+		$key = self::key($key);
+		if(isset(self::$cache[ $key ])) {
+			unset(self::$cache[ $key ]);
 		}
     }
 	
@@ -106,7 +110,7 @@ class CFGP_Cache
 
 		$key = trim($key);
 
-		return "{$key}__{$suffix}";
+		return $key . '__' . $suffix;
 	}
 }
 endif;

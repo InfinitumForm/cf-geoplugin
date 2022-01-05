@@ -258,6 +258,7 @@ class CFGP_Options
 	 * This functionality do automatization for the certain type of data expected in this plugin
 	 */
 	public static function sync_with_the_old_version_of_the_plugin(){
+		global $wpdb;
 		// Get old options before version 8.0.0
 		if( CFGP_U::is_network_admin() ) {
 			$old_options = get_site_option('cf_geoplugin');
@@ -292,6 +293,13 @@ class CFGP_Options
 			// Remove old one
 			delete_site_option('cf_geoplugin');
 			delete_option( 'cf_geoplugin' );
+		}
+		// Let's fix SEO redirection
+		if( $wpdb->get_row("SHOW TABLES LIKE '{$wpdb->prefix}cf_geo_seo_redirection'") === "{$wpdb->prefix}cf_geo_seo_redirection" ) {
+			// Reassign tables
+			$wpdb->query("INSERT INTO `{$wpdb->cfgp_seo_redirection}` (only_once, country, region, city, postcode, url, http_code, active, date) SELECT only_once, country, region, city, postcode, url, http_code, active, date FROM `{$wpdb->prefix}cf_geo_seo_redirection`");
+			// Delete old one
+			$wpdb->query( "DROP TABLE IF EXISTS `{$wpdb->prefix}cf_geo_seo_redirection`" );
 		}
 	}
 }
