@@ -81,6 +81,7 @@ final class CFGP_Init{
 		
 		// Include file classes
 		$includes = apply_filters('cfgp/init/include_classes', array(
+			CFGP_CLASS . '/Statistic.php',				// Plugin statistic
 			CFGP_CLASS . '/Cache.php',					// Memory control class
 			CFGP_CLASS . '/OS.php',						// Operating System info and tool class
 			CFGP_CLASS . '/Defaults.php',				// Default values, data
@@ -256,53 +257,63 @@ final class CFGP_Init{
 				add_option(CFGP_NAME . '-ID', 'cfgp_'.CFGP_U::generate_token(55).'_'.CFGP_U::generate_token(4), false);
 			}
 			
-			$charset_collate = $wpdb->get_charset_collate();
-			
-			## Create database table for the REST tokens
-			if($wpdb->get_var( "SHOW TABLES LIKE '{$wpdb->cfgp_rest_access_token}'" ) != $wpdb->cfgp_rest_access_token) 
+			// Database control
+			$current_db_version = get_option(CFGP_NAME . '-db-version');
+			if( empty($current_db_version) || version_compare($current_db_version, $database_version, '!=') )
 			{
-				dbDelta("
-				CREATE TABLE {$wpdb->cfgp_rest_access_token} (
-					ID bigint(20) NOT NULL AUTO_INCREMENT,
-					`secret_key` varchar(45) NOT NULL,
-					`token` varchar(65) NOT NULL,
-					`app_name` varchar(255) NOT NULL,
-					`app_name_original` varchar(255) NOT NULL,
-					`date_created` timestamp NOT NULL DEFAULT current_timestamp(),
-					`active` int(1) NOT NULL DEFAULT 1,
-					`lookup` bigint(32) NOT NULL DEFAULT 1,
-					PRIMARY KEY (ID),
-					UNIQUE KEY `token` (`token`),
-					UNIQUE KEY `app_name` (`app_name`),
-					KEY `secret_key` (`secret_key`)
-				) {$charset_collate}
-				");
-				add_option(CFGP_NAME . '-db-version', $database_version, false);
+				// Get database collate
+				$charset_collate = $wpdb->get_charset_collate();
+				## Create database table for the REST tokens
+				if($wpdb->get_var( "SHOW TABLES LIKE '{$wpdb->cfgp_rest_access_token}'" ) != $wpdb->cfgp_rest_access_token) 
+				{
+					dbDelta("
+					CREATE TABLE {$wpdb->cfgp_rest_access_token} (
+						ID bigint(20) NOT NULL AUTO_INCREMENT,
+						`secret_key` varchar(45) NOT NULL,
+						`token` varchar(65) NOT NULL,
+						`app_name` varchar(255) NOT NULL,
+						`app_name_original` varchar(255) NOT NULL,
+						`date_created` timestamp NOT NULL DEFAULT current_timestamp(),
+						`active` int(1) NOT NULL DEFAULT 1,
+						`lookup` bigint(32) NOT NULL DEFAULT 1,
+						PRIMARY KEY (ID),
+						UNIQUE KEY `token` (`token`),
+						UNIQUE KEY `app_name` (`app_name`),
+						KEY `secret_key` (`secret_key`)
+					) {$charset_collate}
+					");
+				}
+				
+				## Create database table for the SEO redirection
+				if($wpdb->get_var( "SHOW TABLES LIKE '{$wpdb->cfgp_seo_redirection}'" ) != $wpdb->cfgp_seo_redirection) 
+				{
+					dbDelta("
+					CREATE TABLE {$wpdb->cfgp_seo_redirection} (
+						ID int(11) NOT NULL AUTO_INCREMENT,
+						`only_once` tinyint(1) NOT NULL DEFAULT 0,
+						`country` varchar(100) DEFAULT NULL,
+						`region` varchar(100) DEFAULT NULL,
+						`city` varchar(100) DEFAULT NULL,
+						`postcode` varchar(100) DEFAULT NULL,
+						`url` tinytext NOT NULL,
+						`http_code` smallint(3) NOT NULL DEFAULT 302,
+						`active` tinyint(1) NOT NULL DEFAULT 1,
+						`date` timestamp NOT NULL DEFAULT current_timestamp(),
+						PRIMARY KEY (ID),
+						KEY `country` (`country`),
+						KEY `region` (`region`),
+						KEY `city` (`city`),
+						KEY `postcode` (`postcode`)
+					) {$charset_collate}
+					");
+				}
+				
+				// Update database version
+				update_option(CFGP_NAME . '-db-version', $database_version, false);
 			}
 			
-			## Create database table for the SEO redirection
-			if($wpdb->get_var( "SHOW TABLES LIKE '{$wpdb->cfgp_seo_redirection}'" ) != $wpdb->cfgp_seo_redirection) 
-			{
-				dbDelta("
-				CREATE TABLE {$wpdb->cfgp_seo_redirection} (
-					ID int(11) NOT NULL AUTO_INCREMENT,
-					`only_once` tinyint(1) NOT NULL DEFAULT 0,
-					`country` varchar(100) DEFAULT NULL,
-					`region` varchar(100) DEFAULT NULL,
-					`city` varchar(100) DEFAULT NULL,
-					`postcode` varchar(100) DEFAULT NULL,
-					`url` tinytext NOT NULL,
-					`http_code` smallint(3) NOT NULL DEFAULT 302,
-					`active` tinyint(1) NOT NULL DEFAULT 1,
-					`date` timestamp NOT NULL DEFAULT current_timestamp(),
-					PRIMARY KEY (ID),
-					KEY `country` (`country`),
-					KEY `region` (`region`),
-					KEY `city` (`city`),
-					KEY `postcode` (`postcode`)
-				) {$charset_collate}
-				");
-			}
+			// Plugin statistic
+			CFGP_Anonymous_Statistic::activation( CFGP_Options::get() );
 		});
 	}
 	
@@ -323,6 +334,9 @@ final class CFGP_Init{
 			} else {
 				add_option(CFGP_NAME . '-deactivation', array(date('Y-m-d H:i:s')), false);
 			}
+			
+			// Plugin statistic
+			CFGP_Anonymous_Statistic::deactivation();
 		});
 	}
 	

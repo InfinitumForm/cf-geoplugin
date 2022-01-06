@@ -10,6 +10,7 @@
 if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 	exit;
 }
+
 // Plugin name
 if (!defined('CFGP_NAME')) define('CFGP_NAME', 'cf-geoplugin');
 
@@ -41,3 +42,10 @@ if(get_option(CFGP_NAME . '-db-version')) {
 // Delete MySQL tables
 $wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}cfgp_rest_access_token" );
 $wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}cfgp_seo_redirection" );
+
+// Plugin statistic - remove
+$statistic = rtrim(plugin_dir_path(__FILE__), '/') . '/inc/classes/Statistic.php';
+if( file_exists($statistic) ) {
+	include_once $statistic;
+	CFGP_Anonymous_Statistic::uninstall();
+}
