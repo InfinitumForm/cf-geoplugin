@@ -367,7 +367,11 @@ if (!class_exists('CFGP_SEO_Table')):
                                 echo '<td ' . $attributes . '>' . esc_html($city_name ? $city_name.$city_code : '-') . '</td>';
                             break;
                             case "cfgp_seo_postcode":
-                                echo '<td ' . $attributes . '>' . esc_html($rec->postcode ? get_term_by('name', $rec->postcode, 'cf-geoplugin-postcode')->name : '-') . '</td>';
+								$postcode = $rec->postcode;
+								if($term = get_term_by('name', $rec->postcode, 'cf-geoplugin-postcode')){
+									$postcode = $term->name;
+								}
+                                echo '<td ' . $attributes . '>' . esc_html($postcode ? $postcode : '-') . '</td>';
                             break;
 							case "cfgp_seo_http_code":
                                 echo '<td ' . $attributes . '>HTTP ' . esc_html($rec->http_code) . '</td>';
