@@ -256,6 +256,7 @@ class CFGP_Settings extends CFGP_Global {
 	}
 	
 	public function seo_redirection__callback(){
+		wp_enqueue_media();
 		include_once CFGP_INC . '/filters/seo_redirection_form.php';
 		include_once CFGP_INC . '/filters/seo_redirection_import.php';
 		include_once CFGP_INC . '/filters/seo_redirection_table.php';
