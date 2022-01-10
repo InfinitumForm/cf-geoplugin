@@ -403,7 +403,7 @@ class CFGP_U {
 	public static function setcookie ($name, $val, $time = 0){
 		if( !headers_sent() ) {
 			
-			setcookie( $name, $val, (time()+absint($time)), COOKIEPATH, COOKIE_DOMAIN );
+			setcookie( $name, $val, (CFGP_TIME+absint($time)), COOKIEPATH, COOKIE_DOMAIN );
 			
 			if(CFGP_Options::get('cache-support', 'yes') == 'yes') {
 				self::cache_flush();
@@ -448,7 +448,7 @@ class CFGP_U {
 	public static function delete_defender_cookie (){
 		$token = self::ID();
 		$cookie_name = 'cfgp__' . str_rot13(substr( $token, 6, 8 ));
-		$time = absint((YEAR_IN_SECONDS*2)-time());
+		$time = absint((YEAR_IN_SECONDS*2)-CFGP_TIME);
 		return self::setcookie($cookie_name, $token, $time);
 	}
 	

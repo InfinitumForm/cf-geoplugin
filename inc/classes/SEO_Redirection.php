@@ -247,7 +247,7 @@ class CFGP_SEO_Redirection extends CFGP_Global
 			$expire = apply_filters(
 				'cfgp/seo/control_redirection/cookie/expire',
 				(YEAR_IN_SECONDS*2),
-				time()
+				CFGP_TIME
 			);
 			
 			if(isset($redirect['page_id']) && isset($redirect['ID']) && !empty($redirect['page_id'])) {

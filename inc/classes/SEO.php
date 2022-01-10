@@ -280,7 +280,7 @@ class CFGP_SEO extends CFGP_Global {
 			if ($fp && $result) 
 			{     
 				header('Content-Type: text/csv');
-				header('Content-Disposition: attachment; filename="cfgeo_seo_export_'.date('Y-m-d').'_'.time().'.csv"');
+				header('Content-Disposition: attachment; filename="cfgeo_seo_export_'.date('Y-m-d').'_'.CFGP_TIME.'.csv"');
 				header('Pragma: no-cache');
 				header('Expires: 0');
 				fputcsv($fp, $headers); 

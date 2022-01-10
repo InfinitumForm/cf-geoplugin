@@ -231,8 +231,6 @@ final class CFGP_Init{
 				return;
 			}
 			
-			$database_version = '1.0.0';
-			
 			// Get global variables
 			global $wpdb;
 			
@@ -259,7 +257,7 @@ final class CFGP_Init{
 			
 			// Database control
 			$current_db_version = get_option(CFGP_NAME . '-db-version');
-			if( empty($current_db_version) || version_compare($current_db_version, $database_version, '!=') )
+			if( empty($current_db_version) || version_compare($current_db_version, CFGP_DATABASE_VERSION, '!=') )
 			{
 				// Get database collate
 				$charset_collate = $wpdb->get_charset_collate();
@@ -309,7 +307,7 @@ final class CFGP_Init{
 				}
 				
 				// Update database version
-				update_option(CFGP_NAME . '-db-version', $database_version, false);
+				update_option(CFGP_NAME . '-db-version', CFGP_DATABASE_VERSION, false);
 			}
 			
 			// Plugin statistic
@@ -360,7 +358,7 @@ final class CFGP_Init{
 				AND b.option_value < %d",
 				$wpdb->esc_like( '_transient_cfgp-' ) . '%',
 				$wpdb->esc_like( '_transient_timeout_cfgp-' ) . '%',
-				time()
+				CFGP_TIME
 			)
 		);
 	 
@@ -375,7 +373,7 @@ final class CFGP_Init{
 					AND b.option_value < %d",
 					$wpdb->esc_like( '_site_transient_cfgp-' ) . '%',
 					$wpdb->esc_like( '_site_transient_timeout_cfgp-' ) . '%',
-					time()
+					CFGP_TIME
 				)
 			);
 		} elseif ( is_multisite() && is_main_site() && is_main_network() ) {
@@ -389,7 +387,7 @@ final class CFGP_Init{
 					AND b.meta_value < %d",
 					$wpdb->esc_like( '_site_transient_cfgp-' ) . '%',
 					$wpdb->esc_like( '_site_transient_timeout_cfgp-' ) . '%',
-					time()
+					CFGP_TIME
 				)
 			);
 		}

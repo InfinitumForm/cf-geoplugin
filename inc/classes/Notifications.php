@@ -53,7 +53,7 @@ class CFGP_Notifications extends CFGP_Global{
 			$message = apply_filters('cf_geoplugin_notification_lookup_expire_soon_message', $message);
 
 			$this->send($emails, __('CF GEO PLUGIN NOTIFICATION - Lookup expires soon', CFGP_NAME), $message);
-			set_transient($transient, time(), DAY_IN_SECONDS); // 24 hours
+			set_transient($transient, CFGP_TIME, DAY_IN_SECONDS); // 24 hours
 		}
 	}
 	

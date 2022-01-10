@@ -219,7 +219,7 @@ class CFGP_Geo_Banner extends CFGP_Global {
 			{
 				if(strpos($key, $cookie_name) !== false)
 				{
-					CFGP_U::setcookie($key, time() . '', (time()-((365 * DAY_IN_SECONDS) * 2)));
+					CFGP_U::setcookie($key, CFGP_TIME . '', (CFGP_TIME-((365 * DAY_IN_SECONDS) * 2)));
 					unset($_COOKIE[$key]);
 				}
 			}
