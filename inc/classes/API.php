@@ -26,11 +26,15 @@ class CFGP_API extends CFGP_Global {
 					$return = array_merge($return, $this->get('dns'));
 				}
 				$return = array_merge(
-					apply_filters( 'cf_geoplugin_api_default_fields', CFGP_Defaults::API_RETURN),
+					apply_filters( 'cfgp/api/default/fields', CFGP_Defaults::API_RETURN),
 					$return
 				);
+
 				// Clear cache
 				CFGP_Cache::delete('transfer_dns_records');
+
+				$return = apply_filters( 'cfgp/api/results', $return, CFGP_Defaults::API_RETURN);
+
 				// Save API data to array
 				CFGP_Cache::set('API', $return);
 			}
@@ -66,7 +70,7 @@ class CFGP_API extends CFGP_Global {
 	 */
 	public function get($name, $ip = NULL, $property = array()){
 		
-		$default_fields = apply_filters( 'cf_geoplugin_api_default_fields', CFGP_Defaults::API_RETURN);
+		$default_fields = apply_filters( 'cfgp/api/default/fields', CFGP_Defaults::API_RETURN);
 		
 		if(!empty($ip)) {
 			if(CFGP_IP::filter($ip) === false){
@@ -137,7 +141,7 @@ class CFGP_API extends CFGP_Global {
 					{						
 						// Convert and merge
 						$return = json_decode($return, true);
-						$return = apply_filters('cf_geoplugin_api_get_geodata', $return);
+						$return = apply_filters('cfgp/api/get/geodata', $return);
 
 						$return = array_merge($default_fields, $return);
 	
@@ -242,7 +246,7 @@ class CFGP_API extends CFGP_Global {
 						$DNS = CFGP_Cache::get('transfer_dns_records');
 						
 						// Render response
-						$return = apply_filters( 'cf_geoplugin_api_render_response', array(
+						$return = apply_filters( 'cfgp/api/render/response', array(
 							'ip' => $return['ipAddress'],
 							'ip_version' => $return['ipVersion'],
 							'ip_number' => $return['ipNumber'],
@@ -324,7 +328,7 @@ class CFGP_API extends CFGP_Global {
 				
 				if($transient = get_transient("cfgp-api-{$ip_slug}-dns"))
 				{					
-					$return = apply_filters( 'cf_geoplugin_dns_render_response', $transient);
+					$return = apply_filters( 'cfgp/api/dns/render/response', $transient);
 					CFGP_Cache::delete('transfer_dns_records');
 				}
 				
@@ -337,7 +341,7 @@ class CFGP_API extends CFGP_Global {
 					{						
 						// Convert and merge
 						$return = json_decode($return, true);
-						$return = apply_filters('cf_geoplugin_api_get_dns', $return);
+						$return = apply_filters('cfgp/api/dns/get', $return);
 						
 						$return = array_merge(array(
 							'ip_dns' => NULL,
@@ -362,7 +366,7 @@ class CFGP_API extends CFGP_Global {
 							'dns' => (isset($get['reverse']) ? $get['reverse'] : $return['dns']),
 						));
 						
-						$return = apply_filters( 'cf_geoplugin_dns_render_response', array(
+						$return = apply_filters( 'cfgp/api/dns/render/response', array(
 							'ip_dns' => $return['dns'],
 							'ip_dns_host' => $return['host'],
 							'ip_dns_provider' => $return['provider'],
@@ -385,7 +389,7 @@ class CFGP_API extends CFGP_Global {
 	public static function country2locale($code)
     {
         # http://wiki.openstreetmap.org/wiki/Nominatim/Country_Codes
-        $arr = apply_filters('cf_geoplugin_country_to_locale', CFGP_Defaults::COUNTRY_TO_LOCALE);
+        $arr = apply_filters('cfgp/api/country_to_locale', CFGP_Defaults::COUNTRY_TO_LOCALE);
         #----
         $code = strtolower($code);
         if ($code == 'eu')
