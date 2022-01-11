@@ -113,7 +113,9 @@ final class CFGP_Init{
 			CFGP_CLASS . '/Notifications.php'			// Notifications class
 		));
 		foreach($includes as $include){
-			include_once $include;
+			if( file_exists($include) ) {
+				include_once $include;
+			}
 		}
 		// Dynamic action
 		do_action('cfgp/init/dependencies');
