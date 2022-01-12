@@ -1,5 +1,5 @@
-(function (jQ) {
-jQ(document).ready(function($){
+(function (jCFGP) {
+jCFGP(document).ready(function($){
 	
 	/*
 	 * Fix banner shortcode cache
@@ -8,8 +8,8 @@ jQ(document).ready(function($){
 		if(banner.length > 0)
 		{
 			banner.each(function(){
-				var $this = jQ(this);
-				jQ.ajax({
+				var $this = jCFGP(this);
+				jCFGP.ajax({
 					type: "POST",
 					dataType: 'html',
 					url: (typeof ajaxurl !== 'undefined' ? ajaxurl : CFGP.ajaxurl),
@@ -34,7 +34,7 @@ jQ(document).ready(function($){
 				
 			});
 		}
-	}( jQ('.cf-geoplugin-banner.cache') ));
+	}( jCFGP('.cf-geoplugin-banner.cache') ));
 	
 	
 	/*
@@ -44,8 +44,8 @@ jQ(document).ready(function($){
 		if(sc.length > 0)
 		{
 			sc.each(function(){
-				var $this = jQ(this);
-				jQ.ajax({
+				var $this = jCFGP(this);
+				jCFGP.ajax({
 					type: "POST",
 					dataType: 'html',
 					url: (typeof ajaxurl !== 'undefined' ? ajaxurl : CFGP.ajaxurl),
@@ -69,7 +69,7 @@ jQ(document).ready(function($){
 				
 			});
 		}
-	}( jQ('.cf-geoplugin-shortcode.cache') ));
+	}( jCFGP('.cf-geoplugin-shortcode.cache') ));
 	
 	/**
      * Exchange currencies
@@ -79,19 +79,19 @@ jQ(document).ready(function($){
 		{
 			sc.on( 'click', function( e ) {
 				e.preventDefault();
-				var $this = jQ( this );
+				var $this = jCFGP( this );
 
-				var fromVal = jQ( $this ).closest( 'form' ).find( 'select.cfgp-currency-from option:selected' ).val();
-				var fromText = jQ( $this ).closest( 'form' ).find( 'select.cfgp-currency-from option:selected' ).text();
+				var fromVal = jCFGP( $this ).closest( 'form' ).find( 'select.cfgp-currency-from option:selected' ).val();
+				var fromText = jCFGP( $this ).closest( 'form' ).find( 'select.cfgp-currency-from option:selected' ).text();
 
-				var toVal = jQ( $this ).closest( 'form' ).find( 'select.cfgp-currency-to option:selected' ).val();
-				var toText = jQ( $this ).closest( 'form' ).find( 'select.cfgp-currency-to option:selected' ).text();
+				var toVal = jCFGP( $this ).closest( 'form' ).find( 'select.cfgp-currency-to option:selected' ).val();
+				var toText = jCFGP( $this ).closest( 'form' ).find( 'select.cfgp-currency-to option:selected' ).text();
 
-				jQ( 'select.cfgp-currency-from option:selected' ).val( toVal ).text( toText );
-				jQ( 'select.cfgp-currency-to option:selected' ).val( fromVal ).text( fromText );
+				jCFGP( 'select.cfgp-currency-from option:selected' ).val( toVal ).text( toText );
+				jCFGP( 'select.cfgp-currency-to option:selected' ).val( fromVal ).text( fromText );
 			});
 		}
-	}( jQ( '.cfgp-exchange-currency' ) ));
+	}( jCFGP( '.cfgp-exchange-currency' ) ));
 
     /**
      * Ajax for conversion
@@ -101,11 +101,11 @@ jQ(document).ready(function($){
 		{
 			sc.on( 'submit', function( e ) {
 				e.preventDefault();
-				var $this = jQ( this );
+				var $this = jCFGP( this );
 
 				var formData = $this.serialize();
 
-				jQ.ajax({
+				jCFGP.ajax({
 					method : 'POST',
 					dataType: 'html',
 					data : formData,
@@ -113,12 +113,12 @@ jQ(document).ready(function($){
 					url : (typeof ajaxurl !== 'undefined' ? ajaxurl : CFGP.ajaxurl) + '?action=cfgeo_full_currency_converter',
 					beforeSend: function()
 					{
-						jQ( $this )
+						jCFGP( $this )
 							.find( 'p.cfgp-currency-converted' )
 								.html( '<div class="cfgp-card"><div class="cfgp-card-body"><img src="' + CFGP.loading_gif + '" class="cfgp-loader" /></div></div>' );
 					} 
 				}).done( function( d ) {
-					jQ( $this ).find( 'p.cfgp-currency-converted' ).html( d );
+					jCFGP( $this ).find( 'p.cfgp-currency-converted' ).html( d );
 				}).fail( function( jqXHR, error, textStatus ) {
 					console.log( jqXHR );
 					console.log( error );
@@ -126,7 +126,7 @@ jQ(document).ready(function($){
 				});
 			});
 		}
-	}( jQ( 'form.cfgp-currency-form' ) ));
+	}( jCFGP( 'form.cfgp-currency-form' ) ));
 	
 });
 })(jQuery || window.jQuery || Zepto || window.Zepto);
