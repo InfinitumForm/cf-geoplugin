@@ -1712,5 +1712,18 @@ class CFGP_U {
 		return $post_type;
 	}
 	
+	/**
+	 * Check if plugin has SEO redirection
+	 */
+	public static function has_seo_redirection () {
+		
+		if( NULL !== ($exists = CFGP_Cache::get('has_seo_redirection')) ) {
+			return $exists;
+		}
+		
+		global $wpdb;
+		return CFGP_Cache::set( 'has_seo_redirection', ($wpdb->get_var("SELECT 1 FROM `{$wpdb->cfgp_seo_redirection}` WHERE 1=1 LIMIT 1") == 1) );
+	}
+	
 }
 endif;

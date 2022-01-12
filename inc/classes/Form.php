@@ -144,6 +144,13 @@ class CFGP_Form {
 			$attr['country_code'] = '';
 		}
 		
+		if( !empty($selected) ) {
+			$new_name = explode('-', $selected);
+			$new_name = array_map('ucfirst', $new_name);
+			$new_name = join(' ', $new_name);
+			$options[sanitize_title($selected)] = $new_name;
+		}
+		
 		if(is_array($attr['country_code']))
 		{
 			foreach($attr['country_code'] as $country_code)
@@ -163,7 +170,6 @@ class CFGP_Form {
 				}
 			}
 		}
-		
 		
 		if(isset($attr['class'])){
 			$attr['class'] = trim($attr['class']) . ' cfgp-select-city';
@@ -204,6 +210,8 @@ class CFGP_Form {
 			foreach( $data as $key => $fetch ){
 				$options[$fetch->slug] = $fetch->name;
 			}
+		} else if(!empty($selected)) {
+			$options[sanitize_title($selected)] = $selected;
 		}
 		if($multiple) {
 			$return = self::select_multiple($options, $attr, $selected, false);

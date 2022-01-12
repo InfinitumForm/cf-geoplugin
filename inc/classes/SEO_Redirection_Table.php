@@ -127,11 +127,11 @@ if (!class_exists('CFGP_SEO_Table')):
 			if(CFGP_Options::get('enable_seo_csv', 0) && in_array($which, array('top', 'bottom')))
 			{
 				global $wpdb;
-				$query = $wpdb->query("SELECT 1 FROM `{$wpdb->cfgp_seo_redirection}` WHERE 1=1 LIMIT 1");
+				$exists = CFGP_U::has_seo_redirection();
 				echo '<div class="alignleft actions bulkactions">';
 					printf('<a aria="button" href="%s" class="button"><i class="fa fa-upload"></i> %s</a> ', admin_url('admin.php?page='.CFGP_U::request_string('page').'&action=import&nonce='.wp_create_nonce(CFGP_NAME.'-seo-import-csv')), __('Import From CSV', CFGP_NAME));
 					
-					if($query){
+					if($exists){
 						printf('<a aria="button" href="%s" class="button"><i class="fa fa-table"></i> %s</a> ', admin_url('admin.php?page='.CFGP_U::request_string('page').'&action=export&nonce='.wp_create_nonce(CFGP_NAME.'-seo-export-csv')), __('Export CSV', CFGP_NAME));
 					}
 					
@@ -333,6 +333,11 @@ if (!class_exists('CFGP_SEO_Table')):
                         //Display the cell
                         switch ($column_name)
                         {
+							case "cb":
+								echo '<th scope="row" class="check-column">' . sprintf(
+									'<input type="checkbox" id="cb-select-%1$d" name="seo_redirection[]" value="%1$d" />', $rec->ID
+								). '</th>';
+							break;
                             case "cfgp_seo_url":
                                 echo '<td ' . $attributes . '>';
 									echo ($rec->active ? '' : '<sup>'.__('DISABLED', CFGP_NAME).'</sup> ').'<strong>'.esc_url($rec->url).'</strong>';
@@ -379,11 +384,6 @@ if (!class_exists('CFGP_SEO_Table')):
 							case "cfgp_seo_only_once":
                                 echo '<td ' . $attributes . '>' . esc_html($rec->only_once ? __('Only once', CFGP_NAME) : __('Always', CFGP_NAME) ). '</td>';
                             break;
-							case "cb":
-								echo '<th scope="row" class="check-column">' . sprintf(
-									'<input type="checkbox" id="cb-select-%1$d" name="seo_redirection[]" value="%1$d" />', $rec->ID
-								). '</th>';
-							break;
                         }
                     }
 
