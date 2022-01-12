@@ -11,6 +11,7 @@ jQ(document).ready(function($){
 				var $this = jQ(this);
 				jQ.ajax({
 					type: "POST",
+					dataType: 'html',
 					url: (typeof ajaxurl !== 'undefined' ? ajaxurl : CFGP.ajaxurl),
 					data: {
 						action : 'cf_geoplugin_banner_cache',
@@ -20,7 +21,7 @@ jQ(document).ready(function($){
 						exact : $this.attr('data-exact'),
 						default : $this.attr('data-default')
 					},
-					cache : false
+					cache : true
 				}).done(function(data){
 					$this.html(data);
 					$this.removeClass('cache').addClass('cached')
@@ -46,6 +47,7 @@ jQ(document).ready(function($){
 				var $this = jQ(this);
 				jQ.ajax({
 					type: "POST",
+					dataType: 'html',
 					url: (typeof ajaxurl !== 'undefined' ? ajaxurl : CFGP.ajaxurl),
 					data: {
 						action : 'cf_geoplugin_shortcode_cache',
@@ -53,7 +55,7 @@ jQ(document).ready(function($){
 						shortcode : $this.attr('data-shortcode'),
 						default : $this.attr('data-default')
 					},
-					cache : false
+					cache : true
 				}).done(function(data){
 					if(data == 'false'){
 						return;
@@ -105,6 +107,7 @@ jQ(document).ready(function($){
 
 				jQ.ajax({
 					method : 'POST',
+					dataType: 'html',
 					data : formData,
 					cache  : false,
 					url : (typeof ajaxurl !== 'undefined' ? ajaxurl : CFGP.ajaxurl) + '?action=cfgeo_full_currency_converter',
