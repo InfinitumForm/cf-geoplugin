@@ -112,11 +112,19 @@ final class CFGP_Init{
 			CFGP_CLASS . '/Widgets.php',				// Widgets class
 			CFGP_CLASS . '/Notifications.php'			// Notifications class
 		));
+		
+		// Allow deprecated class
+		if( defined('CFGP_ALLOW_DEPRECATED_METHODS') && CFGP_ALLOW_DEPRECATED_METHODS ) {
+			array_push($includes, CFGP_CLASS . '/CF_Geoplugin.php');
+		}
+		
+		// Include all
 		foreach($includes as $include){
 			if( file_exists($include) ) {
 				include_once $include;
 			}
 		}
+		
 		// Dynamic action
 		do_action('cfgp/init/dependencies');
 	}
@@ -126,6 +134,7 @@ final class CFGP_Init{
 	 * @since     8.0.0
 	 */
 	public static function run() {
+		// Include plugin
 		$instance = self::instance();
 		// Dynamic run
 		do_action('cfgp/init/run');
