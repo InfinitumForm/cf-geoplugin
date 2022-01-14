@@ -457,12 +457,36 @@ dd {
 	color: #007820;
 }
 
-#dashboard-widgets #cf-geoplugin-dashboard-statistic .inside{
+#dashboard-widgets #cf-geoplugin-dashboard-statistic .inside,
+#dashboard-widgets #cf-geoplugin-dashboard-feed .inside{
 	padding:0;
 }
 
 #dashboard-widgets #cf-geoplugin-dashboard-statistic .inside #cfgp-statistic{
 	padding:0 12px 0 12px;
+}
+
+#dashboard-widgets #cf-geoplugin-dashboard-feed .inside .wordpress-news{
+	padding:0;
+}
+
+#dashboard-widgets #cf-geoplugin-dashboard-feed .inside .wordpress-news .rss-widget > li > a {
+	width:100%;
+	display:block;
+	padding: 5px 0px;
+}
+
+#dashboard-widgets #cf-geoplugin-dashboard-feed .inside .wordpress-news .rss-widget > li{
+	padding:0 12px 0 12px;
+}
+
+#dashboard-widgets #cf-geoplugin-dashboard-feed .inside .wordpress-news .rss-widget > li:nth-child(odd){
+	background-color:#f5f5f5;
+}
+
+#dashboard-widgets #cf-geoplugin-dashboard-statistic .inside a:hover,
+#dashboard-widgets #cf-geoplugin-dashboard-feed .inside a:hover{
+	color: #fd4624;
 }
 
 #dashboard-widgets #cf-geoplugin-dashboard-statistic .inside h3{

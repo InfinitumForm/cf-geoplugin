@@ -37,8 +37,11 @@ class CFGP_Sidebar extends CFGP_Global {
 		$this->add_action('cfgp/page/settings/sidebar', 'sidebar_digital_ocean', 40);
 		$this->add_action('cfgp/page/license/sidebar', 'sidebar_digital_ocean', 40);
 		
-		$this->add_action('cfgp/dashboard/widget', 'sidebar_statistic', 10);
-		$this->add_action('cfgp/dashboard/widget', 'dashboard_footer', 10);
+		$this->add_action('cfgp/dashboard/widget/statistic', 'sidebar_statistic', 10);
+		$this->add_action('cfgp/dashboard/widget/statistic', 'dashboard_footer', 10);
+		
+		$this->add_action('cfgp/dashboard/widget/feed', 'dashboard_feed', 10);
+		
 		$this->add_action('cfgp/sidebar_statistic/list/after/dashboard', 'sidebar_statistic_plugin_info', 10);
 	}	
 	
@@ -135,7 +138,7 @@ class CFGP_Sidebar extends CFGP_Global {
 				<?php endif; ?>
 				<p><?php printf(
 					__('If you want to have an %1$s, you need to %2$s.', CFGP_NAME),
-					'<a href="https://cfgeoplugin.com/documentation/quick-start/what-do-i-get-from-unlimited-license" target="_blank">'.__('unlimited lookup', CFGP_NAME).'</a>',
+					'<a href="<?php echo CFGP_STORE; ?>/documentation/quick-start/what-do-i-get-from-unlimited-license" target="_blank">'.__('unlimited lookup', CFGP_NAME).'</a>',
 					'<a href="'.CFGP_U::admin_url('admin.php?page=cf-geoplugin-activate').'" target="_blank"><strong>'.__('activate the license', CFGP_NAME).'</strong></a>'
 				); ?></p>
 			<?php endif; ?>
@@ -161,6 +164,30 @@ class CFGP_Sidebar extends CFGP_Global {
 	public function sidebar_digital_ocean(){ ?>
 <a href="https://www.digitalocean.com/?refcode=a4160dafc356&utm_campaign=Referral_Invite&utm_medium=Referral_Program&utm_source=badge" title="<?php esc_attr_e('CF Geo Plugin uses an API hosted on Digital Ocean servers. Get yours now!', CFGP_NAME); ?>" target="_blank"><img src="https://web-platforms.sfo2.digitaloceanspaces.com/WWW/Badge%202.svg" alt="<?php esc_attr_e('CF Geo Plugin Uses an API Hosted on Digital Ocean Cloud Servers. Get yours now!', CFGP_NAME); ?>" style="margin:0 auto 0 auto; display:block; width:100%; max-width:100%; height:auto; border: 1px solid #c3c4c7; box-shadow: 0 1px 1px rgb(0 0 0 / 4%);" /></a>
 	<?php }
+	
+	
+	/**
+	 * Dashboard news feed
+	 *
+	 * @since    8.0.0
+	 **/
+	public function dashboard_feed(){ $RSS = get_transient('cfgp-dashboard-rss'); ?>
+	<div class="wordpress-news hide-if-no-js<?php echo (empty($RSS) ? ' cfgp-load-dashboard-rss-feed' : ''); ?>">
+	<?php if($RSS) : ?>
+		<?php echo $RSS; ?>
+	<?php else : ?>
+		<ul class="rss-widget">
+			<li style="background-color:transparent;"><?php _e('Loading...', CFGP_NAME); ?></li>
+		</ul>
+	<?php endif; ?>
+	</div>
+	<div class="community-events-footer">
+		<a href="<?php echo CFGP_STORE; ?>/category/announcements" target="_blank"><?php _e( 'Announcements', CFGP_NAME ); ?> <span class="screen-reader-text"><?php _e('(opens in a new tab)', CFGP_NAME); ?></span><span aria-hidden="true" class="dashicons dashicons-external"></span></a>
+		| <a href="<?php echo CFGP_STORE; ?>/category/information" target="_blank"><?php _e( 'Information', CFGP_NAME ); ?> <span class="screen-reader-text">(opens in a new tab)</span><span aria-hidden="true" class="dashicons dashicons-external"></span></a>
+		| <a href="<?php echo CFGP_STORE; ?>/category/tutorial" target="_blank"><?php _e( 'Tutorial', CFGP_NAME ); ?> <span class="screen-reader-text"><?php _e('(opens in a new tab)', CFGP_NAME); ?></span><span aria-hidden="true" class="dashicons dashicons-external"></span></a>
+	</div>
+	<?php }
+	
 	
 	/**
 	 * Dashboard footer in sidebar

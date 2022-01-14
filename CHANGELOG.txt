@@ -1,2 +1,16 @@
-* Removed Geo Tag
-* 
+== Changelog ==
+
+= 8.0.0 =
+* **GREAT UPDATE - BACKUP IS REQUIRED**
+* New optimized user experience based on the WordPress standard design with easy access to all information and settings
+* Added PROXY visit detection and the ability to block access
+* Advanced IP address recognition, enhanced support for Apache and Nginx servers
+* Included local libraries for Continents, Countries, Regions and Cities with autocomplete functionality
+* Maximally optimized PHP code with advanced caching algorithms with correct action hooks that allow advanced manipulation for developers
+* Improved SEO redirection with the possibility of import and export in the CSV format
+* Improved shortcodes
+* Licensing issues fixed
+* Fixed issues with SEO redirection
+* Fixed lookup leak issues
+* Fixed problems with banner and shortcode caching
+* Fixed issues with Siteground integration

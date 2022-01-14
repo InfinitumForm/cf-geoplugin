@@ -16,11 +16,11 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
 if(!class_exists('CFGP_Admin')) :
 class CFGP_Admin extends CFGP_Global {
 	function __construct(){
-		$this->add_action( 'admin_bar_menu', 'admin_bar_menu', 90, 1 );
-		$this->add_action( 'admin_enqueue_scripts', 'register_scripts' );
-		$this->add_action( 'admin_enqueue_scripts', 'register_scripts_ctp' );
-		$this->add_action( 'admin_enqueue_scripts', 'register_style' );
-		$this->add_action( 'admin_init', 'admin_init' );
+		$this->add_action('admin_bar_menu', 'admin_bar_menu', 90, 1);
+		$this->add_action('admin_enqueue_scripts', 'register_scripts');
+		$this->add_action('admin_enqueue_scripts', 'register_scripts_ctp');
+		$this->add_action('admin_enqueue_scripts', 'register_style');
+		$this->add_action('admin_init', 'admin_init');
 		
 		$this->add_action('manage_edit-cf-geoplugin-country_columns', 'rename__cf_geoplugin_country__column');
 		$this->add_action('manage_edit-cf-geoplugin-region_columns', 'rename__cf_geoplugin_region__column');
@@ -29,10 +29,11 @@ class CFGP_Admin extends CFGP_Global {
 		
 		$this->add_action('wp_ajax_cfgp_load_regions', 'ajax__cfgp_load_regions');
 		$this->add_action('wp_ajax_cfgp_load_cities', 'ajax__cfgp_load_cities');
-		$this->add_action( 'wp_ajax_cfgp_rss_feed', 'ajax__rss_feed' );
+		$this->add_action('wp_ajax_cfgp_rss_feed', 'ajax__rss_feed');
+		$this->add_action('wp_ajax_cfgp_dashboard_rss_feed', 'ajax__dashboard_rss_feed');
 		
-		$this->add_action( 'wp_network_dashboard_setup', 'register_dashboard_widget' );
-		$this->add_action( 'wp_dashboard_setup', 'register_dashboard_widget' );
+		$this->add_action('wp_network_dashboard_setup', 'register_dashboard_widget');
+		$this->add_action('wp_dashboard_setup', 'register_dashboard_widget');
 	}
 	
 	public function register_dashboard_widget(){
@@ -43,16 +44,32 @@ class CFGP_Admin extends CFGP_Global {
 		wp_add_dashboard_widget(
 			CFGP_NAME . '-dashboard-statistic', 
 			__( 'CF Geo Plugin', CFGP_NAME ),
-			array( &$this, 'dashboard_widget' ),
+			function (){
+				do_action('cfgp/dashboard/widget/statistic');
+			},
 			NULL,
 			NULL,
 			'normal',
 			'high'
 		);
-	}
-	
-	public function dashboard_widget(){
-		do_action('cfgp/dashboard/widget');
+		
+		wp_add_dashboard_widget(
+			CFGP_NAME . '-dashboard-feed', 
+			__( 'CF Geo Plugin Live News & Info', CFGP_NAME ),
+			function (){
+				add_action('admin_footer', function(){ ?>
+<script>
+/* <![CDATA[ */
+(function(jCFGP){$feed=jCFGP('.cfgp-load-dashboard-rss-feed');if($feed.length>0){jCFGP.ajax({url:"<?php echo admin_url('/admin-ajax.php'); ?>",method:'post',accept:'text/html',data:{action:'cfgp_dashboard_rss_feed'},cache:true}).done(function(data){$feed.html(data).removeClass('cfgp-load-dashboard-rss-feed');});}}(jQuery||window.jQuery));
+/* ]]> */
+</script>
+				<?php }, 99);
+				do_action('cfgp/dashboard/widget/feed');
+			},
+			NULL,
+			NULL,
+			'normal'
+		);
 	}
 	
 	public function ajax__cfgp_load_regions () {
@@ -124,48 +141,130 @@ class CFGP_Admin extends CFGP_Global {
 			echo $RSS;
 			exit;
 		} else {
-			$RSS = [];
-			$data = CFGP_U::curl_get( CFGP_STORE . '/wp-ajax.php?action=cfgp_get_posts_data', '', array(), true);
+			$RSS = $DASH_RSS = [];
+			$data = CFGP_U::curl_get( CFGP_STORE . '/wp-ajax.php?action=cfgp_get_posts_data&numberposts=10&posts_per_page=10', '', array(), true);
 			if($data)
 			{
 				$data = (object)$data;
 				if(isset($data->posts) && is_array($data->posts))
 				{
 					$date_format = get_option('date_format');
+					$x = 4;
 					foreach($data->posts as $i => $post)
 					{
 						$post = (object)$post;
 						
-						if($i === 0) {
-							$RSS[]=sprintf('<div class="cfgp-rss-container">
-									<a href="%1$s" target="_blank" class="cfgp-rss-img">
-										<img src="%3$s" class="img-fluid">
-									</a>
-									<h3>%2$s</h3>
-									<div class="cfgp-rss-excerpt">
-										%4$s
-									</div>
-									<a href="%1$s" target="_blank" class="cfgp-rss-link">%6$s</a><br>
-									<small class="cfgp-rss-date">~ %7$s</small>
-								</div>',
-								$post->post_url,
-								$post->post_title,
-								$post->post_image_medium,
-								$post->post_excerpt,
-								$post->post_url,
-								__('Read more at CF Geo Plugin', CFGP_NAME),
-								date($date_format, strtotime($post->post_date_gmt))
-							);
-						} else {
-							$RSS[]=sprintf('<p class="cfgp-rss-container"><a href="%1$s" target="_blank" class="cfgp-rss-link">%2$s</a><br><small class="cfgp-rss-date">~ %7$s</small></p>',
-								$post->post_url,
-								$post->post_title,
-								$post->post_image_medium,
-								$post->post_excerpt,
-								$post->post_url,
-								__('Read more at CF Geo Plugin', CFGP_NAME),
-								date($date_format, strtotime($post->post_date_gmt))
-							);
+						$DASH_RSS[]=sprintf('<li><a href="%1$s" target="_blank">%2$s</a></li>', $post->post_url, $post->post_title);
+						
+						if($i <= $x) {
+							if($i === 0) {
+								$RSS[]=sprintf('<div class="cfgp-rss-container">
+										<a href="%1$s" target="_blank" class="cfgp-rss-img">
+											<img src="%3$s" class="img-fluid">
+										</a>
+										<h3>%2$s</h3>
+										<div class="cfgp-rss-excerpt">
+											%4$s
+										</div>
+										<a href="%1$s" target="_blank" class="cfgp-rss-link">%6$s</a><br>
+										<small class="cfgp-rss-date">~ %7$s</small>
+									</div>',
+									$post->post_url,
+									$post->post_title,
+									$post->post_image_medium,
+									$post->post_excerpt,
+									$post->post_url,
+									__('Read more at CF Geo Plugin', CFGP_NAME),
+									date($date_format, strtotime($post->post_date_gmt))
+								);
+							} else {
+								$RSS[]=sprintf('<p class="cfgp-rss-container"><a href="%1$s" target="_blank" class="cfgp-rss-link">%2$s</a><br><small class="cfgp-rss-date">~ %7$s</small></p>',
+									$post->post_url,
+									$post->post_title,
+									$post->post_image_medium,
+									$post->post_excerpt,
+									$post->post_url,
+									__('Read more at CF Geo Plugin', CFGP_NAME),
+									date($date_format, strtotime($post->post_date_gmt))
+								);
+							}
+						}
+					}
+				}
+			}
+			
+			if(!empty($DASH_RSS))
+			{
+				$DASH_RSS = '<ul class="rss-widget">' . join("\r\n", $DASH_RSS) . '</ul>';
+				set_transient('cfgp-dashboard-rss', $DASH_RSS, (MINUTE_IN_SECONDS * CFGP_SESSION));
+			}
+			
+			if(!empty($RSS))
+			{
+				$RSS = join("\r\n", $RSS);
+				set_transient('cfgp-rss', $RSS, (MINUTE_IN_SECONDS * CFGP_SESSION));
+				echo $RSS;
+				exit;
+			}
+		}
+		
+		_e('No news for today.', CFGP_NAME);
+		exit;
+	}
+	
+	public function ajax__dashboard_rss_feed () {
+		$DASH_RSS = get_transient('cfgp-dashboard-rss');
+		if( !empty($DASH_RSS) ) {
+			echo $DASH_RSS;
+			exit;
+		} else {
+			$RSS = $DASH_RSS = [];
+			$data = CFGP_U::curl_get( CFGP_STORE . '/wp-ajax.php?action=cfgp_get_posts_data&numberposts=10&posts_per_page=10', '', array(), true);
+			if($data)
+			{
+				$data = (object)$data;
+				if(isset($data->posts) && is_array($data->posts))
+				{
+					$date_format = get_option('date_format');
+					$x = 4;
+					foreach($data->posts as $i => $post)
+					{
+						$post = (object)$post;
+						
+						$DASH_RSS[]=sprintf('<li><a href="%1$s" target="_blank">%2$s</a></li>', $post->post_url, $post->post_title);
+						
+						if($i <= $x) {
+							if($i === 0) {
+								$RSS[]=sprintf('<div class="cfgp-rss-container">
+										<a href="%1$s" target="_blank" class="cfgp-rss-img">
+											<img src="%3$s" class="img-fluid">
+										</a>
+										<h3>%2$s</h3>
+										<div class="cfgp-rss-excerpt">
+											%4$s
+										</div>
+										<a href="%1$s" target="_blank" class="cfgp-rss-link">%6$s</a><br>
+										<small class="cfgp-rss-date">~ %7$s</small>
+									</div>',
+									$post->post_url,
+									$post->post_title,
+									$post->post_image_medium,
+									$post->post_excerpt,
+									$post->post_url,
+									__('Read more at CF Geo Plugin', CFGP_NAME),
+									date($date_format, strtotime($post->post_date_gmt))
+								);
+							} else {
+								$RSS[]=sprintf('<p class="cfgp-rss-container"><a href="%1$s" target="_blank" class="cfgp-rss-link">%2$s</a><br><small class="cfgp-rss-date">~ %7$s</small></p>',
+									$post->post_url,
+									$post->post_title,
+									$post->post_image_medium,
+									$post->post_excerpt,
+									$post->post_url,
+									__('Read more at CF Geo Plugin', CFGP_NAME),
+									date($date_format, strtotime($post->post_date_gmt))
+								);
+							}
 						}
 					}
 				}
@@ -175,7 +274,14 @@ class CFGP_Admin extends CFGP_Global {
 			{
 				$RSS = join("\r\n", $RSS);
 				set_transient('cfgp-rss', $RSS, (MINUTE_IN_SECONDS * CFGP_SESSION));
-				echo $RSS;
+				
+			}
+			
+			if(!empty($DASH_RSS))
+			{
+				$DASH_RSS = '<ul class="rss-widget">' . join("\r\n", $DASH_RSS) . '</ul>';
+				set_transient('cfgp-dashboard-rss', $DASH_RSS, (MINUTE_IN_SECONDS * CFGP_SESSION));
+				echo $DASH_RSS;
 				exit;
 			}
 		}
