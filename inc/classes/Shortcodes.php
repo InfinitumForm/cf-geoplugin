@@ -1028,7 +1028,9 @@ class CFGP_Shortcodes extends CFGP_Global {
 	 */
 	public function cfgeo_full_converter( $atts, $content = '' )
 	{
-		wp_enqueue_style( CFGP_NAME . '-widget-converter' );
+		wp_enqueue_style( CFGP_NAME . '-public-cc' );
+		wp_enqueue_script( CFGP_NAME . '-public-cc' );
+		
 		$currency_symbols = CFGP_Defaults::CURRENCY_SYMBOL;
 
 		$CFGEO = CFGP_U::api();

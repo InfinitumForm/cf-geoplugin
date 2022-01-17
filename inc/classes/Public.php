@@ -43,12 +43,20 @@ class CFGP_Public extends CFGP_Global{
 	
 	public function enqueue_scripts($page) {
 		$min = (defined('CFGP_DEV_MODE') && CFGP_DEV_MODE ? '' : '.min');
+		// Public shortcode style
 		wp_register_style( CFGP_NAME . '-public', CFGP_ASSETS . '/css/style-public' . $min . '.css', 1, (string)CFGP_VERSION );
-		
+		// Public currency converter shortcode
+		wp_register_style( CFGP_NAME . '-public-cc', CFGP_ASSETS . '/css/style-cc' . $min . '.css', 1, (string)CFGP_VERSION );
+		// Public JavaScript for the shortcodes
 		wp_register_script( CFGP_NAME . '-public', CFGP_ASSETS . '/js/script-public' . $min . '.js', array('jquery'), (string)CFGP_VERSION );
 		wp_localize_script(CFGP_NAME . '-public', 'CFGP', array(
 			'ajaxurl' => admin_url('admin-ajax.php'),
-			'cache' => (CFGP_Options::get('enable_cache', 0) ? '1' : '0'),
+			'cache' => (CFGP_Options::get('enable_cache', 0) ? '1' : '0')
+		));
+		// Public Shortcode for the currency converter
+		wp_register_script( CFGP_NAME . '-public-cc', CFGP_ASSETS . '/js/script-cc' . $min . '.js', array('jquery'), (string)CFGP_VERSION );
+		wp_localize_script(CFGP_NAME . '-public-cc', 'CFGP_CC', array(
+			'ajaxurl' => admin_url('admin-ajax.php'),
 			'loading_gif' => apply_filters( 'cfgp/public/js/loading_image_url', (CFGP_ASSETS . '/images/loading.gif'), (CFGP_ASSETS . '/images/loading.gif') )
 		));
 	}
