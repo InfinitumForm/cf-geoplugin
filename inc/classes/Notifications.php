@@ -17,12 +17,71 @@ if(!class_exists('CFGP_Notifications')) :
 class CFGP_Notifications extends CFGP_Global{
 
 	function __construct(){
-		if( defined( 'CFGP_DISABLE_NOTIFICATION' ) && CFGP_DISABLE_NOTIFICATION ) return;
 		
-		if( !CFGP_License::activated() ){
-			$this->add_filter('cf_geoplugin_notification_emails', 'remove_spams', 1);
-			$this->add_filter('init', 'lookup_expire_soon');
+		$this->add_action( 'admin_init', 'check_installation_time' );
+		$this->add_action( 'admin_init', 'cfgp_dimiss_review', 5 );
+		
+		if( defined( 'CFGP_DISABLE_NOTIFICATION' ) && CFGP_DISABLE_NOTIFICATION ) {
+			return;
+		} else {
+			if( !CFGP_License::activated() ){
+				$this->add_filter('cf_geoplugin_notification_emails', 'remove_spams', 1);
+				$this->add_filter('init', 'lookup_expire_soon');
+			}
 		}
+	}
+	
+	// remove the notice for the user if review already done or if the user does not want to
+	public function cfgp_dimiss_review(){    
+		if( isset( $_GET['cfgp_dimiss_review'] ) && !empty( $_GET['cfgp_dimiss_review'] ) ){
+			$cfgp_dimiss_review = $_GET['cfgp_dimiss_review'];
+			if( $cfgp_dimiss_review == 1 ){
+				add_option( CFGP_NAME . '-reviewed' , true );
+				
+				$parse_url = CFGP_U::parse_url();
+				if(wp_safe_redirect(remove_query_arg('cfgp_dimiss_review', $parse_url['url']))) {
+					exit;
+				}
+			}
+		}
+	}
+	
+	// check if review notice should be shown or not
+	public function check_installation_time() {
+		
+		if(get_option(CFGP_NAME . '-reviewed')){
+			return;
+		}
+		
+		$get_dates = get_option(CFGP_NAME . '-activation');
+		if(is_array($get_dates)){
+			$install_date = strtotime(end($get_dates));
+		} else {
+			$install_date = strtotime($get_dates);
+		}
+		
+		$past_date = strtotime( '-7 days' );
+	 
+		if ( $past_date >= $install_date) {
+			$this->add_action( 'admin_notices', 'display_admin_notice' );
+		}
+	}
+	
+	/**
+	 * Display Admin Notice, asking for a review
+	**/
+	public function display_admin_notice() {
+		$parse_url = CFGP_U::parse_url();
+		$dont_disturb = esc_url( add_query_arg('cfgp_dimiss_review', '1', $parse_url['url']) );
+		$plugin_info = get_plugin_data( CFGP_FILE , true, true );       
+		$reviewurl = esc_url( 'https://wordpress.org/support/plugin/cf-geoplugin/reviews/?filter=5#new-post' );
+	 
+		printf(
+			'<div class="notice notice-info"><h3>'.__('You have been using <b> %1$s </b> plugin for a while. We hope you liked it!', CFGP_NAME).'</h3><p>'.__('Please give us a quick rating, it works as a boost for us to keep working on the plugin!', CFGP_NAME).'</p><p class="void-review-btn"><a href="%2$s" class="button button-primary" target="_blank">'.__('Rate Now!', CFGP_NAME).'</a> &nbsp;&nbsp;<a href="%3$s" class="void-grid-review-done">'.__('I\'ve already done that!', CFGP_NAME).'</a></p></div>',
+			$plugin_info['Name'],
+			$reviewurl,
+			$dont_disturb
+		);
 	}
 	
 	/*
