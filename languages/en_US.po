@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: WordPress Geo Plugin\n"
-"POT-Creation-Date: 2022-01-14 15:47+0100\n"
-"PO-Revision-Date: 2022-01-14 15:47+0100\n"
+"POT-Creation-Date: 2022-01-20 08:30+0100\n"
+"PO-Revision-Date: 2022-01-20 08:30+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: en_US\n"
@@ -321,7 +321,7 @@ msgid "Can't delete access token because unexpected reasons."
 msgstr ""
 
 #: inc/classes/Admin.php:613 inc/classes/Help.php:63 inc/classes/Help.php:64
-#: inc/classes/Notifications.php:522 inc/filters/settings-rest.php:27
+#: inc/classes/Notifications.php:581 inc/filters/settings-rest.php:27
 #: inc/settings/sidebar.php:199
 msgid "Documentation"
 msgstr ""
@@ -1034,73 +1034,93 @@ msgstr ""
 msgid "Add New Redirection"
 msgstr ""
 
-#: inc/classes/Notifications.php:41
+#: inc/classes/Notifications.php:80
+#, php-format
+msgid ""
+"You have been using <b> %1$s </b> plugin for a while. We hope you liked it!"
+msgstr ""
+
+#: inc/classes/Notifications.php:80
+msgid ""
+"Please give us a quick rating, it works as a boost for us to keep working on "
+"the plugin!"
+msgstr ""
+
+#: inc/classes/Notifications.php:80
+msgid "Rate Now!"
+msgstr ""
+
+#: inc/classes/Notifications.php:80
+msgid "I've already done that!"
+msgstr ""
+
+#: inc/classes/Notifications.php:100
 msgid "Hi there,"
 msgstr ""
 
-#: inc/classes/Notifications.php:42
+#: inc/classes/Notifications.php:101
 msgid ""
 "Your lookup will expire soon and geo plugin services will be unavailable for "
 "the next 24 hours."
 msgstr ""
 
-#: inc/classes/Notifications.php:44
+#: inc/classes/Notifications.php:103
 #, php-format
 msgid ""
 "If your site has a large traffic and you need the full functionality of the "
 "plugin, you need to get the appropriate license and activate the %1$s."
 msgstr ""
 
-#: inc/classes/Notifications.php:45
+#: inc/classes/Notifications.php:104
 msgid "UNLIMITED LOOKUP."
 msgstr ""
 
-#: inc/classes/Notifications.php:48
+#: inc/classes/Notifications.php:107
 #, php-format
 msgid ""
 "You currently have %1$d lookups available and need to %2$s so that all "
 "services work smoothly."
 msgstr ""
 
-#: inc/classes/Notifications.php:50
+#: inc/classes/Notifications.php:109
 msgid "extend your license"
 msgstr ""
 
-#: inc/classes/Notifications.php:55
+#: inc/classes/Notifications.php:114
 msgid "CF GEO PLUGIN NOTIFICATION - Lookup expires soon"
 msgstr ""
 
-#: inc/classes/Notifications.php:489 inc/classes/Notifications.php:532
+#: inc/classes/Notifications.php:548 inc/classes/Notifications.php:591
 #, php-format
 msgid ""
 "If you no longer wish to receive these notifications, please read how to "
 "%1$s."
 msgstr ""
 
-#: inc/classes/Notifications.php:489 inc/classes/Notifications.php:532
+#: inc/classes/Notifications.php:548 inc/classes/Notifications.php:591
 msgid "disable this notifications"
 msgstr ""
 
-#: inc/classes/Notifications.php:521
+#: inc/classes/Notifications.php:580
 #, php-format
 msgid "This email is automatically sent by CF Geo Plugin via site %1$s."
 msgstr ""
 
-#: inc/classes/Notifications.php:522 inc/filters/license.php:103
+#: inc/classes/Notifications.php:581 inc/filters/license.php:103
 #: inc/filters/license.php:116 inc/settings/debug.php:87
 #: inc/settings/sidebar.php:205
 msgid "Privacy Policy"
 msgstr ""
 
-#: inc/classes/Notifications.php:522
+#: inc/classes/Notifications.php:581
 msgid "Terms And Conditions"
 msgstr ""
 
-#: inc/classes/Notifications.php:522
+#: inc/classes/Notifications.php:581
 msgid "Contact & Support"
 msgstr ""
 
-#: inc/classes/Notifications.php:527
+#: inc/classes/Notifications.php:586
 #, php-format
 msgid "Powered by  %1$s."
 msgstr ""
@@ -1156,11 +1176,11 @@ msgstr ""
 msgid "Allow CF Geo Plugin to integrate with existing installed plugins."
 msgstr ""
 
-#: inc/classes/Public.php:90
+#: inc/classes/Public.php:98
 msgid "CF Geo Plugin CSS Classes"
 msgstr ""
 
-#: inc/classes/Public.php:109 inc/classes/Public.php:157
+#: inc/classes/Public.php:117 inc/classes/Public.php:165
 msgid "CF Geoplugin JavaScript Objects"
 msgstr ""
 
@@ -1362,43 +1382,43 @@ msgid ""
 "inside your shortcode on this shortcode mode."
 msgstr ""
 
-#: inc/classes/Shortcodes.php:1038
+#: inc/classes/Shortcodes.php:1040
 msgid "Currency converter"
 msgstr ""
 
-#: inc/classes/Shortcodes.php:1042 inc/classes/Shortcodes.php:1073
+#: inc/classes/Shortcodes.php:1044 inc/classes/Shortcodes.php:1075
 #: inc/widgets/Currency_Converter.php:47 inc/widgets/Currency_Converter.php:75
 msgid "From"
 msgstr ""
 
-#: inc/classes/Shortcodes.php:1043 inc/classes/Shortcodes.php:1091
+#: inc/classes/Shortcodes.php:1045 inc/classes/Shortcodes.php:1093
 #: inc/widgets/Currency_Converter.php:48 inc/widgets/Currency_Converter.php:76
 msgid "To"
 msgstr ""
 
-#: inc/classes/Shortcodes.php:1044
+#: inc/classes/Shortcodes.php:1046
 msgid "Convert"
 msgstr ""
 
-#: inc/classes/Shortcodes.php:1065 inc/widgets/Currency_Converter.php:46
+#: inc/classes/Shortcodes.php:1067 inc/widgets/Currency_Converter.php:46
 #: inc/widgets/Currency_Converter.php:74
 msgid "Amount"
 msgstr ""
 
-#: inc/classes/Shortcodes.php:1175
+#: inc/classes/Shortcodes.php:1177
 msgid "Direct access is forbidden!"
 msgstr ""
 
-#: inc/classes/Shortcodes.php:1178
+#: inc/classes/Shortcodes.php:1180
 msgid "Please enter valid decimal or integer format."
 msgstr ""
 
-#: inc/classes/Shortcodes.php:1181 inc/classes/Shortcodes.php:1206
+#: inc/classes/Shortcodes.php:1183 inc/classes/Shortcodes.php:1208
 msgid ""
 "Sorry currently we are not able to do conversion. Please try again later."
 msgstr ""
 
-#: inc/classes/Shortcodes.php:1197 inc/classes/Shortcodes.php:1198
+#: inc/classes/Shortcodes.php:1199 inc/classes/Shortcodes.php:1200
 msgid "Undefined"
 msgstr ""
 
@@ -1648,7 +1668,7 @@ msgstr ""
 msgid "You are NOT from the EU"
 msgstr ""
 
-#: inc/filters/main_page.php:30
+#: inc/filters/main_page.php:30 inc/filters/main_page.php:36
 msgid "GPS is enabled"
 msgstr ""
 
@@ -1656,20 +1676,24 @@ msgstr ""
 msgid "GPS is enabled."
 msgstr ""
 
-#: inc/filters/main_page.php:45
+#: inc/filters/main_page.php:36
+msgid "GPS is NOT enabled"
+msgstr ""
+
+#: inc/filters/main_page.php:42
 #, php-format
 msgid "GPS is enabled only with %s extension"
 msgstr ""
 
-#: inc/filters/main_page.php:47
+#: inc/filters/main_page.php:44
 msgid "CF Geo Plugin GPS"
 msgstr ""
 
-#: inc/filters/main_page.php:57 inc/filters/main_page.php:58
+#: inc/filters/main_page.php:54 inc/filters/main_page.php:55
 msgid "Proxy connection"
 msgstr ""
 
-#: inc/filters/main_page.php:61 inc/filters/main_page.php:62
+#: inc/filters/main_page.php:58 inc/filters/main_page.php:59
 msgid "Is not proxy connection"
 msgstr ""
 

@@ -33,10 +33,7 @@ add_action('cfgp/table/after/shortcodes', function($API){ ?>
         <span class="badge"><?php
             if(CFGP_U::is_plugin_active('cf-geoplugin-gps/cf-geoplugin-gps.php'))
             {
-                if(!$CFGEO['gps'])
-                {
-                //	_e('', CFGP_NAME);
-                }
+                echo do_shortcode('[cfgeo_gps default="' .__('GPS is NOT enabled', CFGP_NAME). '"]' .__('GPS is enabled', CFGP_NAME). '[/cfgeo_gps]');
             }
             else
             {
