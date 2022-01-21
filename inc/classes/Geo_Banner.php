@@ -17,7 +17,6 @@ if(!class_exists('CFGP_Geo_Banner')) :
 class CFGP_Geo_Banner extends CFGP_Global {
 	
 	function __construct(){
-		
 		$this->add_action('init', 'register');
 		
 		$this->add_filter('manage_posts_columns', 'columns_banner');
@@ -27,7 +26,21 @@ class CFGP_Geo_Banner extends CFGP_Global {
 		$this->add_action('save_post', 'save_post');
 		
 		$this->add_action('wp_ajax_cf_geoplugin_banner_cache', 'ajax__geoplugin_banner_cache');
-		$this->add_action('wp_ajax_nopriv_cf_geoplugin_banner_cache', 'ajax__geoplugin_banner_cache');		
+		$this->add_action('wp_ajax_nopriv_cf_geoplugin_banner_cache', 'ajax__geoplugin_banner_cache');
+		
+		$this->add_filter( 'single_template', 'add_custom_single_template', 20, 1 );
+	}
+	
+	/* 
+	 * Register elementor geo banner page
+	 * @verson    1.0.0
+	 */
+	public function add_custom_single_template( $template ) {
+		global $post;
+		if( ($post->post_type === 'cf-geoplugin-banner') && file_exists(CFGP_PLUGINS . '/elementor/page/cfgp-banner.php') ){
+			$template = CFGP_PLUGINS . '/elementor/page/cfgp-banner.php';
+		}
+		return $template;
 	}
 	
 	/**
@@ -168,6 +181,14 @@ class CFGP_Geo_Banner extends CFGP_Global {
      * Register post type
      */
 	public function register(){
+		
+		$elementor_support = [];
+		if( is_plugin_active('elementor/elementor.php') ) {
+			if( $es_support = get_option('elementor_cpt_support') ) {
+				$elementor_support = $es_support;
+			}
+		}
+		
 		$projects   = array(
 			'labels'				=> array(
 				'name'               		=> __( 'Geo Banner',CFGP_NAME ),
@@ -189,7 +210,7 @@ class CFGP_Geo_Banner extends CFGP_Global {
 			),
 			'public'            	=> true,
 			'exclude_from_search'	=> true,
-			'publicly_queryable'	=> false, 
+			'publicly_queryable'	=> in_array('cf-geoplugin-banner', $elementor_support), 
 			'show_in_nav_menus'   	=> false,
 			'show_ui'           	=> (CFGP_Options::get('enable_banner', 1) ? true : false),
 			'query_var'         	=> true,

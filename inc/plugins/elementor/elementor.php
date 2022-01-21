@@ -10,7 +10,7 @@ if( !class_exists( 'CFGP__Plugin__elementor' ) ):
 class CFGP__Plugin__elementor extends CFGP_Global
 {
 	// Current plugin version
-	const VERSION = '1.0.1';
+	const VERSION = '1.0.2';
 	// Minimum required Elementor version
 	const MINIMUM_ELEMENTOR_VERSION = '3.3.0';
 	// Minimum required PHP version
@@ -42,22 +42,11 @@ class CFGP__Plugin__elementor extends CFGP_Global
 			return;
 		}
 		
-		$this->add_filter( 'single_template', 'add_custom_single_template', 100, 1 );
 		$this->add_action( 'elementor/elements/categories_registered', 'add_categories', 10, 1 );
 		$this->add_action( 'elementor/widgets/widgets_registered', 'load_widgets', 10, 0 );
+		
 		/* UNDERCONSTRUCTION */
 		//	$this->add_action( 'elementor/controls/controls_registered', 'add_controls', 10, 0 );
-	}
-	
-	/* 
-	 * Register elementor geo banner page
-	 * @verson    1.0.0
-	 */
-	public function add_custom_single_template( $template ) {
-		if( CFGP_U::get_post_type('cf-geoplugin-banner') && file_exists(__DIR__ . '/page/cfgp-banner.php') ){
-			$template = __DIR__ . '/page/cfgp-banner.php';
-		}
-		return $template;
 	}
 	
 	/* 
@@ -182,9 +171,9 @@ class CFGP__Plugin__elementor extends CFGP_Global
 
 		$message = sprintf(
 			/* translators: 1: Plugin name 2: Elementor 3: Required Elementor version */
-			esc_html__( '%1$s requires %2$s version %3$s or greater.', 'elementor-test-extension' ),
-			'<strong>' . esc_html__( 'CF Geo Plugin', 'elementor-test-extension' ) . '</strong>',
-			'<strong>' . esc_html__( 'Elementor', 'elementor-test-extension' ) . '</strong>',
+			esc_html__( '%1$s requires %2$s version %3$s or greater.', CFGP_NAME ),
+			'<strong>' . esc_html__( 'CF Geo Plugin', CFGP_NAME ) . '</strong>',
+			'<strong>' . esc_html__( 'Elementor', CFGP_NAME ) . '</strong>',
 			'<strong>' . self::MINIMUM_ELEMENTOR_VERSION . '</strong>'
 		);
 
@@ -201,9 +190,9 @@ class CFGP__Plugin__elementor extends CFGP_Global
 
 		$message = sprintf(
 			/* translators: 1: Plugin name 2: PHP 3: Required PHP version */
-			esc_html__( '%1$s requires %2$s version %3$s or greater.', 'elementor-test-extension' ),
-			'<strong>' . esc_html__( 'CF Geo Plugin', 'elementor-test-extension' ) . '</strong>',
-			'<strong>' . esc_html__( 'PHP', 'elementor-test-extension' ) . '</strong>',
+			esc_html__( '%1$s requires %2$s version %3$s or greater.', CFGP_NAME ),
+			'<strong>' . esc_html__( 'CF Geo Plugin', CFGP_NAME ) . '</strong>',
+			'<strong>' . esc_html__( 'PHP', CFGP_NAME ) . '</strong>',
 			'<strong>' . self::MINIMUM_PHP_VERSION . '</strong>'
 		);
 
