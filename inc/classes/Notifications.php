@@ -45,26 +45,9 @@ class CFGP_Notifications extends CFGP_Global{
 			}
 		}
 	}
-<<<<<<< HEAD:includes/class-cf-geoplugin-notification.php
-
-	public function license_expire_soon()
-	{
-		global $CF_GEOPLUGIN_OPTIONS, $CFGEO;
-		
-		if( defined( 'CFGP_DISABLE_NOTIFICATION_EXPIRE_SOON' ) && CFGP_DISABLE_NOTIFICATION_EXPIRE_SOON ) return NULL;
-	
-		if(empty($CFGEO)){
-			$CFGEO = $GLOBALS['CFGEO'];
-		}
-		
-		if(empty($CF_GEOPLUGIN_OPTIONS)){
-			$CF_GEOPLUGIN_OPTIONS = $GLOBALS['CF_GEOPLUGIN_OPTIONS'];
-		}
-=======
 	
 	// check if review notice should be shown or not
 	public function check_installation_time() {
->>>>>>> Version_8xx:inc/classes/Notifications.php
 		
 		if(get_option(CFGP_NAME . '-reviewed')){
 			return;

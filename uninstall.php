@@ -38,6 +38,9 @@ if(get_option(CFGP_NAME . '-rest')) {
 if(get_option(CFGP_NAME . '-db-version')) {
 	delete_option(CFGP_NAME . '-db-version');
 }
+if(get_option(CFGP_NAME . '-reviewed')) {
+	delete_option(CFGP_NAME . '-reviewed');
+}
 
 // Delete MySQL tables
 $wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}cfgp_rest_access_token" );

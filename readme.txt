@@ -3,15 +3,9 @@ Contributors: ivijanstefan, creativform
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=creativform@gmail.com
 Tags: geolocation, locator, GeoIP, geo, geotargeting, seo, seo redirect, woocommerce, include exclude, content, remove content, show hide, covid
 Requires at least: 3.0
-<<<<<<< HEAD
-Tested up to: 5.7
-Requires PHP: 5.6.0
-Stable tag: 7.13.7
-=======
 Tested up to: 5.8
 Requires PHP: 7.0.0
 Stable tag: 8.0.0
->>>>>>> Version_8xx
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -374,215 +368,6 @@ Please inform us if any of these errors occur via contact form on our website [h
 
 == Changelog ==
 
-<<<<<<< HEAD
-= 7.13.7 =
-* Switched to new and faster API service
-
-= 7.13.6 =
-* Fixed problem with PHP notice
-* Fixed localhost detection
-
-= 7.13.5 =
-* Improved security
-* Fixed bugs in SEO redirection
-* Fixed WP nonce bugs
-* Added support for WordPress version 5.7
-* Plugin and installation preparation for future version 8.0.0
-
-= 7.13.4 =
-* Increased free lookup from 300 to 1000 lookop per day
-
-= 7.13.3 =
-* Fixed bug for unlimited license
-* Support WordPress version 5.6
-
-
-= 7.13.2 =
-* Fixed issue with losing active license
-* Fixed issue with `session_write_close()`
-* Fixed issue with SEO redirects
-
-= 7.13.1 =
-* Fixed SEO redirection errors
-
-= 7.13.0 =
-* **BIG CHANGES ON THE GEO BANNER - BACKUP IS RECOMMENDED BEFORE UPDATE**
-* Added geo banner default content
-* Added postcode for SEO redirection and geo banner
-* Improved shortcode for geo banner
-* Added new field in XML for SEO redirection (old needs update)
-* Improved SEO redirection
-* Improved metaboxes
-* Improved mail notification filters
-
-= 7.12.14 =
-* IMPORTANT UPDATE: Added Elementor editor inside Geo Banner
-* IMPORTANT UPDATE: Fixed issue with get_queried_object_id()
-* Enhancement: Elementor widgets
-
-= 7.12.13 =
-* Updated code for the PHP7.4 support
-* Fixed problems with AJAX during SEO redirection
-* Improved COVID-19 API
-
-= 7.12.12 =
-* URGENT  FIX: WordPress crash problem
-
-= 7.12.11 =
-* IMPORTANT UPDATE: PHP7.4 and above support
-
-= 7.12.10 =
-* IMPORTANT UPDATE: Fixed problems with update settings
-* IMPORTANT UPDATE: Fixed problems with SEO redirection
-* IMPORTANT UPDATE: JavaScript support for the WordPress 5.5
-
-= 7.12.9 =
-* Enhancement: added new SEO redirection action filters
-
-= 7.12.8 =
-* IMPORTANT UPDATE: Fixed WooCommerce base conversion
-* Enhancement: Improved WooCommerce Payment Options
-* Enhancement: Fixed global options
-
-= 7.12.7 =
-* IMPORTANT UPDATE: Added settings for email notification
-* IMPORTANT UPDATE: Improved SEO redirection for cached pages
-* Enhancement: PHP code
-
-= 7.12.6 =
-* URGENT FIX: Allowed memory size PHP error on the low cost hostings
-
-= 7.12.5 =
-* IMPORTANT UPDATE: Fixed Yoast SEO tags rendering
-* IMPORTANT UPDATE: Fixed SEO redirection
-* IMPORTANT UPDATE: Fixed page ID finder
-* IMPORTANT UPDATE: Fixed cache plugin supports
-* Enhancement: Woocommerce hooks
-* Enhancement: E-mail template link visibility
-* Enhancement: SEO utilities
-
-= 7.12.4 =
-* URGENT FIX: Fixed issue with spamming notification
-* IMPORTANT UPDATE: Added support for GPS extension to detect the exact address of the visitor
-* IMPORTANT UPDATE: Privacy Policy
-* IMPORTANT UPDATE: Support for WordPress version 5.5
-
-= 7.12.3 =
-* URGENT FIX: Page speed impact
-* URGENT FIX: Missing shortcodes on the MySQL Session
-* IMPORTANT UPDATE: API validation
-* IMPORTANT UPDATE: Fixed COVID 19 transient problems  
-* Enhancement: Session functionality
-* Enhancement: CSS and JavaScript functionality
-* New: CSS and JavaScript settings
-* New: Added new action hooks
-* New: Clear session functionality
-
-= 7.12.2 =
-* Enhancement: Site protection
-* Enhancement: Updated UX and UI inside dashboard
-* Enhancement: Added new filters inside code
-
-= 7.12.1 =
-* IMPORTANT UPDATE: Fixed problem with license email expiration
-
-= 7.12.0 =
-* IMPORTANT UPDATE: Improved API communication
-* IMPORTANT UPDATE: Improved license verification and renewal.
-* IMPORTANT UPDATE: Added push notifications for license expiration and lookup.
-* IMPORTANT UPDATE: COVID-19 Fixed PHP error "divided by zero"
-* Enhancement: Finding IDs for SEO redirection pages
-* Enhancement: Fixed a bug with the currency conversion shortcode
-
-= 7.11.7 =
-* IMPORTANT UPDATE: Fixed COVID-19 memory leaking
-* IMPORTANT UPDATE: Fixed COVID-19 data calculation
-* Enhancement: PHP7.4 transition code
-* Enhancement: API call speed
-* NEW FEATURE: COVID-19 API recovery and mortality rate calculation
-
-= 7.11.6 =
-* IMPORTANT UPDATE: COVID-19 API update
-* IMPORTANT UPDATE: Filtered IP server from client IP
-* Enhancement: Currency library
-
-= 7.11.5 =
-* IMPORTANT UPDATE: CSS cache
-* Enhancement: JavaScript AJAX calls
-* Enhancement: PHP settings
-* Enhancement: COVID-19 setup
-
-= 7.11.4 =
-* IMPORTANT UPDATE: Fixed wp-admin linking
-* Enhancement: License activation and deactivation
-
-= 7.11.3 =
-* IMPORTANT UPDATE: Fixed multisite AJAX error
-* IMPORTANT UPDATE: Fixed multisite redirection
-* IMPORTANT UPDATE: Fixed multisite admin navigation
-* IMPORTANT UPDATE: Fixed multisite includes
-* IMPORTANT UPDATE: Fixed PHP error for the missing API object
-* Enhancement: X-Forwarded-For IP lookup
-* Enhancement: IP lookup via SHELL scripts for Win10 & UNIX (if are allowed)
-* Enhancement: Saving options
-* Enhancement: Plugin activation
-* Optimized PHP code
-
-= 7.11.2 =
-* Improved "localhost" detection
-* Improved IP detection
-* Improved server detection
-* Fixed multisite menu problems
-
-= 7.11.1 =
-* Added "Select All" to the geo selection
-
-= 7.11.0 =
-* Centralized API calls
-* Fixed currency converter nonce error
-* Fixed API informations
-* Fixed WooCommerce price calculation
-* Fixed WP Admin URLs on the multisite
-* Improved PHP code
-
-== Upgrade Notice ==
-
-= 7.13.6 =
-* Fixed problem with PHP notice
-* Fixed localhost detection
-
-= 7.13.5 =
-* Improved security
-* Fixed bugs in SEO redirection
-* Fixed WP nonce bugs
-* Added support for WordPress version 5.7
-* Plugin and installation preparation for future version 8.0.0
-
-= 7.13.4 =
-* Increased free lookup from 300 to 1000 lookop per day
-
-= 7.13.3 =
-* Fixed bug for unlimited license
-* Support WordPress version 5.6
-
-= 7.13.2 =
-* Fixed issue with losing active license
-* Fixed issue with `session_write_close()`
-* Fixed issue with SEO redirects
-
-= 7.13.1 =
-* Fixed SEO redirection errors
-
-= 7.13.0 =
-* **BIG CHANGES ON THE GEO BANNER - BACKUP IS RECOMMENDED BEFORE UPDATE**
-* Added geo banner default content
-* Added postcode for SEO redirection and geo banner
-* Improved shortcode for geo banner
-* Added new field in XML for SEO redirection (old needs update)
-* Improved SEO redirection
-* Improved metaboxes
-* Improved mail notification filters
-=======
 = 8.0.0 =
 * **GREAT UPDATE - BACKUP IS REQUIRED**
 * New optimized user experience based on the WordPress standard design with easy access to all information and settings
@@ -614,7 +399,6 @@ Please inform us if any of these errors occur via contact form on our website [h
 * Fixed lookup leak issues
 * Fixed problems with banner and shortcode caching
 * Fixed issues with Siteground integration
->>>>>>> Version_8xx
 
 == Other Notes ==
 
