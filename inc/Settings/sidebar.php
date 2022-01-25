@@ -125,7 +125,7 @@ class CFGP_Sidebar extends CFGP_Global {
 			<h3><?php $this->cfgp_lookup_status_icon(CFGP_U::api('lookup')); ?> <?php _e('Lookup', CFGP_NAME); ?></h3>
 			<?php if(CFGP_U::api('lookup') === 'unlimited' && $license_expire = CFGP_License::expire_date()) : ?>
 				<p><?php _e('Congratulations, you have an unlimited lookup that you can use until:', CFGP_NAME); ?> <strong><?php echo $license_expire; ?></strong></p>
-			<?php elseif(CFGP_U::api('lookup') === 'unlimited') : ?>
+			<?php elseif(CFGP_U::api('lookup') === 'unlimited' || CFGP_U::api('lookup') === 'lifetime') : ?>
 				<p><?php _e('Congratulations, your license has provided you with a lifetime lookup.', CFGP_NAME); ?></p>
 			<?php else : ?>
 				<?php if(CFGP_U::api('lookup') > 0) : ?>

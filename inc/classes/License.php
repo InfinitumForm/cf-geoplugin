@@ -139,25 +139,34 @@ class CFGP_License extends CFGP_Global{
 	 *
 	 * @return  true/false
 	 * 
-	 * NOTICE FOR HACKERS AND DEVELOPERS:
-	 * If you try to hack this function to activate the hidden functionality of the plugin,
-	 * you can try but the lookup will definitely remain limited.
-	 * Our server knows if you have activated the license or not, so there will be a lot of
-	 * problems when trying to force activation.
-	 *
-	 * The license for this plugin is not expensive in general.
-	 * Otherwise, if you need a job, let me know.
-	 *
-	 * I am planning to develop a special protection WordPress plugin that will bring a lot
-	 * of work, and for that I need developers who also know how to hack.
-	 * Because only a hacker can write good protection against hackers. ;)
-	 *
-	 * I'm expecting you.
-	 *
-	 * Cheers!
+	 +======================================================================================+
+	 | NOTICE FOR HACKERS AND DEVELOPERS:                                                   |
+	 | ----------------------------------                                                   |
+	 | If you try to hack this function to activate the hidden functionality of the plugin, |
+	 | you can try but the lookup will definitely remain limited.                           |
+	 | Our server knows if you have activated the license or not, so there will be a lot of |
+	 | problems when trying to force activation.                                            |
+	 |                                                                                      |
+	 | The license for this plugin is not expensive in general.                             |
+	 | Otherwise, if you need a job, let me know.                                           |
+	 |                                                                                      |
+	 | I am planning to develop a special protection WordPress plugin that will bring a lot |
+	 | of work, and for that I need developers who also know how to hack.                   |
+	 | Because only a hacker can write good protection against hackers. ;)                  |
+	 |                                                                                      |
+	 | I'm expecting you.                                                                   |
+	 |                                                                                      |
+	 | Cheers!                                                                              |
+	 +======================================================================================+
 	 */
 	public static function activated(){
+		
 		if(self::$activated !== NULL){
+			return self::$activated;
+		}
+		
+		if( CFGP_U::api('lookup') === 'unlimited' || CFGP_U::api('lookup') === 'lifetime' ) {
+			self::$activated = true;
 			return self::$activated;
 		}
 		
