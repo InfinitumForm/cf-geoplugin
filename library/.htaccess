@@ -1,0 +1,8 @@
+# Disable directory browsing
+Options All -Indexes
+# Restrict access to certain extensions
+<FilesMatch "\.(htaccess|htpasswd|ini|log|sh|inc|bak|txt|lib|cmd|json)$">
+	order allow,deny
+	deny from all
+	satisfy all
+</FilesMatch>

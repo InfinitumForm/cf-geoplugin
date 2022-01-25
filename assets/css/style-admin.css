@@ -1,0 +1,604 @@
+#cf-geoplugin-settings .cf-geoplugin-sticky-button{
+	position: fixed;
+    z-index: 10;
+    top: 32px;
+    right: 10px;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-top: 0;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+#cf-geoplugin-settings .cf-geoplugin-sticky-button > p.submit{
+	margin:0 !important;
+	padding:0 !important;
+	display:table;
+}
+
+#cf-geoplugin-settings .cf-geoplugin-sticky-button > p.submit > input#submit{
+	margin:8px 10px !important;
+}
+
+#cf-geoplugin-settings #poststuff .cfgp-section-description{
+	margin:0;
+}
+
+#cf-geoplugin-settings #poststuff .cfgp-section-description:last-child,
+#cf-geoplugin-settings #poststuff .cfgp-section-description:last-of-type{
+	margin-bottom:15px;
+}
+
+#cf-geoplugin-settings #poststuff .cfgp-section-description + .cfgp-section-description{
+	margin-top:5px;
+}
+
+#cf-geoplugin-settings #poststuff .cfgp-section-description + .cfgp-form-table{
+	margin-top: 15px !important;
+}
+
+
+#cf-geoplugin-settings #poststuff h3.hndle,
+#cf-geoplugin-settings #poststuff .stuffbox > h3,
+#cf-geoplugin-settings #poststuff h2{
+	float: left;
+    width: 99%;
+    display: block;
+}
+
+.nav-tab-wrapper-chosen *{
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+}
+
+.nav-tab-wrapper-chosen .cfgp-tab-panel{
+	display:none;
+	border: 1px solid #c3c4c7;
+	border-top:none;
+}
+.nav-tab-wrapper-chosen .cfgp-tab-panel p.submit{
+	float: initial;
+	margin-bottom:32px;
+}
+.nav-tab-wrapper-chosen .cfgp-tab-panel > table{
+	border-left:none;
+	border-right:none;
+}
+
+.nav-tab-wrapper-chosen .cfgp-tab-panel > table td.cfgp-field{
+	position:relative;
+}
+
+.nav-tab-wrapper-chosen .cfgp-tab-panel > table th.cfgp-label{
+	position:relative;
+}
+
+.nav-tab-wrapper-chosen .cfgp-tab-panel > table th.cfgp-label > label + .cfgp-help{
+	margin-left:5px;
+	top: 2px;
+    position: relative;
+}
+
+.nav-tab-wrapper-chosen .cfgp-tab-panel > table:only-child{
+	border-top:none;
+}
+.nav-tab-wrapper-chosen .cfgp-tab-panel h2{
+	padding:0 15px;
+	font-size: 1.3em !important;
+}
+.nav-tab-wrapper-chosen .cfgp-tab-panel p{
+	padding:0 15px;
+	width: 100%;
+}
+.nav-tab-wrapper-chosen .cfgp-tab-panel > p:first-of-type,
+.nav-tab-wrapper-chosen .cfgp-tab-panel > p:only-child,
+.nav-tab-wrapper-chosen .cfgp-tab-panel > p:first-child{
+	float: left;
+}
+.nav-tab-wrapper-chosen .cfgp-tab-panel p+p{
+	padding-top:0;
+	margin-top:0;
+}
+.nav-tab-wrapper-chosen .cfgp-tab-panel .form-table{
+	margin:0 15px !important;
+}
+.nav-tab-wrapper-chosen .cfgp-tab-panel .input-radio{
+	display:inline-block;
+}
+.nav-tab-wrapper-chosen .cfgp-tab-panel .input-radio+.input-radio{
+	margin-left:10px;
+}
+.nav-tab-wrapper-chosen .cfgp-tab-panel .title{
+	margin-top: 10px !important;
+}
+.nav-tab-wrapper-chosen .cfgp-tab-panel .form-table + .title{
+	margin-top: 15px !important;
+}
+.nav-tab-wrapper-chosen .cfgp-tab-panel .title + p{
+	margin-top:0;
+	padding-top:0;
+}
+.nav-tab-wrapper-chosen .cfgp-tab-panel input + .cfgp-help,
+.nav-tab-wrapper-chosen .cfgp-tab-panel select + .cfgp-help,
+.nav-tab-wrapper-chosen .cfgp-tab-panel textarea + .cfgp-help,
+.nav-tab-wrapper-chosen .cfgp-tab-panel .input-radio + .cfgp-help{
+	margin-left:10px;
+}
+.nav-tab-wrapper-chosen .cfgp-tab-panel.cfgp-tab-panel-active{
+	display:block !important;
+	background:#FFF;
+}
+.nav-tab-wrapper-chosen .nav-tab.nav-tab-active,
+.nav-tab-wrapper-chosen .nav-tab.nav-tab-active:focus:active{
+	background:#FFF;
+	border-bottom: 1px solid #FFF;
+}
+.nav-tab-wrapper-chosen .cfgp-tab-panel textarea{
+	width:100%;
+	max-width:60%;
+	overflow: auto;
+    resize: vertical;
+}
+
+.nav-tab-wrapper-chosen .cfgp-tab-panel input[type^="text"],
+.nav-tab-wrapper-chosen .cfgp-tab-panel input[type^="password"],
+.nav-tab-wrapper-chosen .cfgp-tab-panel input[type^="url"],
+.nav-tab-wrapper-chosen .cfgp-tab-panel input[type^="email"],
+.nav-tab-wrapper-chosen .cfgp-tab-panel input[type^="tel"]{
+	width:100%;
+	max-width:60%;
+}
+
+.nav-tab-wrapper-chosen .cfgp-tab-panel input:disabled,
+.nav-tab-wrapper-chosen .cfgp-tab-panel input.disabled,
+.nav-tab-wrapper-chosen .cfgp-tab-panel textarea:disabled,
+.nav-tab-wrapper-chosen .cfgp-tab-panel textarea.disabled,
+.nav-tab-wrapper-chosen .cfgp-tab-panel select:disabled,
+.nav-tab-wrapper-chosen .cfgp-tab-panel select.disabled{
+	background-color:#efefef;
+	cursor: not-allowed;
+}
+
+.nav-tab-wrapper-chosen .cfgp-tab-panel .cfgp-tab-panel-section{
+	padding-bottom:15px;
+}
+
+.nav-tab-wrapper-chosen .cfgp-tab-panel .cfgp-tab-panel-section+.cfgp-tab-panel-section{
+	padding-top:15px;
+	border-top:1px solid #c3c4c7;
+}
+
+.nav-tab-wrapper-chosen .nav-tab-wrapper-chosen{
+	margin-left:15px;
+	margin-right:15px;
+	margin-bottom:10px;
+}
+
+.nav-tab-wrapper-chosen .cfgp-tab-panel .cfgp-form-group{
+	display:block;
+	width:100%;
+	height:auto;
+	padding:5px 15px 10px 15px;
+}
+
+.nav-tab-wrapper-chosen .cfgp-tab-panel .cfgp-form-group.has-wp-editor{
+	float:left;
+}
+
+.nav-tab-wrapper-chosen .cfgp-tab-panel .cfgp-form-group+.cfgp-form-group{
+	margin-top:10px;
+}
+
+.nav-tab-wrapper-chosen .cfgp-tab-panel .cfgp-form-group p{
+	padding:0;
+}
+
+.nav-tab-wrapper-chosen .cfgp-tab-panel .cfgp-form-group label{
+	display:block;
+	width:100%;
+	margin-bottom:5px;
+}
+
+.nav-tab-wrapper-chosen .cfgp-tab-panel .cfgp-form-group textarea,
+.nav-tab-wrapper-chosen .cfgp-tab-panel .cfgp-form-group select,
+.nav-tab-wrapper-chosen .cfgp-tab-panel .cfgp-form-group input[type="text"],
+.nav-tab-wrapper-chosen .cfgp-tab-panel .cfgp-form-group input[type="url"],
+.nav-tab-wrapper-chosen .cfgp-tab-panel .cfgp-form-group input[type="email"],
+.nav-tab-wrapper-chosen .cfgp-tab-panel .cfgp-form-group input[type="password"],
+.nav-tab-wrapper-chosen .cfgp-tab-panel .cfgp-form-group input[type="tel"],
+.nav-tab-wrapper-chosen .cfgp-tab-panel .cfgp-form-group input[type="date"]{
+	width:100%;
+	max-width: 100%;
+}
+
+@media all and (max-width:992px) {
+	.nav-tab-wrapper-chosen .nav-tab > .label{
+		display:none;
+	}
+	.nav-tab-wrapper-chosen .nav-tab.nav-tab-active > .label{
+		display:inline-block;
+	}
+}
+
+.cfgp-cache-debug{
+	margin: 15px auto 100px auto;
+    display: block;
+    width: 100%;
+    max-width: 50%;
+    font-family: monospace, sans-serif;
+    color: #fff;
+    background: #000;
+    padding: 10px 15px;
+    white-space: pre-wrap;
+}
+
+pre.cfgp-dump{
+	display: block;
+    background: #333;
+    color: #fff;
+    padding: 15px;
+    width: 100%;
+    max-width: 95%;
+	word-break: break-all;
+    white-space: break-spaces;
+}
+
+pre.cfgp-dump + pre.cfgp-dump{
+	margin-top:10px;
+}
+
+.cfgp-form-product-checkbox{
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: flex-start;
+	align-items: flex-start;
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+}
+
+.cfgp-form-product-checkbox *{
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	user-select: none; /* supported by Chrome and Opera */
+   -webkit-user-select: none; /* Safari */
+   -khtml-user-select: none; /* Konqueror HTML */
+   -moz-user-select: none; /* Firefox */
+   -ms-user-select: none; /* Internet Explorer/Edge */
+}
+
+.cfgp-form-product-checkbox > label{
+	position:relative;
+    width: 100%;
+    max-width: 25%;
+    flex: 0 0 25%;
+	text-align:center;
+	margin-bottom:10px;
+}
+
+@media all and (max-width:1400px){
+	.cfgp-form-product-checkbox > label{
+		max-width: 33.33%;
+		flex: 0 0 33.33%;
+	}
+}
+
+@media all and (max-width:1200px){
+	.cfgp-form-product-checkbox > label{
+		max-width: 50%;
+		flex: 0 0 50%;
+	}
+}
+
+@media all and (max-width:512px){
+	.cfgp-form-product-checkbox > label{
+		max-width: 100%;
+		flex: 0 0 100%;
+	}
+}
+
+.cfgp-form-product-checkbox .cfgp-form-product-checkbox-item{
+	border:1px solid #ccc;
+	background:#FFF;
+	padding:5px 15px;
+	margin: 5px;
+	transition:all ease-in-out;
+}
+
+.cfgp-form-product-checkbox .cfgp-form-product-checkbox-item h3{
+	min-height: 50px;
+	font-size: 1.4em;
+	color: steelblue;
+	max-width: 215px;
+    margin: 20px auto 0 auto;
+}
+
+.cfgp-form-product-checkbox .cfgp-form-product-checkbox-item h4{
+	margin-bottom:5px;
+}
+
+.cfgp-form-product-checkbox .cfgp-form-product-checkbox-item .cfgp-form-product-checkbox-price{
+    display: block;
+	min-height: 64px;
+	font-size:1.3rem;
+	color: #FD4624;
+}
+
+.cfgp-form-product-checkbox .cfgp-form-product-checkbox-item .cfgp-form-product-checkbox-price del{
+	font-size: 0.75rem;
+    position: relative;
+    top: -5px;
+    color: #bbb;
+	display: block;
+}
+
+.cfgp-form-product-checkbox .cfgp-form-product-checkbox-item .cfgp-form-product-checkbox-price ins{
+	text-decoration: none;
+}
+
+.cfgp-form-product-checkbox input[type="radio"]{
+	position: absolute;
+    z-index: 1;
+    bottom: 38px;
+    left: 20px;
+}
+
+.cfgp-form-product-checkbox .cfgp-form-product-checkbox-item:hover,
+.cfgp-form-product-checkbox input[type="radio"]:checked + .cfgp-form-product-checkbox-item{
+	border-color:#09F;
+	box-shadow: inset 0 0 10px #09F;
+}
+
+.cfgp-form-product-license{
+	width:100%;
+	max-width: 100%;
+	flex: 0 0 100%;
+	margin-top:15px;
+}
+
+.cfgp-form-product-license > .cfgp-form-product-license-item{
+	border:1px solid #ccc;
+	background:#FFF;
+	padding: 40px 8% 32px 8%;
+    margin: 0 auto;
+	text-align:center;
+}
+
+.cfgp-form-product-license > .cfgp-form-product-license-item > label,
+.cfgp-form-product-license > .cfgp-form-product-license-item > input{
+	display:block;
+	width:100%;
+	text-align:center;
+}
+
+.cfgp-form-product-license > .cfgp-form-product-license-item > label{
+	font-size:1.3rem;
+	font-weight:600;
+	margin-bottom:15px;
+}
+
+.cfgp-form-product-license > .cfgp-form-product-license-item > input{
+	font-size: 1.2rem;
+    padding: 10px 5px;
+}
+
+.cfgp-form-product-license > .cfgp-form-product-license-item .cfgp-deactivate-license,
+.cfgp-form-product-license > .cfgp-form-product-license-item .cfgp-activate-license{
+	font-size: 1.2rem;
+    width: 100%;
+    text-transform: uppercase;
+	margin-top:10px;
+}
+
+
+.cfgp-form-product-license > .cfgp-form-product-license-item .cfgp-deactivate-license{
+	background:#900;
+	border-color:#900;
+}
+
+.cfgp-form-product-license > .cfgp-form-product-license-item .cfgp-deactivate-license:hover{
+	background:#770000;
+	border-color:#900;
+}
+
+.cfgp-seo-table-row-inactive sup{
+	color:#F00;
+	display:table;
+}
+
+.cfgp-seo-table-row-inactive td,
+.cfgp-seo-table-row-inactive th
+{
+	color:#919191;
+}
+
+dl {
+	display: flex;
+	flex-flow: row wrap;
+	border: solid #2c3338;
+	border-width: 1px 1px 0 0;
+	font-size:14px;
+}
+dt {
+	flex-basis: 10%;
+	min-width:100px;
+	padding: 3px 10px 3px 4px;
+	background: #2c3338;
+	text-align: right;
+	color: #fff;
+}
+dd {
+	flex-basis: 80%;
+	flex-grow: 1;
+	margin: 0;
+	padding: 3px 4px 3px 5px;
+	border-bottom: 1px solid #2c3338;
+}
+
+.cfgp-help{
+	position: relative;
+}
+.cfgp-help > .cfgp-tooltip{
+	position:absolute;
+}
+.fa-cfgeo-help{
+	font-size: 1.1em;
+    top: 3px;
+	margin-left: 1px;
+	cursor: help;
+}
+
+.cfgp-statistic-plugin-details .text-danger,
+.cfgp-tab-panel .text-danger{
+	color: #cc0000;
+}
+
+.cfgp-statistic-plugin-details .text-success,
+.cfgp-tab-panel .text-success{
+	color: #007820;
+}
+
+#dashboard-widgets #cf-geoplugin-dashboard-statistic .inside,
+#dashboard-widgets #cf-geoplugin-dashboard-feed .inside{
+	padding:0;
+}
+
+#dashboard-widgets #cf-geoplugin-dashboard-statistic .inside #cfgp-statistic{
+	padding:0 12px 0 12px;
+}
+
+#dashboard-widgets #cf-geoplugin-dashboard-feed .inside .wordpress-news{
+	padding:0;
+}
+
+#dashboard-widgets #cf-geoplugin-dashboard-feed .inside .wordpress-news .rss-widget > li > a {
+	width:100%;
+	display:block;
+	padding: 5px 0px;
+}
+
+#dashboard-widgets #cf-geoplugin-dashboard-feed .inside .wordpress-news .rss-widget > li{
+	padding:0 12px 0 12px;
+}
+
+#dashboard-widgets #cf-geoplugin-dashboard-feed .inside .wordpress-news .rss-widget > li:nth-child(odd){
+	background-color:#f5f5f5;
+}
+
+#dashboard-widgets #cf-geoplugin-dashboard-statistic .inside a:hover,
+#dashboard-widgets #cf-geoplugin-dashboard-feed .inside a:hover{
+	color: #fd4624;
+}
+
+#dashboard-widgets #cf-geoplugin-dashboard-statistic .inside h3{
+	color: #1d2327;
+    font-size: 1.3em;
+    margin: 1em 0;
+	font-weight:500;
+}
+
+#dashboard-widgets #cf-geoplugin-dashboard-statistic .inside h4{
+	font-size: 1em;
+    margin: 1.33em 0;
+	font-weight:500;
+}
+
+#dashboard-widgets #cf-geoplugin-dashboard-statistic .inside .cf-geoplugin-dashboard-details-copyright-column{
+	margin-top:1em;
+	color:#1d2327;
+}
+
+#cf-geoplugin-dashboard-statistic .inside .cfgp-statistic-plugin-details > ul{
+	list-style:none;
+	display:block;
+	padding:0;
+	margin:0;
+	width:100%;
+}
+
+#cf-geoplugin-dashboard-statistic .inside .cfgp-statistic-plugin-details > ul > li{
+	display:block;
+	padding:0;
+	margin:0;
+	width:100%;
+}
+
+#cf-geoplugin-dashboard-statistic .inside .cfgp-statistic-plugin-details > ul > li+li{
+	margin-top:5px;
+}
+
+#cf-geoplugin-dashboard-statistic .inside .cfgp-statistic-plugin-details > ul > li > strong{
+	display: inline-block;
+    vertical-align: top;
+	width: 25%;
+}
+
+#cf-geoplugin-dashboard-statistic .inside .cfgp-statistic-plugin-details > ul > li > span{
+	display: inline-block;
+    vertical-align: top;
+	width: 72%;
+}
+
+#cf-geoplugin-dashboard-statistic .inside .cfgp-statistic-plugin-details.changelog{
+	padding-bottom:5px;
+}
+
+#cf-geoplugin-dashboard-statistic .inside .cfgp-statistic-plugin-details.changelog.has-update {
+	color: #000000 !important;
+	font-weight:500;
+}
+
+#cf-geoplugin-dashboard-statistic .inside .cfgp-statistic-plugin-details.changelog.has-update h3{
+	color: #cc0000 !important;
+}
+
+#cf-geoplugin-dashboard-statistic .inside .cfgp-statistic-separator{
+	border-top: 1px solid #eee;
+	margin-top: 20px;
+}
+
+#cf-geoplugin-dashboard-statistic .inside .cfgp-statistic-plugin-details .cfgp-statistic-plugin-changelog{
+	list-style: square;
+    display: inherit;
+    margin-left: 15px;
+}
+
+@media all and (max-width:1100px){
+	#cf-geoplugin-dashboard-statistic .inside .cfgp-statistic-plugin-details > ul > li > strong{
+		width: 25%;
+	}
+
+	#cf-geoplugin-dashboard-statistic .inside .cfgp-statistic-plugin-details > ul > li > span{
+		width: 70%;
+	}
+}
+
+@media all and (max-width:420px){
+	#cf-geoplugin-dashboard-statistic .inside .cfgp-statistic-plugin-details > ul > li > strong{
+		width: 100%;
+	}
+
+	#cf-geoplugin-dashboard-statistic .inside .cfgp-statistic-plugin-details > ul > li > span{
+		width: 100%;
+	}
+}
+
+.img-fluid{
+	display:block;
+	max-width: 100%;
+	height:auto;
+}
+
+.cfgp-rss-container{
+	padding:0;
+	margin:0;
+}
+
+.cfgp-rss-container + .cfgp-rss-container{
+	margin-top:15px;
+}
+
+.cfgp-rss-container h3{
+	padding:10px 0;
+	margin:0;
+	
+}

@@ -3,9 +3,15 @@ Contributors: ivijanstefan, creativform
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=creativform@gmail.com
 Tags: geolocation, locator, GeoIP, geo, geotargeting, seo, seo redirect, woocommerce, include exclude, content, remove content, show hide, covid
 Requires at least: 3.0
+<<<<<<< HEAD
 Tested up to: 5.7
 Requires PHP: 5.6.0
 Stable tag: 7.13.7
+=======
+Tested up to: 5.8
+Requires PHP: 7.0.0
+Stable tag: 8.0.0
+>>>>>>> Version_8xx
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -87,7 +93,7 @@ This plugin is compatible with any Wordpress installation and many available plu
 
 **YOU NEED TO KNOW** that even if there is compatibility for most plugins, the combination of multiple plugins still has a slight chance of some conflict. There are over a couple thousand plugins and a couple of few million individual WordPress installations. We cannot 100% guarantee that everything will work properly in all possible cases. Sometimes it happens that other plugins are not compatible with CF Geo Plugin, so it is important that you contact us or other plugin authors in case of any problem so that you can solve the problem. The most common fix for most issues is if you keep all the plugins and WordPress installation up to date.
 
-> <strong>All CF Geo Plugin 7.x.x Features</strong><br>
+> <strong>All CF Geo Plugin 8.x.x Features</strong><br>
 >
 > * **Geo Plugin** - Allows you to attach geographical information inside your content via Shortcodes, PHP and JavaScript objects
 > * **Geo Banner** - Allows you to place dynamic content, images, videos and pages using shortcodes for specific audience target by geolocation
@@ -126,30 +132,6 @@ We just found shoes in [cfgeo_city] that you can buy for 50% discount.
 To best understand how shortcodes work, it's best to [read the documentation](https://cfgeoplugin.com/documentation/quick-start/cf-geoplugin-shortcodes/).
 
 But here are some simple examples:
-
-**Coronavirus information (COVID-19 informations)** Using shortcodes or tags you can display global or country based Coronavirus informations in the real time:
-
-`[cfgeo_covid19_total_cases]
-[cfgeo_covid19_total_recovered]
-[cfgeo_covid19_total_unresolved]
-[cfgeo_covid19_total_deaths]
-[cfgeo_covid19_total_new_cases_today]
-[cfgeo_covid19_total_new_deaths_today]
-[cfgeo_covid19_total_active_cases]
-[cfgeo_covid19_total_serious_cases]
-[cfgeo_covid19_mortality_rate]
-[cfgeo_covid19_recovery_rate]
-
-[cfgeo_covid19_global_total_cases]
-[cfgeo_covid19_global_total_recovered]
-[cfgeo_covid19_global_total_unresolved]
-[cfgeo_covid19_global_total_deaths]
-[cfgeo_covid19_global_total_new_cases_today]
-[cfgeo_covid19_global_total_new_deaths_today]
-[cfgeo_covid19_global_total_active_cases]
-[cfgeo_covid19_global_total_serious_cases]
-[cfgeo_covid19_global_mortality_rate]
-[cfgeo_covid19_global_recovery_rate]`
 
 **GEO PLUGIN:** Usage is simple. After installation and activation, in your post you just need to insert `[cfgeo]` shortcode and that's it. Enter a shortcode as this and it returns and displays the IP address to a visitor. If you like to display regions (for example California for users who are from California), you just need to use the `return` attribute in your shortcode like this: `[cfgeo return="region"]`. By changing the return settings, you can display any information from the list above. Each user who comes to the site will see information related to their area. 
 
@@ -387,12 +369,12 @@ Please inform us if any of these errors occur via contact form on our website [h
 9. Example 2
 10. Example 3
 11. SEO Redirection
-12. COVID-19 (Coronavirus) Shortcodes
 13. Contact Form 7 setup
 14. Available SEO tags
 
 == Changelog ==
 
+<<<<<<< HEAD
 = 7.13.7 =
 * Switched to new and faster API service
 
@@ -600,6 +582,39 @@ Please inform us if any of these errors occur via contact form on our website [h
 * Improved SEO redirection
 * Improved metaboxes
 * Improved mail notification filters
+=======
+= 8.0.0 =
+* **GREAT UPDATE - BACKUP IS REQUIRED**
+* New optimized user experience based on the WordPress standard design with easy access to all information and settings
+* Added PROXY visit detection and the ability to block access
+* Advanced IP address recognition, enhanced support for Apache and Nginx servers
+* Included local libraries for Continents, Countries, Regions and Cities with autocomplete functionality
+* Maximally optimized PHP code with advanced caching algorithms with correct action hooks that allow advanced manipulation for developers
+* Improved SEO redirection with the possibility of import and export in the CSV format
+* Improved shortcodes
+* Licensing issues fixed
+* Fixed issues with SEO redirection
+* Fixed lookup leak issues
+* Fixed problems with banner and shortcode caching
+* Fixed issues with Siteground integration
+
+== Upgrade Notice ==
+
+= 8.0.0 =
+* **GREAT UPDATE - BACKUP IS REQUIRED**
+* New optimized user experience based on the WordPress standard design with easy access to all information and settings
+* Added PROXY visit detection and the ability to block access
+* Advanced IP address recognition, enhanced support for Apache and Nginx servers
+* Included local libraries for Continents, Countries, Regions and Cities with autocomplete functionality
+* Maximally optimized PHP code with advanced caching algorithms with correct action hooks that allow advanced manipulation for developers
+* Improved SEO redirection with the possibility of import and export in the CSV format
+* Improved shortcodes
+* Licensing issues fixed
+* Fixed issues with SEO redirection
+* Fixed lookup leak issues
+* Fixed problems with banner and shortcode caching
+* Fixed issues with Siteground integration
+>>>>>>> Version_8xx
 
 == Other Notes ==
 

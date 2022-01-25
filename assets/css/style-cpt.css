@@ -1,0 +1,12 @@
+body.post-type-cf-geoplugin-banner.taxonomy-cf-geoplugin-country .form-field.term-parent-wrap,
+body.post-type-cf-geoplugin-banner.taxonomy-cf-geoplugin-region .form-field.term-parent-wrap,
+body.post-type-cf-geoplugin-banner.taxonomy-cf-geoplugin-city .form-field.term-parent-wrap,
+body.post-type-cf-geoplugin-banner.taxonomy-cf-geoplugin-postcode .form-field.term-parent-wrap,
+
+body.post-type-cf-geoplugin-banner.taxonomy-cf-geoplugin-city .term-description-wrap,
+body.post-type-cf-geoplugin-banner.taxonomy-cf-geoplugin-postcode .term-description-wrap,
+
+body.post-type-cf-geoplugin-banner.taxonomy-cf-geoplugin-country .term-description-wrap textarea[name="description"],
+body.post-type-cf-geoplugin-banner.taxonomy-cf-geoplugin-region .term-description-wrap textarea[name="description"]{
+	display:none !important;
+}

@@ -1,14 +1,14 @@
 <?php
 /**
- * @link              http://cfgeoplugin.com/
- * @since             1.0.0
- * @package           CF_Geoplugin
- *
  * @wordpress-plugin
  * Plugin Name:       WordPress Geo Plugin
- * Plugin URI:        http://cfgeoplugin.com/
+ * Plugin URI:        https://cfgeoplugin.com/
  * Description:       Create Dynamic Content, Banners and Images on Your Website Based On Visitor Geo Location By Using Shortcodes With CF Geo Plugin.
+<<<<<<< HEAD
  * Version:           7.13.7
+=======
+ * Version:           8.0.0
+>>>>>>> Version_8xx
  * Author:            INFINITUM FORM
  * Author URI:        https://infinitumform.com/
  * License:           GPL-2.0+
@@ -17,9 +17,11 @@
  * Domain Path:       /languages
  * Network:           true
  *
- * This program is free software; you can redistribute it and/or modify
+ * Copyright (C) 2015-2022 Ivijan-Stefan Stipic
+ *
+ * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -28,14 +30,14 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
  
 // If someone try to called this file directly via URL, abort.
 if ( ! defined( 'WPINC' ) ) { die( "Don't mess with us." ); }
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
+<<<<<<< HEAD
 // Find is localhost or not
 if ( ! defined( 'CFGP_LOCAL' ) ) {
 	if(isset($_SERVER['REMOTE_ADDR'])) {
@@ -60,26 +62,21 @@ if ( defined( 'WP_DEBUG' ) ) {
 		if ( ! defined( 'WP_CF_GEO_DEBUG' ) ) define( 'WP_CF_GEO_DEBUG', true );
 	}
 }
+=======
+// Library version
+if ( ! defined( 'CFGP_LIBRARY_VERSION' ) ) define( 'CFGP_LIBRARY_VERSION', '1.0.0');
+>>>>>>> Version_8xx
 
-// Find wp-admin file path
-if ( strrpos(WP_CONTENT_DIR, '/wp-content/', 1) !== false) {
-    $WP_ADMIN_DIR = substr(WP_CONTENT_DIR, 0, -10) . 'wp-admin';
-} else {
-    $WP_ADMIN_DIR = substr(WP_CONTENT_DIR, 0, -11) . '/wp-admin';
-}
-if (!defined('WP_ADMIN_DIR')) define('WP_ADMIN_DIR', $WP_ADMIN_DIR);
+// Database version
+if ( ! defined( 'CFGP_DATABASE_VERSION' ) ) define( 'CFGP_DATABASE_VERSION', '1.0.0');
 
-
-// First initialization
-$GLOBALS['CFGEO'] = array();
-$GLOBALS['CF_GEOPLUGIN_OPTIONS'] = array();
+// Globals
+global $cfgp_version;
 
 /*
- * API calls used inside CF Geo Plugin.
- *
- * @since      7.11.0
- * @privacy    https://cfgeoplugin.com/privacy-policy/
+ * Main plugin constants
  */
+<<<<<<< HEAD
 $GLOBALS['CFGEO_API_CALL'] = apply_filters( 'cf_geoplugin_api_calls', array(
 	// Standard CF Geo Plugin API URLs
 	'main'			=>	'http://cdn-cfgeoplugin.com.dedi1855.your-server.de/index.php',
@@ -94,132 +91,24 @@ $GLOBALS['CFGEO_API_CALL'] = apply_filters( 'cf_geoplugin_api_calls', array(
 	'smartIP'		=>	'https://smart-ip.net/myip',
 	'indent'		=>	'https://ident.me'
 ));
+=======
+$CFGEO = array();
+>>>>>>> Version_8xx
 
-// Main website
-if ( ! defined( 'CFGP_STORE' ) )		define( 'CFGP_STORE', 'https://cfgeoplugin.com');
 // Main plugin file
-if ( ! defined( 'CFGP_FILE' ) )			define( 'CFGP_FILE', __FILE__ );
-// Plugin root
-if ( ! defined( 'CFGP_ROOT' ) )			define( 'CFGP_ROOT', rtrim(plugin_dir_path(CFGP_FILE), '/') );
-// Globals directory
-if ( ! defined( 'CFGP_GLOBALS' ) )		define( 'CFGP_GLOBALS', CFGP_ROOT . '/globals' );
-// Shell
-if ( ! defined( 'CFGP_SHELL' ) )		define( 'CFGP_SHELL', CFGP_ROOT . '/shell' );
-// Require plugin general setup
-include_once CFGP_GLOBALS . '/cf-geoplugin-setup.php';
-// Includes directory
-if ( ! defined( 'CFGP_INCLUDES' ) )		define( 'CFGP_INCLUDES', CFGP_ROOT . '/includes' );
-// Includes directory
-if ( ! defined( 'CFGP_ADMIN' ) )		define( 'CFGP_ADMIN', CFGP_ROOT . '/admin' );
-// Plugin URL root
-if ( ! defined( 'CFGP_URL' ) )			define( 'CFGP_URL', rtrim(plugin_dir_url( CFGP_FILE ), '/') );
-// Assets URL
-if ( ! defined( 'CFGP_ASSETS' ) )		define( 'CFGP_ASSETS', CFGP_URL.'/assets' );
-// Plugin name
-if ( ! defined( 'CFGP_NAME' ) )			define( 'CFGP_NAME', 'cf-geoplugin');
-// Plugin metabox prefix
-if ( ! defined( 'CFGP_METABOX' ) )		define( 'CFGP_METABOX', 'cf_geo_metabox_');
-// Plugin session prefix (controlled by version)
-if ( ! defined( 'CFGP_PREFIX' ) )		define( 'CFGP_PREFIX', 'cf_geo_'.preg_replace("/[^0-9]/Ui",'',CFGP_VERSION).'_');
-// Timestamp
-if( ! defined( 'CFGP_TIME' ) )			define( 'CFGP_TIME', time() );
-// if PHP_VERSION missing
-if( ! defined( 'PHP_VERSION' ) && function_exists('phpversion') )
-	define( 'PHP_VERSION', phpversion());
+if ( ! defined( 'CFGP_FILE' ) ) define( 'CFGP_FILE', __FILE__ );
 
-// PHP_VERSION_ID is available as of PHP 5.2.7, if our version is lower than that, then emulate it
-if (!defined('PHP_VERSION_ID')) {
-    $php_version = explode('.', PHP_VERSION);
-    define('PHP_VERSION_ID', ($php_version[0] * 10000 + $php_version[1] * 100 + $php_version[2]));
-	$php_version = NULL;
-}
-// Fix missing PHP SESSION constant PHP_SESSION_NONE (this is bug on the some Nginx servers)
-if (!defined('PHP_SESSION_NONE')) {
-	define('PHP_SESSION_NONE', -1);
-}
-// Check if is multisite installation
-if( ! defined( 'CFGP_MULTISITE' ) && defined( 'WP_ALLOW_MULTISITE' ) && WP_ALLOW_MULTISITE && defined( 'MULTISITE' ) && MULTISITE )			
-{
-	define( 'CFGP_MULTISITE', WP_ALLOW_MULTISITE );
-}
+/*
+ * Require plugin general setup
+ */
+include_once __DIR__ . '/constants.php';
 
-if( ! defined( 'CFGP_MULTISITE' ) )			
-{
-    // New safer approach
-    if( !function_exists( 'is_plugin_active_for_network' ) )
-		include WP_ADMIN_DIR . '/includes/plugin.php';
+/*
+ * Requirements
+ */
+include_once CFGP_CLASS . '/Requirements.php';
 
-	if(file_exists(WP_ADMIN_DIR . '/includes/plugin.php'))
-		define( 'CFGP_MULTISITE', is_plugin_active_for_network( CFGP_ROOT . '/cf-geoplugin.php' ) );
-}
-
-if( ! defined( 'CFGP_MULTISITE' ) ) define( 'CFGP_MULTISITE', false );
-
-// Requirements
-include_once CFGP_GLOBALS . '/cf-geoplugin-requirements.php';
-$CF_Geoplugin_Requirements_Check = new CF_Geoplugin_Requirements_Check(array('file' => CFGP_FILE));
-
-if($CF_Geoplugin_Requirements_Check->passes()) :
-	// PHP7 DEPRECATED FUNCTION SUPPORT
-	include_once CFGP_INCLUDES . '/functions-cf-geoplugin-php7.php';
-	// Include privacy policy
-	include_once CFGP_GLOBALS . '/cf-geoplugin-privacy.php';
-	// Include debug class
-	include_once CFGP_INCLUDES . '/class-cf-geoplugin-debug.php';
-	// Activate session
-	include_once CFGP_GLOBALS . '/cf-geoplugin-session.php';
-	// Our debug object to global variables
-	if( !isset( $GLOBALS['debug'] ) ) $GLOBALS['debug'] = new CF_Geoplugin_Debug;
-	// Check cURL
-	if( !function_exists( 'curl_init' ) ) CF_Geoplugin_Debug::log( 'cURL Status: Disabled' );
-	else CF_Geoplugin_Debug::log( 'cURL Status: Enabled' );
-	// Include hook class
-	include_once CFGP_INCLUDES . '/class-cf-geoplugin-admin-notice.php';
-	// Get locale setup
-	include_once CFGP_INCLUDES . '/class-cf-geoplugin-locale.php';
-	// Get globals
-	include_once CFGP_INCLUDES . '/class-cf-geoplugin-global.php';
-	// Define important constants
-	include_once CFGP_GLOBALS . '/cf-geoplugin-global.php';
-	// Define API services
-	include_once CFGP_GLOBALS . '/cf-geoplugin-api.php';
-	// Include Converter Widget
-	include_once CFGP_GLOBALS . '/cf-geoplugin-includes.php';
-	// Include Plugin integrations
-	include_once CFGP_GLOBALS . '/cf-geoplugin-plugins.php';
-	// Include Activation Control
-	include_once CFGP_GLOBALS . '/cf-geoplugin-activation.php';
-
-	/*
-	* When everything is constructed and builded, just load plugin properly
-	* @since 7.0.0
-	*/
-	function CF_Geoplugin_Invoke(){
-		if(class_exists('CF_Geoplugin_Load')) :
-			return CF_Geoplugin_Load::cf_geoplugin();
-		endif;
-	}
-	/*
-	* Do old function name support (lowercase)
-	* @since 6.0.0
-	*/
-	if(!function_exists('cf_geoplugin')) :
-		function cf_geoplugin(){ return CF_Geoplugin_Invoke(); }
-	endif;
-
-	// Load plugin properly
-	if(class_exists('CF_Geoplugin_Load')) :
-		CF_Geoplugin_Load::load_plugin();
-		CF_Geoplugin_Debug::log( 'Function "CF_Geoplugin_Load::load_plugin()" is loaded.' );
-	else :
-		CF_Geoplugin_Debug::log( 'Function "CF_Geoplugin_Load::load_plugin()" is not loaded.' );
-	endif;
-
-	// Plugin is loaded
-	if(add_action('init', 'CF_Geoplugin', 2, 0)){
-		CF_Geoplugin_Debug::log( 'Function "CF_Geoplugin()" is loaded.' );
-	} else CF_Geoplugin_Debug::log( 'Function "CF_Geoplugin()" is not loaded and plugin can\'t start.' );
-
+<<<<<<< HEAD
 	// Add privacy policy
 	add_action( 'admin_init', 'cf_geoplugin_privacy_policy' );
 	
@@ -227,4 +116,29 @@ if($CF_Geoplugin_Requirements_Check->passes()) :
 	add_action('wp_loaded', function(){
 		session_write_close();
 	}, 99999);
+=======
+/*
+ * Check requiremant
+ */
+$CFGP_Requirements = new CFGP_Requirements(array('file' => CFGP_FILE));
+if($CFGP_Requirements->passes()) :
+	// Dynamic action
+	do_action('cfgp/before_plugin_setup');
+	// Initializing class
+	include_once CFGP_INC . '/Init.php';
+	// Register database tables
+	CFGP_Init::wpdb_tables();
+	// Include dependencies
+	CFGP_Init::dependencies();
+	// Plugin activation
+	CFGP_Init::activation();
+	// Plugin deactivation
+	CFGP_Init::deactivation();
+	// Run plugin
+	CFGP_Init::run();
+	// Run plugin debug
+	CFGP_Init::debug();
+	// Dynamic action
+	do_action('cfgp/after_plugin_setup');
+>>>>>>> Version_8xx
 endif;

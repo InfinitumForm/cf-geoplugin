@@ -1,0 +1,81 @@
+<?php
+/**
+ * Widgets settings
+ *
+ * @link          http://infinitumform.com/
+ * @since         8.0.0
+ * @package       cf-geoplugin
+ * @author        Ivijan-Stefan Stipic
+ * @version       3.0.0
+ *
+ */
+ // If someone try to called this file directly via URL, abort.
+if ( ! defined( 'WPINC' ) ) { die( "Don't mess with us." ); }
+if ( ! defined( 'ABSPATH' ) ) { exit; }
+
+if(!class_exists('CFGP_Widget_Currency_Converter')) :
+class CFGP_Widget_Currency_Converter extends WP_Widget {
+	
+	// The construct part  
+	function __construct() {
+		parent::__construct(
+			'CFGP_Widget_Currency_Converter', 
+			__('Currency Converter', CFGP_NAME), 
+			array( 'description' => __( 'Convert any currency.', CFGP_NAME ), ) 
+		);
+	}
+	  
+	// Creating widget front-end
+	public function widget( $args, $instance ) {
+		echo $args['before_widget'];
+		echo do_shortcode( sprintf(
+			'[cfgeo_full_converter title="%s" before_title="%s" after_title="%s" amount="%s" from="%s" to="%s"][/cfgeo_full_converter]',
+			esc_attr($instance['title']),
+			esc_attr($args['before_title']),
+			esc_attr($args['after_title']),
+			esc_attr($instance['amount']),
+			esc_attr($instance['from']),
+			esc_attr($instance['to'])
+		) );
+		echo $args['after_widget'];
+	}
+			  
+	// Creating widget Backend 
+	public function form( $instance ) {
+		$title = ( isset( $instance['title'] ) ) ? esc_html( $instance['title'] ) : esc_html__( 'Currency Converter', CFGP_NAME );
+		$amount = ( isset( $instance['amount'] ) ) ? esc_html( $instance['amount'] ) : esc_html__( 'Amount', CFGP_NAME );
+		$from = ( isset( $instance['from'] ) ) ? esc_html( $instance['from'] ) : esc_html__( 'From', CFGP_NAME );
+		$to = ( isset( $instance['to'] ) ) ? esc_html( $instance['to'] ) : esc_html__( 'To', CFGP_NAME );
+
+		?>
+		<p>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_attr_e( 'Title:', CFGP_NAME ); ?></label> 
+			<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>">
+		</p>
+		<p>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'amount' ) ); ?>"><?php esc_attr_e( 'Amount Label:', CFGP_NAME ); ?></label> 
+			<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'amount' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'amount' ) ); ?>" type="text" value="<?php echo esc_attr( $amount ); ?>">
+		</p>
+		<p>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'from' ) ); ?>"><?php esc_attr_e( 'From Label:', CFGP_NAME ); ?></label> 
+			<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'from' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'from' ) ); ?>" type="text" value="<?php echo esc_attr( $from ); ?>">
+		</p>
+		<p>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'to' ) ); ?>"><?php esc_attr_e( 'To Label:', CFGP_NAME ); ?></label> 
+			<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'to' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'to' ) ); ?>" type="text" value="<?php echo esc_attr( $to ); ?>">
+		</p>
+		<?php 
+	}
+		  
+	// Updating widget replacing old instances with new
+	public function update( $new_instance, $old_instance ) {
+		$instance = array();
+		$instance['title'] = ( isset( $new_instance['title'] ) && !empty( $new_instance['title'] ) ) ? sanitize_text_field( $new_instance['title'] ) : esc_html__( 'Currency Converter', CFGP_NAME );
+		$instance['amount'] = ( isset( $new_instance['amount'] ) && !empty( $new_instance['amount'] ) ) ? sanitize_text_field( $new_instance['amount'] ) : esc_html__( 'Amount', CFGP_NAME );
+		$instance['from'] = ( isset( $new_instance['from'] ) && !empty( $new_instance['from'] ) ) ? sanitize_text_field( $new_instance['from'] ) : esc_html__( 'From', CFGP_NAME );
+		$instance['to'] = ( isset( $new_instance['to'] ) && !empty( $new_instance['to'] ) ) ? sanitize_text_field( $new_instance['to'] ) : esc_html__( 'To', CFGP_NAME );
+
+		return $instance;
+	}
+}
+endif;
