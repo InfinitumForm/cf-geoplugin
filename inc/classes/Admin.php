@@ -17,6 +17,9 @@ if(!class_exists('CFGP_Admin')) :
 class CFGP_Admin extends CFGP_Global {
 	function __construct(){
 		$this->add_action('admin_bar_menu', 'admin_bar_menu', 90, 1);
+		$this->add_action('wp_footer', 'admin_bar_menu_css', 90, 1);
+		$this->add_action('admin_footer', 'admin_bar_menu_css', 90, 1);
+		
 		$this->add_action('admin_enqueue_scripts', 'register_scripts');
 		$this->add_action('admin_enqueue_scripts', 'register_scripts_ctp');
 		$this->add_action('admin_enqueue_scripts', 'register_style');
@@ -58,7 +61,7 @@ class CFGP_Admin extends CFGP_Global {
 			__( 'CF Geo Plugin Live News & Info', CFGP_NAME ),
 			function (){
 				add_action('admin_footer', function(){ ?>
-<script>
+<script id="cfgp-rss-feed-js" type="text/javascript">
 /* <![CDATA[ */
 (function(jCFGP){$feed=jCFGP('.cfgp-load-dashboard-rss-feed');if($feed.length>0){jCFGP.ajax({url:"<?php echo admin_url('/admin-ajax.php'); ?>",method:'post',accept:'text/html',data:{action:'cfgp_dashboard_rss_feed'},cache:true}).done(function(data){$feed.html(data).removeClass('cfgp-load-dashboard-rss-feed');});}}(jQuery||window.jQuery));
 /* ]]> */
@@ -364,6 +367,36 @@ class CFGP_Admin extends CFGP_Global {
 		}
 	}
 	
+	// Admin bar CSS
+	public function admin_bar_menu_css() { if ( is_admin_bar_showing() ) : ?>
+<style media="all" id="cfgp-admin-bar-css">
+/* <![CDATA[ */
+#wpadminbar .ab-top-menu .menupop.<?php echo CFGP_NAME . '.' . CFGP_NAME . '-admin-bar-link'; ?> .ab-item > .cfgp-ab-icon:before {
+	font: normal 20px/1 dashicons;
+    content: '\f231';
+	position: relative;
+    float: left;
+    speak: never;
+    padding: 4px 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-image: none !important;
+    margin-right: 6px;
+	color: #a7aaad;
+    color: rgba(240, 246, 252, 0.6);
+}
+
+#wpadminbar .ab-top-menu .menupop .<?php echo CFGP_NAME . '.' . CFGP_NAME . '-admin-bar-activate-link'; ?> .ab-item > .cfgp-ab-icon:before{
+	content: '\f155';
+}
+
+#wpadminbar .ab-top-menu .menupop.<?php echo CFGP_NAME . '.' . CFGP_NAME . '-admin-bar-link'; ?>:hover .ab-item > .cfgp-ab-icon:before,
+#wpadminbar .ab-top-menu .menupop.<?php echo CFGP_NAME . '.' . CFGP_NAME . '-admin-bar-link'; ?>.hover .ab-item > .cfgp-ab-icon:before {
+	color: #72aee6;
+}
+/* ]]> */
+</style><?php endif; }
+	
 	// Add admin top bar menu pages
 	public function admin_bar_menu($wp_admin_bar) {
 		if ( !(current_user_can( 'update_plugins' ) && current_user_can( 'delete_plugins' ) && current_user_can( 'install_plugins' )) ) {
@@ -372,7 +405,7 @@ class CFGP_Admin extends CFGP_Global {
 		
 		$wp_admin_bar->add_node(array(
 			'id' => CFGP_NAME . '-admin-bar-link',
-			'title' => __('Geo Plugin', CFGP_NAME), 
+			'title' => '<span class="cfgp-ab-icon"></span>' . __('Geo Plugin', CFGP_NAME), 
 			'href' => esc_url(CFGP_U::admin_url('admin.php?page=cf-geoplugin')), 
 			'meta' => array(
 				'class' => CFGP_NAME . ' ' . CFGP_NAME . '-admin-bar-link',
@@ -479,7 +512,7 @@ class CFGP_Admin extends CFGP_Global {
 			$wp_admin_bar->add_menu(array(
 				'parent' => CFGP_NAME . '-admin-bar-link',
 				'id' => CFGP_NAME . '-admin-bar-activate-link',
-				'title' => __('Activate Unlimited', CFGP_NAME), 
+				'title' => '<span class="cfgp-ab-icon"></span>' . __('Activate Unlimited', CFGP_NAME), 
 				'href' => esc_url(CFGP_U::admin_url('admin.php?page=' . CFGP_NAME . '-activate')), 
 				'meta' => array(
 					'class' => CFGP_NAME . ' ' . CFGP_NAME . '-admin-bar-activate-link',

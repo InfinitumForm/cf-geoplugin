@@ -87,7 +87,8 @@ if(!class_exists('CFGP_Requirements')) : class CFGP_Requirements {
 	//	echo '<pre>', var_dump($response), '</pre>';
 		
 	   if (isset($response->upgrade_notice) && strlen(trim($response->upgrade_notice)) > 0) : ?>
-<style>
+<style media="all" id="cfgp-plugin-update-message-css">
+/* <![CDATA[ */
 .cf-geoplugin-upgrade-notice{
 padding: 10px;
 color: #000;
@@ -105,6 +106,7 @@ display:none;
 margin-top:32px;
 font-weight:600;
 }
+/* ]]> */
 </style>
 <div class="cf-geoplugin-upgrade-notice">
 <h3><?php printf(__('Important upgrade notice for the version %s:', CFGP_NAME), $response->new_version); ?></h3>
