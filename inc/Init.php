@@ -104,6 +104,7 @@ final class CFGP_Init{
 			CFGP_CLASS . '/SEO_Redirection_Pages.php',	// SEO Redirection for pages class
 			CFGP_CLASS . '/SEO_Redirection_Table.php',	// SEO Table class
 			CFGP_CLASS . '/Settings.php',				// Settings class
+			CFGP_CLASS . '/Shortcodes_Automat.php',		// Shortcodes Automat class
 			CFGP_CLASS . '/Shortcodes.php',				// Shortcodes class
 			CFGP_CLASS . '/Defender.php',				// Defender class
 			CFGP_CLASS . '/Public.php',					// Public class

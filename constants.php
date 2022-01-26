@@ -74,6 +74,9 @@ if ( ! defined( 'CFGP_ASSETS' ) )		define( 'CFGP_ASSETS', CFGP_URL.'/assets' );
 // Plugin name
 if ( ! defined( 'CFGP_NAME' ) )			define( 'CFGP_NAME', 'cf-geoplugin');
 
+// Allow deprecated methods (Enabled for some next few versions)
+if ( ! defined( 'CFGP_ALLOW_DEPRECATED_METHODS' ) )			define( 'CFGP_ALLOW_DEPRECATED_METHODS', true);
+
 // Current plugin version ( if change, clear also session cache )
 global $cfgp_version;
 $cfgp_version = get_option(CFGP_NAME.'-version');

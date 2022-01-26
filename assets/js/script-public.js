@@ -7,35 +7,50 @@
 		if(banner.length > 0)
 		{
 			banner.each(function(){
-				var $this = jCFGP(this);
-				jCFGP.ajax({
-					type: "POST",
-					dataType: 'html',
-					url: (typeof ajaxurl !== 'undefined' ? ajaxurl : CFGP.ajaxurl),
-					data: {
-						action : 'cf_geoplugin_banner_cache',
-						id : $this.attr('data-id'),
-						posts_per_page : $this.attr('data-posts_per_page'),
-						class : $this.attr('data-class'),
-						exact : $this.attr('data-exact'),
-						default : $this.attr('data-default')
-					},
-					cache : true
-				}).done(function(data){
-					$this.html(data);
-					$this.removeClass('cache').addClass('cached')
-						.removeAttr('data-default')
-							.removeAttr('data-posts_per_page')
-								.removeAttr('data-class')
-									.removeAttr('data-exact')
-										.removeAttr('data-id');
+				var $this = jCFGP(this),
+					$id = ($this.attr('data-id') || ''),
+					$posts_per_page = ($this.attr('data-posts_per_page') || ''),
+					$class = ($this.attr('data-class') || ''),
+					$exact = ($this.attr('data-exact') || ''),
+					$default = ($this.attr('data-default') || ''),
+					$send_ajax = function(){
+						jCFGP.ajax({
+							type: "POST",
+							dataType: 'html',
+							url: (typeof ajaxurl !== 'undefined' ? ajaxurl : CFGP.ajaxurl),
+							data: {
+								action : 'cf_geoplugin_banner_cache',
+								id : $id,
+								posts_per_page : $posts_per_page,
+								class : $class,
+								exact : $exact,
+								default : $default
+							},
+						//	cache : true,
+							async : true
+						}).done(function(data){
+							$this.html(data);
+							$this.removeClass('cache').addClass('cached')
+								.removeAttr('data-default')
+									.removeAttr('data-posts_per_page')
+										.removeAttr('data-class')
+											.removeAttr('data-exact')
+												.removeAttr('data-id');
+						});
+					};
+				
+				// Make 3 attempts
+				$send_ajax().fail(function(){
+					$send_ajax().fail(function(){
+						$send_ajax();
+					});
 				});
 				
 			});
 		}
 	}( jCFGP('.cf-geoplugin-banner.cache') ));
 	
-	
+
 	/*
 	 * Fix plugin shortcode cache
 	 */
@@ -43,29 +58,41 @@
 		if(sc.length > 0)
 		{
 			sc.each(function(){
-				var $this = jCFGP(this);
-				jCFGP.ajax({
-					type: "POST",
-					dataType: 'html',
-					url: (typeof ajaxurl !== 'undefined' ? ajaxurl : CFGP.ajaxurl),
-					data: {
-						action : 'cf_geoplugin_shortcode_cache',
-						options : $this.attr('data-options'),
-						shortcode : $this.attr('data-shortcode'),
-						default : $this.attr('data-default')
-					},
-					cache : true
-				}).done(function(data){
-					if(data == 'false'){
-						return;
-					}
-					$this.html(data);
-					$this.removeClass('cache').addClass('cached')
-						.removeAttr('data-default')
-							.removeAttr('data-shortcode')
-								.removeAttr('data-options');
-				});
+				var $this = jCFGP(this),
+					$options = ($this.attr('data-options') || ''),
+					$shortcode = ($this.attr('data-shortcode') || ''),
+					$default = ($this.attr('data-default') || ''),
+					$send_ajax = function(){
+						return jCFGP.ajax({
+							type: "POST",
+							dataType: 'html',
+							url: (typeof ajaxurl !== 'undefined' ? ajaxurl : CFGP.ajaxurl),
+							data: {
+								action : 'cf_geoplugin_shortcode_cache',
+								options : $options,
+								shortcode : $shortcode,
+								default : $default
+							},
+						//	cache : true,
+							async : true
+						}).done(function(data){
+							if(data == 'false'){
+								return;
+							}
+							$this.html(data);
+							$this.removeClass('cache').addClass('cached')
+								.removeAttr('data-default')
+									.removeAttr('data-shortcode')
+										.removeAttr('data-options');
+						});
+					};
 				
+				// Make 3 attempts
+				$send_ajax().fail(function(){
+					$send_ajax().fail(function(){
+						$send_ajax();
+					});
+				});
 			});
 		}
 	}( jCFGP('.cf-geoplugin-shortcode.cache') ));
