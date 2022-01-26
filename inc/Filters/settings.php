@@ -111,8 +111,8 @@ add_filter('cfgp/settings', function($options=array()){
 						),
 						array(
 							'name' => 'enable_cache',
-							'label' => __('Enable Caching', CFGP_NAME),
-							'desc' => __('This option allows caching. Usually used in combination with a cache plugin. If you do not want your redirects to be cached, leave this field disabled.', CFGP_NAME),
+							'label' => __('Fix Cache', CFGP_NAME),
+							'desc' => __('If you use the cache plugin and have problems with caching, this option should be enabled on.', CFGP_NAME),
 							'type' => 'radio',
 							'options' => array(
 								1 => __('Yes', CFGP_NAME),
