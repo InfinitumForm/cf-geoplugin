@@ -52,3 +52,34 @@ if( file_exists($statistic) ) {
 	include_once $statistic;
 	CFGP_Anonymous_Statistic::uninstall();
 }
+
+// Remove plugins cache
+if ( is_multisite() && is_main_site() && is_main_network() ) {
+	$wpdb->query("DELETE FROM
+		`{$wpdb->sitemeta}`
+	WHERE (
+			`{$wpdb->sitemeta}`.`option_name` LIKE '_site_transient_cfgp-%'
+		OR
+			`{$wpdb->sitemeta}`.`option_name` LIKE '_site_transient_timeout_cfgp-%'
+		OR
+			`{$wpdb->sitemeta}`.`option_name` LIKE 'woocommerce_cfgp_method_%'
+		OR
+			`{$wpdb->sitemeta}`.`option_name` LIKE 'woocommerce_cf_geoplugin_%'
+	)");
+	} else {
+	$wpdb->query("DELETE FROM
+		`{$wpdb->options}`
+		WHERE (
+				`{$wpdb->sitemeta}`.`option_name` LIKE '_transient_cfgp-%'
+			OR
+				`{$wpdb->sitemeta}`.`option_name` LIKE '_transient_timeout_cfgp-%'
+			OR
+				`{$wpdb->sitemeta}`.`option_name` LIKE '_site_transient_cfgp-%'
+			OR
+				`{$wpdb->sitemeta}`.`option_name` LIKE '_site_transient_timeout_cfgp-%'
+			OR
+				`{$wpdb->sitemeta}`.`option_name` LIKE 'woocommerce_cfgp_method_%'
+			OR
+				`{$wpdb->sitemeta}`.`option_name` LIKE 'woocommerce_cf_geoplugin_%'
+	)");
+}

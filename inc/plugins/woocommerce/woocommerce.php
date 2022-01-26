@@ -37,9 +37,10 @@ class CFGP__Plugin__woocommerce extends CFGP_Global
 			$this->add_filter('cf_geoplugin_get_option', 'change_api_run_options', 1);
 		}
 		
-		if(is_admin())
-		{
+		if( is_admin() ) {
 			$this->add_action( 'admin_footer', 'admin_footer', 10 );
+		} else {
+			$this->add_action( 'wp_footer', 'wp_footer', 50 );
 		}
     }
 	
@@ -480,7 +481,7 @@ class CFGP__Plugin__woocommerce extends CFGP_Global
 /*
 					$settings[ $checkbox_setting_id ] = array(
                         'name'     => __( 'Disable currency conversion for this method', CFGP_NAME ),
-                        'id'       => sprintf( 'woocommerce_cfgp_method_%s', $method_setting_id ),
+                        'id'       => sprintf( 'woocommerce_cfgp_method_%s_disable_currency', $method_setting_id ),
                         'type'     => 'checkbox',
                         'class'    => 'wc-enhanced-checkbox',
                         'default'  => '',
@@ -546,6 +547,41 @@ class CFGP__Plugin__woocommerce extends CFGP_Global
         }
         return apply_filters( 'cf_geoplugin_woocommerce_payment_disable', $gateways, $original_gateways, CFGP_U::api() ); 
     }
+	
+	// Control of the some additional Woocommerce addons
+	public function wp_footer () {
+		
+		$gateways = apply_filters( 'cf_geoplugin_woocommerce_disable_cart_buttons', [
+			'ppcp-gateway-container' => '.wc-proceed-to-checkout #ppc-button'
+		]);
+
+		$css = [];
+
+		foreach($gateways as $gateway => $style) {
+			
+			$type = get_option( sprintf( 'woocommerce_cfgp_method_%s', $gateway ) );
+			$countries = get_option( sprintf( 'woocommerce_cfgp_method_%s_select', $gateway ) );
+		
+			if( empty( $countries ) || $type == 'cfgp_payment_woo' ) continue;
+			
+			if( $type === 'cfgp_payment_disable' && CFGP_U::check_user_by_country( $countries ) )
+			{
+				$css[]=$style;
+			}
+			elseif( $type === 'cfgp_payment_enable' && !CFGP_U::check_user_by_country( $countries ) )
+			{
+				$css[]=$style;
+			}
+		}
+		
+		if( !empty($css) ) : ?>
+<style id="cfgp-woocommerce-disable-payment-gateway-css" media="all">
+/* <![CDATA[ */
+<?php echo join(', ', $css); ?>{display:none !important;}
+/* ]]> */
+</style>
+	<?php endif;
+	}
 	
 	/* 
 	 * Instance
