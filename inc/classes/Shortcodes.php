@@ -51,8 +51,10 @@ if(!class_exists('CFGP_Shortcodes')) :
 class CFGP_Shortcodes extends CFGP_Global {
 	function __construct(){
 		// Standard shortcode
+		$this->add_shortcode('cf_geo', 'cf_geoplugin'); // Deprecated
 		$this->add_shortcode('cfgeo', 'cf_geoplugin');
 		$this->add_shortcode('cfgeo_flag', 'generate_flag');
+		$this->add_shortcode('cf_geo_flag', 'generate_flag'); // Deprecated
 		
 		// Beta shortcodes
 		if(CFGP_Options::get_beta('enable_simple_shortcode')) {
@@ -65,6 +67,7 @@ class CFGP_Shortcodes extends CFGP_Global {
 		if( CFGP_Options::get('enable_gmap', 0) ) {
 			// Official Google Map Shortcode
 			$this->add_shortcode( 'cfgeo_map', 'google_map' );
+			$this->add_shortcode( 'cf_geo_map', 'google_map' ); // Deprecated
 		}
 		
 		// Geo Banner

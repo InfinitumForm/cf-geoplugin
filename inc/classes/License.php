@@ -115,6 +115,10 @@ class CFGP_License extends CFGP_Global{
 			3000	=> CFGP_Defaults::DEVELOPER_LICENSE
 		));
 		
+		if( CFGP_U::api('lookup') === 'lifetime' ) {
+			return 1000;
+		}
+		
 		if(is_array($level))
 		{
 			if($level['status'])

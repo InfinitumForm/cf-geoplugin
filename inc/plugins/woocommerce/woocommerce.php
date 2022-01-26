@@ -39,9 +39,9 @@ class CFGP__Plugin__woocommerce extends CFGP_Global
 		
 		if( is_admin() ) {
 			$this->add_action( 'admin_footer', 'admin_footer', 10 );
-		} else {
-			$this->add_action( 'wp_footer', 'wp_footer', 50 );
 		}
+		
+		$this->add_action( 'wp_footer', 'wp_footer', 50 );
     }
 	
 	public function admin_footer(){ ?>
@@ -430,7 +430,7 @@ class CFGP__Plugin__woocommerce extends CFGP_Global
 
 
                 $custom_attributes = array();
-                if( CFGP_License::level() < 2)
+                if( CFGP_License::level() < 2 && CFGP_License::activated() )
                 {
                     $custom_attributes['disabled'] = true;
                 }
@@ -552,7 +552,7 @@ class CFGP__Plugin__woocommerce extends CFGP_Global
 	public function wp_footer () {
 		
 		$gateways = apply_filters( 'cf_geoplugin_woocommerce_disable_cart_buttons', [
-			'ppcp-gateway-container' => '.wc-proceed-to-checkout #ppc-button'
+			'ppcp-gateway' => '.wc-proceed-to-checkout #ppc-button'
 		]);
 
 		$css = [];
@@ -561,7 +561,7 @@ class CFGP__Plugin__woocommerce extends CFGP_Global
 			
 			$type = get_option( sprintf( 'woocommerce_cfgp_method_%s', $gateway ) );
 			$countries = get_option( sprintf( 'woocommerce_cfgp_method_%s_select', $gateway ) );
-		
+
 			if( empty( $countries ) || $type == 'cfgp_payment_woo' ) continue;
 			
 			if( $type === 'cfgp_payment_disable' && CFGP_U::check_user_by_country( $countries ) )
