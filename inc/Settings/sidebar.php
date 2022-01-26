@@ -309,7 +309,7 @@ class CFGP_Sidebar extends CFGP_Global {
 	 **/
 	public function cfgp_lookup_status_icon($lookup, $class='')
 	{
-		if($lookup === 'unlimited'){
+		if($lookup === 'unlimited' || $lookup === 'lifetime'){
 			echo '<span class="fa fa-check '.$class.'" title="'.__('UNLIMITED',CFGP_NAME).'"></span>';
 		}
 		else if($lookup == 0){

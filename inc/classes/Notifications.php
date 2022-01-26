@@ -94,7 +94,7 @@ class CFGP_Notifications extends CFGP_Global{
 
 		if( get_transient($transient) ) return;
 		
-		if( CFGP_U::api('lookup') != 'unlimited' && CFGP_U::api('lookup') <= 100 && ($emails = $this->get_admins()))
+		if( CFGP_U::api('lookup') != 'unlimited' && CFGP_U::api('lookup') != 'lifetime' && CFGP_U::api('lookup') <= 100 && ($emails = $this->get_admins()))
 		{		
 			$message = array();
 			$message[]= '<p>' . __('Hi there,', CFGP_NAME) . '</p>';
