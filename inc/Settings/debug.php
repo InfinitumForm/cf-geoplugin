@@ -3,7 +3,7 @@
 if ( ! defined( 'WPINC' ) ) { die( "Don't mess with us." ); }
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-$remove_tags = array();
+$remove_tags = apply_filters('cfgp/debug/remove_tags', array('timezoneName', 'state'));
 
 $API = CFGP_Cache::get('API');
 if($NEW_API = CFGP_API::lookup(CFGP_U::request_string('cfgp_lookup'))){
@@ -58,10 +58,10 @@ if($NEW_API = CFGP_API::lookup(CFGP_U::request_string('cfgp_lookup'))){
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php foreach(array_merge(
+                                    <?php foreach(apply_filters('cfgp/table/debug', array_merge(
 										array('cfgeo_flag' => CFGP_U::admin_country_flag($API['country_code'])), 
 										$API
-									) as $key => $value) : if(in_array($key, $remove_tags)) continue; ?>
+									), $API) as $key => $value) : if(in_array($key, $remove_tags)) continue; ?>
                                     <tr>
                                     <?php if(in_array($key, array('cfgeo_flag'))) : ?>
                                     	<td>&nbsp;</td>
