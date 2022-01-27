@@ -25,8 +25,8 @@ class CFGP_Notifications extends CFGP_Global{
 			return;
 		} else {
 			if( !CFGP_License::activated() ){
-				$this->add_filter('cf_geoplugin_notification_emails', 'remove_spams', 1);
-				$this->add_filter('init', 'lookup_expire_soon');
+				$this->add_filter('cfgp/notification/emails', 'remove_spams', 1);
+				$this->add_filter('init', 'lookup_expire_soon', 99);
 			}
 		}
 	}
@@ -91,10 +91,18 @@ class CFGP_Notifications extends CFGP_Global{
 		if( defined( 'CFGP_DISABLE_NOTIFICATION_LOOKUP_EXPIRE_SOON' ) && CFGP_DISABLE_NOTIFICATION_LOOKUP_EXPIRE_SOON ) return;
 		
 		$transient = 'cfgp-notification-lookup-expire-soon';
-
+		
+		// Stop when email is send
 		if( get_transient($transient) ) return;
 		
-		if( CFGP_U::api('lookup') != 'unlimited' && CFGP_U::api('lookup') != 'lifetime' && CFGP_U::api('lookup') <= 100 && ($emails = $this->get_admins()))
+		// Stop if lookup is unlimited or lifetime
+		if( CFGP_U::api('lookup') == 'unlimited' || CFGP_U::api('lookup') == 'lifetime' ) return;
+		
+		// Get emails
+		$emails = $this->get_admins();
+		
+		// Send email below 100
+		if( CFGP_U::api('lookup') <= 100 && $emails )
 		{		
 			$message = array();
 			$message[]= '<p>' . __('Hi there,', CFGP_NAME) . '</p>';
@@ -109,9 +117,13 @@ class CFGP_Notifications extends CFGP_Global{
 				'<a href="' . CFGP_STORE . '/pricing/" target="_blank">' . __('extend your license', CFGP_NAME) . '</a>'
 			) . '</p>';
 			
-			$message = apply_filters('cf_geoplugin_notification_lookup_expire_soon_message', $message);
+			$message = apply_filters('cfgp/notification/message/body/expire_soon', $message);
 
-			$this->send($emails, __('CF GEO PLUGIN NOTIFICATION - Lookup expires soon', CFGP_NAME), $message);
+			$this->send(
+				$emails,
+				__('CF GEO PLUGIN NOTIFICATION - Lookup expires soon', CFGP_NAME),
+				$message
+			);
 			set_transient($transient, CFGP_TIME, DAY_IN_SECONDS); // 24 hours
 		}
 	}
@@ -124,9 +136,24 @@ class CFGP_Notifications extends CFGP_Global{
 		
 		if(is_array($message)) $message = join(PHP_EOL,$message);
 		
-		$headers = apply_filters('cf_geoplugin_notification_mail_headers', array_merge($headers, array('Content-Type: text/html; charset=UTF-8')), $headers);
+		$headers = apply_filters(
+			'cfgp/notification/mail_headers',
+			array_merge(
+				$headers,
+				array('Content-Type: text/html; charset=UTF-8')
+			),
+			$headers
+		);
 		
-		$return = wp_mail( $email, $subject, $this->template($subject, $message), $headers, $attachments );
+		$return = wp_mail(
+			$email, $subject,
+			$this->template(
+				$subject,
+				$message
+			),
+			$headers,
+			$attachments
+		);
 		$this->remove_filter( 'wp_mail_content_type', '_content_type' );
 		return $return;
 	}
@@ -172,10 +199,10 @@ class CFGP_Notifications extends CFGP_Global{
 		{
 			$admins = get_users(
 				apply_filters(
-					'cf_geoplugin_notification_users_setup',
+					'cfgp/notification/users_setup',
 					array(
 						'role__in' => apply_filters(
-							'cf_geoplugin_notification_user_roles',
+							'cfgp/notification/user_roles',
 							array( 'administrator' )
 						) 
 					)
@@ -191,7 +218,7 @@ class CFGP_Notifications extends CFGP_Global{
 		}
 		
 		
-		$emails = apply_filters('cf_geoplugin_notification_emails', $emails);
+		$emails = apply_filters('cfgp/notification/emails', $emails);
 		
 		if(!empty($emails))
 		{

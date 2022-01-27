@@ -155,7 +155,7 @@ if($NEW_API = CFGP_API::lookup(CFGP_U::request_string('cfgp_lookup'))){
                             <table class="wp-list-table widefat fixed striped table-view-list posts table-cf-geoplugin-debug-server-statistics">
                                 <thead>
                                     <tr>
-                                        <th><?php _e('Field',CFGP_NAME); ?></th>
+                                        <th width="30%"><?php _e('Field',CFGP_NAME); ?></th>
                                         <th><?php _e('Value',CFGP_NAME); ?></th>
                                     </tr>
                                 </thead>
@@ -190,6 +190,17 @@ if($NEW_API = CFGP_API::lookup(CFGP_U::request_string('cfgp_lookup'))){
 										?></td>
                                     </tr>
                                     <tr>
+                                        <td><strong><?php _e( 'Deprecated support', CFGP_NAME ); ?></strong></td>
+                                        <td>
+										<?php if( defined('CFGP_ALLOW_DEPRECATED_METHODS') && CFGP_ALLOW_DEPRECATED_METHODS ) : ?>
+											<strong class="text-success"><?php _e( 'Deprecated code support is activated.', CFGP_NAME ); ?></strong>
+											<br><?php _e( 'For now, we\'ve approved the use of deprecated code by default to make transition easier. We recommend that you switch your project to new code as we will be removing support for deprecated code in the future.', CFGP_NAME ); ?>
+										<?php else : ?>
+											<strong class="text-default"><?php _e( 'Deprecated code support is not active.', CFGP_NAME ); ?></strong>
+										<?php endif; ?>
+										</td>
+                                    </tr>
+									<tr>
                                         <td><strong><?php _e( 'Server type', CFGP_NAME ); ?></strong></td>
                                         <td>
 										<?php if(CFGP_IP::is_localhost()) : ?>
@@ -201,19 +212,23 @@ if($NEW_API = CFGP_API::lookup(CFGP_U::request_string('cfgp_lookup'))){
                                     </tr>
 									<tr>
                                         <td><strong><?php _e( 'Site title', CFGP_NAME ); ?></strong></td>
-                                        <td><?php echo get_bloginfo( 'name' ); ?></td>
+                                        <td><?php bloginfo( 'name' ); ?></td>
                                     </tr>
                                     <tr>
                                         <td><strong><?php _e( 'Tagline', CFGP_NAME ); ?></strong></td>
-                                        <td><?php echo get_bloginfo( 'description' ); ?></td>
+                                        <td><?php bloginfo( 'description' ); ?></td>
                                     </tr>
                                     <tr>
                                         <td><strong><?php _e( 'WordPress address (URL)', CFGP_NAME ); ?></strong></td>
-                                        <td><?php echo get_bloginfo( 'wpurl' ); ?></td>
+                                        <td><?php bloginfo( 'wpurl' ); ?></td>
                                     </tr>
                                     <tr>
                                         <td><strong><?php _e( 'WordPress host', CFGP_NAME ); ?></strong></td>
                                         <td><?php echo CFGP_U::get_host(); ?></td>
+                                    </tr>
+									<tr>
+                                        <td><strong><?php _e( 'Server IP', CFGP_NAME ); ?></strong></td>
+                                        <td><?php echo CFGP_IP::server() . (CFGP_U::proxy() ?' <strong><a class="text-danger" href="'.admin_url('admin.php?page=cf-geoplugin-settings').'">('.__('Proxy Enabled',CFGP_NAME).')</a></strong> ' : ''); ?></td>
                                     </tr>
                                     <tr>
                                         <td><strong><?php _e( 'WordPress multisite', CFGP_NAME ); ?></strong></td>
@@ -229,15 +244,15 @@ if($NEW_API = CFGP_API::lookup(CFGP_U::request_string('cfgp_lookup'))){
                                     </tr>
                                     <tr>
                                         <td><strong><?php _e( 'WordPress version', CFGP_NAME ); ?></strong></td>
-                                        <td><?php echo get_bloginfo( 'version' ); ?></td>
+                                        <td><?php echo bloginfo( 'version' ); ?></td>
                                     </tr>
                                     <tr>
                                         <td><strong><?php _e( 'Content-Type', CFGP_NAME ); ?></strong></td>
-                                        <td><?php echo get_bloginfo( 'html_type' ); ?></td>
+                                        <td><?php echo bloginfo( 'html_type' ); ?></td>
                                     </tr>
                                     <tr>
                                         <td><strong><?php _e( 'Language', CFGP_NAME ); ?></strong></td>
-                                        <td><?php echo get_bloginfo( 'language' ); ?></td>
+                                        <td><?php echo bloginfo( 'language' ); ?></td>
                                     </tr>
                                     <tr>
                                         <td><strong><?php _e( 'Server time', CFGP_NAME ); ?></strong></td>
@@ -258,6 +273,10 @@ if($NEW_API = CFGP_API::lookup(CFGP_U::request_string('cfgp_lookup'))){
                                     <tr>
                                         <td><strong><?php _e( 'PHP architecture', CFGP_NAME ); ?></strong></td>
                                         <td><?php printf(__('%dbit', CFGP_NAME), (CFGP_OS::is_php64() ? 64 : 32)); ?></td>
+                                    </tr>
+									<tr>
+                                        <td><strong><?php _e( 'PHP memory usage of the plugin', CFGP_NAME ); ?></strong></td>
+                                        <td><?php echo CFGP_U::filesize(CFGP_Cache::get_size(), 2); ?></td>
                                     </tr>
                                     <tr>
                                         <td><strong><?php _e( 'Operting system', CFGP_NAME ); ?></strong></td>

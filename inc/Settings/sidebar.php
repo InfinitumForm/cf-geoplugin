@@ -19,23 +19,23 @@ class CFGP_Sidebar extends CFGP_Global {
 		$this->add_action('cfgp/page/seo_redirection/sidebar', 'statistic', 10);
 		$this->add_action('cfgp/page/debug/sidebar', 'statistic', 10);
 		$this->add_action('cfgp/page/settings/sidebar', 'statistic', 10);
-		$this->add_action('cfgp/page/license/sidebar', 'statistic', 10);
+	//	$this->add_action('cfgp/page/license/sidebar', 'statistic', 10);
 		
 		$this->add_action('cfgp/page/main_page/sidebar', 'rss_feed', 10);
-		$this->add_action('cfgp/page/defender/sidebar', 'rss_feed', 10);
-		$this->add_action('cfgp/page/google_map/sidebar', 'rss_feed', 10);
+	//	$this->add_action('cfgp/page/defender/sidebar', 'rss_feed', 10);
+	//	$this->add_action('cfgp/page/google_map/sidebar', 'rss_feed', 10);
 		$this->add_action('cfgp/page/seo_redirection/sidebar', 'rss_feed', 10);
 		$this->add_action('cfgp/page/debug/sidebar', 'rss_feed', 10);
 		$this->add_action('cfgp/page/settings/sidebar', 'rss_feed', 10);
-		$this->add_action('cfgp/page/license/sidebar', 'rss_feed', 10);
+	//	$this->add_action('cfgp/page/license/sidebar', 'rss_feed', 10);
 		
-		$this->add_action('cfgp/page/main_page/sidebar', 'sidebar_digital_ocean', 40);
-		$this->add_action('cfgp/page/defender/sidebar', 'sidebar_digital_ocean', 40);
-		$this->add_action('cfgp/page/google_map/sidebar', 'sidebar_digital_ocean', 40);
-		$this->add_action('cfgp/page/seo_redirection/sidebar', 'sidebar_digital_ocean', 40);
-		$this->add_action('cfgp/page/debug/sidebar', 'sidebar_digital_ocean', 40);
-		$this->add_action('cfgp/page/settings/sidebar', 'sidebar_digital_ocean', 40);
-		$this->add_action('cfgp/page/license/sidebar', 'sidebar_digital_ocean', 40);
+		$this->add_action('cfgp/page/main_page/sidebar', 'sidebar_affiliate', 40);
+		$this->add_action('cfgp/page/defender/sidebar', 'sidebar_affiliate', 40);
+		$this->add_action('cfgp/page/google_map/sidebar', 'sidebar_affiliate', 40);
+		$this->add_action('cfgp/page/seo_redirection/sidebar', 'sidebar_affiliate', 40);
+		$this->add_action('cfgp/page/debug/sidebar', 'sidebar_affiliate', 40);
+		$this->add_action('cfgp/page/settings/sidebar', 'sidebar_affiliate', 40);
+		$this->add_action('cfgp/page/license/sidebar', 'sidebar_affiliate', 40);
 		
 		$this->add_action('cfgp/dashboard/widget/statistic', 'sidebar_statistic', 10);
 		$this->add_action('cfgp/dashboard/widget/statistic', 'dashboard_footer', 10);
@@ -161,8 +161,15 @@ class CFGP_Sidebar extends CFGP_Global {
 	 *
 	 * @since    8.0.0
 	 **/
-	public function sidebar_digital_ocean(){ ?>
-<a href="https://www.digitalocean.com/?refcode=a4160dafc356&utm_campaign=Referral_Invite&utm_medium=Referral_Program&utm_source=badge" title="<?php esc_attr_e('CF Geo Plugin uses an API hosted on Digital Ocean servers. Get yours now!', CFGP_NAME); ?>" target="_blank"><img src="https://web-platforms.sfo2.digitaloceanspaces.com/WWW/Badge%202.svg" alt="<?php esc_attr_e('CF Geo Plugin Uses an API Hosted on Digital Ocean Cloud Servers. Get yours now!', CFGP_NAME); ?>" style="margin:0 auto 0 auto; display:block; width:100%; max-width:100%; height:auto; border: 1px solid #c3c4c7; box-shadow: 0 1px 1px rgb(0 0 0 / 4%);" /></a>
+	public function sidebar_affiliate(){ ?>
+	<h4 style="text-align:center;"><?php _e('Special thanks to:', CFGP_NAME); ?></h4>
+<a href="https://www.digitalocean.com/?refcode=a4160dafc356&utm_campaign=Referral_Invite&utm_medium=Referral_Program&utm_source=badge" title="<?php esc_attr_e('CF Geo Plugin uses an API hosted on Digital Ocean servers. Get yours now!', CFGP_NAME); ?>" target="_blank"><img src="<?php echo CFGP_ASSETS; ?>/images/Logo-DigitalOcean.jpg" alt="<?php esc_attr_e('CF Geo Plugin Uses an API Hosted on Digital Ocean Cloud Servers. Get yours now!', CFGP_NAME); ?>" style="margin:0 auto 0 auto; display:block; width:100%; max-width:100%; height:auto; border: 1px solid #c3c4c7; box-shadow: 0 1px 1px rgb(0 0 0 / 4%);" /></a>
+
+<a href="https://www.draxhost.com/checkout/aff.php?aff=1" title="<?php esc_attr_e('The CF Geo Plugin official site is hosted on Drax Host servers. Interested in affordable and secure hosting?', CFGP_NAME); ?>" target="_blank"><img src="<?php echo CFGP_ASSETS; ?>/images/Logo-Drax-Host.jpg" alt="<?php esc_attr_e('The CF Geo Plugin official site is hosted on Drax Host servers. Interested in affordable and secure hosting?', CFGP_NAME); ?>" style="margin:15px auto 0 auto; display:block; width:100%; max-width:100%; height:auto; border: 1px solid #c3c4c7; box-shadow: 0 1px 1px rgb(0 0 0 / 4%);" /></a>
+<?php /* ?>
+<h4 style="text-align:center;"><?php _e('Powered by:', CFGP_NAME); ?></h4>
+<a href="https://infinitumform.com/" title="<?php esc_attr_e('We have created many good projects, do you want to we create something for you?', CFGP_NAME); ?>" target="_blank"><img src="<?php echo CFGP_ASSETS; ?>/images/Logo-Infinitum-Form.jpg" alt="<?php esc_attr_e('We have created many good projects, do you want to we create something for you?', CFGP_NAME); ?>" style="margin:0 auto 0 auto; display:block; width:100%; max-width:100%; height:auto; border: 1px solid #c3c4c7; box-shadow: 0 1px 1px rgb(0 0 0 / 4%);" /></a>
+<?php */ ?>
 	<?php }
 	
 	
@@ -285,20 +292,28 @@ class CFGP_Sidebar extends CFGP_Global {
 	 **/
 	public function cfgp_runtime_status_icon($runtime, $class='')
 	{
-		if(round($runtime)<=1){
-			echo '<span class="fa fa-battery-full '.$class.'" title="'.__('Exellent',CFGP_NAME).'"></span> <span class="cfgp-statistic-label">'.__('Exellent',CFGP_NAME).'</span>';
+		
+		if(!empty($class)) {
+			$class = ' ' . $class;
 		}
-		else if(round($runtime) == 2){
-			echo '<span class="fa fa-battery-three-quarters '.$class.'" title="'.__('Perfect',CFGP_NAME).'"></span> <span class="cfgp-statistic-label">'.__('Perfect',CFGP_NAME).'</span>';
+		
+		if(floatval($runtime) <= 0.1) {
+			echo '<span class="fa fa-battery-full incomparable'.$class.'" title="'.esc_attr__('Incomparable',CFGP_NAME).'"></span> <span class="cfgp-statistic-label incomparable">'.__('Incomparable',CFGP_NAME).'</span>';
 		}
-		else if(round($runtime) == 3){
-			echo '<span class="fa fa-battery-half '.$class.'" title="'.__('Good',CFGP_NAME).'"></span> <span class="cfgp-statistic-label">'.__('Good',CFGP_NAME).'</span>';
+		else if(floatval($runtime) <= 0.5){
+			echo '<span class="fa fa-battery-full exellent'.$class.'" title="'.esc_attr__('Exellent',CFGP_NAME).'"></span> <span class="cfgp-statistic-label exellent">'.__('Exellent',CFGP_NAME).'</span>';
 		}
-		else if(round($runtime) == 4){
-			echo '<span class="fa fa-battery-quarter '.$class.'" title="'.__('Week',CFGP_NAME).'"></span> <span class="cfgp-statistic-label">'.__('Week',CFGP_NAME).'</span>';
+		else if(floatval($runtime) <= 0.8){
+			echo '<span class="fa fa-battery-three-quarters perfect'.$class.'" title="'.esc_attr__('Perfect',CFGP_NAME).'"></span> <span class="cfgp-statistic-label perfect">'.__('Perfect',CFGP_NAME).'</span>';
 		}
-		else if(round($runtime) >= 5){
-			echo '<span class="fa fa-battery-empty '.$class.'" title="'.__('Bad',CFGP_NAME).'"></span> <span class="cfgp-statistic-label">'.__('Bad',CFGP_NAME).'</span>';
+		else if(floatval($runtime) <= 1.2){
+			echo '<span class="fa fa-battery-half good'.$class.'" title="'.esc_attr__('Good',CFGP_NAME).'"></span> <span class="cfgp-statistic-label good">'.__('Good',CFGP_NAME).'</span>';
+		}
+		else if(floatval($runtime) <= 1.5){
+			echo '<span class="fa fa-battery-quarter week'.$class.'" title="'.esc_attr__('Week',CFGP_NAME).'"></span> <span class="cfgp-statistic-label week">'.__('Week',CFGP_NAME).'</span>';
+		}
+		else {
+			echo '<span class="fa fa-battery-empty bad'.$class.'" title="'.esc_attr__('Bad',CFGP_NAME).'"></span> <span class="cfgp-statistic-label bad">'.__('Bad',CFGP_NAME).'</span>';
 		}
 	}
 	

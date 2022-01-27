@@ -99,6 +99,14 @@ class CFGP_Cache
 	}
 	
 	/*
+	 * Cache size
+	 */
+	public static function get_size() {
+		$get_size = strlen(json_encode(self::$cache));
+		return ceil($get_size*8);
+	}
+	
+	/*
 	 * Cache key
 	 */
 	private static function key($key) {

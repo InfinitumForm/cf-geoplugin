@@ -1740,5 +1740,48 @@ class CFGP_U {
 		return CFGP_Cache::set( 'has_seo_redirection', ($wpdb->get_var("SELECT 1 FROM `{$wpdb->cfgp_seo_redirection}` WHERE 1=1 LIMIT 1") == 1) );
 	}
 	
+	/**
+	 * Convert bytes to human file size
+	 */
+	public static function filesize($bytes, $decimals = 0, $short_name = false)
+	{
+		if ($bytes instanceof FileSystem\File) {
+			$bytes = $bytes->size();
+		}
+		if ($bytes instanceof Data\File) {
+			$bytes = $bytes->size();
+		}
+		if ($bytes instanceof Data\Folder) {
+			$bytes = $bytes->size();
+		}
+		if( $short_name ) {
+			$size = array(
+				__('B', CFGP_NAME),
+				__('KB', CFGP_NAME),
+				__('MB', CFGP_NAME),
+				__('GB', CFGP_NAME),
+				__('TB', CFGP_NAME),
+				__('PB', CFGP_NAME),
+				__('EB', CFGP_NAME),
+				__('ZB', CFGP_NAME),
+				__('YB', CFGP_NAME)
+			);
+		} else {
+			$size = array(
+				__('byte', CFGP_NAME),
+				__('kilobyte', CFGP_NAME),
+				__('megabyte', CFGP_NAME),
+				__('gigabyte', CFGP_NAME),
+				__('terabyte', CFGP_NAME),
+				__('petabyte', CFGP_NAME),
+				__('exabyte', CFGP_NAME),
+				__('zettabyte', CFGP_NAME),
+				__('yottabyte', CFGP_NAME)
+			);
+		}
+		$factor = floor((strlen($bytes) - 1) / 3);
+		return sprintf("%.{$decimals}f ", $bytes / pow(1024, $factor)) . ($size[$factor] ?? end($size));
+	}
+	
 }
 endif;
