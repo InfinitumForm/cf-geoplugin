@@ -1,4 +1,4 @@
-CF Geo Plugin WordPress plugin
+Geo Plugin for WordPress
 
 Copyright 2014-2022 by Ivijan-Stefan Stipic - sepport@cfgeoplugin.com
 
