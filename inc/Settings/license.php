@@ -8,7 +8,9 @@ do_action('cfgp/page/license/save');
 ?>
 <div class="wrap wrap-cfgp" id="<?php echo $_GET['page']; ?>">
 	<h1 class="wp-heading-inline"><i class="fa fa-trophy"></i> <?php
-		if(CFGP_License::activated()) {
+		if( CFGP_U::api('lookup') == 'lifetime' ){
+			_e('Congratulations, you have a lifetime lookup!', CFGP_NAME);
+		} else if(CFGP_License::activated()) {
 			printf(__('Your license is successfully active until %s', CFGP_NAME), CFGP_License::expire_date());
 		} else {
 			_e('Select the desired license and activate the plugin', CFGP_NAME);
