@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: WordPress Geo Plugin\n"
-"POT-Creation-Date: 2022-01-26 23:42+0100\n"
-"PO-Revision-Date: 2022-01-26 23:42+0100\n"
+"POT-Creation-Date: 2022-01-27 17:02+0100\n"
+"PO-Revision-Date: 2022-01-27 17:02+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: en_US\n"
@@ -203,7 +203,7 @@ msgstr ""
 
 #: inc/classes/Admin.php:567 inc/classes/Admin.php:614
 #: inc/classes/Metabox.php:548 inc/settings/sidebar.php:60
-#: inc/settings/sidebar.php:180
+#: inc/settings/sidebar.php:187
 msgid "Loading..."
 msgstr ""
 
@@ -321,8 +321,8 @@ msgid "Can't delete access token because unexpected reasons."
 msgstr ""
 
 #: inc/classes/Admin.php:646 inc/classes/Help.php:63 inc/classes/Help.php:64
-#: inc/classes/Notifications.php:581 inc/filters/settings-rest.php:27
-#: inc/settings/sidebar.php:199
+#: inc/classes/Notifications.php:608 inc/filters/settings-rest.php:27
+#: inc/settings/sidebar.php:206
 msgid "Documentation"
 msgstr ""
 
@@ -330,7 +330,7 @@ msgstr ""
 msgid "Contact"
 msgstr ""
 
-#: inc/classes/Admin.php:648 inc/settings/sidebar.php:201
+#: inc/classes/Admin.php:648 inc/settings/sidebar.php:208
 msgid "Blog"
 msgstr ""
 
@@ -714,7 +714,7 @@ msgstr ""
 msgid "UNLIMITED Developer License"
 msgstr ""
 
-#: inc/classes/License.php:250 inc/filters/license.php:66
+#: inc/classes/License.php:250 inc/filters/license.php:69
 msgid "License Key"
 msgstr ""
 
@@ -1054,73 +1054,73 @@ msgstr ""
 msgid "I've already done that!"
 msgstr ""
 
-#: inc/classes/Notifications.php:100
+#: inc/classes/Notifications.php:108
 msgid "Hi there,"
 msgstr ""
 
-#: inc/classes/Notifications.php:101
+#: inc/classes/Notifications.php:109
 msgid ""
 "Your lookup will expire soon and geo plugin services will be unavailable for "
 "the next 24 hours."
 msgstr ""
 
-#: inc/classes/Notifications.php:103
+#: inc/classes/Notifications.php:111
 #, php-format
 msgid ""
 "If your site has a large traffic and you need the full functionality of the "
 "plugin, you need to get the appropriate license and activate the %1$s."
 msgstr ""
 
-#: inc/classes/Notifications.php:104
+#: inc/classes/Notifications.php:112
 msgid "UNLIMITED LOOKUP."
 msgstr ""
 
-#: inc/classes/Notifications.php:107
+#: inc/classes/Notifications.php:115
 #, php-format
 msgid ""
 "You currently have %1$d lookups available and need to %2$s so that all "
 "services work smoothly."
 msgstr ""
 
-#: inc/classes/Notifications.php:109
+#: inc/classes/Notifications.php:117
 msgid "extend your license"
 msgstr ""
 
-#: inc/classes/Notifications.php:114
+#: inc/classes/Notifications.php:124
 msgid "CF GEO PLUGIN NOTIFICATION - Lookup expires soon"
 msgstr ""
 
-#: inc/classes/Notifications.php:548 inc/classes/Notifications.php:591
+#: inc/classes/Notifications.php:575 inc/classes/Notifications.php:618
 #, php-format
 msgid ""
 "If you no longer wish to receive these notifications, please read how to "
 "%1$s."
 msgstr ""
 
-#: inc/classes/Notifications.php:548 inc/classes/Notifications.php:591
+#: inc/classes/Notifications.php:575 inc/classes/Notifications.php:618
 msgid "disable this notifications"
 msgstr ""
 
-#: inc/classes/Notifications.php:580
+#: inc/classes/Notifications.php:607
 #, php-format
 msgid "This email is automatically sent by CF Geo Plugin via site %1$s."
 msgstr ""
 
-#: inc/classes/Notifications.php:581 inc/filters/license.php:103
-#: inc/filters/license.php:116 inc/settings/debug.php:87
-#: inc/settings/sidebar.php:205
+#: inc/classes/Notifications.php:608 inc/filters/license.php:110
+#: inc/filters/license.php:123 inc/settings/debug.php:87
+#: inc/settings/sidebar.php:212
 msgid "Privacy Policy"
 msgstr ""
 
-#: inc/classes/Notifications.php:581
+#: inc/classes/Notifications.php:608
 msgid "Terms And Conditions"
 msgstr ""
 
-#: inc/classes/Notifications.php:581
+#: inc/classes/Notifications.php:608
 msgid "Contact & Support"
 msgstr ""
 
-#: inc/classes/Notifications.php:586
+#: inc/classes/Notifications.php:613
 #, php-format
 msgid "Powered by  %1$s."
 msgstr ""
@@ -1568,45 +1568,127 @@ msgstr ""
 msgid "HTTP redirect status code must be a redirection code, 3xx."
 msgstr ""
 
-#: inc/filters/license.php:54
+#: inc/classes/Utilities.php:1759
+msgid "B"
+msgstr ""
+
+#: inc/classes/Utilities.php:1760
+msgid "KB"
+msgstr ""
+
+#: inc/classes/Utilities.php:1761
+msgid "MB"
+msgstr ""
+
+#: inc/classes/Utilities.php:1762
+msgid "GB"
+msgstr ""
+
+#: inc/classes/Utilities.php:1763
+msgid "TB"
+msgstr ""
+
+#: inc/classes/Utilities.php:1764
+msgid "PB"
+msgstr ""
+
+#: inc/classes/Utilities.php:1765
+msgid "EB"
+msgstr ""
+
+#: inc/classes/Utilities.php:1766
+msgid "ZB"
+msgstr ""
+
+#: inc/classes/Utilities.php:1767
+msgid "YB"
+msgstr ""
+
+#: inc/classes/Utilities.php:1771
+msgid "byte"
+msgstr ""
+
+#: inc/classes/Utilities.php:1772
+msgid "kilobyte"
+msgstr ""
+
+#: inc/classes/Utilities.php:1773
+msgid "megabyte"
+msgstr ""
+
+#: inc/classes/Utilities.php:1774
+msgid "gigabyte"
+msgstr ""
+
+#: inc/classes/Utilities.php:1775
+msgid "terabyte"
+msgstr ""
+
+#: inc/classes/Utilities.php:1776
+msgid "petabyte"
+msgstr ""
+
+#: inc/classes/Utilities.php:1777
+msgid "exabyte"
+msgstr ""
+
+#: inc/classes/Utilities.php:1778
+msgid "zettabyte"
+msgstr ""
+
+#: inc/classes/Utilities.php:1779
+msgid "yottabyte"
+msgstr ""
+
+#: inc/filters/license.php:57
 msgid "Price"
 msgstr ""
 
-#: inc/filters/license.php:55
+#: inc/filters/license.php:58
 msgid "You must become a developer for this license"
 msgstr ""
 
-#: inc/filters/license.php:55
+#: inc/filters/license.php:58
 msgid "Learn more about this product"
 msgstr ""
 
-#: inc/filters/license.php:59
+#: inc/filters/license.php:62
 msgid ""
 "Are you sure you want to deactivate your license? This decision can limit "
 "your plugin functions."
 msgstr ""
 
-#: inc/filters/license.php:67
+#: inc/filters/license.php:70
 msgid "Insert your license key here"
 msgstr ""
 
-#: inc/filters/license.php:69
+#: inc/filters/license.php:72
 msgid "License type must match to your license key that you ordered."
 msgstr ""
 
-#: inc/filters/license.php:70
+#: inc/filters/license.php:73
 msgid "Activate your license"
 msgstr ""
 
-#: inc/filters/license.php:73
+#: inc/filters/license.php:76
 msgid "Dectivate current license"
 msgstr ""
 
-#: inc/filters/license.php:93
+#: inc/filters/license.php:88
+msgid ""
+"As one of the first users of our plugin, you have the honor of using a "
+"unique lifetime license that allows you unlimited lookup."
+msgstr ""
+
+#: inc/filters/license.php:89
+msgid "Therefore, you have no option to change or deactivate the license."
+msgstr ""
+
+#: inc/filters/license.php:100
 msgid "License Information"
 msgstr ""
 
-#: inc/filters/license.php:97
+#: inc/filters/license.php:104
 #, php-format
 msgid ""
 "Thank you for using an unlimited license. Your license is active until %1$s. "
@@ -1615,27 +1697,27 @@ msgid ""
 "license, please go to your %2$s."
 msgstr ""
 
-#: inc/filters/license.php:98
+#: inc/filters/license.php:105
 msgid "never"
 msgstr ""
 
-#: inc/filters/license.php:99
+#: inc/filters/license.php:106
 msgid "CF Geo Plugin account"
 msgstr ""
 
-#: inc/filters/license.php:102
+#: inc/filters/license.php:109
 #, php-format
 msgid ""
 "Do not forget that by purchasing and using the license you have agreed to "
 "our %2$s in accordance with the %1$s."
 msgstr ""
 
-#: inc/filters/license.php:104 inc/filters/license.php:117
-#: inc/settings/sidebar.php:204
+#: inc/filters/license.php:111 inc/filters/license.php:124
+#: inc/settings/sidebar.php:211
 msgid "Terms & Conditions"
 msgstr ""
 
-#: inc/filters/license.php:108
+#: inc/filters/license.php:115
 #, php-format
 msgid ""
 "You currently use a free version of plugin with a limited number of lookups. "
@@ -1645,11 +1727,11 @@ msgid ""
 "understand what this is about, read %3$s."
 msgstr ""
 
-#: inc/filters/license.php:112
+#: inc/filters/license.php:119
 msgid "this article"
 msgstr ""
 
-#: inc/filters/license.php:115
+#: inc/filters/license.php:122
 #, php-format
 msgid "Before any action don't forget to read and agree with %1$s and %2$s."
 msgstr ""
@@ -2959,7 +3041,7 @@ msgstr ""
 msgid "SIP"
 msgstr ""
 
-#: inc/settings/debug.php:110
+#: inc/settings/debug.php:110 inc/settings/debug.php:231
 msgid "Proxy Enabled"
 msgstr ""
 
@@ -3033,119 +3115,146 @@ msgid "Plugin updated"
 msgstr ""
 
 #: inc/settings/debug.php:193
-msgid "Server type"
+msgid "Deprecated support"
 msgstr ""
 
 #: inc/settings/debug.php:196
-msgid "Local Server"
+msgid "Deprecated code support is activated."
 msgstr ""
 
-#: inc/settings/debug.php:198
-msgid "Production Server"
+#: inc/settings/debug.php:197
+msgid ""
+"For now, we've approved the use of deprecated code by default to make "
+"transition easier. We recommend that you switch your project to new code as "
+"we will be removing support for deprecated code in the future."
 msgstr ""
 
-#: inc/settings/debug.php:203
-msgid "Site title"
+#: inc/settings/debug.php:199
+msgid "Deprecated code support is not active."
+msgstr ""
+
+#: inc/settings/debug.php:204
+msgid "Server type"
 msgstr ""
 
 #: inc/settings/debug.php:207
+msgid "Local Server"
+msgstr ""
+
+#: inc/settings/debug.php:209
+msgid "Production Server"
+msgstr ""
+
+#: inc/settings/debug.php:214
+msgid "Site title"
+msgstr ""
+
+#: inc/settings/debug.php:218
 msgid "Tagline"
 msgstr ""
 
-#: inc/settings/debug.php:211
+#: inc/settings/debug.php:222
 msgid "WordPress address (URL)"
 msgstr ""
 
-#: inc/settings/debug.php:215
+#: inc/settings/debug.php:226
 msgid "WordPress host"
 msgstr ""
 
-#: inc/settings/debug.php:219
+#: inc/settings/debug.php:230
+msgid "Server IP"
+msgstr ""
+
+#: inc/settings/debug.php:234
 msgid "WordPress multisite"
 msgstr ""
 
-#: inc/settings/debug.php:220
+#: inc/settings/debug.php:235
 msgid "Enabled"
 msgstr ""
 
-#: inc/settings/debug.php:220
+#: inc/settings/debug.php:235
 msgid "Disabled"
 msgstr ""
 
-#: inc/settings/debug.php:223
+#: inc/settings/debug.php:238
 msgid "Admin email"
 msgstr ""
 
-#: inc/settings/debug.php:227
+#: inc/settings/debug.php:242
 msgid "Encoding for pages and feeds"
 msgstr ""
 
-#: inc/settings/debug.php:231
+#: inc/settings/debug.php:246
 msgid "WordPress version"
 msgstr ""
 
-#: inc/settings/debug.php:235
+#: inc/settings/debug.php:250
 msgid "Content-Type"
 msgstr ""
 
-#: inc/settings/debug.php:239
+#: inc/settings/debug.php:254
 msgid "Language"
 msgstr ""
 
-#: inc/settings/debug.php:243
+#: inc/settings/debug.php:258
 msgid "Server time"
 msgstr ""
 
-#: inc/settings/debug.php:247
+#: inc/settings/debug.php:262
 msgid "WordPress directory path"
 msgstr ""
 
-#: inc/settings/debug.php:251
+#: inc/settings/debug.php:266
 msgid "PHP version"
 msgstr ""
 
-#: inc/settings/debug.php:255
+#: inc/settings/debug.php:270
 msgid "PHP version ID"
 msgstr ""
 
-#: inc/settings/debug.php:259
+#: inc/settings/debug.php:274
 msgid "PHP architecture"
 msgstr ""
 
-#: inc/settings/debug.php:260 inc/settings/debug.php:264
+#: inc/settings/debug.php:275 inc/settings/debug.php:283
 #, php-format
 msgid "%dbit"
 msgstr ""
 
-#: inc/settings/debug.php:263
+#: inc/settings/debug.php:278
+msgid "PHP memory usage of the plugin"
+msgstr ""
+
+#: inc/settings/debug.php:282
 msgid "Operting system"
 msgstr ""
 
-#: inc/settings/debug.php:267
+#: inc/settings/debug.php:286
 msgid "User agent"
 msgstr ""
 
-#: inc/settings/debug.php:271
+#: inc/settings/debug.php:290
 msgid "WordPress debug"
 msgstr ""
 
-#: inc/settings/debug.php:272
+#: inc/settings/debug.php:291
 msgid "On"
 msgstr ""
 
-#: inc/settings/debug.php:272
+#: inc/settings/debug.php:291
 msgid "Off"
 msgstr ""
 
-#: inc/settings/debug.php:275
+#: inc/settings/debug.php:294
 msgid "Plugin directory path"
 msgstr ""
 
-#: inc/settings/debug.php:279
+#: inc/settings/debug.php:298
 msgid "Session API expire"
 msgstr ""
 
-#: inc/settings/debug.php:280
+#: inc/settings/debug.php:299
 #, php-format
 msgid "%d minutes"
 msgstr ""
@@ -3438,11 +3547,15 @@ msgid "If you want to use HTML inside map and display info bar: <br><br>%s"
 msgstr ""
 
 #: inc/settings/license.php:12
+msgid "Congratulations, you have a lifetime lookup!"
+msgstr ""
+
+#: inc/settings/license.php:14
 #, php-format
 msgid "Your license is successfully active until %s"
 msgstr ""
 
-#: inc/settings/license.php:14
+#: inc/settings/license.php:16
 msgid "Select the desired license and activate the plugin"
 msgstr ""
 
@@ -3628,132 +3741,146 @@ msgid "Quality"
 msgstr ""
 
 #: inc/settings/sidebar.php:165
+msgid "Special thanks to:"
+msgstr ""
+
+#: inc/settings/sidebar.php:166
 msgid ""
 "CF Geo Plugin uses an API hosted on Digital Ocean servers. Get yours now!"
 msgstr ""
 
-#: inc/settings/sidebar.php:165
+#: inc/settings/sidebar.php:166
 msgid ""
 "CF Geo Plugin Uses an API Hosted on Digital Ocean Cloud Servers. Get yours "
 "now!"
 msgstr ""
 
-#: inc/settings/sidebar.php:185
+#: inc/settings/sidebar.php:168
+msgid ""
+"The CF Geo Plugin official site is hosted on Drax Host servers. Interested "
+"in affordable and secure hosting?"
+msgstr ""
+
+#: inc/settings/sidebar.php:192
 msgid "Announcements"
 msgstr ""
 
-#: inc/settings/sidebar.php:185 inc/settings/sidebar.php:187
-#: inc/settings/sidebar.php:199 inc/settings/sidebar.php:200
-#: inc/settings/sidebar.php:201 inc/settings/sidebar.php:204
-#: inc/settings/sidebar.php:205 inc/settings/sidebar.php:206
+#: inc/settings/sidebar.php:192 inc/settings/sidebar.php:194
+#: inc/settings/sidebar.php:206 inc/settings/sidebar.php:207
+#: inc/settings/sidebar.php:208 inc/settings/sidebar.php:211
+#: inc/settings/sidebar.php:212 inc/settings/sidebar.php:213
 msgid "(opens in a new tab)"
 msgstr ""
 
-#: inc/settings/sidebar.php:186
+#: inc/settings/sidebar.php:193
 msgid "Information"
 msgstr ""
 
-#: inc/settings/sidebar.php:187
+#: inc/settings/sidebar.php:194
 msgid "Tutorial"
 msgstr ""
 
-#: inc/settings/sidebar.php:200
+#: inc/settings/sidebar.php:207
 msgid "Pricing"
 msgstr ""
 
-#: inc/settings/sidebar.php:206
+#: inc/settings/sidebar.php:213
 msgid "Cookie Policy"
 msgstr ""
 
-#: inc/settings/sidebar.php:209
+#: inc/settings/sidebar.php:216
 #, php-format
 msgid "Copyright © %d-%d CF Geo Plugin. All rights reserved."
 msgstr ""
 
-#: inc/settings/sidebar.php:236
+#: inc/settings/sidebar.php:243
 msgid "CF Geo Plugin details"
 msgstr ""
 
-#: inc/settings/sidebar.php:238
+#: inc/settings/sidebar.php:245
 msgid "Last Update"
 msgstr ""
 
-#: inc/settings/sidebar.php:239
+#: inc/settings/sidebar.php:246
 msgid "Homepage"
 msgstr ""
 
-#: inc/settings/sidebar.php:240
+#: inc/settings/sidebar.php:247
 msgid "WP Support"
 msgstr ""
 
-#: inc/settings/sidebar.php:243
+#: inc/settings/sidebar.php:250
 #, php-format
 msgid "Supported on WP version %s"
 msgstr ""
 
-#: inc/settings/sidebar.php:247
+#: inc/settings/sidebar.php:254
 #, php-format
 msgid "Plugin require WordPress version %s or above!"
 msgstr ""
 
-#: inc/settings/sidebar.php:250
+#: inc/settings/sidebar.php:257
 msgid "PHP Support"
 msgstr ""
 
-#: inc/settings/sidebar.php:254
+#: inc/settings/sidebar.php:261
 #, php-format
 msgid "Supported on PHP version %s"
 msgstr ""
 
-#: inc/settings/sidebar.php:258
+#: inc/settings/sidebar.php:265
 #, php-format
 msgid ""
 "Plugin not support PHP version %1$s. Please use PHP vesion %2$s or above."
 msgstr ""
 
-#: inc/settings/sidebar.php:266
+#: inc/settings/sidebar.php:273
 #, php-format
 msgid "NEW version is available - CF Geo Plugin ver.%s"
 msgstr ""
 
-#: inc/settings/sidebar.php:272
+#: inc/settings/sidebar.php:279
 msgid "There was error in fetching plugin data."
 msgstr ""
 
-#: inc/settings/sidebar.php:275
+#: inc/settings/sidebar.php:282
 msgid "Download new version NOW"
 msgstr ""
 
-#: inc/settings/sidebar.php:289
+#: inc/settings/sidebar.php:301
+msgid "Incomparable"
+msgstr ""
+
+#: inc/settings/sidebar.php:304
 msgid "Exellent"
 msgstr ""
 
-#: inc/settings/sidebar.php:292
+#: inc/settings/sidebar.php:307
 msgid "Perfect"
 msgstr ""
 
-#: inc/settings/sidebar.php:295
+#: inc/settings/sidebar.php:310
 msgid "Good"
 msgstr ""
 
-#: inc/settings/sidebar.php:298
+#: inc/settings/sidebar.php:313
 msgid "Week"
 msgstr ""
 
-#: inc/settings/sidebar.php:301
+#: inc/settings/sidebar.php:316
 msgid "Bad"
 msgstr ""
 
-#: inc/settings/sidebar.php:313
+#: inc/settings/sidebar.php:328
 msgid "UNLIMITED"
 msgstr ""
 
-#: inc/settings/sidebar.php:316
+#: inc/settings/sidebar.php:331
 msgid "EXPIRED"
 msgstr ""
 
-#: inc/settings/sidebar.php:319 inc/settings/sidebar.php:322
-#: inc/settings/sidebar.php:325
+#: inc/settings/sidebar.php:334 inc/settings/sidebar.php:337
+#: inc/settings/sidebar.php:340
 msgid "Available"
 msgstr ""
 
