@@ -3,28 +3,6 @@
 if ( ! defined( 'WPINC' ) ) { die( "Don't mess with us." ); }
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-/**
- * Remove deprecated objects from the table
- *
- * @since    8.0.0
- **/
-add_filter('cfgp/table/shortcodes', 'cfgp_admin_main_page_table_shortcodes');
-add_filter('cfgp/table/simple_shortcodes', 'cfgp_admin_main_page_table_shortcodes');
-add_filter('cfgp/table/tags', 'cfgp_admin_main_page_table_shortcodes');
-if( !function_exists('cfgp_admin_main_page_table_shortcodes') ) {
-	function cfgp_admin_main_page_table_shortcodes($API){
-		
-		if(isset($API['timezoneName'])){
-			unset($API['timezoneName']);
-		}
-		
-		if(isset($API['state'])){
-			unset($API['state']);
-		}
-		
-		return $API;
-	}
-}
 
 /**
  * Special dedicated short codes

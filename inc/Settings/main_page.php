@@ -6,7 +6,9 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
 $remove_tags = array(
 	'error',
 	'error_message',
-	'postcode'
+	'timezoneName',
+	'state',
+	'zip'
 );
 
 $API = CFGP_U::api();

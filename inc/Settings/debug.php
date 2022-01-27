@@ -3,7 +3,11 @@
 if ( ! defined( 'WPINC' ) ) { die( "Don't mess with us." ); }
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-$remove_tags = apply_filters('cfgp/debug/remove_tags', array('timezoneName', 'state'));
+$remove_tags = apply_filters('cfgp/debug/remove_tags', array(
+	'timezoneName',
+	'state',
+	'zip'
+));
 
 $API = CFGP_Cache::get('API');
 if($NEW_API = CFGP_API::lookup(CFGP_U::request_string('cfgp_lookup'))){
