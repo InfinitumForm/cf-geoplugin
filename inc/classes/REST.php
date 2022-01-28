@@ -73,6 +73,71 @@ class CFGP_REST extends CFGP_Global {
 		$this->add_action( 'wp_ajax_cfgp_rest_delete_access_token', 'delete_access_token' );
 	}
 	
+	/*
+	 *  Adding Important REST Endpoints
+	 *  @version     1.0.0
+	 *  @endpoint    json      /wp-json/cf-geoplugin/v1/return
+	 */
+	public static function rest_api_init_v1_return(){
+		add_action( 'rest_api_init', function (){
+			
+			$namespace = 'cf-geoplugin/v1';
+			$routes = array();
+			
+			// Return individual responses
+			foreach(CFGP_U::api() as $key => $value) {
+				
+				if( in_array(
+					$key,
+					array('error', 'error_message', 'lookup', 'status', 'runtime', 'zip', 'timezoneName')
+				) ) {
+					continue;
+				}
+				
+				register_rest_route( $namespace, '/return/'.$key, array(
+					'methods' => array('GET', 'POST'),
+					'callback' => function( $data ) use ( $value ) {
+						return new WP_REST_Response(array(
+							'response' => $value,
+							'error' => CFGP_U::api('error'),
+							'error_message' => CFGP_U::api('error_message'),
+							'lookup' => CFGP_U::api('lookup'),
+							'status' => CFGP_U::api('status'),
+							'runtime' => CFGP_U::api('runtime')
+						) );
+					},
+				), array(), true );
+				
+				$routes[] = home_url('/wp-json/cf-geoplugin/v1/return/'.$key);
+				
+			}
+			
+			// Return complete JSON response
+			register_rest_route( $namespace, '/return', array(
+				'methods' => array('GET', 'POST'),
+				'callback' => function( $data ) use ( $routes ) {
+			
+					$callback = array_merge(
+						CFGP_U::api(),
+						array(
+							'routes' => $routes
+						)
+					);
+					
+					foreach($callback as $key => $value) {
+						if( in_array(
+							$key,
+							array('zip', 'timezoneName')
+						) ) {
+							unset($callback[$key]);
+						}
+					}
+					
+					return new WP_REST_Response($callback);
+				},
+			), array(), true );
+		} );
+	}
 	
 	/*
 	 * Lookup IP address
