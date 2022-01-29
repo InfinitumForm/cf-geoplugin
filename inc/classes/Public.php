@@ -49,9 +49,14 @@ class CFGP_Public extends CFGP_Global{
 		wp_register_style( CFGP_NAME . '-public-cc', CFGP_ASSETS . '/css/style-cc' . $min . '.css', 1, (string)CFGP_VERSION );
 		// Public JavaScript for the shortcodes
 		wp_register_script( CFGP_NAME . '-public', CFGP_ASSETS . '/js/script-public' . $min . '.js', array('jquery'), (string)CFGP_VERSION );
+		
+		$rest_enabled = ( apply_filters('cfgp/rest/v1/enable', true) && apply_filters('rest_enabled', true) && apply_filters('rest_jsonp_enabled', true) );
 		wp_localize_script(CFGP_NAME . '-public', 'CFGP', array(
 			'ajaxurl' => admin_url('admin-ajax.php'),
-			'cache' => (CFGP_Options::get('enable_cache', 0) ? '1' : '0')
+			'cache' => (CFGP_Options::get('enable_cache', 0) ? '1' : '0'),
+			'cache_shortcode_url' => ($rest_enabled ? home_url('/wp-json/cf-geoplugin/v1/cache/shortcode/') : null),
+			'cache_banner_url' => ($rest_enabled ? home_url('/wp-json/cf-geoplugin/v1/cache/banner/') : null),
+			'rest_enabled' => ($rest_enabled ? '1' : '0')
 		));
 		// Public Shortcode for the currency converter
 		wp_register_script( CFGP_NAME . '-public-cc', CFGP_ASSETS . '/js/script-cc' . $min . '.js', array('jquery'), (string)CFGP_VERSION );

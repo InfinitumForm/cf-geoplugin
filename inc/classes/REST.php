@@ -136,6 +136,242 @@ class CFGP_REST extends CFGP_Global {
 					return new WP_REST_Response($callback);
 				},
 			), array(), true );
+			
+			// Fix Shortcode cache
+			register_rest_route( $namespace, '/cache/shortcode', array(
+				'methods' => array('GET', 'POST'),
+				'callback' => function( $data )	{
+					
+					$shortcode = trim(CFGP_U::request_string('shortcode'));
+					
+					if( empty($shortcode) || CFGP_U::request_string('action') != 'cf_geoplugin_shortcode_cache') {
+						return new WP_REST_Response(
+							array(
+								'response' => NULL,
+								'error' => true,
+								'error_message' => __('Important parameters are missing!', CFGP_NAME),
+								'status' => 404
+							)
+						);
+					}
+
+				//	if( !(strpos($shortcode, 'cfgeo') !== false) ) echo 'false', exit;
+					
+					$options = unserialize(urldecode(base64_decode(sanitize_text_field(CFGP_U::request_string('options')))));
+					
+					$attr = array();
+					if(!empty($options) && is_array($options))
+					{
+						foreach($options as $key => $value) {
+							if(!is_numeric($key)) {
+								$attr[] = $key . '="' . esc_attr($value) . '"';
+							} else {
+								$attr[] = $value;
+							}
+						}
+					}
+					
+					$attr = (!empty($attr) ? ' ' . join(' ', $attr) : '');
+					
+					if($default = CFGP_U::request_string('default')) {
+						$content = urldecode(base64_decode(sanitize_text_field($default)));
+						$content = trim($defaucontentlt);
+						$default = $content;
+					} else {
+						$default = $content = '';
+					}
+					
+					$attr = str_replace(' cache', '', $attr) . ' no_cache';
+					
+					$return = array();
+					
+					if(empty($default)) {
+						$return['response'] = do_shortcode('[' . $shortcode . $attr . ']');
+					} else {
+						$return['response'] =  do_shortcode('[' . $shortcode . $attr . ']' . $content . '[/' . $shortcode . ']');
+					}
+					
+					return new WP_REST_Response( array_merge(
+						$return,
+						array(
+							'error' => false,
+							'error_message' => '',
+							'status' => 200
+						)
+					) );
+				},
+				
+			), array(), true );
+			
+			
+			// Fix Shortcode cache
+			register_rest_route( $namespace, '/cache/banner', array(
+				'methods' => array('GET', 'POST'),
+				'callback' => function( $data )	{
+					
+					// Stop on the bad request
+					if( CFGP_U::request_string('action') != 'cf_geoplugin_banner_cache' ) {
+						return new WP_REST_Response(
+							array(
+								'response' => NULL,
+								'error' => true,
+								'error_message' => __('Important parameters are missing!', CFGP_NAME),
+								'status' => 404
+							)
+						);
+					}
+					
+					$return=array(
+						'response' => NULL
+					);
+					
+					$setup = array(
+						'id'				=>	CFGP_U::request_int('id'),
+						'posts_per_page'	=>	CFGP_U::request_int('posts_per_page'),
+						'class'				=>	sanitize_text_field(CFGP_U::request_string('class'))
+					);
+					
+					$cont = urldecode(base64_decode(sanitize_text_field(CFGP_U::request_string('default'))));
+					
+					// Stop if ID is not good
+					if( ! (intval($setup['id']) > 0) ) {
+						$return['response'] = $cont;
+						return new WP_REST_Response( array_merge(
+							$return,
+							array(
+								'error' => false,
+								'error_message' => '',
+								'status' => 200
+							)
+						) );
+					}
+					
+					$exact = CFGP_U::request_int('exact');
+					
+					$posts_per_page = absint($setup['posts_per_page']);
+				
+					// Main query
+					$query = array(
+						'post_type'		=> 'cf-geoplugin-banner',
+						'posts_per_page'	=>	$posts_per_page,
+						'post_status'		=> 'publish',
+						'post_in' => array($setup['id']),
+						'force_no_results' => true,
+						'meta_query' => array(),
+						'tax_query' => array()
+					);
+					
+					$country = CFGP_U::api('country_code');
+					$region = CFGP_U::api('region');
+					$city = CFGP_U::api('city');
+					
+					if($country){
+						// Search by meta
+						$query['meta_query'][]=array(
+							'key' => 'cfgp-banner-location-country',
+							'value' => '"'.strtolower($country).'"',
+							'compare' => 'LIKE',
+						);
+						// Search by taxonomy
+						$query['tax_query'][]=array(
+							'taxonomy'	=> 'cf-geoplugin-country',
+							'field'		=> 'slug',
+							'terms'		=> array($country),
+						);
+					}
+					
+					if($region){
+						// Search by meta
+						$query['meta_query'][]=array(
+							'key' => 'cfgp-banner-location-region',
+							'value' => '"'.strtolower(sanitize_title($country)).'"',
+							'compare' => 'LIKE',
+						);
+						// Search by taxonomy
+						$query['tax_query'][]=array(
+							'taxonomy'	=> 'cf-geoplugin-region',
+							'field'		=> 'slug',
+							'terms'		=> array($region),
+						);
+					}
+					
+					if($city){
+						// Search by meta
+						$query['meta_query'][]=array(
+							'key' => 'cfgp-banner-location-city',
+							'value' => '"'.strtolower(sanitize_title($city)).'"',
+							'compare' => 'LIKE',
+						);
+						// Search by taxonomy
+						$query['tax_query'][]=array(
+							'taxonomy'	=> 'cf-geoplugin-city',
+							'field'		=> 'slug',
+							'terms'		=> array($city),
+						);
+					}
+					
+					// Relative or exact search
+					if(!empty($query['meta_query'])){
+						$query['meta_query']['relation'] = ($exact ? 'AND' : 'OR');
+					}
+					
+					// Tax query
+					if(!empty($query['tax_query'])){
+						$query['tax_query']['relation'] = 'OR';
+					}
+					
+					// Search by tax (DEPRECATED)
+					$meta_query = $query['meta_query'];
+					unset($query['meta_query']);
+					
+					$posts = get_posts( $query );
+					
+					// Search by term
+					if(!$posts) {
+						unset($query['tax_query']);
+						$query['meta_query'] = $meta_query;
+						$meta_query = NULL;
+						$posts = get_posts( $query );
+					}
+					
+					$content = '';
+					$save = array();
+					
+					foreach($posts as $post) {
+						$post_id = $post->ID;
+						$post_content = $post->post_content;
+						$post_content = do_shortcode($post_content);
+						$post_content = apply_filters('the_content', $post_content);
+						
+						$save[]=$post_content;
+					}
+					
+					$save = array_filter($save);
+					
+					// Return banner
+					if(!empty($save)){
+						$content = CFGP_U::fragment_caching(trim(join(PHP_EOL, $save)), true);
+					}
+					
+					// Format defaults
+					if(!empty($cont) && empty($content)) {
+						$content = do_shortcode($cont);
+						$content = apply_filters('the_content', $content);
+					}
+					
+					$return['response'] = $content;
+					
+					return new WP_REST_Response( array_merge(
+						$return,
+						array(
+							'error' => false,
+							'error_message' => '',
+							'status' => 200
+						)
+					) );
+				},
+				
+			), array(), true );
 		} );
 	}
 	

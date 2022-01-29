@@ -373,7 +373,7 @@
 				$feed.html(data).removeClass('cfgp-load-rss-feed');
 			});
 		}
-	}( $('.cfgp-load-rss-feed') ));
+	}( $('.cfgp-load-rss-feed') ));	
 	
 	/*
 	 * Select country, region, city
