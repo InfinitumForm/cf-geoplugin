@@ -375,6 +375,7 @@ Please inform us if any of these errors occur via contact form on our website [h
 * Advanced IP address recognition, enhanced support for Apache and Nginx servers
 * Included local libraries for Continents, Countries, Regions and Cities with autocomplete functionality
 * Maximally optimized PHP code with advanced caching algorithms with correct action hooks that allow advanced manipulation for developers
+* Fixed caching via REST
 * Improved SEO redirection with the possibility of import and export in the CSV format
 * Improved shortcodes
 * Licensing issues fixed
@@ -392,6 +393,7 @@ Please inform us if any of these errors occur via contact form on our website [h
 * Advanced IP address recognition, enhanced support for Apache and Nginx servers
 * Included local libraries for Continents, Countries, Regions and Cities with autocomplete functionality
 * Maximally optimized PHP code with advanced caching algorithms with correct action hooks that allow advanced manipulation for developers
+* Fixed caching via REST
 * Improved SEO redirection with the possibility of import and export in the CSV format
 * Improved shortcodes
 * Licensing issues fixed
