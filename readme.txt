@@ -2,7 +2,7 @@
 Contributors: ivijanstefan, creativform
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=creativform@gmail.com
 Tags: geolocation, locator, GeoIP, geo, geotargeting, seo, seo redirect, woocommerce, include exclude, content, remove content, show hide, covid
-Requires at least: 3.0
+Requires at least: 4.5
 Tested up to: 5.9
 Requires PHP: 7.0.0
 Stable tag: 8.0.0
