@@ -154,8 +154,6 @@ class CFGP_REST extends CFGP_Global {
 							)
 						);
 					}
-
-				//	if( !(strpos($shortcode, 'cfgeo') !== false) ) echo 'false', exit;
 					
 					$options = unserialize(urldecode(base64_decode(sanitize_text_field(CFGP_U::request_string('options')))));
 					

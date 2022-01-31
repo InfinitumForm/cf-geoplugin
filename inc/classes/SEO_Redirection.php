@@ -51,7 +51,7 @@ class CFGP_SEO_Redirection extends CFGP_Global
 		 =======================================*/
 	//	/* 01 */ $this->add_action( 'muplugins_loaded',		'seo_redirection', 1);
 	//	/* 02 */ $this->add_action( 'plugins_loaded',		'seo_redirection', 1);
-	//	/* 03 */ $this->add_action( 'send_headers',			'seo_redirection', (PHP_INT_MAX-1));
+		/* 03 */ $this->add_action( 'send_headers',			'seo_redirection', 1);
 		/* 01 */ $this->add_action( 'template_redirect',	'seo_redirection', 1);
 	}
 	
