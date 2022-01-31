@@ -127,7 +127,7 @@ final class CFGP_Init{
 		}
 		
 		// Adding Important REST Endpoints
-		if( apply_filters('cfgp/rest/v1/enable', true) && apply_filters('rest_enabled', true) && apply_filters('rest_jsonp_enabled', true) ) {
+		if( CFGP_U::is_rest_enabled() ) {
 			add_action('cfgp/init/run', array('CFGP_REST', 'rest_api_init_v1_return'));
 		}
 		

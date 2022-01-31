@@ -1783,5 +1783,21 @@ class CFGP_U {
 		return sprintf("%.{$decimals}f ", $bytes / pow(1024, $factor)) . ($size[$factor] ?? end($size));
 	}
 	
+	/**
+	 * Check is WP REST API enabled
+	 */
+	public static function is_rest_enabled()
+	{
+		if( NULL !== ($cache = CFGP_Cache::get('is_rest_enabled')) ) {
+			return $cache;
+		}
+		
+		return CFGP_Cache::set( 'is_rest_enabled', (
+			apply_filters('cfgp/rest/v1/enable', true)
+			&& apply_filters('rest_enabled', true)
+			&& apply_filters('rest_jsonp_enabled', true)
+		) );
+	}
+	
 }
 endif;
