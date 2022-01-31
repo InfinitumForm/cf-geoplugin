@@ -354,17 +354,17 @@ Please inform us if any of these errors occur via contact form on our website [h
 
 1. CF Geo Plugin Available shortcodes and values
 2. CF Google Map shortcodes and setup
-3. Anti Spam Protection setup
-4. CF Geo Plugin global setup
+3. Anti Spam Protection settings
+4. CF Geo Plugin global settings
 5. Debug Mode for CF Geo Plugin and IP Lookup
 6. Adding shortcode in text editor
 7. Admin bar quick links
 8. Example 1
 9. Example 2
 10. Example 3
-11. SEO Redirection
-13. Contact Form 7 setup
-14. Available SEO tags
+11. SEO Redirection settings
+12. Contact Form 7 settings
+13. Available tags
 
 == Changelog ==
 
