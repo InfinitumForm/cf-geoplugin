@@ -236,6 +236,7 @@ class CFGP_Sidebar extends CFGP_Global {
 			'homepage' => true
 		), false, false );
 		if( !$plugin || is_wp_error( $plugin ) ) return;
+		
 		$plugin_updated = version_compare(CFGP_VERSION, $plugin->version, '<');
 	?>
 <li class="cfgp-statistic-separator"></li>

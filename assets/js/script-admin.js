@@ -58,31 +58,35 @@
 	/**
 	 * Fix admin panels
 	**/
-	$('.nav-tab-wrapper-chosen > .nav-tab-wrapper > a.nav-tab').on({
-		'click' : function(e){
-			e.preventDefault();
-			var $this = $(this),
-				$id = $this.attr('data-id'),
-				$href = $this.attr('href'),
-				$container = $this.closest('.nav-tab-wrapper-chosen');
-			
-			if(/https?/.test($href)){
-				window.open($href);
-				return;
-			}
-			
-			$container.find('.cfgp-tab-panel').removeClass('cfgp-tab-panel-active');
-			$container.find('.nav-tab-wrapper > a.nav-tab').removeClass('nav-tab-active');
-			
-			$container.find($id).addClass('cfgp-tab-panel-active').focus();
-			$this.addClass('nav-tab-active').blur();
-			
-			if($container.find($id + ' .nav-tab-wrapper-chosen').length > 0) {
-				$container.find($id + ' .nav-tab-wrapper-chosen .nav-tab-wrapper > a.nav-tab:first-child').trigger('click');
-			}
-			
+	(function(nav_tabs){
+		if( nav_tabs.length > 0 ) {
+			nav_tabs.on({
+				'click' : function(e){
+					e.preventDefault();
+					var $this = $(this),
+						$id = $this.attr('data-id'),
+						$href = $this.attr('href'),
+						$container = $this.closest('.nav-tab-wrapper-chosen');
+					
+					if(/https?/.test($href)){
+						window.open($href);
+						return;
+					}
+					
+					$container.find('.cfgp-tab-panel').removeClass('cfgp-tab-panel-active');
+					$container.find('.nav-tab-wrapper > a.nav-tab').removeClass('nav-tab-active');
+					
+					$container.find($id).addClass('cfgp-tab-panel-active').focus();
+					$this.addClass('nav-tab-active').blur();
+					
+					if($container.find($id + ' .nav-tab-wrapper-chosen').length > 0) {
+						$container.find($id + ' .nav-tab-wrapper-chosen .nav-tab-wrapper > a.nav-tab:first-child').trigger('click');
+					}
+					
+				}
+			});
 		}
-	});
+	}( $('.nav-tab-wrapper-chosen > .nav-tab-wrapper > a.nav-tab') ));
 	
 	/**
 	 * Detect form changing, fix things and prevent lost data
@@ -164,6 +168,31 @@
 			});
 		}
 	}('.chosen-select'));
+	
+	/*
+	 * Chosen initialization for the menus
+	 * @since 8.0.2
+	*/
+	(function( menu ){
+		
+		if(menu.length > 0)
+		{
+			var html = menu.html();
+			setInterval(function(){
+				var new_html = $('#menu-to-edit').html();
+				if( new_html != html ) {
+					$('.chosen-select').chosen({
+						no_results_text: CFGP.label.chosen.not_found,
+						width: "100%",
+						search_contains:true
+					});
+					country_region_city_multiple_form();
+					html = new_html;
+				}
+			}, 500);
+		}
+		
+	}( $('#menu-to-edit') ));
 	
 	// Generate Secret Key
 	(function($$) {

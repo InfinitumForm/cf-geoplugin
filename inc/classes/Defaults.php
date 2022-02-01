@@ -62,6 +62,7 @@ class CFGP_Defaults {
 		'enable_defender'				=>	1,
 		'enable_gmap'					=>	0,
 		'enable_cache'					=>	0,
+		'enable_menus_control'			=>	1,
 		'enable_banner'					=>	1,
 		'enable_cloudflare'				=>	0,
 		'enable_dns_lookup'				=>	0,

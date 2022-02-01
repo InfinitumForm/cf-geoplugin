@@ -46,6 +46,11 @@ final class CFGP_Init{
 			$classes = array_merge($classes, array('CFGP_SEO', 'CFGP_SEO_Redirection'));
 		}
 		
+		// Menus class
+		if(CFGP_Options::get('enable_menus_control',1)){
+			$classes = array_merge($classes, array('CFGP_Menus'));
+		}
+		
 		$classes = apply_filters('cfgp/init/included/classes', $classes);
 		
 		foreach($classes as $class){
@@ -111,6 +116,7 @@ final class CFGP_Init{
 			CFGP_CLASS . '/Plugins.php',				// Plugins class
 			CFGP_CLASS . '/REST.php',					// REST class
 			CFGP_CLASS . '/Widgets.php',				// Widgets class
+			CFGP_CLASS . '/Menus.php',					// Menus class
 			CFGP_CLASS . '/Notifications.php'			// Notifications class
 		));
 		

@@ -1,5 +1,15 @@
 == Changelog ==
 
+= 8.0.2 =
+* Improved JavaScript code
+* Fixed menu items integration and adapted to taxonomy
+* Improved widgets
+
+= 8.0.1 =
+* Added Menu item visibility based on the geo location
+* Fixed form error when getting old data
+* Improved security
+
 = 8.0.0 =
 * **GREAT UPDATE - BACKUP IS REQUIRED**
 * New optimized user experience based on the WordPress standard design with easy access to all information and settings

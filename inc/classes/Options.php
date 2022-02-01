@@ -104,8 +104,7 @@ class CFGP_Options
 		// Collect and set new values
 		if(!empty($name_or_array))
 		{			
-			if(is_array($name_or_array))
-			{
+			if(is_array($name_or_array)) {
 				$name_or_array = array_merge(
 					(!empty($options) ? $options : $default_options),
 					$name_or_array
@@ -118,9 +117,7 @@ class CFGP_Options
 						unset($name_or_array[$key]);
 					}
 				}
-			}
-			else if(!is_numeric($name_or_array) && is_string($name_or_array))
-			{
+			} else if(!is_numeric($name_or_array) && is_string($name_or_array)) {
 				$name = $name_or_array;
 				$name = apply_filters("cfgp/options/set/field/{$name}", $name, $default_options);
 				if(in_array($name, $filter) !== false) {
@@ -158,8 +155,7 @@ class CFGP_Options
 		// Get default keys
 		$filter = apply_filters('cfgp/options/delete/filter', array_keys($default_options));
 		// Remove options
-		if(is_array($name_or_array))
-		{
+		if(is_array($name_or_array)) {
 			$name_or_array = array_map('trim', $name_or_array);
 			
 			foreach($name_or_array as $key) {
@@ -167,9 +163,7 @@ class CFGP_Options
 					unset($options[$key]);
 				}
 			}
-		}
-		else if(isset($options[$name_or_array]) && in_array($name_or_array, $filter) !== false)
-		{
+		} else if(isset($options[$name_or_array]) && in_array($name_or_array, $filter) !== false) {
 			unset($options[$name_or_array]);
 		}
 		// Set defaults
@@ -198,9 +192,10 @@ class CFGP_Options
 		if( is_array($str) )
 		{
 			$data = array();
-			foreach($str as $key => $obj)
-			{
-				$data[$key]=self::sanitize( $obj ); 
+			if(!empty($str)) {
+				foreach($str as $key => $obj) {
+					$data[$key]=self::sanitize( $obj ); 
+				}
 			}
 			return $data;
 		}
@@ -208,18 +203,19 @@ class CFGP_Options
 		{			
 			if(is_numeric($str))
 			{
-				if(intval( $str ) == $str)
+				if(intval( $str ) == $str) {
 					$str = intval( $str );
-				else if(floatval($str) == $str)
+				} else if(floatval($str) == $str) {
 					$str = floatval( $str );
-				else
+				} else {
 					$str = sanitize_text_field( $str );
+				}
 			}
 			else if(filter_var($str, FILTER_VALIDATE_URL) !== false)
 			{
 				return esc_url($str);
 			}
-			else if(preg_match('/([0-9a-z-_.]+@[0-9a-z-_.]+.[a-z]{2,8})/i', $str))
+			else if(preg_match('/^([0-9a-z-_.]+@[0-9a-z-_.]+.[a-z]{2,8})$/i', $str))
 			{
 				$str = trim($str, "&$%#?!.;:,");
 				$str = sanitize_email($str);
@@ -232,7 +228,7 @@ class CFGP_Options
 			}
 			else if(is_bool($str))
 			{
-				$str = $str ? true : false;
+				$str = ($str ? true : false);
 			}
 			else if(!is_bool($str) && in_array(strtolower($str), array('true','false'), true))
 			{
@@ -241,8 +237,7 @@ class CFGP_Options
 			else
 			{
 				$str = html_entity_decode($str);
-				if(preg_match('/<\/?[a-z][\s\S]*>/i', $str))
-				{
+				if(preg_match('/<\/?[a-z][\s\S]*>/i', $str)) {
 					$str = wp_kses($str, wp_kses_allowed_html('post'));
 				} else {
 					$str = sanitize_text_field( $str );

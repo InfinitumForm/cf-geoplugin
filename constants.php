@@ -79,14 +79,12 @@ if ( ! defined( 'CFGP_ALLOW_DEPRECATED_METHODS' ) )			define( 'CFGP_ALLOW_DEPREC
 
 // Current plugin version ( if change, clear also session cache )
 global $cfgp_version;
-$cfgp_version = get_option(CFGP_NAME.'-version');
-if(empty($cfgp_version)){
-	if(function_exists('get_file_data') && $plugin_data = get_file_data( CFGP_FILE, array('Version' => 'Version'), false ))
-		$cfgp_version = $plugin_data['Version'];
-	if(!$cfgp_version && preg_match('/\*[\s\t]+?version:[\s\t]+?([0-9.]+)/i', file_get_contents( CFGP_FILE ), $v))
-		$cfgp_version = $v[1];
-	update_option(CFGP_NAME.'-version', $cfgp_version, true);
-}
+
+if(function_exists('get_file_data') && $plugin_data = get_file_data( CFGP_FILE, array('Version' => 'Version'), false ))
+	$cfgp_version = $plugin_data['Version'];
+if(!$cfgp_version && preg_match('/\*[\s\t]+?version:[\s\t]+?([0-9.]+)/i', file_get_contents( CFGP_FILE ), $v))
+	$cfgp_version = $v[1];
+
 if ( ! defined( 'CFGP_VERSION' ) )		define( 'CFGP_VERSION', $cfgp_version);
 
 // Plugin metabox prefix

@@ -121,15 +121,16 @@ add_filter('cfgp/settings', function($options=array()){
 							'default' => 0
 						),
 						array(
-							'name' => 'measurement_unit',
-							'label' => __('Measurement Unit', CFGP_NAME),
+							'name' => 'enable_menus_control',
+							'label' => __('Enable Navigation Menus Control', CFGP_NAME),
+							'desc' => __('Control the display of menu items via geo location. Enable this feature and go to the navigation settings for further actions.', CFGP_NAME),
 							'type' => 'radio',
 							'options' => array(
-								'km' => __('km', CFGP_NAME),
-								'mile' => __('mile', CFGP_NAME)
+								1 => __('Yes', CFGP_NAME),
+								0 => __('No', CFGP_NAME)
 							),
-							'default' => 'km'
-						),
+							'default' => 1
+						)
 	
 					)
 				),
@@ -148,6 +149,16 @@ add_filter('cfgp/settings', function($options=array()){
 								0 => __('No', CFGP_NAME)
 							),
 							'default' => 0
+						),
+						array(
+							'name' => 'measurement_unit',
+							'label' => __('Measurement Unit', CFGP_NAME),
+							'type' => 'radio',
+							'options' => array(
+								'km' => __('km', CFGP_NAME),
+								'mile' => __('mile', CFGP_NAME)
+							),
+							'default' => 'km'
 						),
 						/*array(
 							'name' => 'enable_flag',

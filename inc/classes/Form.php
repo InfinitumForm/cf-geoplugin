@@ -144,7 +144,14 @@ class CFGP_Form {
 			$attr['country_code'] = '';
 		}
 		
-		if( !empty($selected) ) {
+		if(is_array($selected)){
+			foreach($selected as $select){
+				$new_name = explode('-', $select);
+				$new_name = array_map('ucfirst', $new_name);
+				$new_name = join(' ', $new_name);
+				$options[sanitize_title($select)] = $new_name;
+			}
+		} else if( !empty($selected) ) {
 			$new_name = explode('-', $selected);
 			$new_name = array_map('ucfirst', $new_name);
 			$new_name = join(' ', $new_name);

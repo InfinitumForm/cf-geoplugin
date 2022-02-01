@@ -599,10 +599,16 @@ class CFGP_Admin extends CFGP_Global {
 	}
 	
 	public function register_scripts($page){
-		if(!$this->limit_scripts($page)) return;
+		if( $page != 'nav-menus.php' ) {
+			if(!$this->limit_scripts($page)) return;
+		}
 		
 		wp_enqueue_style( CFGP_NAME . '-choosen', CFGP_ASSETS . '/js/chosen_v1.8.7/chosen.min.css', 1,  '1.8.7' );
 		wp_enqueue_script( CFGP_NAME . '-choosen', CFGP_ASSETS . '/js/chosen_v1.8.7/chosen.jquery.min.js', array('jquery'), '1.8.7', true );
+		
+		if( $page == 'nav-menus.php' ) {
+			wp_enqueue_style( CFGP_NAME . '-menus', CFGP_ASSETS . '/css/style-menus.css', array(CFGP_NAME . '-choosen'), (string)CFGP_VERSION );
+		}
 		
 		wp_enqueue_script( CFGP_NAME . '-admin', CFGP_ASSETS . '/js/script-admin.js', array('jquery', CFGP_NAME . '-choosen'), (string)CFGP_VERSION, true );
 		wp_localize_script(CFGP_NAME . '-admin', 'CFGP', array(
@@ -657,7 +663,7 @@ class CFGP_Admin extends CFGP_Global {
 		));
 		
 		// Load geodata
-		if(CFGP_U::request_string('page') == 'cf-geoplugin-defender'){
+		if(CFGP_U::request_string('page') == 'cf-geoplugin-defender' || $page == 'nav-menus.php'){
 			wp_localize_script(CFGP_NAME . '-admin', 'CFGP_GEODATA', CFGP_Library::all_geodata());
 		}
 	}

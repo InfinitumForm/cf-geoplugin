@@ -1,6 +1,6 @@
 Geo Plugin for WordPress
 
-Copyright 2014-2022 by Ivijan-Stefan Stipic - sepport@cfgeoplugin.com
+Copyright 2014-2022 by Ivijan-Stefan Stipic - info@cfgeoplugin.com
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
