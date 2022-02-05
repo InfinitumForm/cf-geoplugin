@@ -5,7 +5,7 @@ Tags: geolocation, locator, GeoIP, geo, geotargeting, seo, seo redirect, woocomm
 Requires at least: 4.5
 Tested up to: 5.9
 Requires PHP: 7.0.0
-Stable tag: 8.0.2
+Stable tag: 8.0.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -368,6 +368,21 @@ Please inform us if any of these errors occur via contact form on our website [h
 
 == Changelog ==
 
+= 8.0.4 =
+* **IMPORTANT UPDATE**
+* Added support for the custom URL menu item
+* Fixed SEO Redirection CSV upload
+* Fixed Geo Banner display problems
+* Fixed Geo Banner caching problems
+* Fixed absolute path of the PHP files
+* Added support for the IIS servers
+* Added support for the direct debug
+* Improved REST API response
+* Fixed JavaScript console error
+
+= 8.0.3 =
+* Fixed REST API route definition for the public users
+
 = 8.0.2 =
 * Improved JavaScript code
 * Fixed menu items integration and adapted to taxonomy
@@ -395,6 +410,21 @@ Please inform us if any of these errors occur via contact form on our website [h
 * Fixed issues with Siteground integration
 
 == Upgrade Notice ==
+
+= 8.0.4 =
+* **IMPORTANT UPDATE**
+* Added support for the custom URL menu item
+* Fixed SEO Redirection CSV upload
+* Fixed Geo Banner display problems
+* Fixed Geo Banner caching problems
+* Fixed absolute path of the PHP files
+* Added support for the IIS servers
+* Added support for the direct debug
+* Improved REST API response
+* Fixed JavaScript console error
+
+= 8.0.3 =
+* Fixed REST API route definition for the public users
 
 = 8.0.2 =
 * Improved JavaScript code

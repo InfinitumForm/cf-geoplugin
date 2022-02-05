@@ -14,7 +14,6 @@
 					$exact = ($this.attr('data-exact') || ''),
 					$default = ($this.attr('data-default') || ''),
 					$send_ajax = function(){
-						
 						if( CFGP.rest_enabled == 1 ) {
 							return jCFGP.ajax({
 								type: "POST",
@@ -31,7 +30,7 @@
 							//	cache : true,
 								async : true
 							}).done(function(data){
-								if(data.error !== false) {
+								if(data.error === false) {									
 									$this.html(data.response);
 									$this.removeClass('cache').addClass('cached')
 										.removeAttr('data-default')

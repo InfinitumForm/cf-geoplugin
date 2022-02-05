@@ -95,6 +95,7 @@ final class CFGP_Init{
 			CFGP_CLASS . '/Form.php',					// Form class
 			CFGP_CLASS . '/Options.php',				// Plugin option class
 			CFGP_CLASS . '/Global.php',					// Global class
+			CFGP_CLASS . '/Debug.php',					// Plugin debug
 			CFGP_CLASS . '/Admin.php',					// Admin option class
 			CFGP_CLASS . '/Help.php',					// Contextual help class
 			CFGP_CLASS . '/IP.php',						// IP class
@@ -123,6 +124,13 @@ final class CFGP_Init{
 		// Allow deprecated class
 		if( defined('CFGP_ALLOW_DEPRECATED_METHODS') && CFGP_ALLOW_DEPRECATED_METHODS ) {
 			array_push($includes, CFGP_CLASS . '/CF_Geoplugin.php');
+		}
+		
+		// Fix path on the Windows
+		if( '\\' === DIRECTORY_SEPARATOR ) {
+			$includes = array_map(function($path){
+				return str_replace('\\', DIRECTORY_SEPARATOR, $path);
+			}, $includes);
 		}
 		
 		// Include all
@@ -190,7 +198,7 @@ final class CFGP_Init{
 		
 		// Or inside `/wp-content/plugin/cf-geoplugin/languages`
 		if ( ! $loaded ) {
-			$domain_path = CFGP_ROOT . '/languages';
+			$domain_path = CFGP_ROOT . DIRECTORY_SEPARATOR . 'languages';
 			$loaded = load_textdomain( CFGP_NAME, path_join( $domain_path, $mofile ) );
 			
 			// Or load with only locale without prefix
@@ -262,7 +270,7 @@ final class CFGP_Init{
 			
 			// Include important library
 			if(!function_exists('dbDelta')){
-				require_once ABSPATH . '/wp-admin/includes/upgrade.php';
+				require_once ABSPATH . DIRECTORY_SEPARATOR . 'wp-admin' . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'upgrade.php';
 			}
 			
 			// Add activation date
@@ -422,7 +430,7 @@ final class CFGP_Init{
 	 */
 	function disable_plugin_updates( $value ) {
 		if ( isset($value) && is_object($value) ) {
-			$plugin = dirname(CFGP_FILE).'/'.basename(CFGP_FILE);
+			$plugin = dirname(CFGP_FILE) . '/' . basename(CFGP_FILE);
 			if ( isset( $value->response[$plugin] ) ) {
 				unset( $value->response[$plugin] );
 			}

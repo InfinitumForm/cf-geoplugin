@@ -31,7 +31,7 @@ class CFGP_Menus extends CFGP_Global {
 	 */
 	public function field__enble( $item_id, $item ) {
 		
-		if( !in_array($item->type, array('post_type', 'taxonomy')) ){
+		if( !in_array($item->type, array('post_type', 'taxonomy', 'custom')) ){
 			return;
 		}
 ?>
@@ -85,8 +85,21 @@ class CFGP_Menus extends CFGP_Global {
 			'cities' => ($_POST['cfgp_menu_cities'][$menu_item_db_id] ?? array()),
 		) );
 		
-		// Update
-		if( in_array($item['menu-item-type'], array('post_type')) )
+		// Custom links need to be saved as post meta with menu ID
+		if( in_array($item['menu-item-type'], array('custom')) )
+		{
+			if ( $control['enable'] ) {
+				update_post_meta( $menu_item_db_id, 'cfgp_menu_item_control', $control );
+			} else {
+				if( empty($control['countries']) && empty($control['regions']) && empty($control['cities']) ) {
+					delete_post_meta( $menu_item_db_id, 'cfgp_menu_item_control' );
+				} else {
+					update_post_meta( $menu_item_db_id, 'cfgp_menu_item_control', $control );
+				}
+			}
+		}
+		// Post types need to be saved as post meta with page ID
+		else if( in_array($item['menu-item-type'], array('post_type')) )
 		{
 			if ( $control['enable'] ) {
 				update_post_meta( absint($item['menu-item-object-id']), 'cfgp_menu_item_control', $control );
@@ -98,6 +111,7 @@ class CFGP_Menus extends CFGP_Global {
 				}
 			}
 		}
+		// Taxonomy need to be saved as term meta with term ID
 		else if( in_array($item['menu-item-type'], array('taxonomy')) )
 		{
 			if ( $control['enable'] ) {
@@ -121,33 +135,28 @@ class CFGP_Menus extends CFGP_Global {
 			return $items;
 		}
 		
-		// Current country code getted from CF Geo Plugin magic PHP function
-		$country_code = CFGP_U::api('country_code'); // ...or any other return pharam as 'country', 'ip', etc.
-
 		// Iterate over the items to search and destroy
-		if($country_code) {
-			foreach ( $items as $key => $item ) {
-				if( $control = $this->get_values( $item->object_id, NULL, array(
-					'enable' => NULL,
-					'countries' => array(),
-					'regions' => array(),
-					'cities' => array(),
-				), $item->type ) ) {
-					
-					if($control['enable'] == 1) {
-						$protect = false;
-			
-						if( CFGP_U::check_user_by_city($control['cities']) && CFGP_U::check_user_by_region($control['regions']) ) {
-							$protect = true;
-						} else if( CFGP_U::check_user_by_region($control['regions']) ) {
-							$protect = true;
-						} else if( CFGP_U::check_user_by_country($control['countries']) ) {
-							$protect = true;
-						}
-					
-						if( $protect ){
-							unset($items[$key]);
-						}
+		foreach ( $items as $key => $item ) {
+			if( $control = $this->get_values( (in_array($item->type, array('custom')) ? $item->ID : $item->object_id), NULL, array(
+				'enable' => NULL,
+				'countries' => array(),
+				'regions' => array(),
+				'cities' => array(),
+			), $item->type ) ) {
+				
+				if($control['enable'] == 1) {
+					$protect = false;
+		
+					if( CFGP_U::check_user_by_city($control['cities']) && CFGP_U::check_user_by_region($control['regions']) ) {
+						$protect = true;
+					} else if( CFGP_U::check_user_by_region($control['regions']) ) {
+						$protect = true;
+					} else if( CFGP_U::check_user_by_country($control['countries']) ) {
+						$protect = true;
+					}
+				
+					if( $protect ){
+						unset($items[$key]);
 					}
 				}
 			}
@@ -192,7 +201,10 @@ class CFGP_Menus extends CFGP_Global {
 	 */
 	private function get_values($item_id, $option, $default = NULL, $type = 'post_type') {
 		
+		// Post types and custom links are inside post meta
 		$function = 'get_post_meta';
+		
+		// Taxonomy need to be look at term meta
 		if($type == 'taxonomy') {
 			$function = 'get_term_meta';
 		}

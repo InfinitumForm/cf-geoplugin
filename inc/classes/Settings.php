@@ -18,7 +18,7 @@ class CFGP_Settings extends CFGP_Global {
 	
 	function __construct(){
 		if(!class_exists('CFGP_Sidebar')) {
-			include_once CFGP_INC . '/settings/sidebar.php';
+			include_once CFGP_INC . DIRECTORY_SEPARATOR . 'settings' . DIRECTORY_SEPARATOR . 'sidebar.php';
 			CFGP_Sidebar::instance();
 		}
 		$this->add_action( (CFGP_NETWORK_ADMIN ? 'network_admin_menu' : 'admin_menu'), 'add_pages',  11 );

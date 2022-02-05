@@ -13,7 +13,7 @@
  * Plugin Name:       WordPress Geo Plugin
  * Plugin URI:        https://cfgeoplugin.com/
  * Description:       Create Dynamic Content, Banners and Images on Your Website Based On Visitor Geo Location By Using Shortcodes With CF Geo Plugin.
- * Version:           8.0.2
+ * Version:           8.0.4
  * Author:            INFINITUM FORM
  * Author URI:        https://infinitumform.com/
  * License:           GPL-2.0+
@@ -62,12 +62,12 @@ if ( ! defined( 'CFGP_FILE' ) ) define( 'CFGP_FILE', __FILE__ );
 /*
  * Require plugin general setup
  */
-include_once __DIR__ . '/constants.php';
+include_once __DIR__ . DIRECTORY_SEPARATOR . 'constants.php';
 
 /*
  * Requirements
  */
-include_once CFGP_CLASS . '/Requirements.php';
+include_once CFGP_CLASS . DIRECTORY_SEPARATOR . 'Requirements.php';
 
 /*
  * Check requiremant
@@ -77,7 +77,7 @@ if($CFGP_Requirements->passes()) :
 	// Dynamic action
 	do_action('cfgp/before_plugin_setup');
 	// Initializing class
-	include_once CFGP_INC . '/Init.php';
+	include_once CFGP_INC . DIRECTORY_SEPARATOR . 'Init.php';
 	// Register database tables
 	CFGP_Init::wpdb_tables();
 	// Include dependencies

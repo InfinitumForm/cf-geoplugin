@@ -37,6 +37,43 @@ class CFGP_Admin extends CFGP_Global {
 		
 		$this->add_action('wp_network_dashboard_setup', 'register_dashboard_widget');
 		$this->add_action('wp_dashboard_setup', 'register_dashboard_widget');
+		
+		$this->add_filter( 'plugin_action_links_' . plugin_basename(CFGP_FILE), 'plugin_action_links' );
+		$this->add_filter( 'plugin_row_meta', 'cfgp_action_links', 10, 2 );
+	}
+	
+	// WP Hidden links by plugin setting page
+	public function plugin_action_links( $links ) {
+		$mylinks = array( 
+			'settings'	=> sprintf( '<a href="' . self_admin_url( 'admin.php?page=' . CFGP_NAME . '-settings' ) . '" class="cfgeo-plugins-action-settings">%s</a>', esc_html__( 'Settings', CFGP_NAME ) ), 
+			'documentation' => sprintf( '<a href="%s" target="_blank" rel="noopener noreferrer" class="cfgeo-plugins-action-documentation">%s</a>', esc_url( CFGP_STORE . '/documentation/' ), esc_html__( 'Documentation', CFGP_NAME ) ),
+		);
+
+		return array_merge( $links, $mylinks );
+	}
+	
+	// Plugin action links after details
+	public function cfgp_action_links( $links, $file )
+	{
+		if( plugin_basename( CFGP_FILE ) == $file )
+		{
+			$row_meta = array(
+			/*	'cfgp_donate' => sprintf(
+					'<a href="%s" target="_blank" rel="noopener noreferrer" class="cfgeo-plugins-action-donation">%s</a>',
+					esc_url( 'https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=creativform@gmail.com' ),
+					esc_html__( 'Donate', CFGP_NAME )
+				),	*/
+				'cfgp_vote'	=> sprintf(
+					'<a href="%s" target="_blank" rel="noopener noreferrer" class="cfgeo-plugins-action-vote" title="%s"><span style="color:#ffa000; font-size: 15px; bottom: -1px; position: relative;">&#9733;&#9733;&#9733;&#9733;&#9733;</span> %s</a>',
+					esc_url( 'https://wordpress.org/support/plugin/cf-geoplugin/reviews/?filter=5' ),
+					esc_attr__( 'Give us five if you like!', CFGP_NAME ),
+					esc_html__( '5 Stars?', CFGP_NAME )
+				)
+			);
+
+			$links = array_merge( $links, $row_meta );
+		}
+		return $links;
 	}
 	
 	public function register_dashboard_widget(){

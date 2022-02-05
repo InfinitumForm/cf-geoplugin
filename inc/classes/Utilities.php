@@ -1799,5 +1799,36 @@ class CFGP_U {
 		) );
 	}
 	
+	/*
+	 * Get proper date format in users timezone
+	 *
+	 * @param  $format             Default: 'D, F d Y g:i A'
+	 * @param  $timestamp          Current time
+	 *
+	 * @return string
+	 */
+	public function date($format = 'D, F d Y g:i A', $timestamp = NULL){
+		if(empty($timestamp)) {
+			$timestamp = date('r');
+		}
+
+		$timezone = self::api('timezone');
+		
+		if(is_numeric($timestamp) && strlen((string)$timestamp) >= 10){
+			$timestamp = date('r', (int)$timestamp);
+		}
+		
+		$date = new DateTimeImmutable(
+			$timestamp,
+			new DateTimeZone( date_default_timezone_get() )
+		);
+		
+		if($timezone) {
+			$date->setTimeZone( new DateTimeZone( $timezone ) );
+		}
+		
+		return $date->format( $format );
+	}
+	
 }
 endif;

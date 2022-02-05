@@ -514,7 +514,7 @@ class CFGP_Shortcodes extends CFGP_Global {
 			'post_type'		=> 'cf-geoplugin-banner',
 			'posts_per_page'	=>	$posts_per_page,
 			'post_status'		=> 'publish',
-			'post_in' => array($setup['id']),
+			'post__in' => array($setup['id']),
 			'force_no_results' => true,
 			'meta_query' => array(),
 			'tax_query' => array()
@@ -582,13 +582,14 @@ class CFGP_Shortcodes extends CFGP_Global {
 		// Search by tax (DEPRECATED)
 		$meta_query = $query['meta_query'];
 		unset($query['meta_query']);
+
 		$posts = get_posts( $query );
 		
 		// Search by term
 		if(!$posts) {
 			unset($query['tax_query']);
 			$query['meta_query'] = $meta_query;
-			$meta_query = NULL;
+			$meta_query = NULL;			
 			$posts = get_posts( $query );
 		}
 		

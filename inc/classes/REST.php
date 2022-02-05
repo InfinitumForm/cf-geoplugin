@@ -96,6 +96,7 @@ class CFGP_REST extends CFGP_Global {
 				
 				register_rest_route( $namespace, '/return/'.$key, array(
 					'methods' => array('GET', 'POST'),
+					'permission_callback' => '__return_true',
 					'callback' => function( $data ) use ( $value ) {
 						return new WP_REST_Response(array(
 							'response' => $value,
@@ -115,6 +116,7 @@ class CFGP_REST extends CFGP_Global {
 			// Return complete JSON response
 			register_rest_route( $namespace, '/return', array(
 				'methods' => array('GET', 'POST'),
+				'permission_callback' => '__return_true',
 				'callback' => function( $data ) use ( $routes ) {
 			
 					$callback = array_merge(
@@ -140,6 +142,7 @@ class CFGP_REST extends CFGP_Global {
 			// Fix Shortcode cache
 			register_rest_route( $namespace, '/cache/shortcode', array(
 				'methods' => array('GET', 'POST'),
+				'permission_callback' => '__return_true',
 				'callback' => function( $data )	{
 					
 					$shortcode = trim(CFGP_U::request_string('shortcode'));
@@ -205,6 +208,7 @@ class CFGP_REST extends CFGP_Global {
 			// Fix Shortcode cache
 			register_rest_route( $namespace, '/cache/banner', array(
 				'methods' => array('GET', 'POST'),
+				'permission_callback' => '__return_true',
 				'callback' => function( $data )	{
 					
 					// Stop on the bad request
@@ -253,7 +257,7 @@ class CFGP_REST extends CFGP_Global {
 						'post_type'		=> 'cf-geoplugin-banner',
 						'posts_per_page'	=>	$posts_per_page,
 						'post_status'		=> 'publish',
-						'post_in' => array($setup['id']),
+						'post__in' => array($setup['id']),
 						'force_no_results' => true,
 						'meta_query' => array(),
 						'tax_query' => array()

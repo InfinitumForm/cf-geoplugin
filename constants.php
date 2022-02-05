@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
 if ( strrpos(WP_CONTENT_DIR, '/wp-content/', 1) !== false) {
     $WP_ADMIN_DIR = substr(WP_CONTENT_DIR, 0, -10) . 'wp-admin';
 } else {
-    $WP_ADMIN_DIR = substr(WP_CONTENT_DIR, 0, -11) . '/wp-admin';
+    $WP_ADMIN_DIR = substr(WP_CONTENT_DIR, 0, -11) . DIRECTORY_SEPARATOR . 'wp-admin';
 }
 if (!defined('WP_ADMIN_DIR')) define('WP_ADMIN_DIR', $WP_ADMIN_DIR);
 
@@ -24,22 +24,22 @@ if ( ! defined( 'CFGP_STORE' ) )		define( 'CFGP_STORE', 'https://cfgeoplugin.com
 if ( ! defined( 'CFGP_STORE_CODE' ) )	define( 'CFGP_STORE_CODE', 'YR5pv3FU8l78v3N'); // DON'T TOUCH!!!
 
 // Plugin root
-if ( ! defined( 'CFGP_ROOT' ) )			define( 'CFGP_ROOT', rtrim(plugin_dir_path(CFGP_FILE), '/') );
+if ( ! defined( 'CFGP_ROOT' ) )			define( 'CFGP_ROOT', rtrim(plugin_dir_path(CFGP_FILE), '/\\') );
 
 // Shell
-if ( ! defined( 'CFGP_SHELL' ) )		define( 'CFGP_SHELL', CFGP_ROOT . '/shell' );
+if ( ! defined( 'CFGP_SHELL' ) )		define( 'CFGP_SHELL', CFGP_ROOT . DIRECTORY_SEPARATOR . 'shell' );
 
 // Library
-if ( ! defined( 'CFGP_LIBRARY' ) )		define( 'CFGP_LIBRARY', CFGP_ROOT . '/library' );
+if ( ! defined( 'CFGP_LIBRARY' ) )		define( 'CFGP_LIBRARY', CFGP_ROOT . DIRECTORY_SEPARATOR . 'library' );
 
 // Includes directory
-if ( ! defined( 'CFGP_INC' ) )			define( 'CFGP_INC', CFGP_ROOT . '/inc' );
+if ( ! defined( 'CFGP_INC' ) )			define( 'CFGP_INC', CFGP_ROOT . DIRECTORY_SEPARATOR . 'inc' );
 
 // Classes directory
-if ( ! defined( 'CFGP_CLASS' ) )		define( 'CFGP_CLASS', CFGP_INC . '/classes' );
+if ( ! defined( 'CFGP_CLASS' ) )		define( 'CFGP_CLASS', CFGP_INC . DIRECTORY_SEPARATOR . 'classes' );
 
 // Plugins directory
-if ( ! defined( 'CFGP_PLUGINS' ) )		define( 'CFGP_PLUGINS', CFGP_INC . '/plugins' );
+if ( ! defined( 'CFGP_PLUGINS' ) )		define( 'CFGP_PLUGINS', CFGP_INC . DIRECTORY_SEPARATOR . 'plugins' );
 
 // Limit ( for the information purposes )
 if ( ! defined( 'CFGP_LIMIT' ) )				define( 'CFGP_LIMIT', 1000);
@@ -120,10 +120,10 @@ if( ! defined( 'CFGP_MULTISITE' ) )
 {
     // New safer approach
     if( !function_exists( 'is_plugin_active_for_network' ) )
-		include WP_ADMIN_DIR . '/includes/plugin.php';
+		include WP_ADMIN_DIR . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'plugin.php';
 
-	if(file_exists(WP_ADMIN_DIR . '/includes/plugin.php'))
-		define( 'CFGP_MULTISITE', is_plugin_active_for_network( CFGP_ROOT . '/cf-geoplugin.php' ) );
+	if(file_exists(WP_ADMIN_DIR . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'plugin.php'))
+		define( 'CFGP_MULTISITE', is_plugin_active_for_network( CFGP_ROOT . DIRECTORY_SEPARATOR . 'cf-geoplugin.php' ) );
 }
 if( ! defined( 'CFGP_MULTISITE' ) ) define( 'CFGP_MULTISITE', false );
 

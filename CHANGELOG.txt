@@ -1,5 +1,20 @@
 == Changelog ==
 
+= 8.0.4 =
+* **IMPORTANT UPDATE**
+* Added support for the custom URL menu item
+* Fixed SEO Redirection CSV upload
+* Fixed Geo Banner display problems
+* Fixed Geo Banner caching problems
+* Fixed absolute path of the PHP files
+* Added support for the IIS servers
+* Added support for the direct debug
+* Improved REST API response
+* Fixed JavaScript console error
+
+= 8.0.3 =
+* Fixed REST API route definition for the public users
+
 = 8.0.2 =
 * Improved JavaScript code
 * Fixed menu items integration and adapted to taxonomy
