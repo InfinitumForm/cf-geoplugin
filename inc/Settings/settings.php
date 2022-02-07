@@ -20,7 +20,7 @@ $options = apply_filters('cfgp/settings', array());
 
     		<div id="post-body">
     			<div id="post-body-content">
-            <form method="post" action="<?php echo admin_url('/admin.php?page=cf-geoplugin-settings&save_settings=true&nonce='.wp_create_nonce(CFGP_NAME.'-save-settings')); ?>">
+            <form method="post" action="<?php echo CFGP_U::admin_url('admin.php?page=cf-geoplugin-settings&save_settings=true&nonce='.wp_create_nonce(CFGP_NAME.'-save-settings')); ?>">
   		        <div class="<?php echo CFGP_NAME; ?>-sticky-button"><?php submit_button(); ?></div>
                 <div class="nav-tab-wrapper-chosen">
                     <nav class="nav-tab-wrapper">

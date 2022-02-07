@@ -46,6 +46,68 @@ if (!class_exists('CFGP_SEO_Table')):
 	
 		}
 		
+		public static function get_filter_links() {
+			global $wpdb;
+			$count = [
+				'enabled' => 0,
+				'disabled' => 0
+			];
+			
+			$filter = CFGP_U::request_string('filter', NULL);
+			
+			$query = "SELECT COUNT(*) FROM `{$wpdb->cfgp_seo_redirection}`";
+			
+			/* -- Search -- */
+			if(wp_verify_nonce(($_GET['_wpnonce'] ?? NULL), CFGP_NAME.'-seo-search') && ($s = CFGP_U::request_string('s', ''))){
+				$query.=$wpdb->prepare(
+					" WHERE (
+						`{$wpdb->cfgp_seo_redirection}`.`url` LIKE %s 
+						OR `{$wpdb->cfgp_seo_redirection}`.`country` LIKE %s 
+						OR `{$wpdb->cfgp_seo_redirection}`.`region` LIKE %s 
+						OR `{$wpdb->cfgp_seo_redirection}`.`city` LIKE %s 
+						OR `{$wpdb->cfgp_seo_redirection}`.`postcode` LIKE %s 
+						OR `{$wpdb->cfgp_seo_redirection}`.`http_code` = %d
+					) ",
+					'%'.$wpdb->esc_like($s).'%',
+					'%'.$wpdb->esc_like($s).'%',
+					'%'.$wpdb->esc_like($s).'%',
+					'%'.$wpdb->esc_like($s).'%',
+					'%'.$wpdb->esc_like($s).'%',
+					$s
+				);
+				$count['enabled'] = absint( $wpdb->get_var( $query . " AND `{$wpdb->cfgp_seo_redirection}`.`active` = 1" ) );
+				$count['disabled'] = absint( $wpdb->get_var( $query . " AND `{$wpdb->cfgp_seo_redirection}`.`active` = 0" ) );
+			} else {			
+				$count['enabled'] = absint( $wpdb->get_var( $query . " WHERE `{$wpdb->cfgp_seo_redirection}`.`active` = 1" ) );
+				$count['disabled'] = absint( $wpdb->get_var( $query . " WHERE `{$wpdb->cfgp_seo_redirection}`.`active` = 0" ) );
+			}
+			
+			if($count['enabled']) :
+			?>
+			<ul class="subsubsub">
+				<li class="all"><a href="<?php echo add_query_arg('filter',NULL); ?>"<?php echo add_query_arg('filter','enabled'); ?>"<?php
+					if($filter == NULL) {
+						echo ' class="current" aria-current="page"';
+					}
+				?>><?php _e('All', CFGP_NAME); ?> <span class="count">(<?php echo ($count['enabled']+$count['disabled']); ?>)</span></a> |</li>
+				<li class="enabled"><a href="<?php echo add_query_arg('filter','enabled'); ?>"<?php
+					if($filter == 'enabled') {
+						echo ' class="current" aria-current="page"';
+					}
+				?>><?php _e('Enabled', CFGP_NAME); ?> <span class="count">(<?php echo $count['enabled']; ?>)</span></a> 
+				<?php if($count['disabled']) : ?>|</li>
+				<li class="disabled"><a href="<?php echo add_query_arg('filter','disabled'); ?>"<?php echo add_query_arg('filter','enabled'); ?>"<?php
+					if($filter == 'disabled') {
+						echo ' class="current" aria-current="page"';
+					}
+				?>><?php _e('Disabled', CFGP_NAME); ?> <span class="count">(<?php echo $count['disabled']; ?>)</span></a></li>
+				<?php else : ?>
+				</li>
+				<?php endif; ?>
+			</ul>
+			<?php endif;
+		}
+		
 		public function process_bulk_action() {
 
 			// security check!
@@ -129,10 +191,22 @@ if (!class_exists('CFGP_SEO_Table')):
 				global $wpdb;
 				$exists = CFGP_U::has_seo_redirection();
 				echo '<div class="alignleft actions bulkactions">';
-					printf('<a aria="button" href="%s" class="button"><i class="fa fa-upload"></i> %s</a> ', admin_url('admin.php?page='.CFGP_U::request_string('page').'&action=import&nonce='.wp_create_nonce(CFGP_NAME.'-seo-import-csv')), __('Import From CSV', CFGP_NAME));
+				
+					$seo_import_csv = add_query_arg(array(
+						'action' => 'import',
+						'nonce' => wp_create_nonce(CFGP_NAME.'-seo-import-csv')
+					));
+				
+					printf('<a aria="button" href="%s" class="button"><i class="fa fa-upload"></i> %s</a> ', $seo_import_csv, __('Import From CSV', CFGP_NAME));
 					
 					if($exists){
-						printf('<a aria="button" href="%s" class="button"><i class="fa fa-table"></i> %s</a> ', admin_url('admin.php?page='.CFGP_U::request_string('page').'&action=export&nonce='.wp_create_nonce(CFGP_NAME.'-seo-export-csv')), __('Export CSV', CFGP_NAME));
+						
+						$seo_export_csv = add_query_arg(array(
+							'action' => 'export',
+							'nonce' => wp_create_nonce(CFGP_NAME.'-seo-export-csv')
+						));
+						
+						printf('<a aria="button" href="%s" class="button"><i class="fa fa-table"></i> %s</a> ', $seo_export_csv, __('Export CSV', CFGP_NAME));
 					}
 					
 				echo '</div>';
@@ -205,7 +279,7 @@ if (!class_exists('CFGP_SEO_Table')):
             $query = "SELECT * FROM `{$wpdb->cfgp_seo_redirection}`";
 			
 			/* -- Search -- */
-			if($s = CFGP_U::request_string('s', '')){
+			if(wp_verify_nonce(($_GET['_wpnonce'] ?? NULL), CFGP_NAME.'-seo-search') && ($s = CFGP_U::request_string('s', ''))){
 				$query.=$wpdb->prepare(
 					" WHERE (
 						`{$wpdb->cfgp_seo_redirection}`.`url` LIKE %s 
@@ -222,6 +296,24 @@ if (!class_exists('CFGP_SEO_Table')):
 					'%'.$wpdb->esc_like($s).'%',
 					$s
 				);
+				
+				if($filter = CFGP_U::request_string('filter', NULL))
+				{
+					if($filter == 'enabled') {
+						$query.= " AND `{$wpdb->cfgp_seo_redirection}`.`active` = 1";
+					} else if($filter == 'disabled') {
+						$query.= " AND `{$wpdb->cfgp_seo_redirection}`.`active` = 0";
+					}
+				}
+			} else {
+				if($filter = CFGP_U::request_string('filter', NULL))
+				{
+					if($filter == 'enabled') {
+						$query.= " WHERE `{$wpdb->cfgp_seo_redirection}`.`active` = 1";
+					} else if($filter == 'disabled') {
+						$query.= " WHERE `{$wpdb->cfgp_seo_redirection}`.`active` = 0";
+					}
+				}
 			}
 
             /* -- Ordering parameters -- */
@@ -325,10 +417,20 @@ if (!class_exists('CFGP_SEO_Table')):
                         if (in_array($column_name, $hidden)) $style.= 'display:none;';
 						$style.='"';
                         $attributes = $class . $style;
-											
-                        //edit link
-                        $edit_link = admin_url('admin.php?page='.esc_attr(CFGP_U::request_string('page')).'&action=edit&id=' . (int)$rec->ID . '&nonce='.wp_create_nonce(CFGP_NAME.'-seo-edit'));
-						$delete_link = admin_url('admin.php?page='.esc_attr(CFGP_U::request_string('page')).'&action=delete&id=' . (int)$rec->ID . '&nonce='.wp_create_nonce(CFGP_NAME.'-seo-delete'));
+						
+						//edit link
+						$edit_link = add_query_arg(array(
+							'action' => 'edit',
+							'id' => (int)$rec->ID,
+							'nonce' => wp_create_nonce(CFGP_NAME.'-seo-edit')
+						));
+						
+						// Delete link
+						$delete_link = add_query_arg(array(
+							'action' => 'delete',
+							'id' => (int)$rec->ID,
+							'nonce' => wp_create_nonce(CFGP_NAME.'-seo-delete')
+						));
 
                         //Display the cell
                         switch ($column_name)

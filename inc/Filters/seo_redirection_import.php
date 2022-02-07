@@ -31,14 +31,14 @@ add_action('cfgp/page/seo_redirection/form/import', function(){ ?>
             <dd><?php _e('Redirect only once - Optional, accept integer (1-Enable, 0-Disable)', CFGP_NAME); ?></dd>
         </dl>
         
-        <p class="submit"><button type="button" class="button button-primary button-cfgeo-seo-import-csv" data-label="<i class='fa fa-upload'></i> <?php esc_attr_e('Click Here to Upload CSV', CFGP_NAME); ?>" data-confirm="<?php esc_attr_e('Are you sure? Once you start the import you will not be able to stop it. You must know that this operation deletes all existing data and replaces it with new one. We strongly recommend that you export the existing data first and then continue with this operation.', CFGP_NAME); ?>" data-nonce="<?php echo CFGP_U::request_string('nonce'); ?>" data-callback="<?php echo admin_url('admin.php?page=cf-geoplugin-seo-redirection'); ?>"><i class="fa fa-upload"></i> <?php _e('Click Here to Upload CSV', CFGP_NAME); ?></button> <?php echo (CFGP_U::has_seo_redirection() ? sprintf('<a aria="button" href="%s" class="button" style="float:right"><i class="fa fa-table"></i> %s</a> ', admin_url('admin.php?page='.CFGP_U::request_string('page').'&action=export&nonce='.wp_create_nonce(CFGP_NAME.'-seo-export-csv')), __('Export CSV', CFGP_NAME)) : ''); ?></p>
+        <p class="submit"><button type="button" class="button button-primary button-cfgeo-seo-import-csv" data-label="<i class='fa fa-upload'></i> <?php esc_attr_e('Click Here to Upload CSV', CFGP_NAME); ?>" data-confirm="<?php esc_attr_e('Are you sure? Once you start the import you will not be able to stop it. You must know that this operation deletes all existing data and replaces it with new one. We strongly recommend that you export the existing data first and then continue with this operation.', CFGP_NAME); ?>" data-nonce="<?php echo CFGP_U::request_string('nonce'); ?>" data-callback="<?php echo CFGP_U::admin_url('admin.php?page=cf-geoplugin-seo-redirection'); ?>"><i class="fa fa-upload"></i> <?php _e('Click Here to Upload CSV', CFGP_NAME); ?></button> <?php echo (CFGP_U::has_seo_redirection() ? sprintf('<a aria="button" href="%s" class="button" style="float:right"><i class="fa fa-table"></i> %s</a> ', CFGP_U::admin_url('/admin.php?page=cf-geoplugin-seo-redirection&action=export&nonce='.wp_create_nonce(CFGP_NAME.'-seo-export-csv')), __('Export CSV', CFGP_NAME)) : ''); ?></p>
     </div>
 </div>
 <?php });
 
 
 add_action('cfgp/page/seo_redirection/import', function(){ ?>
-<div class="wrap wrap-cfgp" id="<?php echo $_GET['page']; ?>">
+<div class="wrap wrap-cfgp" id="<?php echo sanitize_title($_GET['page']); ?>">
 	<h1 class="wp-heading-inline"><i class="fa fa-location-arrow"></i> <?php _e('SEO redirection - Upload CSV file', CFGP_NAME);?></h1>
     <hr class="wp-header-end">
     <div id="post">

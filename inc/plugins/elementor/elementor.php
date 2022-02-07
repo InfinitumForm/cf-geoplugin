@@ -85,7 +85,7 @@ class CFGP__Plugin__elementor extends CFGP_Global
 				if(file_exists($file))
 				{
 					// Load widget
-					include_once $file;
+					CFGP_U::include_once($file);
 					// Translate class name
 					$class_name = str_replace('.php', '', $filename);
 					$class_name = explode('-', $class_name);
@@ -126,7 +126,7 @@ class CFGP__Plugin__elementor extends CFGP_Global
 				// Load widget
 				if(file_exists($file))
 				{
-					include_once $file;
+					CFGP_U::include_once($file);
 					// Translate class name
 					$class_name = str_replace('.php', '', $filename);
 					$class_name = explode('-', $class_name);

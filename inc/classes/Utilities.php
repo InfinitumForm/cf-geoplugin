@@ -339,7 +339,7 @@ class CFGP_U {
 		
         if ( is_admin() ) {
 			if ( ! function_exists( 'plugins_api' ) ) {
-				include_once( WP_ADMIN_DIR . '/includes/plugin-install.php' );
+				self::include_once( WP_ADMIN_DIR . '/includes/plugin-install.php' );
 			}
 			/** Prepare our query */
 			//donate_link
@@ -739,7 +739,7 @@ class CFGP_U {
 		if(empty($is_editor)) {
 			if (version_compare(get_bloginfo( 'version' ), '5.0', '>=')) {
 				if(!function_exists('get_current_screen')){
-					include_once ABSPATH  . '/wp-admin/includes/screen.php';
+					self::include_once(ABSPATH  . '/wp-admin/includes/screen.php');
 				}
 				$get_current_screen = get_current_screen();
 				if(is_callable(array($get_current_screen, 'is_block_editor')) && method_exists($get_current_screen, 'is_block_editor')) {
@@ -1638,7 +1638,7 @@ class CFGP_U {
 	public static function is_plugin_active($plugin)
 	{
 		if(!function_exists('is_plugin_active')){
-			include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+			self::include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 		}
 		
 		return is_plugin_active($plugin);
@@ -1829,6 +1829,63 @@ class CFGP_U {
 		
 		return $date->format( $format );
 	}
+
+	/*
+	 * The include_once statement includes and evaluates the specified file during the execution of the script.
+	 *
+	 * @param  $path
+	 *
+	 * @return bool
+	 */
+	public static function include_once( $path ) {
+		if( ! is_array($path) ) {
+			$path = [$path];
+		}
+
+		if( '\\' === DIRECTORY_SEPARATOR ) {
+			$includes = array_map(function($path){
+				return str_replace('/', DIRECTORY_SEPARATOR, $path);
+			}, $includes);
+		}
+		
+		$i = 0;
+		foreach($path as $include){
+			if( file_exists($include) ) {
+				include_once $include;
+				++$i;
+			}
+		}
+		
+		return ($i > 0);
+	}
 	
+	/*
+	 * The include expression includes and evaluates the specified file.
+	 *
+	 * @param  $path
+	 *
+	 * @return bool
+	 */
+	public static function include( $path ) {
+		if( ! is_array($path) ) {
+			$path = [$path];
+		}
+
+		if( '\\' === DIRECTORY_SEPARATOR ) {
+			$includes = array_map(function($path){
+				return str_replace('/', DIRECTORY_SEPARATOR, $path);
+			}, $includes);
+		}
+		
+		$i = 0;
+		foreach($path as $include){
+			if( file_exists($include) ) {
+				include $include;
+				++$i;
+			}
+		}
+		
+		return ($i > 0);
+	}
 }
 endif;

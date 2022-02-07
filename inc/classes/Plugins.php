@@ -127,7 +127,7 @@ if(!class_exists('CFGP_Plugins')) :
 							if(class_exists($plugin_class) && method_exists($plugin_class, 'instance')) {
 								$plugin_class::instance();
 							} else {
-								include_once $addon;
+								CFGP_U::include_once($addon);
 								if(class_exists($plugin_class) && method_exists($plugin_class, 'instance')) {
 									$plugin_class::instance();
 								}

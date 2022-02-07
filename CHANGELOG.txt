@@ -1,5 +1,14 @@
 == Changelog ==
 
+= 8.0.5 =
+* Added today's course at the topbar
+* Improved SEO redirection settings table
+* Improved file includes
+* Fixed plugin page URL's
+* Fixed plugin widgets
+* Improved global UI and UX
+* Fixed previous bugs
+
 = 8.0.4 =
 * **IMPORTANT UPDATE**
 * Added support for the custom URL menu item

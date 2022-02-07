@@ -129,7 +129,7 @@ final class CFGP_Init{
 		// Fix path on the Windows
 		if( '\\' === DIRECTORY_SEPARATOR ) {
 			$includes = array_map(function($path){
-				return str_replace('\\', DIRECTORY_SEPARATOR, $path);
+				return str_replace('/', DIRECTORY_SEPARATOR, $path);
 			}, $includes);
 		}
 		
@@ -296,7 +296,7 @@ final class CFGP_Init{
 				if($wpdb->get_var( "SHOW TABLES LIKE '{$wpdb->cfgp_rest_access_token}'" ) != $wpdb->cfgp_rest_access_token) 
 				{
 					dbDelta("
-					CREATE TABLE {$wpdb->cfgp_rest_access_token} (
+					CREATE TABLE IF NOT EXISTS {$wpdb->cfgp_rest_access_token} (
 						ID bigint(20) NOT NULL AUTO_INCREMENT,
 						`secret_key` varchar(45) NOT NULL,
 						`token` varchar(65) NOT NULL,
@@ -317,7 +317,7 @@ final class CFGP_Init{
 				if($wpdb->get_var( "SHOW TABLES LIKE '{$wpdb->cfgp_seo_redirection}'" ) != $wpdb->cfgp_seo_redirection) 
 				{
 					dbDelta("
-					CREATE TABLE {$wpdb->cfgp_seo_redirection} (
+					CREATE TABLE IF NOT EXISTS {$wpdb->cfgp_seo_redirection} (
 						ID int(11) NOT NULL AUTO_INCREMENT,
 						`only_once` tinyint(1) NOT NULL DEFAULT 0,
 						`country` varchar(100) DEFAULT NULL,

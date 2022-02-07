@@ -23,7 +23,7 @@ class CFGP_Sidebar extends CFGP_Global {
 		
 		$this->add_action('cfgp/page/main_page/sidebar', 'rss_feed', 10);
 	//	$this->add_action('cfgp/page/defender/sidebar', 'rss_feed', 10);
-	//	$this->add_action('cfgp/page/google_map/sidebar', 'rss_feed', 10);
+		$this->add_action('cfgp/page/google_map/sidebar', 'rss_feed', 10);
 		$this->add_action('cfgp/page/seo_redirection/sidebar', 'rss_feed', 10);
 		$this->add_action('cfgp/page/debug/sidebar', 'rss_feed', 10);
 		$this->add_action('cfgp/page/settings/sidebar', 'rss_feed', 10);

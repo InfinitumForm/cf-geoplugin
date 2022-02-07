@@ -179,6 +179,8 @@ class CFGP_Global {
 		return add_meta_box($id, $title, $callback, $screen, $context, $priority, $callback_args);
 	}
 	
+	
+	
 	/* 
 	 * Instance
 	 * @verson    1.0.0

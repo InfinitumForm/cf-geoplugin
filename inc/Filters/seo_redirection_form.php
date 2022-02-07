@@ -107,7 +107,7 @@ add_action('cfgp/page/seo_redirection/form/content', function(){
                 </tr>
             </tbody>
         </table>
-        <p class="submit"><button type="submit" class="button button-primary"><?php _e('Save Redirection', CFGP_NAME); ?></button><?php if($ID): ?> <a href="<?php echo admin_url('admin.php?page='.CFGP_NAME.'-seo-redirection'); ?>" class="button" style="float:right"><?php _e('Go back to list', CFGP_NAME); ?></a><?php endif; ?></p>
+        <p class="submit"><button type="submit" class="button button-primary"><?php _e('Save Redirection', CFGP_NAME); ?></button><?php if($ID): ?> <a href="<?php echo CFGP_U::admin_url('admin.php?page='.CFGP_NAME.'-seo-redirection'); ?>" class="button" style="float:right"><?php _e('Go back to list', CFGP_NAME); ?></a><?php endif; ?></p>
     </div>
 </div>
 <?php });
@@ -115,7 +115,7 @@ add_action('cfgp/page/seo_redirection/form/content', function(){
 add_action('cfgp/page/seo_redirection/form', function(){
 	$action = CFGP_U::request_string('action');	
 ?>
-<div class="wrap wrap-cfgp" id="<?php echo $_GET['page']; ?>">
+<div class="wrap wrap-cfgp" id="<?php echo sanitize_title($_GET['page']); ?>">
 	<h1 class="wp-heading-inline"><i class="fa fa-location-arrow"></i> <?php
 		if($action == 'edit') {
 			_e('Edit SEO redirection', CFGP_NAME);
@@ -127,7 +127,7 @@ add_action('cfgp/page/seo_redirection/form', function(){
 		if($action == 'edit') {
 			printf(
 				'<a href="%s" class="page-title-action button-cfgeo-seo-new"><i class="fa fa-plus"></i> %s</a> ',
-				admin_url('admin.php?page='.CFGP_U::request_string('page').'&action=new&nonce='.wp_create_nonce(CFGP_NAME.'-seo-new')),
+				CFGP_U::admin_url('admin.php?page=cf-geoplugin-seo-redirection&action=new&nonce='.wp_create_nonce(CFGP_NAME.'-seo-new')),
 				__('New SEO redirection', CFGP_NAME)
 			);
 		}

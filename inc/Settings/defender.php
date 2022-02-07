@@ -93,12 +93,12 @@ if(!empty($block_city) && !is_array($block_city) && preg_match('/\]|\[/', $block
 
         	<div id="post-body">
             	<div id="post-body-content">
-					<form method="post" action="<?php echo admin_url('/admin.php?page=cf-geoplugin-defender&save_defender=true&nonce='.wp_create_nonce(CFGP_NAME.'-save-defender')); ?>">
+					<form method="post" action="<?php echo CFGP_U::admin_url('admin.php?page=cf-geoplugin-defender&save_defender=true&nonce='.wp_create_nonce(CFGP_NAME.'-save-defender')); ?>">
                     	<div class="nav-tab-wrapper-chosen">
                         	<nav class="nav-tab-wrapper">
                             	<a href="javascript:void(0);" class="nav-tab nav-tab-active" data-id="#defender-settings"><i class="fa fa-wrench"></i><span class="label"> <?php _e('General Defender Settings', CFGP_NAME); ?></span></a>
                                 <a href="javascript:void(0);" class="nav-tab" data-id="#defender-settings-page"><i class="fa fa-file"></i><span class="label"> <?php _e('Defender page', CFGP_NAME); ?></span></a>
-                                <a href="<?php echo admin_url('/admin.php?page=cf-geoplugin-defender&preview=true'); ?>" class="nav-tab" target="_blank"><i class="fa fa-desktop"></i><span class="label"> <?php _e('Preview', CFGP_NAME); ?></span></a>
+                                <a href="<?php echo CFGP_U::admin_url('admin.php?page=cf-geoplugin-defender&preview=true'); ?>" class="nav-tab" target="_blank"><i class="fa fa-desktop"></i><span class="label"> <?php _e('Preview', CFGP_NAME); ?></span></a>
                             </nav>
                             
                             <div class="cfgp-tab-panel cfgp-tab-panel-active" id="defender-settings">

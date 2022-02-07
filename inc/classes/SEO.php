@@ -32,7 +32,7 @@ class CFGP_SEO extends CFGP_Global {
 			{
 				// Parse CSV
 				if(!class_exists('CFGP_CSV')) {
-					include_once CFGP_CLASS . DIRECTORY_SEPARATOR . 'CSV.php';
+					CFGP_U::include_once(CFGP_CLASS . '/CSV.php');
 				}
 				
 				if($csv = CFGP_CSV::import($url ,false, ','))

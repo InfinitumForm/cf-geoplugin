@@ -422,21 +422,29 @@ class CFGP_Admin extends CFGP_Global {
 	color: #a7aaad;
     color: rgba(240, 246, 252, 0.6);
 }
-
 #wpadminbar .ab-top-menu .menupop .<?php echo CFGP_NAME . '.' . CFGP_NAME . '-admin-bar-activate-link'; ?> .ab-item > .cfgp-ab-icon:before{
 	content: '\f155';
 }
-
 #wpadminbar .ab-top-menu .menupop.<?php echo CFGP_NAME . '.' . CFGP_NAME . '-admin-bar-link'; ?>:hover .ab-item > .cfgp-ab-icon:before,
 #wpadminbar .ab-top-menu .menupop.<?php echo CFGP_NAME . '.' . CFGP_NAME . '-admin-bar-link'; ?>.hover .ab-item > .cfgp-ab-icon:before {
 	color: #72aee6;
+}
+#wpadminbar .ab-top-menu .cf-geoplugin-toolbar-course,
+#wpadminbar .ab-top-menu .cf-geoplugin-toolbar-course:focus,
+#wpadminbar .ab-top-menu .cf-geoplugin-toolbar-course:hover,
+#wpadminbar:not(.mobile) .ab-top-menu > li.cf-geoplugin-toolbar-course > .ab-item:focus,
+#wpadminbar.nojq .quicklinks .ab-top-menu > li.cf-geoplugin-toolbar-course > .ab-item:focus,
+#wpadminbar:not(.mobile) .ab-top-menu > li.cf-geoplugin-toolbar-course:hover > .ab-item,
+#wpadminbar .ab-top-menu > li.cf-geoplugin-toolbar-course.hover > .ab-item{
+	background: #443333;
+	color: rgba(240, 246, 252, 1);
 }
 /* ]]> */
 </style><?php endif; }
 	
 	// Add admin top bar menu pages
 	public function admin_bar_menu($wp_admin_bar) {
-		if ( !(current_user_can( 'update_plugins' ) && current_user_can( 'delete_plugins' ) && current_user_can( 'install_plugins' )) ) {
+		if ( ! (current_user_can( 'administrator' ) || current_user_can( 'editor' )) ){
 			return $wp_admin_bar;
 		}
 		
@@ -556,6 +564,32 @@ class CFGP_Admin extends CFGP_Global {
 					'title' => __('Activate Unlimited', CFGP_NAME),
 				)
 			));
+		}
+		
+		
+		// Display Currency Converter in the topbar
+		if(
+			apply_filters('cfgp/topbar/currency/display', true)
+			&& ($currency_converter = CFGP_U::api('currency_converter'))
+		)
+		{			
+			$money = apply_filters(
+				'cfgp/topbar/currency/title',
+				sprintf(
+					'%s: %s &#8646; %s',
+					__('Today\'s course', CFGP_NAME),
+					'<span class="cfgp-topbar-currency-from">' . ( 1 . '' . CFGP_Options::get('base_currency') ) . '</span>',
+					'<span class="cfgp-topbar-currency-to">' . ( number_format($currency_converter, 2) . '' . CFGP_U::api('currency') ) . '</span>'
+				)
+			);
+			
+			$wp_admin_bar->add_node( array(
+				'id' => CFGP_NAME . '-course',
+				'title' => $money,
+				'href' => '',
+				'meta'  => array( 'class' => CFGP_NAME . '-toolbar-course' ),
+				'parent' => false,
+			) );
 		}
 	}
 	

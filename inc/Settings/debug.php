@@ -34,7 +34,7 @@ if($NEW_API = CFGP_API::lookup(CFGP_U::request_string('cfgp_lookup'))){
                     	<form method="get" autocomplete="off">
                         	<input type="text" value="<?php echo CFGP_U::request_string('cfgp_lookup'); ?>" name="cfgp_lookup" placeholder="<?php _e('IP Lookup', CFGP_NAME); ?>: <?php echo $API['ip']; ?>" autocomplete="off"> 
                             <button type="submit" class="button button-primary"><?php _e('Lookup', CFGP_NAME); ?></button>
-                            <a href="<?php echo admin_url('admin.php?page=cf-geoplugin-debug'); ?>" target="_self" class="button" title=""><i class="fa fa-refresh"></i></a>
+                            <a href="<?php echo CFGP_U::admin_url('admin.php?page=cf-geoplugin-debug'); ?>" target="_self" class="button" title=""><i class="fa fa-refresh"></i></a>
                             <input type="hidden" name="page" value="cf-geoplugin-debug">
                             <input type="hidden" name="nonce" value="<?php echo wp_create_nonce(CFGP_NAME . '-lookup'); ?>">
                         </form>

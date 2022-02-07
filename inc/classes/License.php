@@ -6,7 +6,7 @@
  * @since         8.0.0
  * @package       cf-geoplugin
  * @author        Ivijan-Stefan Stipic
- * @version       2.0.0
+ * @version       2.0.1
  *
  */
  // If someone try to called this file directly via URL, abort.
@@ -55,10 +55,37 @@ class CFGP_License extends CFGP_Global{
 	public static function get_product_data(){
 		$response = get_transient('cfgp-get-product-data');
 		if(!$response) {
-			if($return = CFGP_U::curl_get('https://cfgeoplugin.com/wp-admin/admin-ajax.php?action=cfgp_get_product_data', '', array(), true))
+			if($return = CFGP_U::curl_get(CFGP_STORE . '/wp-admin/admin-ajax.php?action=cfgp_get_product_data', '', array(), true))
 			{
 				if($return['error'] === false && $return['lenght'] > 0){
 					$response = $return['products'];
+					
+					if( !empty($response) ) {
+						$reorder = array();
+						foreach(array(
+							CFGP_Defaults::BASIC_LICENSE,
+							CFGP_Defaults::PERSONAL_LICENSE,
+							CFGP_Defaults::PERSONAL_LICENSE_4Y,
+							CFGP_Defaults::FREELANCER_LICENSE,
+							CFGP_Defaults::FREELANCER_LICENSE_4Y,
+							CFGP_Defaults::BUSINESS_LICENSE,
+							CFGP_Defaults::BUSINESS_LICENSE_4Y,
+							CFGP_Defaults::LIFETIME_LICENSE,
+							CFGP_Defaults::DEVELOPER_LICENSE
+						) as $sku) {
+							foreach($response as $product){
+								if( $product['sku'] === $sku ) {
+									$reorder[]=$product;
+									break;
+								}
+							}
+						}
+						
+						if( !empty($reorder) ){
+							$response = $reorder;
+						}
+					}
+					
 					set_transient('cfgp-get-product-data', $response, DAY_IN_SECONDS);
 				}
 			}
