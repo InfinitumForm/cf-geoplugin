@@ -20,12 +20,7 @@ $API = CFGP_U::api();
 
     <div id="post">
     	<div id="poststuff" class="metabox-holder has-right-sidebar">
-				<div class="inner-sidebar" id="<?php echo CFGP_NAME; ?>-main-page-sidebar">
-					<div id="side-sortables" class="meta-box-sortables ui-sortable">
-						<?php do_action('cfgp/page/main_page/sidebar'); ?>
-					</div>
-				</div>
-
+			
         	<div id="post-body">
             	<div id="post-body-content">
 
@@ -200,6 +195,13 @@ $API = CFGP_U::api();
                 </div>
 
             </div>
+			
+			<div class="inner-sidebar" id="<?php echo CFGP_NAME; ?>-main-page-sidebar">
+				<div id="side-sortables" class="meta-box-sortables ui-sortable">
+					<?php do_action('cfgp/page/main_page/sidebar'); ?>
+				</div>
+			</div>
+				
             <br class="clear">
         </div>
     </div>

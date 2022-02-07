@@ -38,7 +38,7 @@ class CFGP_Menus extends CFGP_Global {
 <div class="cfgp-menu-item-restriction cfgp-menu-item-restriction-<?php echo $item_id; ?>" data-id="<?php echo $item_id; ?>" style="clear: both;">
 	<p class="cfgp-menu-item cfgp-menu-item-enable-restriction">
 		<label for="edit-menu-item-enable-restriction-<?php echo $item_id; ?>">
-			<input type="checkbox" id="edit-menu-item-enable-restriction-<?php echo $item_id; ?>" name="cfgp_menu_enable_restriction[<?php echo $item_id; ?>]" value="1" data-id="<?php echo $item_id; ?>" <?php checked(1, $this->get_values( $item->object_id, 'enable', NULL, $item->type )); ?>> <?php _e('Hide From Geo Locations', CFGP_NAME); ?>
+			<input type="checkbox" id="edit-menu-item-enable-restriction-<?php echo $item_id; ?>" name="cfgp_menu_enable_restriction[<?php echo $item_id; ?>]" value="1" data-id="<?php echo $item_id; ?>" <?php checked(1, $this->get_values( $item->object_id, 'enable', NULL, $item->type )); ?>> <?php _e('Enable geographic location control', CFGP_NAME); ?>
 		</label>
 	</p>
 	<div class="cfgp-menu-item-restriction-locations cfgp-menu-item-restriction-locations-<?php echo $item_id; ?> cfgp-country-region-city-multiple-form-no-ajax">
@@ -65,8 +65,8 @@ class CFGP_Menus extends CFGP_Global {
 				'country_code' => $this->get_values( $item->object_id, 'countries', array(), $item->type )
 			), $this->get_values( $item->object_id, 'cities', array(), $item->type ), true, true); ?>
 		</p>
-		<p class="cfgp-menu-item-description"><?php _e('In selected locations, navigation will be hidden from the public as well as direct access to the URL.', CFGP_NAME); ?></p>
 	</div>
+	<p class="cfgp-menu-item-description"><?php _e('If you enable this option, in selected locations navigation will be hidden from the public as well as direct access to the URL.', CFGP_NAME); ?></p>
 </div>
 		<?php
 	}

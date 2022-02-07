@@ -1794,6 +1794,7 @@ class CFGP_U {
 		
 		return CFGP_Cache::set( 'is_rest_enabled', (
 			apply_filters('cfgp/rest/v1/enable', true)
+			&& apply_filters('json_enabled', true)
 			&& apply_filters('rest_enabled', true)
 			&& apply_filters('rest_jsonp_enabled', true)
 		) );

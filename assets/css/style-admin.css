@@ -556,10 +556,14 @@ dd {
 	margin-top: 20px;
 }
 
-#cf-geoplugin-dashboard-statistic .inside .cfgp-statistic-plugin-details .cfgp-statistic-plugin-changelog{
+#cf-geoplugin-dashboard-statistic .inside .cfgp-statistic-plugin-details > ul.cfgp-statistic-plugin-changelog{
 	list-style: square;
     display: inherit;
     margin-left: 15px;
+}
+
+#cf-geoplugin-dashboard-statistic .inside .cfgp-statistic-plugin-details > ul.cfgp-statistic-plugin-changelog > li{
+	display: list-item !important;
 }
 
 @media all and (max-width:1100px){
@@ -601,4 +605,19 @@ dd {
 	padding:10px 0;
 	margin:0;
 	
+}
+
+@media only screen and (max-width: 850px) {
+	#wpbody-content .cfgp-wrap #poststuff #post-body #post-body-content {
+		margin-right:0 !important;
+	}
+	
+	#wpbody-content .cfgp-wrap #poststuff .inner-sidebar,
+	#wpbody-content .cfgp-wrap #poststuff .inner-sidebar #side-sortables,
+	#wpbody-content .cfgp-wrap #poststuff .columns-2 .inner-sidebar #side-sortables	{
+		width:100%;
+	}
+	#wpbody-content .cfgp-wrap #poststuff .cfgp-form-table .cfgp-field{
+		padding: 20px 0 20px 0;
+	}
 }

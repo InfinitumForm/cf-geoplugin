@@ -15,17 +15,11 @@ if($NEW_API = CFGP_API::lookup(CFGP_U::request_string('cfgp_lookup'))){
 }
 
 ?>
-<div class="wrap wrap-cfgp" id="<?php echo $_GET['page']; ?>">
+<div class="wrap cfgp-wrap" id="<?php echo $_GET['page']; ?>">
 	<h1 class="wp-heading-inline"><i class="fa fa-globe"></i> <?php _e('Debug', CFGP_NAME); ?></h1>
     <hr class="wp-header-end">
     <div id="post">
     	<div id="poststuff" class="metabox-holder has-right-sidebar">
-
-				<div class="inner-sidebar" id="<?php echo CFGP_NAME; ?>-debug-sidebar">
-					<div id="side-sortables" class="meta-box-sortables ui-sortable">
-						<?php do_action('cfgp/page/debug/sidebar'); ?>
-					</div>
-				</div>
 
         	<div id="post-body">
             	<div id="post-body-content">
@@ -327,6 +321,13 @@ if($NEW_API = CFGP_API::lookup(CFGP_U::request_string('cfgp_lookup'))){
                     
                 </div>
             </div>
+			
+			<div class="inner-sidebar" id="<?php echo CFGP_NAME; ?>-debug-sidebar">
+				<div id="side-sortables" class="meta-box-sortables ui-sortable">
+					<?php do_action('cfgp/page/debug/sidebar'); ?>
+				</div>
+			</div>
+			
             <br class="clear">
         </div>
     </div>

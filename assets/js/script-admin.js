@@ -3,6 +3,10 @@
 		custom_uploader_timeout,
 		debounce,
 		loader = '<i class="fa fa-circle-o-notch fa-spin fa-fw"></i> ' + CFGP.label.loading,
+		/*
+		 * Multiple location form
+		 * @since 8.0.0
+		*/
 		country_region_city_multiple_form = function country_region_city_multiple_form (){
 			var $form = $('.cfgp-country-region-city-multiple-form-no-ajax');
 			if($form.length > 0)
@@ -51,8 +55,31 @@
 					});
 				});
 			}
+		},
+		/*
+		 * Menus control
+		 * @since 8.0.6
+		*/
+		menus_checkbox_control = function(){
+			var checkbox = $('.cfgp-menu-item-enable-restriction input[type^="checkbox"]');
+			if(checkbox.length) {
+				checkbox.on('change', function(){
+					if(this.checked) {
+						$( '.cfgp-menu-item-restriction-locations', $(this).closest('.cfgp-menu-item-restriction') ).show();
+					} else {
+						$( '.cfgp-menu-item-restriction-locations', $(this).closest('.cfgp-menu-item-restriction') ).hide();
+					}
+				}).each(function(){
+					if(this.checked) {
+						$( '.cfgp-menu-item-restriction-locations', $(this).closest('.cfgp-menu-item-restriction') ).show();
+					} else {
+						$( '.cfgp-menu-item-restriction-locations', $(this).closest('.cfgp-menu-item-restriction') ).hide();
+					}
+				});
+			}
 		};
 	
+	// Load multiple location form
 	country_region_city_multiple_form();
 	
 	/**
@@ -174,7 +201,7 @@
 	 * @since 8.0.2
 	*/
 	(function( menu ){
-		
+		menus_checkbox_control();
 		if(menu.length > 0)
 		{
 			var html = menu.html();
@@ -187,6 +214,7 @@
 						search_contains:true
 					});
 					country_region_city_multiple_form();
+					menus_checkbox_control();
 					html = new_html;
 				}
 			}, 500);

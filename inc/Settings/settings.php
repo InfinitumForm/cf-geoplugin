@@ -12,12 +12,6 @@ $options = apply_filters('cfgp/settings', array());
     <div id="post">
       <div id="poststuff" class="metabox-holder has-right-sidebar">
 
-        <div class="inner-sidebar" id="<?php echo CFGP_NAME; ?>-settings-sidebar">
-    			<div id="side-sortables" class="meta-box-sortables ui-sortable">
-    				<?php do_action('cfgp/page/settings/sidebar'); ?>
-    			</div>
-    		</div>
-
     		<div id="post-body">
     			<div id="post-body-content">
             <form method="post" action="<?php echo CFGP_U::admin_url('admin.php?page=cf-geoplugin-settings&save_settings=true&nonce='.wp_create_nonce(CFGP_NAME.'-save-settings')); ?>">
@@ -252,6 +246,13 @@ switch($input['type'])
             </form>
     			</div>
     		</div>
+			
+			<div class="inner-sidebar" id="<?php echo CFGP_NAME; ?>-settings-sidebar">
+    			<div id="side-sortables" class="meta-box-sortables ui-sortable">
+    				<?php do_action('cfgp/page/settings/sidebar'); ?>
+    			</div>
+    		</div>
+			
     		<br class="clear">
     	</div>
     </div>

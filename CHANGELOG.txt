@@ -1,5 +1,11 @@
 == Changelog ==
 
+= 8.0.6 =
+* Fixed PROXY detection
+* Improved UX for mobile devices
+* Improved menus navigation control
+* JavaScript bugs fixed
+
 = 8.0.5 =
 * Added today's course at the topbar
 * Improved SEO redirection settings table

@@ -6,17 +6,11 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
 $API = CFGP_Cache::get('API');
 
 ?>
-<div class="wrap wrap-cfgp" id="<?php echo $_GET['page']; ?>">
+<div class="wrap cfgp-wrap" id="<?php echo $_GET['page']; ?>">
 	<h1 class="wp-heading-inline"><i class="fa fa-globe"></i> <?php _e('Google Map', CFGP_NAME); ?></h1>
     <hr class="wp-header-end">
     <div id="post">
     	<div id="poststuff" class="metabox-holder has-right-sidebar">
-
-				<div class="inner-sidebar" id="<?php echo CFGP_NAME; ?>-google_map-sidebar">
-					<div id="side-sortables" class="meta-box-sortables ui-sortable">
-						<?php do_action('cfgp/page/google_map/sidebar'); ?>
-					</div>
-				</div>
 
         	<div id="post-body">
             	<div id="post-body-content">
@@ -120,10 +114,10 @@ $API = CFGP_Cache::get('API');
                                 </thead>
                                 <tbody>
                                 	<tr>
-                                        <td><?php printf(__("If you want to place a simple google map in your post or page, you just need to place a shortcode like this: %s - what will show place on Google map by visitors location.",CFGP_NAME),'<br><br><code>[cfgeo_map]</code>'); ?></td>
+                                        <td><?php printf(__('If you want to place a simple google map in your post or page, you just need to place a shortcode like this: %s - what will show place on Google map by visitors location.',CFGP_NAME),'<br><br><code>[cfgeo_map]</code>'); ?></td>
                                     </tr>
                                     <tr>
-                                        <td><?php printf(__("If you want to display your own company street address inside Google map, you can do that by adding optional attributes %s like on example: %s - what will show your company on Google map.", CFGP_NAME), '<code>longitude</code> and <code>latitude</code>', '<br><br><code>[cfgeo_map longitude="-74.0059" latitude="40.7128" zoom="15"]</code>' ); ?></td>
+                                        <td><?php printf(__('If you want to display your own company street address inside Google map, you can do that by adding optional attributes %s like on example: %s - what will show your company on Google map.', CFGP_NAME), __('<code>longitude</code> and <code>latitude</code>', CFGP_NAME), '<br><br><code>[cfgeo_map longitude="-74.0059" latitude="40.7128" zoom="15"]</code>' ); ?></td>
                                     </tr>
                                     <tr>
                                         <td><?php 
@@ -160,6 +154,13 @@ $API = CFGP_Cache::get('API');
                     
                 </div>
             </div>
+			
+			<div class="inner-sidebar" id="<?php echo CFGP_NAME; ?>-google_map-sidebar">
+				<div id="side-sortables" class="meta-box-sortables ui-sortable">
+					<?php do_action('cfgp/page/google_map/sidebar'); ?>
+				</div>
+			</div>
+			
             <br class="clear">
         </div>
     </div>
