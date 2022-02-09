@@ -5,7 +5,7 @@
  * Geo Plugin for WordPress
  *
  * @package           cf-geoplugin
- * @link              https://github.com/johnbillion/user-switching
+ * @link              https://github.com/CreativForm/wordpress-geoplugin
  * @author            Ivijan-Stefan Stipic <ivijan.stefan@gmail.com>
  * @copyright         2014-2022 Ivijan-Stefan Stipic
  * @license           GPL v2 or later
@@ -13,7 +13,7 @@
  * Plugin Name:       WordPress Geo Plugin
  * Plugin URI:        https://cfgeoplugin.com/
  * Description:       Create Dynamic Content, Banners and Images on Your Website Based On Visitor Geo Location By Using Shortcodes With CF Geo Plugin.
- * Version:           8.0.6
+ * Version:           8.0.7
  * Author:            INFINITUM FORM
  * Author URI:        https://infinitumform.com/
  * License:           GPL-2.0+

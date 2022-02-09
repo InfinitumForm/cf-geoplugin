@@ -176,7 +176,7 @@ $remove = array(
 	'currencyConverter'
 );
 
-foreach(CFGP_U::api() as $key => $value) :
+foreach(CFGP_U::api(false, CFGP_Defaults::API_RETURN) as $key => $value) :
 if(!(in_array($key, $remove, true) !== false))
 {
 if($key == 'error') $value = 'false';

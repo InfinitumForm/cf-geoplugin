@@ -46,7 +46,7 @@ class CFGP__Plugin__contact_form_7 extends CFGP_Global{
 	public function add_wpcf7_shortcode() {
 		if(function_exists('wpcf7_add_form_tag'))
 		{
-			$CFGEO = CFGP_U::api();
+			$CFGEO = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
 			
 			if(empty($CFGEO) || !is_array($CFGEO)) return '';
 			
@@ -100,7 +100,7 @@ class CFGP__Plugin__contact_form_7 extends CFGP_Global{
 	 * @since    4.0.0
 	 */
 	public function tag_generator() {
-		$CFGEO = CFGP_U::api();
+		$CFGEO = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
 		
 		$tag_generator = WPCF7_TagGenerator::get_instance();
 		

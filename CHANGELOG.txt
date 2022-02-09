@@ -1,5 +1,15 @@
 == Changelog ==
 
+= 8.0.7 =
+* **IMPORTANT UPDATE**
+* Fixed Elementor integration
+* Fixed REST API integration
+* Fixed cache algorithms
+* Optimized JavaScript code
+* Optimized CSS code
+* Improved page impact
+* Improved shortodes
+
 = 8.0.6 =
 * Fixed PROXY detection
 * Improved UX for mobile devices

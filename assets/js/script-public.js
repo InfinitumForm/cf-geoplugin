@@ -1,3 +1,11 @@
+/*
+ * CF Geo Plugin
+ * @package           cf-geoplugin
+ * @link              https://wordpress.org/plugins/cf-geoplugin/
+ * @author            Ivijan-Stefan Stipic <ivijan.stefan@gmail.com>
+ * @copyright         2014-2022 Ivijan-Stefan Stipic
+ * @license           GPL v2 or later
+ */
 (function (jCFGP) {jCFGP(document).ready(function($){
 	
 	/*
@@ -14,57 +22,38 @@
 					$exact = ($this.attr('data-exact') || ''),
 					$default = ($this.attr('data-default') || ''),
 					$send_ajax = function(){
-						if( CFGP.rest_enabled == 1 ) {
-							return jCFGP.ajax({
-								type: "POST",
-								accept: 'application/json',
-								url: CFGP.cache_banner_url,
-								data: {
-									action : 'cf_geoplugin_banner_cache',
-									id : $id,
-									posts_per_page : $posts_per_page,
-									class : $class,
-									exact : $exact,
-									default : $default
-								},
-							//	cache : true,
-								async : true
-							}).done(function(data){
+						
+						return jCFGP.ajax({
+							type: "POST",
+							dataType: ((CFGP.rest_enabled == 1) ? 'json' : 'html'),
+							accept: ((CFGP.rest_enabled == 1) ? 'application/json' : 'text/html'),
+							url: ((CFGP.rest_enabled == 1) ? CFGP.cache_banner_url : (typeof ajaxurl !== 'undefined' ? ajaxurl : CFGP.ajaxurl)),
+							data: {
+								action : 'cf_geoplugin_banner_cache',
+								id : $id,
+								posts_per_page : $posts_per_page,
+								class : $class,
+								exact : $exact,
+								default : $default
+							},
+						//	cache : true,
+							async : true
+						}).done(function(data){
+							if(CFGP.rest_enabled == 1) {
 								if(data.error === false) {									
 									$this.html(data.response);
-									$this.removeClass('cache').addClass('cached')
-										.removeAttr('data-default')
-											.removeAttr('data-posts_per_page')
-												.removeAttr('data-class')
-													.removeAttr('data-exact')
-														.removeAttr('data-id');
 								}
-							});
-						} else {
-							return jCFGP.ajax({
-								type: "POST",
-								dataType: 'html',
-								url: (typeof ajaxurl !== 'undefined' ? ajaxurl : CFGP.ajaxurl),
-								data: {
-									action : 'cf_geoplugin_banner_cache',
-									id : $id,
-									posts_per_page : $posts_per_page,
-									class : $class,
-									exact : $exact,
-									default : $default
-								},
-							//	cache : true,
-								async : true
-							}).done(function(data){
+							} else {
 								$this.html(data);
-								$this.removeClass('cache').addClass('cached')
-									.removeAttr('data-default')
-										.removeAttr('data-posts_per_page')
-											.removeAttr('data-class')
-												.removeAttr('data-exact')
+							}
+							$this.removeClass('cache').addClass('cached')
+								.removeAttr('data-default')
+									.removeAttr('data-posts_per_page')
+										.removeAttr('data-class')
+											.removeAttr('data-exact')
+												.removeAttr('data-nonce')
 													.removeAttr('data-id');
-							});
-						}
+						});
 					};
 				
 				// Make 3 attempts
@@ -88,56 +77,42 @@
 			sc.each(function(){
 				var $this = jCFGP(this),
 					$options = ($this.attr('data-options') || ''),
-					$shortcode = ($this.attr('data-shortcode') || ''),
+					$type = ($this.attr('data-type') || ''),
 					$default = ($this.attr('data-default') || ''),
 					$send_ajax = function(){
-						if( CFGP.rest_enabled == 1 ) {
-							return jCFGP.ajax({
-								type: "POST",
-								accept: 'application/json',
-								url: CFGP.cache_shortcode_url,
-								data: {
-									action : 'cf_geoplugin_shortcode_cache',
-									options : $options,
-									shortcode : $shortcode,
-									default : $default
-								},
-							//	cache : true,
-								async : true
-							}).done(function(data){
+						
+						return jCFGP.ajax({
+							type: "POST",
+							dataType: ((CFGP.rest_enabled == 1) ? 'json' : 'html'),
+							accept: ((CFGP.rest_enabled == 1) ? 'application/json' : 'text/html'),
+							url: ((CFGP.rest_enabled == 1) ? CFGP.cache_shortcode_url : (typeof ajaxurl !== 'undefined' ? ajaxurl : CFGP.ajaxurl)),
+							data: {
+								action : 'cf_geoplugin_shortcode_cache',
+								options : $options,
+								shortcode : $type,
+								default : $default
+							},
+						//	cache : true,
+							async : true
+						}).done(function(data){
+							if(CFGP.rest_enabled == 1) {
 								if(data.response == 'false' || data.error === true){
 									return;
 								}
 								$this.html(data.response);
-								$this.removeClass('cache').addClass('cached')
-									.removeAttr('data-default')
-										.removeAttr('data-shortcode')
-											.removeAttr('data-options');
-							});
-						} else {
-							return jCFGP.ajax({
-								type: "POST",
-								dataType: 'html',
-								url: (typeof ajaxurl !== 'undefined' ? ajaxurl : CFGP.ajaxurl),
-								data: {
-									action : 'cf_geoplugin_shortcode_cache',
-									options : $options,
-									shortcode : $shortcode,
-									default : $default
-								},
-							//	cache : true,
-								async : true
-							}).done(function(data){
+							} else {
 								if(data == 'false'){
 									return;
 								}
 								$this.html(data);
-								$this.removeClass('cache').addClass('cached')
-									.removeAttr('data-default')
-										.removeAttr('data-shortcode')
+							}
+							$this.removeClass('cache').addClass('cached')
+								.removeAttr('data-default')
+									.removeAttr('data-type')
+										.removeAttr('data-nonce')
 											.removeAttr('data-options');
-							});
-						}
+						});
+						
 					};
 				
 				// Make 3 attempts

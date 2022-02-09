@@ -11,7 +11,7 @@ $remove_tags = array(
 	'zip'
 );
 
-$API = CFGP_U::api();
+$API = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
 
 ?>
 <div class="wrap cfgp-wrap" id="<?php echo $_GET['page']; ?>">
@@ -158,7 +158,7 @@ $API = CFGP_U::api();
                                 <tbody>
                                 	<?php
 									do_action('cfgp/table/before/css_property', $API);
-									$CFGEO = CFGP_U::api();
+									$CFGEO = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
 									$allowed_css = apply_filters( 'cfgp/public/css/allowed', array(
 										'country',
 										'country_code',

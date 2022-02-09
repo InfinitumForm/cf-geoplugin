@@ -545,7 +545,7 @@ class CFGP__Plugin__woocommerce extends CFGP_Global
                 }
             }
         }
-        return apply_filters( 'cf_geoplugin_woocommerce_payment_disable', $gateways, $original_gateways, CFGP_U::api() ); 
+        return apply_filters( 'cf_geoplugin_woocommerce_payment_disable', $gateways, $original_gateways, CFGP_U::api(false, CFGP_Defaults::API_RETURN) ); 
     }
 	
 	// Control of the some additional Woocommerce addons

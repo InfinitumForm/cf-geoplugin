@@ -42,7 +42,7 @@ class CFGP_SEO_Redirection_Pages extends CFGP_Global
 		}
 		
 		// Prevent by custom filter
-		$API = CFGP_U::api();
+		$API = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
 		$stop_redirection_filter = apply_filters('cfgp/seo/stop_redirection', false, $API);
 		if( $stop_redirection_filter ){
 			if(CFGP_U::recursive_array_search($stop_redirection_filter, $API, true)){

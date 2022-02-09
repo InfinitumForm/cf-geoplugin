@@ -39,7 +39,7 @@ if(!class_exists('CFGP_Plugins')) :
 			$this->plugins = apply_filters('cfgp/plugins', $this->plugins);				
 			foreach($this->plugins as $dir_name=>$file_name){
 				$addon = CFGP_PLUGINS . "/{$dir_name}/{$dir_name}.php";
-				if( is_plugin_active("{$dir_name}/{$file_name}.php") && file_exists($addon) )
+				if( file_exists($addon) && is_plugin_active("{$dir_name}/{$file_name}.php") )
 				{
 					if($plugin_info = CFGP_U::plugin_info(array(), $dir_name))
 					{
@@ -91,7 +91,7 @@ if(!class_exists('CFGP_Plugins')) :
 			$this->plugins = apply_filters('cfgp/plugins', $this->plugins);				
 			foreach($this->plugins as $dir_name=>$file_name){
 				$addon = CFGP_PLUGINS . "/{$dir_name}/{$dir_name}.php";
-				if( is_plugin_active("{$dir_name}/{$file_name}.php") && file_exists($addon) )
+				if( file_exists($addon) && is_plugin_active("{$dir_name}/{$file_name}.php") )
 				{
 					$plugin_options['enable-' . $dir_name]=0;
 				}
@@ -117,7 +117,7 @@ if(!class_exists('CFGP_Plugins')) :
 				foreach($this->plugins as $dir_name=>$file_name)
 				{
 					$addon = CFGP_PLUGINS . "/{$dir_name}/{$dir_name}.php";
-					if( is_plugin_active("{$dir_name}/{$file_name}.php") && file_exists($addon) )
+					if( file_exists($addon) && is_plugin_active("{$dir_name}/{$file_name}.php") )
 					{
 						$class_name = str_replace(['-','.'], '_', $dir_name);
 						$plugin_class = "CFGP__Plugin__{$class_name}";

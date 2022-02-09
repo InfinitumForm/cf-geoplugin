@@ -51,6 +51,31 @@ final class CFGP_Init{
 			$classes = array_merge($classes, array('CFGP_Menus'));
 		}
 		
+		// Remove some classes in the special cases
+		$remove_classes = apply_filters('cfgp/init/included/classes/remove', array(
+			'CFGP_Menus',
+			'CFGP_SEO_Redirection',
+			'CFGP_SEO_Redirection_Pages',
+			'CFGP_Defender',					
+			'CFGP_Help',
+			'CFGP_Notifications'
+		));
+		if(
+			!is_admin()
+			&& (
+				(isset($_REQUEST['action']) && $_REQUEST['action'] == 'elementor')
+				|| (isset($_REQUEST['elementor-preview']) && $_REQUEST['elementor-preview'] > 0)
+				|| (
+					(isset($_REQUEST['preview']) && $_REQUEST['preview'] == 'true') 
+					&& (isset($_REQUEST['preview_id']) && $_REQUEST['preview_id'] > 0)
+				)
+			)
+		) {
+			$classes = array_filter($classes, function($c) use ($remove_classes) {
+				return !in_array($c, $remove_classes);
+			});
+		}
+		
 		$classes = apply_filters('cfgp/init/included/classes', $classes);
 		
 		foreach($classes as $class){

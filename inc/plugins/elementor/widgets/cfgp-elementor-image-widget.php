@@ -332,7 +332,7 @@ class CFGP_Elementor_Image_Widget extends \Elementor\Widget_Base {
 		
 		foreach($settings['list'] as $i=>$fetch)
 		{
-			if(CFGP_U::recursive_array_search($fetch['location'], CFGP_U::api())){		
+			if(CFGP_U::recursive_array_search($fetch['location'], CFGP_U::api(false, CFGP_Defaults::API_RETURN))){		
 				$image = [
 					'ID' => $fetch['image']['id'],
 					'url' => $fetch['image']['url'],

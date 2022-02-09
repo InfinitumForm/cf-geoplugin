@@ -85,7 +85,7 @@ class CFGP_REST extends CFGP_Global {
 			$routes = array();
 			
 			// Return individual responses
-			foreach(CFGP_U::api() as $key => $value) {
+			foreach(CFGP_U::api(false, CFGP_Defaults::API_RETURN) as $key => $value) {
 				
 				if( in_array(
 					$key,
@@ -120,7 +120,7 @@ class CFGP_REST extends CFGP_Global {
 				'callback' => function( $data ) use ( $routes ) {
 			
 					$callback = array_merge(
-						CFGP_U::api(),
+						CFGP_U::api(false, CFGP_Defaults::API_RETURN),
 						array(
 							'routes' => $routes
 						)
@@ -176,7 +176,7 @@ class CFGP_REST extends CFGP_Global {
 					
 					if($default = CFGP_U::request_string('default')) {
 						$content = urldecode(base64_decode(sanitize_text_field($default)));
-						$content = trim($defaucontentlt);
+						$content = trim($content);
 						$default = $content;
 					} else {
 						$default = $content = '';

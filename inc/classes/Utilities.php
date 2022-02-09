@@ -1254,10 +1254,16 @@ class CFGP_U {
 	 * Returns API fields
 	 */
 	public static function api($name = false, $default = '') {
+		$API = NULL;
+		
+		if(CFGP_Cache::get('API')) {
+			$API = CFGP_Cache::get('API');
+		}
+		
 		if(empty($name)) {
-			return CFGP_Cache::get('API');
+			return ( $API ? $API : $default );
 		} else {
-			return isset(CFGP_Cache::get('API')[$name]) ? CFGP_Cache::get('API')[$name] : $default;
+			return ( isset($API[$name]) ? $API[$name] : $default );
 		}
 	}
 	

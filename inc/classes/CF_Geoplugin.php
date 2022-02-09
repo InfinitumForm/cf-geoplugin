@@ -20,7 +20,7 @@ if(!class_exists('CF_Geoplugin')) : class CF_Geoplugin{
 	// Construct API response
 	function __construct($options=array()){
 		// Get geo data
-		$this->data = CFGP_U::api();
+		$this->data = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
 		
 		// Fetch new data via API
 		if( !empty($options) ) {

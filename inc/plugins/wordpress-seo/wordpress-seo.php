@@ -19,7 +19,7 @@ class CFGP__Plugin__wordpress_seo extends CFGP_Global
 	 * @verson    1.0.0
 	 */
 	public function register_vars (){
-		foreach(CFGP_U::api() as $key=>$value) {
+		foreach(CFGP_U::api(false, CFGP_Defaults::API_RETURN) as $key=>$value) {
 			wpseo_register_var_replacement("%%{$key}%%", function () use ($value) {
 				return $value;
 			}, 'advanced');

@@ -149,19 +149,19 @@ class CFGP_Shortcodes extends CFGP_Global {
 			wp_enqueue_script( CFGP_NAME . '-public' );
 		}
 		
-		$nonce = wp_create_nonce( 'cfgeo-process-cache-ajax' );
-		
 		if( !empty($ip) ) {
 			$CFGEO = CFGP_API::instance(true)->get('geo', $ip);
 			if (CFGP_Options::get('enable_dns_lookup', 0)) {
 				$CFGEO = array_merge($CFGEO, CFGP_API::instance(true)->get('dns', $ip));
 			}
 		} else {
-			$CFGEO = CFGP_U::api();
+			$CFGEO = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
 		}
 		
 		if(!empty($content))
-		{			
+		{
+			$content = trim($content);
+			
 			// Include/ Exclude functionality for the content
 			if(!empty($exclude) || !empty($include)) {
 				// Include
@@ -247,13 +247,11 @@ class CFGP_Shortcodes extends CFGP_Global {
 	 * @since    7.0.0
 	 */
 	public function shortcode_automat_setup($atts){
-		$CFGEO = CFGP_U::api();
+		$CFGEO = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
 
 		if(empty($CFGEO)){
 			return;
 		}
-
-		$nonce = wp_create_nonce( 'cfgeo-process-cache-ajax' );
 		
 		$cache = CFGP_U::is_attribute_exists('cache', $atts);
 		if(CFGP_Options::get('enable_cache', 0)) $cache = true;
@@ -325,7 +323,7 @@ class CFGP_Shortcodes extends CFGP_Global {
 				$CFGEO = array_merge($CFGEO, CFGP_API::instance(true)->get('dns', $ip));
 			}
 		} else {
-			$CFGEO = CFGP_U::api();
+			$CFGEO = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
 		}
 		
 		if(!empty($exclude) || !empty($include)) {
@@ -449,7 +447,7 @@ class CFGP_Shortcodes extends CFGP_Global {
 	 */
 	public function geo_banner( $setup, $cont='', $tag )
 	{
-		$CFGEO = CFGP_U::api();
+		$CFGEO = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
 		
 		$cache = CFGP_U::is_attribute_exists('cache', $setup);
 		
@@ -1013,7 +1011,7 @@ class CFGP_Shortcodes extends CFGP_Global {
 		
 		$currency_symbols = CFGP_Defaults::CURRENCY_SYMBOL;
 
-		$CFGEO = CFGP_U::api();
+		$CFGEO = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
 
 		$instance = shortcode_atts(
 			array(
@@ -1219,7 +1217,7 @@ class CFGP_Shortcodes extends CFGP_Global {
 		if( !empty($ip) ) {
 			$CFGEO = CFGP_API::instance(true)->get('geo', $ip);
 		} else {
-			$CFGEO = CFGP_U::api();
+			$CFGEO = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
 		}
 		
 		if(!empty($exclude) || !empty($include)) {
@@ -1268,7 +1266,7 @@ class CFGP_Shortcodes extends CFGP_Global {
 		if( !empty($ip) ) {
 			$CFGEO = CFGP_API::instance(true)->get('geo', $ip);
 		} else {
-			$CFGEO = CFGP_U::api();
+			$CFGEO = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
 		}
 		
 		if(!empty($exclude) || !empty($include)) {
@@ -1320,7 +1318,7 @@ class CFGP_Shortcodes extends CFGP_Global {
 		if( !empty($ip) ) {
 			$CFGEO = CFGP_API::instance(true)->get('geo', $ip);
 		} else {
-			$CFGEO = CFGP_U::api();
+			$CFGEO = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
 		}
 		
 		if(!empty($exclude) || !empty($include)) {
@@ -1369,7 +1367,7 @@ class CFGP_Shortcodes extends CFGP_Global {
 		if( !empty($ip) ) {
 			$CFGEO = CFGP_API::instance(true)->get('geo', $ip);
 		} else {
-			$CFGEO = CFGP_U::api();
+			$CFGEO = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
 		}
 		
 		if(!empty($exclude) || !empty($include)) {
@@ -1418,7 +1416,7 @@ class CFGP_Shortcodes extends CFGP_Global {
 		if( !empty($ip) ) {
 			$CFGEO = CFGP_API::instance(true)->get('geo', $ip);
 		} else {
-			$CFGEO = CFGP_U::api();
+			$CFGEO = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
 		}
 		
 		if(!empty($exclude) || !empty($include)) {
@@ -1470,7 +1468,7 @@ class CFGP_Shortcodes extends CFGP_Global {
 		if( !empty($ip) ) {
 			$CFGEO = CFGP_API::instance(true)->get('geo', $ip);
 		} else {
-			$CFGEO = CFGP_U::api();
+			$CFGEO = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
 		}
 		
 		if(!empty($exclude) || !empty($include)) {
@@ -1520,7 +1518,7 @@ class CFGP_Shortcodes extends CFGP_Global {
 		if( !empty($ip) ) {
 			$CFGEO = CFGP_API::instance(true)->get('geo', $ip);
 		} else {
-			$CFGEO = CFGP_U::api();
+			$CFGEO = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
 		}
 		
 		if(!empty($exclude) || !empty($include)) {
@@ -1575,10 +1573,11 @@ class CFGP_Shortcodes extends CFGP_Global {
 			$shortcode = esc_attr($shortcode);
 			$shortcode = trim($shortcode);
 			return sprintf(
-				'<span class="cf-geoplugin-shortcode cache cf-geoplugin-shortcode__%1$s" data-shortcode="%1$s" data-options="%2$s" data-default="%3$s">%4$s</span>',
+				'<span class="cf-geoplugin-shortcode cf-geoplugin-shortcode-%1$s cache" data-type="%1$s" data-options="%2$s" data-default="%3$s" data-nonce="%4$s">%5$s</span>',
 				esc_attr($shortcode),
 				esc_attr(base64_encode(urlencode(serialize($options)))),
 				esc_attr(base64_encode(urlencode($default))),
+				wp_create_nonce( 'cfgeo-process-cache-ajax' ),
 				$content
 			);
 		} else {

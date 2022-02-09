@@ -70,7 +70,7 @@ class CFGP_Public extends CFGP_Global{
 	 * @verson    1.0.0
 	 */
 	public function css_suppport() {
-		$CFGEO = CFGP_U::api();
+		$CFGEO = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
 		
 		if(empty($CFGEO)) return;
 		
@@ -115,7 +115,7 @@ class CFGP_Public extends CFGP_Global{
 	 * @verson    1.0.0
 	 */
 	public function javascript_support() {
-		$CFGEO = CFGP_U::api();
+		$CFGEO = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
 		if(empty($CFGEO)) return;
 		?>
 <!-- <?php _e('CF Geoplugin JavaScript Objects',CFGP_NAME); ?> -->
@@ -227,7 +227,7 @@ class CFGP_Public extends CFGP_Global{
 	public function output_buffer_callback($content) {
 		
 		// Let's do a tags
-		if($API = CFGP_U::api())
+		if($API = CFGP_U::api(false, CFGP_Defaults::API_RETURN))
 		{
 			$remove_tags = array(
 				'error',
