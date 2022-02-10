@@ -400,7 +400,7 @@ function CF_GeoPlugin_Google_Map_GeoTag() {
             <label for="country"><?php _e('Choose Countries', CFGP_NAME); ?></label>
             <?php CFGP_Form::select_countries(array('name'=>"{$this->metabox}[{$i}][country]", 'id'=>"{$this->metabox}-{$i}-country"), $country, true);?>
             <span class="description"><?php _e( 'Select the countries you want to redirect.', CFGP_NAME ); ?></span>
-            <button type="button" class="cfgp-select-all" data-target="<?php echo "{$this->metabox}-{$i}-country"; ?>"><object data="<?php echo CFGP_ASSETS . '/images/select.svg'; ?>" width="15" height="15"></object> <?php esc_attr_e( 'Select all', CFGP_NAME ); ?></button>&nbsp;&nbsp;&nbsp;&nbsp;
+            <button type="button" class="cfgp-select-all" data-target="<?php echo "{$this->metabox}-{$i}-country"; ?>"><object data="<?php echo CFGP_ASSETS . '/images/select.svg'; ?>" width="10" height="10"></object> <?php esc_attr_e( 'Select all', CFGP_NAME ); ?></button>&nbsp;&nbsp;&nbsp;&nbsp;
 			<?php
 				CFGP_Form::checkbox(
 					array(
@@ -419,7 +419,7 @@ function CF_GeoPlugin_Google_Map_GeoTag() {
             <label for="region"><?php _e('Choose Regions', CFGP_NAME); ?></label>
             <?php CFGP_Form::select_regions(array('name'=>"{$this->metabox}[{$i}][region]", 'id'=>"{$this->metabox}-{$i}-region", 'country_code' => $country), $region, true); ?>
             <span class="description"><?php _e( 'Select the regions you want to redirect.', CFGP_NAME ); ?></span>
-            <button type="button" class="cfgp-select-all" data-target="<?php echo "{$this->metabox}-{$i}-region"; ?>"><object data="<?php echo CFGP_ASSETS . '/images/select.svg'; ?>" width="15" height="15"></object> <?php esc_attr_e( 'Select all', CFGP_NAME ); ?></button>&nbsp;&nbsp;&nbsp;&nbsp;
+            <button type="button" class="cfgp-select-all" data-target="<?php echo "{$this->metabox}-{$i}-region"; ?>"><object data="<?php echo CFGP_ASSETS . '/images/select.svg'; ?>" width="10" height="10"></object> <?php esc_attr_e( 'Select all', CFGP_NAME ); ?></button>&nbsp;&nbsp;&nbsp;&nbsp;
 			<?php
 				CFGP_Form::checkbox(
 					array(
@@ -438,7 +438,7 @@ function CF_GeoPlugin_Google_Map_GeoTag() {
             <label for="city"><?php _e('Choose Cities', CFGP_NAME); ?></label>
             <?php CFGP_Form::select_cities(array('name'=>"{$this->metabox}[{$i}][city]", 'id'=>"{$this->metabox}-{$i}-city", 'country_code' => $country), $city, true); ?>
             <span class="description"><?php _e( 'Select the cities you want to redirect.', CFGP_NAME ); ?></span>
-            <button type="button" class="cfgp-select-all" data-target="<?php echo "{$this->metabox}-{$i}-city"; ?>"><object data="<?php echo CFGP_ASSETS . '/images/select.svg'; ?>" width="15" height="15"></object> <?php esc_attr_e( 'Select all', CFGP_NAME ); ?></button>&nbsp;&nbsp;&nbsp;&nbsp;
+            <button type="button" class="cfgp-select-all" data-target="<?php echo "{$this->metabox}-{$i}-city"; ?>"><object data="<?php echo CFGP_ASSETS . '/images/select.svg'; ?>" width="10" height="10"></object> <?php esc_attr_e( 'Select all', CFGP_NAME ); ?></button>&nbsp;&nbsp;&nbsp;&nbsp;
 			<?php
 				CFGP_Form::checkbox(
 					array(
@@ -457,7 +457,7 @@ function CF_GeoPlugin_Google_Map_GeoTag() {
             <label for="postcode"><?php _e('Choose Postcodes', CFGP_NAME); ?></label>
             <?php CFGP_Form::select_postcodes(array('name'=>"{$this->metabox}[{$i}][postcode]", 'id'=>"{$this->metabox}-{$i}-postcode"), $postcode, true); ?>
             <span class="description"><?php _e( 'Select the postcodes you want to redirect.', CFGP_NAME ); ?></span>
-            <button type="button" class="cfgp-select-all" data-target="<?php echo "{$this->metabox}-{$i}-postcode"; ?>"><object data="<?php echo CFGP_ASSETS . '/images/select.svg'; ?>" width="15" height="15"></object> <?php esc_attr_e( 'Select all', CFGP_NAME ); ?></button>&nbsp;&nbsp;&nbsp;&nbsp;
+            <button type="button" class="cfgp-select-all" data-target="<?php echo "{$this->metabox}-{$i}-postcode"; ?>"><object data="<?php echo CFGP_ASSETS . '/images/select.svg'; ?>" width="10" height="10"></object> <?php esc_attr_e( 'Select all', CFGP_NAME ); ?></button>&nbsp;&nbsp;&nbsp;&nbsp;
 			<?php
 				CFGP_Form::checkbox(
 					array(

@@ -621,3 +621,14 @@ dd {
 		padding: 20px 0 20px 0;
 	}
 }
+
+.button.cfgp-select-all,
+button.cfgp-select-all {
+	border: none;
+    color: #555;
+    border-radius: 0;
+    margin-top: 0;
+    font-size: 12px;
+    padding-left: 0;
+    background: none;
+}

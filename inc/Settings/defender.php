@@ -126,7 +126,7 @@ if(!empty($block_city) && !is_array($block_city) && preg_match('/\]|\[/', $block
 												);
 											?>
                                             <br>
-                                            <button type="button" class="button cfgp-select-all" data-target="block_country"><object data="<?php echo CFGP_ASSETS . '/images/select.svg'; ?>" width="15" height="15"></object> <?php esc_attr_e( 'Select/Deselect all', CFGP_NAME ); ?></button>
+                                            <button type="button" class="button cfgp-select-all" data-target="block_country"><object data="<?php echo CFGP_ASSETS . '/images/select.svg'; ?>" width="10" height="10"></object> <?php esc_attr_e( 'Select/Deselect all', CFGP_NAME ); ?></button>
                                         </div>
                                     </div>
                                     <div class="cfgp-tab-panel" id="region-restriction">
@@ -144,7 +144,7 @@ if(!empty($block_city) && !is_array($block_city) && preg_match('/\]|\[/', $block
 												);
 											?>
 											<br>
-                                            <button type="button" class="button cfgp-select-all" data-target="block_region"><object data="<?php echo CFGP_ASSETS . '/images/select.svg'; ?>" width="15" height="15"></object> <?php esc_attr_e( 'Select/Deselect all', CFGP_NAME ); ?></button>
+                                            <button type="button" class="button cfgp-select-all" data-target="block_region"><object data="<?php echo CFGP_ASSETS . '/images/select.svg'; ?>" width="10" height="10"></object> <?php esc_attr_e( 'Select/Deselect all', CFGP_NAME ); ?></button>
                                         </div>
                                     </div>
                                     <div class="cfgp-tab-panel" id="city-restriction">
@@ -162,7 +162,7 @@ if(!empty($block_city) && !is_array($block_city) && preg_match('/\]|\[/', $block
 												);
 											?>
 											<br>
-                                            <button type="button" class="button cfgp-select-all" data-target="block_city"><object data="<?php echo CFGP_ASSETS . '/images/select.svg'; ?>" width="15" height="15"></object> <?php esc_attr_e( 'Select/Deselect all', CFGP_NAME ); ?></button>
+                                            <button type="button" class="button cfgp-select-all" data-target="block_city"><object data="<?php echo CFGP_ASSETS . '/images/select.svg'; ?>" width="10" height="10"></object> <?php esc_attr_e( 'Select/Deselect all', CFGP_NAME ); ?></button>
                                         </div>
                                     </div>
 									<div class="cfgp-tab-panel" id="proxy-restriction">

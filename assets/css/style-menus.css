@@ -7,3 +7,13 @@
     max-width: 361px;
     padding: 5px 15px;
 }
+
+.cfgp-menu-item .cfgp-select-all {
+	border: none;
+    color: #555;
+    border-radius: 0;
+    margin-top: 0;
+    font-size: 12px;
+    padding-left: 0;
+    background: none;
+}
