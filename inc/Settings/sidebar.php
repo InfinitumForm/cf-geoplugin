@@ -123,12 +123,16 @@ class CFGP_Sidebar extends CFGP_Global {
 	<li class="cfgp-statistic-limit">
 		<?php if(in_array(CFGP_U::api('status'), array(200,402))) : ?>
 			<h3><?php $this->cfgp_lookup_status_icon(CFGP_U::api('lookup')); ?> <?php _e('Lookup', CFGP_NAME); ?></h3>
-			<?php if(CFGP_U::api('lookup') === 'unlimited' && $license_expire = CFGP_License::expire_date()) : ?>
-				<p><?php _e('Congratulations, you have an unlimited lookup that you can use until:', CFGP_NAME); ?> <strong><?php echo $license_expire; ?></strong></p>
-			<?php elseif(CFGP_U::api('lookup') === 'unlimited' || CFGP_U::api('lookup') === 'lifetime') : ?>
+			<?php if(CFGP_U::api('lookup') === 'lifetime') : ?>
 				<p><?php _e('Congratulations, your license has provided you with a lifetime lookup.', CFGP_NAME); ?></p>
+			<?php elseif(CFGP_U::api('lookup') === 'unlimited') : ?>
+				<?php if($license_expire = CFGP_License::expire_date()) : ?>
+					<p><?php _e('You have an unlimited lookup that you can use until:', CFGP_NAME); ?> <strong><?php echo $license_expire; ?></strong></p>
+				<?php else: ?>
+					<p><?php _e('You have an unlimited lookup.', CFGP_NAME); ?></p>
+				<?php endif; ?>
 			<?php else : ?>
-				<?php if(CFGP_U::api('lookup') > 0) : ?>
+				<?php if(is_numeric(CFGP_U::api('lookup')) && CFGP_U::api('lookup') > 0) : ?>
 					<p><?php printf(__('You currently spent %1$d lookups of the %3$d lookups available. This means you have %2$d lookups left today.', CFGP_NAME), (CFGP_LIMIT-CFGP_U::api('lookup')), CFGP_U::api('lookup'), CFGP_LIMIT); ?></p>
 					<?php if(CFGP_U::api('lookup') <= (CFGP_LIMIT/3)) : ?>
 						<p style="color:#900"><?php _e('Your lookup expires soon, the site may be left without important functionality.', CFGP_NAME); ?></p>
