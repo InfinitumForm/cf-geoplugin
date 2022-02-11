@@ -236,7 +236,7 @@ class CFGP_Defaults {
 		'accuracy_radius' => NULL,
 		'runtime' => NULL,
 		'status' => NULL,
-		'lookup' => NULL,
+		'lookup' => 1000,
 		'error' => NULL,
 		'error_message' => NULL,
 		'credit' => NULL

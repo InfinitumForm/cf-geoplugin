@@ -296,7 +296,7 @@ class CFGP_API extends CFGP_Global {
 							'accuracy_radius' => ($return['accuracy_radius'] ?? NULL),
 							'runtime' => abs($return['runtime'] ?? 0),
 							'status' => ($return['status'] ?? NULL),
-							'lookup' => ($return['available_lookup'] ?? NULL),
+							'lookup' => ($return['available_lookup'] ?? CFGP_LIMIT),
 							'error' => ($return['error'] ?? NULL),
 							'error_message' => ($return['message'] ?? NULL),
 							'credit' => ($return['credit'] ?? NULL),

@@ -1247,7 +1247,7 @@ class CFGP_U {
 	 * Request
 	 */
 	public static function request($name, $default = ''){
-		return (isset($_REQUEST[$name]) ?  $_REQUEST[$name] : $default);
+		return (isset($_REQUEST[$name]) ?  CFGP_Options::sanitize($_REQUEST[$name]) : $default);
 	}
 	
 	/*

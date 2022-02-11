@@ -129,7 +129,7 @@ class CFGP_Sidebar extends CFGP_Global {
 				<p><?php _e('Congratulations, your license has provided you with a lifetime lookup.', CFGP_NAME); ?></p>
 			<?php else : ?>
 				<?php if(CFGP_U::api('lookup') > 0) : ?>
-					<p><?php printf(__('You currently spent %1$d lookup of the %2$d lookup available.', CFGP_NAME), (CFGP_LIMIT-CFGP_U::api('lookup')), CFGP_U::api('lookup')); ?></p>
+					<p><?php printf(__('You currently spent %1$d lookups of the %3$d lookups available. This means you have %2$d lookups left today.', CFGP_NAME), (CFGP_LIMIT-CFGP_U::api('lookup')), CFGP_U::api('lookup'), CFGP_LIMIT); ?></p>
 					<?php if(CFGP_U::api('lookup') <= (CFGP_LIMIT/3)) : ?>
 						<p style="color:#900"><?php _e('Your lookup expires soon, the site may be left without important functionality.', CFGP_NAME); ?></p>
 					<?php endif; ?>
