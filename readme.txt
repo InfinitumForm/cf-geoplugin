@@ -1,4 +1,4 @@
-﻿=== WordPress Geo Plugin - CF Geo Plugin ===
+﻿=== WordPress Geolocation Plugin - CF Geo Plugin ===
 Contributors: ivijanstefan, creativform
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=creativform@gmail.com
 Tags: geolocation, locator, GeoIP, geo, geotargeting, seo, seo redirect, woocommerce, include exclude, content, remove content, show hide, covid
