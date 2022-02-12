@@ -16,8 +16,12 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
 if(!class_exists('CFGP_API')) :
 class CFGP_API extends CFGP_Global {
 	
+	private $host;
+	
 	public function __construct( $dry_run = false ){
 		try {
+			$this->host = CFGP_U::get_host(true);
+			
 			if($dry_run !== true)
 			{
 				// Collect geo data & DNS
@@ -109,6 +113,10 @@ class CFGP_API extends CFGP_Global {
 					$return['current_time']= date(get_option('time_format'), CFGP_TIME);
 					$return['current_date']= date(get_option('date_format'), CFGP_TIME);
 					
+					if( $lookup = get_transient('cfgp-api-available-lookup-' . $this->host) ) {
+						$return['lookup']=$lookup;
+					}
+					
 					// Save in the session DNS host
 					CFGP_Cache::set('transfer_dns_records', self::fix_dns_host($transient['dns']));
 				}
@@ -120,7 +128,7 @@ class CFGP_API extends CFGP_Global {
 						'{IP}' => $ip,
 						'{SIP}' => CFGP_IP::server(),
 						'{TIME}' => CFGP_TIME,
-						'{HOST}' => CFGP_U::get_host(true),
+						'{HOST}' => $this->host,
 						'{VERSION}' => CFGP_VERSION,
 						'{M}' => get_bloginfo("admin_email"),
 						'{P}' => get_option('cf_geo_defender_api_key'), // we need to keep in track some old activation keys
@@ -302,6 +310,11 @@ class CFGP_API extends CFGP_Global {
 							'credit' => ($return['credit'] ?? NULL),
 						), $return);
 
+						// Save lookup to session
+						if(is_numeric($return['lookup']) && $return['lookup'] < 99) {
+							set_transient('cfgp-api-available-lookup-' . $this->host, $return['lookup'], DAY_IN_SECONDS);
+						}
+						
 						// Save to session
 						set_transient("cfgp-api-{$ip_slug}", array(
 							'geo' => (array)$return,
@@ -315,7 +328,7 @@ class CFGP_API extends CFGP_Global {
 				$pharams = array(
 					'{IP}' => $ip,
 					'{SIP}' => CFGP_IP::server(),
-					'{HOST}' => CFGP_U::get_host(true),
+					'{HOST}' => $this->host,
 					'{VERSION}' => CFGP_VERSION,
 					'{P}' => get_option('cf_geo_defender_api_key')
 				);

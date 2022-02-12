@@ -8,6 +8,7 @@
     border-top: 0;
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
+	box-shadow: 0 0 10px rgba(10,10,10,0.3);
 }
 
 #cf-geoplugin-settings .cf-geoplugin-sticky-button > p.submit{
@@ -105,8 +106,25 @@
 .nav-tab-wrapper-chosen .cfgp-tab-panel .input-radio{
 	display:inline-block;
 }
-.nav-tab-wrapper-chosen .cfgp-tab-panel .input-radio+.input-radio{
+.nav-tab-wrapper-chosen .cfgp-tab-panel .input-radio.input-radio-block{
+	display:block;
+}
+.nav-tab-wrapper-chosen .cfgp-tab-panel .input-radio{
 	margin-left:10px;
+}
+.nav-tab-wrapper-chosen .cfgp-tab-panel .input-radio+.input-radio{
+	margin-top:5px;
+}
+@media only screen and (max-width: 850px) {
+	.nav-tab-wrapper-chosen .cfgp-tab-panel .input-radio.input-radio-block+.input-radio.input-radio-block {
+		margin-top: 15px;
+	}
+	.nav-tab-wrapper-chosen .cfgp-tab-panel .input-radio input {
+		margin-right: 8px;
+	}
+	.nav-tab-wrapper-chosen .cfgp-tab-panel .input-radio:not(.input-radio-block)+.input-radio:not(.input-radio-block){
+		margin-left: 15px;
+	}
 }
 .nav-tab-wrapper-chosen .cfgp-tab-panel .title{
 	margin-top: 10px !important;
@@ -611,7 +629,6 @@ dd {
 	#wpbody-content .cfgp-wrap #poststuff #post-body #post-body-content {
 		margin-right:0 !important;
 	}
-	
 	#wpbody-content .cfgp-wrap #poststuff .inner-sidebar,
 	#wpbody-content .cfgp-wrap #poststuff .inner-sidebar #side-sortables,
 	#wpbody-content .cfgp-wrap #poststuff .columns-2 .inner-sidebar #side-sortables	{

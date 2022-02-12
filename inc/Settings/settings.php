@@ -28,7 +28,7 @@ $options = apply_filters('cfgp/settings', array());
                 <?php foreach($options as $o=>$option) : ?>
                     <div class="cfgp-tab-panel<?php echo ($o===0 ? ' cfgp-tab-panel-active' : ''); ?>" id="<?php echo esc_attr($option['id']); ?>">
                     <?php if(isset($option['sections']) && is_array($option['sections'])) :
-        foreach($option['sections'] as $s=>$section) : ?>
+        foreach($option['sections'] as $s=>$section) : if(isset($section['enabled']) && $section['enabled'] === false) continue; ?>
         			<section class="cfgp-tab-panel-section" id="<?php echo sanitize_title($section['title']); ?>">
                       <?php if(!empty($section['title'])) : ?><h2 class="title"><?php echo $section['title']; ?></h2><?php endif; ?>
                         <?php if(!empty($section['desc'])) : ?>
@@ -72,7 +72,9 @@ switch($input['type'])
 	case 'radio':
 	$default = CFGP_Options::get($input['name'], (isset($input['default']) ? $input['default'] : ''));
 	if(isset($input['options'])) : foreach($input['options'] as $value => $name) : ?>
-    <span class="input-radio">
+    <span class="input-radio<?php
+          echo (isset($input['style']) ? ' ' . $input['style'] : '');
+        ?>">
         <input type="radio" name="<?php
           echo CFGP_NAME;
         ?>[<?php
@@ -98,7 +100,9 @@ switch($input['type'])
 
 	### CHECKBOX
 	case 'checkbox': $default = CFGP_Options::get($input['name'], (isset($input['default']) ? $input['default'] : [])); if(isset($input['options'])) : foreach($input['options'] as $i => $object) : ?>
-    <span class="input-radio">
+    <span class="input-radio<?php
+          echo (isset($input['style']) ? ' ' . $input['style'] : '');
+        ?>">
         <input type="checkbox" name="<?php
           echo CFGP_NAME;
         ?>[<?php

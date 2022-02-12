@@ -1,5 +1,11 @@
 == Changelog ==
 
+= 8.0.8 =
+* Fixed plugin notifications
+* Improved API calls
+* Improved user experience
+* Improved action hooks
+
 = 8.0.7 =
 * **IMPORTANT UPDATE**
 * Fixed Elementor integration

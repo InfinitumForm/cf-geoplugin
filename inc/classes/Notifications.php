@@ -102,18 +102,19 @@ class CFGP_Notifications extends CFGP_Global{
 		$emails = $this->get_admins();
 		
 		// Send email below 100
-		if( CFGP_U::api('lookup') <= 100 && $emails )
+		$lookup = CFGP_U::api('lookup');
+		if( is_numeric($lookup) && $lookup <= 100 && $emails )
 		{		
 			$message = array();
 			$message[]= '<p>' . __('Hi there,', CFGP_NAME) . '</p>';
-			$message[]= '<p>' . __('Your lookup will expire soon and geo plugin services will be unavailable for the next 24 hours.', CFGP_NAME) . '</p>';
+			$message[]= '<p>' . __('Your lookup will expire soon and geo plugin services will be unavailable until the next day.', CFGP_NAME) . '</p>';
 			$message[]= '<p>' . sprintf(
 				__('If your site has a large traffic and you need the full functionality of the plugin, you need to get the appropriate license and activate the %1$s.', CFGP_NAME),
 				'<a href="' . CFGP_STORE . '/pricing/" target="_blank">' . __('UNLIMITED LOOKUP.', CFGP_NAME) . '</a>'
 			) . '</p>';
 			$message[]= '<p>' . sprintf(
-				__('You currently have %1$d lookups available and need to %2$s so that all services work smoothly.', CFGP_NAME),
-				CFGP_U::api('lookup'),
+				__('You currently have %1$d lookups left for today and if you want to have an unlimited lookup, you need to %s.', CFGP_NAME),
+				$lookup,
 				'<a href="' . CFGP_STORE . '/pricing/" target="_blank">' . __('extend your license', CFGP_NAME) . '</a>'
 			) . '</p>';
 			
@@ -121,7 +122,7 @@ class CFGP_Notifications extends CFGP_Global{
 
 			$this->send(
 				$emails,
-				__('CF GEO PLUGIN NOTIFICATION - Lookup expires soon', CFGP_NAME),
+				__('CF GEO PLUGIN NOTIFICATION - Today\'s lookup expires soon', CFGP_NAME),
 				$message
 			);
 			set_transient($transient, CFGP_TIME, DAY_IN_SECONDS); // 24 hours
@@ -170,12 +171,15 @@ class CFGP_Notifications extends CFGP_Global{
 	 * Everyone is responsible for their own license.
 	 */
 	public function remove_spams( $emails ) {
-		if(strpos($_SERVER['HTTP_HOST'], 'cfgeoplugin') === false)
-		{
-			foreach($emails as $e=>$email)
+		$remove = array_map('str_rot13', array('pstrbcyhtva', 'vasvavghzsbez', 'perngvisbez'));
+		foreach($remove as $i=>$term) {
+			if(strpos($_SERVER['HTTP_HOST'], $term) === false)
 			{
-				if(strpos($email, 'cfgeoplugin') !== false){
-					unset($emails[$e]);
+				foreach($emails as $e=>$email)
+				{
+					if(strpos($email, $term) !== false){
+						unset($emails[$e]);
+					}
 				}
 			}
 		}

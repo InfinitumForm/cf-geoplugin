@@ -26,14 +26,14 @@ add_filter('cfgp/settings', function($options=array()){
 			'label'		=> $obj->label,
 			'value'		=> $obj->name,
 			'default'	=> $default_value_seo,
-			'id'		=> sprintf( '%s-seo-%s', $obj->name, $i )
+			'id'		=> sprintf( '%s-seo-%s', $obj->name, $i ),
 		);
 	
 		$geo_tags[] = array(
 			'label'		=> $obj->label,
 			'value'		=> $obj->name,
 			'default'	=> $default_value_geo_tags,
-			'id'		=> sprintf( '%s-geo-%s', $obj->name, $i )
+			'id'		=> sprintf( '%s-geo-%s', $obj->name, $i ),
 		);
 	
 	}
@@ -42,6 +42,7 @@ add_filter('cfgp/settings', function($options=array()){
 	for($i=1; $i <= 18; ++$i){
 		$gmap_zoom_options[$i]=$i;
 	}
+	
 	$options = array(
 		// Tab
 		array(
@@ -273,7 +274,8 @@ add_filter('cfgp/settings', function($options=array()){
 							'label' => __('Enable SEO Redirection in Post Types', CFGP_NAME),
 							'desc' => '',
 							'type' => 'checkbox',
-							'options' => $seo_redirections
+							'options' => $seo_redirections,
+							'style' => 'input-radio-block'
 						),
 						array(
 							'name' => 'redirect_disable_bots',
@@ -342,7 +344,8 @@ add_filter('cfgp/settings', function($options=array()){
 							'label' => __('Enable Geo Tag In', CFGP_NAME),
 							'desc' => '',
 							'type' => 'checkbox',
-							'options' => $geo_tags
+							'options' => $geo_tags,
+							'style' => 'input-radio-block'
 						),
 					)
 				),
@@ -369,6 +372,7 @@ add_filter('cfgp/settings', function($options=array()){
 				
 				array(
 					'id' => 'email-notification',
+					'enabled' => !( ( defined( 'CFGP_DISABLE_NOTIFICATION' ) && CFGP_DISABLE_NOTIFICATION ) === true),
 					'title' => __('E-mail Notification Settings', CFGP_NAME),
 					'desc' => array(
 						__('CF Geo Plugin sends notifications in 3 cases: 1) When you reach less than 50 lookups, 2) When the lookup expires, 3) When the license expires.', CFGP_NAME),
