@@ -145,8 +145,9 @@ class CFGP_IP extends CFGP_Global {
 		// Let's ask server?
 		$external_servers = apply_filters('cfgp/ip/external_servers', array(
 			'https://api.ipify.org',
-			'https://smart-ip.net/myip',
-			'https://ident.me'
+			'https://ident.me',
+			'https://api.my-ip.io/ip',
+			'https://ip4.seeip.org'
 		));
 		if(stristr(PHP_OS, 'WIN') !== false)
 		{
