@@ -38,10 +38,11 @@ class CFGP_Media extends CFGP_Global {
 	 * Allow multi .csv uploads
 	 */
 	public function upload_multi_mimes( $check, $file, $filename, $mimes ) {
-		if ( empty( $check['ext'] ) && empty( $check['type'] ) ) {
-			// Adjust to your needs!
-			$multi_mimes = array( array( 'csv' => 'text/csv' ), array( 'csv' => 'application/vnd.ms-excel' ) );
-
+			// Set MIME types
+			$multi_mimes = array(
+				array( 'csv' => 'text/csv' ),
+				array( 'csv' => 'application/vnd.ms-excel' )
+			);
 			// Run new checks for our custom mime types and not on core mime types.
 			foreach( $multi_mimes as $mime ) {
 				$this->remove_filter( 'wp_check_filetype_and_ext', 'upload_multi_mimes', 99, 4 );

@@ -191,7 +191,7 @@ class CFGP_Menus extends CFGP_Global {
 			
 				if( $protect ){
 					$wp_query->set_404();
-					status_header(503);
+					status_header(302);
 					get_template_part( 404 );
 					exit;
 				}
