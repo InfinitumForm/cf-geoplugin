@@ -155,8 +155,7 @@ class CFGP_IP extends CFGP_Global {
 			{
 				foreach($external_servers as $server) {
 					$ip = shell_exec('powershell.exe -InputFormat none -ExecutionPolicy Unrestricted -NoProfile -Command "(Invoke-WebRequest '.$server.').Content.Trim()"');
-					if(self::filter($ip)!==false)
-					{
+					if(self::filter($ip)!==false) {
 						return CFGP_Cache::set('IP', $ip);
 					}
 				}
@@ -168,8 +167,7 @@ class CFGP_IP extends CFGP_Global {
 			{
 				foreach($external_servers as $server) {
 					$ip = shell_exec('curl '.$server.'##*( )');
-					if(self::filter($ip)!==false)
-					{
+					if(self::filter($ip)!==false) {
 						return CFGP_Cache::set('IP', $ip);
 					}
 				}

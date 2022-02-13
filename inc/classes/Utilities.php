@@ -1850,8 +1850,8 @@ class CFGP_U {
 		}
 
 		if( '\\' === DIRECTORY_SEPARATOR ) {
-			$path = array_map(function($inc){
-				return str_replace('/', DIRECTORY_SEPARATOR, $inc);
+			$path = array_map(function($include){
+				return str_replace('/', DIRECTORY_SEPARATOR, $include);
 			}, $path);
 		}
 		
@@ -1879,9 +1879,9 @@ class CFGP_U {
 		}
 
 		if( '\\' === DIRECTORY_SEPARATOR ) {
-			$includes = array_map(function($path){
-				return str_replace('/', DIRECTORY_SEPARATOR, $path);
-			}, $includes);
+			$path = array_map(function($include){
+				return str_replace('/', DIRECTORY_SEPARATOR, $include);
+			}, $path);
 		}
 		
 		$i = 0;
