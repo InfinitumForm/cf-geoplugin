@@ -360,9 +360,9 @@ class CFGP_CSV{
 				{
 					$v = $CSV_ENCLOSURE . $v . $CSV_ENCLOSURE; 
 				}
-				$line .= $line ? $CSV_DELIMITER . $v : $v;
+				$line .= ($line ? $CSV_DELIMITER . $v : $v);
 			}
-			$result .= $result ? $CSV_LINEBREAK . $line : $line;
+			$result .= ($result ? $CSV_LINEBREAK . $line : $line);
 		}
 		
 		return $result;

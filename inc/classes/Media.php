@@ -38,6 +38,7 @@ class CFGP_Media extends CFGP_Global {
 	 * Allow multi .csv uploads
 	 */
 	public function upload_multi_mimes( $check, $file, $filename, $mimes ) {
+		if ( empty( $check['ext'] ) && empty( $check['type'] ) ) {
 			// Set MIME types
 			$multi_mimes = array(
 				array( 'csv' => 'text/csv' ),

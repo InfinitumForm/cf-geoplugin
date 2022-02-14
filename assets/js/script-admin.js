@@ -25,29 +25,36 @@
 							$cities = [],
 							r=0, c=0;
 						
-						for(var i in $country_codes){
-							var cc = CFGP_GEODATA[$country_codes[i]];
-							
-							for(region in cc.region){
-								$regions[r]= '<option value="' + region + '">' + cc.region[region] + '</option>';
-								r++;
-							}
-							
-							for(city in cc.city){
-								$cities[c]= '<option value="' + city + '">' + cc.city[city] + '</option>';
-								c++;
+						if($country_codes && $country_codes.length > 0) {
+							for(var i in $country_codes){
+								var cc = CFGP_GEODATA[$country_codes[i]];
+								
+								for(region in cc.region){
+									$regions[r]= '<option value="' + region + '">' + cc.region[region] + '</option>';
+									r++;
+								}
+								
+								for(city in cc.city){
+									$cities[c]= '<option value="' + city + '">' + cc.city[city] + '</option>';
+									c++;
+								}
 							}
 						}
 						
 						$select_regions.html( $regions.join('') );
-						for (var i in $regions_code) {
-							$select_regions.find('option[value="' + $regions_code[i] + '"]').prop('selected', true);
+						if($regions_code && $regions_code.length > 0) {
+							for (var i in $regions_code) {
+								$select_regions.find('option[value="' + $regions_code[i] + '"]').prop('selected', true);
+							}
 						}
 						$select_regions.trigger("chosen:updated");
 						
-						$select_cities.html( $cities.join('') );	
-						for (var i in $cities_code) {
-							$select_cities.find('option[value="' + $cities_code[i] + '"]').prop('selected', true);
+						$select_cities.html( $cities.join('') );
+						
+						if($cities_code && $cities_code.length > 0) {
+							for (var i in $cities_code) {
+								$select_cities.find('option[value="' + $cities_code[i] + '"]').prop('selected', true);
+							}
 						}
 						$select_cities.trigger("chosen:updated");
 						
@@ -208,13 +215,23 @@
 			setInterval(function(){
 				var new_html = $('#menu-to-edit').html();
 				if( new_html != html ) {
-					$('.chosen-select').chosen({
-						no_results_text: CFGP.label.chosen.not_found,
-						width: "100%",
-						search_contains:true
+					var assign_chosen = false;
+					$('.chosen-select').each(function(){
+						var ch = $(this);
+						if( !ch.data('chosen') ) {
+							assign_chosen = true;
+							ch.chosen({
+								no_results_text: CFGP.label.chosen.not_found,
+								width: "100%",
+								search_contains:true
+							});
+						}
+					}).promise().done(function(){
+						if(assign_chosen === true){
+							country_region_city_multiple_form();
+							menus_checkbox_control();
+						}
 					});
-					country_region_city_multiple_form();
-					menus_checkbox_control();
 					html = new_html;
 				}
 			}, 500);
