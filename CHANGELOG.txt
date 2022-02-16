@@ -1,5 +1,8 @@
 == Changelog ==
 
+= 8.0.10 =
+* Fixed license activation problems
+
 = 8.0.9 =
 * Added support for the new Windows servers
 * Fixed IP detection on the Windows IIS

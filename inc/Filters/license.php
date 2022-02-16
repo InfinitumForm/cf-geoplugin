@@ -30,7 +30,8 @@ if( CFGP_U::api('lookup') != 'lifetime' ) :
 		} else if(isset($_POST['deactivate_license']) && wp_verify_nonce(CFGP_U::request_string('nonce'), CFGP_NAME.'-deactivate-license') !== false){
 			CFGP_License::deactivate();
 		}
-		$_POST = NULL;
+		
+		wp_safe_redirect( CFGP_U::admin_url('/admin.php?page=cf-geoplugin-activate') ); exit;
 	}
 
 	foreach(CFGP_License::get_product_data() as $i => $product){
@@ -110,7 +111,11 @@ add_action('cfgp/page/license/sidebar', function(){ if( CFGP_U::api('lookup') ==
             '<strong><a href="https://cfgeoplugin.com/privacy-policy/" target="_blank">' . __('Privacy Policy', CFGP_NAME) . '</a></strong>',
             '<strong><a href="https://cfgeoplugin.com/terms-and-conditions/" target="_blank">' . __('Terms & Conditions', CFGP_NAME) . '</a></strong>'
         ); ?></p>
-        <?php else: ?>
+		<?php elseif(CFGP_U::api('lookup') === 'unlimited') : ?>
+		<p style="font-weight:600;"><?php _e('An update error occurred and your license was not recorded on your server.'); ?></p>
+		<p><?php _e('This should not scare you because our API has recognized the problem and still gives you all the necessary information without restrictions.'); ?></p>
+		<p><?php _e('But for the plugin to work properly, please re-enter your license and activate the plugin to unlock all internal features.'); ?></p>
+		<?php else: ?>
         <p><?php printf(
             __('You currently use a free version of plugin with a limited number of lookups. Each free version of this plugin is limited to %1$s lookups per day and you have only %2$s lookups available for today. If you want to have unlimited lookup, please enter your license key. If you are unsure and do not understand what this is about, read %3$s.', CFGP_NAME),
             

@@ -95,6 +95,8 @@ class CFGP_Options
 	 */
 	public static function set($name_or_array=array(), $value=NULL)
 	{
+		// Clear cache;
+		$clear_cache = false;
 		// Get plugin options
 		$options = self::get();
 		// Get default options
@@ -103,8 +105,9 @@ class CFGP_Options
 		$filter = apply_filters('cfgp/options/set/filter', array_keys($default_options));
 		// Collect and set new values
 		if(!empty($name_or_array))
-		{			
+		{
 			if(is_array($name_or_array)) {
+				$clear_cache = true;
 				$name_or_array = array_merge(
 					(!empty($options) ? $options : $default_options),
 					$name_or_array
@@ -135,6 +138,12 @@ class CFGP_Options
 		}
 		// Save to cache
 		CFGP_Cache::set('options', $options);
+		
+		// Clear special API cache
+		if( $clear_cache ) {
+			CFGP_API::remove_cache();
+		}
+		
 		// Return
 		return apply_filters( 'cfgp/options/set', $options, $default_options, $name_or_array, $value);
 	}

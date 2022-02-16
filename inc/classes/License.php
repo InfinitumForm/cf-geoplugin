@@ -196,12 +196,12 @@ class CFGP_License extends CFGP_Global{
 			return self::$activated;
 		}
 		
-		if( CFGP_U::api('lookup') === 'unlimited' || CFGP_U::api('lookup') === 'lifetime' ) {
+		if( CFGP_U::api('lookup') === 'lifetime' ) {
 			self::$activated = true;
 			return self::$activated;
 		}
 		
-		if(self::expired()) {
+		if( self::expired() ) {
 			self::$activated = false;
 			return self::$activated;
 		}
@@ -401,7 +401,6 @@ class CFGP_License extends CFGP_Global{
 		{
 			// Clear errors if exists
 			delete_transient('cfgp-license-response-errors');
-			
 			// Update license
 			$update = array(
 				'key' => $response['data']['the_key'],
@@ -415,6 +414,8 @@ class CFGP_License extends CFGP_Global{
 			);
 			self::set($update);
 			set_transient('cfgp-license-response-success', $response['message'], YEAR_IN_SECONDS);
+			// Clear special API cache
+			CFGP_API::remove_cache();
 			return true;
 		}
 	}
@@ -461,6 +462,8 @@ class CFGP_License extends CFGP_Global{
 			// Clear license
 			self::set(CFGP_Defaults::LICENSE);
 			set_transient('cfgp-license-response-success', $response['message'], YEAR_IN_SECONDS);
+			// Clear special API cache
+			CFGP_API::remove_cache();
 			return true;
 		}
 	}

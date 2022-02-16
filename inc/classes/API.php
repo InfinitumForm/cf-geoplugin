@@ -311,8 +311,13 @@ class CFGP_API extends CFGP_Global {
 						), $return);
 
 						// Save lookup to session
-						if(is_numeric($return['lookup']) && $return['lookup'] < 99) {
-							set_transient('cfgp-api-available-lookup-' . $this->host, $return['lookup'], DAY_IN_SECONDS);
+						if(is_numeric($return['lookup']) && $return['lookup'] <= CFGP_LIMIT) {
+							set_transient('cfgp-api-available-lookup-' . $this->host, $return['lookup'], (DAY_IN_SECONDS*2));
+						} else if(
+							($return['lookup'] == 'unlimited' || $return['lookup'] == 'lifetime') 
+							&& get_transient('cfgp-api-available-lookup-' . $this->host)
+						) {
+							delete_transient('cfgp-api-available-lookup-' . $this->host);
 						}
 						
 						// Save to session
@@ -397,6 +402,35 @@ class CFGP_API extends CFGP_Global {
 		}
 		
 		return $return;
+	}
+	
+	public static function remove_cache(){
+		global $wpdb;
+		
+		// Remove plugins cache
+		if ( is_multisite() && is_main_site() && is_main_network() ) {
+			$wpdb->query("DELETE FROM
+				`{$wpdb->sitemeta}`
+			WHERE (
+					`{$wpdb->sitemeta}`.`option_name` LIKE '_site_transient_cfgp-api-%'
+				OR
+					`{$wpdb->sitemeta}`.`option_name` LIKE '_site_transient_timeout_cfgp-api-%'
+			)");
+			} else {
+			$wpdb->query("DELETE FROM
+				`{$wpdb->options}`
+			WHERE (
+					`{$wpdb->sitemeta}`.`option_name` LIKE '_transient_cfgp-api-%'
+				OR
+					`{$wpdb->sitemeta}`.`option_name` LIKE '_transient_timeout_cfgp-api-%'
+				OR
+					`{$wpdb->sitemeta}`.`option_name` LIKE '_site_transient_cfgp-api-%'
+				OR
+					`{$wpdb->sitemeta}`.`option_name` LIKE '_site_transient_timeout_cfgp-api-%'
+			)");
+		}
+		
+		CFGP_Cache::delete( 'API' );
 	}
 	
 	public static function country2locale($code)
