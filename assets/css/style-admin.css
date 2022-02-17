@@ -17,6 +17,13 @@
 	display:table;
 }
 
+#cf-geoplugin .cfgp-gps-marker{
+	color: #cc0000;
+    margin-left: 5px;
+    font-family: monospace;
+	font-weight: 600px;
+}
+
 #cf-geoplugin-settings .cf-geoplugin-sticky-button > p.submit > input#submit{
 	margin:8px 10px !important;
 }

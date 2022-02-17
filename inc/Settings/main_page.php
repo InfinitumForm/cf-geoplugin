@@ -11,6 +11,20 @@ $remove_tags = array(
 	'zip'
 );
 
+$gps_keys = array(
+	'address',
+	'latitude',
+	'longitude',
+	'region',
+	'state',
+	'street',
+	'street_number',
+	'country_code',
+	'country',
+	'city',
+	'city_code'
+);
+
 $API = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
 
 ?>
@@ -58,9 +72,16 @@ $API = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
                                     <?php if(in_array($key, array('cfgeo_flag'))) : ?>
                                     	<td><code>[<?php echo $key; ?>]</code></td>
                                     <?php else : ?>
-                                    	<td><code>[cfgeo return="<?php echo $key; ?>"]</code></td>
+                                    	<td>
+											<code>[cfgeo return="<?php echo $key; ?>"]</code>
+										</td>
                                     <?php endif; ?>
-                                        <td><?php echo $value; ?></td>
+                                        <td>
+											<span class="cfgp-value"><?php echo $value; ?></span>
+											<?php if($API['gps'] == 1 && in_array($key, $gps_keys)) : ?>
+											<sup class="cfgp-gps-marker"><b><?php _e('GPS',CFGP_NAME); ?></b></sup>
+											<?php endif; ?>
+										</td>
                                     </tr>
                                     <?php endforeach; ?>
                                     <?php do_action('cfgp/table/after/shortcodes', $API); ?>
@@ -94,7 +115,12 @@ $API = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
                                             ), $API) as $key => $value) : if(in_array($key, $remove_tags)) continue; ?>
                                         <tr>
                                             <td><code>[cfgeo_<?php echo $key; ?>]</code></td>
-                                            <td><?php echo $value; ?></td>
+                                            <td>
+												<span class="cfgp-value"><?php echo $value; ?></span>
+												<?php if($API['gps'] == 1 && in_array($key, $gps_keys)) : ?>
+												<sup class="cfgp-gps-marker"><b><?php _e('GPS',CFGP_NAME); ?></b></sup>
+												<?php endif; ?>
+											</td>
                                         </tr>
                                         <?php endforeach; ?>
                                         <?php do_action('cfgp/table/after/simple_shortcodes', $API); ?>
@@ -124,7 +150,12 @@ $API = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
                                     <?php foreach(apply_filters('cfgp/table/tags', $API) as $key => $value) : if(in_array($key, $remove_tags)) continue; ?>
                                     <tr>
                                         <td><code>%%<?php echo $key; ?>%%</code></td>
-                                        <td><?php echo $value; ?></td>
+                                        <td>
+											<span class="cfgp-value"><?php echo $value; ?></span>
+											<?php if($API['gps'] == 1 && in_array($key, $gps_keys)) : ?>
+											<sup class="cfgp-gps-marker"><b><?php _e('GPS',CFGP_NAME); ?></b></sup>
+											<?php endif; ?>
+										</td>
                                     </tr>
                                     <?php endforeach; ?>
                                     <?php do_action('cfgp/table/after/tags', $API); ?>
