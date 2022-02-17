@@ -34,7 +34,8 @@
 								posts_per_page : $posts_per_page,
 								class : $class,
 								exact : $exact,
-								default : $default
+								default : $default,
+								key : (typeof window.cfgeo !== 'undefined' ? window.cfgeo.key : CFGP.key)
 							},
 						//	cache : true,
 							async : true
@@ -90,7 +91,8 @@
 								action : 'cf_geoplugin_shortcode_cache',
 								options : $options,
 								shortcode : $type,
-								default : $default
+								default : $default,
+								key : (typeof window.cfgeo !== 'undefined' ? window.cfgeo.key : CFGP.key)
 							},
 						//	cache : true,
 							async : true

@@ -21,7 +21,7 @@ class CFGP_U {
 	
 	/*
 	 * Get plugin ID
-	 * @return        NULL/string
+	 * @return        string
 	 * @author        Ivijan-Stefan Stipic
 	*/
 	public static function ID() {
@@ -29,12 +29,31 @@ class CFGP_U {
 			return $ID;
 		}
 
-		return CFGP_Cache::set('ID', get_option(CFGP_NAME . '-ID'));
+		$ID = get_option(CFGP_NAME . '-ID');
+		
+		if( !$ID ) {
+			$ID = ('cfgp_'.self::generate_token(55).'_'.self::generate_token(4));
+			add_option(CFGP_NAME . '-ID', $ID, false);
+		}
+
+		return CFGP_Cache::set('ID', $ID);
+	}
+	
+	/*
+	 * Get plugin KEY for the REST API
+	 * @return        string
+	 * @author        Ivijan-Stefan Stipic
+	*/
+	public static function KEY() {
+		if( $KEY = CFGP_Cache::get('REST_KEY') ) {
+			return $KEY;
+		}
+		return CFGP_Cache::set('REST_KEY', str_rot13(substr(CFGP_U::ID(), 6, 21)));
 	}
 	
 	/*
 	 * Get HTTP codes
-	 * @return        object/null
+	 * @return        object
 	 * @author        Ivijan-Stefan Stipic
 	*/
 	public static function get_http_codes(){
@@ -1261,9 +1280,9 @@ class CFGP_U {
 		}
 		
 		if(empty($name)) {
-			return ( $API ? $API : $default );
+			return apply_filters('cfgp/api/return', ( $API ? $API : $default ), $API, $default);
 		} else {
-			return ( isset($API[$name]) ? $API[$name] : $default );
+			return apply_filters('cfgp/api/return/' . $name, ( isset($API[$name]) ? $API[$name] : $default ), $API, $default);
 		}
 	}
 	

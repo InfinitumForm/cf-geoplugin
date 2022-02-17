@@ -55,7 +55,8 @@ class CFGP_Public extends CFGP_Global{
 			'cache' => (CFGP_Options::get('enable_cache', 0) ? '1' : '0'),
 			'cache_shortcode_url' => (CFGP_U::is_rest_enabled() ? get_rest_url( null, 'cf-geoplugin/v1/cache/shortcode/') : null),
 			'cache_banner_url' => (CFGP_U::is_rest_enabled() ? get_rest_url( null, 'cf-geoplugin/v1/cache/banner/') : null),
-			'rest_enabled' => (CFGP_U::is_rest_enabled() ? '1' : '0')
+			'rest_enabled' => (CFGP_U::is_rest_enabled() ? '1' : '0'),
+			'key' => CFGP_U::KEY()
 		));
 		// Public Shortcode for the currency converter
 		wp_register_script( CFGP_NAME . '-public-cc', CFGP_ASSETS . '/js/script-cc' . $min . '.js', array('jquery'), (string)CFGP_VERSION );
@@ -131,7 +132,8 @@ class CFGP_Public extends CFGP_Global{
 		$js = array();
 		
 		$CFGEO = array_merge($CFGEO,array(
-			'flag' => ''
+			'flag' => '',
+			'key' => CFGP_U::KEY()
 		));
 		
 		if( isset( $CFGEO['country_code'] ) && !empty( $CFGEO['country_code'] ) )

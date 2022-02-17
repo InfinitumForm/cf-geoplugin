@@ -1622,11 +1622,26 @@ class CFGP_Shortcodes extends CFGP_Global {
 		}
 		
 		$attr = str_replace(' cache', '', $attr) . ' no_cache';
-		
-		if(empty($default)) {
-			echo do_shortcode('[' . $shortcode . $attr . ']');
+
+		if( !in_array($shortcode, array(
+			'cfgeo_flag',
+			'cfgeo_converter',
+			'cfgeo_is_vat',
+			'cfgeo_is_not_vat',
+			'cfgeo_in_eu',
+			'cfgeo_not_in_eu',
+			'cfgeo_is_proxy',
+			'cfgeo_is_not_proxy',
+			'cfgeo_gps',
+			'cfgeo_map'
+		)) && preg_match('/cfgeo_([a-z_]+)/i', $shortcode, $match) ) {
+			echo do_shortcode('[cfgeo return="' . $match[1] . '"' . $attr . ']');
 		} else {
-			echo do_shortcode('[' . $shortcode . $attr . ']' . $content . '[/' . $shortcode . ']');
+			if(empty($default)) {
+				echo do_shortcode('[' . $shortcode . $attr . ']');
+			} else {
+				echo do_shortcode('[' . $shortcode . $attr . ']' . $content . '[/' . $shortcode . ']');
+			}
 		}
 		
 		exit;

@@ -98,6 +98,16 @@ class CFGP_REST extends CFGP_Global {
 					'methods' => array('GET', 'POST'),
 					'permission_callback' => '__return_true',
 					'callback' => function( $data ) use ( $value ) {
+						
+						if( !isset($_REQUEST['key']) || (isset($_REQUEST['key']) && CFGP_U::KEY() !== $_REQUEST['key']) ) {
+							return new WP_REST_Response(array(
+								'error' => true,
+								'code' => 'not_authorized',
+								'error_message' => __('You are not authorized to access this information.', CFGP_NAME),
+								'status' => 404
+							));
+						}
+						
 						return new WP_REST_Response(array(
 							'response' => $value,
 							'error' => CFGP_U::api('error'),
@@ -118,6 +128,15 @@ class CFGP_REST extends CFGP_Global {
 				'methods' => array('GET', 'POST'),
 				'permission_callback' => '__return_true',
 				'callback' => function( $data ) use ( $routes ) {
+					
+					if( !isset($_REQUEST['key']) || (isset($_REQUEST['key']) && CFGP_U::KEY() !== $_REQUEST['key']) ) {
+						return new WP_REST_Response(array(
+							'error' => true,
+							'code' => 'not_authorized',
+							'error_message' => __('You are not authorized to access this information.', CFGP_NAME),
+							'status' => 404
+						));
+					}
 			
 					$callback = array_merge(
 						CFGP_U::api(false, CFGP_Defaults::API_RETURN),
@@ -144,6 +163,15 @@ class CFGP_REST extends CFGP_Global {
 				'methods' => array('GET', 'POST'),
 				'permission_callback' => '__return_true',
 				'callback' => function( $data )	{
+					
+					if( !isset($_REQUEST['key']) || (isset($_REQUEST['key']) && CFGP_U::KEY() !== $_REQUEST['key']) ) {
+						return new WP_REST_Response(array(
+							'error' => true,
+							'code' => 'not_authorized',
+							'error_message' => __('You are not authorized to access this information.', CFGP_NAME),
+							'status' => 404
+						));
+					}
 					
 					$shortcode = trim(CFGP_U::request_string('shortcode'));
 					
@@ -186,10 +214,25 @@ class CFGP_REST extends CFGP_Global {
 					
 					$return = array();
 					
-					if(empty($default)) {
-						$return['response'] = do_shortcode('[' . $shortcode . $attr . ']');
+					if( !in_array($shortcode, array(
+						'cfgeo_flag',
+						'cfgeo_converter',
+						'cfgeo_is_vat',
+						'cfgeo_is_not_vat',
+						'cfgeo_in_eu',
+						'cfgeo_not_in_eu',
+						'cfgeo_is_proxy',
+						'cfgeo_is_not_proxy',
+						'cfgeo_gps',
+						'cfgeo_map'
+					)) && preg_match('/cfgeo_([a-z_]+)/i', $shortcode, $match) ) {
+						$return['response'] = do_shortcode('[cfgeo return="' . $match[1] . '"' . $attr . ']');
 					} else {
-						$return['response'] =  do_shortcode('[' . $shortcode . $attr . ']' . $content . '[/' . $shortcode . ']');
+						if(empty($default)) {
+							$return['response'] = do_shortcode('[' . $shortcode . $attr . ']');
+						} else {
+							$return['response'] =  do_shortcode('[' . $shortcode . $attr . ']' . $content . '[/' . $shortcode . ']');
+						}
 					}
 					
 					return new WP_REST_Response( array_merge(
@@ -205,11 +248,20 @@ class CFGP_REST extends CFGP_Global {
 			), array(), true );
 			
 			
-			// Fix Shortcode cache
+			// Fix Banner cache
 			register_rest_route( $namespace, '/cache/banner', array(
 				'methods' => array('GET', 'POST'),
 				'permission_callback' => '__return_true',
 				'callback' => function( $data )	{
+					
+					if( !isset($_REQUEST['key']) || (isset($_REQUEST['key']) && CFGP_U::KEY() !== $_REQUEST['key']) ) {
+						return new WP_REST_Response(array(
+							'error' => true,
+							'code' => 'not_authorized',
+							'error_message' => __('You are not authorized to access this information.', CFGP_NAME),
+							'status' => 404
+						));
+					}
 					
 					// Stop on the bad request
 					if( CFGP_U::request_string('action') != 'cf_geoplugin_banner_cache' ) {
