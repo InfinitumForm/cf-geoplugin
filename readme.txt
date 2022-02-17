@@ -5,7 +5,7 @@ Tags: geolocation, locator, GeoIP, geo, geotargeting, seo, seo redirect, woocomm
 Requires at least: 4.5
 Tested up to: 5.9
 Requires PHP: 7.0.0
-Stable tag: 8.0.10
+Stable tag: 8.1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -368,6 +368,16 @@ Please inform us if any of these errors occur via contact form on our website [h
 
 == Changelog ==
 
+= 8.1.0 =
+* Added improved integration for the GPS module
+* Aded new action and filters
+* Fixed REST API security
+* Fixed JavaScript security
+* Fixed Shortcode cache
+* Improved Utilities
+* Improved public scripts
+* Improved cache flush
+
 = 8.0.10 =
 * Fixed license activation problems
 
@@ -451,86 +461,18 @@ Please inform us if any of these errors occur via contact form on our website [h
 
 == Upgrade Notice ==
 
+= 8.1.0 =
+* Added improved integration for the GPS module
+* Aded new action and filters
+* Fixed REST API security
+* Fixed JavaScript security
+* Fixed Shortcode cache
+* Improved Utilities
+* Improved public scripts
+* Improved cache flush
+
 = 8.0.10 =
 * Fixed license activation problems
-
-= 8.0.9 =
-* Added support for the new Windows servers
-* Fixed IP detection on the Windows IIS
-* Fixed CSV media uploads
-* Improved JavaScript
-
-= 8.0.8 =
-* Fixed plugin notifications
-* Improved API calls
-* Improved user experience
-* Improved action hooks
-
-= 8.0.7 =
-* **IMPORTANT UPDATE**
-* Fixed Elementor integration
-* Fixed REST API integration
-* Fixed cache algorithms
-* Optimized JavaScript code
-* Optimized CSS code
-* Improved page impact
-* Improved shortodes
-
-= 8.0.6 =
-* Fixed PROXY detection
-* Improved UX for mobile devices
-* Improved menus navigation control
-* JavaScript bugs fixed
-
-= 8.0.5 =
-* Added today's course at the topbar
-* Improved SEO redirection settings table
-* Improved file includes
-* Fixed plugin page URL's
-* Fixed plugin widgets
-* Improved global UI and UX
-* Fixed previous bugs
-
-= 8.0.4 =
-* **IMPORTANT UPDATE**
-* Added support for the custom URL menu item
-* Fixed SEO Redirection CSV upload
-* Fixed Geo Banner display problems
-* Fixed Geo Banner caching problems
-* Fixed absolute path of the PHP files
-* Added support for the IIS servers
-* Added support for the direct debug
-* Improved REST API response
-* Fixed JavaScript console error
-
-= 8.0.3 =
-* Fixed REST API route definition for the public users
-
-= 8.0.2 =
-* Improved JavaScript code
-* Fixed menu items integration and adapted to taxonomy
-* Improved widgets
-
-= 8.0.1 =
-* Added Menu item visibility based on the geo location
-* Fixed form error when getting old data
-* Improved security
-
-= 8.0.0 =
-* **GREAT UPDATE - BACKUP IS REQUIRED**
-* New optimized user experience based on the WordPress standard design with easy access to all information and settings
-* Added PROXY visit detection and the ability to block access
-* Advanced IP address recognition, enhanced support for Apache and Nginx servers
-* Included local libraries for Continents, Countries, Regions and Cities with autocomplete functionality
-* Maximally optimized PHP code with advanced caching algorithms with correct action hooks that allow advanced manipulation for developers
-* Fixed caching via REST
-* Improved SEO redirection with the possibility of import and export in the CSV format
-* Improved shortcodes
-* Licensing issues fixed
-* Fixed issues with SEO redirection
-* Fixed lookup leak issues
-* Fixed problems with banner and shortcode caching
-* Fixed issues with Siteground integration
 
 == Other Notes ==
 

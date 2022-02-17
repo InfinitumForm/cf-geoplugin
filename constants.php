@@ -66,7 +66,7 @@ if( ! defined( 'CFGP_DISABLE_NOTIFICATION_LOOKUP_EXPIRED' ) )	define('CFGP_DISAB
 if( ! defined( 'CFGP_DISABLE_NOTIFICATION_LOOKUP_EXPIRE_SOON' ) )	define('CFGP_DISABLE_NOTIFICATION_LOOKUP_EXPIRE_SOON', false);
 
 // Plugin URL root
-if ( ! defined( 'CFGP_URL' ) )			define( 'CFGP_URL', rtrim(plugin_dir_url( CFGP_FILE ), '/') );
+if ( ! defined( 'CFGP_URL' ) )			define( 'CFGP_URL', rtrim(plugin_dir_url( CFGP_FILE ), '/\\') );
 
 // Assets URL
 if ( ! defined( 'CFGP_ASSETS' ) )		define( 'CFGP_ASSETS', CFGP_URL.'/assets' );

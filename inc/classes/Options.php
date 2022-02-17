@@ -80,7 +80,7 @@ class CFGP_Options
 		$return = $default;
 		if (in_array($name, CFGP_Defaults::BETA_OPTIONS)) {
 			$return = self::get($name, $default);
-		}
+		}		
 		return apply_filters( 'cfgp/option/get_beta', $return, $name, $default, CFGP_Defaults::BETA_OPTIONS, CFGP_Defaults::OPTIONS );
 	}	
 	
@@ -128,6 +128,8 @@ class CFGP_Options
 				}
 			}
 		}
+		// Apply action
+		do_action('cfgp/options/action/set', $options, $default_options, $name_or_array, $value, $clear_cache);
 		// Return on the bad data
 		if(empty($options)) return false;
 		// Save new options
@@ -177,6 +179,8 @@ class CFGP_Options
 		}
 		// Set defaults
 		$options = array_merge($default_options, $options);
+		// Apply action
+		do_action('cfgp/options/action/delete', $options, $default_options, $name_or_array);
 		// Update options
 		if(CFGP_NETWORK_ADMIN){
 			update_site_option(CFGP_NAME, $options, true);
