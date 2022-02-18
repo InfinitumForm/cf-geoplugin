@@ -267,6 +267,7 @@ class CFGP_API extends CFGP_Global {
 							'isp_asname' => NULL,
 							'country_code_numeric' => ($return['countryNumericCode'] ?? NULL),
 							'country_code' => ($return['countryCode'] ?? NULL),
+							'country_code_3' => ($return['countryCode3'] ?? NULL),
 							'country' => ($return['countryName'] ?? NULL),
 							'region' => ($return['regionName'] ?? NULL), //regionCode
 							'region_code' => ($return['regionCode'] ?? NULL),
@@ -277,6 +278,7 @@ class CFGP_API extends CFGP_Global {
 							'zip' => ($return['zip'] ?? NULL),
 							'postcode' => ($return['zip'] ?? NULL),
 							'address' => ($return['address'] ?? NULL),
+							'calling_code' => ($return['callingCode'] ?? NULL),
 							'latitude' => ($return['latitude'] ?? NULL),
 							'longitude' => ($return['longitude'] ?? NULL),
 							'timezone' => ($return['timezone'] ?? NULL),
