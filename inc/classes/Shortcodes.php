@@ -447,26 +447,33 @@ class CFGP_Shortcodes extends CFGP_Global {
 	 */
 	public function geo_banner( $setup, $cont='', $tag )
 	{
+		global $wpdb;
+		
 		$CFGEO = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
 		
+		// Cache control
 		$cache = CFGP_U::is_attribute_exists('cache', $setup);
-		
 		if(CFGP_Options::get('enable_cache', 0)){
 			$cache = true;
 		}
-		
-		if(CFGP_U::is_attribute_exists('no_cache', $setup)){
+		if(CFGP_U::is_attribute_exists('no_cache', $setup)) {
 			$cache = false;
 		}
-		
-		$exact = false;
-		if(CFGP_U::is_attribute_exists('exact', $setup)){
-			$exact = true;
-		}
-		
-		if($cache){
+		if($cache) {
 			wp_enqueue_style( CFGP_NAME . '-public' );
 			wp_enqueue_script( CFGP_NAME . '-public' );
+		}
+		
+		// Exact controls
+		$exact = true;
+		if(CFGP_U::is_attribute_exists('relative', $setup)) {
+			$exact = false;
+		}
+		if(CFGP_U::is_attribute_exists('any', $setup)) {
+			$exact = false;
+		}
+		if(CFGP_U::is_attribute_exists('exact', $setup)) {
+			$exact = true;
 		}
 		
 		$ID = CFGP_U::generate_token(16); // Let's made this realy hard
@@ -497,133 +504,92 @@ class CFGP_Shortcodes extends CFGP_Global {
 			}
 		}
 		
-		$class		=	sanitize_html_class($setup['class']);
-		$classes	=	(empty($class) ? array() : array_map('trim',explode(' ', $class)));
-		$classes[]	=	'cf-geoplugin-banner';
+		$class		= sanitize_html_class($setup['class']);
+		$classes	= (empty($class) ? array() : array_map('trim',explode(' ', $class)));
+		$classes[]	= 'cf-geoplugin-banner';
 		
 		if($cache != false){
-			$classes[]	=	'cache';
+			$classes[] = 'cache';
 		}
 		
 		$posts_per_page = absint($setup['posts_per_page']);
 		
-		// Main query
-		$query = array(
-			'post_type'		=> 'cf-geoplugin-banner',
-			'posts_per_page'	=>	$posts_per_page,
-			'post_status'		=> 'publish',
-			'post__in' => array($setup['id']),
-			'force_no_results' => true,
-			'meta_query' => array(),
-			'tax_query' => array()
-		);
-		
 		$country = CFGP_U::api('country_code');
+		$country_sql = '%"' . esc_sql($country) . '"%';
+		
 		$region = CFGP_U::api('region');
+		$region_sql = '%"' . esc_sql($region) . '"%';
+		
 		$city = CFGP_U::api('city');
-		
-		if($country){
-			// Search by meta
-			$query['meta_query'][]=array(
-				'key' => 'cfgp-banner-location-country',
-				'value' => '"'.strtolower($country).'"',
-				'compare' => 'LIKE',
-			);
-			// Search by taxonomy
-			$query['tax_query'][]=array(
-				'taxonomy'	=> 'cf-geoplugin-country',
-				'field'		=> 'slug',
-				'terms'		=> array($country),
-			);
-		}
-		
-		if($region){
-			// Search by meta
-			$query['meta_query'][]=array(
-				'key' => 'cfgp-banner-location-region',
-				'value' => '"'.strtolower(sanitize_title($country)).'"',
-				'compare' => 'LIKE',
-			);
-			// Search by taxonomy
-			$query['tax_query'][]=array(
-				'taxonomy'	=> 'cf-geoplugin-region',
-				'field'		=> 'slug',
-				'terms'		=> array($region),
-			);
-		}
-		
-		if($city){
-			// Search by meta
-			$query['meta_query'][]=array(
-				'key' => 'cfgp-banner-location-city',
-				'value' => '"'.strtolower(sanitize_title($city)).'"',
-				'compare' => 'LIKE',
-			);
-			// Search by taxonomy
-			$query['tax_query'][]=array(
-				'taxonomy'	=> 'cf-geoplugin-city',
-				'field'		=> 'slug',
-				'terms'		=> array($city),
-			);
-		}
-		
-		// Relative or exact search
-		if(!empty($query['meta_query'])){
-			$query['meta_query']['relation'] = ($exact ? 'AND' : 'OR');
-		}
-		
-		// Tax query
-		if(!empty($query['tax_query'])){
-			$query['tax_query']['relation'] = 'OR';
-		}
-		
-		// Search by tax (DEPRECATED)
-		$meta_query = $query['meta_query'];
-		unset($query['meta_query']);
+		$city_sql = '%"' . esc_sql($city) . '"%';
 
-		$posts = get_posts( $query );
-		
-		// Search by term
-		if(!$posts) {
-			unset($query['tax_query']);
-			$query['meta_query'] = $meta_query;
-			$meta_query = NULL;			
-			$posts = get_posts( $query );
-		}
+		$post = $wpdb->get_row( $wpdb->prepare("
+SELECT
+	`banner`.`ID`,
+	`banner`.`post_title`,
+	`banner`.`post_content`
+FROM
+	`{$wpdb->posts}` AS `banner`
+WHERE
+	`banner`.`ID` = %d
+AND
+	`banner`.`post_type` = 'cf-geoplugin-banner'
+AND
+	`post_status` = 'publish'
+AND
+	IF(
+		EXISTS(SELECT 1 FROM `{$wpdb->postmeta}` `c` WHERE `c`.`post_id` = `banner`.`ID` AND `c`.`meta_key` = 'cfgp-banner-location-country'),
+        EXISTS(SELECT 1 FROM `{$wpdb->postmeta}` `c` WHERE `c`.`post_id` = `banner`.`ID` AND `c`.`meta_key` = 'cfgp-banner-location-country' AND `c`.`meta_value` LIKE %s),
+        1
+    )
+AND
+	IF(
+        EXISTS(SELECT 1 FROM `{$wpdb->postmeta}` `r` WHERE `r`.`post_id` = `banner`.`ID` AND `r`.`meta_key` = 'cfgp-banner-location-region'),
+        EXISTS(SELECT 1 FROM `{$wpdb->postmeta}` `r` WHERE `r`.`post_id` = `banner`.`ID` AND `r`.`meta_key` = 'cfgp-banner-location-region' AND `r`.`meta_value` LIKE %s),
+        1
+    )
+AND
+	IF(
+        EXISTS(SELECT 1 FROM `{$wpdb->postmeta}` `s` WHERE `s`.`post_id` = `banner`.`ID` AND `s`.`meta_key` = 'cfgp-banner-location-city'),
+        EXISTS(SELECT 1 FROM `{$wpdb->postmeta}` `s` WHERE `s`.`post_id` = `banner`.`ID` AND `s`.`meta_key` = 'cfgp-banner-location-city' AND `s`.`meta_value` LIKE %s),
+        1
+    )
+LIMIT 1
+		",
+		absint($setup['id']),
+		$country_sql,
+		$region_sql,
+		$city_sql
+		) );
 		
 		// Let's list it
-		$content = '';
-		$save = array();
-		if( $posts ) {
-			foreach($posts as $post) {
-				$post_id = $post->ID;
-				$post_content = $post->post_content;
-				$post_content = do_shortcode($post_content);
-				$post_content = apply_filters('the_content', $post_content);
-				
-				$save[]='<div id="cf-geoplugin-banner-'.$post_id.'" class="'.join(' ',get_post_class($classes, $post_id)).' cf-geoplugin-banner-'.$post_id.'"'
-				
-					. ($cache ? ' data-id="' . $post_id . '"' : '')
-					. ($cache ? ' data-posts_per_page="' . esc_attr($posts_per_page) . '"' : '')
-					. ($cache ? ' data-class="' . esc_attr($class) . '"' : '')
-					. ($cache ? ' data-exact="' . ($exact ? 1 : 0) . '"' : '')
-					. ($cache ? ' data-default="' . esc_attr(base64_encode(urlencode($cont))) . '"' : '')
-				
-				. '>' . $post_content . '</div>';
-			}
+		$save = NULL;
+		if( $post ) {
+			$post->post_content = do_shortcode($post->post_content);
+			$post->post_content = apply_filters('the_content', $post->post_content);
+			
+			$save='<div id="cf-geoplugin-banner-'.$post->ID.'" class="'.join(' ',get_post_class($classes, $post->ID)).' cf-geoplugin-banner-'.$post->ID.'"'
+			
+				. ($cache ? ' data-id="' . $post->ID . '"' : '')
+				. ($cache ? ' data-posts_per_page="' . esc_attr($posts_per_page) . '"' : '')
+				. ($cache ? ' data-class="' . esc_attr($class) . '"' : '')
+				. ($cache ? ' data-exact="' . ($exact ? 1 : 0) . '"' : '')
+				. ($cache ? ' data-default="' . esc_attr(base64_encode(urlencode($cont))) . '"' : '')
+			
+			. '>' . $post->post_content . '</div>';
 			
 			$classes = NULL;
 		}
 		
 		// Return banner
 		if(!empty($save)){
-			return CFGP_U::fragment_caching(trim(join(PHP_EOL, $save)), $cache);
+			return CFGP_U::fragment_caching($save, $cache);
 		}
 		
 		// Format defaults
 		if(!empty($cont)) {
-			$content = do_shortcode($cont);
-			$content = apply_filters('the_content', $content);
+			$cont = do_shortcode($cont);
+			$cont = apply_filters('the_content', $cont);
 		}
 		
 		// Return defaults
@@ -636,7 +602,7 @@ class CFGP_Shortcodes extends CFGP_Global {
 				. ($cache ? ' data-exact="' . ($exact ? 1 : 0) . '"' : '')
 				. ($cache ? ' data-default="' . esc_attr(base64_encode(urlencode($cont))) . '"' : '')
 			
-			. '>' . $content . '</div>',
+			. '>' . $cont . '</div>',
 			$cache
 		);
 	}

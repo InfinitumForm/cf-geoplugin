@@ -47,7 +47,8 @@ class CFGP_Geo_Banner extends CFGP_Global {
      * AJAX - Fix cache on cached websites
      */
 	public function ajax__geoplugin_banner_cache(){
-
+		global $wpdb;
+		
 		$setup = array(
 			'id'				=>	CFGP_U::request_int('id'),
 			'posts_per_page'	=>	CFGP_U::request_int('posts_per_page'),
@@ -64,108 +65,67 @@ class CFGP_Geo_Banner extends CFGP_Global {
 		$exact = CFGP_U::request_int('exact');
 		
 		$posts_per_page = absint($setup['posts_per_page']);
-	
-		// Main query
-		$query = array(
-			'post_type'		=> 'cf-geoplugin-banner',
-			'posts_per_page'	=>	$posts_per_page,
-			'post_status'		=> 'publish',
-			'post__in' => array($setup['id']),
-			'force_no_results' => true,
-			'meta_query' => array(),
-			'tax_query' => array()
-		);
 		
 		$country = CFGP_U::api('country_code');
+		$country_sql = '%"' . esc_sql($country) . '"%';
+		
 		$region = CFGP_U::api('region');
+		$region_sql = '%"' . esc_sql($region) . '"%';
+		
 		$city = CFGP_U::api('city');
-		
-		if($country){
-			// Search by meta
-			$query['meta_query'][]=array(
-				'key' => 'cfgp-banner-location-country',
-				'value' => '"'.strtolower($country).'"',
-				'compare' => 'LIKE',
-			);
-			// Search by taxonomy
-			$query['tax_query'][]=array(
-				'taxonomy'	=> 'cf-geoplugin-country',
-				'field'		=> 'slug',
-				'terms'		=> array($country),
-			);
-		}
-		
-		if($region){
-			// Search by meta
-			$query['meta_query'][]=array(
-				'key' => 'cfgp-banner-location-region',
-				'value' => '"'.strtolower(sanitize_title($country)).'"',
-				'compare' => 'LIKE',
-			);
-			// Search by taxonomy
-			$query['tax_query'][]=array(
-				'taxonomy'	=> 'cf-geoplugin-region',
-				'field'		=> 'slug',
-				'terms'		=> array($region),
-			);
-		}
-		
-		if($city){
-			// Search by meta
-			$query['meta_query'][]=array(
-				'key' => 'cfgp-banner-location-city',
-				'value' => '"'.strtolower(sanitize_title($city)).'"',
-				'compare' => 'LIKE',
-			);
-			// Search by taxonomy
-			$query['tax_query'][]=array(
-				'taxonomy'	=> 'cf-geoplugin-city',
-				'field'		=> 'slug',
-				'terms'		=> array($city),
-			);
-		}
-		
-		// Relative or exact search
-		if(!empty($query['meta_query'])){
-			$query['meta_query']['relation'] = ($exact ? 'AND' : 'OR');
-		}
-		
-		// Tax query
-		if(!empty($query['tax_query'])){
-			$query['tax_query']['relation'] = 'OR';
-		}
-		
-		// Search by tax (DEPRECATED)
-		$meta_query = $query['meta_query'];
-		unset($query['meta_query']);
-		
-		$posts = get_posts( $query );
-		
-		// Search by term
-		if(!$posts) {
-			unset($query['tax_query']);
-			$query['meta_query'] = $meta_query;
-			$meta_query = NULL;
-			$posts = get_posts( $query );
-		}
+		$city_sql = '%"' . esc_sql($city) . '"%';
+
+		$post = $wpdb->get_row( $wpdb->prepare("
+SELECT
+	`banner`.`ID`,
+	`banner`.`post_title`,
+	`banner`.`post_content`
+FROM
+	`{$wpdb->posts}` AS `banner`
+WHERE
+	`banner`.`ID` = %d
+AND
+	`banner`.`post_type` = 'cf-geoplugin-banner'
+AND
+	`post_status` = 'publish'
+AND
+	IF(
+		EXISTS(SELECT 1 FROM `{$wpdb->postmeta}` `c` WHERE `c`.`post_id` = `banner`.`ID` AND `c`.`meta_key` = 'cfgp-banner-location-country'),
+        EXISTS(SELECT 1 FROM `{$wpdb->postmeta}` `c` WHERE `c`.`post_id` = `banner`.`ID` AND `c`.`meta_key` = 'cfgp-banner-location-country' AND `c`.`meta_value` LIKE %s),
+        1
+    )
+AND
+	IF(
+        EXISTS(SELECT 1 FROM `{$wpdb->postmeta}` `r` WHERE `r`.`post_id` = `banner`.`ID` AND `r`.`meta_key` = 'cfgp-banner-location-region'),
+        EXISTS(SELECT 1 FROM `{$wpdb->postmeta}` `r` WHERE `r`.`post_id` = `banner`.`ID` AND `r`.`meta_key` = 'cfgp-banner-location-region' AND `r`.`meta_value` LIKE %s),
+        1
+    )
+AND
+	IF(
+        EXISTS(SELECT 1 FROM `{$wpdb->postmeta}` `s` WHERE `s`.`post_id` = `banner`.`ID` AND `s`.`meta_key` = 'cfgp-banner-location-city'),
+        EXISTS(SELECT 1 FROM `{$wpdb->postmeta}` `s` WHERE `s`.`post_id` = `banner`.`ID` AND `s`.`meta_key` = 'cfgp-banner-location-city' AND `s`.`meta_value` LIKE %s),
+        1
+    )
+LIMIT 1
+		",
+		absint($setup['id']),
+		$country_sql,
+		$region_sql,
+		$city_sql
+		) );
 		
 		$content = '';
-		$save = array();
+		$save = NULL;
 		
-		foreach($posts as $post) {
-			$post_id = $post->ID;
-			$post_content = $post->post_content;
-			$post_content = do_shortcode($post_content);
-			$post_content = apply_filters('the_content', $post_content);
-			
-			$save[]=$post_content;
+		if($post) {
+			$post->post_content = do_shortcode($post->post_content);
+			$post->post_content = apply_filters('the_content', $post->post_content);
+			$save=$post->post_content;
 		}
-		
-		$save = array_filter($save);
 		
 		// Return banner
 		if(!empty($save)){
-			$content = CFGP_U::fragment_caching(trim(join(PHP_EOL, $save)), true);
+			$content = CFGP_U::fragment_caching($save, false);
 		}
 		
 		// Format defaults
@@ -267,9 +227,23 @@ class CFGP_Geo_Banner extends CFGP_Global {
 		update_post_meta( $post_id, 'cfgp-banner-default', wp_kses_post(CFGP_U::request('cfgp-banner-default-content', NULL)) );
 		delete_post_meta( $post_id, CFGP_METABOX . 'banner_default' );
 		
-		update_post_meta( $post_id, 'cfgp-banner-location-country',  CFGP_Options::sanitize( CFGP_U::request('cfgp-banner-location-country', array()) ) );
-		update_post_meta( $post_id, 'cfgp-banner-location-region',  CFGP_Options::sanitize( CFGP_U::request('cfgp-banner-location-region', array()) ) );
-		update_post_meta( $post_id, 'cfgp-banner-location-city',  CFGP_Options::sanitize( CFGP_U::request('cfgp-banner-location-city', array()) ) );
+		if( $country = CFGP_Options::sanitize( CFGP_U::request('cfgp-banner-location-country', array()) ) ) {
+			update_post_meta( $post_id, 'cfgp-banner-location-country', $country);
+		} else {
+			delete_post_meta( $post_id, 'cfgp-banner-location-country' );
+		}
+		
+		if( $region = CFGP_Options::sanitize( CFGP_U::request('cfgp-banner-location-region', array()) ) ) {
+			update_post_meta( $post_id, 'cfgp-banner-location-region', $region);
+		} else {
+			delete_post_meta( $post_id, 'cfgp-banner-location-region' );
+		}
+		
+		if( $city = CFGP_Options::sanitize( CFGP_U::request('cfgp-banner-location-city', array()) ) ) {
+			update_post_meta( $post_id, 'cfgp-banner-location-city', $city);
+		} else {
+			delete_post_meta( $post_id, 'cfgp-banner-location-city' );
+		}
 		
 		wp_set_post_terms( $post_id, '', 'cf-geoplugin-country' );
 		wp_set_post_terms( $post_id, '', 'cf-geoplugin-region' );
