@@ -552,7 +552,7 @@ class CFGP__Plugin__woocommerce extends CFGP_Global
 	public function wp_footer () {
 		
 		$gateways = apply_filters( 'cf_geoplugin_woocommerce_disable_cart_buttons', [
-			'ppcp-gateway' => '.wc-proceed-to-checkout #ppc-button'
+			'ppcp-gateway' => '.wc-proceed-to-checkout #ppc-button, #ppc-button'
 		]);
 
 		$css = [];
@@ -574,12 +574,17 @@ class CFGP__Plugin__woocommerce extends CFGP_Global
 			}
 		}
 		
-		if( !empty($css) ) : ?>
+		if( !empty($css) ) : $css = join(', ', $css); ?>
 <style id="cfgp-woocommerce-disable-payment-gateway-css" media="all">
 /* <![CDATA[ */
-<?php echo join(', ', $css); ?>{display:none !important;}
+<?php echo $css; ?>{display:none !important;}
 /* ]]> */
 </style>
+<script id="cfgp-woocommerce-disable-payment-gateway-js" type="text/javascript">
+/* <![CDATA[ */
+(function(jCFGP){if(jCFGP){jCFGP(document).ready(function(){jCFGP(<?php printf('"%s"', $css); ?>).remove();});}}(jQuery||window.jQuery));
+/* ]]> */
+</script>
 	<?php endif;
 	}
 	
