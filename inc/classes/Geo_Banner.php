@@ -125,13 +125,13 @@ LIMIT 1
 		
 		// Return banner
 		if(!empty($save)){
-			$content = CFGP_U::fragment_caching($save, false);
+			$content = $save;
 		}
 		
 		// Format defaults
 		if(!empty($cont) && empty($content)) {
-			$content = do_shortcode($cont);
-			$content = apply_filters('the_content', $content);
+			$cont = do_shortcode($cont);
+			$content = apply_filters('the_content', $cont);
 		}
 		
 		echo $content; exit;

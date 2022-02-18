@@ -131,12 +131,16 @@ class CFGP_Shortcodes extends CFGP_Global {
 		$relative_match = (CFGP_U::is_attribute_exists('relative_match', $atts) ? true : false);
 		
 		$array = shortcode_atts( array(
-			'return' 	=>  'ip',
+			'return' 	=>  '',
 			'ip'		=>	false,
 			'default'	=>	NULL,
 			'exclude'	=>	false,
 			'include'	=>	false
         ), $atts );
+
+		if( empty($atts) ) {
+			$array['return'] = 'ip';
+		}
 
 		$return 	= $array['return'];
 		$ip 		= $array['ip'];
@@ -577,8 +581,6 @@ LIMIT 1
 				. ($cache ? ' data-default="' . esc_attr(base64_encode(urlencode($cont))) . '"' : '')
 			
 			. '>' . $post->post_content . '</div>';
-			
-			$classes = NULL;
 		}
 		
 		// Return banner
@@ -1538,10 +1540,15 @@ LIMIT 1
 		if( $cache ) {
 			$shortcode = esc_attr($shortcode);
 			$shortcode = trim($shortcode);
+			
+			if(is_array($options)) {
+				$options = array_filter($options);
+			}
+			
 			return sprintf(
 				'<span class="cf-geoplugin-shortcode cf-geoplugin-shortcode-%1$s cache" data-type="%1$s" data-options="%2$s" data-default="%3$s" data-nonce="%4$s">%5$s</span>',
 				esc_attr($shortcode),
-				esc_attr(base64_encode(urlencode(serialize($options)))),
+				empty($options) ? '' : esc_attr(base64_encode(urlencode(serialize($options)))),
 				esc_attr(base64_encode(urlencode($default))),
 				wp_create_nonce( 'cfgeo-process-cache-ajax' ),
 				$content
@@ -1581,7 +1588,7 @@ LIMIT 1
 		
 		if($default = CFGP_U::request_string('default')) {
 			$content = urldecode(base64_decode(sanitize_text_field($default)));
-			$content = trim($defaucontentlt);
+			$content = trim($content);
 			$default = $content;
 		} else {
 			$default = $content = '';
