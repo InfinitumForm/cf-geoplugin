@@ -495,6 +495,28 @@ class CFGP_Shortcodes extends CFGP_Global {
 			$setup['id'] = absint($setup['id']);
 		}
 		
+		// Reassign taxonomy to post meta
+		foreach(array(
+			'cf-geoplugin-country' => 'cfgp-banner-location-country',
+			'cf-geoplugin-region' => 'cfgp-banner-location-region',
+			'cf-geoplugin-city' => 'cfgp-banner-location-city'
+		) as $get_post_terms=>$update_post_meta) {
+			if($all_terms = wp_get_post_terms($setup['id'], $get_post_terms, array('fields' => 'all'))) {
+				$tax_collection=array();
+				foreach($all_terms as $i=>$fetch)
+				{
+					$tax_collection[]=$fetch->slug;
+				}
+				if( !empty($tax_collection) ) {
+					update_post_meta($setup['id'], $update_post_meta, $tax_collection);
+				} else {
+					delete_post_meta($setup['id'], $update_post_meta);
+				}
+				wp_set_post_terms( $setup['id'], '', $get_post_terms );
+				$tax_collection = NULL;
+			}
+		}
+		
 		// Get defaults
 		if( empty($cont) ) {
 			$banner_default = get_post_meta( $setup['id'], 'cfgp-banner-default', true ); 
