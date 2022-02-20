@@ -89,13 +89,13 @@ class CFGP_Geo_Banner extends CFGP_Global {
 		$posts_per_page = absint($setup['posts_per_page']);
 		
 		$country = CFGP_U::api('country_code');
-		$country_sql = '%"' . esc_sql($country) . '"%';
+		$country_sql = '%"' . $wpdb->esc_like(esc_sql($country)) . '"%';
 		
 		$region = CFGP_U::api('region');
-		$region_sql = '%"' . esc_sql($region) . '"%';
+		$region_sql = '%"' . $wpdb->esc_like(esc_sql($region)) . '"%';
 		
 		$city = CFGP_U::api('city');
-		$city_sql = '%"' . esc_sql($city) . '"%';
+		$city_sql = '%"' . $wpdb->esc_like(esc_sql($city)) . '"%';
 
 		$post = $wpdb->get_row( $wpdb->prepare("
 SELECT

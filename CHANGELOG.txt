@@ -1,5 +1,16 @@
 == Changelog ==
 
+= 8.1.1 =
+* Adding transitional code for the geo banner
+* Adding calling_code and country_code_3
+* Added new country flags
+* Added postcode library for the Serbia
+* Improved Woocommerce integration for the PayPal extensions
+* Fixed Geo banner cache
+* Fixed shortcode cache
+* Fixed license activation
+* Switched Geo banner from get_posts to direct MySQL query
+
 = 8.1.0 =
 * Added improved integration for the GPS module
 * Aded new action and filters

@@ -87,6 +87,71 @@ class CFGP_Library {
 		}
 		return array();
 	}
+	/*
+	 * Get postcode by country code and city name
+	 */
+	public static function get_postcode( $country_code, $city ){
+		if( $postcode = CFGP_Cache::get('cfgeo/libraray/get_postcode') ) {
+			return $postcode;
+		}
+		
+		if( $country_code && $city && ($postcodes = self::get_postcodes($country_code)) ) {
+			if( isset($postcodes[$city]) ) {
+				return CFGP_Cache::set('cfgeo/libraray/get_postcode', $postcodes[$city]);
+			}
+		}
+		
+		$postcodes = NULL;
+		
+		return $postcodes;
+	}
+	
+	/*
+	 * Get postcode by country
+	 */
+	public static function get_postcodes( $country_code, $json = false ){
+		if(!empty($country_code))
+		{
+			$country_code = strtolower($country_code);
+			
+			$file_base = CFGP_LIBRARY . '/postcodes';
+			$file_path = "/{$country_code}";
+			$file_name = "/{$country_code}.json";
+			
+			$file = apply_filters('cfgp/library/postcodes/path', array(
+				'path' => "{$file_base}{$file_path}{$file_name}",
+				'file_base' => $file_base,
+				'file_path' => $file_path,
+				'file_name' => $file_name,
+				'country_code' => $country_code
+			));
+			
+			$file = apply_filters("cfgp/library/postcodes/path/{$country_code}", $file);
+			
+			if(isset($file['path']) && file_exists($file['path'])){
+				$JSON = '';
+				$fh = fopen($file['path'],'r');
+					while ($line = fgets($fh)){$JSON.=$line;}
+				fclose($fh);
+				if( empty($JSON) ) {
+					if($json === false){
+						return array();
+					}
+					return '{}';
+				}
+				if($json === false){
+					$data = json_decode( $JSON, true );
+				}
+				return $data;
+			}
+		}
+		
+		if($json === false){
+			return array();
+		}
+		
+		return '{}';
+	}
 	
 	/*
 	 * Get cities by country
@@ -123,11 +188,14 @@ class CFGP_Library {
 				}
 				if($json === false){
 					$data = json_decode( $JSON, true );
-					sort($data);
+					if($data){
+						sort($data);
+					}
 				}
 				return $data;
 			}
 		}
+		
 		if($json === false){
 			return array();
 		}

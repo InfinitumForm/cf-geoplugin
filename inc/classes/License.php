@@ -52,6 +52,9 @@ class CFGP_License extends CFGP_Global{
 		return $license_names;
 	}
 	
+	/*
+	 * Get product informations
+	 */
 	public static function get_product_data(){
 		$response = get_transient('cfgp-get-product-data');
 		if(!$response) {
@@ -91,6 +94,10 @@ class CFGP_License extends CFGP_Global{
 			}
 		}
 		
+		if(empty($response)) {
+			$response = self::get_static_product_data();
+		}
+		
 		// Developer License
 		if( CFGP_DEV_MODE )
 		{
@@ -118,6 +125,7 @@ class CFGP_License extends CFGP_Global{
 
 		return empty($response) ? array() : $response;
 	}
+	
 	
 	/*
 	 * Access level
@@ -633,6 +641,104 @@ class CFGP_License extends CFGP_Global{
 		return array(
 			'message' => __('Undefined error', CFGP_NAME),
 			'info' => __('This error is not defined and you need to contact the author of the plugin for more information.', CFGP_NAME),
+		);
+	}
+	
+	/*
+	 * Static product data if main website fail to send informations
+	 */
+	public static function get_static_product_data () {
+		return array(
+			732 => array(
+				'id' => 732,
+				'title' => 'Geolocation Basic Services',
+				'slug' => 'cf-geo-plugin-basic-license',
+				'sku' => 'CFGEO1M',
+				'url' => 'https://cfgeoplugin.com/license/cf-geo-plugin-basic-license',
+				'price' => array(
+					'amount' => 10,
+					'regular' => 10,
+					'sale' => 0,
+					'date' => array(
+						'sale_from' => NULL,
+						'sale_to' => NULL
+					),
+					'currency' => 'USD',
+					'currency_symbol' => '&#36;'
+				)
+			),
+			586 => array(
+				'id' => 586,
+				'title' => 'Geolocation Personal Services',
+				'slug' => 'cf-geo-plugin-unlimited-personal-license',
+				'sku' => 'CFGEOSWL',
+				'url' => 'https://cfgeoplugin.com/license/cf-geo-plugin-unlimited-personal-license',
+				'price' => array(
+					'amount' => 59,
+					'regular' => 74,
+					'sale' => 59,
+					'date' => array(
+						'sale_from' => NULL,
+						'sale_to' => NULL
+					),
+					'currency' => 'USD',
+					'currency_symbol' => '&#36;'
+				)
+			),
+			589 => array(
+				'id' => 589,
+				'title' => 'Geolocation Freelancer Services',
+				'slug' => 'cf-geo-plugin-unlimited-freelancer-license',
+				'sku' => 'CFGEO3WL',
+				'url' => 'https://cfgeoplugin.com/license/cf-geo-plugin-unlimited-freelancer-license',
+				'price' => array(
+					'amount' => 79,
+					'regular' => 99,
+					'sale' => 79,
+					'date' => array(
+						'sale_from' => NULL,
+						'sale_to' => NULL
+					),
+					'currency' => 'USD',
+					'currency_symbol' => '&#36;'
+				)
+			),
+			590 => array(
+				'id' => 590,
+				'title' => 'Geolocation Business Services',
+				'slug' => 'cf-geo-plugin-unlimited-business-license',
+				'sku' => 'CFGEODWL',
+				'url' => 'https://cfgeoplugin.com/license/cf-geo-plugin-unlimited-business-license',
+				'price' => array(
+					'amount' => 279,
+					'regular' => 349,
+					'sale' => 279,
+					'date' => array(
+						'sale_from' => NULL,
+						'sale_to' => NULL
+					),
+					'currency' => 'USD',
+					'currency_symbol' => '&#36;'
+				)
+			),
+			2933 => array(
+				'id' => 2933,
+				'title' => 'Geolocation Lifetime Services',
+				'slug' => 'geolocation-lifetime-services',
+				'sku' => 'LIFETIME',
+				'url' => 'https://cfgeoplugin.com/license/geolocation-lifetime-services',
+				'price' => array(
+					'amount' => 1499,
+					'regular' => 1499,
+					'sale' => 0,
+					'date' => array(
+						'sale_from' => NULL,
+						'sale_to' => NULL
+					),
+					'currency' => 'USD',
+					'currency_symbol' => '&#36;'
+				)
+			)
 		);
 	}
 	

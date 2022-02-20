@@ -253,6 +253,12 @@ class CFGP_API extends CFGP_Global {
 						CFGP_Cache::set('transfer_dns_records', self::fix_dns_host($return));
 						$DNS = CFGP_Cache::get('transfer_dns_records');
 						
+						// Fix postcodes
+						$postcode = (isset($return['zip']) && !empty($return['zip']) ? $return['zip'] : CFGP_Library::get_postcode(
+							($return['countryCode'] ?? NULL),
+							($return['cityName'] ?? NULL)
+						));
+						
 						// Render response
 						$return = apply_filters( 'cfgp/api/render/response', array(
 							'ip' => ($return['ipAddress'] ?? NULL),
@@ -275,8 +281,8 @@ class CFGP_API extends CFGP_Global {
 							'city' => ($return['cityName'] ?? NULL),
 							'continent' => ($return['continent'] ?? NULL),
 							'continent_code' => ($return['continentCode'] ?? NULL),
-							'zip' => ($return['zip'] ?? NULL),
-							'postcode' => ($return['zip'] ?? NULL),
+							'zip' => $postcode,	// deprecated
+							'postcode' => $postcode,
 							'address' => ($return['address'] ?? NULL),
 							'calling_code' => ($return['callingCode'] ?? NULL),
 							'latitude' => ($return['latitude'] ?? NULL),

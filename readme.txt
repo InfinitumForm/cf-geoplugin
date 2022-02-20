@@ -5,7 +5,7 @@ Tags: geolocation, locator, GeoIP, geo, geotargeting, seo, seo redirect, woocomm
 Requires at least: 4.5
 Tested up to: 5.9
 Requires PHP: 7.0.0
-Stable tag: 8.1.0
+Stable tag: 8.1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -368,6 +368,17 @@ Please inform us if any of these errors occur via contact form on our website [h
 
 == Changelog ==
 
+= 8.1.1 =
+* Adding transitional code for the geo banner
+* Adding calling_code and country_code_3
+* Added new country flags
+* Added postcode library for the Serbia
+* Improved Woocommerce integration for the PayPal extensions
+* Fixed Geo banner cache
+* Fixed shortcode cache
+* Fixed license activation
+* Switched Geo banner from get_posts to direct MySQL query
+
 = 8.1.0 =
 * Added improved integration for the GPS module
 * Aded new action and filters
@@ -461,6 +472,17 @@ Please inform us if any of these errors occur via contact form on our website [h
 
 == Upgrade Notice ==
 
+= 8.1.1 =
+* Adding transitional code for the geo banner
+* Adding calling_code and country_code_3
+* Added new country flags
+* Added postcode library for the Serbia
+* Improved Woocommerce integration for the PayPal extensions
+* Fixed Geo banner cache
+* Fixed shortcode cache
+* Fixed license activation
+* Switched Geo banner from get_posts to direct MySQL query
+
 = 8.1.0 =
 * Added improved integration for the GPS module
 * Aded new action and filters
@@ -470,9 +492,6 @@ Please inform us if any of these errors occur via contact form on our website [h
 * Improved Utilities
 * Improved public scripts
 * Improved cache flush
-
-= 8.0.10 =
-* Fixed license activation problems
 
 == Other Notes ==
 
