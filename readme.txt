@@ -365,6 +365,7 @@ Please inform us if any of these errors occur via contact form on our website [h
 11. SEO Redirection settings
 12. Contact Form 7 settings
 13. Available tags
+14. WooCommerce Settings
 
 == Changelog ==
 
