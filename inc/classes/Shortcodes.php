@@ -544,10 +544,10 @@ class CFGP_Shortcodes extends CFGP_Global {
 		$country_sql = '%"' . $wpdb->esc_like(esc_sql($country)) . '"%';
 		
 		$region = CFGP_U::api('region');
-		$region_sql = '%"' . $wpdb->esc_like(esc_sql($region)) . '"%';
+		$region_sql = '%"' . $wpdb->esc_like(esc_sql(sanitize_title( CFGP_U::transliterate($region) ))) . '"%';
 		
 		$city = CFGP_U::api('city');
-		$city_sql = '%"' . $wpdb->esc_like(esc_sql($city)) . '"%';
+		$city_sql = '%"' . $wpdb->esc_like(esc_sql(sanitize_title( CFGP_U::transliterate($city) ))) . '"%';
 
 		$post = $wpdb->get_row( $wpdb->prepare("
 SELECT

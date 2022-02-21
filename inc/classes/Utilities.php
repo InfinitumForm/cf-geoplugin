@@ -1528,6 +1528,7 @@ class CFGP_U {
 	{
 		if( is_array( $city ) )
 		{
+			$city = array_map( array(__CLASS__, 'transliterate'), $city );
 			$city = array_map( 'sanitize_title', $city );
 			if( isset( $city[0] ) && !empty( $city[0] ) && in_array(sanitize_title(self::api('city')), $city, true ) ) {
 				return true;
@@ -1535,6 +1536,7 @@ class CFGP_U {
 		}
 		elseif( is_string( $city ) )
 		{
+			$city = self::transliterate($city);
 			if( !empty( $city ) && sanitize_title( $city ) === sanitize_title(self::api('city')) ) {
 				return true;
 			}
@@ -1552,6 +1554,7 @@ class CFGP_U {
 		{
 			if( isset( $region[0] ) && !empty( $region[0] ) )
 			{
+				$region = array_map( array(__CLASS__, 'transliterate'), $region );
 				$region = array_map( 'sanitize_title', $region );
 				// Supports region code and region name
 				if(in_array( sanitize_title( self::api('region_code') ), $region, true ) ) {
@@ -1566,6 +1569,7 @@ class CFGP_U {
 		{
 			if( !empty( $region ) )
 			{
+				$region = self::transliterate($region);
 				// Supports region code and region name
 				if( sanitize_title( $region ) === sanitize_title(self::api('region_code')) ) {
 					return true;
@@ -1588,6 +1592,7 @@ class CFGP_U {
 		{
 			if( isset( $country[0] ) && !empty( $country[0] ) )
 			{
+				$country = array_map( array(__CLASS__, 'transliterate'), $country );
 				$country = array_map( 'sanitize_title', $country );
 				// Supports country code and name
 				if( in_array( sanitize_title(self::api('country_code')), $country, true ) ) {
@@ -1602,6 +1607,7 @@ class CFGP_U {
 		{
 			if( !empty( $country ) )
 			{
+				$country = self::transliterate($country);
 				// Supports country code and name
 				if( sanitize_title( $country ) === sanitize_title(self::api('country_code')) ) {
 					return true;
@@ -1912,6 +1918,383 @@ class CFGP_U {
 		}
 		
 		return ($i > 0);
+	}
+	
+	/*
+	 * Transliterator.
+	 * This transliteration is based on logic from WordPress plugin https://wordpress.org/plugins/serbian-transliteration/
+	 *
+	 * @source https://en.wikipedia.org/wiki/List_of_Unicode_characters
+	 * @author Ivijan-Stefan Stipic
+	 *
+	 * @param  $string
+	 *
+	 * @return string
+	 */
+	public static function transliterate( $string ) {
+		
+		if(empty($string) || !is_string($string) || is_numeric($string)) {
+			return $string;
+		}
+		
+		$transliterate = apply_filters('cfgp/transliterate', array(
+			// Uppercase
+			'A' => array(
+				'À',
+				'Á',
+				'Â',
+				'Ã',
+				'Ä',
+				'Å',
+				'Ā',
+				'Ă',
+				'Ą'
+			),
+			'B' => array(
+				'Ɓ',
+				'Ƃ',
+				'Ƅ'
+			),
+			'AE' => array(
+				'Æ'
+			),
+			'C' => array(
+				'Ç',
+				'Ć',
+				'Ĉ',
+				'Ċ',
+				'Č',
+				'Ƈ'
+			),
+			'D' => array(
+				'Ď',
+				'Ɗ',
+				'Ƌ'
+			),
+			'DJ' => array(
+				'Đ'
+			),
+			'E' => array(
+				'Ǝ',
+				'Ɛ',
+				'È',
+				'É',
+				'Ê',
+				'Ë',
+				'Ē',
+				'Ĕ',
+				'Ė',
+				'Ę',
+				'Ě'
+			),
+			'F' => array(
+				'Ƒ'
+			),
+			'G' => array(
+				'Ɠ',
+				'Ĝ',
+				'Ğ',
+				'Ġ',
+				'Ģ'
+			),
+			'H' => array(
+				'Ĥ',
+				'Ħ'
+			),
+			'I' => array(
+				'Ì',
+				'Í',
+				'Î',
+				'Ï',
+				'Ĩ',
+				'Ī',
+				'Ĭ',
+				'Į',
+				'İ',
+				'Ɩ',
+				'Ɨ'
+			),
+			'IJ' => array(
+				'Ĳ'
+			),
+			'J' => array(
+				'Ĵ'
+			),
+			'K' => array(
+				'Ƙ',
+				'Ķ'
+			),
+			'L' => array(
+				'Ĺ',
+				'Ļ',
+				'Ľ',
+				'Ŀ',
+				'Ł'
+			),
+			'Lj' => array(
+				'ǈ'
+			),
+			'N' => array(
+				'Ń',
+				'Ñ',
+				'Ņ',
+				'Ň',
+				'Ɲ'
+			),
+			'NJ' => array(
+				'Ǌ'
+			),
+			'Nj' => array(
+				'ǋ'
+			),
+			'O' => array(
+				'Ō',
+				'Ŏ',
+				'Ő',
+				'Ò',
+				'Ó',
+				'Ô',
+				'Õ',
+				'Ö',
+				'Ø',
+				'Ơ',
+				'Ɵ',
+				'Ɔ'
+			),
+			'OE' => array(
+				'Œ'
+			),
+			'P' => array(
+				'Ƥ'
+			),
+			'R' => array(
+				'Ŕ',
+				'Ŗ',
+				'Ř'
+			),
+			'S' => array(
+				'Ś',
+				'Ŝ',
+				'Ş',
+				'Š',
+				'ß'
+			),
+			'T' => array(
+				'Ţ',
+				'Ť',
+				'Ŧ',
+				'Ʈ',
+				'Ƭ'
+			),
+			'U' => array(
+				'Ù',
+				'Ú',
+				'Û',
+				'Ü',
+				'Ũ',
+				'Ū',
+				'Ŭ',
+				'Ů',
+				'Ű',
+				'Ų',
+				'Ʋ',
+				'Ư'
+			),
+			'W' => array(
+				'Ŵ'
+			),
+			'Y' => array(
+				'Ŷ',
+				'Ÿ',
+				'Ý',
+				'Ƴ',
+				'ƴ'
+			),
+			'Z' => array(
+				'Ź',
+				'Ż',
+				'Ž',
+				'Ƶ'
+			),
+			
+			// Lowercase
+			'a' => array(
+				'à',
+				'á',
+				'â',
+				'ã',
+				'ä',
+				'å',
+				'ā',
+				'ă',
+				'ą'
+			),
+			'ae' => array(
+				'æ'
+			),
+			'b' => array(
+				'ƀ',
+				'ƃ'
+			),
+			'c' => array(
+				'ç',
+				'ć',
+				'ĉ',
+				'ċ',
+				'č',
+				'ƈ'
+			),
+			'd' => array(
+				'ď',
+				'ƌ',
+				'ƍ'
+			),
+			'dj' => array(
+				'đ'
+			),
+			'e' => array(
+				'ē',
+				'ĕ',
+				'ė',
+				'ę',
+				'ě',
+				'è',
+				'é',
+				'ê',
+				'ë'
+			),
+			'eth' => array(
+				'ð'
+			),
+			'f' => array(
+				'ƒ'
+			),
+			'g' => array(
+				'ĝ',
+				'ğ',
+				'ġ',
+				'ģ'
+			),
+			'h' => array(
+				'ĥ',
+				'ħ'
+			),
+			'i' => array(
+				'ĩ',
+				'ī',
+				'ĭ',
+				'į',
+				'ı',
+				'ì',
+				'í',
+				'î',
+				'ï'
+			),
+			'ij' => array(
+				'ĳ'
+			),
+			'j' => array(
+				'ĵ'
+			),
+			'k' => array(
+				'ķ',
+				'ĸ',
+				'ƙ'
+			),
+			'l' => array(
+				'ĺ',
+				'ļ',
+				'ľ',
+				'ŀ',
+				'ł',
+				'ƚ',
+				'ƛ'
+			),
+			'ǉ' => array(
+				'lj'
+			),
+			'n' => array(
+				'ń',
+				'ņ',
+				'ň',
+				'ŉ',
+				'ñ',
+				'ƞ'
+			),
+			'nj' => array(
+				'ǌ'
+			),
+			'o' => array(
+				'ò',
+				'ó',
+				'ô',
+				'õ',
+				'ö',
+				'ø',
+				'ŏ',
+				'ő',
+				'ơ'
+			),
+			'oe' => array(
+				'œ'
+			),
+			'p' => array(
+				'ƥ'
+			),
+			'r' => array(
+				'ŕ',
+				'ŗ',
+				'ř'
+			),
+			's' => array(
+				'ś',
+				'ŝ',
+				'ş',
+				'š',
+				'ſ'
+			),
+			't' => array(
+				'ţ',
+				'ť',
+				'ŧ',
+				'ƫ',
+				'ƭ'
+			),
+			'u' => array(
+				'ũ',
+				'ū',
+				'ŭ',
+				'ů',
+				'ű',
+				'ų',
+				'ù',
+				'ú',
+				'û',
+				'ü',
+				'ư'
+			),
+			'w' => array(
+				'ŵ'
+			),
+			'y' => array(
+				'ŷ',
+				'ý',
+				'ÿ',
+				'ƴ'
+			),
+			'z' => array(
+				'ź',
+				'ż',
+				'ž',
+				'ƶ'
+			)
+		), $string);
+		
+		foreach($transliterate as $replace => $find) {
+			$string = str_replace($find, $replace, $string);
+		}
+		
+		return $string;
 	}
 }
 endif;

@@ -92,7 +92,7 @@ class CFGP_Form {
 			{
 				if($data = CFGP_Library::get_regions($country_code)){
 					foreach( $data as $key => $fetch ){
-						$options[strtolower(sanitize_title($fetch['region']))] = $fetch['region'];
+						$options[sanitize_title( CFGP_U::transliterate($fetch['region']) )] = $fetch['region'];
 					}
 				}
 			}
@@ -101,7 +101,7 @@ class CFGP_Form {
 		{
 			if($data = CFGP_Library::get_regions($attr['country_code'])){
 				foreach( $data as $key => $fetch ){
-					$options[strtolower(sanitize_title($fetch['region']))] = $fetch['region'];
+					$options[sanitize_title( CFGP_U::transliterate($fetch['region']) )] = $fetch['region'];
 				}
 			}
 		}
@@ -149,13 +149,13 @@ class CFGP_Form {
 				$new_name = explode('-', $select);
 				$new_name = array_map('ucfirst', $new_name);
 				$new_name = join(' ', $new_name);
-				$options[sanitize_title($select)] = $new_name;
+				$options[sanitize_title( CFGP_U::transliterate($select) )] = $new_name;
 			}
 		} else if( !empty($selected) ) {
 			$new_name = explode('-', $selected);
 			$new_name = array_map('ucfirst', $new_name);
 			$new_name = join(' ', $new_name);
-			$options[sanitize_title($selected)] = $new_name;
+			$options[sanitize_title( CFGP_U::transliterate($selected) )] = $new_name;
 		}
 		
 		if(is_array($attr['country_code']))
@@ -164,7 +164,7 @@ class CFGP_Form {
 			{
 				if($data = CFGP_Library::get_cities($country_code)){
 					foreach( $data as $fetch ){
-						$options[strtolower(sanitize_title($fetch))] = $fetch;
+						$options[sanitize_title( CFGP_U::transliterate($fetch) )] = $fetch;
 					}
 				}
 			}
@@ -173,7 +173,7 @@ class CFGP_Form {
 		{
 			if($data = CFGP_Library::get_cities($attr['country_code'])){
 				foreach( $data as $fetch ){
-					$options[strtolower(sanitize_title($fetch))] = $fetch;
+					$options[sanitize_title( CFGP_U::transliterate($fetch) )] = $fetch;
 				}
 			}
 		}
@@ -218,7 +218,7 @@ class CFGP_Form {
 				$options[$fetch->slug] = $fetch->name;
 			}
 		} else if(!empty($selected)) {
-			$options[sanitize_title($selected)] = $selected;
+			$options[sanitize_title(CFGP_U::transliterate($selected))] = $selected;
 		}
 		if($multiple) {
 			$return = self::select_multiple($options, $attr, $selected, false);

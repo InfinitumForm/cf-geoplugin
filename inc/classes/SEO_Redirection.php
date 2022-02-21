@@ -79,31 +79,71 @@ class CFGP_SEO_Redirection extends CFGP_Global
 			
 			$where = $where_relative = array();
 			
+			$strtolower = function($str){
+				return (function_exists('mb_strtolower') ? mb_strtolower($str) : strtolower($str));
+			};
+			
 			if($country || $country_code)
 			{
-				if($country) $where[]=$wpdb->prepare("TRIM(LOWER(`{$wpdb->cfgp_seo_redirection}`.`country`)) = %s", strtolower($country));
-				if($country_code) $where[]=$wpdb->prepare("TRIM(LOWER(`{$wpdb->cfgp_seo_redirection}`.`country`)) = %s", strtolower($country_code));
+				$where[]=$wpdb->prepare(
+					"(
+						TRIM(LOWER(`{$wpdb->cfgp_seo_redirection}`.`country`)) = %s
+						OR
+						TRIM(LOWER(`{$wpdb->cfgp_seo_redirection}`.`country`)) = %s
+						OR
+						TRIM(LOWER(`{$wpdb->cfgp_seo_redirection}`.`country`)) = %s
+						OR
+						TRIM(LOWER(`{$wpdb->cfgp_seo_redirection}`.`country`)) = %s
+					)",
+					$strtolower($country_code),
+					sanitize_title(CFGP_U::transliterate($country)),
+					$strtolower(CFGP_U::transliterate($country)),
+					$strtolower($country)
+				);
+				
 			}
 			
 			if($region || $region_code)
 			{
-				if($region){
-					$where[]=$wpdb->prepare("TRIM(LOWER(`{$wpdb->cfgp_seo_redirection}`.`region`)) = %s", strtolower($region));
-					$where_relative[]=$wpdb->prepare("TRIM(`{$wpdb->cfgp_seo_redirection}`.`region`) = %s", sanitize_title($region));
-				}
-				if($region_code) $where[]=$wpdb->prepare("TRIM(LOWER(`{$wpdb->cfgp_seo_redirection}`.`region`)) = %s", strtolower($region_code));
+				$where[]=$wpdb->prepare(
+					"(
+						TRIM(LOWER(`{$wpdb->cfgp_seo_redirection}`.`region`)) = %s
+						OR
+						TRIM(LOWER(`{$wpdb->cfgp_seo_redirection}`.`region`)) = %s
+						OR
+						TRIM(LOWER(`{$wpdb->cfgp_seo_redirection}`.`region`)) = %s
+						OR
+						TRIM(LOWER(`{$wpdb->cfgp_seo_redirection}`.`region`)) = %s
+					)",
+					sanitize_title(CFGP_U::transliterate($region)),
+					$strtolower(CFGP_U::transliterate($region)),
+					$strtolower($region),
+					$strtolower($region_code)
+				);
 			}
 			
 			if($city){
-				$where[]=$wpdb->prepare("TRIM(LOWER(`{$wpdb->cfgp_seo_redirection}`.`city`)) = %s", strtolower($city));
-				$where_relative[]=$wpdb->prepare("TRIM(`{$wpdb->cfgp_seo_redirection}`.`city`) = %s", sanitize_title($city));
+				$where[]=$wpdb->prepare(
+					"(
+						TRIM(LOWER(`{$wpdb->cfgp_seo_redirection}`.`city`)) = %s
+						OR
+						TRIM(LOWER(`{$wpdb->cfgp_seo_redirection}`.`city`)) = %s
+						OR
+						TRIM(LOWER(`{$wpdb->cfgp_seo_redirection}`.`city`)) = %s
+					)",
+					sanitize_title(CFGP_U::transliterate($city)),
+					$strtolower(CFGP_U::transliterate($city)),
+					$strtolower($city)
+				);
 			}
 			
-			if($postcode) $where[]=$wpdb->prepare("TRIM(LOWER(`{$wpdb->cfgp_seo_redirection}`.`postcode`)) = %s", strtolower($postcode));
+			if($postcode) {
+				$where[]=$wpdb->prepare("TRIM(LOWER(`{$wpdb->cfgp_seo_redirection}`.`postcode`)) = %s", strtolower($postcode));
+			}
 			
 			if(!empty($where)) {
 				$where_exact = ' AND (' . join(' AND ', $where) . ')';
-				$where_relative = ' AND (' . join(' OR ', $where) . (!empty($where_relative) ? ' OR ' . join(' OR ', $where_relative) : '' ) . ')';
+				$where_relative = ' AND (' . join(' OR ', $where) . ')';
 			} else {
 				$where_exact = '';
 				$where_relative = '';

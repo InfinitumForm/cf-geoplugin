@@ -82,14 +82,33 @@ class CFGP_SEO_Redirection_Pages extends CFGP_Global
 			
 			$seo_redirection = get_post_meta($current_page->ID, $this->metabox, true);
 			
-			$current_country = array_filter(array(CFGP_U::api('country'), CFGP_U::api('country_code')));
-			$current_country = array_map('strtolower', $current_country);
+			$strtolower = (function_exists('mb_strtolower') ? 'mb_strtolower' : 'strtolower');
 			
-			$current_region = array_filter(array(CFGP_U::api('region'), CFGP_U::api('region_code')));
-			$current_region = array_map('strtolower', $current_region);
+			$current_country = array_filter(array(
+				sanitize_title(CFGP_U::transliterate(CFGP_U::api('country'))),
+				CFGP_U::transliterate(CFGP_U::api('country')),
+				CFGP_U::api('country'),
+				CFGP_U::api('country_code')
+			));
+			$current_country = array_map($strtolower, $current_country);
 			
-			$current_city = strtolower(CFGP_U::api('city'));
-			$current_postcode = strtolower(CFGP_U::api('region_code'));
+			$current_region = array_filter(array(
+				sanitize_title(CFGP_U::transliterate(CFGP_U::api('region'))),
+				CFGP_U::transliterate(CFGP_U::api('region')),
+				CFGP_U::api('region'),
+				CFGP_U::api('region_code')
+			));
+			$current_region = array_map($strtolower, $current_region);
+			
+			$current_city = array_filter(array(
+				sanitize_title(CFGP_U::transliterate(CFGP_U::api('city'))),
+				CFGP_U::transliterate(CFGP_U::api('city')),
+				CFGP_U::api('city')
+			));
+			$current_city = array_map($strtolower, $current_city);
+			
+			$current_postcode = array_filter(array(CFGP_U::api('region_code')));
+			$current_postcode = array_map($strtolower, $current_postcode);
 			
 			if($seo_redirection && is_array($seo_redirection))
 			{
@@ -111,20 +130,26 @@ class CFGP_SEO_Redirection_Pages extends CFGP_Global
 						continue;
 					}
 					
-					$country 	= array_map('strtolower', (isset($data['country']) ? $data['country'] : array()));
-					$region 	= array_map('strtolower', (isset($data['region']) ? $data['region'] : array()));
-					$city 		= array_map('strtolower', (isset($data['city']) ? $data['city'] : array()));
-					$postcode 	= array_map('strtolower', (isset($data['postcode']) ? $data['postcode'] : array()));
+					$country 	= array_map($strtolower, (isset($data['country']) ? $data['country'] : array()));
+					$region 	= array_map($strtolower, (isset($data['region']) ? $data['region'] : array()));
+					$city 		= array_map($strtolower, (isset($data['city']) ? $data['city'] : array()));
+					$postcode 	= array_map($strtolower, (isset($data['postcode']) ? $data['postcode'] : array()));
 					
 					if(isset($data['exclude_country']) ? $data['exclude_country'] : false) {
 						$country=array();
 					}
+					$country = array_map( array('CFGP_U', 'transliterate'), $country );
+					
 					if(isset($data['exclude_region']) ? $data['exclude_region'] : false) {
 						$region=array();
 					}
+					$region = array_map( array('CFGP_U', 'transliterate'), $region );
+					
 					if(isset($data['exclude_city']) ? $data['exclude_city'] : false) {
 						$city=array();
 					}
+					$city = array_map( array('CFGP_U', 'transliterate'), $city );
+					
 					if(isset($data['exclude_postcode']) ? $data['exclude_postcode'] : false) {
 						$postcode=array();
 					}
@@ -156,14 +181,24 @@ class CFGP_SEO_Redirection_Pages extends CFGP_Global
 						}
 					}
 					
-					if(!empty($current_city) && !empty($city) && in_array($current_city, $city) !== false){
-						$redirect[] = 1;
+					if(!empty($current_city)) {
+						foreach($city as $ct){
+							if(!empty($ct) && in_array($ct, $current_city) !== false){
+								$redirect[] = 1;
+								break;
+							}
+						}
 					}
 					
-					if(!empty($current_postcode) && !empty($postcode) && in_array($current_postcode, $postcode) !== false){
-						$redirect[] = 1;
+					if(!empty($current_postcode)) {
+						foreach($postcode as $pc){
+							if(!empty($pc) && in_array($pc, $current_postcode) !== false){
+								$redirect[] = 1;
+								break;
+							}
+						}
 					}
-
+					
 					$redirect = count($redirect);
 
 					if( $redirect > 0 )
