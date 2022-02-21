@@ -2,10 +2,10 @@
 Contributors: ivijanstefan, creativform
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=creativform@gmail.com
 Tags: geolocation, locator, GeoIP, geo, geotargeting, seo, seo redirect, woocommerce, include exclude, content, remove content, show hide, covid
-Requires at least: 4.5
+Requires at least: 5.0
 Tested up to: 5.9
-Requires PHP: 7.0.0
-Stable tag: 8.1.1
+Requires PHP: 7.0
+Stable tag: 8.1.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -369,6 +369,11 @@ Please inform us if any of these errors occur via contact form on our website [h
 
 == Changelog ==
 
+= 8.1.2 =
+* Fixing location search
+* Fixing SEO redirections for the certain countries
+* Fixing Geo banner for the certain countries
+
 = 8.1.1 =
 * Adding transitional code for the geo banner
 * Adding calling_code and country_code_3
@@ -472,6 +477,11 @@ Please inform us if any of these errors occur via contact form on our website [h
 * Fixed issues with Siteground integration
 
 == Upgrade Notice ==
+
+= 8.1.2 =
+* Fixing location search
+* Fixing SEO redirections for the certain countries
+* Fixing Geo banner for the certain countries
 
 = 8.1.1 =
 * Adding transitional code for the geo banner
