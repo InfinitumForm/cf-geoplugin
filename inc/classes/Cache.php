@@ -32,6 +32,7 @@ class CFGP_Cache
 	 * If it does exist, the data is not added and the function returns
 	 */
     public static function add($key, $value) {
+		self::garbage_cleaner();
 		$key = self::key($key);
 		if(!isset(self::$cache[ $key ])) {
 			self::$cache[ $key ] = $value;
@@ -46,6 +47,7 @@ class CFGP_Cache
 	 * if not then it will be created.
 	 */
     public static function set($key, $value, $expire=0) {
+		self::garbage_cleaner();
 		$key = self::key($key);
 		self::$cache[ $key ] = $value;
 		return self::$cache[ $key ];
@@ -119,6 +121,72 @@ class CFGP_Cache
 		$key = trim($key);
 
 		return $key . '__' . $suffix;
+	}
+	
+	/*
+	 * PRIVATE: Clean up the accumulated garbage
+	 */
+	private static function garbage_cleaner() {
+		if (!function_exists('mt_getrandmax') || !is_array(self::$cache)) {
+			return;
+		}
+
+		if (function_exists('mt_rand')) {
+			$getrandmax = mt_getrandmax();
+			$rand = mt_rand();
+		}
+		else {
+			$getrandmax = getrandmax();
+			$rand = rand();
+		}
+		
+		$exclude = apply_filters('cfgp/cache/exclude_from_cleaning', array(
+			// Classes
+			'CFGP_API',
+			'CFGP_IP',
+			'CFGP_License',
+			// Main objects
+			'API',
+			'ID',
+			'IP',
+			'REST_KEY',
+			'license',
+			'IP-blocked',
+			'IP-server',
+			// Helpers
+			'parse_url',
+			'current_url',
+			'get_page',
+			'get_post_type',
+			'is_rest_enabled',
+			'has_seo_redirection',
+			'transfer_dns_records'
+		));
+
+		$capability = apply_filters('cfgp/cache/capability', 100);
+		$gc_probability = apply_filters('cfgp/cache/gc_probability', 1);
+		$gc_divisor = apply_filters('cfgp/cache/gc_divisor', 100);
+
+		if (defined('CFGP_CACHE_CAPABILITY')) {
+			$capability = CFGP_CACHE_CAPABILITY;
+		}
+		if (defined('CFGP_CACHE_GARBAGE_COLLECTION_PROBABILITY')) {
+			$gc_probability = CFGP_CACHE_GARBAGE_COLLECTION_PROBABILITY;
+		}
+		if (defined('CFGP_CACHE_GARBAGE_COLLECTION_DIVISOR')) {
+			$gc_divisor = CFGP_CACHE_GARBAGE_COLLECTION_DIVISOR;
+		}
+
+		if (($rand / $getrandmax) && ($gc_probability / $gc_divisor)) {
+			while (count(self::$cache) > $capability) {
+				reset(self::$cache);
+				$key = key(self::$cache);
+				
+				if( !in_array($key, $exclude) ) {
+					self::delete($key);
+				}
+			}
+		}
 	}
 }
 endif;

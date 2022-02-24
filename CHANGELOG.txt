@@ -1,5 +1,9 @@
 == Changelog ==
 
+= 8.1.3 =
+* Improved object caching and added garbage collector
+* Fixed issues with missing Wordpress features
+
 = 8.1.2 =
 * Fixing location search
 * Fixing SEO redirections for the certain countries
