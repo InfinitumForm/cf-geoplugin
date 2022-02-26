@@ -15,7 +15,7 @@ if (!defined('ABSPATH')) {
 
 // Find wp-admin file path
 if (!defined('WP_ADMIN_DIR')) {
-    define('WP_ADMIN_DIR', rtrim(str_replace(home_url('/') , ABSPATH, admin_url('/')) , '/'));
+    define('WP_ADMIN_DIR', rtrim(str_replace(home_url('/') , ABSPATH, admin_url('/')) , '/\\'));
 }
 
 // Main website

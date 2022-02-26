@@ -6,7 +6,7 @@
  * @since         8.0.0
  * @package       cf-geoplugin
  * @author        Ivijan-Stefan Stipic
- * @version       3.0.0
+ * @version       3.0.1
  *
  */
  // If someone try to called this file directly via URL, abort.
@@ -23,15 +23,15 @@ class CFGP_Widgets extends CFGP_Global {
 		
 		global $class;
 		
+		// For each class include file and register widget
 		foreach($classes as $i => $class){
 			
+			// Include
 			if(!class_exists($class)) {
-				$filename = str_replace('CFGP_Widget_', '', $class) . '.php';
-				if(file_exists(CFGP_INC . "/widgets/{$filename}")) {
-					include_once CFGP_INC . "/widgets/{$filename}";
-				}
+				CFGP_U::include_once(CFGP_INC . '/widgets/' . str_replace('CFGP_Widget_', '', $class) . '.php');
 			}
 			
+			// Register widget
 			if(class_exists($class)) {
 				add_action( 'widgets_init', function(){
 					global $class;

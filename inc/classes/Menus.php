@@ -169,6 +169,9 @@ class CFGP_Menus extends CFGP_Global {
 		return $items;
 	}
 	
+	/*
+	 * Prevent pages to be seen
+	 */
 	public function restrict_page_access(){
 		global $wp_query;
 		$page_id = get_the_ID();
@@ -214,19 +217,19 @@ class CFGP_Menus extends CFGP_Global {
 		
 		$key = "{$function}_{$item_id}";
 		
-		if( $menu_options[$key] ?? NULL ) {
+		if( $this->menu_options[$key] ?? NULL ) {
 			if(NULL === $option) {
-				return $menu_options[$key];
+				return $this->menu_options[$key];
 			} else {
-				return $menu_options[$key][$option];
+				return $this->menu_options[$key][$option];
 			}
 		} else if($control = $function( $item_id, 'cfgp_menu_item_control', true )) {
-			$menu_options[$key] = CFGP_Options::sanitize($control);
+			$this->menu_options[$key] = CFGP_Options::sanitize($control);
 			
 			if(NULL === $option) {
-				return $menu_options[$key];
+				return $this->menu_options[$key];
 			} else {
-				return $menu_options[$key][$option];
+				return $this->menu_options[$key][$option];
 			}
 		}
 		

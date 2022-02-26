@@ -1298,7 +1298,7 @@ class CFGP_U {
 		else if(func_num_args() > 1)
 			echo '<pre class="cfgp-dump">', var_dump( func_get_args() ), '</pre>';
 		else
-			throw Exception('You must provide at least one argument to this function.');
+			throw new Exception('You must provide at least one argument to this function.');
 	}
 	
 	/*
@@ -1388,7 +1388,7 @@ class CFGP_U {
 	protected static function get_page_ID__private__query(){
 		global $wpdb;
 		$actual_link = rtrim($_SERVER['REQUEST_URI'], '/');
-		$parts = self::explode('/', $actual_link);
+		$parts = explode('/', $actual_link);
 		if(!empty($parts))
 		{
 			$slug = end($parts);
@@ -1697,7 +1697,7 @@ class CFGP_U {
 	 * @return        boolean true/false
 	*/
 	public static function is_network_admin() {
-		return function_exists('is_network_admin') && is_network_admin();
+		return (function_exists('is_network_admin') && is_network_admin());
 	}
 	
 	/**

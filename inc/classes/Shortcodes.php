@@ -105,9 +105,9 @@ class CFGP_Shortcodes extends CFGP_Global {
 	 * @version    7.4.3
 	*/
 	public function cfgeo_escape_shortcode($attr, $content='', $tag){
-		$cache = CFGP_U::is_attribute_exists('cache', $atts);
+		$cache = CFGP_U::is_attribute_exists('cache', $attr);
 		if(CFGP_Options::get('enable_cache', 0)) $cache = true;
-		if(CFGP_U::is_attribute_exists('no_cache', $atts)) $cache = false;
+		if(CFGP_U::is_attribute_exists('no_cache', $attr)) $cache = false;
 		
 		if(!empty($content)){
 			$content = preg_replace('%\[(.*?)\]%i','&lsqb;$1&rsqb;',$content);

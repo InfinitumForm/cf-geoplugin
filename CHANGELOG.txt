@@ -1,5 +1,12 @@
 == Changelog ==
 
+= 8.1.4 =
+* Preparing code for advanced libraries that come with the following versions.
+* Fixed existing PHP errors
+* Improved PHP algorithm
+* Improved widgets
+* Improved shortcode
+
 = 8.1.3 =
 * Improved object caching and added garbage collector
 * Fixed issues with missing Wordpress features

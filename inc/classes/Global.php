@@ -50,7 +50,7 @@ class CFGP_Global {
 		if(!is_array($function_to_add))
 			$function_to_add = [&$this, $function_to_add];
 			
-		return add_action( (string)$tag, $function_to_add, (int)$priority, (int)$accepted_args );
+		return add_action( (string)$tag, $function_to_add, $priority, $accepted_args );
 	}
 	
 	/* 
@@ -72,7 +72,7 @@ class CFGP_Global {
 		if(!is_array($function_to_add))
 			$function_to_add = [&$this, $function_to_add];
 			
-		return add_filter( (string)$tag, $function_to_add, (int)$priority, (int)$accepted_args );
+		return add_filter( (string)$tag, $function_to_add, $priority, $accepted_args );
 	}
 	
 	/* 
@@ -83,7 +83,7 @@ class CFGP_Global {
 		if(!is_array($function_to_remove))
 			$function_to_remove = [&$this, $function_to_remove];
 			
-		return remove_filter( (string)$tag, $function_to_remove, (int)$priority );
+		return remove_filter( (string)$tag, $function_to_remove, $priority );
 	}
 	
 	/* 

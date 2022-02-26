@@ -57,7 +57,7 @@ class CFGP_CSV{
 				$amount = preg_match_all($pattern,  $this->_csv);
 	
 				if ($maxCount > 0 && $amount > 0) {
-					$msg = 'Identifier is not clear: "' . $result . '" and "' . $delimiter . '" are possible';
+					$msg = 'Identifier is not clear: "' . $amount . '" and "' . $delimiter . '" are possible';
 					throw new \Exception($msg);
 				}
 	
