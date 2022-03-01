@@ -592,7 +592,7 @@ LIMIT 1
 		$save = NULL;
 		if( $post ) {
 			$post->post_content = do_shortcode($post->post_content);
-			$post->post_content = apply_filters('the_content', $post->post_content);
+			$post->post_content = CFGP_U::the_content( $post->post_content );
 			
 			$save='<div id="cf-geoplugin-banner-'.$post->ID.'" class="'.join(' ',get_post_class($classes, $post->ID)).' cf-geoplugin-banner-'.$post->ID.'"'
 			
@@ -613,7 +613,7 @@ LIMIT 1
 		// Format defaults
 		if(!empty($cont)) {
 			$cont = do_shortcode($cont);
-			$cont = apply_filters('the_content', $cont);
+			$cont = CFGP_U::the_content( $cont );
 		}
 		
 		// Return defaults

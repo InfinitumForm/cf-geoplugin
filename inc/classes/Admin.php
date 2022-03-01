@@ -35,6 +35,11 @@ class CFGP_Admin extends CFGP_Global {
 		$this->add_action('wp_ajax_cfgp_rss_feed', 'ajax__rss_feed');
 		$this->add_action('wp_ajax_cfgp_dashboard_rss_feed', 'ajax__dashboard_rss_feed');
 		
+		
+		$this->add_action('wp_ajax_cfgp_select2_locations', array('CFGP_Library', 'ajax__select2_locations'));
+		$this->add_action('wp_ajax_nopriv_cfgp_select2_locations', array('CFGP_Library', 'ajax__select2_locations'));
+		
+		
 		$this->add_action('wp_network_dashboard_setup', 'register_dashboard_widget');
 		$this->add_action('wp_dashboard_setup', 'register_dashboard_widget');
 		
@@ -680,6 +685,10 @@ class CFGP_Admin extends CFGP_Global {
 		if( $page == 'nav-menus.php' ) {
 			wp_enqueue_style( CFGP_NAME . '-menus', CFGP_ASSETS . '/css/style-menus.css', array(CFGP_NAME . '-choosen'), (string)CFGP_VERSION );
 		}
+		
+		
+		wp_enqueue_style( 'select2', 'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css', false, '4.1.0', 'all' );
+		wp_enqueue_script( 'select2', 'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js', array( 'jquery' ), '4.1.0', true );
 		
 		wp_enqueue_script( CFGP_NAME . '-admin', CFGP_ASSETS . '/js/script-admin.js', array('jquery', CFGP_NAME . '-choosen'), (string)CFGP_VERSION, true );
 		wp_localize_script(CFGP_NAME . '-admin', 'CFGP', array(

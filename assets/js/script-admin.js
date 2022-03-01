@@ -203,6 +203,62 @@
 		}
 	}('.chosen-select'));
 	
+	
+	/*
+	 * Select2 Initialization
+	 */
+	(function(select2){
+		if( select2.length > 0 ) {
+			select2.each(function(){
+				var $this = $(this),
+					$type = $this.attr('data-type');
+				
+				$this.select2({
+					ajax : {
+						url : (typeof ajaxurl !== 'undefined' ? ajaxurl : CFGP.ajaxurl),
+						dataType: 'json',
+						data : function (params) {
+							var $search = (params.term || ''),
+								$country_codes = null;
+							
+							if( 'region' === $type ) {
+								$country_codes = $('[data-type^="region"].cfgp_select2').attr('data-country_codes')
+							} else if( 'city' === $type ) {
+								$country_codes = $('[data-type^="city"].cfgp_select2').attr('data-country_codes')
+							}
+							
+							if($country_codes) {
+								$country_codes = $country_codes.split(',');
+							}
+							
+							console.log( {
+								search : $search,
+								type : $type,
+								country_codes : $country_codes,
+								exclude : [].filter((item) => item),
+								action : 'cfgp_select2_locations'
+							} );
+							return {
+								search : $search,
+								type : $type,
+								country_codes : $country_codes,
+								exclude : [].filter((item) => item),
+								action : 'cfgp_select2_locations'
+							}
+						}
+					}
+				}).on('select2:select', function (e) {
+					var $this = $(this),
+						$type = $this.attr('data-type');
+					
+					if(['country'].indexOf($type) > -1){
+						$('[data-type^="region"].cfgp_select2,[data-type^="city"].cfgp_select2').attr('data-country_codes', $this.val().join(','));
+					}
+				});
+			});
+		}
+	}( $('.cfgp_select2') ));
+	
 	/*
 	 * Chosen initialization for the menus
 	 * @since 8.0.2

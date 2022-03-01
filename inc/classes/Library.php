@@ -17,6 +17,99 @@ if(!class_exists('CFGP_Library')) :
 class CFGP_Library {
 	private static $country_region_data_json;
 	private static $country_region_data;
+	private static $country_city_data_json;
+	private static $country_city_data;
+	
+	/*
+	 * Ajax functionality for the select2 search
+	 */
+	public static function ajax__select2_locations() {
+		static $cache = [];
+		
+		// Get search keywords
+		$search = CFGP_U::strtolower(sanitize_text_field($_REQUEST['search'] ?? ''));
+		$type = sanitize_text_field($_REQUEST['type'] ?? '');
+		// Collect results
+		$results = [];
+		// Switch type of search
+		if( isset($cache[$type.'_'.$search]) ){
+			$results=$cache[$type.'_'.$search];
+		} else {
+			switch($type) {
+				// Search for the country
+				case 'country':
+					if($countries = self::get_countries()) {
+						foreach($countries as $country_code=>$country_name) {
+							if( 
+								empty($search) 
+								|| strpos(CFGP_U::strtolower($country_code), $search) !== false 
+								|| strpos(CFGP_U::strtolower($country_name), $search) !== false 
+							) {
+								$results[]=array(
+									'id' => $country_code,
+									'text' => $country_name
+								);
+							}
+						}
+						$countries = NULL;
+					}
+				break;
+				// Search for the region
+				case 'region':
+					if ( is_array($_REQUEST['country_codes'] ?? NULL) ) {
+						foreach($_REQUEST['country_codes'] as $country_code) {
+							if($regions = self::get_regions($country_code)) {
+								foreach( $regions as $fetch ){
+									$region_code = sanitize_title( CFGP_U::transliterate($fetch['region']) );
+									if(
+										strpos(CFGP_U::strtolower($fetch['region']), $search) !== false 
+										|| strpos(CFGP_U::strtolower($region_code), $search) !== false 
+									) {
+										$results[]=array(
+											'id' => $region_code,
+											'text' => $fetch['region']
+										);
+									}
+								}
+								$regions = NULL;
+							}
+						}
+					}
+				break;
+				// Search for the city
+				case 'city':
+					if ( is_array($_REQUEST['country_codes'] ?? NULL) ) {
+						foreach($_REQUEST['country_codes'] as $country_code) {
+							if($cities = self::get_cities($country_code)) {
+								foreach( $cities as $city ){
+									$city_code = sanitize_title( CFGP_U::transliterate($city) );
+									if( 
+										strpos(CFGP_U::strtolower($city), $search) !== false 
+										|| strpos(CFGP_U::strtolower($city_code), $search) !== false 
+									) {
+										$results[]=array(
+											'id' => $city_code,
+											'text' => $city
+										);
+									}
+								}
+								$cities = NULL;
+							}
+						}
+					}
+				break;
+				$cache[$type.'_'.$search]=$results;
+			}
+		}
+		
+		// Return data
+		wp_send_json(array(
+			'results'=>$results
+		));
+		
+		// exit for any case
+		exit;
+	}
 	
 	/*
 	 * Get Country Region Data
@@ -24,8 +117,8 @@ class CFGP_Library {
 	public static function get_country_region_data($json=false){
 		
 		if($json) {
-			if(!empty(self::$country_region_data) ){
-				return self::$country_region_data;
+			if(!empty(self::$country_region_data_json) ){
+				return self::$country_region_data_json;
 			}
 		} else {
 			if(!empty(self::$country_region_data) ){
@@ -72,7 +165,7 @@ class CFGP_Library {
 	 * Get regions by country
 	 */
 	public static function get_regions( $country, $json = false ){
-		if(!empty($country) && $data = self::get_country_region_data())
+		if(!empty($country) && ($data = self::get_country_region_data()))
 		{
 			$country = strtolower($country);
 			foreach ($data as $key => $fetch) {
@@ -156,9 +249,19 @@ class CFGP_Library {
 	/*
 	 * Get cities by country
 	 */
-	public static function get_cities( $country_code, $json = false ){
+	public static function get_cities( $country_code, $json = false ){		
 		if(!empty($country_code))
 		{
+			if($json) {
+				if(!empty(self::$country_city_data_json)){
+					return self::$country_city_data_json;
+				}
+			} else {
+				if(!empty(self::$country_city_data)){
+					return self::$country_city_data;
+				}
+			}
+			
 			$country_code = strtolower($country_code);
 			
 			$file_base = CFGP_LIBRARY . '/cities';
@@ -176,22 +279,28 @@ class CFGP_Library {
 			$file = apply_filters("cfgp/library/cities/path/{$country_code}", $file);
 			
 			if(isset($file['path']) && file_exists($file['path'])){
-				$JSON = '';
+				$data = '';
 				$fh = fopen($file['path'],'r');
-					while ($line = fgets($fh)){$JSON.=$line;}
+					while ($line = fgets($fh)){$data.=$line;}
 				fclose($fh);
-				if( empty($JSON) ) {
+				
+				if( empty($data) ) {
 					if($json === false){
 						return array();
 					}
 					return '{}';
 				}
+				
 				if($json === false){
-					$data = json_decode( $JSON, true );
+					$data = json_decode( $data, true );
 					if($data){
 						sort($data);
+						self::$country_city_data = $data;
 					}
+				} else {
+					self::$country_city_data_json = $data;
 				}
+				
 				return $data;
 			}
 		}

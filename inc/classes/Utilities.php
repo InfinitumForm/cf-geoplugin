@@ -1938,7 +1938,7 @@ class CFGP_U {
 		}
 		
 		$transliterate = apply_filters('cfgp/transliterate', array(
-			// Uppercase
+			// A
 			'A' => array(
 				'À',
 				'Á',
@@ -1950,14 +1950,35 @@ class CFGP_U {
 				'Ă',
 				'Ą'
 			),
+			'a' => array(
+				'à',
+				'á',
+				'â',
+				'ã',
+				'ä',
+				'å',
+				'ā',
+				'ă',
+				'ą'
+			),
+			// AE
+			'AE' => array(
+				'Æ'
+			),
+			'ae' => array(
+				'æ'
+			),
+			// B
 			'B' => array(
 				'Ɓ',
 				'Ƃ',
 				'Ƅ'
 			),
-			'AE' => array(
-				'Æ'
+			'b' => array(
+				'ƀ',
+				'ƃ'
 			),
+			// C		
 			'C' => array(
 				'Ç',
 				'Ć',
@@ -1966,14 +1987,33 @@ class CFGP_U {
 				'Č',
 				'Ƈ'
 			),
+			'c' => array(
+				'ç',
+				'ć',
+				'ĉ',
+				'ċ',
+				'č',
+				'ƈ'
+			),
+			// D	
 			'D' => array(
 				'Ď',
 				'Ɗ',
 				'Ƌ'
 			),
+			'd' => array(
+				'ď',
+				'ƌ',
+				'ƍ'
+			),
+			// DJ
 			'DJ' => array(
 				'Đ'
 			),
+			'dj' => array(
+				'đ'
+			),
+			// E
 			'E' => array(
 				'Ǝ',
 				'Ɛ',
@@ -1987,9 +2027,29 @@ class CFGP_U {
 				'Ę',
 				'Ě'
 			),
+			'e' => array(
+				'ē',
+				'ĕ',
+				'ė',
+				'ę',
+				'ě',
+				'è',
+				'é',
+				'ê',
+				'ë'
+			),
+			// ETH
+			'eth' => array(
+				'ð'
+			),
+			// F
 			'F' => array(
 				'Ƒ'
 			),
+			'f' => array(
+				'ƒ'
+			),
+			// G
 			'G' => array(
 				'Ɠ',
 				'Ĝ',
@@ -1997,10 +2057,22 @@ class CFGP_U {
 				'Ġ',
 				'Ģ'
 			),
+			'g' => array(
+				'ĝ',
+				'ğ',
+				'ġ',
+				'ģ'
+			),
+			// H
 			'H' => array(
 				'Ĥ',
 				'Ħ'
 			),
+			'h' => array(
+				'ĥ',
+				'ħ'
+			),
+			// I
 			'I' => array(
 				'Ì',
 				'Í',
@@ -2014,16 +2086,42 @@ class CFGP_U {
 				'Ɩ',
 				'Ɨ'
 			),
+			'i' => array(
+				'ĩ',
+				'ī',
+				'ĭ',
+				'į',
+				'ı',
+				'ì',
+				'í',
+				'î',
+				'ï'
+			),
+			// IJ
 			'IJ' => array(
 				'Ĳ'
 			),
+			'ij' => array(
+				'ĳ'
+			),
+			// J
 			'J' => array(
 				'Ĵ'
 			),
+			'j' => array(
+				'ĵ'
+			),
+			// K
 			'K' => array(
 				'Ƙ',
 				'Ķ'
 			),
+			'k' => array(
+				'ķ',
+				'ĸ',
+				'ƙ'
+			),
+			// L
 			'L' => array(
 				'Ĺ',
 				'Ļ',
@@ -2031,9 +2129,23 @@ class CFGP_U {
 				'Ŀ',
 				'Ł'
 			),
+			'l' => array(
+				'ĺ',
+				'ļ',
+				'ľ',
+				'ŀ',
+				'ł',
+				'ƚ',
+				'ƛ'
+			),
+			// LJ
 			'Lj' => array(
 				'ǈ'
 			),
+			'ǉ' => array(
+				'lj'
+			),
+			// N
 			'N' => array(
 				'Ń',
 				'Ñ',
@@ -2041,12 +2153,22 @@ class CFGP_U {
 				'Ň',
 				'Ɲ'
 			),
+			'n' => array(
+				'ń',
+				'ņ',
+				'ň',
+				'ŉ',
+				'ñ',
+				'ƞ'
+			),
+			// NJ
 			'NJ' => array(
 				'Ǌ'
 			),
-			'Nj' => array(
-				'ǋ'
+			'nj' => array(
+				'ǌ'
 			),
+			// O
 			'O' => array(
 				'Ō',
 				'Ŏ',
@@ -2061,17 +2183,43 @@ class CFGP_U {
 				'Ɵ',
 				'Ɔ'
 			),
+			'o' => array(
+				'ò',
+				'ó',
+				'ô',
+				'õ',
+				'ö',
+				'ø',
+				'ŏ',
+				'ő',
+				'ơ'
+			),
+			// OE
 			'OE' => array(
 				'Œ'
 			),
+			'oe' => array(
+				'œ'
+			),
+			// P
 			'P' => array(
 				'Ƥ'
 			),
+			'p' => array(
+				'ƥ'
+			),
+			// R
 			'R' => array(
 				'Ŕ',
 				'Ŗ',
 				'Ř'
 			),
+			'r' => array(
+				'ŕ',
+				'ŗ',
+				'ř'
+			),
+			// S
 			'S' => array(
 				'Ś',
 				'Ŝ',
@@ -2079,6 +2227,14 @@ class CFGP_U {
 				'Š',
 				'ß'
 			),
+			's' => array(
+				'ś',
+				'ŝ',
+				'ş',
+				'š',
+				'ſ'
+			),
+			// T
 			'T' => array(
 				'Ţ',
 				'Ť',
@@ -2086,6 +2242,14 @@ class CFGP_U {
 				'Ʈ',
 				'Ƭ'
 			),
+			't' => array(
+				'ţ',
+				'ť',
+				'ŧ',
+				'ƫ',
+				'ƭ'
+			),
+			// U
 			'U' => array(
 				'Ù',
 				'Ú',
@@ -2100,166 +2264,6 @@ class CFGP_U {
 				'Ʋ',
 				'Ư'
 			),
-			'W' => array(
-				'Ŵ'
-			),
-			'Y' => array(
-				'Ŷ',
-				'Ÿ',
-				'Ý',
-				'Ƴ',
-				'ƴ'
-			),
-			'Z' => array(
-				'Ź',
-				'Ż',
-				'Ž',
-				'Ƶ'
-			),
-			
-			// Lowercase
-			'a' => array(
-				'à',
-				'á',
-				'â',
-				'ã',
-				'ä',
-				'å',
-				'ā',
-				'ă',
-				'ą'
-			),
-			'ae' => array(
-				'æ'
-			),
-			'b' => array(
-				'ƀ',
-				'ƃ'
-			),
-			'c' => array(
-				'ç',
-				'ć',
-				'ĉ',
-				'ċ',
-				'č',
-				'ƈ'
-			),
-			'd' => array(
-				'ď',
-				'ƌ',
-				'ƍ'
-			),
-			'dj' => array(
-				'đ'
-			),
-			'e' => array(
-				'ē',
-				'ĕ',
-				'ė',
-				'ę',
-				'ě',
-				'è',
-				'é',
-				'ê',
-				'ë'
-			),
-			'eth' => array(
-				'ð'
-			),
-			'f' => array(
-				'ƒ'
-			),
-			'g' => array(
-				'ĝ',
-				'ğ',
-				'ġ',
-				'ģ'
-			),
-			'h' => array(
-				'ĥ',
-				'ħ'
-			),
-			'i' => array(
-				'ĩ',
-				'ī',
-				'ĭ',
-				'į',
-				'ı',
-				'ì',
-				'í',
-				'î',
-				'ï'
-			),
-			'ij' => array(
-				'ĳ'
-			),
-			'j' => array(
-				'ĵ'
-			),
-			'k' => array(
-				'ķ',
-				'ĸ',
-				'ƙ'
-			),
-			'l' => array(
-				'ĺ',
-				'ļ',
-				'ľ',
-				'ŀ',
-				'ł',
-				'ƚ',
-				'ƛ'
-			),
-			'ǉ' => array(
-				'lj'
-			),
-			'n' => array(
-				'ń',
-				'ņ',
-				'ň',
-				'ŉ',
-				'ñ',
-				'ƞ'
-			),
-			'nj' => array(
-				'ǌ'
-			),
-			'o' => array(
-				'ò',
-				'ó',
-				'ô',
-				'õ',
-				'ö',
-				'ø',
-				'ŏ',
-				'ő',
-				'ơ'
-			),
-			'oe' => array(
-				'œ'
-			),
-			'p' => array(
-				'ƥ'
-			),
-			'r' => array(
-				'ŕ',
-				'ŗ',
-				'ř'
-			),
-			's' => array(
-				'ś',
-				'ŝ',
-				'ş',
-				'š',
-				'ſ'
-			),
-			't' => array(
-				'ţ',
-				'ť',
-				'ŧ',
-				'ƫ',
-				'ƭ'
-			),
 			'u' => array(
 				'ũ',
 				'ū',
@@ -2273,14 +2277,33 @@ class CFGP_U {
 				'ü',
 				'ư'
 			),
+			// W
+			'W' => array(
+				'Ŵ'
+			),
 			'w' => array(
 				'ŵ'
+			),
+			// Y
+			'Y' => array(
+				'Ŷ',
+				'Ÿ',
+				'Ý',
+				'Ƴ',
+				'ƴ'
 			),
 			'y' => array(
 				'ŷ',
 				'ý',
 				'ÿ',
 				'ƴ'
+			),
+			// Z
+			'Z' => array(
+				'Ź',
+				'Ż',
+				'Ž',
+				'Ƶ'
 			),
 			'z' => array(
 				'ź',
@@ -2295,6 +2318,23 @@ class CFGP_U {
 		}
 		
 		return $string;
+	}
+	
+	/*
+	 * Geo plugin using a bit different way to format content
+	 *
+	 * @param  $string
+	 *
+	 * @return string
+	 */
+	public static function the_content( $string ){
+		$string = htmlspecialchars_decode( $string );
+		$string = str_replace( ']]>', ']]&gt;', $string );
+		return $string;
+	}
+	
+	public static function strtolower($string) {
+		return ( function_exists('mb_strtolower') ? mb_strtolower($string) : strtolower($string) );
 	}
 }
 endif;

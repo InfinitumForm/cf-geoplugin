@@ -381,7 +381,7 @@ LIMIT 1
 					
 					if($post) {
 						$post->post_content = do_shortcode($post->post_content);
-						$post->post_content = apply_filters('the_content', $post->post_content);
+						$post->post_content = CFGP_U::the_content($post->post_content);
 						$save=$post->post_content;
 					}
 					
@@ -393,7 +393,7 @@ LIMIT 1
 					// Format defaults
 					if(!empty($cont) && empty($content)) {
 						$content = do_shortcode($cont);
-						$content = apply_filters('the_content', $content);
+						$content = CFGP_U::the_content($content);
 					}
 					
 					$return['response'] = $content;
