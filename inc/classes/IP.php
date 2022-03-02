@@ -28,7 +28,7 @@ class CFGP_IP extends CFGP_Global {
 		if($ip = CFGP_Cache::get('IP')) return $ip;
 		
 		$findIP=array();
-		$blacklistIP = self::blocked( array( self::server() ) );
+		$blacklistIP = self::blocked();
 		
 		// Enable cloudflare
 		if (CFGP_Options::get('enable_cloudflare', false) && isset($_SERVER['HTTP_CF_CONNECTING_IP']) && !empty($_SERVER['HTTP_CF_CONNECTING_IP']))
@@ -218,10 +218,14 @@ class CFGP_IP extends CFGP_Global {
 		}
 		
 		$blacklist=apply_filters('cfgp/ip/blacklist', array(
+			// Localhost IP must be the first one
 			'0.0.0.0'		=>	8,
+			'127.0.0.0'		=>	8,
+			// Server IP address must be blacklisted
+			self::server()	=> 	0,
+			// Universal IP addresses
 			'10.0.0.0'		=>	8,
 			'100.64.0.0'	=>	10,
-			'127.0.0.0'		=>	8,
 			'169.254.0.0'	=>	16,
 			'172.16.0.0'	=>	12,
 			'192.0.0.0'		=>	24,
@@ -234,7 +238,7 @@ class CFGP_IP extends CFGP_Global {
 			'203.0.113.0'	=>	24,
 			'224.0.0.0'		=>	4,
 			'240.0.0.0'		=>	4,
-			'255.255.255.0'	=>	255,
+			'255.255.255.0'	=>	255
 		));
 		
 		if(!empty($list) && is_array($list)){
@@ -449,18 +453,18 @@ class CFGP_IP extends CFGP_Global {
 		$cache_name = CFGP_NAME . '_is_localhost_'. $server_ip;
 
 		// Return cached proxy
-		if(NULL !== ($is_localhost = get_option($cache_name, NULL))) {
+		if(NULL !== ($is_localhost = CFGP_Cache::get($cache_name, NULL))) {
 			return $is_localhost;
 		}
 		
 		$localhost = false;
 		
 		$blacklist=array(
-			'127.0.0.0'		=>	255,
-			'192.168.0.0'	=>	8,
-			'192.168.1.0'	=>	255,
-			'192.168.2.0'	=>	255,
-			'192.168.3.0'	=>	255,
+			'127.0.0.0'		=>	8,
+		//	'192.168.0.0'	=>	8,
+		//	'192.168.1.0'	=>	255,
+		//	'192.168.2.0'	=>	255,
+		//	'192.168.3.0'	=>	255,
 		);
 		
 		if(!empty($list) && is_array($list)){
@@ -507,19 +511,32 @@ class CFGP_IP extends CFGP_Global {
 		if($remote_addr && in_array($remote_addr, $whitelist)){
 			$localhost = true;
 		}
+	
+		if(!$localhost) {
+			$host = $_SERVER['HTTP_HOST'] ?? NULL;
+			if($host && in_array($host, $whitelist)){
+				$localhost = true;
+			}
+		}
 		
-		$host = $_SERVER['HTTP_HOST'] ?? NULL;
-		if($host && in_array($host, $whitelist)){
+		if(!$localhost && in_array($server_ip, $whitelist)){
 			$localhost = true;
 		}
 		
-		if(in_array($server_ip, $whitelist)){
+		if( !$localhost && function_exists('gethostname') && in_array(gethostname(), apply_filters('cfgp/is_localhost/hostnames', array(
+			'localhost',
+			'localserver',
+			'ubuntu',
+			'raspberrypi',
+			'infinitumform.server.node.001',
+			'infinitumform.server.node.002',
+			'infinitumform.server.node.003',
+			'infinitumform.server.node.004'
+		))) ) {
 			$localhost = true;
 		}
 		
-		update_option($cache_name, $localhost);
-
-		return $localhost;
+		return CFGP_Cache::set($cache_name, $localhost);
 	}
 	
 	/**

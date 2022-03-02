@@ -337,7 +337,7 @@ class CFGP_API extends CFGP_Global {
 				}
 				break;
 				
-			case 'dns':			
+			case 'dns':
 				$pharams = array(
 					'{IP}' => $ip,
 					'{SIP}' => CFGP_IP::server(),
@@ -360,16 +360,16 @@ class CFGP_API extends CFGP_Global {
 				
 				if(empty($return))
 				{
-					$return = CFGP_U::curl_get($url);
+					$dns_return = CFGP_U::curl_get($url);
 					
 					// Fix data and save to cache
-					if (!empty($return))
+					if (!empty($dns_return))
 					{						
 						// Convert and merge
-						$return = json_decode($return, true);
-						$return = apply_filters('cfgp/api/dns/get', $return);
+						$dns_return = json_decode($dns_return, true);
+						$dns_return = apply_filters('cfgp/api/dns/get', $dns_return);
 						
-						$return = array_merge(array(
+						$dns_return = array_merge(array(
 							'ip_dns' => NULL,
 							'ip_dns_host' => NULL,
 							'ip_dns_provider' => NULL,
@@ -377,29 +377,29 @@ class CFGP_API extends CFGP_Global {
 							'isp_organization' => NULL,
 							'isp_as' => NULL,
 							'isp_asname' => NULL
-						), $return);
+						), $dns_return);
 						
-						if($return['error']===true) return $return;
+						if($dns_return['error']===true) return $dns_return;
 						
 						$get = CFGP_Cache::get('transfer_dns_records');
 						CFGP_Cache::delete('transfer_dns_records');
 						
-						$return = array_merge($return, array(
+						$dns_return = array_merge($dns_return, array(
 							'isp' => (isset($get['isp']) ? $get['isp'] : NULL),
 							'org' => (isset($get['org']) ? $get['org'] : NULL),
 							'as' => (isset($get['as']) ? $get['as'] : NULL),
 							'asname' => (isset($get['asname']) ? $get['asname'] : NULL),
-							'dns' => (isset($get['reverse']) ? $get['reverse'] : $return['dns']),
+							'dns' => (isset($get['reverse']) ? $get['reverse'] : $dns_return['dns']),
 						));
 						
 						$return = apply_filters( 'cfgp/api/dns/render/response', array(
-							'ip_dns' => $return['dns'],
-							'ip_dns_host' => $return['host'],
-							'ip_dns_provider' => $return['provider'],
-							'isp' => $return['isp'],
-							'isp_organization' => $return['org'],
-							'isp_as' => $return['as'],
-							'isp_asname' => $return['asname']
+							'ip_dns' => $dns_return['dns'],
+							'ip_dns_host' => $dns_return['host'],
+							'ip_dns_provider' => $dns_return['provider'],
+							'isp' => $dns_return['isp'],
+							'isp_organization' => $dns_return['org'],
+							'isp_as' => $dns_return['as'],
+							'isp_asname' => $dns_return['asname']
 						));
 						
 						// Save to session
