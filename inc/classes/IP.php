@@ -181,17 +181,9 @@ class CFGP_IP extends CFGP_Global {
 			
 			if(function_exists('file_get_contents'))
 			{
-				$context = CFGP_U::set_stream_context( array( 'Accept: application/json' ), 'GET' );
-				$result = @file_get_contents( 'https://api.ipify.org/?format=json', false, $context );
-			}
-			if($result)
-			{
-				$result = json_decode($result);
-				if(isset($result->ip))
-				{
-					$ip = $result->ip;
-					if(self::filter($ip)!==false)
-					{
+				foreach($external_servers as $server) {
+					$ip = @file_get_contents( $server, false );
+					if(self::filter($ip)!==false) {
 						return CFGP_Cache::set('IP', $ip);
 					}
 				}

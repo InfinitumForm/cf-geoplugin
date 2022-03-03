@@ -389,9 +389,13 @@ class CFGP__Plugin__woocommerce extends CFGP_Global
     }
 
     // Show options for payment tab
-    public function cfgp_woocommerce_payment_settings()
-    {
+    public function cfgp_woocommerce_payment_settings() {
         woocommerce_admin_fields( $this->get_payment_settings() );
+    }
+	
+	// Save payment settings (only when plugin is active)
+    public function cfgp_woocommerce_payment_settings_save() {
+        woocommerce_update_options( $this->get_payment_settings() );
     }
 
     // Generate option fields for payment
@@ -509,12 +513,6 @@ class CFGP__Plugin__woocommerce extends CFGP_Global
             $settings[] = array( 'type' => 'sectionend', 'id' => 'cf_geoplugin_payment_restriction' );
             return apply_filters( 'cf_geoplugin_payment_restriction_settings', $settings );
         }
-    }
-
-    // Save payment settings
-    public function cfgp_woocommerce_payment_settings_save()
-    {
-        woocommerce_update_options( $this->get_payment_settings() );
     }
 
     // Disable payments for specific users

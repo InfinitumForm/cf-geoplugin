@@ -1278,7 +1278,8 @@ class CFGP_U {
 		if(CFGP_Cache::get('API')) {
 			$API = CFGP_Cache::get('API');
 		}
-		
+
+
 		if(empty($name)) {
 			return apply_filters('cfgp/api/return', ( $API ? $API : $default ), $API, $default);
 		} else {
