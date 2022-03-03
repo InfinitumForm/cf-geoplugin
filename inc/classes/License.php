@@ -191,11 +191,14 @@ class CFGP_License extends CFGP_Global{
 	 |                                                                                      |
 	 | I am planning to develop a special protection WordPress plugin that will bring a lot |
 	 | of work, and for that I need developers who also know how to hack.                   |
+	 |                                                                                      |
 	 | Because only a hacker can write good protection against hackers. ;)                  |
 	 |                                                                                      |
 	 | I'm expecting you.                                                                   |
 	 |                                                                                      |
 	 | Cheers!                                                                              |
+	 |                                                                                      |
+	 | Contact: https://cfgeoplugin.com/get-involved                                        |
 	 +======================================================================================+
 	 */
 	public static function activated(){
