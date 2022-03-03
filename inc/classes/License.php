@@ -453,6 +453,7 @@ class CFGP_License extends CFGP_Global{
 			return false;
 		}
 		
+		/**
 		if( isset( $response['error'] ) && $response['error'] == true )
 		{
 			delete_transient('cfgp-license-response-success');
@@ -465,8 +466,9 @@ class CFGP_License extends CFGP_Global{
 		}
 		else
 		{
-			// Clear errors if exists
+			// Clear responses if exists
 			delete_transient('cfgp-license-response-errors');
+			delete_transient('cfgp-license-response-success');
 			// Clear license
 			self::set(CFGP_Defaults::LICENSE);
 			set_transient('cfgp-license-response-success', $response['message'], YEAR_IN_SECONDS);
@@ -474,6 +476,24 @@ class CFGP_License extends CFGP_Global{
 			CFGP_API::remove_cache();
 			return true;
 		}
+		**/
+		
+		/*
+		 * OK, we have some problems with some websites.
+		 *
+		 * In that case, we will force deactivation until we find 
+		 * the perfect solution to the problem we are facing.
+		 */
+		
+		// Clear responses if exists
+		delete_transient('cfgp-license-response-errors');
+		delete_transient('cfgp-license-response-success');
+		// Clear license
+		self::set(CFGP_Defaults::LICENSE);
+		set_transient('cfgp-license-response-success', __('License successfully deactivated!',CFGP_NAME), YEAR_IN_SECONDS);
+		// Clear special API cache
+		CFGP_API::remove_cache();
+		return true;
 	}
 	
 	/*
