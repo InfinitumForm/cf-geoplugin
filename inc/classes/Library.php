@@ -8,6 +8,7 @@
  * @author        Ivijan-Stefan Stipic
  * @version       2.0.0
  *
+ * Some library comes from https://mainfacts.com/ and https://lite.ip2location.com/ip-address-ranges-by-country as IP adress, counry names etc.
  */
  // If someone try to called this file directly via URL, abort.
 if ( ! defined( 'WPINC' ) ) { die( "Don't mess with us." ); }
@@ -24,87 +25,139 @@ class CFGP_Library {
 	 * Ajax functionality for the select2 search
 	 */
 	public static function ajax__select2_locations() {
-		static $cache = [];
-		
 		// Get search keywords
 		$search = CFGP_U::strtolower(sanitize_text_field($_REQUEST['search'] ?? ''));
 		$type = sanitize_text_field($_REQUEST['type'] ?? '');
+		// Set object cache
+		$object_cache_name=strtr(sanitize_title($type.'-'.$search), '-', '_');
+		$cache = wp_cache_get('cfgp_select2_locations');
+		if( !$cache ) {
+			$cache = [];
+		}
+		// Pagination
+		$page = absint($_REQUEST['page'] ?? 1);
+		$per_page = 20;
+		$offset = 0;
+		$more = 0;
+		if($page > 1){
+			$offset = ($per_page*$page);
+		}
 		// Collect results
 		$results = [];
-		// Switch type of search
-		if( isset($cache[$type.'_'.$search]) ){
-			$results=$cache[$type.'_'.$search];
+		if( isset($cache[$type]) && !empty($cache[$type]) ){
+			$results = $cache[$type];
 		} else {
+			// Switch type of search
 			switch($type) {
-				// Search for the country
+				// country
 				case 'country':
 					if($countries = self::get_countries()) {
-						foreach($countries as $country_code=>$country_name) {
-							if( 
-								empty($search) 
-								|| strpos(CFGP_U::strtolower($country_code), $search) !== false 
-								|| strpos(CFGP_U::strtolower($country_name), $search) !== false 
-							) {
-								$results[]=array(
-									'id' => $country_code,
-									'text' => $country_name
-								);
-							}
-						}
+						$cache[$type] = $countries;
 						$countries = NULL;
 					}
 				break;
-				// Search for the region
+				// region
 				case 'region':
 					if ( is_array($_REQUEST['country_codes'] ?? NULL) ) {
 						foreach($_REQUEST['country_codes'] as $country_code) {
 							if($regions = self::get_regions($country_code)) {
-								foreach( $regions as $fetch ){
-									$region_code = sanitize_title( CFGP_U::transliterate($fetch['region']) );
-									if(
-										strpos(CFGP_U::strtolower($fetch['region']), $search) !== false 
-										|| strpos(CFGP_U::strtolower($region_code), $search) !== false 
-									) {
-										$results[]=array(
-											'id' => $region_code,
-											'text' => $fetch['region']
-										);
-									}
-								}
+								$cache[$type] = $regions;
 								$regions = NULL;
 							}
 						}
 					}
 				break;
-				// Search for the city
+				// city
 				case 'city':
 					if ( is_array($_REQUEST['country_codes'] ?? NULL) ) {
 						foreach($_REQUEST['country_codes'] as $country_code) {
 							if($cities = self::get_cities($country_code)) {
-								foreach( $cities as $city ){
-									$city_code = sanitize_title( CFGP_U::transliterate($city) );
-									if( 
-										strpos(CFGP_U::strtolower($city), $search) !== false 
-										|| strpos(CFGP_U::strtolower($city_code), $search) !== false 
-									) {
-										$results[]=array(
-											'id' => $city_code,
-											'text' => $city
-										);
-									}
-								}
+								$cache[$type] = $cities;
 								$cities = NULL;
 							}
 						}
 					}
 				break;
-				$cache[$type.'_'.$search]=$results;
 			}
+			wp_cache_set('cfgp_select2_locations', $cache, 'cf-geoplugin', HOUR_IN_SECONDS);
 		}
+		
+		switch($type) {
+			// Search for the country
+			case 'country':
+				if($countries = $cache[$type]) {
+					foreach($countries as $country_code=>$country_name) {
+						if( 
+							empty($search) 
+							|| strpos(CFGP_U::strtolower($country_code), $search) !== false 
+							|| strpos(CFGP_U::strtolower($country_name), $search) !== false 
+						) {
+							$results[]=array(
+								'id' => $country_code,
+								'text' => $country_name
+							);
+						}
+					}
+					$countries = NULL;
+				}
+			break;
+			// Search for the region
+			case 'region':
+				if ( is_array($_REQUEST['country_codes'] ?? NULL) ) {
+					foreach($_REQUEST['country_codes'] as $country_code) {
+						if($regions = $cache[$type]) {
+							foreach( $regions as $fetch ){
+								$region_code = sanitize_title( CFGP_U::transliterate($fetch['region']) );
+								if(
+									empty($search) 
+									|| strpos(CFGP_U::strtolower($fetch['region']), $search) !== false 
+									|| strpos(CFGP_U::strtolower($region_code), $search) !== false 
+								) {
+									$results[]=array(
+										'id' => $region_code,
+										'text' => $fetch['region']
+									);
+								}
+							}
+							$regions = NULL;
+						}
+					}
+				}
+			break;
+			// Search for the city
+			case 'city':
+				if ( is_array($_REQUEST['country_codes'] ?? NULL) ) {
+					foreach($_REQUEST['country_codes'] as $country_code) {
+						if($cities = $cache[$type]) {
+							foreach( $cities as $city ){
+								$city_code = sanitize_title( CFGP_U::transliterate($city) );
+								if( 
+									empty($search) 
+									|| strpos(CFGP_U::strtolower($city), $search) !== false 
+									|| strpos(CFGP_U::strtolower($city_code), $search) !== false 
+								) {
+									$results[]=array(
+										'id' => $city_code,
+										'text' => $city
+									);
+								}
+							}
+							$cities = NULL;
+						}
+					}
+				}
+			break;
+		}
+		
+		$more = count($results);
+		$results = array_slice($results, $offset, $per_page);
 		
 		// Return data
 		wp_send_json(array(
-			'results'=>$results
+			'results'=>$results,
+			'pagination'=>array(
+				'more' => ($more > ($offset+$per_page))
+			)
 		));
 		
 		// exit for any case

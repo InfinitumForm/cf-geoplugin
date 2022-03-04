@@ -145,8 +145,8 @@ if(!empty($block_city) && !is_array($block_city) && preg_match('/\]|\[/', $block
 												);*/
 											?>
 											<select name="block_region" id="block_region" class="cfgp_select2" data-type="region" data-country_codes="" multiple></select>
-											<br>
-                                            <button type="button" class="button cfgp-select-all" data-target="block_region"><object data="<?php echo CFGP_ASSETS . '/images/select.svg'; ?>" width="10" height="10"></object> <?php esc_attr_e( 'Select/Deselect all', CFGP_NAME ); ?></button>
+											<!-- br>
+                                            <button type="button" class="button cfgp-select-all" data-target="block_region"><object data="<?php echo CFGP_ASSETS . '/images/select.svg'; ?>" width="10" height="10"></object> <?php esc_attr_e( 'Select/Deselect all', CFGP_NAME ); ?></button -->
                                         </div>
                                     </div>
                                     <div class="cfgp-tab-panel" id="city-restriction">
@@ -164,8 +164,8 @@ if(!empty($block_city) && !is_array($block_city) && preg_match('/\]|\[/', $block
 												);*/
 											?>
 											<select name="block_city" id="block_city" class="cfgp_select2" data-type="city" data-country_codes="" multiple></select>
-											<br>
-                                            <button type="button" class="button cfgp-select-all" data-target="block_city"><object data="<?php echo CFGP_ASSETS . '/images/select.svg'; ?>" width="10" height="10"></object> <?php esc_attr_e( 'Select/Deselect all', CFGP_NAME ); ?></button>
+											<!-- br>
+                                            <button type="button" class="button cfgp-select-all" data-target="block_city"><object data="<?php echo CFGP_ASSETS . '/images/select.svg'; ?>" width="10" height="10"></object> <?php esc_attr_e( 'Select/Deselect all', CFGP_NAME ); ?></button -->
                                         </div>
                                     </div>
 									<div class="cfgp-tab-panel" id="proxy-restriction">

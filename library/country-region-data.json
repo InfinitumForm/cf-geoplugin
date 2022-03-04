@@ -3259,9 +3259,9 @@
     ]
   },
   {
-    "country_name": "Cocos (Keeling) Islands",
+    "country_name": "Cocos Islands",
     "country_code": "cc",
-    "countryIS": "Cocos (Keeling) Islands (the)",
+    "countryIS": "Cocos Islands",
     "regions": [
       {
         "region": "Direction Island",
@@ -3447,9 +3447,9 @@
     ]
   },
   {
-    "country_name": "Congo, Republic of the (Brazzaville)",
+    "country_name": "Congo Republic",
     "country_code": "cg",
-    "countryIS": "Congo (the Democratic Republic of the)",
+    "countryIS": "Congo Republic",
     "regions": [
       {
         "region": "Bouenza",
@@ -3502,7 +3502,7 @@
     ]
   },
   {
-    "country_name": "Congo, the Democratic Republic of the (Kinshasa)",
+    "country_name": "DR Congo",
     "country_code": "cd",
     "regions": [
       {
@@ -3641,7 +3641,7 @@
     ]
   },
   {
-    "country_name": "Côte d'Ivoire, Republic of",
+    "country_name": "Ivory Coast",
     "country_code": "ci",
     "regions": [
       {
@@ -4633,12 +4633,12 @@
     ]
   },
   {
-    "country_name": "Falkland Islands (Islas Malvinas)",
+    "country_name": "Falkland Islands",
     "country_code": "fk",
-    "countryIS": "Falkland Islands (the) [Malvinas]",
+    "countryIS": "Falkland Islands",
     "regions": [
       {
-        "region": "Falkland Islands (Islas Malvinas)",
+        "region": "East Falkland",
         "region_code": ""
       }
     ]
@@ -4994,9 +4994,9 @@
     ]
   },
   {
-    "country_name": "Gambia, The",
+    "country_name": "Gambia",
     "country_code": "gm",
-    "countryIS": "Gambia (the)",
+    "countryIS": "Gambia",
     "regions": [
       {
         "region": "Banjul",
@@ -13610,7 +13610,7 @@
     "country_code": "rs",
     "regions": [
       {
-        "region": "Beograd (Belgrade)",
+        "region": "Belgrade",
         "region_code": "00"
       },
       {

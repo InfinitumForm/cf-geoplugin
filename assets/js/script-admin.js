@@ -243,7 +243,8 @@
 								type : $type,
 								country_codes : $country_codes,
 								exclude : [].filter((item) => item),
-								action : 'cfgp_select2_locations'
+								action : 'cfgp_select2_locations',
+								page: params.page || 1
 							}
 						}
 					}
