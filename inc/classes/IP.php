@@ -149,27 +149,13 @@ class CFGP_IP extends CFGP_Global {
 			'https://api.my-ip.io/ip',
 			'https://ip4.seeip.org'
 		));
-		if(stristr(PHP_OS, 'WIN') !== false)
-		{
-			if(function_exists('shell_exec'))
-			{
-				foreach($external_servers as $server) {
-					$ip = shell_exec('powershell.exe -InputFormat none -ExecutionPolicy Unrestricted -NoProfile -Command "(Invoke-WebRequest '.$server.').Content.Trim()"');
-					if(self::filter($ip)!==false) {
-						return CFGP_Cache::set('IP', $ip);
-					}
-				}
-			}
-		}
-		else
-		{
-			if(function_exists('shell_exec'))
-			{
-				foreach($external_servers as $server) {
-					$ip = shell_exec('curl '.$server.'##*( )');
-					if(self::filter($ip)!==false) {
-						return CFGP_Cache::set('IP', $ip);
-					}
+		
+		foreach($external_servers as $server) {
+			$request = wp_remote_get( 'https://storage.ip-api.com/data/cities.json' );
+			if( !is_wp_error( $request ) ) {
+				$ip = wp_remote_retrieve_body( $request );
+				if(self::filter($ip)!==false) {
+					return CFGP_Cache::set('IP', $ip);
 				}
 			}
 		}

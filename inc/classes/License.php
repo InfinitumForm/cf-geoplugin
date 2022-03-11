@@ -58,7 +58,7 @@ class CFGP_License extends CFGP_Global{
 	public static function get_product_data(){
 		$response = get_transient('cfgp-get-product-data');
 		if(!$response) {
-			if($return = CFGP_U::curl_get(CFGP_STORE . '/wp-admin/admin-ajax.php?action=cfgp_get_product_data', '', array(), true))
+			if($return = CFGP_U::curl_get(CFGP_STORE . '/wp-admin/admin-ajax.php?action=cfgp_get_product_data', '', array(), false))
 			{
 				if($return['error'] === false && $return['lenght'] > 0){
 					$response = $return['products'];
@@ -378,7 +378,7 @@ class CFGP_License extends CFGP_Global{
 			'domain' => CFGP_U::get_host(true)
 		);
 		
-		$response = CFGP_U::curl_post( CFGP_Defaults::API['authenticate'], $post_data, '', array(), true );
+		$response = CFGP_U::curl_post( CFGP_Defaults::API['authenticate'], $post_data, '', array(), false );
 		
 		if(empty($response)){
 			delete_transient('cfgp-license-response-success');
@@ -444,7 +444,7 @@ class CFGP_License extends CFGP_Global{
 			'domain' => CFGP_U::get_host(true)
 		);
 		
-		$response = CFGP_U::curl_post( CFGP_Defaults::API['authenticate'], $post_data, '', array(), true );
+		$response = CFGP_U::curl_post( CFGP_Defaults::API['authenticate'], $post_data, '', array(), false );
 	
 		if(empty($response)){
 			delete_transient('cfgp-license-response-success');

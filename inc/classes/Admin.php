@@ -35,16 +35,14 @@ class CFGP_Admin extends CFGP_Global {
 		$this->add_action('wp_ajax_cfgp_rss_feed', 'ajax__rss_feed');
 		$this->add_action('wp_ajax_cfgp_dashboard_rss_feed', 'ajax__dashboard_rss_feed');
 		
-		
-		$this->add_action('wp_ajax_cfgp_select2_locations', array('CFGP_Library', 'ajax__select2_locations'));
-		$this->add_action('wp_ajax_nopriv_cfgp_select2_locations', array('CFGP_Library', 'ajax__select2_locations'));
-		
-		
 		$this->add_action('wp_network_dashboard_setup', 'register_dashboard_widget');
 		$this->add_action('wp_dashboard_setup', 'register_dashboard_widget');
 		
 		$this->add_filter( 'plugin_action_links_' . plugin_basename(CFGP_FILE), 'plugin_action_links' );
 		$this->add_filter( 'plugin_row_meta', 'cfgp_action_links', 10, 2 );
+		
+		$this->add_action('wp_ajax_cfgp_select2_locations', array('CFGP_Library', 'ajax__select2_locations'));
+		$this->add_action('wp_ajax_nopriv_cfgp_select2_locations', array('CFGP_Library', 'ajax__select2_locations'));
 	}
 	
 	// WP Hidden links by plugin setting page
@@ -129,8 +127,8 @@ class CFGP_Admin extends CFGP_Global {
 				$regons = CFGP_Library::get_regions($cc);	
 				foreach( $regons as $key => $fetch ){
 					$options[]= array(
-						'key' => strtolower(sanitize_title($fetch['region'])),
-						'value' => $fetch['region']
+						'key' => sanitize_title($fetch),
+						'value' => $fetch
 					);
 				}
 			}
@@ -140,8 +138,8 @@ class CFGP_Admin extends CFGP_Global {
 			$regons = CFGP_Library::get_regions($country_code);	
 			foreach( $regons as $key => $fetch ){
 				$options[]= array(
-					'key' => strtolower(sanitize_title($fetch['region'])),
-					'value' => $fetch['region']
+					'key' => sanitize_title($fetch),
+					'value' => $fetch
 				);
 			}
 		}
@@ -187,7 +185,7 @@ class CFGP_Admin extends CFGP_Global {
 			exit;
 		} else {
 			$RSS = $DASH_RSS = [];
-			$data = CFGP_U::curl_get( CFGP_STORE . '/wp-ajax.php?action=cfgp_get_posts_data&numberposts=10&posts_per_page=10', '', array(), true);
+			$data = CFGP_U::curl_get( CFGP_STORE . '/wp-ajax.php?action=cfgp_get_posts_data&numberposts=10&posts_per_page=10', '', array(), false);
 			if($data)
 			{
 				$data = (object)$data;
@@ -264,7 +262,7 @@ class CFGP_Admin extends CFGP_Global {
 			exit;
 		} else {
 			$RSS = $DASH_RSS = [];
-			$data = CFGP_U::curl_get( CFGP_STORE . '/wp-ajax.php?action=cfgp_get_posts_data&numberposts=10&posts_per_page=10', '', array(), true);
+			$data = CFGP_U::curl_get( CFGP_STORE . '/wp-ajax.php?action=cfgp_get_posts_data&numberposts=10&posts_per_page=10', '', array(), false);
 			if($data)
 			{
 				$data = (object)$data;
@@ -631,15 +629,6 @@ class CFGP_Admin extends CFGP_Global {
 			'ajaxurl' => CFGP_U::admin_url('admin-ajax.php'),
 			'label' => array(
 				'unload' => __('Data will lost , Do you wish to continue?',CFGP_NAME),
-				'chosen' => array(
-					'not_found' 		=> __('Nothing found!',CFGP_NAME),
-					'choose' 			=> __('Choose...',CFGP_NAME),
-					'choose_first' 		=> __('Choose countries first!',CFGP_NAME),
-					'choose_countries' 	=> __('Choose countries...',CFGP_NAME),
-					'choose_regions' 	=> __('Choose regions...',CFGP_NAME),
-					'choose_cities' 	=> __('Choose cities...',CFGP_NAME),
-					'choose_postcodes' 	=> __('Choose postcodes...',CFGP_NAME),
-				),
 				'loading' => __('Loading...',CFGP_NAME),
 				'not_found' => __('Not Found!',CFGP_NAME),
 				'placeholder' => __('Search',CFGP_NAME),
@@ -668,10 +657,6 @@ class CFGP_Admin extends CFGP_Global {
 			),
 			'current_url'	=> $url
 		));
-		// Load geodata
-		if(strpos($url, 'post-new.php') !== false || strpos($url, 'post=') !== false){
-			wp_localize_script(CFGP_NAME . '-cpt', 'CFGP_GEODATA', CFGP_Library::all_geodata());
-		}
 	}
 	
 	public function register_scripts($page){
@@ -679,18 +664,14 @@ class CFGP_Admin extends CFGP_Global {
 			if(!$this->limit_scripts($page)) return;
 		}
 		
-		wp_enqueue_style( CFGP_NAME . '-choosen', CFGP_ASSETS . '/js/chosen_v1.8.7/chosen.min.css', 1,  '1.8.7' );
-		wp_enqueue_script( CFGP_NAME . '-choosen', CFGP_ASSETS . '/js/chosen_v1.8.7/chosen.jquery.min.js', array('jquery'), '1.8.7', true );
+		wp_enqueue_style( CFGP_NAME . '-select2', CFGP_ASSETS . '/css/select2.min.css', 1,  '4.1.0-rc.0' );
+		wp_enqueue_script( CFGP_NAME . '-select2', CFGP_ASSETS . '/js/select2.min.js', array('jquery'), '4.1.0-rc.0', true );
 		
 		if( $page == 'nav-menus.php' ) {
-			wp_enqueue_style( CFGP_NAME . '-menus', CFGP_ASSETS . '/css/style-menus.css', array(CFGP_NAME . '-choosen'), (string)CFGP_VERSION );
+			wp_enqueue_style( CFGP_NAME . '-menus', CFGP_ASSETS . '/css/style-menus.css', array(CFGP_NAME . '-select2'), (string)CFGP_VERSION );
 		}
 		
-		
-		wp_enqueue_style( 'select2', 'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css', false, '4.1.0', 'all' );
-		wp_enqueue_script( 'select2', 'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js', array( 'jquery' ), '4.1.0', true );
-		
-		wp_enqueue_script( CFGP_NAME . '-admin', CFGP_ASSETS . '/js/script-admin.js', array('jquery', CFGP_NAME . '-choosen'), (string)CFGP_VERSION, true );
+		wp_enqueue_script( CFGP_NAME . '-admin', CFGP_ASSETS . '/js/script-admin.js', array('jquery', CFGP_NAME . '-select2'), (string)CFGP_VERSION, true );
 		wp_localize_script(CFGP_NAME . '-admin', 'CFGP', array(
 			'ajaxurl' => CFGP_U::admin_url('admin-ajax.php'),
 			'adminurl' => self_admin_url('/'),
@@ -705,9 +686,6 @@ class CFGP_Admin extends CFGP_Global {
 				'rss' => array(
 					'no_news' => __('There are no news at the moment.',CFGP_NAME),
 					'error' => __("ERROR! Can't load news feed.",CFGP_NAME)
-				),
-				'chosen' => array(
-					'not_found' => __('Nothing found!',CFGP_NAME)
 				),
 				'settings' => array(
 					'saved' => __('Option saved successfuly!',CFGP_NAME),
@@ -738,14 +716,19 @@ class CFGP_Admin extends CFGP_Global {
 				'seo_redirection' => array(
 					'bulk_delete' => __('Are you sure you want to delete all these SEO redirects? You will no longer be able to recover data. We suggest to you made a backup before deleting.',CFGP_NAME),
 					'not_selected' => __('You didn\'t select anything.',CFGP_NAME)
+				),
+				'select2' => array(
+					'not_found' => array(
+						'country' => __('Country not found.',CFGP_NAME),
+						'region' => __('Region not found.',CFGP_NAME),
+						'city' => __('City not found.',CFGP_NAME),
+						'postcode' => esc_attr__('Postcode not found.',CFGP_NAME)
+					),
+					'type_to_search' => __('Type to Search...',CFGP_NAME),
+					'searching' => __('Searching...',CFGP_NAME)
 				)
 			)
 		));
-		
-		// Load geodata
-		if(CFGP_U::request_string('page') == 'cf-geoplugin-defender' || $page == 'nav-menus.php'){
-			wp_localize_script(CFGP_NAME . '-admin', 'CFGP_GEODATA', CFGP_Library::all_geodata());
-		}
 	}
 	
 	/*

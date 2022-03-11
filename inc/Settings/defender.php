@@ -98,7 +98,7 @@ if(!empty($block_city) && !is_array($block_city) && preg_match('/\]|\[/', $block
                             <div class="cfgp-tab-panel cfgp-tab-panel-active" id="defender-settings">
                             	<p><?php _e('With Anti Spam Protection you can block the access from the specific IP, country, state and city to your site. Names of countries, states, regions or cities are not case sensitive, but the name must be entered correctly (in English) to get this feature work correctly. This feature is very safe and does not affect SEO.', CFGP_NAME); ?></p>
                                 
-                                <div class="nav-tab-wrapper-chosen cfgp-country-region-city-multiple-form-no-ajax">
+                                <div class="nav-tab-wrapper-chosen cfgp-country-region-city-multiple-form">
                                     <nav class="nav-tab-wrapper">
                                         <a href="javascript:void(0);" class="nav-tab nav-tab-active" data-id="#ip-restriction"><i class="fa fa-shield"></i><span class="label"> <?php _e('IP Restriction', CFGP_NAME); ?></span></a>
                                         <a href="javascript:void(0);" class="nav-tab" data-id="#country-restriction"><i class="fa fa-globe"></i><span class="label"> <?php _e('Country Restriction', CFGP_NAME); ?></span></a>
@@ -116,16 +116,15 @@ if(!empty($block_city) && !is_array($block_city) && preg_match('/\]|\[/', $block
                                     	<div class="cfgp-form-group">
                                             <label for="block_country"><?php _e('Choose Countries',CFGP_NAME); ?>:</label>
 											<?php
-												/*CFGP_Form::select_countries(
+												CFGP_Form::select_countries(
 													array(
 														'name'=>'block_country',
 														'id' => 'block_country'
 													),
 													$block_country,
 													true
-												);*/
+												);
 											?>
-											<select name="block_country" id="block_country" class="cfgp_select2" data-type="country" multiple></select>
                                             <br>
                                             <button type="button" class="button cfgp-select-all" data-target="block_country"><object data="<?php echo CFGP_ASSETS . '/images/select.svg'; ?>" width="10" height="10"></object> <?php esc_attr_e( 'Select/Deselect all', CFGP_NAME ); ?></button>
                                         </div>
@@ -134,7 +133,7 @@ if(!empty($block_city) && !is_array($block_city) && preg_match('/\]|\[/', $block
                                     	<div class="cfgp-form-group">
                                             <label for="block_region"><?php _e('Choose Region',CFGP_NAME); ?>:</label>
                                             <?php
-												/*CFGP_Form::select_regions(
+												CFGP_Form::select_regions(
 													array(
 														'name'=>'block_region',
 														'id' => 'block_region',
@@ -142,9 +141,8 @@ if(!empty($block_city) && !is_array($block_city) && preg_match('/\]|\[/', $block
 													),
 													$block_region,
 													true
-												);*/
+												);
 											?>
-											<select name="block_region" id="block_region" class="cfgp_select2" data-type="region" data-country_codes="" multiple></select>
 											<!-- br>
                                             <button type="button" class="button cfgp-select-all" data-target="block_region"><object data="<?php echo CFGP_ASSETS . '/images/select.svg'; ?>" width="10" height="10"></object> <?php esc_attr_e( 'Select/Deselect all', CFGP_NAME ); ?></button -->
                                         </div>
@@ -153,7 +151,7 @@ if(!empty($block_city) && !is_array($block_city) && preg_match('/\]|\[/', $block
                                     	<div class="cfgp-form-group">
                                             <label for="block_city"><?php _e('Choose Cities',CFGP_NAME); ?>:</label>
                                             <?php
-												/*CFGP_Form::select_cities(
+												CFGP_Form::select_cities(
 													array(
 														'name'=>'block_city',
 														'id' => 'block_city',
@@ -161,9 +159,8 @@ if(!empty($block_city) && !is_array($block_city) && preg_match('/\]|\[/', $block
 													),
 													$block_city,
 													true
-												);*/
+												);
 											?>
-											<select name="block_city" id="block_city" class="cfgp_select2" data-type="city" data-country_codes="" multiple></select>
 											<!-- br>
                                             <button type="button" class="button cfgp-select-all" data-target="block_city"><object data="<?php echo CFGP_ASSETS . '/images/select.svg'; ?>" width="10" height="10"></object> <?php esc_attr_e( 'Select/Deselect all', CFGP_NAME ); ?></button -->
                                         </div>

@@ -28,13 +28,14 @@ class CFGP_Metabox extends CFGP_Global {
 	 * Hook for the post save/update
 	 */
 	public function save_post($post_id){
+
 		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
 			return;
 		}
 		if ( ! current_user_can( 'edit_post', $post_id ) ) {
 			return;
 		}
-		
+
 		$post_type = get_post_type($post_id);
 		
 		// SEO Redirection
@@ -419,7 +420,6 @@ function CF_GeoPlugin_Google_Map_GeoTag() {
             <label for="region"><?php _e('Choose Regions', CFGP_NAME); ?></label>
             <?php CFGP_Form::select_regions(array('name'=>"{$this->metabox}[{$i}][region]", 'id'=>"{$this->metabox}-{$i}-region", 'country_code' => $country), $region, true); ?>
             <span class="description"><?php _e( 'Select the regions you want to redirect.', CFGP_NAME ); ?></span>
-            <button type="button" class="cfgp-select-all" data-target="<?php echo "{$this->metabox}-{$i}-region"; ?>"><object data="<?php echo CFGP_ASSETS . '/images/select.svg'; ?>" width="10" height="10"></object> <?php esc_attr_e( 'Select all', CFGP_NAME ); ?></button>&nbsp;&nbsp;&nbsp;&nbsp;
 			<?php
 				CFGP_Form::checkbox(
 					array(
@@ -438,7 +438,6 @@ function CF_GeoPlugin_Google_Map_GeoTag() {
             <label for="city"><?php _e('Choose Cities', CFGP_NAME); ?></label>
             <?php CFGP_Form::select_cities(array('name'=>"{$this->metabox}[{$i}][city]", 'id'=>"{$this->metabox}-{$i}-city", 'country_code' => $country), $city, true); ?>
             <span class="description"><?php _e( 'Select the cities you want to redirect.', CFGP_NAME ); ?></span>
-            <button type="button" class="cfgp-select-all" data-target="<?php echo "{$this->metabox}-{$i}-city"; ?>"><object data="<?php echo CFGP_ASSETS . '/images/select.svg'; ?>" width="10" height="10"></object> <?php esc_attr_e( 'Select all', CFGP_NAME ); ?></button>&nbsp;&nbsp;&nbsp;&nbsp;
 			<?php
 				CFGP_Form::checkbox(
 					array(
@@ -457,7 +456,6 @@ function CF_GeoPlugin_Google_Map_GeoTag() {
             <label for="postcode"><?php _e('Choose Postcodes', CFGP_NAME); ?></label>
             <?php CFGP_Form::select_postcodes(array('name'=>"{$this->metabox}[{$i}][postcode]", 'id'=>"{$this->metabox}-{$i}-postcode"), $postcode, true); ?>
             <span class="description"><?php _e( 'Select the postcodes you want to redirect.', CFGP_NAME ); ?></span>
-            <button type="button" class="cfgp-select-all" data-target="<?php echo "{$this->metabox}-{$i}-postcode"; ?>"><object data="<?php echo CFGP_ASSETS . '/images/select.svg'; ?>" width="10" height="10"></object> <?php esc_attr_e( 'Select all', CFGP_NAME ); ?></button>&nbsp;&nbsp;&nbsp;&nbsp;
 			<?php
 				CFGP_Form::checkbox(
 					array(
@@ -536,10 +534,11 @@ function CF_GeoPlugin_Google_Map_GeoTag() {
 			
 			wp_enqueue_style( CFGP_NAME . '-fontawesome', CFGP_ASSETS . '/css/font-awesome.min.css', array(), (string)CFGP_VERSION );
 			wp_enqueue_style( CFGP_NAME . '-metabox', CFGP_ASSETS . '/css/style-metabox.css', array(CFGP_NAME . '-fontawesome'), (string)CFGP_VERSION, false );
-			wp_enqueue_style( CFGP_NAME . '-choosen', CFGP_ASSETS . '/js/chosen_v1.8.7/chosen.min.css', 1,  '1.8.7' );
 			
-			wp_enqueue_script( CFGP_NAME . '-choosen', CFGP_ASSETS . '/js/chosen_v1.8.7/chosen.jquery.min.js', array('jquery'), '1.8.7', true );
-			wp_enqueue_script( CFGP_NAME . '-metabox', CFGP_ASSETS . '/js/script-metabox.js', array('jquery', CFGP_NAME . '-choosen'), (string)CFGP_VERSION, true );
+			wp_enqueue_style( CFGP_NAME . '-select2', CFGP_ASSETS . '/css/select2.min.css', 1,  '4.1.0-rc.0' );
+			wp_enqueue_script( CFGP_NAME . '-select2', CFGP_ASSETS . '/js/select2.min.js', array('jquery'), '4.1.0-rc.0', true );
+		
+			wp_enqueue_script( CFGP_NAME . '-metabox', CFGP_ASSETS . '/js/script-metabox.js', array('jquery', CFGP_NAME . '-select2'), (string)CFGP_VERSION, true );
 			wp_localize_script(CFGP_NAME . '-metabox', 'CFGP', array(
 				'ajaxurl' => admin_url('admin-ajax.php'),
 				'adminurl' => self_admin_url('/'),
@@ -547,24 +546,18 @@ function CF_GeoPlugin_Google_Map_GeoTag() {
 					'unload' => esc_attr__('Data will lost , Do you wish to continue?',CFGP_NAME),
 					'loading' => esc_attr__('Loading...',CFGP_NAME),
 					'not_found' => esc_attr__('Not Found!',CFGP_NAME),
-					'chosen' => array(
-						'not_found' 		=> esc_attr__('Nothing found!',CFGP_NAME),
-						'choose' 			=> esc_attr__('Choose...',CFGP_NAME),
-						'choose_first' 		=> esc_attr__('Choose countries first!',CFGP_NAME),
-						'choose_countries' 	=> esc_attr__('Choose countries...',CFGP_NAME),
-						'choose_regions' 	=> esc_attr__('Choose regions...',CFGP_NAME),
-						'choose_cities' 	=> esc_attr__('Choose cities...',CFGP_NAME),
-						'choose_postcodes' 	=> esc_attr__('Choose postcodes...',CFGP_NAME),
+					'select2' => array(
+						'not_found' => array(
+							'country' => esc_attr__('Country not found.',CFGP_NAME),
+							'region' => esc_attr__('Region not found.',CFGP_NAME),
+							'city' => esc_attr__('City not found.',CFGP_NAME),
+							'postcode' => esc_attr__('Postcode not found.',CFGP_NAME)
+						),
+						'type_to_search' => esc_attr__('Type to Search...',CFGP_NAME),
+						'searching' => esc_attr__('Searching...',CFGP_NAME)
 					)
 				)
-			));
-			
-			// Load geodata
-			if(strpos($url, 'post-new.php') !== false || (strpos($url, 'action=edit') !== false && strpos($url, 'post=') !== false)){
-				wp_localize_script(CFGP_NAME . '-metabox', 'CFGP_GEODATA', CFGP_Library::all_geodata());
-			}
-			
-			
+			));			
 		}
 	}	
 	

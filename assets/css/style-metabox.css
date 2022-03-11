@@ -22,6 +22,11 @@
 	margin-bottom:2px;
 }
 
+.cfgp_select2,
+.cfgp_select2+.select2.select2-container{
+	width:100% !important;
+}
+
 .cfgp-container .input-radio input[type="radio"]+input[type="radio"],
 .cfgp-container .input-radio span+input[type="radio"]{
 	margin-left:12px;

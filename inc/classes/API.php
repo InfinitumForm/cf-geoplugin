@@ -148,7 +148,6 @@ class CFGP_API extends CFGP_Global {
 					if (!empty($return))
 					{						
 						// Convert and merge
-						$return = json_decode($return, true);
 						$return = apply_filters('cfgp/api/get/geodata', $return);
 
 						$return = array_merge($default_fields, $return);
@@ -366,7 +365,6 @@ class CFGP_API extends CFGP_Global {
 					if (!empty($dns_return))
 					{						
 						// Convert and merge
-						$dns_return = json_decode($dns_return, true);
 						$dns_return = apply_filters('cfgp/api/dns/get', $dns_return);
 						
 						$dns_return = array_merge(array(

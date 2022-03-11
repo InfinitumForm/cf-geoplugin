@@ -143,7 +143,7 @@ class CFGP_U {
 	{
 		
 		$cache_name = 'cfgp-curl_get-'.md5(serialize(array($url, $headers, $new_params, $json)));
-		if($cache = CFGP_Cache::get($cache_name)){
+		if(NULL !== ($cache = CFGP_Cache::get($cache_name))){
 			return $cache;
 		}
 		
@@ -199,10 +199,10 @@ class CFGP_U {
 		}
 		
 		if( empty( $output ) ) {
-			return false;
+			return CFGP_Cache::set($cache_name, false);
 		}
 
-		if($json !== false) {
+		if($json === false) {
 			$output = json_decode($output, true);
 		}
 		
@@ -219,7 +219,7 @@ class CFGP_U {
 	public static function curl_post( $url, $post_data = array(), $headers = '', $new_params = array(), $json = false )
 	{
 		$cache_name = 'cfgp-curl_post-'.md5(serialize(array($url, $headers, $new_params, $json)));
-		if($cache = CFGP_Cache::get($cache_name)){
+		if(NULL !== ($cache = CFGP_Cache::get($cache_name))){
 			return $cache;
 		}
 		
@@ -277,10 +277,10 @@ class CFGP_U {
 		}
 		
 		if( empty( $output ) ) {
-			return false;
+			return CFGP_Cache::set($cache_name, false);
 		}
 
-		if($json !== false) {
+		if($json === false) {
 			$output = json_decode($output, true);
 		}
 		

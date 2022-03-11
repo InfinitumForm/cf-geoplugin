@@ -55,6 +55,11 @@ class CFGP_Form {
 			$attr['class'] = 'cfgp-select-country';
 		}
 		
+		$attr = array_merge($attr, array(
+			'data-type' => 'country',
+			'data-country_codes' => (is_array($selected) ? join(',', $selected) : $selected)
+		));
+		
 		if($multiple) {
 			$return = self::select_multiple($options, $attr, $selected, false);
 		} else {
@@ -83,7 +88,7 @@ class CFGP_Form {
 		}
 		
 		if(!isset($attr['country_code'])){
-			$attr['country_code'] = '';
+			$attr['country_code'] = [];
 		}
 		
 		if(is_array($attr['country_code']))
@@ -92,7 +97,7 @@ class CFGP_Form {
 			{
 				if($data = CFGP_Library::get_regions($country_code)){
 					foreach( $data as $key => $fetch ){
-						$options[sanitize_title( CFGP_U::transliterate($fetch['region']) )] = $fetch['region'];
+						$options[sanitize_title( CFGP_U::transliterate($fetch) )] = $fetch;
 					}
 				}
 			}
@@ -101,7 +106,7 @@ class CFGP_Form {
 		{
 			if($data = CFGP_Library::get_regions($attr['country_code'])){
 				foreach( $data as $key => $fetch ){
-					$options[sanitize_title( CFGP_U::transliterate($fetch['region']) )] = $fetch['region'];
+					$options[sanitize_title( CFGP_U::transliterate($fetch) )] = $fetch;
 				}
 			}
 		}
@@ -111,6 +116,11 @@ class CFGP_Form {
 		} else {
 			$attr['class'] = 'cfgp-select-region';
 		}
+		
+		$attr = array_merge($attr, array(
+			'data-type' => 'region',
+			'data-country_codes' => (is_array($attr['country_code']) ? join(',', $attr['country_code']) : $attr['country_code'])
+		));
 		
 		if($multiple) {
 			$return = self::select_multiple($options, $attr, $selected, false);
@@ -141,7 +151,7 @@ class CFGP_Form {
 		}
 		
 		if(!isset($attr['country_code'])){
-			$attr['country_code'] = '';
+			$attr['country_code'] = [];
 		}
 		
 		if(is_array($selected)){
@@ -184,6 +194,11 @@ class CFGP_Form {
 			$attr['class'] = 'cfgp-select-city';
 		}
 		
+		$attr = array_merge($attr, array(
+			'data-type' => 'city',
+			'data-country_codes' => (is_array($attr['country_code']) ? join(',', $attr['country_code']) : $attr['country_code'])
+		));
+		
 		if($multiple) {
 			$return = self::select_multiple($options, $attr, $selected, false);
 		} else {
@@ -220,6 +235,11 @@ class CFGP_Form {
 		} else if(!empty($selected)) {
 			$options[sanitize_title(CFGP_U::transliterate($selected))] = $selected;
 		}
+		
+		$attr = array_merge($attr, array(
+			'data-type' => 'postcode'
+		));
+		
 		if($multiple) {
 			$return = self::select_multiple($options, $attr, $selected, false);
 		} else {
@@ -259,9 +279,9 @@ class CFGP_Form {
 			$attr['name']=$attr['name'].'[]';
 			
 			if(isset($attr['class'])){
-				$attr['class'] = trim($attr['class']) . ' chosen-select';
+				$attr['class'] = trim($attr['class']) . ' cfgp_select2';
 			} else {
-				$attr['class'] = 'chosen-select';
+				$attr['class'] = 'cfgp_select2';
 			}
 
 			foreach($options as $val=>$name)

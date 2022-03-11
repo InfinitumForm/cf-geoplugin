@@ -2,113 +2,120 @@
 	var debounce,
 		loader = '<i class="fa fa-circle-o-notch fa-spin fa-fw"></i> ' + CFGP.label.loading,
 		/*
-		 * Select country, region, city (multiple)
-		 */		
-		country_region_city_multiple_form = function country_region_city_multiple_form (dry){
-			var $form = $('.cfgp-country-region-city-multiple-form');
-			if($form.length > 0)
-			{
-				$form.each(function(){
-					var $container = $(this),
-						$select_countries = $container.find('select.cfgp-select-country'),
-						$select_regions = $container.find('select.cfgp-select-region'),
-						$select_cities = $container.find('select.cfgp-select-city'),
-						$required_field = $container.find('.required-field');
-						
-					if(dry === true){
-						var $country_codes = $select_countries.find('option:selected').map(function(_, e){return e.value}).get();							
-						
-						if($country_codes.length === 0) {
-							$select_regions.attr('data-placeholder', CFGP.label.chosen.choose_countries).prop('disabled', true).trigger("chosen:updated");
-							$select_cities.attr('data-placeholder', CFGP.label.chosen.choose_countries).prop('disabled', true).trigger("chosen:updated");
-						} else {
-							$select_regions.attr('data-placeholder', CFGP.label.chosen.choose_regions).prop('disabled', false).trigger("chosen:updated");
-							$select_cities.attr('data-placeholder', CFGP.label.chosen.choose_cities).prop('disabled', false).trigger("chosen:updated");
-						}
-						
-						if($required_field.length > 0){
-							if($country_codes.length > 0 && $required_field.val().length === 0) {
-								$required_field.removeClass('required').prop('required', true);
-							} else {
-								$required_field.addClass('required').prop('required', false);
-							}
+		 * Select2 Initialization
+		 */
+		select2_init = function select2_init(){
+			var select2 = $('.cfgp_select2:not(.select2-hidden-accessible)');
+			if( select2.length > 0 ) {
+				
+				// Set country
+				$('[data-type^="country"].cfgp_select2:not(.select2-hidden-accessible)').select2({
+					allowClear: true,
+					language: {
+						'inputTooShort': function () {
+							return CFGP.label.select2.type_to_search;
+						},
+						'noResults': function(){
+							return CFGP.label.select2.not_found['country'];
+						},
+						'searching': function() {
+							return CFGP.label.select2.searching;
 						}
 					}
+				});
+				
+				// Set postcode
+				$('[data-type^="postcode"].cfgp_select2:not(.select2-hidden-accessible)').select2({
+					allowClear: true,
+					language: {
+						'inputTooShort': function () {
+							return CFGP.label.select2.type_to_search;
+						},
+						'noResults': function(){
+							return CFGP.label.select2.not_found['postcode'];
+						},
+						'searching': function() {
+							return CFGP.label.select2.searching;
+						}
+					}
+				});
+				
+				// Set pharams after selection
+				select2.on('select2:select', function (e) {
+					var $this = $(this),
+						$type = $this.attr('data-type'),
+						$container = $this.closest('.cfgp-country-region-city-multiple-form');
 					
-					$select_countries.on('change', function(){
-						var $country_codes = $(this).find('option:selected').map(function(_, e){return e.value}).get(),
-							$regions_code = $select_regions.find('option:selected').map(function(_, e){return e.value}).get(),
-							$cities_code = $select_cities.find('option:selected').map(function(_, e){return e.value}).get(),
-							$regions = [], $cities = [], r=0, c=0;
-
-							if($country_codes.length === 0) {
-								$select_regions.attr('data-placeholder', CFGP.label.chosen.choose_countries).prop('disabled', true).trigger("chosen:updated");
-								$select_cities.attr('data-placeholder', CFGP.label.chosen.choose_countries).prop('disabled', true).trigger("chosen:updated");
-							} else {
-								$select_regions.attr('data-placeholder', CFGP.label.chosen.choose_regions).prop('disabled', false).trigger("chosen:updated");
-								$select_cities.attr('data-placeholder', CFGP.label.chosen.choose_cities).prop('disabled', false).trigger("chosen:updated");
+					if( ['country','region','city'].indexOf($type) === -1 ) {
+						return this;
+					}
+					
+					if('country' === $type){
+						if(Array.isArray($this.val())) {
+							$container
+								.find('[data-type^="region"].cfgp_select2,[data-type^="city"].cfgp_select2')
+									.attr('data-country_codes', $this.val().join(','));
+						} else {
+							$container
+								.find('[data-type^="region"].cfgp_select2,[data-type^="city"].cfgp_select2')
+									.attr('data-country_codes', $this.val());
+						}
+					}
+				});
+				
+				// Set region and city
+				return select2.each(function(){
+					var $this = $(this),
+						$type = $this.attr('data-type');
+						
+					if( ['region','city'].indexOf($type) === -1 ) {
+						return this;
+					}
+					
+					$this.select2({
+						minimumInputLength: 1,
+						language: {
+							'inputTooShort': function () {
+								return CFGP.label.select2.type_to_search;
+							},
+							'noResults': function(){
+								return CFGP.label.select2.not_found[$type];
+							},
+							'searching': function() {
+								return CFGP.label.select2.searching;
 							}
-							
-							if($required_field.length > 0){
-								if($country_codes.length > 0 && $required_field.val().length === 0) {
-									$required_field.removeClass('required').prop('required', true);
-								} else {
-									$required_field.addClass('required').prop('required', false);
+						},
+						allowClear: true,
+						ajax : {
+							url : (typeof ajaxurl !== 'undefined' ? ajaxurl : CFGP.ajaxurl),
+							dataType: 'json',
+							data : function (params) {
+								var $select_this = $(this),
+									$type = $select_this.attr('data-type'),
+									$container = $select_this.closest('.cfgp-country-region-city-multiple-form'),
+									$search = (params.term || ''),
+									$country_codes = $select_this.attr('data-country_codes');
+								
+								if($country_codes) {
+									$country_codes = $country_codes.split(',');
+								}
+								
+								return {
+									search : $search,
+									type : $type,
+									country_codes : $country_codes,
+									exclude : [].filter((item) => item),
+									action : 'cfgp_select2_locations',
+									page: params.page || 1
 								}
 							}
-							
-						for(var i in $country_codes){
-							var cc = CFGP_GEODATA[$country_codes[i]];
-							
-							for(region in cc.region){
-								$regions[r]= '<option value="' + region + '">' + cc.region[region] + '</option>';
-								r++;
-							}
-							
-							for(city in cc.city){
-								$cities[c]= '<option value="' + city + '">' + cc.city[city] + '</option>';
-								c++;
-							}
 						}
-						
-						$select_regions.html( $regions.join('') );
-						for (var i in $regions_code) {
-							$select_regions.find('option[value="' + $regions_code[i] + '"]').prop('selected', true);
-						}
-						$select_regions.trigger("chosen:updated");
-						
-						$select_cities.html( $cities.join('') );	
-						for (var i in $cities_code) {
-							$select_cities.find('option[value="' + $cities_code[i] + '"]').prop('selected', true);
-						}
-						$select_cities.trigger("chosen:updated");
-						
-						return;
 					});
 				});
 			}
 		};
 		
-	country_region_city_multiple_form(true);
-
-	
-	/*
-	 * Chosen initialization
-	 * @since 7.0.0
-	*/
-	(function($$){
-		if( $($$) )
-		{
-			$($$).each(function(index, element) {
-				$(this).chosen({
-					no_results_text: CFGP.label.chosen.not_found,
-					width: "100%",
-					search_contains:true
-				});
-			});
-		}
-	}('.chosen-select'));
-	
+	select2_init();
 	
 	$(document)
 	
@@ -125,7 +132,7 @@
 				$(this).prop('selected',true);
 			}
 		}).promise().done(function(){
-			$target.trigger('change').trigger('chosen:updated');
+			$target.trigger('change');
 		});
 	})
 	
@@ -137,33 +144,35 @@
 			$repeater  = $item.closest('.cfgp-repeater'),
 			$template = $repeater.find('.cfgp-repeater-item:first-child').html(),
 			$index = $repeater.find('.cfgp-repeater-item').length;
-			
+		
+		// Set new indexes
 		$template = $template.replace(/(\[0\])/gi, '[' + $index + ']');
 		$template = $template.replace(/(-0-)/gi, '-' + $index + '-');
 		$template = $template.replace(/(_0_)/gi, '_' + $index + '_');
 		
+		// Generate new HTML
 		var $html = $('<div/>').addClass('cfgp-row cfgp-repeater-item cfgp-country-region-city-multiple-form').html($template);
-		$html.find('select option:selected').removeAttr('selected').prop('selected', false);
-		$html.find('input[type="url"], input[type="text"]').val('');
 		
+		// Clean data
+		$html.find('select').each(function(){
+			$(this).find('option:selected').removeAttr('selected').prop('selected', false);
+		});
+		$html.find('input[type="url"], input[type="text"]').val('');
 		$html.find('input[type="checkbox"]').prop('checked', false);
 		
+		// Remove select2
+		$html.find('.cfgp_select2').select2().select2('destroy');
+		$html.find('.select2').remove();
+		
+		// Assign new values
 		$html.find('select#cfgp-seo-redirection-' + $index + '-http_code').val(302);
+		$html.find('select#cfgp-seo-redirection-' + $index + '-country').removeClass('select2-hidden-accessible').attr('data-country_codes','');
+		$html.find('select#cfgp-seo-redirection-' + $index + '-region').removeClass('select2-hidden-accessible').attr('data-country_codes','').html('');
+		$html.find('select#cfgp-seo-redirection-' + $index + '-city').removeClass('select2-hidden-accessible').attr('data-country_codes','').html('');
 		
-		$html.find('select#cfgp-seo-redirection-' + $index + '-region').html('');
-		$html.find('select#cfgp-seo-redirection-' + $index + '-city').html('');
-		
-		/* TODO - Reset chosen */
-		$html.find('.chosen-container').remove();
-		$html.find('.chosen-select').each(function(){
-			$(this).chosen({
-				no_results_text: CFGP.label.chosen.not_found,
-				width: "100%",
-				search_contains:true
-			});
-		}).promise().done(function(){
-			$repeater.append($html);
-			country_region_city_multiple_form(true);
+		// Append and load select2
+		$repeater.append($html).promise().done(function(){
+			select2_init();
 		});
 	})
 	

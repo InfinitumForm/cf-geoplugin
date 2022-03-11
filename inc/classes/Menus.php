@@ -41,7 +41,7 @@ class CFGP_Menus extends CFGP_Global {
 			<input type="checkbox" id="edit-menu-item-enable-restriction-<?php echo $item_id; ?>" name="cfgp_menu_enable_restriction[<?php echo $item_id; ?>]" value="1" data-id="<?php echo $item_id; ?>" <?php checked(1, $this->get_values( $item->object_id, 'enable', NULL, $item->type )); ?>> <?php _e('Enable geographic location control', CFGP_NAME); ?>
 		</label>
 	</p>
-	<div class="cfgp-menu-item-restriction-locations cfgp-menu-item-restriction-locations-<?php echo $item_id; ?> cfgp-country-region-city-multiple-form-no-ajax">
+	<div class="cfgp-menu-item-restriction-locations cfgp-menu-item-restriction-locations-<?php echo $item_id; ?> cfgp-country-region-city-multiple-form">
 		<p class="cfgp-menu-item cfgp-menu-item-countrues" style="clear: both;">
 			<label for="edit-menu-item-countrues-<?php echo $item_id; ?>"><?php _e('Hide in Countries', CFGP_NAME); ?></label><br>
 			<?php CFGP_Form::select_countries(array(
@@ -56,8 +56,7 @@ class CFGP_Menus extends CFGP_Global {
 				'name'=>"cfgp_menu_regions[{$item_id}]",
 				'id' => "edit-menu-item-regions-{$item_id}",
 				'country_code' => $this->get_values( $item->object_id, 'countries', array(), $item->type )
-			), $this->get_values( $item->object_id, 'regions', array(), $item->type ), true, true); ?><br>
-			<button type="button" class="button cfgp-select-all" data-target="edit-menu-item-regions-<?php echo $item_id; ?>"><object data="<?php echo CFGP_ASSETS . '/images/select.svg'; ?>" width="10" height="10"></object> <?php esc_attr_e( 'Select/Deselect all', CFGP_NAME ); ?></button>
+			), $this->get_values( $item->object_id, 'regions', array(), $item->type ), true, true); ?>
 		</p>
 		<p class="cfgp-menu-item cfgp-menu-item-cities">
 			<label for="edit-menu-item-cities-<?php echo $item_id; ?>"><?php _e('Hide in Cities', CFGP_NAME); ?></label><br>
@@ -65,8 +64,7 @@ class CFGP_Menus extends CFGP_Global {
 				'name'=>"cfgp_menu_cities[{$item_id}]",
 				'id' => "edit-menu-item-cities-{$item_id}",
 				'country_code' => $this->get_values( $item->object_id, 'countries', array(), $item->type )
-			), $this->get_values( $item->object_id, 'cities', array(), $item->type ), true, true); ?><br>
-			<button type="button" class="button cfgp-select-all" data-target="edit-menu-item-cities-<?php echo $item_id; ?>"><object data="<?php echo CFGP_ASSETS . '/images/select.svg'; ?>" width="10" height="10"></object> <?php esc_attr_e( 'Select/Deselect all', CFGP_NAME ); ?></button>
+			), $this->get_values( $item->object_id, 'cities', array(), $item->type ), true, true); ?>
 		</p>
 	</div>
 	<p class="cfgp-menu-item-description"><?php _e('If you enable this option, in selected locations navigation will be hidden from the public as well as direct access to the URL.', CFGP_NAME); ?></p>
