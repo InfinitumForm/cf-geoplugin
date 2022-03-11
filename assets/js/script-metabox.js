@@ -7,28 +7,29 @@
 		select2_init = function select2_init(){
 			var select2 = $('.cfgp_select2:not(.select2-hidden-accessible)');
 			if( select2.length > 0 ) {
+				var CFGP_LABEL = CFGP.label.select2;
 				
 				// Set country
 				$('[data-type^="country"].cfgp_select2:not(.select2-hidden-accessible)').select2({
 					allowClear: false,
 					language: {
 						'inputTooShort': function () {
-							return CFGP.label.select2.type_to_search;
+							return CFGP_LABEL.type_to_search;
 						},
 						'noResults': function(){
-							return CFGP.label.select2.not_found['country'];
+							return CFGP_LABEL.not_found['country'];
 						},
 						'searching': function() {
-							return CFGP.label.select2.searching;
+							return CFGP_LABEL.searching;
 						},
 						'removeItem': function() {
-							return CFGP.label.select2.removeItem;
+							return CFGP_LABEL.removeItem;
 						},
 						'removeAllItems': function() {
-							return CFGP.label.select2.removeAllItems;
+							return CFGP_LABEL.removeAllItems;
 						},
 						'loadingMore': function() {
-							return CFGP.label.select2.loadingMore;
+							return CFGP_LABEL.loadingMore;
 						}
 					}
 				});
@@ -38,22 +39,22 @@
 					allowClear: false,
 					language: {
 						'inputTooShort': function () {
-							return CFGP.label.select2.type_to_search;
+							return CFGP_LABEL.type_to_search;
 						},
 						'noResults': function(){
-							return CFGP.label.select2.not_found['postcode'];
+							return CFGP_LABEL.not_found['postcode'];
 						},
 						'searching': function() {
-							return CFGP.label.select2.searching;
+							return CFGP_LABEL.searching;
 						},
 						'removeItem': function() {
-							return CFGP.label.select2.removeItem;
+							return CFGP_LABEL.removeItem;
 						},
 						'removeAllItems': function() {
-							return CFGP.label.select2.removeAllItems;
+							return CFGP_LABEL.removeAllItems;
 						},
 						'loadingMore': function() {
-							return CFGP.label.select2.loadingMore;
+							return CFGP_LABEL.loadingMore;
 						}
 					}
 				});
@@ -103,22 +104,22 @@
 						minimumInputLength: 0,
 						language: {
 							'inputTooShort': function () {
-								return CFGP.label.select2.type_to_search;
+								return CFGP_LABEL.type_to_search;
 							},
 							'noResults': function(){
-								return CFGP.label.select2.not_found[$type];
+								return CFGP_LABEL.not_found[$type];
 							},
 							'searching': function() {
-								return CFGP.label.select2.searching;
+								return CFGP_LABEL.searching;
 							},
 							'removeItem': function() {
-								return CFGP.label.select2.removeItem;
+								return CFGP_LABEL.removeItem;
 							},
 							'removeAllItems': function() {
-								return CFGP.label.select2.removeAllItems;
+								return CFGP_LABEL.removeAllItems;
 							},
 							'loadingMore': function() {
-								return CFGP.label.select2.loadingMore;
+								return CFGP_LABEL.loadingMore;
 							}
 						},
 						allowClear: false,
