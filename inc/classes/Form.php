@@ -35,7 +35,7 @@ class CFGP_Form {
 			$options = array();
 		} else {
 			$options = array(
-				'' => '-'
+				'' => ''
 			);
 		}
 		if($multiple) {
@@ -78,7 +78,7 @@ class CFGP_Form {
 			$options = array();
 		} else {
 			$options = array(
-				'' => '-'
+				'' => ''
 			);
 		}
 		if($multiple) {
@@ -141,7 +141,7 @@ class CFGP_Form {
 			$options = array();
 		} else {
 			$options = array(
-				'' => '-'
+				'' => ''
 			);
 		}
 		if($multiple) {
@@ -217,7 +217,7 @@ class CFGP_Form {
 			$options = array();
 		} else {
 			$options = array(
-				'' => '-'
+				'' => ''
 			);
 		}
 		if($multiple) {

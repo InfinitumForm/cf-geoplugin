@@ -34,7 +34,7 @@
 				
 				// Set country
 				$('[data-type^="country"].cfgp_select2:not(.select2-hidden-accessible)').select2({
-					allowClear: true,
+					allowClear: false,
 					language: {
 						'inputTooShort': function () {
 							return CFGP.label.select2.type_to_search;
@@ -44,13 +44,22 @@
 						},
 						'searching': function() {
 							return CFGP.label.select2.searching;
+						},
+						'removeItem': function() {
+							return CFGP.label.select2.removeItem;
+						},
+						'removeAllItems': function() {
+							return CFGP.label.select2.removeAllItems;
+						},
+						'loadingMore': function() {
+							return CFGP.label.select2.loadingMore;
 						}
 					}
 				});
 				
 				// Set postcode
 				$('[data-type^="postcode"].cfgp_select2:not(.select2-hidden-accessible)').select2({
-					allowClear: true,
+					allowClear: false,
 					language: {
 						'inputTooShort': function () {
 							return CFGP.label.select2.type_to_search;
@@ -60,6 +69,15 @@
 						},
 						'searching': function() {
 							return CFGP.label.select2.searching;
+						},
+						'removeItem': function() {
+							return CFGP.label.select2.removeItem;
+						},
+						'removeAllItems': function() {
+							return CFGP.label.select2.removeAllItems;
+						},
+						'loadingMore': function() {
+							return CFGP.label.select2.loadingMore;
 						}
 					}
 				});
@@ -68,22 +86,31 @@
 				select2.on('select2:select', function (e) {
 					var $this = $(this),
 						$type = $this.attr('data-type'),
-						$container = $this.closest('.cfgp-country-region-city-multiple-form');
+						$container = $this.closest('.cfgp-country-region-city-multiple-form'),
+						$value = '';
 					
 					if( ['country','region','city'].indexOf($type) === -1 ) {
 						return this;
 					}
 					
 					if('country' === $type){
-						if(Array.isArray($this.val())) {
-							$container
-								.find('[data-type^="region"].cfgp_select2,[data-type^="city"].cfgp_select2')
-									.attr('data-country_codes', $this.val().join(','));
-						} else {
-							$container
-								.find('[data-type^="region"].cfgp_select2,[data-type^="city"].cfgp_select2')
-									.attr('data-country_codes', $this.val());
+						$value = $this.val();
+						
+						if( Array.isArray($value) ) {
+							$value = $value.join(',');
 						}
+						
+						$container
+							.find('[data-type^="region"].cfgp_select2,[data-type^="city"].cfgp_select2')
+								.attr('data-country_codes', $value)
+									.each(function(){
+										$(this).find('option:selected').removeAttr('selected').prop('selected', false);
+									}).trigger('change');
+						$container
+							.find('[data-type^="postcode"].cfgp_select2')
+								.each(function(){
+									$(this).find('option:selected').removeAttr('selected').prop('selected', false);
+								}).trigger('change');
 					}
 				});
 				
@@ -97,7 +124,7 @@
 					}
 					
 					$this.select2({
-						minimumInputLength: 1,
+						minimumInputLength: 0,
 						language: {
 							'inputTooShort': function () {
 								return CFGP.label.select2.type_to_search;
@@ -107,9 +134,18 @@
 							},
 							'searching': function() {
 								return CFGP.label.select2.searching;
+							},
+							'removeItem': function() {
+								return CFGP.label.select2.removeItem;
+							},
+							'removeAllItems': function() {
+								return CFGP.label.select2.removeAllItems;
+							},
+							'loadingMore': function() {
+								return CFGP.label.select2.loadingMore;
 							}
 						},
-						allowClear: true,
+						allowClear: false,
 						ajax : {
 							url : (typeof ajaxurl !== 'undefined' ? ajaxurl : CFGP.ajaxurl),
 							dataType: 'json',

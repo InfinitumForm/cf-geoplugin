@@ -554,7 +554,10 @@ function CF_GeoPlugin_Google_Map_GeoTag() {
 							'postcode' => esc_attr__('Postcode not found.',CFGP_NAME)
 						),
 						'type_to_search' => esc_attr__('Type to Search...',CFGP_NAME),
-						'searching' => esc_attr__('Searching...',CFGP_NAME)
+						'searching' => esc_attr__('Searching, please wait...',CFGP_NAME),
+						'removeItem' => __('Remove Item',CFGP_NAME),
+						'removeAllItems' => __('Remove all items',CFGP_NAME),
+						'loadingMore' => __('Loading more results, please wait...',CFGP_NAME)
 					)
 				)
 			));			

@@ -725,7 +725,10 @@ class CFGP_Admin extends CFGP_Global {
 						'postcode' => esc_attr__('Postcode not found.',CFGP_NAME)
 					),
 					'type_to_search' => __('Type to Search...',CFGP_NAME),
-					'searching' => __('Searching...',CFGP_NAME)
+					'searching' => __('Searching, please wait...',CFGP_NAME),
+					'removeItem' => __('Remove Item',CFGP_NAME),
+					'removeAllItems' => __('Remove all items',CFGP_NAME),
+					'loadingMore' => __('Loading more results, please wait...',CFGP_NAME)
 				)
 			)
 		));
