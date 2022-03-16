@@ -553,7 +553,7 @@ function CF_GeoPlugin_Google_Map_GeoTag() {
 							'city' => esc_attr__('City not found.',CFGP_NAME),
 							'postcode' => esc_attr__('Postcode not found.',CFGP_NAME)
 						),
-						'type_to_search' => __('Type to Search...',CFGP_NAME),
+						'type_to_search' => __('Start typing the name of the location and it will be shown the choice that matches.',CFGP_NAME),
 						'searching' => __('Searching, please wait...',CFGP_NAME),
 						'removeItem' => __('Remove Item',CFGP_NAME),
 						'removeAllItems' => __('Remove all items',CFGP_NAME),

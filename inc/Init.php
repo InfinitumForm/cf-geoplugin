@@ -96,7 +96,7 @@ final class CFGP_Init{
 		 *
 		 * add_filter( 'site_transient_update_plugins', array($this, 'disable_plugin_updates') );
 		 */
-		
+
 		// Dynamic action
 		do_action('cfgp/init', $this);
 	}

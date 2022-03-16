@@ -91,23 +91,9 @@ class CFGP_Form {
 			$attr['country_code'] = [];
 		}
 		
-		if(is_array($attr['country_code']))
-		{
-			foreach($attr['country_code'] as $country_code)
-			{
-				if($data = CFGP_Library::get_regions($country_code)){
-					foreach( $data as $key => $fetch ){
-						$options[sanitize_title( CFGP_U::transliterate($fetch) )] = $fetch;
-					}
-				}
-			}
-		}
-		else
-		{
-			if($data = CFGP_Library::get_regions($attr['country_code'])){
-				foreach( $data as $key => $fetch ){
-					$options[sanitize_title( CFGP_U::transliterate($fetch) )] = $fetch;
-				}
+		if($data = CFGP_Library::get_regions($attr['country_code'])){
+			foreach( $data as $key => $fetch ){
+				$options[sanitize_title( CFGP_U::transliterate($fetch) )] = $fetch;
 			}
 		}
 		
@@ -168,23 +154,9 @@ class CFGP_Form {
 			$options[sanitize_title( CFGP_U::transliterate($selected) )] = $new_name;
 		}
 		
-		if(is_array($attr['country_code']))
-		{
-			foreach($attr['country_code'] as $country_code)
-			{
-				if($data = CFGP_Library::get_cities($country_code)){
-					foreach( $data as $fetch ){
-						$options[sanitize_title( CFGP_U::transliterate($fetch) )] = $fetch;
-					}
-				}
-			}
-		}
-		else
-		{
-			if($data = CFGP_Library::get_cities($attr['country_code'])){
-				foreach( $data as $fetch ){
-					$options[sanitize_title( CFGP_U::transliterate($fetch) )] = $fetch;
-				}
+		if($data = CFGP_Library::get_cities($attr['country_code'])){
+			foreach( $data as $fetch ){
+				$options[sanitize_title( CFGP_U::transliterate($fetch) )] = $fetch;
 			}
 		}
 		

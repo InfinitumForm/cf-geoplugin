@@ -101,7 +101,7 @@
 					}
 					
 					$this.select2({
-						minimumInputLength: 0,
+						minimumInputLength: 1,
 						language: {
 							'inputTooShort': function () {
 								return CFGP_LABEL.type_to_search;
@@ -126,6 +126,8 @@
 						ajax : {
 							url : (typeof ajaxurl !== 'undefined' ? ajaxurl : CFGP.ajaxurl),
 							dataType: 'json',
+							delay: 250,
+							cache: true,
 							data : function (params) {
 								var $select_this = $(this),
 									$type = $select_this.attr('data-type'),
@@ -146,6 +148,9 @@
 									page: params.page || 1
 								}
 							}
+						},
+						escapeMarkup: function(markup) {
+							return markup;
 						}
 					});
 				});
