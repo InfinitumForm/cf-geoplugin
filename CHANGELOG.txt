@@ -1,5 +1,20 @@
 == Changelog ==
 
+= 8.1.6 =
+* **GREAT UPDATE - BACKUP IS REQUIRED**
+* New optimized libraries
+* Improved forms
+* Improved search for cities, regions and countries
+* Improved admin pages
+* Fixed SEO redirection for cached pages
+* Removed unnecessary code
+* Optimized JavaScript code
+* Optimized PHP code
+
+= 8.1.5 =
+* Fixing CF Geo Banner duplication problem
+* Fixing localhost problems
+
 = 8.1.4 =
 * Preparing code for advanced libraries that come with the following versions.
 * Fixed existing PHP errors

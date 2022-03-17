@@ -5,7 +5,7 @@ Tags: geolocation, locator, GeoIP, geo, geotargeting, seo, seo redirect, woocomm
 Requires at least: 5.0
 Tested up to: 5.9
 Requires PHP: 7.0
-Stable tag: 8.1.4
+Stable tag: 8.1.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -369,6 +369,21 @@ Please inform us if any of these errors occur via contact form on our website [h
 
 == Changelog ==
 
+= 8.1.6 =
+* **GREAT UPDATE - BACKUP IS REQUIRED**
+* New optimized libraries
+* Improved forms
+* Improved search for cities, regions and countries
+* Improved admin pages
+* Fixed SEO redirection for cached pages
+* Removed unnecessary code
+* Optimized JavaScript code
+* Optimized PHP code
+
+= 8.1.5 =
+* Fixing CF Geo Banner duplication problem
+* Fixing localhost problems
+
 = 8.1.4 =
 * Preparing code for advanced libraries that come with the following versions.
 * Fixed existing PHP errors
@@ -489,42 +504,16 @@ Please inform us if any of these errors occur via contact form on our website [h
 
 == Upgrade Notice ==
 
-= 8.1.4 =
-* Preparing code for advanced libraries that come with the following versions.
-* Fixed existing PHP errors
-* Improved PHP algorithm
-* Improved widgets
-* Improved shortcode
-
-= 8.1.3 =
-* Improved object caching and added garbage collector
-* Fixed issues with missing Wordpress features
-
-= 8.1.2 =
-* Fixing location search
-* Fixing SEO redirections for the certain countries
-* Fixing Geo banner for the certain countries
-
-= 8.1.1 =
-* Adding transitional code for the geo banner
-* Adding calling_code and country_code_3
-* Added new country flags
-* Added postcode library for the Serbia
-* Improved Woocommerce integration for the PayPal extensions
-* Fixed Geo banner cache
-* Fixed shortcode cache
-* Fixed license activation
-* Switched Geo banner from get_posts to direct MySQL query
-
-= 8.1.0 =
-* Added improved integration for the GPS module
-* Aded new action and filters
-* Fixed REST API security
-* Fixed JavaScript security
-* Fixed Shortcode cache
-* Improved Utilities
-* Improved public scripts
-* Improved cache flush
+= 8.1.6 =
+* **GREAT UPDATE - BACKUP IS REQUIRED**
+* New optimized libraries
+* Improved forms
+* Improved search for cities, regions and countries
+* Improved admin pages
+* Fixed SEO redirection for cached pages
+* Removed unnecessary code
+* Optimized JavaScript code
+* Optimized PHP code
 
 == Other Notes ==
 

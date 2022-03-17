@@ -29,6 +29,10 @@
 	width:100% !important;
 }
 
+.select2-container--default.select2-container--focus .select2-selection--multiple {
+    border: solid #8c8f94 1px;
+}
+
 #cf-geoplugin-settings .cf-geoplugin-sticky-button > p.submit > input#submit{
 	margin:8px 10px !important;
 }

@@ -165,7 +165,10 @@
 	.on('click', '.cfgp-select-all', function( e ){
 		e.preventDefault();
 		var $this = $(this),
-			$target = $( '#' + $this.attr('data-target') );
+			$target = $( '#' + $this.attr('data-target') ),
+			$type = $target.attr('data-type'),
+			$container = $target.closest('.cfgp-country-region-city-multiple-form');
+			
 		$target.find('option').each(function(){
 			var $option = $(this);
 			if($option.is(':selected')) {
@@ -175,6 +178,26 @@
 			}
 		}).promise().done(function(){
 			$target.trigger('change');
+			
+			if( $type === 'country' ) {
+				$value = $target.val();
+						
+				if( Array.isArray($value) ) {
+					$value = $value.join(',');
+				}
+				
+				$container
+					.find('[data-type^="region"].cfgp_select2,[data-type^="city"].cfgp_select2')
+						.attr('data-country_codes', $value)
+							.each(function(){
+								$(this).find('option:selected').removeAttr('selected').prop('selected', false);
+							}).trigger('change');
+				$container
+					.find('[data-type^="postcode"].cfgp_select2')
+						.each(function(){
+							$(this).find('option:selected').removeAttr('selected').prop('selected', false);
+						}).trigger('change');
+			}
 		});
 	})
 	

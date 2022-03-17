@@ -160,7 +160,7 @@ class CFGP_Library {
 		if(isset($file['path']) && file_exists($file['path'])){
 			$data = '';
 			$fh = fopen($file['path'],'r');
-				while ($line = fgets($fh)){
+				while (($line = stream_get_line($fh, 1024)) !== false){
 					$data.=$line;
 					fflush($fh);
 				}
@@ -213,6 +213,9 @@ class CFGP_Library {
 				
 				foreach($country_codes as $country_code){
 					$country_code = strtolower($country_code);
+					if(strlen($country_code) > 2){
+						continue;
+					}
 				
 					if( isset($country_region_data[$country_code]) ) {
 						$collection = array_merge($collection, $country_region_data[$country_code]);
@@ -233,7 +236,7 @@ class CFGP_Library {
 						if(isset($file['path']) && file_exists($file['path'])){
 							$data = '';
 							$fh = fopen($file['path'],'r');
-								while ($line = fgets($fh)){
+								while (($line = stream_get_line($fh, 1024)) !== false){
 									$data.=$line;
 									fflush($fh);
 								}
@@ -248,6 +251,9 @@ class CFGP_Library {
 				}
 			} else {
 				$country_code = strtolower($country_code);
+				if(strlen($country_code) > 2){
+					return array();
+				}
 				
 				if( isset($country_region_data[$country_code]) ) {
 					$collection = $country_region_data[$country_code];
@@ -268,7 +274,7 @@ class CFGP_Library {
 					if(isset($file['path']) && file_exists($file['path'])){
 						$data = '';
 						$fh = fopen($file['path'],'r');
-							while ($line = fgets($fh)){
+							while (($line = stream_get_line($fh, 1024)) !== false){
 								$data.=$line;
 								fflush($fh);
 							}
@@ -290,6 +296,8 @@ class CFGP_Library {
 		if(!empty($collection)) {
 			$collection = array_unique($collection);
 		}
+		
+		$collection = apply_filters('cfgp/library/regions/collection', $collection);
 		
 		if($json === true) {
 			return json_encode($collection);
@@ -316,6 +324,9 @@ class CFGP_Library {
 				
 				foreach($country_codes as $country_code){
 					$country_code = strtolower($country_code);
+					if(strlen($country_code) > 2){
+						continue;
+					}
 				
 					if( isset($country_city_data[$country_code]) ) {
 						$collection = array_merge($collection, $country_city_data[$country_code]);
@@ -336,7 +347,7 @@ class CFGP_Library {
 						if(isset($file['path']) && file_exists($file['path'])){
 							$data = '';
 							$fh = fopen($file['path'],'r');
-								while ($line = fgets($fh)){
+								while (($line = stream_get_line($fh, 1024)) !== false){
 									$data.=$line;
 									fflush($fh);
 								}
@@ -351,6 +362,9 @@ class CFGP_Library {
 				}
 			} else {
 				$country_code = strtolower($country_code);
+				if(strlen($country_code) > 2){
+					return array();
+				}
 				
 				if( isset($country_city_data[$country_code]) ) {
 					$collection = $country_city_data[$country_code];
@@ -371,7 +385,7 @@ class CFGP_Library {
 					if(isset($file['path']) && file_exists($file['path'])){
 						$data = '';
 						$fh = fopen($file['path'],'r');
-							while ($line = fgets($fh)){
+							while (($line = stream_get_line($fh, 1024)) !== false){
 								$data.=$line;
 								fflush($fh);
 							}
@@ -394,6 +408,8 @@ class CFGP_Library {
 			$collection = array_unique($collection);
 		}
 		
+		$collection = apply_filters('cfgp/library/cities/collection', $collection);
+		
 		if($json === true) {
 			return json_encode($collection);
 		}
@@ -406,6 +422,10 @@ class CFGP_Library {
 	 * Get postcode by country code and city name
 	 */
 	public static function get_postcode( $country_code, $city ){
+		if(strlen($country_code) > 2){
+			return NULL;
+		}
+				
 		if( $postcode = CFGP_Cache::get('cfgeo/libraray/get_postcode') ) {
 			return $postcode;
 		}
@@ -427,6 +447,10 @@ class CFGP_Library {
 	public static function get_postcodes( $country_code, $json = false ){
 		if(!empty($country_code))
 		{
+			if(strlen($country_code) > 2){
+				return NULL;
+			}
+				
 			$country_code = strtolower($country_code);
 			
 			$file_base = CFGP_LIBRARY . '/postcodes';
@@ -446,7 +470,7 @@ class CFGP_Library {
 			if(isset($file['path']) && file_exists($file['path'])){
 				$JSON = '';
 				$fh = fopen($file['path'],'r');
-					while ($line = fgets($fh)){
+					while (($line = stream_get_line($fh, 1024)) !== false){
 						$JSON.=$line;
 						fflush($fh);
 					}
