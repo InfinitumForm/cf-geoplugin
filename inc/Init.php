@@ -87,9 +87,6 @@ final class CFGP_Init{
 		// Delete expired transients
 		self::delete_expired_transients();
 		
-		// Synchronize with old version of the plugin
-		CFGP_Options::sync_with_the_old_version_of_the_plugin();
-		
 		// Disable plugin updates
 		/*
 		 * NOTE: Right now is not used
@@ -317,6 +314,7 @@ final class CFGP_Init{
 			{
 				// Get database collate
 				$charset_collate = $wpdb->get_charset_collate();
+				
 				## Create database table for the REST tokens
 				if($wpdb->get_var( "SHOW TABLES LIKE '{$wpdb->cfgp_rest_access_token}'" ) != $wpdb->cfgp_rest_access_token) 
 				{
@@ -338,7 +336,17 @@ final class CFGP_Init{
 					");
 				}
 				
-				## Create database table for the SEO redirection
+				## Rename database table for the SEO redirection if old table exists
+				if(version_compare(CFGP_DATABASE_VERSION, '1.0.0', '>')) {
+					if( 
+						$wpdb->get_var("SHOW TABLES LIKE '{$wpdb->prefix}cf_geo_seo_redirection'") === "{$wpdb->prefix}cf_geo_seo_redirection" 
+						&& empty($wpdb->get_var("SHOW TABLES LIKE '{$wpdb->cfgp_rest_access_token}'"))
+					) {
+						$wpdb->query( "ALTER TABLE `{$wpdb->prefix}cf_geo_seo_redirection` RENAME TO `{$wpdb->cfgp_seo_redirection}`");
+					}
+				}
+				
+				## Create database table for the SEO redirection if plugin is new
 				if($wpdb->get_var( "SHOW TABLES LIKE '{$wpdb->cfgp_seo_redirection}'" ) != $wpdb->cfgp_seo_redirection) 
 				{
 					dbDelta("
@@ -362,9 +370,25 @@ final class CFGP_Init{
 					");
 				}
 				
+				## Rename database table for the SEO redirection if new and old table exists
+				if(version_compare(CFGP_DATABASE_VERSION, '1.0.0', '>')) {
+					if( 
+						$wpdb->get_var("SHOW TABLES LIKE '{$wpdb->prefix}cf_geo_seo_redirection'") === "{$wpdb->prefix}cf_geo_seo_redirection" 
+						&& $wpdb->get_var("SHOW TABLES LIKE '{$wpdb->cfgp_rest_access_token}'") === $wpdb->cfgp_rest_access_token
+					) {
+						// Reassign tables
+						$wpdb->query("INSERT INTO `{$wpdb->cfgp_seo_redirection}` (only_once, country, region, city, postcode, url, http_code, active, date) SELECT only_once, country, region, city, postcode, url, http_code, active, date FROM `{$wpdb->prefix}cf_geo_seo_redirection`");
+						// Delete old one
+						$wpdb->query( "DROP TABLE IF EXISTS `{$wpdb->prefix}cf_geo_seo_redirection`" );
+					}
+				}
+				
 				// Update database version
 				update_option(CFGP_NAME . '-db-version', CFGP_DATABASE_VERSION, false);
 			}
+			
+			// Synchronize with old version of the plugin
+			CFGP_Options::sync_with_the_old_version_of_the_plugin();
 			
 			// Plugin statistic
 			CFGP_Anonymous_Statistic::activation( CFGP_Options::get() );

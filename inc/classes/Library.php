@@ -147,7 +147,7 @@ class CFGP_Library {
 		}
 	
 		$file_base = CFGP_LIBRARY;
-		$file_path = '/';
+		$file_path = DIRECTORY_SEPARATOR;
 		$file_name = 'countries.json';
 		
 		$file = apply_filters('cfgp/library/countries/path', array(
@@ -206,7 +206,7 @@ class CFGP_Library {
 		
 		if(!empty($country_code))
 		{
-			$file_base = CFGP_LIBRARY . '/regions';
+			$file_base = CFGP_LIBRARY . DIRECTORY_SEPARATOR . 'regions';
 			
 			if(is_array($country_code)) {
 				$country_codes = array_map('strtolower', $country_code);
@@ -220,8 +220,8 @@ class CFGP_Library {
 					if( isset($country_region_data[$country_code]) ) {
 						$collection = array_merge($collection, $country_region_data[$country_code]);
 					} else {
-						$file_path = "/{$country_code}";
-						$file_name = "/{$country_code}.json";
+						$file_path = DIRECTORY_SEPARATOR . "{$country_code}";
+						$file_name = DIRECTORY_SEPARATOR . "{$country_code}.json";
 						
 						$file = apply_filters('cfgp/library/regions/path', array(
 							'path' => "{$file_base}{$file_path}{$file_name}",
@@ -258,8 +258,8 @@ class CFGP_Library {
 				if( isset($country_region_data[$country_code]) ) {
 					$collection = $country_region_data[$country_code];
 				} else {
-					$file_path = "/{$country_code}";
-					$file_name = "/{$country_code}.json";
+					$file_path = DIRECTORY_SEPARATOR . "{$country_code}";
+					$file_name = DIRECTORY_SEPARATOR . "{$country_code}.json";
 					
 					$file = apply_filters('cfgp/library/regions/path', array(
 						'path' => "{$file_base}{$file_path}{$file_name}",
@@ -317,7 +317,7 @@ class CFGP_Library {
 		
 		if(!empty($country_code))
 		{
-			$file_base = CFGP_LIBRARY . '/cities';
+			$file_base = CFGP_LIBRARY . DIRECTORY_SEPARATOR . 'cities';
 			
 			if(is_array($country_code)) {
 				$country_codes = array_map('strtolower', $country_code);
@@ -331,8 +331,8 @@ class CFGP_Library {
 					if( isset($country_city_data[$country_code]) ) {
 						$collection = array_merge($collection, $country_city_data[$country_code]);
 					} else {
-						$file_path = "/{$country_code}";
-						$file_name = "/{$country_code}.json";
+						$file_path = DIRECTORY_SEPARATOR . "{$country_code}";
+						$file_name = DIRECTORY_SEPARATOR . "{$country_code}.json";
 						
 						$file = apply_filters('cfgp/library/cities/path', array(
 							'path' => "{$file_base}{$file_path}{$file_name}",
@@ -369,8 +369,8 @@ class CFGP_Library {
 				if( isset($country_city_data[$country_code]) ) {
 					$collection = $country_city_data[$country_code];
 				} else {
-					$file_path = "/{$country_code}";
-					$file_name = "/{$country_code}.json";
+					$file_path = DIRECTORY_SEPARATOR . "{$country_code}";
+					$file_name = DIRECTORY_SEPARATOR . "{$country_code}.json";
 					
 					$file = apply_filters('cfgp/library/cities/path', array(
 						'path' => "{$file_base}{$file_path}{$file_name}",
@@ -453,9 +453,9 @@ class CFGP_Library {
 				
 			$country_code = strtolower($country_code);
 			
-			$file_base = CFGP_LIBRARY . '/postcodes';
-			$file_path = "/{$country_code}";
-			$file_name = "/{$country_code}.json";
+			$file_base = CFGP_LIBRARY . DIRECTORY_SEPARATOR . 'postcodes';
+			$file_path = DIRECTORY_SEPARATOR . "{$country_code}";
+			$file_name = DIRECTORY_SEPARATOR . "{$country_code}.json";
 			
 			$file = apply_filters('cfgp/library/postcodes/path', array(
 				'path' => "{$file_base}{$file_path}{$file_name}",
@@ -549,11 +549,13 @@ class CFGP_Library {
 
 		$array = array();
 		
-		if(!is_dir(CFGP_LIBRARY . '/cities')){
-			@mkdir(CFGP_LIBRARY . '/cities', '0755');
+		$cities_path = CFGP_LIBRARY . DIRECTORY_SEPARATOR . 'cities';
+		
+		if(!is_dir($cities_path)){
+			@mkdir($cities_path, '0755');
 		}
-		if(!file_exists(CFGP_LIBRARY . '/cities/index.php')){
-			@touch(CFGP_LIBRARY . '/cities/index.php');
+		if(!file_exists($cities_path . DIRECTORY_SEPARATOR . 'index.php')){
+			@touch($cities_path . DIRECTORY_SEPARATOR . 'index.php');
 		}
 
 		foreach($cr_data as $country_code=>$city_data){
@@ -570,16 +572,18 @@ class CFGP_Library {
 				$cities = array_unique($cities);
 				sort($cities);
 				
-				if(!is_dir(CFGP_LIBRARY . '/cities/'.$country_code)){
-					@mkdir(CFGP_LIBRARY . '/cities/'.$country_code, '0755', true);
-				}				
-				if(!file_exists(CFGP_LIBRARY . '/cities/'.$country_code.'/'.$country_code.'.json')){
-					@touch(CFGP_LIBRARY . '/cities/'.$country_code.'/'.$country_code.'.json');
+				$city_path = $cities_path . DIRECTORY_SEPARATOR . $country_code;
+				
+				if(!is_dir($city_path)){
+					@mkdir($city_path, '0755', true);
+				}			
+				if(!file_exists($city_path . DIRECTORY_SEPARATOR . $country_code.'.json')){
+					@touch($city_path . DIRECTORY_SEPARATOR . $country_code.'.json');
 				}
-				if(!file_exists(CFGP_LIBRARY . '/cities/'.$country_code.'/index.php')){
-					@touch(CFGP_LIBRARY . '/cities/'.$country_code.'/index.php');
+				if(!file_exists($city_path . DIRECTORY_SEPARATOR . 'index.php')){
+					@touch($city_path . DIRECTORY_SEPARATOR . 'index.php');
 				}
-				file_put_contents(CFGP_LIBRARY . '/cities/'.$country_code.'/'.$country_code.'.json', json_encode($cities));
+				file_put_contents($city_path . DIRECTORY_SEPARATOR . $country_code.'.json', json_encode($cities));
 				
 				$array[$country_code] = $cities;
 			}
@@ -598,11 +602,13 @@ class CFGP_Library {
 
 		$array = array();
 		
-		if(!is_dir(CFGP_LIBRARY . '/regions')){
-			@mkdir(CFGP_LIBRARY . '/regions', '0755');
+		$regions_path = CFGP_LIBRARY . DIRECTORY_SEPARATOR . 'regions';
+		
+		if(!is_dir($regions_path)){
+			@mkdir($regions_path, '0755');
 		}
-		if(!file_exists(CFGP_LIBRARY . '/regions/index.php')){
-			@touch(CFGP_LIBRARY . '/regions/index.php');
+		if(!file_exists($regions_path . DIRECTORY_SEPARATOR . 'index.php')){
+			@touch($regions_path . DIRECTORY_SEPARATOR . 'index.php');
 		}
 
 		foreach($cr_data as $country_code=>$regions){
@@ -613,16 +619,18 @@ class CFGP_Library {
 				$regions = array_unique($regions);
 				sort($regions);
 				
-				if(!is_dir(CFGP_LIBRARY . '/regions/'.$country_code)){
-					@mkdir(CFGP_LIBRARY . '/regions/'.$country_code, '0755', true);
+				$region_path = $regions_path . DIRECTORY_SEPARATOR . $country_code;
+				
+				if(!is_dir($region_path)){
+					@mkdir($region_path, '0755', true);
 				}				
-				if(!file_exists(CFGP_LIBRARY . '/regions/'.$country_code.'/'.$country_code.'.json')){
-					@touch(CFGP_LIBRARY . '/regions/'.$country_code.'/'.$country_code.'.json');
+				if(!file_exists($region_path . DIRECTORY_SEPARATOR . $country_code.'.json')){
+					@touch($region_path . DIRECTORY_SEPARATOR . $country_code.'.json');
 				}
-				if(!file_exists(CFGP_LIBRARY . '/regions/'.$country_code.'/index.php')){
-					@touch(CFGP_LIBRARY . '/regions/'.$country_code.'/index.php');
+				if(!file_exists($region_path . DIRECTORY_SEPARATOR . 'index.php')){
+					@touch($region_path . DIRECTORY_SEPARATOR . 'index.php');
 				}
-				file_put_contents(CFGP_LIBRARY . '/regions/'.$country_code.'/'.$country_code.'.json', json_encode($regions));
+				file_put_contents($region_path . DIRECTORY_SEPARATOR . $country_code.'.json', json_encode($regions));
 				$array[$country_code] = $regions;
 			}
 		}

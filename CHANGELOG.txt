@@ -1,5 +1,10 @@
 == Changelog ==
 
+= 8.1.7 =
+* Fixed algorithm for SEO redirection
+* Improved filesystem
+* Improved local server verification
+
 = 8.1.6 =
 * **GREAT UPDATE - BACKUP IS REQUIRED**
 * New optimized libraries

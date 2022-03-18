@@ -278,8 +278,8 @@ class CFGP_IP extends CFGP_Global {
 	
 		$findIP=apply_filters( 'cfgp/ip/server_constants', array(
 			'SERVER_ADDR',
-			'LOCAL_ADDR',
 			'SERVER_NAME',
+			'LOCAL_ADDR'
 		));
 		
 		$ip = '';

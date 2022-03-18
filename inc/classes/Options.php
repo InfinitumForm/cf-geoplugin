@@ -302,13 +302,6 @@ class CFGP_Options
 			delete_site_option('cf_geoplugin');
 			delete_option( 'cf_geoplugin' );
 		}
-		// Let's fix SEO redirection
-		if( $wpdb->get_row("SHOW TABLES LIKE '{$wpdb->prefix}cf_geo_seo_redirection'") === "{$wpdb->prefix}cf_geo_seo_redirection" ) {
-			// Reassign tables
-			$wpdb->query("INSERT INTO `{$wpdb->cfgp_seo_redirection}` (only_once, country, region, city, postcode, url, http_code, active, date) SELECT only_once, country, region, city, postcode, url, http_code, active, date FROM `{$wpdb->prefix}cf_geo_seo_redirection`");
-			// Delete old one
-			$wpdb->query( "DROP TABLE IF EXISTS `{$wpdb->prefix}cf_geo_seo_redirection`" );
-		}
 	}
 }
 endif;
