@@ -624,6 +624,30 @@
 			}
 		}
 	});
+	
+	// Let's do Affiliate
+	var cfgp_affilliates = null;
+	(function(affiliate){
+		if(affiliate.length > 0){
+			
+			if(cfgp_affilliates) {
+				if(cfgp_affilliates) {
+					if(typeof cfgp_affilliates.nord_vpn != 'undefined' && cfgp_affilliates.nord_vpn.length > 0) {
+						affiliate.attr('href', cfgp_affilliates.nord_vpn[ Math.floor(Math.random()*cfgp_affilliates.nord_vpn.length) ]);
+					}
+				}
+			} else {			
+				$.getJSON('https://cfgeoplugin.com/affiliate.json', function(json){
+					cfgp_affilliates = json;
+					if(cfgp_affilliates) {
+						if(typeof cfgp_affilliates.nord_vpn != 'undefined' && cfgp_affilliates.nord_vpn.length > 0) {
+							affiliate.attr('href', cfgp_affilliates.nord_vpn[ Math.floor(Math.random()*cfgp_affilliates.nord_vpn.length) ]);
+						}
+					}
+				});
+			}
+		}
+	}( $('.affiliate-nordvpn') ));
 
 	/**
 	 * Display Thank You footer
