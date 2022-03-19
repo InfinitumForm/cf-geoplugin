@@ -457,7 +457,7 @@ add_filter('cfgp/settings', function($options=array()){
 					'desc' => array(
 						sprintf(
 							__('Some servers do not share real IP because of security reasons or IP is blocked from geolocation. Using proxy you can bypass that protocol and enable geoplugin to work properly. Also, this option on individual servers can cause inaccurate geo information, and because of that this option is disabled by default. You need to test this option on your side and use wise. Need proxy service? %s.', CFGP_NAME),
-							'<a href="https://go.nordvpn.net/aff_c?offer_id=15&aff_id=14042&url_id=902" target="_blank">' . __('We have Recommended Service For You', CFGP_NAME) . '</a>'
+							'<a href="https://affiliates.nordvpn.com/publisher/#!/offer/15" class="affiliate-nordvpn" target="_blank">' . __('We have Recommended Service For You', CFGP_NAME) . '</a>'
 						),
 						__('This is usually good if you use some Onion domain or you are a general user of the private web and all your websites are in the private networks.', CFGP_NAME),
 					),
