@@ -165,11 +165,8 @@ class CFGP_CSV{
 				$str = trim($str, "&$%#?!.;:,");
 				$str = sanitize_email($str);
 				
-				if(function_exists('mb_strtolower')){
-					return mb_strtolower($str);
-				} else {
-					return strtolower($str);
-				}
+
+				return CFGP_U::strtolower($str);
 			}
 			else if(is_numeric($str))
 			{

@@ -1015,7 +1015,7 @@ class CFGP_U {
 				if (count($sub)) {
 					return $sub;
 				}
-			} elseif (strtolower($value) === strtolower($search)) {
+			} elseif (self::strtolower($value) === self::strtolower($search)) {
 				return array_merge($keys, array($key));
 			}
 		}
@@ -1038,7 +1038,7 @@ class CFGP_U {
 				if ($found !== false) {
 					return $found;
 				}
-			} else if (strtolower($key) === strtolower($needle)) {
+			} else if (self::strtolower($key) === self::strtolower($needle)) {
 				return $parent;
 			}
 		}
@@ -1073,7 +1073,7 @@ class CFGP_U {
 								return $value;
 							}
 						} else {
-							if(strtolower($need) == strtolower($value))
+							if(self::strtolower($need) == self::strtolower($value))
 							{
 								return $value;
 							}
@@ -2337,6 +2337,13 @@ class CFGP_U {
 		return $string;
 	}
 	
+	/*
+	 * Geo plugin using a bit different way to format string to lowercase
+	 *
+	 * @param  $string
+	 *
+	 * @return string
+	 */
 	public static function strtolower($string) {
 		return ( function_exists('mb_strtolower') ? mb_strtolower($string) : strtolower($string) );
 	}

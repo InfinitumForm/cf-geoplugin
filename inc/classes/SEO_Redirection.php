@@ -79,10 +79,6 @@ class CFGP_SEO_Redirection extends CFGP_Global
 			
 			$where = $where_relative = array();
 			
-			$strtolower = function($str){
-				return (function_exists('mb_strtolower') ? mb_strtolower($str) : strtolower($str));
-			};
-			
 			if($country || $country_code)
 			{
 				$where[]=$wpdb->prepare(
@@ -95,10 +91,10 @@ class CFGP_SEO_Redirection extends CFGP_Global
 						OR
 						TRIM(LOWER(`{$wpdb->cfgp_seo_redirection}`.`country`)) = %s
 					)",
-					$strtolower($country_code),
+					CFGP_U::strtolower($country_code),
 					sanitize_title(CFGP_U::transliterate($country)),
-					$strtolower(CFGP_U::transliterate($country)),
-					$strtolower($country)
+					CFGP_U::strtolower(CFGP_U::transliterate($country)),
+					CFGP_U::strtolower($country)
 				);
 				
 			}

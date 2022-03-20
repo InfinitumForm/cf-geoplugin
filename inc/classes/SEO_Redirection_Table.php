@@ -170,11 +170,6 @@ if (!class_exists('CFGP_SEO_Table')):
 						}
 					}
 					break;
-	
-				default:
-					// do nothing or something else
-					return;
-					break;
 			}
 	
 			return;
@@ -371,7 +366,7 @@ if (!class_exists('CFGP_SEO_Table')):
             /* -- Fetch the items -- */
             $this->_column_headers = array(
                 $columns,
-                array('ID') ,
+                array('ID'),
                 $sortable
             );
 			
@@ -442,8 +437,17 @@ if (!class_exists('CFGP_SEO_Table')):
 							break;
                             case "cfgp_seo_url":
                                 echo '<td ' . $attributes . '>';
-									echo ($rec->active ? '' : '<sup>'.__('DISABLED', CFGP_NAME).'</sup> ').'<strong>'.esc_url($rec->url).'</strong>';
-									echo '<div class="row-actions"><span class="edit"><a href="'.esc_url($edit_link).'">'.__('Edit', CFGP_NAME).'</a> | </span><span class="trash"><a href="'.esc_url($delete_link).'" class="submitdelete"  onclick="if (confirm(\''.esc_attr__('Are you sure you want to delete this redirection?', CFGP_NAME).'\')){return true;}else{event.stopPropagation(); event.preventDefault();};">'.__('Delete', CFGP_NAME).'</a></span></div>';
+									echo ($rec->active ? '' : '<sup>' . __('DISABLED', CFGP_NAME) . '</sup> ') . '<strong>' . esc_url($rec->url) . '</strong>';
+									echo '<div class="row-actions">
+										<span class="edit"><a href="' . esc_url($edit_link).'">' 
+											. __('Edit', CFGP_NAME) 
+										. '</a> | </span>
+										<span class="trash"><a href="' . esc_url($delete_link) . '" class="submitdelete"  onclick="if (confirm(\'' 
+											. esc_attr__('Are you sure you want to delete this redirection?', CFGP_NAME) 
+										. '\')){return true;}else{event.stopPropagation(); event.preventDefault();};">' 
+											. __('Delete', CFGP_NAME) 
+										. '</a></span>
+									</div>';
 								echo '</td>';
                             break;
 							case "cfgp_seo_country":

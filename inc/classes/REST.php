@@ -74,345 +74,6 @@ class CFGP_REST extends CFGP_Global {
 	}
 	
 	/*
-	 *  Adding Important REST Endpoints
-	 *  @version     1.0.0
-	 *  @endpoint    json      /wp-json/cf-geoplugin/v1/return
-	 */
-	public static function rest_api_init_v1_return(){
-		add_action( 'rest_api_init', function (){
-			
-			$namespace = 'cf-geoplugin/v1';
-			$routes = array();
-			
-			// Return individual responses
-			foreach(CFGP_U::api(false, CFGP_Defaults::API_RETURN) as $key => $value) {
-				
-				if( in_array(
-					$key,
-					array('error', 'error_message', 'lookup', 'status', 'runtime', 'zip', 'timezoneName')
-				) ) {
-					continue;
-				}
-				
-				register_rest_route( $namespace, '/return/'.$key, array(
-					'methods' => array('GET', 'POST'),
-					'permission_callback' => '__return_true',
-					'callback' => function( $data ) use ( $value ) {
-						
-						if( !isset($_REQUEST['key']) || (isset($_REQUEST['key']) && CFGP_U::KEY() !== $_REQUEST['key']) ) {
-							return new WP_REST_Response(array(
-								'error' => true,
-								'code' => 'not_authorized',
-								'error_message' => __('You are not authorized to access this information.', CFGP_NAME),
-								'status' => 404
-							));
-						}
-						
-						return new WP_REST_Response(array(
-							'response' => $value,
-							'error' => CFGP_U::api('error'),
-							'error_message' => CFGP_U::api('error_message'),
-							'lookup' => CFGP_U::api('lookup'),
-							'status' => CFGP_U::api('status'),
-							'runtime' => CFGP_U::api('runtime')
-						) );
-					},
-				), array(), true );
-				
-				$routes[] = home_url('/wp-json/cf-geoplugin/v1/return/'.$key);
-				
-			}
-			
-			// Return complete JSON response
-			register_rest_route( $namespace, '/return', array(
-				'methods' => array('GET', 'POST'),
-				'permission_callback' => '__return_true',
-				'callback' => function( $data ) use ( $routes ) {
-					
-					if( !isset($_REQUEST['key']) || (isset($_REQUEST['key']) && CFGP_U::KEY() !== $_REQUEST['key']) ) {
-						return new WP_REST_Response(array(
-							'error' => true,
-							'code' => 'not_authorized',
-							'error_message' => __('You are not authorized to access this information.', CFGP_NAME),
-							'status' => 404
-						));
-					}
-			
-					$callback = array_merge(
-						CFGP_U::api(false, CFGP_Defaults::API_RETURN),
-						array(
-							'routes' => $routes
-						)
-					);
-					
-					foreach($callback as $key => $value) {
-						if( in_array(
-							$key,
-							array('zip', 'timezoneName')
-						) ) {
-							unset($callback[$key]);
-						}
-					}
-					
-					return new WP_REST_Response($callback);
-				},
-			), array(), true );
-			
-			// Fix Shortcode cache
-			register_rest_route( $namespace, '/cache/shortcode', array(
-				'methods' => array('GET', 'POST'),
-				'permission_callback' => '__return_true',
-				'callback' => function( $data )	{
-					
-					if( !isset($_REQUEST['key']) || (isset($_REQUEST['key']) && CFGP_U::KEY() !== $_REQUEST['key']) ) {
-						return new WP_REST_Response(array(
-							'error' => true,
-							'code' => 'not_authorized',
-							'error_message' => __('You are not authorized to access this information.', CFGP_NAME),
-							'status' => 404
-						));
-					}
-					
-					$shortcode = trim(CFGP_U::request_string('shortcode'));
-					
-					if( empty($shortcode) || CFGP_U::request_string('action') != 'cf_geoplugin_shortcode_cache') {
-						return new WP_REST_Response(
-							array(
-								'response' => NULL,
-								'error' => true,
-								'error_message' => __('Important parameters are missing!', CFGP_NAME),
-								'status' => 404
-							)
-						);
-					}
-					
-					$options = unserialize(urldecode(base64_decode(sanitize_text_field(CFGP_U::request_string('options')))));
-					
-					$attr = array();
-					if(!empty($options) && is_array($options))
-					{
-						foreach($options as $key => $value) {
-							if(!is_numeric($key)) {
-								$attr[] = $key . '="' . esc_attr($value) . '"';
-							} else {
-								$attr[] = $value;
-							}
-						}
-					}
-					
-					$attr = (!empty($attr) ? ' ' . join(' ', $attr) : '');
-					
-					if($default = CFGP_U::request_string('default')) {
-						$content = urldecode(base64_decode(sanitize_text_field($default)));
-						$content = trim($content);
-						$default = $content;
-					} else {
-						$default = $content = '';
-					}
-					
-					$attr = str_replace(' cache', '', $attr) . ' no_cache';
-					
-					$return = array();
-					
-					if( !in_array($shortcode, array(
-						'cfgeo_flag',
-						'cfgeo_converter',
-						'cfgeo_is_vat',
-						'cfgeo_is_not_vat',
-						'cfgeo_in_eu',
-						'cfgeo_not_in_eu',
-						'cfgeo_is_proxy',
-						'cfgeo_is_not_proxy',
-						'cfgeo_gps',
-						'cfgeo_map'
-					)) && preg_match('/cfgeo_([a-z_]+)/i', $shortcode, $match) ) {
-						$return['response'] = do_shortcode('[cfgeo return="' . $match[1] . '"' . $attr . ']');
-					} else {
-						if(empty($default)) {
-							$return['response'] = do_shortcode('[' . $shortcode . $attr . ']');
-						} else {
-							$return['response'] =  do_shortcode('[' . $shortcode . $attr . ']' . $content . '[/' . $shortcode . ']');
-						}
-					}
-					
-					return new WP_REST_Response( array_merge(
-						$return,
-						array(
-							'error' => false,
-							'error_message' => '',
-							'status' => 200
-						)
-					) );
-				},
-				
-			), array(), true );
-			
-			
-			// Fix Banner cache
-			register_rest_route( $namespace, '/cache/banner', array(
-				'methods' => array('GET', 'POST'),
-				'permission_callback' => '__return_true',
-				'callback' => function( $data )	{
-					
-					if( !isset($_REQUEST['key']) || (isset($_REQUEST['key']) && CFGP_U::KEY() !== $_REQUEST['key']) ) {
-						return new WP_REST_Response(array(
-							'error' => true,
-							'code' => 'not_authorized',
-							'error_message' => __('You are not authorized to access this information.', CFGP_NAME),
-							'status' => 404
-						));
-					}
-					
-					// Stop on the bad request
-					if( CFGP_U::request_string('action') != 'cf_geoplugin_banner_cache' ) {
-						return new WP_REST_Response(
-							array(
-								'response' => NULL,
-								'error' => true,
-								'error_message' => __('Important parameters are missing!', CFGP_NAME),
-								'status' => 404
-							)
-						);
-					}
-					
-					$return=array(
-						'response' => NULL
-					);
-					
-					$setup = array(
-						'id'				=>	CFGP_U::request_int('id'),
-						'posts_per_page'	=>	CFGP_U::request_int('posts_per_page'),
-						'class'				=>	sanitize_text_field(CFGP_U::request_string('class'))
-					);
-					
-					$cont = urldecode(base64_decode(sanitize_text_field(CFGP_U::request_string('default'))));
-					
-					// Stop if ID is not good
-					if( ! (intval($setup['id']) > 0) ) {
-						$return['response'] = $cont;
-						return new WP_REST_Response( array_merge(
-							$return,
-							array(
-								'error' => false,
-								'error_message' => '',
-								'status' => 200
-							)
-						) );
-					}
-					
-					// Reassign taxonomy to post meta
-					foreach(array(
-						'cf-geoplugin-country' => 'cfgp-banner-location-country',
-						'cf-geoplugin-region' => 'cfgp-banner-location-region',
-						'cf-geoplugin-city' => 'cfgp-banner-location-city'
-					) as $get_post_terms=>$update_post_meta) {
-						if($all_terms = wp_get_post_terms($setup['id'], $get_post_terms, array('fields' => 'all'))) {
-							$tax_collection=array();
-							foreach($all_terms as $i=>$fetch)
-							{
-								$tax_collection[]=$fetch->slug;
-							}
-							if( !empty($tax_collection) ) {
-								update_post_meta($setup['id'], $update_post_meta, $tax_collection);
-							} else {
-								delete_post_meta($setup['id'], $update_post_meta);
-							}
-							wp_set_post_terms( $setup['id'], '', $get_post_terms );
-							$tax_collection = NULL;
-						}
-					}
-					
-					$exact = CFGP_U::request_int('exact');
-					
-					$posts_per_page = absint($setup['posts_per_page']);
-				
-					global $wpdb;
-					
-					$country = CFGP_U::api('country_code');
-					$country_sql = '%"' . $wpdb->esc_like(esc_sql($country)) . '"%';
-					
-					$region = CFGP_U::api('region');
-					$region_sql = '%"' . $wpdb->esc_like(esc_sql(sanitize_title( CFGP_U::transliterate($region) ))) . '"%';
-					
-					$city = CFGP_U::api('city');
-					$city_sql = '%"' . $wpdb->esc_like(esc_sql(sanitize_title( CFGP_U::transliterate($city) ))) . '"%';
-					
-					$post = $wpdb->get_row( $wpdb->prepare("
-SELECT
-	`banner`.`ID`,
-	`banner`.`post_title`,
-	`banner`.`post_content`
-FROM
-	`{$wpdb->posts}` AS `banner`
-WHERE
-	`banner`.`ID` = %d
-AND
-	`banner`.`post_type` = 'cf-geoplugin-banner'
-AND
-	`post_status` = 'publish'
-AND
-	IF(
-		EXISTS(SELECT 1 FROM `{$wpdb->postmeta}` `c` WHERE `c`.`post_id` = `banner`.`ID` AND `c`.`meta_key` = 'cfgp-banner-location-country'),
-		EXISTS(SELECT 1 FROM `{$wpdb->postmeta}` `c` WHERE `c`.`post_id` = `banner`.`ID` AND `c`.`meta_key` = 'cfgp-banner-location-country' AND `c`.`meta_value` LIKE %s),
-		1
-	)
-AND
-	IF(
-		EXISTS(SELECT 1 FROM `{$wpdb->postmeta}` `r` WHERE `r`.`post_id` = `banner`.`ID` AND `r`.`meta_key` = 'cfgp-banner-location-region'),
-		EXISTS(SELECT 1 FROM `{$wpdb->postmeta}` `r` WHERE `r`.`post_id` = `banner`.`ID` AND `r`.`meta_key` = 'cfgp-banner-location-region' AND `r`.`meta_value` LIKE %s),
-		1
-	)
-AND
-	IF(
-		EXISTS(SELECT 1 FROM `{$wpdb->postmeta}` `s` WHERE `s`.`post_id` = `banner`.`ID` AND `s`.`meta_key` = 'cfgp-banner-location-city'),
-		EXISTS(SELECT 1 FROM `{$wpdb->postmeta}` `s` WHERE `s`.`post_id` = `banner`.`ID` AND `s`.`meta_key` = 'cfgp-banner-location-city' AND `s`.`meta_value` LIKE %s),
-		1
-	)
-LIMIT 1
-					",
-					absint($setup['id']),
-					$country_sql,
-					$region_sql,
-					$city_sql
-					) );
-					
-					$content = '';
-					$save = NULL;
-					
-					if($post) {
-						$post->post_content = do_shortcode($post->post_content);
-						$post->post_content = CFGP_U::the_content($post->post_content);
-						$save=$post->post_content;
-					}
-					
-					// Return banner
-					if(!empty($save)){
-						$content = CFGP_U::fragment_caching($save, false);
-					}
-					
-					// Format defaults
-					if(!empty($cont) && empty($content)) {
-						$content = do_shortcode($cont);
-						$content = CFGP_U::the_content($content);
-					}
-					
-					$return['response'] = $content;
-					
-					return new WP_REST_Response( array_merge(
-						$return,
-						array(
-							'error' => false,
-							'error_message' => '',
-							'status' => 200
-						)
-					) );
-				},
-				
-			), array(), true );
-		} );
-	}
-	
-	/*
 	 * Lookup IP address
 	 * https://somesite.com/wp-admin/admin-ajax.php?action=cf_geoplugin_lookup
 	 *
@@ -791,6 +452,346 @@ LIMIT 1
 		}
 		
 		return $str;
+	}
+	
+	/*
+	 *  Adding Important internal REST Endpoints for AJAX calls
+	 *
+	 *  @version     1.0.0
+	 *  @endpoint    json      /wp-json/cf-geoplugin/v1/return
+	 */
+	public static function rest_api_init_v1_return(){
+		add_action( 'rest_api_init', function (){
+			
+			$namespace = 'cf-geoplugin/v1';
+			$routes = array();
+			
+			// Return individual responses
+			foreach(CFGP_U::api(false, CFGP_Defaults::API_RETURN) as $key => $value) {
+				
+				if( in_array(
+					$key,
+					array('error', 'error_message', 'lookup', 'status', 'runtime', 'zip', 'timezoneName')
+				) ) {
+					continue;
+				}
+				
+				register_rest_route( $namespace, '/return/'.$key, array(
+					'methods' => array('GET', 'POST'),
+					'permission_callback' => '__return_true',
+					'callback' => function( $data ) use ( $value ) {
+						
+						if( !isset($_REQUEST['key']) || (isset($_REQUEST['key']) && CFGP_U::KEY() !== $_REQUEST['key']) ) {
+							return new WP_REST_Response(array(
+								'error' => true,
+								'code' => 'not_authorized',
+								'error_message' => __('You are not authorized to access this information.', CFGP_NAME),
+								'status' => 404
+							));
+						}
+						
+						return new WP_REST_Response(array(
+							'response' => $value,
+							'error' => CFGP_U::api('error'),
+							'error_message' => CFGP_U::api('error_message'),
+							'lookup' => CFGP_U::api('lookup'),
+							'status' => CFGP_U::api('status'),
+							'runtime' => CFGP_U::api('runtime')
+						) );
+					},
+				), array(), true );
+				
+				$routes[] = home_url('/wp-json/cf-geoplugin/v1/return/'.$key);
+				
+			}
+			
+			// Return complete JSON response
+			register_rest_route( $namespace, '/return', array(
+				'methods' => array('GET', 'POST'),
+				'permission_callback' => '__return_true',
+				'callback' => function( $data ) use ( $routes ) {
+					
+					if( !isset($_REQUEST['key']) || (isset($_REQUEST['key']) && CFGP_U::KEY() !== $_REQUEST['key']) ) {
+						return new WP_REST_Response(array(
+							'error' => true,
+							'code' => 'not_authorized',
+							'error_message' => __('You are not authorized to access this information.', CFGP_NAME),
+							'status' => 404
+						));
+					}
+			
+					$callback = array_merge(
+						CFGP_U::api(false, CFGP_Defaults::API_RETURN),
+						array(
+							'routes' => $routes
+						)
+					);
+					
+					foreach($callback as $key => $value) {
+						if( in_array(
+							$key,
+							array('zip', 'timezoneName')
+						) ) {
+							unset($callback[$key]);
+						}
+					}
+					
+					return new WP_REST_Response($callback);
+				},
+			), array(), true );
+			
+			// Fix Shortcode cache
+			register_rest_route( $namespace, '/cache/shortcode', array(
+				'methods' => array('GET', 'POST'),
+				'permission_callback' => '__return_true',
+				'callback' => function( $data )	{
+					
+					if( !isset($_REQUEST['key']) || (isset($_REQUEST['key']) && CFGP_U::KEY() !== $_REQUEST['key']) ) {
+						return new WP_REST_Response(array(
+							'error' => true,
+							'code' => 'not_authorized',
+							'error_message' => __('You are not authorized to access this information.', CFGP_NAME),
+							'status' => 404
+						));
+					}
+					
+					$shortcode = trim(CFGP_U::request_string('shortcode'));
+					
+					if( empty($shortcode) || CFGP_U::request_string('action') != 'cf_geoplugin_shortcode_cache') {
+						return new WP_REST_Response(
+							array(
+								'response' => NULL,
+								'error' => true,
+								'error_message' => __('Important parameters are missing!', CFGP_NAME),
+								'status' => 404
+							)
+						);
+					}
+					
+					$options = unserialize(urldecode(base64_decode(sanitize_text_field(CFGP_U::request_string('options')))));
+					
+					$attr = array();
+					if(!empty($options) && is_array($options))
+					{
+						foreach($options as $key => $value) {
+							if(!is_numeric($key)) {
+								$attr[] = $key . '="' . esc_attr($value) . '"';
+							} else {
+								$attr[] = $value;
+							}
+						}
+					}
+					
+					$attr = (!empty($attr) ? ' ' . join(' ', $attr) : '');
+					
+					if($default = CFGP_U::request_string('default')) {
+						$content = urldecode(base64_decode(sanitize_text_field($default)));
+						$content = trim($content);
+						$default = $content;
+					} else {
+						$default = $content = '';
+					}
+					
+					$attr = str_replace(' cache', '', $attr) . ' no_cache';
+					
+					$return = array();
+					
+					if( !in_array($shortcode, array(
+						'cfgeo_flag',
+						'cfgeo_converter',
+						'cfgeo_is_vat',
+						'cfgeo_is_not_vat',
+						'cfgeo_in_eu',
+						'cfgeo_not_in_eu',
+						'cfgeo_is_proxy',
+						'cfgeo_is_not_proxy',
+						'cfgeo_gps',
+						'cfgeo_map'
+					)) && preg_match('/cfgeo_([a-z_]+)/i', $shortcode, $match) ) {
+						$return['response'] = do_shortcode('[cfgeo return="' . $match[1] . '"' . $attr . ']');
+					} else {
+						if(empty($default)) {
+							$return['response'] = do_shortcode('[' . $shortcode . $attr . ']');
+						} else {
+							$return['response'] =  do_shortcode('[' . $shortcode . $attr . ']' . $content . '[/' . $shortcode . ']');
+						}
+					}
+					
+					return new WP_REST_Response( array_merge(
+						$return,
+						array(
+							'error' => false,
+							'error_message' => '',
+							'status' => 200
+						)
+					) );
+				},
+				
+			), array(), true );
+			
+			
+			// Fix Banner cache
+			register_rest_route( $namespace, '/cache/banner', array(
+				'methods' => array('GET', 'POST'),
+				'permission_callback' => '__return_true',
+				'callback' => function( $data )	{
+					
+					if( !isset($_REQUEST['key']) || (isset($_REQUEST['key']) && CFGP_U::KEY() !== $_REQUEST['key']) ) {
+						return new WP_REST_Response(array(
+							'error' => true,
+							'code' => 'not_authorized',
+							'error_message' => __('You are not authorized to access this information.', CFGP_NAME),
+							'status' => 404
+						));
+					}
+					
+					// Stop on the bad request
+					if( CFGP_U::request_string('action') != 'cf_geoplugin_banner_cache' ) {
+						return new WP_REST_Response(
+							array(
+								'response' => NULL,
+								'error' => true,
+								'error_message' => __('Important parameters are missing!', CFGP_NAME),
+								'status' => 404
+							)
+						);
+					}
+					
+					$return=array(
+						'response' => NULL
+					);
+					
+					$setup = array(
+						'id'				=>	CFGP_U::request_int('id'),
+						'posts_per_page'	=>	CFGP_U::request_int('posts_per_page'),
+						'class'				=>	sanitize_text_field(CFGP_U::request_string('class'))
+					);
+					
+					$cont = urldecode(base64_decode(sanitize_text_field(CFGP_U::request_string('default'))));
+					
+					// Stop if ID is not good
+					if( ! (intval($setup['id']) > 0) ) {
+						$return['response'] = $cont;
+						return new WP_REST_Response( array_merge(
+							$return,
+							array(
+								'error' => false,
+								'error_message' => '',
+								'status' => 200
+							)
+						) );
+					}
+					
+					// Reassign taxonomy to post meta
+					foreach(array(
+						'cf-geoplugin-country' => 'cfgp-banner-location-country',
+						'cf-geoplugin-region' => 'cfgp-banner-location-region',
+						'cf-geoplugin-city' => 'cfgp-banner-location-city'
+					) as $get_post_terms=>$update_post_meta) {
+						if($all_terms = wp_get_post_terms($setup['id'], $get_post_terms, array('fields' => 'all'))) {
+							$tax_collection=array();
+							foreach($all_terms as $i=>$fetch)
+							{
+								$tax_collection[]=$fetch->slug;
+							}
+							if( !empty($tax_collection) ) {
+								update_post_meta($setup['id'], $update_post_meta, $tax_collection);
+							} else {
+								delete_post_meta($setup['id'], $update_post_meta);
+							}
+							wp_set_post_terms( $setup['id'], '', $get_post_terms );
+							$tax_collection = NULL;
+						}
+					}
+					
+					$exact = CFGP_U::request_int('exact');
+					
+					$posts_per_page = absint($setup['posts_per_page']);
+				
+					global $wpdb;
+					
+					$country = CFGP_U::api('country_code');
+					$country_sql = '%"' . $wpdb->esc_like(esc_sql($country)) . '"%';
+					
+					$region = CFGP_U::api('region');
+					$region_sql = '%"' . $wpdb->esc_like(esc_sql(sanitize_title( CFGP_U::transliterate($region) ))) . '"%';
+					
+					$city = CFGP_U::api('city');
+					$city_sql = '%"' . $wpdb->esc_like(esc_sql(sanitize_title( CFGP_U::transliterate($city) ))) . '"%';
+					
+					$post = $wpdb->get_row( $wpdb->prepare("
+						SELECT
+							`banner`.`ID`,
+							`banner`.`post_title`,
+							`banner`.`post_content`
+						FROM
+							`{$wpdb->posts}` AS `banner`
+						WHERE
+							`banner`.`ID` = %d
+						AND
+							`banner`.`post_type` = 'cf-geoplugin-banner'
+						AND
+							`post_status` = 'publish'
+						AND
+							IF(
+								EXISTS(SELECT 1 FROM `{$wpdb->postmeta}` `c` WHERE `c`.`post_id` = `banner`.`ID` AND `c`.`meta_key` = 'cfgp-banner-location-country'),
+								EXISTS(SELECT 1 FROM `{$wpdb->postmeta}` `c` WHERE `c`.`post_id` = `banner`.`ID` AND `c`.`meta_key` = 'cfgp-banner-location-country' AND `c`.`meta_value` LIKE %s),
+								1
+							)
+						AND
+							IF(
+								EXISTS(SELECT 1 FROM `{$wpdb->postmeta}` `r` WHERE `r`.`post_id` = `banner`.`ID` AND `r`.`meta_key` = 'cfgp-banner-location-region'),
+								EXISTS(SELECT 1 FROM `{$wpdb->postmeta}` `r` WHERE `r`.`post_id` = `banner`.`ID` AND `r`.`meta_key` = 'cfgp-banner-location-region' AND `r`.`meta_value` LIKE %s),
+								1
+							)
+						AND
+							IF(
+								EXISTS(SELECT 1 FROM `{$wpdb->postmeta}` `s` WHERE `s`.`post_id` = `banner`.`ID` AND `s`.`meta_key` = 'cfgp-banner-location-city'),
+								EXISTS(SELECT 1 FROM `{$wpdb->postmeta}` `s` WHERE `s`.`post_id` = `banner`.`ID` AND `s`.`meta_key` = 'cfgp-banner-location-city' AND `s`.`meta_value` LIKE %s),
+								1
+							)
+						LIMIT 1
+					",
+					absint($setup['id']),
+					$country_sql,
+					$region_sql,
+					$city_sql
+					) );
+					
+					$content = '';
+					$save = NULL;
+					
+					if($post) {
+						$post->post_content = do_shortcode($post->post_content);
+						$post->post_content = CFGP_U::the_content($post->post_content);
+						$save=$post->post_content;
+					}
+					
+					// Return banner
+					if(!empty($save)){
+						$content = CFGP_U::fragment_caching($save, false);
+					}
+					
+					// Format defaults
+					if(!empty($cont) && empty($content)) {
+						$content = do_shortcode($cont);
+						$content = CFGP_U::the_content($content);
+					}
+					
+					$return['response'] = $content;
+					
+					return new WP_REST_Response( array_merge(
+						$return,
+						array(
+							'error' => false,
+							'error_message' => '',
+							'status' => 200
+						)
+					) );
+				},
+				
+			), array(), true );
+		} );
 	}
 	
 	/*

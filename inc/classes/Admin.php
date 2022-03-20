@@ -158,7 +158,7 @@ class CFGP_Admin extends CFGP_Global {
 				$cities = CFGP_Library::get_cities($cc);
 				foreach( $cities as $fetch ){
 					$options[]= array(
-						'key' => strtolower(sanitize_title($fetch)),
+						'key' => CFGP_U::strtolower(sanitize_title($fetch)),
 						'value' => $fetch
 					);
 				}
@@ -169,7 +169,7 @@ class CFGP_Admin extends CFGP_Global {
 			$cities = CFGP_Library::get_cities($country_code);
 			foreach( $cities as $fetch ){
 				$options[]= array(
-					'key' => strtolower(sanitize_title($fetch)),
+					'key' => CFGP_U::strtolower(sanitize_title($fetch)),
 					'value' => $fetch
 				);
 			}
