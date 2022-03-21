@@ -536,66 +536,6 @@
 		}
 	}( $('.cfgp-load-rss-feed') ));	
 	
-	/*
-	 * Select country, region, city
-	 */
-	(function($form){
-		if($form.length > 0)
-		{
-			$($form).each(function(){
-				var $container = $(this),
-					$select_countries = $container.find('select.cfgp-select-country'),
-					$select_regions = $container.find('select.cfgp-select-region'),
-					$select_cities = $container.find('select.cfgp-select-city');
-		
-				$select_countries.on('change', function(){
-					var $country_code = $(this).find('option:selected').attr('value');
-					
-					$select_regions.html('<option>' + CFGP.label.loading + '</option>').prop('disabled', true).trigger("change");
-					$select_cities.html('<option>' + CFGP.label.loading + '</option>').prop('disabled', true).trigger("change");
-					
-					$.ajax({
-						url: (typeof ajaxurl !== 'undefined' ? ajaxurl : CFGP.ajaxurl),
-						method: 'post',
-						accept: 'application/json',
-						data: {
-							action : 'cfgp_load_regions',
-							country_code : $country_code
-						},
-						cache: true
-					}).done( function( data ) {
-						var options = '<option>-</option>';
-						for(key in data){
-							options+='<option value="' + data[key].key + '">' + data[key].value + '</option>';
-						}
-						$select_regions.html(options).prop('disabled', false).trigger("change");
-					}).fail(function(){
-						$select_regions.html('<option>-</option>').prop('disabled', false).trigger("change");
-					});
-					
-					$.ajax({
-						url: (typeof ajaxurl !== 'undefined' ? ajaxurl : CFGP.ajaxurl),
-						method: 'post',
-						accept: 'application/json',
-						data: {
-							action : 'cfgp_load_cities',
-							country_code : $country_code
-						},
-						cache: true
-					}).done( function( data ) {
-						var options = '<option>-</option>', i;
-						for(key in data){
-							options+='<option value="' + data[key].key + '">' + data[key].value + '</option>';
-						}
-						$select_cities.html(options).prop('disabled', false).trigger("change");
-					}).fail(function(){
-						$select_cities.html('<option>-</option>').prop('disabled', false).trigger("change");
-					});
-					
-				});
-			});
-		}
-	})($('.cfgp-country-region-city-form'));
 	
 	/*
 	 * SEO Redirection bulk actions

@@ -112,9 +112,9 @@ class CFGP_SEO_Redirection extends CFGP_Global
 						TRIM(LOWER(`{$wpdb->cfgp_seo_redirection}`.`region`)) = %s
 					)",
 					sanitize_title(CFGP_U::transliterate($region)),
-					$strtolower(CFGP_U::transliterate($region)),
-					$strtolower($region),
-					$strtolower($region_code)
+					CFGP_U::strtolower(CFGP_U::transliterate($region)),
+					CFGP_U::strtolower($region),
+					CFGP_U::strtolower($region_code)
 				);
 			}
 			
@@ -128,8 +128,8 @@ class CFGP_SEO_Redirection extends CFGP_Global
 						TRIM(LOWER(`{$wpdb->cfgp_seo_redirection}`.`city`)) = %s
 					)",
 					sanitize_title(CFGP_U::transliterate($city)),
-					$strtolower(CFGP_U::transliterate($city)),
-					$strtolower($city)
+					CFGP_U::strtolower(CFGP_U::transliterate($city)),
+					CFGP_U::strtolower($city)
 				);
 			}
 			

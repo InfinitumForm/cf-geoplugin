@@ -30,8 +30,6 @@ class CFGP_Admin extends CFGP_Global {
 		$this->add_action('manage_edit-cf-geoplugin-city_columns', 'rename__cf_geoplugin_city__column');
 		$this->add_action('manage_edit-cf-geoplugin-postcode_columns', 'rename__cf_geoplugin_postcode__column');
 		
-		$this->add_action('wp_ajax_cfgp_load_regions', 'ajax__cfgp_load_regions');
-		$this->add_action('wp_ajax_cfgp_load_cities', 'ajax__cfgp_load_cities');
 		$this->add_action('wp_ajax_cfgp_rss_feed', 'ajax__rss_feed');
 		$this->add_action('wp_ajax_cfgp_dashboard_rss_feed', 'ajax__dashboard_rss_feed');
 		
@@ -113,69 +111,6 @@ class CFGP_Admin extends CFGP_Global {
 			NULL,
 			'normal'
 		);
-	}
-	
-	public function ajax__cfgp_load_regions () {
-		
-		$country_code = CFGP_U::request('country_code');
-		$country_code = sanitize_text_field($country_code);
-		$options = array();
-		
-		if(is_array($country_code))
-		{
-			foreach($country_code as $cc){
-				$regons = CFGP_Library::get_regions($cc);	
-				foreach( $regons as $key => $fetch ){
-					$options[]= array(
-						'key' => sanitize_title($fetch),
-						'value' => $fetch
-					);
-				}
-			}
-		}
-		else
-		{
-			$regons = CFGP_Library::get_regions($country_code);	
-			foreach( $regons as $key => $fetch ){
-				$options[]= array(
-					'key' => sanitize_title($fetch),
-					'value' => $fetch
-				);
-			}
-		}
-		
-		wp_send_json($options);
-	}
-	
-	public function ajax__cfgp_load_cities () {
-		$country_code = CFGP_U::request('country_code');
-		$country_code = sanitize_text_field($country_code);
-		$options = array();
-		
-		if(is_array($country_code))
-		{
-			foreach($country_code as $cc){
-				$cities = CFGP_Library::get_cities($cc);
-				foreach( $cities as $fetch ){
-					$options[]= array(
-						'key' => CFGP_U::strtolower(sanitize_title($fetch)),
-						'value' => $fetch
-					);
-				}
-			}
-		}
-		else
-		{
-			$cities = CFGP_Library::get_cities($country_code);
-			foreach( $cities as $fetch ){
-				$options[]= array(
-					'key' => CFGP_U::strtolower(sanitize_title($fetch)),
-					'value' => $fetch
-				);
-			}
-		}
-		
-		wp_send_json($options);
 	}
 	
 	public function ajax__rss_feed () {
