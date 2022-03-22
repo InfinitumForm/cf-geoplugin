@@ -18,6 +18,15 @@ class CFGP_Taxonomy extends CFGP_Global {
 	
 	function __construct(){
 		$this->add_action( 'init', 'register' );
+		
+		$this->add_action( 'cf-geoplugin-postcode_add_form_fields', 'add_postcode_fields' );
+		$this->add_action( 'cf-geoplugin-postcode_edit_form_fields', 'edit_postcode_fields', 10, 2 );
+		
+		$this->add_filter( 'manage_edit-cf-geoplugin-postcode_columns', 'place_column_postcode_fields' );
+		$this->add_filter( 'manage_cf-geoplugin-postcode_custom_column', 'column_postcode_fields',10,3);
+		
+		$this->add_action( 'created_cf-geoplugin-postcode', 'save_postcode_fields' );
+		$this->add_action( 'edited_cf-geoplugin-postcode', 'save_postcode_fields' );
 	}
 	
 	public function register(){
@@ -148,6 +157,96 @@ class CFGP_Taxonomy extends CFGP_Global {
 				)
 			);
 		}
+	}
+	
+	// Add fields to taxonomy postcodes on the new page
+	function add_postcode_fields( $taxonomy ) { ?>
+<div class="form-field term-country-wrap">
+	<label for="country"><?php _e('Country',CFGP_NAME); ?></label>
+	<?php CFGP_Form::select_countries(array('name'=>'country', 'class'=>'cfgp_select2')); ?>
+	<p><?php _e('Select the country where this postcode is from.',CFGP_NAME); ?></p>
+</div>
+<div class="form-field term-city-wrap">
+	<label for="city"><?php _e('City name (optional)',CFGP_NAME); ?></label>
+	<?php CFGP_Form::input('text', array('name'=>'city')); ?>
+	<p><?php _e('Add city name for this postcode.',CFGP_NAME); ?></p>
+</div>
+	<?php }
+	
+	// Add fields to taxonomy postcodes on the edit page
+	function edit_postcode_fields( $term, $taxonomy ) {
+		$country = get_term_meta( $term->term_id, 'country', true );
+		$city = get_term_meta( $term->term_id, 'city', true );
+	?>
+<tr class="form-field term-country-wrap">
+	<th>
+		<label for="country"><?php _e('Country',CFGP_NAME); ?></label>
+	</th>
+	<td>
+		<?php CFGP_Form::select_countries(array('name'=>'country', 'class'=>'cfgp_select2'), $country); ?>
+		<p class="description"><?php _e('Select the country where this postcode is from.',CFGP_NAME); ?></p>
+	</td>
+</tr>
+<tr class="form-field term-city-wrap">
+	<th>
+		<label for="city"><?php _e('City name (optional)',CFGP_NAME); ?></label>
+	</th>
+	<td>
+		<?php CFGP_Form::input('text', array('name'=>'city', 'value'=>$city)); ?>
+		<p class="description"><?php _e('Add city name for this postcode.',CFGP_NAME); ?></p>
+	</td>
+</tr>
+	<?php }
+	
+	// Add custom column to taxonomy postcodes in table
+	function place_column_postcode_fields( $columns ) {
+		if(isset($columns['posts'])) {
+			unset($columns['posts']);
+		}
+		$columns['country'] = __('Country',CFGP_NAME);
+		$columns['city'] = __('City',CFGP_NAME);
+		return $columns;
+	}
+	
+	// Add custom column value to taxonomy postcodes in table
+	public function column_postcode_fields ($content, $column_name, $term_id) {
+		switch ($column_name) {
+			case 'country':
+				$country_code = get_term_meta( $term_id, 'country', true );
+				$countries = CFGP_Library::get_countries();
+				$content = $countries[$country_code] ?? '-';
+				break;
+			case 'city':
+				$content = get_term_meta( $term_id, 'city', true ) ?? '-';
+				break;
+		}
+		return $content;
+	}
+	
+	// Add fields to taxonomy postcodes in the database
+	function save_postcode_fields( $term_id ) {
+		
+		if(isset($_POST[ 'country' ])) {
+			update_term_meta(
+				$term_id,
+				'country',
+				strtolower(sanitize_text_field( $_POST[ 'country' ] ))
+			);
+		}
+		
+		if(isset($_POST[ 'city' ])) {
+			update_term_meta(
+				$term_id,
+				'city',
+				sanitize_text_field( $_POST[ 'city' ] )
+			);
+			update_term_meta(
+				$term_id,
+				'city_slug',
+				sanitize_title( $_POST[ 'city' ] )
+			);
+		}
+		
 	}
 	
 	/* 

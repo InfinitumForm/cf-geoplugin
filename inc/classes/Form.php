@@ -197,14 +197,8 @@ class CFGP_Form {
 				$attr['data-placeholder'] = __( 'Choose postcodes...', CFGP_NAME );
 			}
 		}
-		if($data = get_terms(array(
-			'taxonomy'		=> 'cf-geoplugin-postcode',
-			'hide_empty'	=> false
-		))){
-			foreach( $data as $key => $fetch ){
-				$options[$fetch->slug] = $fetch->name;
-			}
-		} else if(!empty($selected)) {
+		
+		if(!empty($selected)) {
 			$options[sanitize_title(CFGP_U::transliterate($selected))] = $selected;
 		}
 		

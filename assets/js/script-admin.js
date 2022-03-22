@@ -60,7 +60,7 @@
 				});
 				
 				// Set postcode
-				$('[data-type^="postcode"].cfgp_select2:not(.select2-hidden-accessible)').select2({
+				/*$('[data-type^="postcode"].cfgp_select2:not(.select2-hidden-accessible)').select2({
 					allowClear: false,
 					language: {
 						'inputTooShort': function () {
@@ -82,7 +82,7 @@
 							return CFGP_LABEL.loadingMore;
 						}
 					}
-				});
+				});*/
 				
 				// Set pharams after selection
 				select2.on('select2:select', function (e) {
@@ -91,7 +91,7 @@
 						$container = $this.closest('.cfgp-country-region-city-multiple-form'),
 						$value = '';
 					
-					if( ['country','region','city'].indexOf($type) === -1 ) {
+					if( ['country','region','city','postcode'].indexOf($type) === -1 ) {
 						return this;
 					}
 					
@@ -103,16 +103,11 @@
 						}
 						
 						$container
-							.find('[data-type^="region"].cfgp_select2,[data-type^="city"].cfgp_select2')
+							.find('[data-type^="region"].cfgp_select2,[data-type^="city"].cfgp_select2,[data-type^="postcode"].cfgp_select2')
 								.attr('data-country_codes', $value)
 									.each(function(){
 										$(this).find('option:selected').removeAttr('selected').prop('selected', false);
 									}).trigger('change');
-						$container
-							.find('[data-type^="postcode"].cfgp_select2')
-								.each(function(){
-									$(this).find('option:selected').removeAttr('selected').prop('selected', false);
-								}).trigger('change');
 					}
 				});
 				
@@ -121,7 +116,7 @@
 					var $this = $(this),
 						$type = $this.attr('data-type');
 						
-					if( ['region','city'].indexOf($type) === -1 ) {
+					if( ['region','city','postcode'].indexOf($type) === -1 ) {
 						return this;
 					}
 					
