@@ -463,16 +463,18 @@ class CFGP_Library {
 						$collection = array_merge($collection, $country_postcode_data[$country_code]);
 					} else {
 						
-						if($get_terms = get_terms(array(
+						if( $get_terms = get_terms(array(
 							'taxonomy'		=> 'cf-geoplugin-postcode',
 							'meta_key'		=> 'country',
 							'meta_value'	=> $country_code,
 							'hide_empty'	=> false
-						))){
-							foreach( $get_terms as $term ){
-								$collection[ get_term_meta( $term->term_id, 'city', true ) ?? get_term_meta( $term->term_id, 'country', true ) ?? $term->slug ] = $term->name;
+						)) ) {
+							if( !is_wp_error($get_terms) && is_array($get_terms) ){
+								foreach( $get_terms as $term ){
+									$collection[ get_term_meta( $term->term_id, 'city', true ) ?? get_term_meta( $term->term_id, 'country', true ) ?? $term->slug ] = $term->name;
+								}
+								$country_postcode_data[$country_code] = array_merge($country_postcode_data[$country_code], $collection);
 							}
-							$country_postcode_data[$country_code] = array_merge($country_postcode_data[$country_code], $collection);
 						}
 						
 						$file_path = DIRECTORY_SEPARATOR . "{$country_code}";
@@ -514,15 +516,16 @@ class CFGP_Library {
 				if( isset($country_postcode_data[$country_code]) ) {
 					$collection = $country_postcode_data[$country_code];
 				} else {
-					
-					if($get_terms = get_terms(array(
+					if( $get_terms = get_terms(array(
 						'taxonomy'		=> 'cf-geoplugin-postcode',
 						'meta_key'		=> 'country',
 						'meta_value'	=> $country_code,
 						'hide_empty'	=> false
-					))){
-						foreach( $get_terms as $term ){
-							$collection[ get_term_meta( $term->term_id, 'city', true ) ?? get_term_meta( $term->term_id, 'country', true ) ?? $term->slug ] = $term->name;
+					)) ) {
+						if( !is_wp_error($get_terms) && is_array($get_terms) ){
+							foreach( $get_terms as $term ){
+								$collection[ get_term_meta( $term->term_id, 'city', true ) ?? get_term_meta( $term->term_id, 'country', true ) ?? $term->slug ] = $term->name;
+							}
 						}
 					}
 					
