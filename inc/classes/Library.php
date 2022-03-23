@@ -455,6 +455,7 @@ class CFGP_Library {
 				
 				foreach($country_codes as $country_code){
 					$country_code = strtolower($country_code);
+					
 					if(strlen($country_code) > 2){
 						continue;
 					}
@@ -463,6 +464,7 @@ class CFGP_Library {
 						$collection = array_merge($collection, $country_postcode_data[$country_code]);
 					} else {
 						
+						$term_collection=array();
 						if( $get_terms = get_terms(array(
 							'taxonomy'		=> 'cf-geoplugin-postcode',
 							'meta_key'		=> 'country',
@@ -471,9 +473,8 @@ class CFGP_Library {
 						)) ) {
 							if( !is_wp_error($get_terms) && is_array($get_terms) ){
 								foreach( $get_terms as $term ){
-									$collection[ get_term_meta( $term->term_id, 'city', true ) ?? get_term_meta( $term->term_id, 'country', true ) ?? $term->slug ] = $term->name;
+									$term_collection[ get_term_meta( $term->term_id, 'city', true ) ?? get_term_meta( $term->term_id, 'country', true ) ?? $term->slug ] = $term->name;
 								}
-								$country_postcode_data[$country_code] = array_merge($country_postcode_data[$country_code], $collection);
 							}
 						}
 						
@@ -501,9 +502,15 @@ class CFGP_Library {
 							
 							if( !empty($data) ) {
 								$data = json_decode( $data, true );
-								$collection = array_merge($collection, $data);
-								$country_postcode_data[$country_code] = array_merge($country_postcode_data[$country_code], $data);
+								$collection = array_merge($collection, array_merge($term_collection, $data));
 							}
+						}
+						
+						if(!empty($collection)) {
+							$country_postcode_data[$country_code] = $collection;
+						} else if (!empty($term_collection)) {
+							$country_postcode_data[$country_code] = $term_collection;
+							$collection = array_merge($collection, $country_postcode_data[$country_code]);
 						}
 					}
 				}
@@ -566,7 +573,7 @@ class CFGP_Library {
 		if(isset($data)){
 			$data = NULL;
 		}
-		
+
 		if(!empty($collection)) {
 			$collection = array_unique($collection);
 		}

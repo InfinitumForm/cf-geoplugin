@@ -87,7 +87,15 @@ class CFGP_Taxonomy extends CFGP_Global {
 					'rewrite'        	=> true,
 					'query_var'			=> false,
 					'show_tagcloud'		=> false,
-					'show_in_nav_menus'	=> false
+					'show_in_nav_menus'	=> false,
+					
+					'show_in_quick_edit'=> false,
+					'show_admin_column' => false,
+					'show_tagcloud'		=> false,
+					'show_in_rest'		=> false,
+					'show_in_menu'		=> false,
+					'publicly_queryable'=> false,
+					'meta_box_cb'		=> false
 				)
 			);
 		}
@@ -119,7 +127,15 @@ class CFGP_Taxonomy extends CFGP_Global {
 					'rewrite'        	=> true,
 					'query_var'			=> false,
 					'show_tagcloud'		=> false,
-					'show_in_nav_menus'	=> false
+					'show_in_nav_menus'	=> false,
+					
+					'show_in_quick_edit'=> false,
+					'show_admin_column' => false,
+					'show_tagcloud'		=> false,
+					'show_in_rest'		=> false,
+					'show_in_menu'		=> false,
+					'publicly_queryable'=> false,
+					'meta_box_cb'		=> false
 				)
 			);
 		}
@@ -153,7 +169,15 @@ class CFGP_Taxonomy extends CFGP_Global {
 					'rewrite'        	=> true,
 					'query_var'			=> false,
 					'show_tagcloud'		=> false,
-					'show_in_nav_menus'	=> false
+					'show_in_nav_menus'	=> false,
+					
+					'show_in_quick_edit'=> false,
+					'show_admin_column' => false,
+					'show_tagcloud'		=> false,
+					'show_in_rest'		=> false,
+					'show_in_menu'		=> false,
+					'publicly_queryable'=> false,
+					'meta_box_cb'		=> false
 				)
 			);
 		}

@@ -198,12 +198,35 @@ class CFGP_Form {
 			}
 		}
 		
+		if(!isset($attr['country_code'])){
+			$attr['country_code'] = [];
+		}
+		
 		if(!empty($selected)) {
-			$options[sanitize_title(CFGP_U::transliterate($selected))] = $selected;
+			if(is_array($selected)){
+				foreach($selected as $select){
+					$options[$select] = $select;
+				}
+			} else {
+				$options[sanitize_title(CFGP_U::transliterate($selected))] = $selected;
+			}
+		}
+		
+		if($data = CFGP_Library::get_postcodes($attr['country_code'])){
+			foreach( $data as $city=>$postcode ){
+				$options[$postcode] = $postcode;
+			}
+		}
+		
+		if(isset($attr['class'])){
+			$attr['class'] = trim($attr['class']) . ' cfgp-select-postcode';
+		} else {
+			$attr['class'] = 'cfgp-select-postcode';
 		}
 		
 		$attr = array_merge($attr, array(
-			'data-type' => 'postcode'
+			'data-type' => 'postcode',
+			'data-country_codes' => (is_array($attr['country_code']) ? join(',', $attr['country_code']) : $attr['country_code'])
 		));
 		
 		if($multiple) {
@@ -262,7 +285,14 @@ class CFGP_Form {
 					}
 				}
 				$current = (in_array($val, $find) ? ' selected' : '');
-				$options_render[] = apply_filters('cfgp/form/select_multiple/option/raw', "<option value=\"{$val}\"{$current}>{$name}</option>", $val, $name, $selected);
+
+				$options_render[] = apply_filters(
+					'cfgp/form/select_multiple/option/raw',
+					"<option value=\"{$val}\"{$current}>{$name}</option>",
+					$val,
+					$name,
+					$selected
+				);
 			}
 		}
 		

@@ -13,10 +13,17 @@ body.post-type-cf-geoplugin-banner.taxonomy-cf-geoplugin-region .term-descriptio
 
 .cfgp_select2,
 .cfgp_select2+.select2.select2-container{
-	width:100% !important;
+	width:95% !important;
 }
 
-.term-country-wrap .cfgp_select2,
-.term-country-wrap .cfgp_select2+.select2.select2-container{
-	width:95% !important;
+.cfgp-form-radio input[type^="radio"]{
+	margin-right:2px;
+}
+
+.cfgp_select2.select2-hidden-accessible {
+	left:0 !important;
+}
+
+.input-radio .cfgp-form-radio + .cfgp-form-radio{
+	margin-left:15px;
 }

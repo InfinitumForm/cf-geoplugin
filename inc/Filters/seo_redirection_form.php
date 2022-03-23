@@ -93,12 +93,12 @@ add_action('cfgp/page/seo_redirection/form/content', function(){
                     <td valign="top"><?php CFGP_Form::select_http_code(array('name'=>'http_code'), $http_code); ?></td>
                 </tr>
                 <tr>
-                    <th scope="row" valign="top" class="cfgp-label"><label><?php _e('Redirect only once', CFGP_NAME); ?></label></th>
+                    <th scope="row" valign="top" class="cfgp-label"><label><?php _e('Redirection', CFGP_NAME); ?></label></th>
                     <td valign="top"><?php
 						CFGP_Form::radio(
 							array(
-								1 => __('Enable', CFGP_NAME),
-								0 => __('Disable', CFGP_NAME)
+								1 => __('only once', CFGP_NAME),
+								0 => __('always', CFGP_NAME)
 							),
 							array('name'=>'only_once'),
 							$only_once

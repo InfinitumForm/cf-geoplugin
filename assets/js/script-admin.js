@@ -59,31 +59,6 @@
 					}
 				});
 				
-				// Set postcode
-				/*$('[data-type^="postcode"].cfgp_select2:not(.select2-hidden-accessible)').select2({
-					allowClear: false,
-					language: {
-						'inputTooShort': function () {
-							return CFGP_LABEL.type_to_search;
-						},
-						'noResults': function(){
-							return CFGP_LABEL.not_found['postcode'];
-						},
-						'searching': function() {
-							return CFGP_LABEL.searching;
-						},
-						'removeItem': function() {
-							return CFGP_LABEL.removeItem;
-						},
-						'removeAllItems': function() {
-							return CFGP_LABEL.removeAllItems;
-						},
-						'loadingMore': function() {
-							return CFGP_LABEL.loadingMore;
-						}
-					}
-				});*/
-				
 				// Set pharams after selection
 				select2.on('select2:select', function (e) {
 					var $this = $(this),

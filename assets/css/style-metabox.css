@@ -24,7 +24,18 @@
 
 .cfgp_select2,
 .cfgp_select2+.select2.select2-container{
+	width:95% !important;
+}
+
+#cf-geoplugin-banner-settings .cfgp_select2,
+#cf-geoplugin-banner-settings .cfgp_select2+.select2.select2-container,
+#cf-geoplugin-page-seo-redirection .cfgp_select2,
+#cf-geoplugin-page-seo-redirection .cfgp_select2+.select2.select2-container{
 	width:100% !important;
+}
+
+.cfgp_select2.select2-hidden-accessible {
+	left:0 !important;
 }
 
 .select2-container--default.select2-container--focus .select2-selection--multiple {
@@ -184,4 +195,12 @@ width: 345px;
 }
 #cfgp-geo-tag-container .cfgp-input {
 width: 300px;
+}
+
+.cfgp-form-radio input[type^="radio"]{
+	margin-right:2px;
+}
+
+.input-radio .cfgp-form-radio + .cfgp-form-radio{
+	margin-left:15px;
 }
