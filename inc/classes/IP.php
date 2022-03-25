@@ -37,6 +37,7 @@ class CFGP_IP extends CFGP_Global {
 		}
 		
 		$findIP=apply_filters( 'cfgp/ip/constants', array_merge($findIP, array(
+			'HTTP_X_REAL_IP',
 			'HTTP_X_FORWARDED_FOR', // X-Forwarded-For: <client>, <proxy1>, <proxy2> client = client ip address; https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-For
 			'HTTP_X_FORWARDED',
 			'HTTP_X_CLUSTER_CLIENT_IP', // Private LAN address
@@ -55,13 +56,13 @@ class CFGP_IP extends CFGP_Global {
 			
 			// Check in $_SERVER
 			if (isset($_SERVER[$http]) && !empty($_SERVER[$http])){
-				$ip=$_SERVER[$http];
+				$ip=sanitize_text_field( wp_unslash($_SERVER[$http]) );
 			}
 			
 			// check in getenv() for any case
 			if(empty($ip) && function_exists('getenv'))
 			{
-				$ip = getenv($http);
+				$ip = sanitize_text_field( wp_unslash( getenv($http) ) );
 			}
 			
 			// Check if here is multiple IP's
@@ -69,7 +70,8 @@ class CFGP_IP extends CFGP_Global {
 			{
 				$ips=str_replace(';',',',$ip);
 				$ips=explode(',',$ips);
-				$ips=array_map('trim',$ips);
+				$ips=array_map('wp_unslash',$ips);
+				$ips=array_map('sanitize_text_field',$ips);
 				
 				$ipf=array();
 				foreach($ips as $ipx)
@@ -118,7 +120,8 @@ class CFGP_IP extends CFGP_Global {
 				// Well Somethimes can be tricky to find IP if have more then one
 				$ips=str_replace(';',',',$headers['X-Forwarded-For']);
 				$ips=explode(',',$ips);
-				$ips=array_map('trim',$ips);
+				$ips=array_map('wp_unslash',$ips);
+				$ips=array_map('sanitize_text_field',$ips);
 				
 				$ipf=array();
 				foreach($ips as $ipx)
@@ -526,26 +529,9 @@ class CFGP_IP extends CFGP_Global {
 	 */
 	public static function filter($ip, $blacklistIP=array())
 	{
-		do_action('cfgp/ip/filter/before', $ip, $blacklistIP);
-		
-		if(
-			function_exists('filter_var') 
-			&& !empty($ip) 
-			&& in_array($ip, $blacklistIP,true)===false 
-			&& filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) !== false
-		) {
-			return $ip;
-		} else if(
-			preg_match('/^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/', $ip) 
-			&& !empty($ip) 
-			&& in_array($ip, $blacklistIP,true)===false
-		) {
-			return $ip;
-		}
-		
-		do_action('cfgp/ip/filter/after', $ip, $blacklistIP);
-		
-		return false;
+		do_action('cfgp/ip/filter', $ip, $blacklistIP);
+		$ip = rest_is_ip_address($ip);
+		return (!empty($ip) && in_array($ip, $blacklistIP, true)===false) ? $ip : false;
 	}
 	
 	

@@ -42,12 +42,25 @@ class CFGP__Plugin__woocommerce extends CFGP_Global
 		}
 		
 		$this->add_action( 'wp_footer', 'wp_footer', 50 );
+		$this->add_filter( 'woocommerce_get_geolocation', 'woocommerce_get_geolocation', 10, 2 );
     }
 	
+	// Geolocate Woocommerce
+	public function woocommerce_get_geolocation( $geolocation, $ip_address ){
+		return array(
+			'country'  => CFGP_U::api('country_code'),
+			'state'    => CFGP_U::api('region'),
+			'city'     => CFGP_U::api('city'),
+			'postcode' => CFGP_U::api('postcode')
+		);
+	}
+	
+	// Adding extra code to footer
 	public function admin_footer(){ ?>
 	<style>.woocommerce-converted-price{display: block;color: darkorange;}</style>
 	<?php }
 	
+	// Change API options
 	public function change_api_run_options($options){
 		
 		if($this->woocommerce_currency && isset($options['base_currency'])){
