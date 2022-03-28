@@ -41,6 +41,14 @@ if(get_option(CFGP_NAME . '-db-version')) {
 if(get_option(CFGP_NAME . '-reviewed')) {
 	delete_option(CFGP_NAME . '-reviewed');
 }
+if(get_option(CFGP_NAME . '-woo-transition')) {
+	delete_option(CFGP_NAME . '-woo-transition');
+}
+
+// Fix WooCommerce after our plugin
+if('cf_geoplugin' === get_option( 'woocommerce_default_customer_address' )) {
+	update_option( 'woocommerce_default_customer_address', 'geolocation' );
+}
 
 // Delete MySQL tables
 $wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}cfgp_rest_access_token" );
