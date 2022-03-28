@@ -20,7 +20,7 @@ class CFGP__Plugin__woocommerce extends CFGP_Global
 	private $woocommerce_currency;
 
     private function __construct()
-    {		
+    {
         $this->add_action( 'init', 'check_woocommerce_instalation', 10 );
 		
 		$this->cf_conversion 				= get_option( 'woocommerce_cf_geoplugin_conversion', 'original');
@@ -42,35 +42,10 @@ class CFGP__Plugin__woocommerce extends CFGP_Global
 		}
 		
 		$this->add_action( 'wp_footer', 'wp_footer', 50 );
-		$this->add_filter( 'woocommerce_get_geolocation', 'woocommerce_get_geolocation', 10, 2 );
     }
 	
-	// Geolocate Woocommerce
-	public function woocommerce_get_geolocation( $geolocation, $ip_address ){
-		return array(
-			'country'  => CFGP_U::api('country_code'),
-			'state'    => CFGP_U::api('region'),
-			'city'     => CFGP_U::api('city'),
-			'postcode' => CFGP_U::api('postcode')
-		);
-	}
 	
-	// Adding extra code to footer
-	public function admin_footer(){ ?>
-	<style>.woocommerce-converted-price{display: block;color: darkorange;}</style>
-	<?php }
-	
-	// Change API options
-	public function change_api_run_options($options){
-		
-		if($this->woocommerce_currency && isset($options['base_currency'])){
-			$options['base_currency'] = $this->woocommerce_currency;
-		}
-		
-		return $options;
-	}
-
-    // Check if woocommerce is installed and active
+	// Check if woocommerce is installed and active
     public function check_woocommerce_instalation()
     {
 		if( CFGP_U::api('currency_converter') > 0 )
@@ -107,7 +82,90 @@ class CFGP__Plugin__woocommerce extends CFGP_Global
 		
 		$this->add_filter('cf_geoplugin_raw_woocommerce_converted_price', 'calculate_and_modify_price', 1);
 		$this->add_filter('cf_geoplugin_raw_woocommerce_price', 'calculate_and_modify_price', 1);
+		
+		// Add Geo plugin to settings
+		$this->add_filter( 'woocommerce_general_settings', 'woocommerce_general_settings', 10, 2 );
+		// Apply geolocation to woocommerce
+		if('cf_geoplugin' === get_option( 'woocommerce_default_customer_address' )) {
+			$this->add_filter( 'woocommerce_get_geolocation', 'woocommerce_get_geolocation', 10, 2 );
+			$this->add_filter( 'woocommerce_geolocation_ajax_get_location_hash', 'woocommerce_geolocation_ajax_get_location_hash', 10, 1 );
+			$this->add_filter( 'woocommerce_get_tax_location', 'woocommerce_get_tax_location', 10, 3 );
+			$this->add_filter( 'woocommerce_customer_default_location', 'woocommerce_customer_default_location', 10, 1 );
+		}
     }
+	
+	
+	// Add CF Geo Plugin option to general settings
+	public function woocommerce_general_settings ($settings) {
+		
+		foreach($settings as &$option) {
+			if($option['id'] === 'woocommerce_default_customer_address') {
+				$option['options'] = array_merge($option['options'], array(
+					'cf_geoplugin' => __('Geolocate (by CF Geo Plugin)', CFGP_NAME)
+				));
+			}
+		}
+		
+		return $settings;
+	}
+	
+	// Let's change geolocations to woocommerce
+	public function woocommerce_get_geolocation( $geolocation, $ip_address ){
+		return array(
+			'country'  => CFGP_U::api('country_code'),
+			'state'    => CFGP_U::api('region'),
+			'city'     => CFGP_U::api('city'),
+			'postcode' => CFGP_U::api('postcode')
+		);
+	}
+	// Get a hash of the customer location.
+	public function woocommerce_geolocation_ajax_get_location_hash( $geolocation ){
+		substr( md5( implode( '', array(
+			'country'  => CFGP_U::api('country_code'),
+			'state'    => CFGP_U::api('region'),
+			'city'     => CFGP_U::api('city'),
+			'postcode' => CFGP_U::api('postcode')
+		) ) ), 0, 12 );
+	}
+	// Change tax location
+	public function woocommerce_get_tax_location( $location, $tax_class = '', $customer = null ){
+		
+		if ( is_null( $customer ) && WC()->customer ) {
+			$customer = WC()->customer;
+		}
+
+		if ( empty( $customer ) ) {
+			$location = array(
+				CFGP_U::api('country_code'),
+				CFGP_U::api('region'),
+				CFGP_U::api('postcode'),
+				CFGP_U::api('city')
+			);
+		}
+		
+		return $location;
+	}
+	// Change default customer location
+	public function woocommerce_customer_default_location ($default_location) {
+		return CFGP_U::api('continent_code') . ':' . CFGP_U::api('country_code');
+	}
+	
+	
+	
+	// Adding extra code to footer
+	public function admin_footer(){ ?>
+	<style>.woocommerce-converted-price{display: block;color: darkorange;}</style>
+	<?php }
+	
+	// Change API options
+	public function change_api_run_options($options){
+		
+		if($this->woocommerce_currency && isset($options['base_currency'])){
+			$options['base_currency'] = $this->woocommerce_currency;
+		}
+		
+		return $options;
+	}
 	
 	/* We must recreate wc_price in order to perform conversion wisely */
 	function wc_price( $original_formatted_price, $price, $args  ) {
