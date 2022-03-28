@@ -154,7 +154,7 @@ class CFGP_IP extends CFGP_Global {
 		));
 		
 		foreach($external_servers as $server) {
-			$request = wp_remote_get( 'https://storage.ip-api.com/data/cities.json' );
+			$request = wp_remote_get( $server );
 			if( !is_wp_error( $request ) ) {
 				$ip = wp_remote_retrieve_body( $request );
 				if(self::filter($ip)!==false) {
