@@ -1,5 +1,15 @@
 == Changelog ==
 
+= 8.1.8 =
+* Improved IP address detection
+* Improved algorithm for local servers
+* Improved web bot detection
+* Fixed postcode search
+* Improved postcode detection
+* Added WooCommerce algorithm for advanced geolocation
+* Fixed WooCommerce detection for payment methods
+* Improved PHP code and bug fixes
+
 = 8.1.7 =
 * Fixed algorithm for SEO redirection
 * Improved filesystem

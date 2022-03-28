@@ -39,7 +39,7 @@
 					allowClear: false,
 					language: {
 						'inputTooShort': function () {
-							return CFGP_LABEL.type_to_search;
+							return CFGP_LABEL.type_to_search['country'];
 						},
 						'noResults': function(){
 							return CFGP_LABEL.not_found['country'];
@@ -99,7 +99,7 @@
 						minimumInputLength: 1,
 						language: {
 							'inputTooShort': function () {
-								return CFGP_LABEL.type_to_search;
+								return CFGP_LABEL.type_to_search[$type];
 							},
 							'noResults': function(){
 								return CFGP_LABEL.not_found[$type];

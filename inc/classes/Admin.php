@@ -659,7 +659,12 @@ class CFGP_Admin extends CFGP_Global {
 						'city' => __('City not found.',CFGP_NAME),
 						'postcode' => esc_attr__('Postcode not found.',CFGP_NAME)
 					),
-					'type_to_search' => __('Start typing the name of the location and it will be shown the choice that matches.',CFGP_NAME),
+					'type_to_search' => array(
+						'country' => esc_attr__('Start typing the name of the country.',CFGP_NAME),
+						'region' => esc_attr__('Start typing the name of the region.',CFGP_NAME),
+						'city' => esc_attr__('Start typing the name of a city.',CFGP_NAME),
+						'postcode' => esc_attr__('Start typing the postcode.',CFGP_NAME)
+					),
 					'searching' => __('Searching, please wait...',CFGP_NAME),
 					'removeItem' => __('Remove Item',CFGP_NAME),
 					'removeAllItems' => __('Remove all items',CFGP_NAME),
