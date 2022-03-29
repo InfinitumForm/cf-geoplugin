@@ -445,7 +445,7 @@ class CFGP_Menus extends CFGP_Global {
 			continue;
 		}
 		?>
-		<tr class="cfgp-menu-location-item" data-country="<?php echo esc_attr($geo_menu->country); ?>" data-location="<?php echo esc_attr($geo_menu->location); ?>" data-id="<?php echo esc_attr($geo_menu->term_id); ?>" id="cfgp-menu-location-item-<?php echo esc_attr($geo_menu->country); ?>-<?php echo esc_attr($geo_menu->location); ?>">
+		<tr class="cfgp-menu-location-item" data-country="<?php echo esc_attr($geo_menu_country); ?>" data-location="<?php echo esc_attr($geo_menu_location); ?>" data-id="<?php echo esc_attr($geo_menu->term_id); ?>" id="cfgp-menu-location-item-<?php echo esc_attr($geo_menu_country); ?>-<?php echo esc_attr($geo_menu_location); ?>">
 			<td><?php echo $geo_menu->name; ?></td>
 			<td><?php echo ($locations[$geo_menu_location] ?? $geo_menu_location); ?></td>
 			<td><?php echo ($countries[$geo_menu_country] ?? $geo_menu_country); ?></td>
