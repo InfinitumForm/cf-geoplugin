@@ -529,7 +529,7 @@
 	});
 	
 	
-	$('#cfgp-menu-add-location').on('click', function(e){
+	$(document).on('click', '#cfgp-menu-add-location', function(e){
 		e.preventDefault();
 		var $this = $(this),
 			$table = $this.closest('table'),
@@ -555,6 +555,13 @@
 		}
 		
 		if($country_val == '') {
+			$country.next('.select2.select2-container').css({
+				border : '1px solid #cc0000'
+			});
+			$continue = false;
+		}
+		
+		if( $('#cfgp-menu-location-item-' + $country_val + '-' + $location_val, $table).length > 0 ) {
 			$country.next('.select2.select2-container').css({
 				border : '1px solid #cc0000'
 			});
