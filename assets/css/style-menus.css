@@ -22,3 +22,13 @@
 .cfgp_select2+.select2.select2-container{
 	width:100% !important;
 }
+
+#cfgp-menu-locations-wrap{
+	margin: 64px auto 128px 0;
+}
+
+@media all and (min-width:769px){
+	#cfgp-menu-locations-wrap{
+		width: 60%;
+	}
+}

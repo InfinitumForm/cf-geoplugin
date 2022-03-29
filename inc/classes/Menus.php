@@ -24,7 +24,17 @@ class CFGP_Menus extends CFGP_Global {
 		
 		$this->add_filter( 'wp_get_nav_menu_items', 'restrict_menu_items', 1, 3);
 		$this->add_filter( 'template_redirect', 'restrict_page_access', 1, 0);
+		
+	//	$this->add_action( (CFGP_NETWORK_ADMIN ? 'network_admin_menu' : 'admin_menu'), 'add_pages',  10 );
+		
+		$this->add_filter( 'after_menu_locations_table', 'after_menu_locations_table', 10 );
+		
+		$this->add_action( 'wp_ajax_cfgp_geolocate_menu', 'ajax__geolocate_menu' );
+		$this->add_action( 'wp_ajax_cfgp_geolocate_remove_menu', 'ajax__geolocate_remove_menu' );
+		
+		$this->add_filter( 'wp_nav_menu_args', 'wp_nav_menu_args' );
 	}
+	
 	
 	/*
 	 * New select field for the enabling geo restriction
@@ -198,6 +208,289 @@ class CFGP_Menus extends CFGP_Global {
 				}
 			}
 		}
+	}
+	
+	/*
+	 * Include Geolocate Menus setting
+	 */
+	public function after_menu_locations_table(){
+		global $locations, $menu_locations, $num_locations;
+		
+		if( $num_locations === 0 ) {
+			return;
+		}
+		
+		if( empty($locations) ) {
+			$locations = get_registered_nav_menus();
+		}
+		
+		$geolocate_menus = get_terms( array(
+			'taxonomy' => 'nav_menu',
+			'hide_empty' => false,
+			'meta_query' => array(
+				array(
+					'key' => 'country',
+					'compare' => 'EXISTS'
+				),
+				array(
+					'key' => 'location',
+					'compare' => 'EXISTS'
+				)
+			)
+		) );
+		
+		if( $geolocate_menus ) {
+			foreach($geolocate_menus as $i => $geo_menu) {
+				$geolocate_menus[$i]->country = get_term_meta($geo_menu->term_id, 'country', true);
+				$geolocate_menus[$i]->location = get_term_meta($geo_menu->term_id, 'location', true);			
+			}
+		}
+		
+		$countries = CFGP_Library::get_countries();
+?>
+<div id="cfgp-menu-locations-wrap">
+	<h3><?php _e('Geolocate Menus', CFGP_NAME); ?></h3>
+	<p><?php _e('Create a navigation menu based on the geolocation of your users.', CFGP_NAME); ?></p>
+	<p><?php _e('You must first create a default menu for the entire site that each user will see. Then come back here and select a location for that menu and save. This will create a new navigation menu just for defined location.', CFGP_NAME); ?></p>
+	<table class="widefat fixed" id="menu-geo-locations-table">
+		<thead>
+			<tr>
+				<th scope="col" class="manage-column cfgp-menu-column-locations">
+					<label for="cfgp-menu-locations-select"><?php _e('Select Theme Location', CFGP_NAME); ?></label>
+				</th>
+				<th scope="col" class="manage-column cfgp-menu-column-country" colspan="3">
+					<label for="cfgp-menu-country-select"><?php _e('Select Country', CFGP_NAME); ?></label>
+				</th>
+			</tr>
+		</thead>
+		<tbody id="cfgp-add-new-menu-locations">
+			<tr>
+				<td class="cfgp-menu-locations-select">
+					<select name="cfgp-menu-locations-select" id="cfgp-menu-locations-select">
+						<option value="">—<?php _e('Select Location', CFGP_NAME); ?>—</option>
+					<?php foreach ( $locations as $location => $description ) : ?>
+						<option value="<?php echo esc_attr($location); ?>"><?php echo esc_html($description); ?></option>
+					<?php endforeach; ?>
+					</select>
+				</td>
+				<td class="cfgp-menu-country-select"><?php 
+					CFGP_Form::select_countries(array(
+						'name'=>'cfgp-menu-country-select',
+						'id'=>'cfgp-menu-country-select',
+						'class'=>'cfgp_select2'
+					), '');
+				?></td>
+				<td  class="cfgp-menu-options" colspan="2" style="text-align:right">
+					<input type="button" name="nav-menu-locations" class="button button-primary right" id="cfgp-menu-add-location" value="<?php esc_attr_e('+ Add New', CFGP_NAME); ?>">
+				</td>
+			</tr>
+		</tbody>
+		<thead>
+			<tr>
+				<th scope="col">
+					<?php _e('Menu name', CFGP_NAME); ?>
+				</th>
+				<th scope="col">
+					<?php _e('Menu Location', CFGP_NAME); ?>
+				</th>
+				<th scope="col">
+					<?php _e('Country Location', CFGP_NAME); ?>
+				</th>
+				<th scope="col" style="text-align: right;">
+					<?php _e('Options', CFGP_NAME); ?>
+				</th>
+			</tr>
+		</thead>
+		<tbody id="cfgp-menu-locations">
+			<?php
+				if( $geolocate_menus ) :
+				
+				foreach($geolocate_menus as $i => $geo_menu) :
+				if( !isset($locations[$geo_menu->location]) ) {
+					continue;
+				}
+			?>
+			<tr>
+				<td><?php echo $geo_menu->name; ?></td>
+				<td><?php echo $locations[$geo_menu->location]; ?></td>
+				<td><?php echo ($countries[$geo_menu->country] ?? $geo_menu->country); ?></td>
+				<td style="text-align: right;">
+					<a href="javascript:void(0);" 
+						class="submitdelete deletion right cfgp-menu-remove-location" 
+						data-confirm="<?php esc_attr_e('Are you sure you want to delete the entire menu for this location?', CFGP_NAME); ?>" 
+						data-id="<?php echo absint($geo_menu->term_id); ?>"><?php _e('Delete', CFGP_NAME); ?></a>
+				</td>
+			</tr>
+			<?php endforeach; else : ?>
+			<tr>
+				<td colspan="4"><?php _e('No menus for defined geolocations have been created yet.', CFGP_NAME); ?></td>
+			</tr>
+			<?php endif; ?>
+		</tbody>
+		<tfoot>
+			<tr>
+				<th scope="col">
+					<?php _e('Menu name', CFGP_NAME); ?>
+				</th>
+				<th scope="col">
+					<?php _e('Menu Location', CFGP_NAME); ?>
+				</th>
+				<th scope="col">
+					<?php _e('Country Location', CFGP_NAME); ?>
+				</th>
+				<th scope="col" style="text-align: right;">
+					<?php _e('Options', CFGP_NAME); ?>
+				</th>
+			</tr>
+		</tfoot>
+	</table>
+</div>
+<?php
+	}
+	
+	/*
+	 * Geolocate Menus
+	 */
+	public function wp_nav_menu_args ($args = array()) {
+		
+		if( $geolocate_menus = get_terms( array(
+			'taxonomy' => 'nav_menu',
+			'hide_empty' => false,
+			'meta_query' => array(
+				array(
+					'key' => 'country',
+					'compare' => 'EXISTS'
+				),
+				array(
+					'key' => 'location',
+					'compare' => 'EXISTS'
+				)
+			)
+		) ) ) :
+		
+			// This retun 2 letter country code from CF Geo Plugin
+			$country_code = strtolower(CFGP_U::api('country_code'));
+			
+			// Assign location
+			foreach($geolocate_menus as $i => $geo_menu) :
+				$theme_location = get_term_meta($geo_menu->term_id, 'location', true);
+				$theme_country = get_term_meta($geo_menu->term_id, 'country', true);
+				
+				if($args['theme_location'] === $theme_location && $theme_country === $country_code) {
+					$args['menu'] = $geo_menu->slug;
+				}
+			endforeach;
+		endif;
+		
+		// Return
+		return $args;
+	}
+	
+	
+	/*
+	 * Geolocate Menus add/show menus
+	 */
+	public function ajax__geolocate_menu () {
+		
+		$locations = get_registered_nav_menus();
+		$countries = CFGP_Library::get_countries();
+		
+		$country = sanitize_text_field($_POST['country'] ?? NULL);
+		$location = sanitize_text_field($_POST['location'] ?? NULL);
+		
+		if($country && $location) {
+			$menu_name = sprintf(
+				__('%s for %s', CFGP_NAME),
+				($locations[$location] ?? $location),
+				($countries[$country] ?? $country)
+			);
+			
+			$menu_slug = sanitize_title( join( '-', array('cfgp', $location, $country) ) );
+			
+			if( $nav_menu = wp_insert_term(
+				$menu_name,
+				'nav_menu',
+				array(
+					'slug' => $menu_slug
+				)
+			) ) {
+				if( !is_wp_error($nav_menu) ) {
+					update_term_meta($nav_menu['term_id'], 'country', $country);
+					update_term_meta($nav_menu['term_id'], 'location', $location);
+				} else {
+					CFGP_U::dump($nav_menu);
+				}
+			}
+		}
+		
+		if( $geolocate_menus = get_terms( array(
+			'taxonomy' => 'nav_menu',
+			'hide_empty' => false,
+			'meta_query' => array(
+				array(
+					'key' => 'country',
+					'compare' => 'EXISTS'
+				),
+				array(
+					'key' => 'location',
+					'compare' => 'EXISTS'
+				)
+			)
+		) ) ) :
+		
+		foreach($geolocate_menus as $i => $geo_menu) :
+		$geo_menu_location = get_term_meta($geo_menu->term_id, 'location', true);
+		$geo_menu_country = get_term_meta($geo_menu->term_id, 'country', true);
+		if( !isset($locations[$geo_menu_location]) ) {
+			continue;
+		}
+		?>
+		<tr>
+			<td><?php echo $geo_menu->name; ?></td>
+			<td><?php echo ($locations[$geo_menu_location] ?? $geo_menu_location); ?></td>
+			<td><?php echo ($countries[$geo_menu_country] ?? $geo_menu_country); ?></td>
+			<td style="text-align: right;">
+				<a href="javascript:void(0);" 
+					class="submitdelete deletion right cfgp-menu-remove-location" 
+					data-confirm="<?php esc_attr_e('Are you sure you want to delete the entire menu for this location?', CFGP_NAME); ?>" 
+					data-id="<?php echo absint($geo_menu->term_id); ?>"><?php _e('Delete', CFGP_NAME); ?></a>
+			</td>
+		</tr>
+		<?php endforeach; else : ?>
+		<tr>
+			<td colspan="4"><?php _e('No menus for defined geolocations have been created yet.', CFGP_NAME); ?></td>
+		</tr>
+		<?php endif; exit;
+	}
+	
+	/*
+	 * Geolocate Menus remove menu
+	 */
+	public function ajax__geolocate_remove_menu () {
+		if( $term_id = ($_POST['term_id'] ?? NULL) ) {
+			if( $nav_menu_items = get_posts( array(
+				'post_type' => 'nav_menu_item',
+				'numberposts' => -1,
+				'tax_query' => array(
+					array(
+						'taxonomy' => 'nav_menu',
+						'field' => 'term_id',
+						'terms' => $term_id
+					)
+				)
+			) ) ) {
+				foreach($nav_menu_items as $item) {
+					wp_delete_post( $item->ID, true );
+				}
+			}
+			
+			wp_delete_term(
+				$term_id,
+				'nav_menu'
+			);
+		}
+		
+		$this->ajax__geolocate_menu();
 	}
 	
 	/*

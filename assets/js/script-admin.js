@@ -507,6 +507,79 @@
 	}( $('.cfgp-load-rss-feed') ));	
 	
 	
+	$(document).on('click', '.cfgp-menu-remove-location', function(e){
+		e.preventDefault();
+		var $this = $(this),
+			$table = $this.closest('table'),
+			$id = $this.attr('data-id'),
+			$continue = confirm($this.attr('data-confirm'));
+		if( $continue ) {
+			$.ajax({
+				url: (typeof ajaxurl !== 'undefined' ? ajaxurl : CFGP.ajaxurl),
+				method: 'post',
+				accept: 'text/html',
+				data: {
+					term_id : $id,
+					action : 'cfgp_geolocate_remove_menu'
+				}
+			}).done( function( data ) {
+				$table.find('#cfgp-menu-locations').html(data);
+			});
+		}
+	});
+	
+	
+	$('#cfgp-menu-add-location').on('click', function(e){
+		e.preventDefault();
+		var $this = $(this),
+			$table = $this.closest('table'),
+			$location = $table.find('#cfgp-menu-locations-select'),
+			$location_val = $location.val(),
+			$country = $table.find('#cfgp-menu-country-select'),
+			$country_val = $country.val(),
+			$continue = true;
+		
+		$location.css({
+			border : ''
+		});
+		
+		$country.next('.select2.select2-container').css({
+			border : ''
+		});
+		
+		if($location_val == '') {
+			$location.css({
+				border : '1px solid #cc0000'
+			});
+			$continue = false;
+		}
+		
+		if($country_val == '') {
+			$country.next('.select2.select2-container').css({
+				border : '1px solid #cc0000'
+			});
+			$continue = false;
+		}
+		
+		if($continue) {
+			$.ajax({
+				url: (typeof ajaxurl !== 'undefined' ? ajaxurl : CFGP.ajaxurl),
+				method: 'post',
+				accept: 'text/html',
+				data: {
+					country : $country_val,
+					location : $location_val,
+					action : 'cfgp_geolocate_menu'
+				}
+			}).done( function( data ) {
+				$table.find('#cfgp-menu-locations').html(data);
+				$location.val('').trigger('change');
+				$country.val('').trigger('change');
+			});
+		}
+	});
+	
+	
 	/*
 	 * SEO Redirection bulk actions
 	 */

@@ -21,7 +21,7 @@ class CFGP_Settings extends CFGP_Global {
 			CFGP_U::include_once(CFGP_INC . '/settings/sidebar.php');
 			CFGP_Sidebar::instance();
 		}
-		$this->add_action( (CFGP_NETWORK_ADMIN ? 'network_admin_menu' : 'admin_menu'), 'add_pages',  11 );
+		$this->add_action( (CFGP_NETWORK_ADMIN ? 'network_admin_menu' : 'admin_menu'), 'add_pages',  10 );
 		$this->add_action( 'admin_init', 'admin_init' );
 	}
 	
