@@ -164,17 +164,7 @@ class CFGP_Settings extends CFGP_Global {
 				CFGP_U::admin_url('edit.php?post_type=' . CFGP_NAME . '-banner')
 			);
 		}
-		if(CFGP_Options::get('enable_seo_redirection', 1))
-		{
-			$this->add_submenu_page(
-				CFGP_NAME,
-				__('SEO Redirection',CFGP_NAME),
-				__('SEO Redirection',CFGP_NAME),
-				'manage_options',
-				CFGP_NAME . '-seo-redirection',
-				'seo_redirection__callback'
-			);
-		}
+		
 		$this->add_submenu_page(
 			CFGP_NAME,
 			__('Postcode',CFGP_NAME),
@@ -217,6 +207,39 @@ class CFGP_Settings extends CFGP_Global {
 				'manage_options',
 				CFGP_NAME . '-activate',
 				'license__callback'
+			);
+		}
+		
+		if(CFGP_Options::get('enable_seo_redirection', 1))
+		{
+			global $submenu;
+			
+			$this->add_menu_page(
+				__('SEO Redirection',CFGP_NAME),
+				__('SEO Redirection',CFGP_NAME),
+				'manage_options',
+				CFGP_NAME . '-seo-redirection',
+				'seo_redirection__callback',
+				'dashicons-location',
+				59
+			);
+		
+			$submenu[CFGP_NAME . '-seo-redirection'] = array(
+				array(
+					__( 'SEO Redirection', CFGP_NAME ),
+					'manage_options',
+					CFGP_U::admin_url('/admin.php?page=cf-geoplugin-seo-redirection')
+				),
+				array(
+					__( 'Add New', CFGP_NAME ),
+					'manage_options',
+					CFGP_U::admin_url('/admin.php?page=cf-geoplugin-seo-redirection&action=new&nonce='.wp_create_nonce(CFGP_NAME.'-seo-new'))
+				),
+				array(
+					__( 'Import/Export', CFGP_NAME ),
+					'manage_options',
+					CFGP_U::admin_url('/admin.php?page=cf-geoplugin-seo-redirection&action=import&nonce='.wp_create_nonce(CFGP_NAME.'-seo-import-csv'))
+				)
 			);
 		}
 	}

@@ -251,7 +251,7 @@ class CFGP_Menus extends CFGP_Global {
 <div id="cfgp-menu-locations-wrap">
 	<h3><?php _e('Geolocate Menus', CFGP_NAME); ?></h3>
 	<p><?php _e('Create a navigation menu based on the geolocation of your users.', CFGP_NAME); ?></p>
-	<p><?php _e('You must first create a default menu for the entire site that each user will see. Then come back here and select a location for that menu and save. This will create a new navigation menu just for defined location.', CFGP_NAME); ?></p>
+	<p><?php _e('The principle is simple. Make the default menu first in the standard way. Then come back here and create the navigations for the geo locations you want. After that, fill those locations with Menu items and your users will always see a navigation menu based on the geo location.', CFGP_NAME); ?></p>
 	<table class="widefat fixed" id="menu-geo-locations-table">
 		<thead>
 			<tr>
