@@ -5,6 +5,12 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
 
 
 add_filter('cfgp/settings', function($options=array()){
+	// Set currency
+	$currency = array();
+	foreach( CFGP_Defaults::CURRENCY_NAME as $currency_code => $currency_name ) {
+		$currency[$currency_code] = sprintf('%s - %s (%s)', $currency_code, $currency_name, (CFGP_Defaults::CURRENCY_SYMBOL[$currency_code] ?? $currency_code));
+	}
+	
 	// Get post types
 	$get_post_types = apply_filters( 'cf_geoplugin_post_types', get_post_types(
 		array(
@@ -120,7 +126,18 @@ add_filter('cfgp/settings', function($options=array()){
 								0 => __('No', CFGP_NAME)
 							),
 							'default' => 0
-						)	
+						),
+						array(
+							'name' => 'enable_menus_control',
+							'label' => __('Enable Navigation Menus Control', CFGP_NAME),
+							'desc' => __('Control the display of menu items via geo location. Enable this feature and go to the navigation settings for further actions.', CFGP_NAME),
+							'type' => 'radio',
+							'options' => array(
+								1 => __('Yes', CFGP_NAME),
+								0 => __('No', CFGP_NAME)
+							),
+							'default' => 1
+						)					
 					)
 				),
 				array(
@@ -149,6 +166,14 @@ add_filter('cfgp/settings', function($options=array()){
 							),
 							'default' => 'km'
 						),
+						array(
+							'name' => 'base_currency',
+							'label' => __('Base Currency', CFGP_NAME),
+							'desc' => __('Select your site base currency.', CFGP_NAME),
+							'type' => 'select',
+							'options' => $currency,
+							'default' => (get_option('woocommerce_currency') ?? 'USD')
+						),
 						/*array(
 							'name' => 'enable_flag',
 							'label' => __('Enable Country Flags', CFGP_NAME),
@@ -167,17 +192,6 @@ add_filter('cfgp/settings', function($options=array()){
 					'title' => __('Plugin Features', CFGP_NAME),
 					'desc' => __('Here you can enable or disable features that you need. This is useful because you can disable functionality that you do not need.', CFGP_NAME),
 					'inputs' => array(
-						array(
-							'name' => 'enable_menus_control',
-							'label' => __('Enable Site Menus Control', CFGP_NAME),
-							'desc' => __('Control the display of menu items via geo location. Enable this feature and go to the navigation settings for further actions.', CFGP_NAME),
-							'type' => 'radio',
-							'options' => array(
-								1 => __('Yes', CFGP_NAME),
-								0 => __('No', CFGP_NAME)
-							),
-							'default' => 1
-						),
 						array(
 							'name' => 'enable_banner',
 							'label' => __('Enable Geo Banner', CFGP_NAME),

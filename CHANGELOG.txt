@@ -1,5 +1,13 @@
 == Changelog ==
 
+= 8.1.9 =
+* Added navigation control by geo location
+* Fixed bugs with SEO redirection
+* Fixed bugs in license authentication
+* SEO redirection has been moved to a separate menu item
+* Fixed bugs with settings around base currency
+* Improved WooCommerce integration
+
 = 8.1.8 =
 * Improved IP address detection
 * Improved algorithm for local servers

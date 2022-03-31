@@ -207,6 +207,11 @@ class CFGP_License extends CFGP_Global{
 			return self::$activated;
 		}
 		
+		if( CFGP_Defaults::LIFETIME_LICENSE === self::get('sku') ) {
+			self::$activated = true;
+			return self::$activated;
+		}
+		
 		if( CFGP_U::api('lookup') === 'lifetime' ) {
 			self::$activated = true;
 			return self::$activated;
@@ -234,9 +239,15 @@ class CFGP_License extends CFGP_Global{
 	 */
 	public static function expired(){
 		static $expired = NULL;
+		
 		if(NULL === $expired) {
-			$expired = ((int)self::expire_date('YmdH') < (int)date('YmdH'));
+			if( CFGP_Defaults::LIFETIME_LICENSE === self::get('sku') ) {
+				$expired = false;
+			} else {
+				$expired = ((int)self::expire_date('YmdH') < (int)date('YmdH'));
+			}
 		}
+		
 		return $expired;
 	}
 	
