@@ -278,8 +278,8 @@ class CFGP_CSV{
 			$r[$k][$n] = '';
 			
 			while ($i < $cnt) { 
-				$ch = $this->_csv{$i};
-				$chch = ($i < $cnt-1) ? $ch.$this->_csv{$i+1} : $ch;
+				$ch = $this->_csv[$i];
+				$chch = ($i < $cnt-1) ? $ch.$this->_csv[$i+1] : $ch;
 	
 				if ($ch === $CSV_LINEBREAK) {
 					if ($esc) {
