@@ -13,8 +13,7 @@
 if ( ! defined( 'WPINC' ) ) { die( "Don't mess with us." ); }
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-if(!class_exists('CFGP_Taxonomy')) :
-class CFGP_Taxonomy extends CFGP_Global {
+if(!class_exists('CFGP_Taxonomy')) : class CFGP_Taxonomy extends CFGP_Global {
 	
 	function __construct(){
 		$this->add_action( 'init', 'register' );
@@ -285,5 +284,4 @@ class CFGP_Taxonomy extends CFGP_Global {
 		}
 		return $instance;
 	}
-}
-endif;
+} endif;

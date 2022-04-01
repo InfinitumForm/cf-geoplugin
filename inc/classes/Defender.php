@@ -57,9 +57,8 @@ class CFGP_Defender extends CFGP_Global {
 				$response = CFGP_U::curl_get( $url );
             }
 			
-            if( $response !== false )
+            if( !empty($response) )
             {
-                $response = json_decode( $response, true );
                 if( isset( $response['return'] ) && $response['return'] === true && isset( $response['error'] ) && $response['error'] === false )
                 {
 					if( function_exists('http_response_code') && version_compare(PHP_VERSION, '5.4', '>=') ) {
