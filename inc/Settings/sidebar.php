@@ -285,7 +285,11 @@ class CFGP_Sidebar extends CFGP_Global {
 	} else {
 		_e( 'There was error in fetching plugin data.', CFGP_NAME );
 	}
-	if( !is_multisite() && !(defined('DISALLOW_FILE_MODS') && DISALLOW_FILE_MODS === true) && apply_filters('site_transient_update_plugins', true)) : ?>
+	if( 
+		!is_multisite() 
+		&& !(defined('DISALLOW_FILE_MODS') && DISALLOW_FILE_MODS === true) 
+		&& apply_filters('site_transient_update_plugins', true)
+	) : ?>
 		<br><a href="<?php echo self_admin_url('plugin-install.php?tab=plugin-information&plugin=cf-geoplugin&TB_iframe=true&width=600&height=550'); ?>"  class="open-plugin-details-modal button button-primary "><?php _e( 'Download new version NOW', CFGP_NAME ); ?></a>
 	<?php endif; ?>
 </li>
