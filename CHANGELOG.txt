@@ -1,5 +1,10 @@
 == Changelog ==
 
+= 8.1.10 =
+* Fixed memory leak
+* Fixed the problem with the geo banner on the cached site
+* Corrected UX
+
 = 8.1.9 =
 * Added navigation control by geo location
 * Fixed bugs with SEO redirection
