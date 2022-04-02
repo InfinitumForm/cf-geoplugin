@@ -120,7 +120,7 @@ class CFGP_Cache
 
 		$key = trim($key);
 
-		return $key . '__' . $suffix;
+		return $key . '_' . $suffix;
 	}
 	
 	/*

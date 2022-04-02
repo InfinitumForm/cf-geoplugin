@@ -32,4 +32,5 @@ add_action('cfgp/page/seo_redirection/table', function(){ ?>
         </div>
     </div>
 </div>
+<script>;(function(jQ){jQ('#toplevel_page_cf-geoplugin-seo-redirection .wp-submenu').find('.wp-first-item').addClass('current');}(jQuery || window.jQuery));</script>
 <?php });

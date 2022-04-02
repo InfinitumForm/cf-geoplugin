@@ -440,13 +440,13 @@ class CFGP_IP extends CFGP_Global {
 		
 		$localhost = false;
 		
-		$blacklist=array(
+		$blacklist=apply_filters('cfgp/is_localhost/blacklist', array(
 			'127.0.0.0'		=>	8,
 		//	'192.168.0.0'	=>	8,
 		//	'192.168.1.0'	=>	255,
 		//	'192.168.2.0'	=>	255,
 		//	'192.168.3.0'	=>	255,
-		);
+		));
 		
 		if(!empty($list) && is_array($list)){
 			$blacklist = array_merge($blacklist);
@@ -486,7 +486,14 @@ class CFGP_IP extends CFGP_Global {
 		$whitelist=array_map('trim', $whitelist);
 		$whitelist=array_filter($whitelist);
 		
-		$whitelist = array_merge(array('::1', 'localhost'), $whitelist);
+		$whitelist = apply_filters(
+				'cfgp/is_localhost/whitelist',
+				array_merge(array(
+					'::1',
+					'localhost'
+				), $whitelist),
+			$whitelist
+		);
 		
 		$remote_addr = $_SERVER['REMOTE_ADDR'] ?? NULL;
 		if($remote_addr && in_array($remote_addr, $whitelist)){

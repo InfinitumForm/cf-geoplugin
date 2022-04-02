@@ -63,4 +63,5 @@ add_action('cfgp/page/seo_redirection/import', function(){ ?>
         </div>
     </div>
 </div>
+<script>;(function(jQ){jQ('#toplevel_page_cf-geoplugin-seo-redirection .wp-submenu').find('li:nth-child(4)').addClass('current');}(jQuery || window.jQuery));</script>
 <?php });

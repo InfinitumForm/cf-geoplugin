@@ -155,4 +155,7 @@ add_action('cfgp/page/seo_redirection/form', function(){
         </div>
     </div>
 </div>
+<?php if($action == 'new') : ?>
+<script>;(function(jQ){jQ('#toplevel_page_cf-geoplugin-seo-redirection .wp-submenu').find('li:nth-child(3)').addClass('current');}(jQuery || window.jQuery));</script>
+<?php endif; ?>
 <?php });
