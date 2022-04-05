@@ -1672,11 +1672,16 @@ class CFGP_U {
 	 */
 	public static function is_plugin_active($plugin)
 	{
-		if(!function_exists('is_plugin_active')){
-			self::include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
-		}
+		static $active_plugins = array();
 		
-		return is_plugin_active($plugin);
+		if( !isset($active_plugins[$plugin]) ) {
+			if(!function_exists('is_plugin_active')) {
+				self::include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+			}
+			$active_plugins[$plugin] = is_plugin_active($plugin);
+		}
+
+		return $active_plugins[$plugin];
 	}
 	
 	/*

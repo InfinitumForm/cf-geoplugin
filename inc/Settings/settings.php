@@ -153,6 +153,9 @@ switch($input['type'])
 		echo (isset($input['readonly']) && $input['readonly'] ? ' readonly' : '');
 		echo (isset($input['disabled']) && $input['disabled'] ? ' disabled' : '');
 	?>>
+	<?php if(isset($input['info']) && !empty($input['info'])) : 
+		?><br><div class="cfgp-field-description"><?php echo $input['info']; ?></div><?php 
+	endif; ?>
 	<?php break;
 	
 	### TEXTAREA
@@ -176,6 +179,9 @@ switch($input['type'])
 		echo (isset($input['readonly']) && $input['readonly'] ? ' readonly' : '');
 		echo (isset($input['disabled']) && $input['disabled'] ? ' disabled' : '');
 	?>><?php echo $default; ?></textarea>
+	<?php if(isset($input['info']) && !empty($input['info'])) : 
+		?><br><div class="cfgp-field-description"><?php echo $input['info']; ?></div><?php 
+	endif; ?>
 	<?php break;
 	
 	
@@ -203,6 +209,9 @@ switch($input['type'])
     	<option value="<?php echo esc_attr($value); ?>"<?php echo ($default == $value ? ' selected' : ''); ?>><?php echo $label; ?></option>
     <?php endforeach; ?>
     </select>
+	<?php if(isset($input['info']) && !empty($input['info'])) : 
+		?><br><div class="cfgp-field-description"><?php echo $input['info']; ?></div><?php 
+	endif; ?>
 	<?php break;
 	
 	
@@ -230,6 +239,9 @@ switch($input['type'])
     	<option value="<?php echo esc_attr($value); ?>"<?php echo (in_array($value, $default) ? ' selected' : ''); ?>><?php echo $label; ?></option>
     <?php endforeach; ?>
     </select>
+	<?php if(isset($input['info']) && !empty($input['info'])) : 
+		?><br><div class="cfgp-field-description"><?php echo $input['info']; ?></div><?php 
+	endif; ?>
 	<?php break;
 }
 ?>

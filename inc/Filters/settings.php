@@ -172,7 +172,13 @@ add_filter('cfgp/settings', function($options=array()){
 							'desc' => __('Select your site base currency.', CFGP_NAME),
 							'type' => 'select',
 							'options' => $currency,
-							'default' => (get_option('woocommerce_currency') ?? 'USD')
+							'default' => (get_option('woocommerce_currency') ?? 'USD'),
+							'disabled' => (CFGP_U::is_plugin_active('woocommerce/woocommerce.php') && CFGP_Options::get('enable-woocommerce', 0) ),
+							'info' => (
+								( CFGP_U::is_plugin_active('woocommerce/woocommerce.php') && CFGP_Options::get('enable-woocommerce', 0) )
+								? sprintf(__('WooCommerce has taken over this functionality and if you want to change the base currency, you have to do it in <a href="%s">WooCommerce Settings</a>.', CFGP_NAME), admin_url('/admin.php?page=wc-settings#pricing_options-description'))
+								: ''
+							)
 						),
 						/*array(
 							'name' => 'enable_flag',

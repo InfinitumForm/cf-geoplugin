@@ -64,7 +64,7 @@ class CFGP__Plugin__woocommerce extends CFGP_Global
 			$this->add_filter( 'woocommerce_general_settings', 'conversion_options', 10 );
 		}
 		
-		//  Add a settings tabs
+		// Add a settings tabs
 		$this->add_filter( 'woocommerce_settings_tabs_array', 'cfgp_woocommerce_tabs', 50 );
 		// Add payment settings
 		$this->add_action( 'woocommerce_settings_tabs_cf_geoplugin_payment_restriction', 'cfgp_woocommerce_payment_settings' );
@@ -77,6 +77,9 @@ class CFGP__Plugin__woocommerce extends CFGP_Global
 			// Disable payment gateways for specifis users
 			$this->add_filter( 'woocommerce_available_payment_gateways', 'cfgp_woocommerce_payment_disable' );
 		}
+		
+		// Save base currency value
+		$this->add_action( 'woocommerce_update_options_general', 'woocommerce_update_options_general' );
 
 		$this->add_filter('cf_geoplugin_woocommerce_currency_and_symbol', 'calculate_conversions', 1);
 		
@@ -94,6 +97,10 @@ class CFGP__Plugin__woocommerce extends CFGP_Global
 		}
     }
 	
+	public function woocommerce_update_options_general ($settings) {
+		CFGP_Options::set('base_currency', get_option('woocommerce_currency'));
+		CFGP_U::flush_plugin_cache();
+	}
 	
 	// Add CF Geo Plugin option to general settings
 	public function woocommerce_general_settings ($settings) {

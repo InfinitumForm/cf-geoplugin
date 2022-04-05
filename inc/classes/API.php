@@ -93,6 +93,8 @@ class CFGP_API extends CFGP_Global {
 		
 		if(isset($property['base_currency'])) {
 			$base_currency = $property['base_currency'];
+		} else if( CFGP_U::is_plugin_active('woocommerce/woocommerce.php') && CFGP_Options::get('enable-woocommerce', 0) ) {
+			$base_currency = (get_option('woocommerce_currency') ?? CFGP_Options::get('base_currency', 'USD'));
 		} else {
 			$base_currency = CFGP_Options::get('base_currency', 'USD');
 		}
