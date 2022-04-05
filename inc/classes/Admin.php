@@ -509,6 +509,7 @@ class CFGP_Admin extends CFGP_Global {
 		if(
 			apply_filters('cfgp/topbar/currency/display', true)
 			&& ($currency_converter = CFGP_U::api('currency_converter'))
+			&& (CFGP_Options::get('base_currency') != CFGP_U::api('currency'))
 		)
 		{			
 			$money = apply_filters(
