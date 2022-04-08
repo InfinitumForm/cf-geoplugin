@@ -56,13 +56,13 @@ class CFGP_IP extends CFGP_Global {
 			
 			// Check in $_SERVER
 			if (isset($_SERVER[$http]) && !empty($_SERVER[$http])){
-				$ip=sanitize_text_field( wp_unslash($_SERVER[$http]) );
+				$ip = wp_unslash( $_SERVER[$http] );
 			}
 			
 			// check in getenv() for any case
 			if(empty($ip) && function_exists('getenv'))
 			{
-				$ip = sanitize_text_field( wp_unslash( getenv($http) ) );
+				$ip = wp_unslash( getenv($http) );
 			}
 			
 			// Check if here is multiple IP's
@@ -71,7 +71,8 @@ class CFGP_IP extends CFGP_Global {
 				$ips=str_replace(';',',',$ip);
 				$ips=explode(',',$ips);
 				$ips=array_map('wp_unslash',$ips);
-				$ips=array_map('sanitize_text_field',$ips);
+				$ips=array_map('trim',$ips);
+				$ips=array_filter($ips);
 				
 				$ipf=array();
 				foreach($ips as $ipx)
@@ -147,14 +148,16 @@ class CFGP_IP extends CFGP_Global {
 		
 		// Let's ask server?
 		$external_servers = apply_filters('cfgp/ip/external_servers', array(
-			'https://api.ipify.org',
 			'https://ident.me',
+			'https://api.ipify.org',
 			'https://api.my-ip.io/ip',
 			'https://ip4.seeip.org'
 		));
 		
 		foreach($external_servers as $server) {
-			$request = wp_remote_get( $server );
+			$request = wp_remote_get( $server, [
+				'timeout' => CFGP_Options::get('timeout', 5)
+			] );
 			if( !is_wp_error( $request ) ) {
 				$ip = wp_remote_retrieve_body( $request );
 				if(self::filter($ip)!==false) {

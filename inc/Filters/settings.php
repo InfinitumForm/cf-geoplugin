@@ -126,17 +126,6 @@ add_filter('cfgp/settings', function($options=array()){
 								0 => __('No', CFGP_NAME)
 							),
 							'default' => 0
-						),
-						array(
-							'name' => 'enable_menus_control',
-							'label' => __('Enable Navigation Menus Control', CFGP_NAME),
-							'desc' => __('Control the display of menu items via geo location. Enable this feature and go to the navigation settings for further actions.', CFGP_NAME),
-							'type' => 'radio',
-							'options' => array(
-								1 => __('Yes', CFGP_NAME),
-								0 => __('No', CFGP_NAME)
-							),
-							'default' => 1
 						)					
 					)
 				),
@@ -176,7 +165,7 @@ add_filter('cfgp/settings', function($options=array()){
 							'disabled' => (CFGP_U::is_plugin_active('woocommerce/woocommerce.php') && CFGP_Options::get('enable-woocommerce', 0) ),
 							'info' => (
 								( CFGP_U::is_plugin_active('woocommerce/woocommerce.php') && CFGP_Options::get('enable-woocommerce', 0) )
-								? sprintf(__('WooCommerce has taken over this functionality and if you want to change the base currency, you have to do it in <a href="%s">WooCommerce Settings</a>.', CFGP_NAME), admin_url('/admin.php?page=wc-settings#pricing_options-description'))
+								? sprintf(__('WooCommerce has taken over this functionality and if you want to change the base currency, you have to do it in <strong><a href="%s">WooCommerce Settings</a></strong>.', CFGP_NAME), CFGP_U::admin_url('/admin.php?page=wc-settings#pricing_options-description'))
 								: ''
 							)
 						),
@@ -198,6 +187,18 @@ add_filter('cfgp/settings', function($options=array()){
 					'title' => __('Plugin Features', CFGP_NAME),
 					'desc' => __('Here you can enable or disable features that you need. This is useful because you can disable functionality that you do not need.', CFGP_NAME),
 					'inputs' => array(
+						array(
+							'name' => 'enable_menus_control',
+							'label' => __('Enable Navigation Menus', CFGP_NAME),
+							'desc' => __('Control the display of menu items via geo location. Enable this feature and go to the navigation settings for further actions.', CFGP_NAME),
+							'type' => 'radio',
+							'options' => array(
+								1 => __('Yes', CFGP_NAME),
+								0 => __('No', CFGP_NAME)
+							),
+							'default' => 1,
+							'info' => sprintf(__('This option allows you to control Menus locations by geography. If you approve it, you will get new options within <strong>Appearance -> <a href="%s">Menus</a></strong>.', CFGP_NAME), CFGP_U::admin_url('/nav-menus.php'))
+						),
 						array(
 							'name' => 'enable_banner',
 							'label' => __('Enable Geo Banner', CFGP_NAME),

@@ -13,7 +13,7 @@
  * Plugin Name:       WordPress Geo Plugin
  * Plugin URI:        https://cfgeoplugin.com/
  * Description:       Create Dynamic Content, Banners and Images on Your Website Based On Visitor Geo Location By Using Shortcodes With CF Geo Plugin.
- * Version:           8.1.11
+ * Version:           8.2.0
  * Requires at least: 5.0
  * Requires PHP:      7.0
  * Author:            INFINITUM FORM
@@ -99,3 +99,21 @@ if($CFGP_Requirements->passes()) :
 	// Dynamic action
 	do_action('cfgp/after_plugin_setup');
 endif;
+
+/*
+ * HEY!!! YOU NEED HELP AROUND THE PLUGIN IN PHP?
+ *
+ * I believe you need the CFGP_U class located in /inc/classes/Utilities.php
+ *
+ * There is a set of very useful functions and the most important and most commonly 
+ * used is CFGP_U::api() which returns an array of geo objects or an individual object
+ * such as CFGP_U::api('country_code').
+ *
+ * Within the /inc/classes folder are all the classes of our plugin and the file names
+ * are named according to their purpose. Everywhere you have some action hooks or
+ * filters you can hook up to.
+ *
+ * If you want to help document our plugin, contact us at office@infinitumform.com
+ *
+ * Happy coding! Cheers!
+ */

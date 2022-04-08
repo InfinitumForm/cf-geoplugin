@@ -95,7 +95,9 @@ switch($input['type'])
 			echo (isset($input['disabled']) && $input['disabled'] ? ' disabled' : '');
         ?>><?php echo $name; ?>
     </span>
-	<?php endforeach; endif; break;
+	<?php endforeach; if(isset($input['info']) && !empty($input['info'])) : 
+		?><br><div class="cfgp-field-description cfgp-field-description-<?php echo $input['type']; ?>"><?php echo $input['info']; ?></div><?php 
+	endif; endif; break;
 
 
 	### CHECKBOX
@@ -123,7 +125,9 @@ switch($input['type'])
 			echo (isset($input['disabled']) && $input['disabled'] ? ' disabled' : '');
         ?>><?php echo $object['label']; ?>
     </span>
-	<?php endforeach; endif; break;
+	<?php endforeach; if(isset($input['info']) && !empty($input['info'])) : 
+		?><br><div class="cfgp-field-description cfgp-field-description-<?php echo $input['type']; ?>"><?php echo $input['info']; ?></div><?php 
+	endif; endif; break;
 	
 	### INPUT
 	case 'number':
@@ -154,7 +158,7 @@ switch($input['type'])
 		echo (isset($input['disabled']) && $input['disabled'] ? ' disabled' : '');
 	?>>
 	<?php if(isset($input['info']) && !empty($input['info'])) : 
-		?><br><div class="cfgp-field-description"><?php echo $input['info']; ?></div><?php 
+		?><br><div class="cfgp-field-description cfgp-field-description-<?php echo $input['type']; ?>"><?php echo $input['info']; ?></div><?php 
 	endif; ?>
 	<?php break;
 	
@@ -180,7 +184,7 @@ switch($input['type'])
 		echo (isset($input['disabled']) && $input['disabled'] ? ' disabled' : '');
 	?>><?php echo $default; ?></textarea>
 	<?php if(isset($input['info']) && !empty($input['info'])) : 
-		?><br><div class="cfgp-field-description"><?php echo $input['info']; ?></div><?php 
+		?><br><div class="cfgp-field-description cfgp-field-description-<?php echo $input['type']; ?>"><?php echo $input['info']; ?></div><?php 
 	endif; ?>
 	<?php break;
 	
@@ -210,7 +214,7 @@ switch($input['type'])
     <?php endforeach; ?>
     </select>
 	<?php if(isset($input['info']) && !empty($input['info'])) : 
-		?><br><div class="cfgp-field-description"><?php echo $input['info']; ?></div><?php 
+		?><br><div class="cfgp-field-description cfgp-field-description-<?php echo $input['type']; ?>"><?php echo $input['info']; ?></div><?php 
 	endif; ?>
 	<?php break;
 	
@@ -240,7 +244,7 @@ switch($input['type'])
     <?php endforeach; ?>
     </select>
 	<?php if(isset($input['info']) && !empty($input['info'])) : 
-		?><br><div class="cfgp-field-description"><?php echo $input['info']; ?></div><?php 
+		?><br><div class="cfgp-field-description cfgp-field-description-<?php echo $input['type']; ?>"><?php echo $input['info']; ?></div><?php 
 	endif; ?>
 	<?php break;
 }

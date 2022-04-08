@@ -1,5 +1,10 @@
 == Changelog ==
 
+= 8.2.0 =
+* Advanced IP address recognition algorithms
+* Improved legacy code support
+* Improved Settings
+
 = 8.1.11 =
 * Improved integration with WooCommerce
 * WooCommerce takes control of the base currency

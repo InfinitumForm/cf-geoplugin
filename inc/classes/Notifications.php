@@ -103,7 +103,7 @@ class CFGP_Notifications extends CFGP_Global{
 		
 		// Send email below 100
 		$lookup = CFGP_U::api('lookup');
-		if( is_numeric($lookup) && $lookup <= 100 && $emails )
+		if( is_numeric($lookup) && $lookup <= 100 && $lookup > 1 && $emails )
 		{		
 			$message = array();
 			$message[]= '<p>' . __('Hi there,', CFGP_NAME) . '</p>';
