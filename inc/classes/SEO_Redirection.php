@@ -18,6 +18,10 @@ class CFGP_SEO_Redirection extends CFGP_Global
 {
 	public function __construct()
 	{
+		// Is database table not exists
+		if( !CFGP_SEO_Table::table_exists() ) {
+			return;
+		}
 		// Prevent redirection for the crawlers and bots
 		if(CFGP_Options::get('redirect_disable_bots', 0) && CFGP_U::is_bot()){
 			return;

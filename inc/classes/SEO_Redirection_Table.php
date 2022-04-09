@@ -48,6 +48,11 @@ if (!class_exists('CFGP_SEO_Table')):
 		
 		public static function get_filter_links() {
 			global $wpdb;
+			
+			if(!self::table_exists()) {
+				return;
+			}
+			
 			$count = [
 				'enabled' => 0,
 				'disabled' => 0
@@ -248,6 +253,11 @@ if (!class_exists('CFGP_SEO_Table')):
         function prepare_items()
         {
             global $wpdb, $_wp_column_headers;
+			
+			if(!self::table_exists()) {
+				return;
+			}
+			
 			// Set bulk actions
 			$this->process_bulk_action();
 			// get the current user ID
@@ -513,5 +523,21 @@ if (!class_exists('CFGP_SEO_Table')):
             }
             return $instance;
         }
+		
+		public static function table_exists() {
+			static $cache = NULL;
+			global $wpdb;
+			
+			if(NULL === $cache) {
+				if($wpdb->get_var( "SHOW TABLES LIKE '{$wpdb->cfgp_seo_redirection}'" ) != $wpdb->cfgp_seo_redirection) {
+					error_log(sprintf(__('The database table "%s" not exists! You can try to reactivate the WordPress Geo Plugin to correct this error.', CFGP_NAME), $wpdb->cfgp_seo_redirection));
+					$cache = false;
+				} else {
+					$cache = true;
+				}
+			}
+			
+			return $cache;
+		}
     }
 endif;

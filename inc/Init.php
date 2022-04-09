@@ -198,11 +198,7 @@ final class CFGP_Init{
 	 * Load translations
 	 * @since     8.0.0
 	 */
-	public function textdomain() {
-		if ( is_textdomain_loaded( CFGP_NAME ) ) {
-			unload_textdomain( CFGP_NAME );
-		}
-		
+	public function textdomain() {	
 		// Get locale
 		$locale = apply_filters( 'cfgp_plugin_locale', get_locale(), CFGP_NAME );
 		
@@ -289,6 +285,11 @@ final class CFGP_Init{
 			
 			// clear old cache
 			CFGP_U::flush_plugin_cache();
+			
+			// Let's reload textdomain
+			if ( is_textdomain_loaded( CFGP_NAME ) ) {
+				unload_textdomain( CFGP_NAME );
+			}
 			
 			// Include important library
 			if(!function_exists('dbDelta')){
@@ -403,6 +404,11 @@ final class CFGP_Init{
 		return CFGP_Global::register_deactivation_hook(function(){
 			if ( ! current_user_can( 'activate_plugins' ) ) {
 				return;
+			}
+			
+			// Let's unload textdomain
+			if ( is_textdomain_loaded( CFGP_NAME ) ) {
+				unload_textdomain( CFGP_NAME );
 			}
 			
 			// Add deactivation date

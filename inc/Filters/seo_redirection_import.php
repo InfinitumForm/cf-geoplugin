@@ -3,8 +3,14 @@
 if ( ! defined( 'WPINC' ) ) { die( "Don't mess with us." ); }
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
+add_action('cfgp/page/seo_redirection/form/import', function(){ global $wpdb; ?>
 
-add_action('cfgp/page/seo_redirection/form/import', function(){ ?>
+<?php if( !CFGP_SEO_Table::table_exists() ) : ?>
+<div class="notice notice-error"> 
+	<p><?php printf(__('The database table "%s" not exists! You can try to reactivate the WordPress Geo Plugin to correct this error.', CFGP_NAME), "<strong>{$wpdb->cfgp_seo_redirection}</strong>"); ?></p>
+</div>
+<?php endif; ?>
+
 <div class="postbox">
 	<h3 class="hndle" style="margin-bottom:0;padding-bottom:0;"><span><?php _e('SEO Redirection CSV Upload', CFGP_NAME); ?></span></h3><hr>
 	<div class="inside">
@@ -30,8 +36,9 @@ add_action('cfgp/page/seo_redirection/form/import', function(){ ?>
             <dt>only_once</dt>
             <dd><?php _e('Redirect only once - Optional, accept integer (1-Enable, 0-Disable)', CFGP_NAME); ?></dd>
         </dl>
-        
+        <?php if( CFGP_SEO_Table::table_exists() ) : ?>
         <p class="submit"><button type="button" class="button button-primary button-cfgeo-seo-import-csv" data-label="<i class='fa fa-upload'></i> <?php esc_attr_e('Click Here to Upload CSV', CFGP_NAME); ?>" data-confirm="<?php esc_attr_e('Are you sure? Once you start the import you will not be able to stop it. You must know that this operation deletes all existing data and replaces it with new one. We strongly recommend that you export the existing data first and then continue with this operation.', CFGP_NAME); ?>" data-nonce="<?php echo CFGP_U::request_string('nonce'); ?>" data-callback="<?php echo CFGP_U::admin_url('admin.php?page=cf-geoplugin-seo-redirection'); ?>"><i class="fa fa-upload"></i> <?php _e('Click Here to Upload CSV', CFGP_NAME); ?></button> <?php echo (CFGP_U::has_seo_redirection() ? sprintf('<a aria="button" href="%s" class="button" style="float:right"><i class="fa fa-table"></i> %s</a> ', CFGP_U::admin_url('/admin.php?page=cf-geoplugin-seo-redirection&action=export&nonce='.wp_create_nonce(CFGP_NAME.'-seo-export-csv')), __('Export CSV', CFGP_NAME)) : ''); ?></p>
+		<?php endif; ?>
     </div>
 </div>
 <?php });
