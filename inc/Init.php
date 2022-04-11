@@ -317,25 +317,7 @@ final class CFGP_Init{
 				$charset_collate = $wpdb->get_charset_collate();
 				
 				## Create database table for the REST tokens
-				if($wpdb->get_var( "SHOW TABLES LIKE '{$wpdb->cfgp_rest_access_token}'" ) != $wpdb->cfgp_rest_access_token) 
-				{
-					dbDelta("
-					CREATE TABLE IF NOT EXISTS {$wpdb->cfgp_rest_access_token} (
-						ID bigint(20) NOT NULL AUTO_INCREMENT,
-						`secret_key` varchar(45) NOT NULL,
-						`token` varchar(65) NOT NULL,
-						`app_name` varchar(255) NOT NULL,
-						`app_name_original` varchar(255) NOT NULL,
-						`date_created` timestamp NOT NULL DEFAULT current_timestamp(),
-						`active` int(1) NOT NULL DEFAULT 1,
-						`lookup` bigint(32) NOT NULL DEFAULT 1,
-						PRIMARY KEY (ID),
-						UNIQUE KEY `token` (`token`),
-						UNIQUE KEY `app_name` (`app_name`),
-						KEY `secret_key` (`secret_key`)
-					) {$charset_collate}
-					");
-				}
+				CFGP_REST::table_install();
 				
 				## Rename database table for the SEO redirection if old table exists
 				if(version_compare(CFGP_DATABASE_VERSION, '1.0.0', '>')) {
@@ -348,28 +330,7 @@ final class CFGP_Init{
 				}
 				
 				## Create database table for the SEO redirection if plugin is new
-				if($wpdb->get_var( "SHOW TABLES LIKE '{$wpdb->cfgp_seo_redirection}'" ) != $wpdb->cfgp_seo_redirection) 
-				{
-					dbDelta("
-					CREATE TABLE IF NOT EXISTS {$wpdb->cfgp_seo_redirection} (
-						ID int(11) NOT NULL AUTO_INCREMENT,
-						`only_once` tinyint(1) NOT NULL DEFAULT 0,
-						`country` varchar(100) DEFAULT NULL,
-						`region` varchar(100) DEFAULT NULL,
-						`city` varchar(100) DEFAULT NULL,
-						`postcode` varchar(100) DEFAULT NULL,
-						`url` tinytext NOT NULL,
-						`http_code` smallint(3) NOT NULL DEFAULT 302,
-						`active` tinyint(1) NOT NULL DEFAULT 1,
-						`date` timestamp NOT NULL DEFAULT current_timestamp(),
-						PRIMARY KEY (ID),
-						KEY `country` (`country`),
-						KEY `region` (`region`),
-						KEY `city` (`city`),
-						KEY `postcode` (`postcode`)
-					) {$charset_collate}
-					");
-				}
+				CFGP_SEO_Table::table_install();
 				
 				## Rename database table for the SEO redirection if new and old table exists
 				if(version_compare(CFGP_DATABASE_VERSION, '1.0.0', '>')) {

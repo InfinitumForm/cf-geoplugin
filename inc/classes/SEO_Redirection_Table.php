@@ -508,22 +508,11 @@ if (!class_exists('CFGP_SEO_Table')):
                 }
             }
         }
-
-        /*
-         * Instance
+		
+		/*
+         * Check is database table exists
          * @verson    1.0.0
         */
-        public static function print ()
-        {
-            $class = self::class;
-            $instance = CFGP_Cache::get($class);
-            if (!$instance)
-            {
-                $instance = CFGP_Cache::set($class, new self());
-            }
-            return $instance;
-        }
-		
 		public static function table_exists() {
 			static $cache = NULL;
 			global $wpdb;
@@ -539,5 +528,57 @@ if (!class_exists('CFGP_SEO_Table')):
 			
 			return $cache;
 		}
+		
+		/*
+         * Install missing tables
+         * @verson    1.0.0
+        */
+		public static function table_install() {
+			if( !self::table_exists() ) {
+				global $wpdb;
+				
+				// Include important library
+				if(!function_exists('dbDelta')){
+					require_once ABSPATH . DIRECTORY_SEPARATOR . 'wp-admin' . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'upgrade.php';
+				}
+				
+				// Install table
+				$charset_collate = $wpdb->get_charset_collate();
+				dbDelta("
+				CREATE TABLE IF NOT EXISTS {$wpdb->cfgp_seo_redirection} (
+					ID int(11) NOT NULL AUTO_INCREMENT,
+					`only_once` tinyint(1) NOT NULL DEFAULT 0,
+					`country` varchar(100) DEFAULT NULL,
+					`region` varchar(100) DEFAULT NULL,
+					`city` varchar(100) DEFAULT NULL,
+					`postcode` varchar(100) DEFAULT NULL,
+					`url` tinytext NOT NULL,
+					`http_code` smallint(3) NOT NULL DEFAULT 302,
+					`active` tinyint(1) NOT NULL DEFAULT 1,
+					`date` timestamp NOT NULL DEFAULT current_timestamp(),
+					PRIMARY KEY (ID),
+					KEY `country` (`country`),
+					KEY `region` (`region`),
+					KEY `city` (`city`),
+					KEY `postcode` (`postcode`)
+				) {$charset_collate}
+				");
+			}
+		}
+
+        /*
+         * Instance
+         * @verson    1.0.0
+        */
+        public static function print ()
+        {
+            $class = self::class;
+            $instance = CFGP_Cache::get($class);
+            if (!$instance)
+            {
+                $instance = CFGP_Cache::set($class, new self());
+            }
+            return $instance;
+        }
     }
 endif;
