@@ -1,5 +1,8 @@
 == Changelog ==
 
+= 8.2.2 =
+* Fixed database error log
+
 = 8.2.1 =
 * Update database tables
 * Upgrade transliteration
