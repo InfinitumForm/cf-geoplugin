@@ -539,12 +539,12 @@ class CFGP_U {
 		if (function_exists('wpfc_clear_all_cache')) {
 			wpfc_clear_all_cache(true);
 		}
-
+/*
 		// WP Rocket
 		if ( function_exists( 'rocket_clean_domain' ) ) {
 			rocket_clean_domain();
 		}
-
+*/
 		// WP Super Cache
 		if(function_exists( 'prune_super_cache' ) && function_exists( 'get_supercache_dir' )) {
 			prune_super_cache( get_supercache_dir(), true );

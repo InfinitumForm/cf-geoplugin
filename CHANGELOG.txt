@@ -1,5 +1,10 @@
 == Changelog ==
 
+= 8.2.1 =
+* Update database tables
+* Upgrade transliteration
+* Fixing problem with missing SEO redirection table in some servers
+
 = 8.2.0 =
 * Advanced IP address recognition algorithms
 * Improved legacy code support
