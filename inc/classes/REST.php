@@ -794,58 +794,67 @@ class CFGP_REST extends CFGP_Global {
 	}
 	
 	/*
-         * Check is database table exists
-         * @verson    1.0.0
-        */
-		public static function table_exists() {
-			static $cache = NULL;
-			global $wpdb;
-			
-			if(NULL === $cache) {
-				if($wpdb->get_var( "SHOW TABLES LIKE '{$wpdb->cfgp_rest_access_token}'" ) != $wpdb->cfgp_rest_access_token) {
-					error_log(sprintf(__('The database table "%s" not exists! You can try to reactivate the WordPress Geo Plugin to correct this error.', CFGP_NAME), $wpdb->cfgp_rest_access_token));
-					$cache = false;
-				} else {
-					$cache = true;
+	 * Check is database table exists
+	 * @verson    1.0.0
+	*/
+	public static function table_exists($dry = false) {
+		static $cache = NULL;
+		global $wpdb;
+		
+		if(NULL === $cache || $dry) {
+			if($wpdb->get_var( "SHOW TABLES LIKE '{$wpdb->cfgp_rest_access_token}'" ) != $wpdb->cfgp_rest_access_token) {
+				if( $dry ) {
+					return false;
 				}
+				
+				error_log(sprintf(__('The database table "%s" not exists! You can try to reactivate the WordPress Geo Plugin to correct this error.', CFGP_NAME), $wpdb->cfgp_seo_redirection));
+				
+				$cache = false;
+			} else {
+				if( $dry ) {
+					return true;
+				}
+				
+				$cache = true;
 			}
-			
-			return $cache;
 		}
 		
-		/*
-         * Install missing tables
-         * @verson    1.0.0
-        */
-		public static function table_install() {
-			if( !self::table_exists() ) {
-				global $wpdb;
-				
-				// Include important library
-				if(!function_exists('dbDelta')){
-					require_once ABSPATH . DIRECTORY_SEPARATOR . 'wp-admin' . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'upgrade.php';
-				}
-				
-				// Install table
-				$charset_collate = $wpdb->get_charset_collate();
-				dbDelta("
-				CREATE TABLE IF NOT EXISTS {$wpdb->cfgp_rest_access_token} (
-					ID bigint(20) NOT NULL AUTO_INCREMENT,
-					`secret_key` varchar(45) NOT NULL,
-					`token` varchar(65) NOT NULL,
-					`app_name` varchar(255) NOT NULL,
-					`app_name_original` varchar(255) NOT NULL,
-					`date_created` timestamp NOT NULL DEFAULT current_timestamp(),
-					`active` int(1) NOT NULL DEFAULT 1,
-					`lookup` bigint(32) NOT NULL DEFAULT 1,
-					PRIMARY KEY (ID),
-					UNIQUE KEY `token` (`token`),
-					UNIQUE KEY `app_name` (`app_name`),
-					KEY `secret_key` (`secret_key`)
-				) {$charset_collate}
-				");
+		return $cache;
+	}
+	
+	/*
+	 * Install missing tables
+	 * @verson    1.0.0
+	*/
+	public static function table_install() {
+		if( !self::table_exists() ) {
+			global $wpdb;
+			
+			// Include important library
+			if(!function_exists('dbDelta')){
+				require_once ABSPATH . DIRECTORY_SEPARATOR . 'wp-admin' . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'upgrade.php';
 			}
+			
+			// Install table
+			$charset_collate = $wpdb->get_charset_collate();
+			dbDelta("
+			CREATE TABLE IF NOT EXISTS {$wpdb->cfgp_rest_access_token} (
+				ID bigint(20) NOT NULL AUTO_INCREMENT,
+				`secret_key` varchar(45) NOT NULL,
+				`token` varchar(65) NOT NULL,
+				`app_name` varchar(255) NOT NULL,
+				`app_name_original` varchar(255) NOT NULL,
+				`date_created` timestamp NOT NULL DEFAULT current_timestamp(),
+				`active` int(1) NOT NULL DEFAULT 1,
+				`lookup` bigint(32) NOT NULL DEFAULT 1,
+				PRIMARY KEY (ID),
+				UNIQUE KEY `token` (`token`),
+				UNIQUE KEY `app_name` (`app_name`),
+				KEY `secret_key` (`secret_key`)
+			) {$charset_collate}
+			");
 		}
+	}
 	
 	/*
 	 * Instance

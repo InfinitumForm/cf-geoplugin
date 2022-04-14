@@ -513,15 +513,24 @@ if (!class_exists('CFGP_SEO_Table')):
          * Check is database table exists
          * @verson    1.0.0
         */
-		public static function table_exists() {
+		public static function table_exists($dry = false) {
 			static $cache = NULL;
 			global $wpdb;
 			
-			if(NULL === $cache) {
+			if(NULL === $cache || $dry) {
 				if($wpdb->get_var( "SHOW TABLES LIKE '{$wpdb->cfgp_seo_redirection}'" ) != $wpdb->cfgp_seo_redirection) {
+					if( $dry ) {
+						return false;
+					}
+					
 					error_log(sprintf(__('The database table "%s" not exists! You can try to reactivate the WordPress Geo Plugin to correct this error.', CFGP_NAME), $wpdb->cfgp_seo_redirection));
+					
 					$cache = false;
 				} else {
+					if( $dry ) {
+						return true;
+					}
+					
 					$cache = true;
 				}
 			}
