@@ -543,7 +543,7 @@ if (!class_exists('CFGP_SEO_Table')):
          * @verson    1.0.0
         */
 		public static function table_install() {
-			if( !self::table_exists() ) {
+			if( !self::table_exists(true) ) {
 				global $wpdb;
 				
 				// Include important library
