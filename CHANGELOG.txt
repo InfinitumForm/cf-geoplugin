@@ -1,5 +1,9 @@
 == Changelog ==
 
+= 8.2.3 =
+* Improved plugin integrations
+* Removed deprecated notices
+
 = 8.2.2 =
 * Fixed database error log
 

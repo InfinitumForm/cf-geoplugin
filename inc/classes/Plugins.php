@@ -14,13 +14,14 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
 
 if(!class_exists('CFGP_Plugins')) :
 	class CFGP_Plugins extends CFGP_Global
-	{		
+	{
+		// plugin-directory => plugin-file.php
 		private $plugins = array(
-			'woocommerce' => 'woocommerce',
-			'wooplatnica' => 'wooplatnica',
-			'contact-form-7' => 'wp-contact-form-7',
-			'wordpress-seo' => 'wp-seo',
-			'elementor' => 'elementor'
+			'woocommerce' 		=> 'woocommerce',
+			'wooplatnica' 		=> 'wooplatnica',
+			'contact-form-7'	=> 'wp-contact-form-7',
+			'wordpress-seo' 	=> 'wp-seo',
+			'elementor' 		=> 'elementor'
 		);
 		
 		function __construct( $options=array(), $only_object = false ) {

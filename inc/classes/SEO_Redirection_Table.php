@@ -523,7 +523,7 @@ if (!class_exists('CFGP_SEO_Table')):
 						return false;
 					}
 					
-					error_log(sprintf(__('The database table "%s" not exists! You can try to reactivate the WordPress Geo Plugin to correct this error.', CFGP_NAME), $wpdb->cfgp_seo_redirection));
+				//	error_log(sprintf(__('The database table "%s" not exists! You can try to reactivate the WordPress Geo Plugin to correct this error.', CFGP_NAME), $wpdb->cfgp_seo_redirection));
 					
 					$cache = false;
 				} else {
