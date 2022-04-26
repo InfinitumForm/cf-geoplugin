@@ -1,5 +1,8 @@
 == Changelog ==
 
+= 8.2.4 =
+* Fixed WP WP_ADMIN_DIR constant
+
 = 8.2.3 =
 * Improved plugin integrations
 * Removed deprecated notices
