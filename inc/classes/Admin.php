@@ -114,7 +114,7 @@ class CFGP_Admin extends CFGP_Global {
 	}
 	
 	public function ajax__rss_feed () {
-		$RSS = get_transient('cfgp-rss');
+		$RSS = CFGP_DB_Cache::get('cfgp-rss');
 		if( !empty($RSS) ) {
 			echo $RSS;
 			exit;
@@ -126,13 +126,12 @@ class CFGP_Admin extends CFGP_Global {
 				$data = (object)$data;
 				if(isset($data->posts) && is_array($data->posts))
 				{
-					$date_format = get_option('date_format');
 					$x = 4;
 					foreach($data->posts as $i => $post)
 					{
 						$post = (object)$post;
 						
-						$DASH_RSS[]=sprintf('<li><a href="%1$s" target="_blank">%2$s</a></li>', $post->post_url, $post->post_title);
+						$DASH_RSS[]=sprintf('<li><a href="%1$s" target="_blank">%2$s</a></li>', esc_url($post->post_url), esc_html($post->post_title));
 						
 						if($i <= $x) {
 							if($i === 0) {
@@ -147,23 +146,23 @@ class CFGP_Admin extends CFGP_Global {
 										<a href="%1$s" target="_blank" class="cfgp-rss-link">%6$s</a><br>
 										<small class="cfgp-rss-date">~ %7$s</small>
 									</div>',
-									$post->post_url,
-									$post->post_title,
-									$post->post_image_medium,
-									$post->post_excerpt,
-									$post->post_url,
+									esc_url($post->post_url),
+									esc_html($post->post_title),
+									esc_url($post->post_image_medium),
+									esc_html($post->post_excerpt),
+									esc_url($post->post_url),
 									__('Read more at CF Geo Plugin', CFGP_NAME),
-									date($date_format, strtotime($post->post_date_gmt))
+									date(CFGP_DATE_FORMAT, strtotime($post->post_date_gmt))
 								);
 							} else {
 								$RSS[]=sprintf('<p class="cfgp-rss-container"><a href="%1$s" target="_blank" class="cfgp-rss-link">%2$s</a><br><small class="cfgp-rss-date">~ %7$s</small></p>',
-									$post->post_url,
-									$post->post_title,
-									$post->post_image_medium,
-									$post->post_excerpt,
-									$post->post_url,
+									esc_url($post->post_url),
+									esc_html($post->post_title),
+									esc_url($post->post_image_medium),
+									esc_html($post->post_excerpt),
+									esc_url($post->post_url),
 									__('Read more at CF Geo Plugin', CFGP_NAME),
-									date($date_format, strtotime($post->post_date_gmt))
+									date(CFGP_DATE_FORMAT, strtotime($post->post_date_gmt))
 								);
 							}
 						}
@@ -174,13 +173,13 @@ class CFGP_Admin extends CFGP_Global {
 			if(!empty($DASH_RSS))
 			{
 				$DASH_RSS = '<ul class="rss-widget">' . join("\r\n", $DASH_RSS) . '</ul>';
-				set_transient('cfgp-dashboard-rss', $DASH_RSS, (MINUTE_IN_SECONDS * CFGP_SESSION));
+				CFGP_DB_Cache::set('cfgp-dashboard-rss', $DASH_RSS, (MINUTE_IN_SECONDS * CFGP_SESSION));
 			}
 			
 			if(!empty($RSS))
 			{
 				$RSS = join("\r\n", $RSS);
-				set_transient('cfgp-rss', $RSS, (MINUTE_IN_SECONDS * CFGP_SESSION));
+				CFGP_DB_Cache::set('cfgp-rss', $RSS, (MINUTE_IN_SECONDS * CFGP_SESSION));
 				echo $RSS;
 				exit;
 			}
@@ -191,7 +190,7 @@ class CFGP_Admin extends CFGP_Global {
 	}
 	
 	public function ajax__dashboard_rss_feed () {
-		$DASH_RSS = get_transient('cfgp-dashboard-rss');
+		$DASH_RSS = CFGP_DB_Cache::get('cfgp-dashboard-rss');
 		if( !empty($DASH_RSS) ) {
 			echo $DASH_RSS;
 			exit;
@@ -203,13 +202,12 @@ class CFGP_Admin extends CFGP_Global {
 				$data = (object)$data;
 				if(isset($data->posts) && is_array($data->posts))
 				{
-					$date_format = get_option('date_format');
 					$x = 4;
 					foreach($data->posts as $i => $post)
 					{
 						$post = (object)$post;
 						
-						$DASH_RSS[]=sprintf('<li><a href="%1$s" target="_blank">%2$s</a></li>', $post->post_url, $post->post_title);
+						$DASH_RSS[]=sprintf('<li><a href="%1$s" target="_blank">%2$s</a></li>', esc_url($post->post_url), esc_html($post->post_title));
 						
 						if($i <= $x) {
 							if($i === 0) {
@@ -224,23 +222,23 @@ class CFGP_Admin extends CFGP_Global {
 										<a href="%1$s" target="_blank" class="cfgp-rss-link">%6$s</a><br>
 										<small class="cfgp-rss-date">~ %7$s</small>
 									</div>',
-									$post->post_url,
-									$post->post_title,
-									$post->post_image_medium,
-									$post->post_excerpt,
-									$post->post_url,
+									esc_url($post->post_url),
+									esc_html($post->post_title),
+									esc_url($post->post_image_medium),
+									esc_html($post->post_excerpt),
+									esc_url($post->post_url),
 									__('Read more at CF Geo Plugin', CFGP_NAME),
-									date($date_format, strtotime($post->post_date_gmt))
+									date(CFGP_DATE_FORMAT, strtotime($post->post_date_gmt))
 								);
 							} else {
 								$RSS[]=sprintf('<p class="cfgp-rss-container"><a href="%1$s" target="_blank" class="cfgp-rss-link">%2$s</a><br><small class="cfgp-rss-date">~ %7$s</small></p>',
-									$post->post_url,
-									$post->post_title,
-									$post->post_image_medium,
-									$post->post_excerpt,
-									$post->post_url,
+									esc_url($post->post_url),
+									esc_html($post->post_title),
+									esc_url($post->post_image_medium),
+									esc_html($post->post_excerpt),
+									esc_url($post->post_url),
 									__('Read more at CF Geo Plugin', CFGP_NAME),
-									date($date_format, strtotime($post->post_date_gmt))
+									date(CFGP_DATE_FORMAT, strtotime($post->post_date_gmt))
 								);
 							}
 						}
@@ -251,14 +249,14 @@ class CFGP_Admin extends CFGP_Global {
 			if(!empty($RSS))
 			{
 				$RSS = join("\r\n", $RSS);
-				set_transient('cfgp-rss', $RSS, (MINUTE_IN_SECONDS * CFGP_SESSION));
+				CFGP_DB_Cache::set('cfgp-rss', $RSS, (MINUTE_IN_SECONDS * CFGP_SESSION));
 				
 			}
 			
 			if(!empty($DASH_RSS))
 			{
 				$DASH_RSS = '<ul class="rss-widget">' . join("\r\n", $DASH_RSS) . '</ul>';
-				set_transient('cfgp-dashboard-rss', $DASH_RSS, (MINUTE_IN_SECONDS * CFGP_SESSION));
+				CFGP_DB_Cache::set('cfgp-dashboard-rss', $DASH_RSS, (MINUTE_IN_SECONDS * CFGP_SESSION));
 				echo $DASH_RSS;
 				exit;
 			}

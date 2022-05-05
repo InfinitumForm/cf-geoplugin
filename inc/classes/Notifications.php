@@ -34,7 +34,7 @@ class CFGP_Notifications extends CFGP_Global{
 	// remove the notice for the user if review already done or if the user does not want to
 	public function cfgp_dimiss_review(){    
 		if( isset( $_GET['cfgp_dimiss_review'] ) && !empty( $_GET['cfgp_dimiss_review'] ) ){
-			$cfgp_dimiss_review = $_GET['cfgp_dimiss_review'];
+			$cfgp_dimiss_review = absint($_GET['cfgp_dimiss_review']);
 			if( $cfgp_dimiss_review == 1 ){
 				add_option( CFGP_NAME . '-reviewed' , true );
 				
@@ -93,7 +93,7 @@ class CFGP_Notifications extends CFGP_Global{
 		$transient = 'cfgp-notification-lookup-expire-soon';
 		
 		// Stop when email is send
-		if( get_transient($transient) ) return;
+		if( CFGP_DB_Cache::get($transient) ) return;
 		
 		// Stop if lookup is unlimited or lifetime
 		if( CFGP_U::api('lookup') == 'unlimited' || CFGP_U::api('lookup') == 'lifetime' ) return;
@@ -125,7 +125,7 @@ class CFGP_Notifications extends CFGP_Global{
 				__('CF GEO PLUGIN NOTIFICATION - Today\'s lookup expires soon', CFGP_NAME),
 				$message
 			);
-			set_transient($transient, CFGP_TIME, DAY_IN_SECONDS); // 24 hours
+			CFGP_DB_Cache::set($transient, CFGP_TIME, DAY_IN_SECONDS); // 24 hours
 		}
 	}
 	

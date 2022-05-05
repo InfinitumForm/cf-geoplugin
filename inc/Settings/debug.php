@@ -168,7 +168,7 @@ if($NEW_API = CFGP_API::lookup(CFGP_U::request_string('cfgp_lookup'))){
 											$plugin_installed = get_option(CFGP_NAME . '-activation');
 											if($plugin_installed && is_array($plugin_installed)){
 												$plugin_installed = array_shift($plugin_installed);
-												echo date(get_option('date_format').' '.get_option('time_format'),strtotime($plugin_installed));
+												echo date(CFGP_DATE_TIME_FORMAT, strtotime($plugin_installed));
 											} else {
 												$plugin_installed = NULL;
 												 echo '-';
@@ -182,7 +182,7 @@ if($NEW_API = CFGP_API::lookup(CFGP_U::request_string('cfgp_lookup'))){
 											if($plugin_activation && is_array($plugin_activation)){
 												$plugin_activation = end($plugin_activation);
 												if($plugin_activation != $plugin_installed) {
-													echo date(get_option('date_format').' '.get_option('time_format'),strtotime($plugin_activation));
+													echo date(CFGP_DATE_TIME_FORMAT, strtotime($plugin_activation));
 												} else echo '-';
 											} else echo '-';
 										?></td>

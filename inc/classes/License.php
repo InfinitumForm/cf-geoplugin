@@ -56,7 +56,7 @@ class CFGP_License extends CFGP_Global{
 	 * Get product informations
 	 */
 	public static function get_product_data(){
-		$response = get_transient('cfgp-get-product-data');
+		$response = CFGP_DB_Cache::get('cfgp-get-product-data');
 		if(!$response) {
 			if($return = CFGP_U::curl_get(CFGP_STORE . '/wp-admin/admin-ajax.php?action=cfgp_get_product_data', '', array(), false))
 			{
@@ -89,7 +89,7 @@ class CFGP_License extends CFGP_Global{
 						}
 					}
 					
-					set_transient('cfgp-get-product-data', $response, DAY_IN_SECONDS);
+					CFGP_DB_Cache::set('cfgp-get-product-data', $response, DAY_IN_SECONDS);
 				}
 			}
 		}
@@ -291,7 +291,7 @@ class CFGP_License extends CFGP_Global{
 	 * Print API response errors notice
 	 */
 	public static function print_response_errors(){
-		$response = get_transient('cfgp-license-response-errors');
+		$response = CFGP_DB_Cache::get('cfgp-license-response-errors');
 
 		if($response) 
 		{
@@ -327,7 +327,7 @@ class CFGP_License extends CFGP_Global{
                 <?php endif; ?>
 			<?php endforeach; ?>
 			<?php
-			delete_transient('cfgp-license-response-errors');
+			CFGP_DB_Cache::delete('cfgp-license-response-errors');
 			printf('<div class="notice notice-error is-dismissible">%s</div>', ob_get_clean());
 		}
 		
@@ -338,7 +338,7 @@ class CFGP_License extends CFGP_Global{
 	 * Print API response success notice
 	 */
 	public static function print_response_success(){
-		$response = get_transient('cfgp-license-response-success');
+		$response = CFGP_DB_Cache::get('cfgp-license-response-success');
 
 		if($response) 
 		{
@@ -346,7 +346,7 @@ class CFGP_License extends CFGP_Global{
             <h3><?php _e('Activation succeeded', CFGP_NAME); ?></h3>
             <p><?php echo $response; ?></p>
 			<?php
-			delete_transient('cfgp-license-response-success');
+			CFGP_DB_Cache::delete('cfgp-license-response-success');
 			printf('<div class="notice notice-success is-dismissible">%s</div>', ob_get_clean());
 		}
 		
@@ -374,8 +374,8 @@ class CFGP_License extends CFGP_Global{
 			$input_field_error = array_merge($input_field_error, array(
 				__('Make sure you select the license you purchased and enter the correct license key.',CFGP_NAME))
 			);
-			delete_transient('cfgp-license-response-success');
-			set_transient('cfgp-license-response-errors', array(
+			CFGP_DB_Cache::delete('cfgp-license-response-success');
+			CFGP_DB_Cache::set('cfgp-license-response-errors', array(
 				'input_field' => $input_field_error
 			), YEAR_IN_SECONDS);
 			return;
@@ -392,8 +392,8 @@ class CFGP_License extends CFGP_Global{
 		$response = CFGP_U::curl_post( CFGP_Defaults::API['authenticate'], $post_data, '', array(), false );
 		
 		if(empty($response)){
-			delete_transient('cfgp-license-response-success');
-			set_transient('cfgp-license-response-errors', array(
+			CFGP_DB_Cache::delete('cfgp-license-response-success');
+			CFGP_DB_Cache::set('cfgp-license-response-errors', array(
 				'no_connection' => array(
 					__('Unable to connect to server.',CFGP_NAME)
 				)
@@ -403,13 +403,13 @@ class CFGP_License extends CFGP_Global{
 		
 		if( isset( $response['error'] ) && $response['error'] == true )
 		{
-			delete_transient('cfgp-license-response-success');
+			CFGP_DB_Cache::delete('cfgp-license-response-success');
 			
 			if(isset($response['errors_raw']) && !empty($response['errors_raw'])){
 				$response['errors'] = $response['errors_raw'];
 			}
 			
-			set_transient('cfgp-license-response-errors', (isset($response['errors']) ? $response['errors'] : array(
+			CFGP_DB_Cache::set('cfgp-license-response-errors', (isset($response['errors']) ? $response['errors'] : array(
 				'api_error' => array_merge(array(
 					$response['message']
 				), array(
@@ -422,7 +422,7 @@ class CFGP_License extends CFGP_Global{
 		else
 		{
 			// Clear errors if exists
-			delete_transient('cfgp-license-response-errors');
+			CFGP_DB_Cache::delete('cfgp-license-response-errors');
 			// Update license
 			$update = array(
 				'key' => $response['data']['the_key'],
@@ -435,7 +435,7 @@ class CFGP_License extends CFGP_Global{
 				'status' => ($response['data']['status'] == 'active')
 			);
 			self::set($update);
-			set_transient('cfgp-license-response-success', $response['message'], YEAR_IN_SECONDS);
+			CFGP_DB_Cache::set('cfgp-license-response-success', $response['message'], YEAR_IN_SECONDS);
 			// Clear special API cache
 			CFGP_API::remove_cache();
 			return true;
@@ -458,8 +458,8 @@ class CFGP_License extends CFGP_Global{
 		$response = CFGP_U::curl_post( CFGP_Defaults::API['authenticate'], $post_data, '', array(), false );
 	
 		if(empty($response)){
-			delete_transient('cfgp-license-response-success');
-			set_transient('cfgp-license-response-errors', array(
+			CFGP_DB_Cache::delete('cfgp-license-response-success');
+			CFGP_DB_Cache::set('cfgp-license-response-errors', array(
 				'no_connection' => array(
 					__('Unable to connect to server.',CFGP_NAME)
 				)
@@ -470,8 +470,8 @@ class CFGP_License extends CFGP_Global{
 		/**
 		if( isset( $response['error'] ) && $response['error'] == true )
 		{
-			delete_transient('cfgp-license-response-success');
-			set_transient('cfgp-license-response-errors', (isset($response['errors']) ? $response['errors'] : array(
+			CFGP_DB_Cache::delete('cfgp-license-response-success');
+			CFGP_DB_Cache::set('cfgp-license-response-errors', (isset($response['errors']) ? $response['errors'] : array(
 				'api_error' => array(
 					$response['message']
 				)
@@ -481,11 +481,11 @@ class CFGP_License extends CFGP_Global{
 		else
 		{
 			// Clear responses if exists
-			delete_transient('cfgp-license-response-errors');
-			delete_transient('cfgp-license-response-success');
+			CFGP_DB_Cache::delete('cfgp-license-response-errors');
+			CFGP_DB_Cache::delete('cfgp-license-response-success');
 			// Clear license
 			self::set(CFGP_Defaults::LICENSE);
-			set_transient('cfgp-license-response-success', $response['message'], YEAR_IN_SECONDS);
+			CFGP_DB_Cache::set('cfgp-license-response-success', $response['message'], YEAR_IN_SECONDS);
 			// Clear special API cache
 			CFGP_API::remove_cache();
 			return true;
@@ -500,11 +500,11 @@ class CFGP_License extends CFGP_Global{
 		 */
 		
 		// Clear responses if exists
-		delete_transient('cfgp-license-response-errors');
-		delete_transient('cfgp-license-response-success');
+		CFGP_DB_Cache::delete('cfgp-license-response-errors');
+		CFGP_DB_Cache::delete('cfgp-license-response-success');
 		// Clear license
 		self::set(CFGP_Defaults::LICENSE);
-		set_transient('cfgp-license-response-success', __('License successfully deactivated!',CFGP_NAME), YEAR_IN_SECONDS);
+		CFGP_DB_Cache::set('cfgp-license-response-success', __('License successfully deactivated!',CFGP_NAME), YEAR_IN_SECONDS);
 		// Clear special API cache
 		CFGP_API::remove_cache();
 		return true;

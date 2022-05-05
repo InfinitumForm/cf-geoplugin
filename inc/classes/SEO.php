@@ -94,7 +94,7 @@ class CFGP_SEO extends CFGP_Global {
 						// Validate
 						if($num_saved > 0)
 						{
-						//	set_transient('cfgp-seo-form-success', __('CSV uploaded successfully.', CFGP_NAME), YEAR_IN_SECONDS);
+						//	CFGP_DB_Cache::set('cfgp-seo-form-success', __('CSV uploaded successfully.', CFGP_NAME), YEAR_IN_SECONDS);
 							
 							wp_send_json(array(
 								'return'=>true,
@@ -160,7 +160,7 @@ class CFGP_SEO extends CFGP_Global {
 				$redirection_url = CFGP_U::request_string('url');
 			
 				if(empty($redirection_url)) {
-					set_transient('cfgp-seo-form-error', __('Redirect URL is a required field.', CFGP_NAME), YEAR_IN_SECONDS);
+					CFGP_DB_Cache::set('cfgp-seo-form-error', __('Redirect URL is a required field.', CFGP_NAME), YEAR_IN_SECONDS);
 				}
 				else
 				{
@@ -176,11 +176,11 @@ class CFGP_SEO extends CFGP_Global {
 					
 					if(is_wp_error($save))
 					{
-						set_transient('cfgp-seo-form-error', __('This redirection was not saved due to a database error. Please try again.', CFGP_NAME), YEAR_IN_SECONDS);
+						CFGP_DB_Cache::set('cfgp-seo-form-error', __('This redirection was not saved due to a database error. Please try again.', CFGP_NAME), YEAR_IN_SECONDS);
 					}
 					else
 					{
-						set_transient('cfgp-seo-form-success', __('Settings saved.', CFGP_NAME), YEAR_IN_SECONDS);
+						CFGP_DB_Cache::set('cfgp-seo-form-success', __('Settings saved.', CFGP_NAME), YEAR_IN_SECONDS);
 						
 						$parse_url = CFGP_U::parse_url();
 						$url = $parse_url['url'];
@@ -203,7 +203,7 @@ class CFGP_SEO extends CFGP_Global {
 				$redirection_url = CFGP_U::request_string('url');
 				
 				if(empty($redirection_url)) {
-					set_transient('cfgp-seo-form-error', __('Redirect URL is a required field.', CFGP_NAME), YEAR_IN_SECONDS);
+					CFGP_DB_Cache::set('cfgp-seo-form-error', __('Redirect URL is a required field.', CFGP_NAME), YEAR_IN_SECONDS);
 				}
 				else
 				{
@@ -220,11 +220,11 @@ class CFGP_SEO extends CFGP_Global {
 					
 					if(is_wp_error($save))
 					{
-						set_transient('cfgp-seo-form-error', __('This redirection was not saved due to a database error. Please try again.', CFGP_NAME), YEAR_IN_SECONDS);
+						CFGP_DB_Cache::set('cfgp-seo-form-error', __('This redirection was not saved due to a database error. Please try again.', CFGP_NAME), YEAR_IN_SECONDS);
 					}
 					else
 					{
-						set_transient('cfgp-seo-form-success', __('Settings saved.', CFGP_NAME), YEAR_IN_SECONDS);
+						CFGP_DB_Cache::set('cfgp-seo-form-success', __('Settings saved.', CFGP_NAME), YEAR_IN_SECONDS);
 					}
 				}
 			}
@@ -242,7 +242,7 @@ class CFGP_SEO extends CFGP_Global {
 			$url = remove_query_arg('nonce', $url);
 			$url = remove_query_arg('id', $url);
 			
-			set_transient('cfgp-seo-form-success', __('Deleted.', CFGP_NAME), YEAR_IN_SECONDS);
+			CFGP_DB_Cache::set('cfgp-seo-form-success', __('Deleted.', CFGP_NAME), YEAR_IN_SECONDS);
 			
 			if(!headers_sent()) {
 				wp_safe_redirect($url);
@@ -296,25 +296,25 @@ class CFGP_SEO extends CFGP_Global {
 	
 	// Response Error
 	public static function response_error(){
-		$response = get_transient('cfgp-seo-form-error');
+		$response = CFGP_DB_Cache::get('cfgp-seo-form-error');
 		if($response) {
 			printf(
 				'<div class="notice notice-error"><p>%s</p></div>',
 				$response
 			);
-			delete_transient('cfgp-seo-form-error');
+			CFGP_DB_Cache::delete('cfgp-seo-form-error');
 		}
 	}
 	
 	// Response Success
 	public static function response_success(){
-		$response = get_transient('cfgp-seo-form-success');
+		$response = CFGP_DB_Cache::get('cfgp-seo-form-success');
 		if($response) {
 			printf(
 				'<div class="notice notice-success is-dismissible"><p>%s</p></div>',
 				$response
 			);
-			delete_transient('cfgp-seo-form-success');
+			CFGP_DB_Cache::delete('cfgp-seo-form-success');
 		}
 	}
 	

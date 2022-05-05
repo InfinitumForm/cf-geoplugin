@@ -351,7 +351,7 @@ class CFGP_U {
 		}
 		
 		if($force_cache === true) {
-			if($cache = get_transient("cfgp-{$cache_name}")) {
+			if($cache = CFGP_DB_Cache::get("cfgp-{$cache_name}")) {
 				return $cache;
 			}
 		}
@@ -408,7 +408,7 @@ class CFGP_U {
 			
 			// Because is expencive function, we need to store data to transients
 			if($force_cache === true) {
-				set_transient("cfgp-{$cache_name}", $plugin_data, DAY_IN_SECONDS);
+				CFGP_DB_Cache::set("cfgp-{$cache_name}", $plugin_data, DAY_IN_SECONDS);
 			}
 			
 			return $plugin_data;

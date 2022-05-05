@@ -168,18 +168,7 @@ add_filter('cfgp/settings', function($options=array()){
 								? sprintf(__('WooCommerce has taken over this functionality and if you want to change the base currency, you have to do it in <strong><a href="%s">WooCommerce Settings</a></strong>.', CFGP_NAME), CFGP_U::admin_url('/admin.php?page=wc-settings#pricing_options-description'))
 								: ''
 							)
-						),
-						/*array(
-							'name' => 'enable_flag',
-							'label' => __('Enable Country Flags', CFGP_NAME),
-							'desc' => __('Display country flag SVG or PNG image on your website.', CFGP_NAME),
-							'type' => 'radio',
-							'options' => array(
-								1 => __('Yes', CFGP_NAME),
-								0 => __('No', CFGP_NAME)
-							),
-							'default' => 1
-						),*/
+						)
 					)
 				),
 				array(

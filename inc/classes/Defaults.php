@@ -96,16 +96,16 @@ class CFGP_Defaults {
 		'base_currency'					=>	'USD',
 		'rest_secret'					=>	'',
 		'plugin_activated'				=>	'',
-		'enable_spam_ip'				=> 0,
-		'first_plugin_activation'		=> 1,
-		'log_errors'					=> 0,
-		'enable_seo_posts'				=> array('post', 'page'),
-		'enable_geo_tag'				=> array('post', 'page'),
-		'enable_css'					=> 1,
-		'enable_js'						=> 1,
-		'hide_http_referrer_headers' 	=> 0,
-		'notification_recipient_emails'	=> '',
-		'notification_recipient_type' 	=> 'all'
+		'enable_spam_ip'				=>	0,
+		'first_plugin_activation'		=>	1,
+		'log_errors'					=>	0,
+		'enable_seo_posts'				=>	array('post', 'page'),
+		'enable_geo_tag'				=>	array(),
+		'enable_css'					=>	1,
+		'enable_js'						=>	1,
+		'hide_http_referrer_headers' 	=>	0,
+		'notification_recipient_emails'	=>	'',
+		'notification_recipient_type' 	=>	'all'
 	);
 
 

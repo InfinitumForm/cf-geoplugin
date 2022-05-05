@@ -16,14 +16,23 @@ if (!defined('ABSPATH')) {
 global $WP_ADMIN_DIR, $WP_ADMIN_URL;
 
 // Find wp-admin file path
-$WP_ADMIN_URL = admin_url('/');
+
 if (!defined('WP_ADMIN_DIR')) {
-	if( strpos($WP_ADMIN_URL, 'wp-admin') !== false ) {
-		$WP_ADMIN_DIR = rtrim(str_replace(home_url('/') , ABSPATH, $WP_ADMIN_URL) , '/\\');
+	if( $WP_ADMIN_DIR ) {
+		define('WP_ADMIN_DIR', $WP_ADMIN_DIR);
 	} else {
-		$WP_ADMIN_DIR = dirname(WP_CONTENT_DIR) . '/wp-admin';
+		if( !$WP_ADMIN_URL ) {
+			$WP_ADMIN_URL = admin_url('/');
+		}
+		
+		if( strpos($WP_ADMIN_URL, 'wp-admin') !== false ) {
+			$WP_ADMIN_DIR = rtrim(str_replace(home_url('/') , strtr(ABSPATH, '\\', '/'), $WP_ADMIN_URL) , '/\\');
+		} else {
+			$WP_ADMIN_DIR = dirname(WP_CONTENT_DIR) . DIRECTORY_SEPARATOR . 'wp-admin';
+		}
+		
+		define('WP_ADMIN_DIR', $WP_ADMIN_DIR);
 	}
-	define('WP_ADMIN_DIR', $WP_ADMIN_DIR);
 }
 
 // Main website
@@ -34,7 +43,6 @@ if (!defined('CFGP_STORE')) {
 // Main website code
 if (!defined('CFGP_STORE_CODE')) {
     define('CFGP_STORE_CODE', 'YR5pv3FU8l78v3N'); // DON'T TOUCH!!!
-    
 }
 
 // Plugin root
@@ -158,6 +166,21 @@ if (!defined('CFGP_PREFIX')) {
 // Timestamp
 if (!defined('CFGP_TIME')) {
     define('CFGP_TIME', time());
+}
+
+// Time Format
+if (!defined('CFGP_TIME_FORMAT')) {
+    define('CFGP_TIME_FORMAT', get_option('time_format'));
+}
+
+// Date Format
+if (!defined('CFGP_DATE_FORMAT')) {
+    define('CFGP_DATE_FORMAT', get_option('date_format'));
+}
+
+// Date Format
+if (!defined('CFGP_DATE_TIME_FORMAT')) {
+    define('CFGP_DATE_TIME_FORMAT', CFGP_DATE_FORMAT . ' ' . CFGP_TIME_FORMAT);
 }
 
 // if PHP_VERSION missing

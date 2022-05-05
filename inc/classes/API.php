@@ -108,14 +108,14 @@ class CFGP_API extends CFGP_Global {
 		{
 			case 'geo':				
 				// Get cached data
-				if($transient = get_transient("cfgp-api-{$ip_slug}"))
+				if($transient = CFGP_DB_Cache::get("cfgp-api-{$ip_slug}"))
 				{					
 					$return = $transient['geo'];
 					
-					$return['current_time']= date(get_option('time_format'), CFGP_TIME);
-					$return['current_date']= date(get_option('date_format'), CFGP_TIME);
+					$return['current_time']= date(CFGP_TIME_FORMAT, CFGP_TIME);
+					$return['current_date']= date(CFGP_DATE_FORMAT, CFGP_TIME);
 					
-					if( $lookup = get_transient('cfgp-api-available-lookup-' . $this->host) ) {
+					if( $lookup = CFGP_DB_Cache::get('cfgp-api-available-lookup-' . $this->host) ) {
 						$return['lookup']=$lookup;
 					}
 					
@@ -302,8 +302,8 @@ class CFGP_API extends CFGP_Global {
 							'ip_host' => ($return['refererIP'] ?? NULL),
 							'timestamp' => ($return['timestamp'] ?? NULL),
 							'timestamp_readable' => ($return['timestampReadable'] ?? NULL),
-							'current_time' => date(get_option('time_format'), CFGP_TIME),
-							'current_date' => date(get_option('date_format'), CFGP_TIME),
+							'current_time' => date(CFGP_TIME_FORMAT, CFGP_TIME),
+							'current_date' => date(CFGP_DATE_FORMAT, CFGP_TIME),
 							'version' => CFGP_VERSION,
 							'is_proxy' => ( ($return['proxy'] ?? NULL) ? 1 : (CFGP_IP::is_proxy() ? 1 : 0) ),
 							'is_vat' => ($return['isVAT'] ?? NULL) ? 1 : 0,
@@ -321,16 +321,16 @@ class CFGP_API extends CFGP_Global {
 
 						// Save lookup to session
 						if(is_numeric($return['lookup']) && $return['lookup'] <= CFGP_LIMIT) {
-							set_transient('cfgp-api-available-lookup-' . $this->host, $return['lookup'], (DAY_IN_SECONDS*2));
+							CFGP_DB_Cache::set('cfgp-api-available-lookup-' . $this->host, $return['lookup'], (DAY_IN_SECONDS*2));
 						} else if(
 							($return['lookup'] == 'unlimited' || $return['lookup'] == 'lifetime') 
-							&& get_transient('cfgp-api-available-lookup-' . $this->host)
+							&& CFGP_DB_Cache::get('cfgp-api-available-lookup-' . $this->host)
 						) {
-							delete_transient('cfgp-api-available-lookup-' . $this->host);
+							CFGP_DB_Cache::delete('cfgp-api-available-lookup-' . $this->host);
 						}
 						
 						// Save to session
-						set_transient("cfgp-api-{$ip_slug}", array(
+						CFGP_DB_Cache::set("cfgp-api-{$ip_slug}", array(
 							'geo' => (array)$return,
 							'dns' => (array)$DNS
 						), (MINUTE_IN_SECONDS * CFGP_SESSION));
@@ -353,7 +353,7 @@ class CFGP_API extends CFGP_Global {
 					CFGP_Defaults::API['dns'].'?ip={IP}&sip={SIP}&r={HOST}&v={VERSION}&p={P}'
 				);
 				
-				if($transient = get_transient("cfgp-api-{$ip_slug}-dns"))
+				if($transient = CFGP_DB_Cache::get("cfgp-api-{$ip_slug}-dns"))
 				{					
 					$return = apply_filters( 'cfgp/api/dns/render/response', $transient);
 					CFGP_Cache::delete('transfer_dns_records');
@@ -403,7 +403,7 @@ class CFGP_API extends CFGP_Global {
 						));
 						
 						// Save to session
-						set_transient("cfgp-api-{$ip_slug}-dns", (array)$return, (MINUTE_IN_SECONDS * CFGP_SESSION));
+						CFGP_DB_Cache::set("cfgp-api-{$ip_slug}-dns", (array)$return, (MINUTE_IN_SECONDS * CFGP_SESSION));
 					}
 				}
 				break;

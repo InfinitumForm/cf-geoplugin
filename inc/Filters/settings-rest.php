@@ -211,7 +211,7 @@ endforeach;
                     <tr id="<?php echo $token->app_name.'-'.$i; ?>">
                         <th><?php echo $token->token; ?></th>
                         <td><?php echo $token->app_name_original; ?></td>
-                        <td><?php echo date(get_option('date_format').' '.get_option('time_format'), strtotime($token->date_created)); ?></td>
+                        <td><?php echo date(CFGP_DATE_TIME_FORMAT, strtotime($token->date_created)); ?></td>
                         <td style="text-align:right;"><button type="button" data-remove="#<?php echo $token->app_name.'-'.$i; ?>" data-id="<?php echo $token->ID; ?>" data-confirm="<?php esc_attr_e('Are you sure you want to remove this access token?', CFGP_NAME); ?>" data-nonce="<?php echo wp_create_nonce(CFGP_NAME.'-token-remove'); ?>" class="button cfgp-button-delete cfgp-button-token-remove"><?php _e('Remove',CFGP_NAME) ?></button></td>
                     </tr>
                     <?php endforeach; else: ?>

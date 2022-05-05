@@ -8,9 +8,7 @@
  * @author        Ivijan-Stefan Stipic
  * @version       1.0.0
  */
-if(!class_exists('CFGP_Cache')) :
-class CFGP_Cache
-{
+if(!class_exists('CFGP_Cache')) : class CFGP_Cache {
 	/*
 	 * Save all cached objcts to this variable
 	 */
@@ -29,7 +27,7 @@ class CFGP_Cache
 	 * Save object to cache
 	 *
 	 * This function adds data to the cache if the cache key doesn’t already exist.
-	 * If it does exist, the data is not added and the function returns
+	 * If it does exist, the data is not added and the function returns old value
 	 */
     public static function add($key, $value) {
 		self::garbage_cleaner();
@@ -142,6 +140,7 @@ class CFGP_Cache
 		
 		$exclude = apply_filters('cfgp/cache/exclude_from_cleaning', array(
 			// Classes
+			'CFGP_DB_Cache',
 			'CFGP_API',
 			'CFGP_IP',
 			'CFGP_License',
@@ -188,5 +187,4 @@ class CFGP_Cache
 			}
 		}
 	}
-}
-endif;
+} endif;

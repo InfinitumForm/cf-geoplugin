@@ -19,6 +19,7 @@ final class CFGP_Init{
 		// Call main classes
 		$classes = apply_filters('cfgp/init/classes', array(
 			'CFGP_Cache',					// Register cache
+			'CFGP_DB_Cache',				// Register database cache
 			'CFGP_API',						// Main API class
 			'CFGP_Taxonomy',				// Register Taxonomy
 			'CFGP_Metabox',					// Metabox class
@@ -110,6 +111,7 @@ final class CFGP_Init{
 		$includes = apply_filters('cfgp/init/include_classes', array(
 			CFGP_CLASS . '/Statistic.php',				// Plugin statistic
 			CFGP_CLASS . '/Cache.php',					// Memory control class
+			CFGP_CLASS . '/Cache_DB.php',				// Cache control class
 			CFGP_CLASS . '/OS.php',						// Operating System info and tool class
 			CFGP_CLASS . '/Defaults.php',				// Default values, data
 			CFGP_CLASS . '/Utilities.php',				// Utilities
@@ -192,6 +194,8 @@ final class CFGP_Init{
 		$wpdb->cfgp_seo_redirection   = $wpdb->get_blog_prefix() . 'cfgp_seo_redirection';
 		// REST token table
 		$wpdb->cfgp_rest_access_token = $wpdb->get_blog_prefix() . 'cfgp_rest_access_token';
+		// REST token table
+		$wpdb->cfgp_cache = $wpdb->get_blog_prefix() . 'cfgp_cache';
 	}
 	
 	/**
@@ -318,6 +322,8 @@ final class CFGP_Init{
 				
 				## Create database table for the REST tokens
 				CFGP_REST::table_install();
+				## Create database table for the Cache
+				CFGP_DB_Cache::table_install();
 				
 				## Rename database table for the SEO redirection if old table exists
 				if(version_compare(CFGP_DATABASE_VERSION, '1.0.0', '>')) {

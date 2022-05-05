@@ -50,7 +50,7 @@ if ( ! defined( 'CFGP_LIBRARY_VERSION' ) ){
 }
 // Database version
 if ( ! defined( 'CFGP_DATABASE_VERSION' ) ){
-	define( 'CFGP_DATABASE_VERSION', '1.0.1');
+	define( 'CFGP_DATABASE_VERSION', '1.0.2');
 }
 // Globals
 global $cfgp_version;

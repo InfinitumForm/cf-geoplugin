@@ -51,8 +51,8 @@ class CFGP_Sidebar extends CFGP_Global {
 	 * @since    8.0.0
 	 **/
 	public function rss_feed(){
-	//	delete_transient('cfgp-rss');
-		$RSS = get_transient('cfgp-rss');
+	//	CFGP_DB_Cache::delete('cfgp-rss');
+		$RSS = CFGP_DB_Cache::get('cfgp-rss');
 	?>
 <div class="postbox">
 	<h3 class="hndle" style="margin-bottom:0;padding-bottom:0;"><span><?php _e('Live News & info', CFGP_NAME); ?></span></h3><hr>
@@ -184,7 +184,7 @@ class CFGP_Sidebar extends CFGP_Global {
 	 *
 	 * @since    8.0.0
 	 **/
-	public function dashboard_feed(){ $RSS = get_transient('cfgp-dashboard-rss'); ?>
+	public function dashboard_feed(){ $RSS = CFGP_DB_Cache::get('cfgp-dashboard-rss'); ?>
 	<div class="wordpress-news hide-if-no-js<?php echo (empty($RSS) ? ' cfgp-load-dashboard-rss-feed' : ''); ?>">
 	<?php if($RSS) : ?>
 		<?php echo $RSS; ?>
@@ -249,7 +249,7 @@ class CFGP_Sidebar extends CFGP_Global {
 <li class="cfgp-statistic-plugin-details">
 	<h3><i class="fa fa-plug" aria-hidden="true"></i> <?php _e( 'CF Geo Plugin details', CFGP_NAME ); ?></h3>
 	<ul>
-		<li><strong><?php _e( 'Last Update', CFGP_NAME ); ?>:</strong> <span><?php echo date((get_option('date_format').' '.get_option('time_format')),strtotime($plugin->last_updated)); ?></span></li>
+		<li><strong><?php _e( 'Last Update', CFGP_NAME ); ?>:</strong> <span><?php echo date(CFGP_DATE_TIME_FORMAT, strtotime($plugin->last_updated)); ?></span></li>
 		<li><strong><?php _e( 'Homepage', CFGP_NAME ); ?>:</strong> <span><a href="<?php echo $plugin->homepage ?>" target="_blank"><?php echo $plugin->homepage ?></a></span></li>
 		<li><strong><?php _e( 'WP Support', CFGP_NAME ); ?>:</strong> <span><?php
 			if(version_compare(get_bloginfo('version'), $plugin->requires, '>='))
