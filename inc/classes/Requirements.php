@@ -29,7 +29,31 @@ if(!class_exists('CFGP_Requirements')) : class CFGP_Requirements {
 			}
 		}
 		
+		if( is_admin() ) {
+			$this->update_database_alert();
+		}
+		
 		add_action( "in_plugin_update_message-{$this->slug}/{$this->slug}.php", array(&$this, 'in_plugin_update_message'), 10, 2 );
+	}
+	
+	/*
+	 * Update database alert 
+	 */
+	private function update_database_alert() {
+		$current_db_version = (get_option(CFGP_NAME . '-db-version') ?? '0.0.0');
+		if( version_compare($current_db_version, CFGP_DATABASE_VERSION, '!=') ) {
+			add_action( 'admin_notices', function () {
+				echo '<div class="notice notice-info" id="cf-geoplugin-database-update">';
+					echo '<p><strong>'.sprintf(__('%1$s database update required!', CFGP_NAME), esc_html( $this->title ), esc_html( CFGP_DATABASE_VERSION )).'</strong></p>';
+					echo '<p>'.sprintf(__('%1$s has been updated! To keep things running smoothly, we have to update your database to the newest version.', CFGP_NAME), esc_html( $this->title ), esc_html( CFGP_DATABASE_VERSION )).'</p>';
+					echo '<p class="submit"><a href="'.add_query_arg([
+						'cf_geoplugin_db_update' => 'true',
+						'cf_geoplugin_nonce' => wp_create_nonce('cf_geoplugin_db_update')
+					]).'" class="button button-primary">'.__('Update Database', CFGP_NAME).'</a></p>';
+				echo '</div>';
+			} );
+			return false;
+		}
 	}
 	
 	/*

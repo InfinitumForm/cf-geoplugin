@@ -41,6 +41,34 @@ class CFGP_Admin extends CFGP_Global {
 		
 		$this->add_action('wp_ajax_cfgp_select2_locations', array('CFGP_Library', 'ajax__select2_locations'));
 		$this->add_action('wp_ajax_nopriv_cfgp_select2_locations', array('CFGP_Library', 'ajax__select2_locations'));
+		
+		// Update database
+		if( is_admin() ) {
+			$this->add_action('plugins_loaded', 'update_database', 20, 0);
+		}
+	}
+	
+	// Update database
+	public function update_database(){
+		if(
+			($_GET['cf_geoplugin_db_update'] ?? NULL) == 'true'
+			&& wp_verify_nonce( ($_GET['cf_geoplugin_nonce'] ?? NULL), 'cf_geoplugin_db_update' )
+		) {
+			## Create database table for the Cache
+			CFGP_DB_Cache::table_install();
+			## Create database table for the REST tokens
+			CFGP_REST::table_install();
+			## Create database table for the SEO redirection if plugin is new
+			CFGP_SEO_Table::table_install();
+			// Update database version
+			update_option(CFGP_NAME . '-db-version', CFGP_DATABASE_VERSION, false);
+			
+			$url = remove_query_arg( 'cf_geoplugin_db_update' );
+			$url = remove_query_arg( 'cf_geoplugin_nonce', $url );
+			if( wp_safe_redirect($url) ) {
+				exit;
+			}
+		}
 	}
 	
 	// WP Hidden links by plugin setting page

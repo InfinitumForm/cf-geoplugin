@@ -10,9 +10,11 @@
  */
 if(!class_exists('CFGP_DB_Cache')) : class CFGP_DB_Cache {
 	
-	public function __construct(){
-		global $wpdb;
-		$wpdb->query( $wpdb->prepare("DELETE FROM `{$wpdb->cfgp_cache}` WHERE `expire` != 0 AND `expire` <= %d", time() ));
+	public function __construct() {
+		if( self::table_exists() ) {
+			global $wpdb;
+			$wpdb->query( $wpdb->prepare("DELETE FROM `{$wpdb->cfgp_cache}` WHERE `expire` != 0 AND `expire` <= %d", time() ));
+		}
 	}
 	
 	/*
@@ -42,7 +44,7 @@ if(!class_exists('CFGP_DB_Cache')) : class CFGP_DB_Cache {
 			WHERE
 				`{$wpdb->cfgp_cache}`.`key` = %s
 		", $key ))) ) {
-			if(is_serialized($result)){
+			if(is_serialized($result) || self::is_serialized($result)){
 				$result = unserialize($result);
 			}
 			return $result;
@@ -67,7 +69,7 @@ if(!class_exists('CFGP_DB_Cache')) : class CFGP_DB_Cache {
 				$save = set_transient( $key, $value, $expire );
 			} else {
 				if($expire > 0) {
-					$expire = (CFGP_TIME+$expire);
+					$expire = (time()+$expire);
 				}
 				
 				if(is_array($value) || is_object($value) || is_bool($value)){
@@ -100,6 +102,10 @@ if(!class_exists('CFGP_DB_Cache')) : class CFGP_DB_Cache {
 	 */
     public static function set(string $key, $value, int $expire=0) {
 		
+		if( empty($value) ) {
+			return NULL;
+		}
+		
 		$key = self::key($key);
 		
 		if( !self::table_exists() ) {
@@ -126,13 +132,18 @@ if(!class_exists('CFGP_DB_Cache')) : class CFGP_DB_Cache {
 	 */
     public static function replace(string $key, $value, int $expire=0) {
 		
+		if( empty($value) ) {
+			sef::delete($key);
+			return NULL;
+		}
+		
 		$key = self::key($key);
 		
 		if( !self::table_exists() ) {
 			$save = set_transient( $key, $value, $expire );
 		} else {
 			if($expire > 0) {
-				$expire = (CFGP_TIME+$expire);
+				$expire = (time()+$expire);
 			}
 			
 			if(is_array($value) || is_object($value) || is_bool($value)){
@@ -269,6 +280,68 @@ if(!class_exists('CFGP_DB_Cache')) : class CFGP_DB_Cache {
 			) {$charset_collate}
 			");
 		}
+	}
+	
+	/*
+	 * Check is value is serialized
+	 * @verson    1.0.0
+	 */
+	private static function is_serialized( $data, $strict = true ) {
+		// If it isn't a string, it isn't serialized.
+		if ( ! is_string( $data ) ) {
+			return false;
+		}
+		$data = trim( $data );
+		if ( 'N;' === $data ) {
+			return true;
+		}
+		if ( strlen( $data ) < 4 ) {
+			return false;
+		}
+		if ( ':' !== $data[1] ) {
+			return false;
+		}
+		if ( $strict ) {
+			$lastc = substr( $data, -1 );
+			if ( ';' !== $lastc && '}' !== $lastc ) {
+				return false;
+			}
+		} else {
+			$semicolon = strpos( $data, ';' );
+			$brace     = strpos( $data, '}' );
+			// Either ; or } must exist.
+			if ( false === $semicolon && false === $brace ) {
+				return false;
+			}
+			// But neither must be in the first X characters.
+			if ( false !== $semicolon && $semicolon < 3 ) {
+				return false;
+			}
+			if ( false !== $brace && $brace < 4 ) {
+				return false;
+			}
+		}
+		$token = $data[0];
+		switch ( $token ) {
+			case 's':
+				if ( $strict ) {
+					if ( '"' !== substr( $data, -2, 1 ) ) {
+						return false;
+					}
+				} elseif ( false === strpos( $data, '"' ) ) {
+					return false;
+				}
+				// Or else fall through.
+			case 'a':
+			case 'O':
+				return (bool) preg_match( "/^{$token}:[0-9]+:/s", $data );
+			case 'b':
+			case 'i':
+			case 'd':
+				$end = $strict ? '$' : '';
+				return (bool) preg_match( "/^{$token}:[0-9.E+-]+;{$end}/", $data );
+		}
+		return false;
 	}
 	
 	/*

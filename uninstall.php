@@ -53,6 +53,7 @@ if('cf_geoplugin' === get_option( 'woocommerce_default_customer_address' )) {
 // Delete MySQL tables
 $wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}cfgp_rest_access_token" );
 $wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}cfgp_seo_redirection" );
+$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}cfgp_cache" );
 
 // Plugin statistic - remove
 $statistic = rtrim(plugin_dir_path(__FILE__), '/') . '/inc/classes/Statistic.php';

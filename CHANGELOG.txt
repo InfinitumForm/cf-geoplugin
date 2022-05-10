@@ -1,5 +1,11 @@
 == Changelog ==
 
+= 8.2.5 =
+* **GREAT UPDATE - BACKUP IS REQUIRED**
+* Added new internal database cache
+* Fixed cach bugs
+* Added support for WordPress version 6.0
+
 = 8.2.4 =
 * Fixed WP WP_ADMIN_DIR constant
 
