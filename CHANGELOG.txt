@@ -1,9 +1,15 @@
 == Changelog ==
 
+= 8.2.6 =
+* Adding browser and operating system recognition
+* Adding short codes for the desktop, mobile, browser and platform
+* Fixing UI and UX in the admin
+* Fixing plugin security
+
 = 8.2.5 =
 * **GREAT UPDATE - BACKUP IS REQUIRED**
 * Added new internal database cache
-* Fixed cach bugs
+* Fixed cache bugs
 * Added support for WordPress version 6.0
 
 = 8.2.4 =

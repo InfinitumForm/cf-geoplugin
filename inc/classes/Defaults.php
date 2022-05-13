@@ -223,6 +223,12 @@ class CFGP_Defaults {
 		'current_time' => NULL,
 		'current_date' => NULL,
 		'version' => NULL,
+		
+		'browser' => NULL,
+		'browser_version' => NULL,
+		'platform' => NULL,
+		'is_mobile' => 0,
+		
 		'is_proxy' => NULL,
 		'is_vat' => NULL,
 		'vat_rate'	=> NULL,

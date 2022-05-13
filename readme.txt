@@ -372,7 +372,7 @@ Please inform us if any of these errors occur via contact form on our website [h
 = 8.2.5 =
 * **GREAT UPDATE - BACKUP IS REQUIRED**
 * Added new internal database cache
-* Fixed cach bugs
+* Fixed cache bugs
 * Added support for WordPress version 6.0
 
 = 8.2.4 =
@@ -566,7 +566,7 @@ Please inform us if any of these errors occur via contact form on our website [h
 = 8.2.5 =
 * **GREAT UPDATE - BACKUP IS REQUIRED**
 * Added new internal database cache
-* Fixed cach bugs
+* Fixed cache bugs
 * Added support for WordPress version 6.0
 
 == Other Notes ==

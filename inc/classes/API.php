@@ -114,6 +114,10 @@ class CFGP_API extends CFGP_Global {
 					
 					$return['current_time']= date(CFGP_TIME_FORMAT, CFGP_TIME);
 					$return['current_date']= date(CFGP_DATE_FORMAT, CFGP_TIME);
+					$return['browser']= CFGP_Browser::instance()->getBrowser();
+					$return['browser_version']= CFGP_Browser::instance()->getVersion();
+					$return['platform']= CFGP_Browser::instance()->getPlatform();
+					$return['is_mobile']= (CFGP_Browser::instance()->isMobile() ? 1 : 0);
 					
 					if( $lookup = CFGP_DB_Cache::get('cfgp-api-available-lookup-' . $this->host) ) {
 						$return['lookup']=$lookup;
@@ -307,10 +311,14 @@ class CFGP_API extends CFGP_Global {
 							'version' => CFGP_VERSION,
 							'is_proxy' => ( ($return['proxy'] ?? NULL) ? 1 : (CFGP_IP::is_proxy() ? 1 : 0) ),
 							'is_vat' => ($return['isVAT'] ?? NULL) ? 1 : 0,
+							'is_mobile' => (CFGP_Browser::instance()->isMobile() ? 1 : 0),
 							'vat_rate'	=> ($return['VATrate'] ?? NULL),
 							'in_eu'	=> ($return['inEU'] ?? NULL) ? 1 : 0,
 							'gps'	=> ($return['gps'] ?? NULL) ? 1 : 0,
 							'accuracy_radius' => ($return['accuracy_radius'] ?? NULL),
+							'browser' => CFGP_Browser::instance()->getBrowser(),
+							'browser_version' => CFGP_Browser::instance()->getVersion(),
+							'platform' => CFGP_Browser::instance()->getPlatform(),
 							'runtime' => abs($return['runtime'] ?? 0),
 							'status' => ($return['status'] ?? NULL),
 							'lookup' => ($return['available_lookup'] ?? CFGP_LIMIT),

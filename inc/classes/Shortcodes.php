@@ -73,6 +73,12 @@ class CFGP_Shortcodes extends CFGP_Global {
 		// IS NOT PROXY
 		$this->add_shortcode( 'cfgeo_is_not_proxy', 'is_not_proxy' );
 		
+		// IS MOBILE
+		$this->add_shortcode( 'cfgeo_is_mobile', 'is_mobile' );
+		
+		// IS NOT MOBILE
+		$this->add_shortcode( 'cfgeo_is_desktop', 'is_desktop' );
+		
 		// GPS
 		$this->add_shortcode( 'cfgeo_gps', 'cfgeo_gps' );
 		
@@ -88,6 +94,8 @@ class CFGP_Shortcodes extends CFGP_Global {
 			$this->add_shortcode( 'not_in_eu',    'not_in_eu' );
 			$this->add_shortcode( 'is_proxy',     'is_proxy' );
 			$this->add_shortcode( 'is_not_proxy', 'is_not_proxy' );
+			$this->add_shortcode( 'is_mobile',    'is_mobile' );
+			$this->add_shortcode( 'is_desktop',   'is_desktop' );
 			$this->add_shortcode( 'gps',          'cfgeo_gps' );
 		}
 		
@@ -136,7 +144,7 @@ class CFGP_Shortcodes extends CFGP_Global {
 			'default'	=>	NULL,
 			'exclude'	=>	false,
 			'include'	=>	false
-        ), $atts );
+        ), $atts, $tag );
 
 		if( empty($atts) ) {
 			$array['return'] = 'ip';
@@ -312,7 +320,7 @@ class CFGP_Shortcodes extends CFGP_Global {
 			'country' 	=>	CFGP_U::api('country_code'),
 			'exclude'	=>	false,
 			'include'	=>	false,
-        ), $atts );
+        ), $atts, $tag );
 		
 		if($img_format && $cache) {
 			$arg = array_merge($arg, array('img'));
@@ -486,7 +494,7 @@ class CFGP_Shortcodes extends CFGP_Global {
 			'id'				=>	-1,
 			'posts_per_page'	=>	1,
 			'class'				=>	''
-		), $setup);
+		), $setup, $tag);
 		
 		// Stop if ID is not good
 		if( ! (intval($setup['id']) > 0) ) {
@@ -662,7 +670,7 @@ LIMIT 1
 			'title'					=>	CFGP_U::api('address'),
 			'address'				=>	'',
 			'pointer'				=>  '',
-		), $atts );
+		), $atts, $tag );
 		
 		
 
@@ -888,8 +896,7 @@ LIMIT 1
 				'no-symbol' => 0,
 				'auto' => 0
 			), 
-			$atts, 
-			'cfgeo_converter'
+			$atts, $tag
 		);
 		$symbols = CFGP_Defaults::CURRENCY_SYMBOL;
 		$find_symbol = preg_replace('%([^a-zA-Z]+)%i','',$content);
@@ -1197,7 +1204,7 @@ LIMIT 1
 			'default'	=>	NULL,
 			'exclude'	=>	false,
 			'include'	=>	false
-        ), $attr );
+        ), $attr, $tag );
 
 		$ip 		= $array['ip'];
 		$default 	= $array['default'];
@@ -1246,7 +1253,7 @@ LIMIT 1
 			'default'	=>	NULL,
 			'exclude'	=>	false,
 			'include'	=>	false
-        ), $attr );
+        ), $attr, $tag );
 
 		$ip 		= $array['ip'];
 		$default 	= $array['default'];
@@ -1286,6 +1293,107 @@ LIMIT 1
 		return self::__cache($tag, $default, (array)$array, $content, $cache);
 	}
 	
+	// IS MOBILE
+	public function is_mobile($attr, $content='', $tag){
+		
+		$cache = CFGP_U::is_attribute_exists('cache', $attr);
+		if(CFGP_U::is_attribute_exists('no_cache', $attr)) $cache = false;
+		$relative_match = (CFGP_U::is_attribute_exists('relative_match', $attr) ? true : false);
+		
+		$array = shortcode_atts( array(
+			'ip'		=>	false,
+			'default'	=>	NULL,
+			'exclude'	=>	false,
+			'include'	=>	false
+        ), $attr, $tag );
+
+		$ip 		= $array['ip'];
+		$default 	= $array['default'];
+		$exclude 	= $array['exclude'];
+		$include 	= $array['include'];
+		
+		if( !empty($ip) ) {
+			$CFGEO = CFGP_API::instance(true)->get('geo', $ip);
+		} else {
+			$CFGEO = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
+		}
+		
+		if(!empty($exclude) || !empty($include)) {
+			if(!empty($include))
+			{
+				if(!CFGP_U::recursive_array_search($include, $CFGEO, $relative_match)){
+					return self::__cache($tag, $default, (array)$array, $content, $cache);
+				}
+			}
+			
+			if(!empty($exclude))
+			{
+				if(CFGP_U::recursive_array_search($exclude, $CFGEO, $relative_match)){
+					return self::__cache($tag, $default, (array)$array, $content, $cache);
+				}
+			}
+		}
+		
+		if(isset($CFGEO['is_mobile']) && $CFGEO['is_mobile'])
+		{
+			return self::__cache($tag, $content, (array)$array, $default, $cache);
+		}
+		
+		return self::__cache($tag, $default, (array)$array, $content, $cache);
+	}
+	
+	// IS NOT MOBILE
+	public function is_desktop($attr, $content='', $tag){
+
+		$cache = CFGP_U::is_attribute_exists('cache', $attr);
+		if(CFGP_U::is_attribute_exists('no_cache', $attr)) $cache = false;
+		$relative_match = (CFGP_U::is_attribute_exists('relative_match', $attr) ? true : false);
+		
+		$array = shortcode_atts( array(
+			'ip'		=>	false,
+			'default'	=>	NULL,
+			'exclude'	=>	false,
+			'include'	=>	false
+        ), $attr, $tag );
+
+		$ip 		= $array['ip'];
+		$default 	= $array['default'];
+		$exclude 	= $array['exclude'];
+		$include 	= $array['include'];
+		
+		if( !empty($ip) ) {
+			$CFGEO = CFGP_API::instance(true)->get('geo', $ip);
+		} else {
+			$CFGEO = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
+		}
+		
+		if(!empty($exclude) || !empty($include)) {
+			if(!empty($include))
+			{
+				if(!CFGP_U::recursive_array_search($include, $CFGEO, $relative_match)){
+					return self::__cache($tag, $content, (array)$array, $default, $cache);
+				}
+			}
+			
+			if(!empty($exclude))
+			{
+				if(CFGP_U::recursive_array_search($exclude, $CFGEO, $relative_match)){
+					return self::__cache($tag, $content, (array)$array, $default, $cache);
+				}
+			}
+		}
+		
+		if(isset($CFGEO['is_mobile']))
+		{
+			if(!$CFGEO['is_mobile'])
+			{
+				return self::__cache($tag, $content, (array)$array, $default, $cache);
+			}
+		}
+		
+		return self::__cache($tag, $default, (array)$array, $content, $cache);
+	}
+	
 	// GPS
 	public function cfgeo_gps($attr, $content='', $tag){
 
@@ -1298,7 +1406,7 @@ LIMIT 1
 			'default'	=>	NULL,
 			'exclude'	=>	false,
 			'include'	=>	false
-        ), $attr );
+        ), $attr, $tag );
 
 		$ip 		= $array['ip'];
 		$default 	= $array['default'];
@@ -1347,7 +1455,7 @@ LIMIT 1
 			'default'	=>	NULL,
 			'exclude'	=>	false,
 			'include'	=>	false
-        ), $attr );
+        ), $attr, $tag );
 
 		$ip 		= $array['ip'];
 		$default 	= $array['default'];
@@ -1396,7 +1504,7 @@ LIMIT 1
 			'default'	=>	NULL,
 			'exclude'	=>	false,
 			'include'	=>	false
-        ), $attr );
+        ), $attr, $tag );
 
 		$ip 		= $array['ip'];
 		$default 	= $array['default'];
@@ -1448,7 +1556,7 @@ LIMIT 1
 			'default'	=>	NULL,
 			'exclude'	=>	false,
 			'include'	=>	false
-        ), $attr );
+        ), $attr, $tag );
 
 		$ip 		= $array['ip'];
 		$default 	= $array['default'];
@@ -1498,7 +1606,7 @@ LIMIT 1
 			'default'	=>	NULL,
 			'exclude'	=>	false,
 			'include'	=>	false
-        ), $attr );
+        ), $attr, $tag );
 
 		$ip 		= $array['ip'];
 		$default 	= $array['default'];

@@ -113,6 +113,7 @@ final class CFGP_Init{
 			CFGP_CLASS . '/Cache.php',					// Memory control class
 			CFGP_CLASS . '/Cache_DB.php',				// Cache control class
 			CFGP_CLASS . '/OS.php',						// Operating System info and tool class
+			CFGP_CLASS . '/Browser.php',				// Browser class
 			CFGP_CLASS . '/Defaults.php',				// Default values, data
 			CFGP_CLASS . '/Utilities.php',				// Utilities
 			CFGP_CLASS . '/Library.php',				// Library, data

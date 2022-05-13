@@ -73,11 +73,17 @@ $API = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
                                     	<td><code>[<?php echo $key; ?>]</code></td>
                                     <?php else : ?>
                                     	<td>
-											<code>[cfgeo return="<?php echo $key; ?>"]</code>
+											<code>[cfgeo return="<?php echo esc_attr($key); ?>"]</code>
 										</td>
                                     <?php endif; ?>
                                         <td>
-											<span class="cfgp-value"><?php echo $value; ?></span>
+											<span class="cfgp-value"><?php
+												if( in_array($key, ['cfgeo_flag', 'credit']) ) {
+													echo wp_kses_post( $value ?? '-' );
+												} else {
+													echo esc_html( $value ?? '-' );
+												}
+											?></span>
 											<?php if($API['gps'] == 1 && in_array($key, $gps_keys)) : ?>
 											<sup class="cfgp-gps-marker"><b><?php _e('GPS',CFGP_NAME); ?></b></sup>
 											<?php endif; ?>
@@ -114,9 +120,15 @@ $API = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
                                                 $API
                                             ), $API) as $key => $value) : if(in_array($key, $remove_tags)) continue; ?>
                                         <tr>
-                                            <td><code>[cfgeo_<?php echo $key; ?>]</code></td>
+                                            <td><code>[cfgeo_<?php echo esc_attr($key); ?>]</code></td>
                                             <td>
-												<span class="cfgp-value"><?php echo $value; ?></span>
+												<span class="cfgp-value"><?php
+													if( in_array($key, ['country_flag', 'credit']) ) {
+														echo wp_kses_post( $value ?? '-' );
+													} else {
+														echo esc_html( $value ?? '-' );
+													}
+												?></span>
 												<?php if($API['gps'] == 1 && in_array($key, $gps_keys)) : ?>
 												<sup class="cfgp-gps-marker"><b><?php _e('GPS',CFGP_NAME); ?></b></sup>
 												<?php endif; ?>
@@ -149,9 +161,15 @@ $API = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
                                 	<?php do_action('cfgp/table/before/tags', $API); ?>
                                     <?php foreach(apply_filters('cfgp/table/tags', $API) as $key => $value) : if(in_array($key, $remove_tags)) continue; ?>
                                     <tr>
-                                        <td><code>%%<?php echo $key; ?>%%</code></td>
+                                        <td><code>%%<?php echo esc_html($key); ?>%%</code></td>
                                         <td>
-											<span class="cfgp-value"><?php echo $value; ?></span>
+											<span class="cfgp-value"><?php
+												if( in_array($key, ['cfgeo_flag', 'credit']) ) {
+													echo wp_kses_post( $value ?? '-' );
+												} else {
+													echo esc_html( $value ?? '-' );
+												}
+											?></span>
 											<?php if($API['gps'] == 1 && in_array($key, $gps_keys)) : ?>
 											<sup class="cfgp-gps-marker"><b><?php _e('GPS',CFGP_NAME); ?></b></sup>
 											<?php endif; ?>
@@ -205,8 +223,8 @@ $API = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
 									$geo = sanitize_title($geo);
 									?>
                                     <tr>
-                                        <td><code>cfgeo-show-in-<?php echo $geo; ?></code></td>
-                                        <td><code>cfgeo-hide-from-<?php echo $geo; ?></code></td>
+                                        <td><code>cfgeo-show-in-<?php echo esc_html($geo); ?></code></td>
+                                        <td><code>cfgeo-hide-from-<?php echo esc_html($geo); ?></code></td>
                                     </tr>
                                     <?php endforeach; do_action('cfgp/table/after/css_property', $API); ?>
                                 </tbody>
