@@ -5,6 +5,7 @@
 * Adding short codes for the desktop, mobile, browser and platform
 * Fixing UI and UX in the admin
 * Fixing plugin security
+* Improved debbuging
 
 = 8.2.5 =
 * **GREAT UPDATE - BACKUP IS REQUIRED**

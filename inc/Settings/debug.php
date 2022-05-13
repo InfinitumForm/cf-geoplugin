@@ -64,9 +64,15 @@ if($NEW_API = CFGP_API::lookup(CFGP_U::request_string('cfgp_lookup'))){
                                     <?php if(in_array($key, array('cfgeo_flag'))) : ?>
                                     	<td>&nbsp;</td>
                                     <?php else : ?>
-                                    	<td><b><?php echo $key; ?></b></td>
+                                    	<td><b><?php echo esc_attr($key); ?></b></td>
                                     <?php endif; ?>
-                                        <td><?php echo $value; ?></td>
+                                        <td><?php
+											if( in_array($key, ['cfgeo_flag', 'credit', 'error_message']) ) {
+												echo wp_kses_post( $value || is_numeric($value) ? $value : '-' );
+											} else {
+												echo esc_html( $value || is_numeric($value) ? $value : '-' );
+											}
+										?></td>
                                     </tr>
                                     <?php endforeach; ?>
                                 </tbody>
@@ -261,28 +267,36 @@ if($NEW_API = CFGP_API::lookup(CFGP_U::request_string('cfgp_lookup'))){
                                         <td><?php echo ABSPATH; ?></td>
                                     </tr>
                                     <tr>
-                                        <td><strong><?php _e( 'PHP version', CFGP_NAME ); ?></strong></td>
+                                        <td><strong><?php _e( 'PHP: Version', CFGP_NAME ); ?></strong></td>
                                         <td>PHP <?php echo PHP_VERSION; ?></td>
                                     </tr>
                                     <tr>
-                                        <td><strong><?php _e( 'PHP version ID', CFGP_NAME ); ?></strong></td>
+                                        <td><strong><?php _e( 'PHP: Version ID', CFGP_NAME ); ?></strong></td>
                                         <td><?php echo PHP_VERSION_ID; ?></td>
                                     </tr>
                                     <tr>
-                                        <td><strong><?php _e( 'PHP architecture', CFGP_NAME ); ?></strong></td>
+                                        <td><strong><?php _e( 'PHP: Architecture', CFGP_NAME ); ?></strong></td>
                                         <td><?php printf(__('%dbit', CFGP_NAME), (CFGP_OS::is_php64() ? 64 : 32)); ?></td>
                                     </tr>
 									<tr>
-                                        <td><strong><?php _e( 'PHP memory usage of the plugin', CFGP_NAME ); ?></strong></td>
+                                        <td><strong><?php _e( 'PHP: Memory usage of the plugin', CFGP_NAME ); ?></strong></td>
                                         <td><?php echo CFGP_U::filesize(CFGP_Cache::get_size(), 2); ?></td>
                                     </tr>
                                     <tr>
-                                        <td><strong><?php _e( 'Operting system', CFGP_NAME ); ?></strong></td>
+                                        <td><strong><?php _e( 'PHP: Operting system', CFGP_NAME ); ?></strong></td>
                                         <td><?php echo CFGP_OS::get(); ?> <?php printf(__('%dbit', CFGP_NAME), CFGP_OS::architecture()); ?></td>
                                     </tr>
                                     <tr>
-                                        <td><strong><?php _e( 'User agent', CFGP_NAME ); ?></strong></td>
-                                        <td><?php echo CFGP_OS::user_agent(); ?></td>
+                                        <td><strong><?php _e( 'Browser', CFGP_NAME ); ?></strong></td>
+                                        <td><?php printf(_x('%1$s (%2$s)', 'Debug: User agent (Browser)', CFGP_NAME), CFGP_Browser::instance()->getBrowser(), CFGP_Browser::instance()->getVersion()); ?></td>
+                                    </tr>
+									<tr>
+                                        <td><strong><?php _e( 'User platform', CFGP_NAME ); ?></strong></td>
+                                        <td><?php echo esc_html( trim( sprintf(
+											'%1$s %2$s',
+											CFGP_Browser::instance()->getPlatform(),
+											(CFGP_Browser::instance()->isMobile() ? __( '(mobile device)', CFGP_NAME ) : '')
+										) ) ); ?></td>
                                     </tr>
                                     <tr>
                                         <td><strong><?php _e( 'WordPress debug', CFGP_NAME ); ?></strong></td>
