@@ -17,6 +17,7 @@ class CFGP__Plugin__woocommerce extends CFGP_Global
 	private $cf_conversion_rounded_option	= 'up';
 	private $cf_conversion_adjust 			= 0;
 	private $cf_conversion_in_admin 		= 'yes';
+	private $cf_save_location		 		= 'yes';
 	private $woocommerce_currency;
 
     private function __construct()
@@ -28,6 +29,7 @@ class CFGP__Plugin__woocommerce extends CFGP_Global
 		$this->cf_conversion_rounded_option	= get_option( 'woocommerce_cf_geoplugin_conversion_rounded_option', 'up');
 		$this->cf_conversion_adjust 		= get_option( 'woocommerce_cf_geoplugin_conversion_adjust', 0);
 		$this->cf_conversion_in_admin 		= get_option( 'woocommerce_cf_geoplugin_conversion_in_admin', 'yes' );
+	//	$this->cf_save_location 			= get_option( 'woocommerce_cf_geoplugin_save_checkout_location', 'yes' );
 		$this->woocommerce_currency 		= get_option( 'woocommerce_currency');
 		
 		if($this->woocommerce_currency)
@@ -42,8 +44,20 @@ class CFGP__Plugin__woocommerce extends CFGP_Global
 		}
 		
 		$this->add_action( 'wp_footer', 'wp_footer', 50 );
+	
+		if($this->cf_save_location == 'yes') {
+			$this->add_action('woocommerce_checkout_create_order', 'woocommerce_checkout_create_order', 20, 1);
+		}
     }
 	
+	// Check if woocommerce is installed and active
+    public function woocommerce_checkout_create_order( $order )
+    {
+		$order->update_meta_data( 
+			'woocommerce_cf_geoplugin_checkout_location',
+			apply_filters('cf_geoplugin_woocommerce_checkout_location', CFGP_U::api())
+		);
+	}
 	
 	// Check if woocommerce is installed and active
     public function check_woocommerce_instalation()

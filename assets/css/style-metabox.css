@@ -95,6 +95,21 @@
 	margin-bottom: 5px;
 }
 
+.cfgp-container .input-radio {
+	width:100%;
+}
+
+@media all and (min-width:1042px){
+	.cfgp-container .input-radio label{
+		display:inline-block !important;
+		width:auto !important;
+	}
+	
+	.input-radio .input-radio .cfgp-form-radio + .cfgp-form-radio{
+		margin-left:15px;
+	}
+}
+
 .cfgp-container .description{
 	font-size:0.75rem;
 	margin: 3px auto;
@@ -120,87 +135,83 @@
 	border-top: 1px solid #ccc;
 }
 
+.cfgp-form-radio input[type^="radio"]{
+	margin-right:2px;
+}
+
 /* Geo Tags */
 
 /* Always set the map height explicitly to define the size of the div
 * element that contains the map. */
 #cfgp-geo-tag-container #CFGP_Geo_Tag_Gmap {
-height: 400px;
+	height: 400px;
 }
 #cfgp-geo-tag-container #description {
-font-family: Roboto;
-font-size: 15px;
-font-weight: 300;
+	font-family: Roboto;
+	font-size: 15px;
+	font-weight: 300;
 }
 
 #cfgp-geo-tag-container #infowindow-content .title {
-font-weight: bold;
+	font-weight: bold;
 }
 
 #cfgp-geo-tag-container #infowindow-content {
-display: none;
+	display: none;
 }
 
 #cfgp-geo-tag-container #CFGP_Geo_Tag_Gmap #infowindow-content {
-display: inline;
+	display: inline;
 }
 
 #cfgp-geo-tag-container .pac-card {
-margin: 10px 10px 0 0;
-border-radius: 2px 0 0 2px;
-box-sizing: border-box;
--moz-box-sizing: border-box;
-outline: none;
-box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-background-color: #fff;
-font-family: Roboto;
+	margin: 10px 10px 0 0;
+	border-radius: 2px 0 0 2px;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	outline: none;
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+	background-color: #fff;
+	font-family: Roboto;
 }
 
 #cfgp-geo-tag-container #pac-container {
-padding-bottom: 12px;
-margin-right: 12px;
+	padding-bottom: 12px;
+	margin-right: 12px;
 }
 
 #cfgp-geo-tag-container .pac-controls {
-display: inline-block;
-padding: 5px 11px;
+	display: inline-block;
+	padding: 5px 11px;
 }
 #cfgp-geo-tag-container .pac-controls label {
-font-family: Roboto;
-font-size: 13px;
-font-weight: 300;
+	font-family: Roboto;
+	font-size: 13px;
+	font-weight: 300;
 }
 #cfgp-geo-tag-container #pac-input {
-font-family: Roboto;
-background-color: #fff;
-font-size: 15px;
-font-weight: 300;
-margin-left: 12px;
-padding: 10px 11px 10px 13px;
-text-overflow: ellipsis;
-width: 500px;
+	font-family: Roboto;
+	background-color: #fff;
+	font-size: 15px;
+	font-weight: 300;
+	margin-left: 12px;
+	padding: 10px 11px 10px 13px;
+	text-overflow: ellipsis;
+	width: 500px;
 }
 #cfgp-geo-tag-container #pac-input:focus {
-border-color: #4d90fe;
+	border-color: #4d90fe;
 }
 #cfgp-geo-tag-container #title {
-color: #fff;
-background-color: #4d90fe;
-font-size: 25px;
-font-weight: 500;
-padding: 6px 12px;
+	color: #fff;
+	background-color: #4d90fe;
+	font-size: 25px;
+	font-weight: 500;
+	padding: 6px 12px;
 }
 #cfgp-geo-tag-container #target {
-width: 345px;
+	width: 345px;
 }
 #cfgp-geo-tag-container .cfgp-input {
-width: 300px;
-}
-
-.cfgp-form-radio input[type^="radio"]{
-	margin-right:2px;
-}
-
-.input-radio .cfgp-form-radio + .cfgp-form-radio{
-	margin-left:15px;
+	width: 300px;
 }

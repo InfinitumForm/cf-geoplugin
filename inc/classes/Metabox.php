@@ -19,6 +19,7 @@ if(!class_exists('CFGP_Metabox')) : class CFGP_Metabox extends CFGP_Global {
 	public function __construct(){
 		$this->add_action('add_meta_boxes', 'add_seo_redirection', 1);
 		$this->add_action('add_meta_boxes', 'add_geo_tags', 1);
+	//	$this->add_action('add_meta_boxes', 'add_page_restriction', 1);
 		$this->add_action('admin_enqueue_scripts', 'register_style');
 		$this->add_action('save_post', 'save_post');
 	}
@@ -479,7 +480,7 @@ function CF_GeoPlugin_Google_Map_GeoTag() {
             <?php CFGP_Form::select_http_code(array('name'=>"{$this->metabox}[{$i}][http_code]", 'id'=>"{$this->metabox}-{$i}-http_code"), $http_code); ?>
             <span class="description"><?php _e( 'Select the desired HTTP redirection.', CFGP_NAME ); ?></span>
         </div>
-        <div class="cfgp-col cfgp-col-3 input-radio">
+        <div class="cfgp-col cfgp-col-3">
             <label><?php _e('Enable this redirection', CFGP_NAME); ?></label>
             <?php
                 CFGP_Form::radio(
@@ -492,7 +493,7 @@ function CF_GeoPlugin_Google_Map_GeoTag() {
                 );
             ?>
         </div>
-        <div class="cfgp-col cfgp-col-sm-6 cfgp-col-3 input-radio">
+        <div class="cfgp-col cfgp-col-sm-6 cfgp-col-3">
             <label><?php _e('Redirect only once', CFGP_NAME); ?></label>
             <?php
                 CFGP_Form::radio(
@@ -505,13 +506,60 @@ function CF_GeoPlugin_Google_Map_GeoTag() {
                 );
             ?>
         </div>
-        <div class="cfgp-col cfgp-col-sm-6 cfgp-col-3 input-radio"></div>
-        <div class="cfgp-col cfgp-col-sm-6 cfgp-col-3 cfgp-col-content-right cfgp-repeater-actions">
+        <div class="cfgp-col cfgp-col-sm-6 cfgp-col-6 cfgp-col-content-right cfgp-repeater-actions">
         	<button type="button" class="button button-link cfgp-remove-seo-redirection"><i class="fa fa-times"></i> <?php _e( 'Remove', CFGP_NAME ); ?></button>
         	<button type="button" class="button button-primary cfgp-add-seo-redirection"><i class="fa fa-plus"></i> <?php _e( 'Add New Redirection', CFGP_NAME ); ?></button>
         </div>
     </div>
     <?php endforeach; ?>
+</div>
+	<?php }
+	
+	/**
+	 * Add page restriction
+	 */
+	public function add_page_restriction() {
+		$screen = get_current_screen();
+		$this->add_meta_box(
+			CFGP_NAME . '-page-restriction',				// Unique ID
+			__( 'Page Restriction', CFGP_NAME ),			// Box title
+			'add_page_restriction__callback',						// Content callback, must be of type callable
+			$screen->post_type,								// Post type
+			'side'
+		);
+	}
+	
+	/**
+	 * Add page restriction callback
+	 */
+	public function add_page_restriction__callback( $post ){
+		$screen = get_current_screen();
+		if(isset( $screen->post_type ) && $screen->post_type === 'cf-geoplugin-banner') return;
+		?>
+<div class="cfgp-container cfgp-page-restriction-container cfgp-country-region-city-multiple-form">
+	<p><?php _e('Use these options if you want to hide the current page from visitors from a specific geo location without SEO redirection.', CFGP_NAME); ?></p>
+	<p>
+		<label for="cfgp_hide_in_countries"><?php _e('Select Countries', CFGP_NAME); ?></label>
+        <?php CFGP_Form::select_countries(array('name'=>'cfgp_hide_in_countries', 'id'=>'cfgp_hide_in_countries'), $country, true);?>
+	</p>
+	<p>
+		<label for="cfgp_hide_in_regions"><?php _e('Select Regions', CFGP_NAME); ?></label>
+        <?php CFGP_Form::select_regions(array('name'=>'cfgp_hide_in_regions', 'id'=>'cfgp_hide_in_regions'), $country, true);?>
+	</p>
+	<p>
+		<label for="cfgp_hide_in_cities"><?php _e('Select Cities', CFGP_NAME); ?></label>
+        <?php CFGP_Form::select_cities(array('name'=>'cfgp_hide_in_cities', 'id'=>'cfgp_hide_in_cities'), $country, true);?>
+	</p>
+	<p>
+		<label for="cfgp_default_page"><?php _e('Select page', CFGP_NAME); ?></label><br>
+		<select name="cfgp_default_page" id="cfgp_default_page" class="cfgp_select2">
+			<option value="page_404"><?php _e('404 Page (default)', CFGP_NAME); ?></option>
+			<?php if($pages = get_pages()) : foreach($pages as $page) : ?>
+			<option value="<?php echo absint($page->ID); ?>"><?php echo esc_html($page->post_title); ?></option>
+			<?php endforeach; endif; ?>
+		</select>
+		<span class="description cfgp-description"><?php _e('Select the page to be displayed instead of the current one for the defined locations.', CFGP_NAME); ?></span>
+	</p>
 </div>
 	<?php }
 	
