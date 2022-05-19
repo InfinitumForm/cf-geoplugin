@@ -200,8 +200,35 @@ if($flag = CFGP_U::admin_country_flag($GEO->country_code)) {
 	<br><?php esc_html_e( 'Browser:', CFGP_NAME ); ?> <?php echo esc_html($GEO->browser); ?>
 	<br><?php esc_html_e( 'Version:', CFGP_NAME ); ?> <?php echo esc_html($GEO->browser_version); ?>
 </p>
-	<?php else : ?>
-<p><strong><?php esc_html_e( 'There is no information for this order.', CFGP_NAME ); ?></strong></p>
+	<?php
+		else :
+		$browser = CFGP_Browser::instance(get_post_meta($post->ID, '_customer_user_agent', true));
+	?>
+<p><strong><?php esc_html_e( 'Order IP address:', CFGP_NAME ); ?></strong><br><?php
+if($flag = CFGP_U::admin_country_flag(get_post_meta($post->ID, '_billing_country', true))) {
+	echo $flag;
+} else {
+	echo '<span class="fa fa-globe"></span>';
+}
+?>&nbsp;&nbsp;<big><?php echo esc_html(get_post_meta($post->ID, '_customer_ip_address', true)); ?></big></p>
+<p><strong><?php esc_html_e( 'Order Location:', CFGP_NAME ); ?></strong><br><?php
+	$country = get_post_meta($post->ID, '_billing_country', true);
+	$location = array(
+		get_post_meta($post->ID, '_billing_city', true),
+		(WC()->countries->get_states( $country )[get_post_meta($post->ID, '_billing_state', true)] ?? NULL),
+		(WC()->countries->countries[$country] ?? NULL) . ' (' . $country . ')'
+	);
+	$location = array_map('trim', $location);
+	$location = array_filter($location);
+	echo esc_html( join(', ', $location) );
+?></p>
+<p><strong><?php esc_html_e( 'Customer User Agent:', CFGP_NAME ); ?></strong>
+	<br><?php esc_html_e( 'Platform:', CFGP_NAME ); ?> <?php echo esc_html($browser->getPlatform()); ?>
+	<br><?php esc_html_e( 'Browser:', CFGP_NAME ); ?> <?php echo esc_html($browser->getBrowser()); ?>
+	<br><?php esc_html_e( 'Version:', CFGP_NAME ); ?> <?php echo esc_html($browser->getVersion()); ?>
+</p>
+<hr>
+<p class="description"><?php esc_html_e( 'NOTE: This geo location is based on the default WooCommerce algorithm.', CFGP_NAME ); ?></p>
 	<?php endif;
 	}
 	
