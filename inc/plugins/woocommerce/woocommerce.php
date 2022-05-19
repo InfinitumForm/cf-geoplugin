@@ -13,10 +13,7 @@ class CFGP__Plugin__woocommerce extends CFGP_Global
      * CF Geo Plugin converter option
      */
     private $cf_conversion					= 'original';
-	private $cf_conversion_rounded 			= 0;
-	private $cf_conversion_rounded_option	= 'up';
 	private $cf_conversion_adjust 			= 0;
-	private $cf_conversion_in_admin 		= 'yes';
 	private $cf_save_location		 		= 'yes';
 	private $woocommerce_currency;
 
@@ -25,11 +22,7 @@ class CFGP__Plugin__woocommerce extends CFGP_Global
         $this->add_action( 'init', 'check_woocommerce_instalation', 10 );
 		
 		$this->cf_conversion 				= get_option( 'woocommerce_cf_geoplugin_conversion', 'original');
-		$this->cf_conversion_rounded 		= get_option( 'woocommerce_cf_geoplugin_conversion_rounded', 0);
-		$this->cf_conversion_rounded_option	= get_option( 'woocommerce_cf_geoplugin_conversion_rounded_option', 'up');
 		$this->cf_conversion_adjust 		= get_option( 'woocommerce_cf_geoplugin_conversion_adjust', 0);
-		$this->cf_conversion_in_admin 		= get_option( 'woocommerce_cf_geoplugin_conversion_in_admin', 'yes' );
-	//	$this->cf_save_location 			= get_option( 'woocommerce_cf_geoplugin_save_checkout_location', 'yes' );
 		$this->woocommerce_currency 		= get_option( 'woocommerce_currency');
 		
 		if($this->woocommerce_currency)
@@ -45,19 +38,11 @@ class CFGP__Plugin__woocommerce extends CFGP_Global
 		
 		$this->add_action( 'wp_footer', 'wp_footer', 50 );
 	
-		if($this->cf_save_location == 'yes') {
-			$this->add_action('woocommerce_checkout_create_order', 'woocommerce_checkout_create_order', 20, 1);
+		if('yes' === get_option( 'woocommerce_cf_geoplugin_save_checkout_location', 'no' )) {
+			$this->add_action('woocommerce_checkout_create_order', 'woocommerce_geolocation_log', 20, 1);
+			$this->add_action('add_meta_boxes', 'customer_order_info', 1);
 		}
     }
-	
-	// Check if woocommerce is installed and active
-    public function woocommerce_checkout_create_order( $order )
-    {
-		$order->update_meta_data( 
-			'woocommerce_cf_geoplugin_checkout_location',
-			apply_filters('cf_geoplugin_woocommerce_checkout_location', CFGP_U::api())
-		);
-	}
 	
 	// Check if woocommerce is installed and active
     public function check_woocommerce_instalation()
@@ -67,7 +52,7 @@ class CFGP__Plugin__woocommerce extends CFGP_Global
 			if($this->cf_conversion != 'original')
 			{
 				// All prices conversion
-				if($this->cf_conversion_in_admin == 'yes') {
+				if('yes' === get_option( 'woocommerce_cf_geoplugin_conversion_in_admin', 'yes' )) {
 					if( !is_admin() ) $this->add_filter( 'wc_price', 'wc_price', 99, 3 );
 				} else {
 					$this->add_filter( 'wc_price', 'wc_price', 99, 3 );
@@ -108,8 +93,13 @@ class CFGP__Plugin__woocommerce extends CFGP_Global
 			$this->add_filter( 'woocommerce_geolocation_ajax_get_location_hash', 'woocommerce_geolocation_ajax_get_location_hash', 10, 1 );
 			$this->add_filter( 'woocommerce_get_tax_location', 'woocommerce_get_tax_location', 10, 3 );
 			$this->add_filter( 'woocommerce_customer_default_location', 'woocommerce_customer_default_location', 10, 1 );
+			$this->add_action('woocommerce_checkout_create_order', 'woocommerce_change_ip', 100, 1);
 		}
     }
+	
+	public function woocommerce_change_ip ( $order ) {
+		$order->update_meta_data('_customer_ip_address', CFGP_U::api('ip'));
+	}
 	
 	public function woocommerce_update_options_general ($settings) {
 		CFGP_Options::set('base_currency', get_option('woocommerce_currency'));
@@ -171,7 +161,57 @@ class CFGP__Plugin__woocommerce extends CFGP_Global
 		return CFGP_U::api('continent_code') . ':' . CFGP_U::api('country_code');
 	}
 	
+	/**
+     * Customer Order information
+     */
+	public function customer_order_info(){
+		$screen = get_current_screen();
+		if( isset( $screen->post_type ) && in_array($screen->post_type, ['shop_order']) ){
+			$this->add_meta_box(
+				CFGP_NAME . '-log',								// Unique ID
+				__( 'GEO Location Info', CFGP_NAME ),			// Box title
+				'geo_location_info__callback',					// Content callback, must be of type callable
+				$screen->post_type,								// Post type
+				'side',
+				'high'
+			);
+		}
+		
+		return;
+	}
 	
+	// Customer Order information callback
+	public function geo_location_info__callback($post) {
+		if($GEO = get_post_meta($post->ID, '_cfgp_location_log', true)):
+		$GEO = (object)$GEO;
+?>
+<p><strong><?php esc_html_e( 'Order IP address:', CFGP_NAME ); ?></strong><br><?php
+if($flag = CFGP_U::admin_country_flag($GEO->country_code)) {
+	echo $flag;
+} else {
+	echo '<span class="fa fa-globe"></span>';
+}
+?>&nbsp;&nbsp;<big><?php echo esc_html($GEO->ip); ?></big></p>
+<p><strong><?php esc_html_e( 'Order Timestamp:', CFGP_NAME ); ?></strong><br><?php echo esc_html($GEO->timestamp_readable); ?></p>
+<p><strong><?php esc_html_e( 'Order Location:', CFGP_NAME ); ?></strong><br><?php echo esc_html($GEO->address); ?></p>
+<p><strong><?php esc_html_e( 'Timezone:', CFGP_NAME ); ?></strong><br><?php echo esc_html($GEO->timezone); ?></p>
+<p><strong><?php esc_html_e( 'Customer User Agent:', CFGP_NAME ); ?></strong>
+	<br><?php esc_html_e( 'Platform:', CFGP_NAME ); ?> <?php echo esc_html($GEO->platform); ?>
+	<br><?php esc_html_e( 'Browser:', CFGP_NAME ); ?> <?php echo esc_html($GEO->browser); ?>
+	<br><?php esc_html_e( 'Version:', CFGP_NAME ); ?> <?php echo esc_html($GEO->browser_version); ?>
+</p>
+	<?php else : ?>
+<p><strong><?php esc_html_e( 'There is no information for this order.', CFGP_NAME ); ?></strong></p>
+	<?php endif;
+	}
+	
+	// Log customer geolocation on order
+    public function woocommerce_geolocation_log( $order ) {
+		$order->update_meta_data( 
+			'_cfgp_location_log',
+			apply_filters('cf_geoplugin_woocommerce_checkout_log', CFGP_U::api())
+		);
+	}
 	
 	// Adding extra code to footer
 	public function admin_footer(){ ?>
@@ -308,9 +348,9 @@ class CFGP__Plugin__woocommerce extends CFGP_Global
 	// Modify raw price
 	public function calculate_and_modify_price($price){
 		
-		if( $price && $this->cf_conversion_rounded == 'yes' )
+		if( $price && 'yes' === get_option( 'woocommerce_cf_geoplugin_conversion_rounded', 'no') )
 		{
-			switch($this->cf_conversion_rounded_option)
+			switch( get_option( 'woocommerce_cf_geoplugin_conversion_rounded_option', 'up') )
 			{
 				default:
 				case 'up':
@@ -338,7 +378,20 @@ class CFGP__Plugin__woocommerce extends CFGP_Global
             $new_settings[$key] = $values;
             $key++;
 
-            if( $values['id'] == 'woocommerce_currency_pos' )
+            if( $values['id'] === 'woocommerce_default_customer_address' )
+            {
+				$new_settings[$key] = array(
+                    'title'    => __( 'GEO location info log', CFGP_NAME ),
+                    'desc'     => __( 'Activate your customer\'s geo location log.', CFGP_NAME ),
+                    'class'    => 'wc-enhanced-checkbox',
+                    'id'       => 'woocommerce_cf_geoplugin_save_checkout_location',
+                    'default'  => 'no',
+                    'type'     => 'checkbox',
+                    'desc_tip' => __( 'By activating this option, you enable the geolocation of your customers to be anonymously logged and displayed within the orders.', CFGP_NAME )
+                );
+				$key++;
+			}
+			else if( $values['id'] === 'woocommerce_currency_pos' )
             {
                 $new_settings[$key] = array(
                     'title'    => __( 'Currency conversion options', CFGP_NAME ),

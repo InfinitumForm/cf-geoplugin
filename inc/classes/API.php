@@ -24,11 +24,26 @@ class CFGP_API extends CFGP_Global {
 			
 			if($dry_run !== true)
 			{
-				// Collect geo data & DNS
+				// Collect geo data
 				$return = $this->get('geo');
-				if (CFGP_Options::get('enable_dns_lookup', 0)) {
-					$return = array_merge($return, $this->get('dns'));
+				
+				// Fix response
+				if( !is_array($return) ) {
+					$return = [];
 				}
+				
+				// Collect DNS
+				if (CFGP_Options::get('enable_dns_lookup', 0)) {
+					$dns = $this->get('dns');
+					
+					if( !is_array($dns) ) {
+						$dns = [];
+					}
+					
+					$return = array_merge($return, $dns);
+				}
+				
+				// Add filter
 				$return = array_merge(
 					apply_filters( 'cfgp/api/default/fields', CFGP_Defaults::API_RETURN),
 					$return
@@ -37,6 +52,7 @@ class CFGP_API extends CFGP_Global {
 				// Clear cache
 				CFGP_Cache::delete('transfer_dns_records');
 
+				// Merge all
 				$return = apply_filters( 'cfgp/api/results', $return, CFGP_Defaults::API_RETURN);
 
 				// Save API data to array
