@@ -369,6 +369,15 @@ Please inform us if any of these errors occur via contact form on our website [h
 
 == Changelog ==
 
+= 8.2.7 =
+* **PLUGIN UPDATE: Mandatory PHP extensions cURL and Multibyte String**
+* **WOOCOMMERCE UPDATE: Revisit WooCommerce settings after update**
+* Added requirements for the PHP extensions cURL and Multibyte String
+* Added WooCommerce geo location info log to orders
+* Added WooCommerce sidebar widget for the geo location info log
+* Fixed WooCommerce geolocate for orders
+* Updated Library
+
 = 8.2.6 =
 * Adding browser and operating system recognition
 * Adding short codes for the desktop, mobile, browser and platform
@@ -569,6 +578,15 @@ Please inform us if any of these errors occur via contact form on our website [h
 * Fixed issues with Siteground integration
 
 == Upgrade Notice ==
+
+= 8.2.7 =
+* **PLUGIN UPDATE: Mandatory PHP extensions cURL and Multibyte String**
+* **WOOCOMMERCE UPDATE: Revisit WooCommerce settings after update**
+* Added requirements for the PHP extensions cURL and Multibyte String
+* Added WooCommerce geo location info log to orders
+* Added WooCommerce sidebar widget for the geo location info log
+* Fixed WooCommerce geolocate for orders
+* Updated Library
 
 = 8.2.6 =
 * Adding browser and operating system recognition

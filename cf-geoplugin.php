@@ -13,7 +13,7 @@
  * Plugin Name:       WordPress Geo Plugin
  * Plugin URI:        https://cfgeoplugin.com/
  * Description:       Create Dynamic Content, Banners and Images on Your Website Based On Visitor Geo Location By Using Shortcodes With CF Geo Plugin.
- * Version:           8.2.6
+ * Version:           8.2.7
  * Requires at least: 5.0
  * Requires PHP:      7.0
  * Author:            INFINITUM FORM
@@ -46,7 +46,7 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
 
 // Library version
 if ( ! defined( 'CFGP_LIBRARY_VERSION' ) ){
-	define( 'CFGP_LIBRARY_VERSION', '1.0.0');
+	define( 'CFGP_LIBRARY_VERSION', '1.0.1');
 }
 // Database version
 if ( ! defined( 'CFGP_DATABASE_VERSION' ) ){
