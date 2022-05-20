@@ -211,6 +211,7 @@ if($flag = CFGP_U::admin_country_flag(get_post_meta($post->ID, '_billing_country
 	echo '<span class="fa fa-globe"></span>';
 }
 ?>&nbsp;&nbsp;<big><?php echo esc_html(get_post_meta($post->ID, '_customer_ip_address', true)); ?></big></p>
+<p><strong><?php esc_html_e( 'Order Timestamp:', CFGP_NAME ); ?></strong><br><?php echo date('D, j M Y, H:i:s O', strtotime($post->post_date_gmt)) ?></p>
 <p><strong><?php esc_html_e( 'Order Location:', CFGP_NAME ); ?></strong><br><?php
 	$country = get_post_meta($post->ID, '_billing_country', true);
 	$location = array(

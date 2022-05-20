@@ -21,6 +21,7 @@ if(!class_exists('CFGP_Requirements')) : class CFGP_Requirements {
 	private $wp = '5.4';
 	private $slug = 'cf-geoplugin';
 	private $file;
+	private $required_php_extensions = array();
 
 	public function __construct( $args ) {
 		foreach ( array( 'title', 'php', 'wp', 'file' ) as $setting ) {
@@ -32,6 +33,19 @@ if(!class_exists('CFGP_Requirements')) : class CFGP_Requirements {
 		if( is_admin() ) {
 			$this->update_database_alert();
 		}
+		
+		$this->required_php_extensions = array(
+			'curl_version' => (object)array(
+				'name' => esc_html( 'cURL', CFGP_NAME),
+				'desc' => esc_html( 'cURL PHP extension', CFGP_NAME),
+				'link' => esc_url('https://www.php.net/manual/en/curl.installation.php')
+			),
+			'mb_substr' => (object)array(
+				'name' => esc_html( 'Multibyte String', CFGP_NAME),
+				'desc' => esc_html( 'Multibyte String PHP extension (mbstring)', CFGP_NAME),
+				'link' => esc_url('https://www.php.net/manual/en/mbstring.installation.php')
+			)
+		);
 		
 		add_action( "in_plugin_update_message-{$this->slug}/{$this->slug}.php", array(&$this, 'in_plugin_update_message'), 10, 2 );
 	}
@@ -60,15 +74,52 @@ if(!class_exists('CFGP_Requirements')) : class CFGP_Requirements {
 	 * Detect if plugin passes all checks 
 	 */
 	public function passes() {
-		$passes = ( $this->validate_php_version() && $this->validate_wp_version() );
+		$passes = ( $this->validate_php_version() && $this->validate_wp_version() && $this->validate_php_modules() );
 		if ( ! $passes ) {
 			add_action( 'admin_notices', function () {
 				if ( isset( $this->file ) ) {
 					deactivate_plugins( plugin_basename( $this->file ) );
+					wp_mail(
+						get_option('admin_email'),
+						sprintf(__('NOTICE: The %s is disabled for some reason!', CFGP_NAME), $this->title),
+						sprintf(__("There has been some incompatibility with your server and %s is disabled.\r\n\r\nPlease visit your admin panel, go to plugins page and check what is causing this problem.", CFGP_NAME), $this->title)
+					);
 				}
 			} );
 		}
 		return $passes;
+	}
+	
+	/*
+	 * Check PHP modules 
+	 */
+	private function validate_php_modules() {
+		if(empty($this->required_php_extensions)) {
+			return true;
+		}
+		
+		$modules = array_map('function_exists', array_keys($this->required_php_extensions));
+		$modules = array_filter($modules, function($m){return !empty($m);} );
+		
+		if ( count($modules) === count($this->required_php_extensions) ) {
+			return true;
+		}
+		
+		add_action( 'admin_notices', function () {
+			echo '<div class="notice notice-error">';
+			printf('<p><strong>%s</strong></p><ol>', sprintf(__('%s requires the following PHP modules (extensions) to be activated:', CFGP_NAME), $this->title));
+			foreach($this->required_php_extensions as $fn => $obj) {
+				if( !function_exists($fn) ) {
+					printf('<li>%1$s - <a href="%2s" target="_blank">%3$s</a></li>', $obj->desc, $obj->link, __('install', CFGP_NAME));
+				}
+			}
+			echo '</ol>';
+			printf('<p>%s</p>', __('Without these PHP modules you will not be able to use this plugin.', CFGP_NAME));
+			printf('<p>%s</p>', __('Your hosting providers can help you to solve this problem. Contact them and request activation of the missing PHP modules.', CFGP_NAME));
+			echo '</div>';
+		} );
+		
+		return false;
 	}
 
 	/*
