@@ -80,7 +80,7 @@ if(!empty($block_city) && !is_array($block_city) && preg_match('/\]|\[/', $block
 
 ?>
 <div class="wrap cfgp-wrap" id="<?php echo $_GET['page']; ?>">
-	<h1 class="wp-heading-inline"><i class="fa fa-lock"></i> <?php _e('Anti Spam Protection & Site Restriction', CFGP_NAME); ?></h1>
+	<h1 class="wp-heading-inline"><i class="cfa cfa-lock"></i> <?php _e('Anti Spam Protection & Site Restriction', CFGP_NAME); ?></h1>
     <hr class="wp-header-end">
     <div id="post">
     	<div id="poststuff" class="metabox-holder has-right-sidebar">
@@ -90,9 +90,9 @@ if(!empty($block_city) && !is_array($block_city) && preg_match('/\]|\[/', $block
 					<form method="post" action="<?php echo CFGP_U::admin_url('admin.php?page=cf-geoplugin-defender&save_defender=true&nonce='.wp_create_nonce(CFGP_NAME.'-save-defender')); ?>">
                     	<div class="nav-tab-wrapper-chosen">
                         	<nav class="nav-tab-wrapper">
-                            	<a href="javascript:void(0);" class="nav-tab nav-tab-active" data-id="#defender-settings"><i class="fa fa-wrench"></i><span class="label"> <?php _e('General Defender Settings', CFGP_NAME); ?></span></a>
-                                <a href="javascript:void(0);" class="nav-tab" data-id="#defender-settings-page"><i class="fa fa-file"></i><span class="label"> <?php _e('Defender page', CFGP_NAME); ?></span></a>
-                                <a href="<?php echo CFGP_U::admin_url('admin.php?page=cf-geoplugin-defender&preview=true'); ?>" class="nav-tab" target="_blank"><i class="fa fa-desktop"></i><span class="label"> <?php _e('Preview', CFGP_NAME); ?></span></a>
+                            	<a href="javascript:void(0);" class="nav-tab nav-tab-active" data-id="#defender-settings"><i class="cfa cfa-wrench"></i><span class="label"> <?php _e('General Defender Settings', CFGP_NAME); ?></span></a>
+                                <a href="javascript:void(0);" class="nav-tab" data-id="#defender-settings-page"><i class="cfa cfa-file"></i><span class="label"> <?php _e('Defender page', CFGP_NAME); ?></span></a>
+                                <a href="<?php echo CFGP_U::admin_url('admin.php?page=cf-geoplugin-defender&preview=true'); ?>" class="nav-tab" target="_blank"><i class="cfa cfa-desktop"></i><span class="label"> <?php _e('Preview', CFGP_NAME); ?></span></a>
                             </nav>
                             
                             <div class="cfgp-tab-panel cfgp-tab-panel-active" id="defender-settings">
@@ -100,11 +100,11 @@ if(!empty($block_city) && !is_array($block_city) && preg_match('/\]|\[/', $block
                                 
                                 <div class="nav-tab-wrapper-chosen cfgp-country-region-city-multiple-form">
                                     <nav class="nav-tab-wrapper">
-                                        <a href="javascript:void(0);" class="nav-tab nav-tab-active" data-id="#ip-restriction"><i class="fa fa-shield"></i><span class="label"> <?php _e('IP Restriction', CFGP_NAME); ?></span></a>
-                                        <a href="javascript:void(0);" class="nav-tab" data-id="#country-restriction"><i class="fa fa-globe"></i><span class="label"> <?php _e('Country Restriction', CFGP_NAME); ?></span></a>
-                                        <a href="javascript:void(0);" class="nav-tab" data-id="#region-restriction"><i class="fa fa-map-marker"></i><span class="label"> <?php _e('Region Restriction', CFGP_NAME); ?></span></a>
-                                        <a href="javascript:void(0);" class="nav-tab" data-id="#city-restriction"><i class="fa fa-building-o"></i><span class="label"> <?php _e('City Restriction', CFGP_NAME); ?></span></a>
-										<a href="javascript:void(0);" class="nav-tab" data-id="#proxy-restriction"><i class="fa fa-sitemap"></i><span class="label"> <?php _e('Proxy Restriction', CFGP_NAME); ?></span></a>
+                                        <a href="javascript:void(0);" class="nav-tab nav-tab-active" data-id="#ip-restriction"><i class="cfa cfa-shield"></i><span class="label"> <?php _e('IP Restriction', CFGP_NAME); ?></span></a>
+                                        <a href="javascript:void(0);" class="nav-tab" data-id="#country-restriction"><i class="cfa cfa-globe"></i><span class="label"> <?php _e('Country Restriction', CFGP_NAME); ?></span></a>
+                                        <a href="javascript:void(0);" class="nav-tab" data-id="#region-restriction"><i class="cfa cfa-map-marker"></i><span class="label"> <?php _e('Region Restriction', CFGP_NAME); ?></span></a>
+                                        <a href="javascript:void(0);" class="nav-tab" data-id="#city-restriction"><i class="cfa cfa-building-o"></i><span class="label"> <?php _e('City Restriction', CFGP_NAME); ?></span></a>
+										<a href="javascript:void(0);" class="nav-tab" data-id="#proxy-restriction"><i class="cfa cfa-sitemap"></i><span class="label"> <?php _e('Proxy Restriction', CFGP_NAME); ?></span></a>
                                     </nav>
                                     <div class="cfgp-tab-panel cfgp-tab-panel-active" id="ip-restriction">
                                     	<div class="cfgp-form-group">

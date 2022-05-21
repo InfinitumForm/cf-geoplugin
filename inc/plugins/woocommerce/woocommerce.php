@@ -189,7 +189,7 @@ class CFGP__Plugin__woocommerce extends CFGP_Global
 if($flag = CFGP_U::admin_country_flag($GEO->country_code)) {
 	echo $flag;
 } else {
-	echo '<span class="fa fa-globe"></span>';
+	echo '<span class="cfa cfa-globe"></span>';
 }
 ?>&nbsp;&nbsp;<big><?php echo esc_html($GEO->ip); ?></big></p>
 <p><strong><?php esc_html_e( 'Order Timestamp:', CFGP_NAME ); ?></strong><br><?php echo esc_html($GEO->timestamp_readable); ?></p>
@@ -208,7 +208,7 @@ if($flag = CFGP_U::admin_country_flag($GEO->country_code)) {
 if($flag = CFGP_U::admin_country_flag(get_post_meta($post->ID, '_billing_country', true))) {
 	echo $flag;
 } else {
-	echo '<span class="fa fa-globe"></span>';
+	echo '<span class="cfa cfa-globe"></span>';
 }
 ?>&nbsp;&nbsp;<big><?php echo esc_html(get_post_meta($post->ID, '_customer_ip_address', true)); ?></big></p>
 <p><strong><?php esc_html_e( 'Order Timestamp:', CFGP_NAME ); ?></strong><br><?php echo date('D, j M Y, H:i:s O', strtotime($post->post_date_gmt)) ?></p>

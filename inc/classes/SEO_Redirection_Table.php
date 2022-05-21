@@ -197,7 +197,7 @@ if (!class_exists('CFGP_SEO_Table')):
 						'nonce' => wp_create_nonce(CFGP_NAME.'-seo-import-csv')
 					));
 				
-					printf('<a aria="button" href="%s" class="button"><i class="fa fa-upload"></i> %s</a> ', $seo_import_csv, __('Import From CSV', CFGP_NAME));
+					printf('<a aria="button" href="%s" class="button"><i class="cfa cfa-upload"></i> %s</a> ', $seo_import_csv, __('Import From CSV', CFGP_NAME));
 					
 					if($exists){
 						
@@ -206,7 +206,7 @@ if (!class_exists('CFGP_SEO_Table')):
 							'nonce' => wp_create_nonce(CFGP_NAME.'-seo-export-csv')
 						));
 						
-						printf('<a aria="button" href="%s" class="button"><i class="fa fa-table"></i> %s</a> ', $seo_export_csv, __('Export CSV', CFGP_NAME));
+						printf('<a aria="button" href="%s" class="button"><i class="cfa cfa-table"></i> %s</a> ', $seo_export_csv, __('Export CSV', CFGP_NAME));
 					}
 					
 				echo '</div>';

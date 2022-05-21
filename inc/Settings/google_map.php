@@ -7,7 +7,7 @@ $API = CFGP_Cache::get('API');
 
 ?>
 <div class="wrap cfgp-wrap" id="<?php echo $_GET['page']; ?>">
-	<h1 class="wp-heading-inline"><i class="fa fa-globe"></i> <?php _e('Google Map', CFGP_NAME); ?></h1>
+	<h1 class="wp-heading-inline"><i class="cfa cfa-globe"></i> <?php _e('Google Map', CFGP_NAME); ?></h1>
     <hr class="wp-header-end">
     <div id="post">
     	<div id="poststuff" class="metabox-holder has-right-sidebar">
@@ -17,9 +17,9 @@ $API = CFGP_Cache::get('API');
                 
                     <div class="nav-tab-wrapper-chosen">
                         <nav class="nav-tab-wrapper">
-                        	<a href="javascript:void(0);" class="nav-tab nav-tab-active" data-id="#property"><i class="fa fa-archive"></i><span class="label"> <?php _e('Property List', CFGP_NAME); ?></span></a>
-                            <a href="javascript:void(0);" class="nav-tab" data-id="#info"><i class="fa fa-info"></i><span class="label"> <?php _e('Info & Examples', CFGP_NAME); ?></span></a>
-                            <a href="javascript:void(0);" class="nav-tab" data-id="#preview"><i class="fa fa-globe"></i><span class="label"> <?php _e('Preview', CFGP_NAME); ?></span></a>
+                        	<a href="javascript:void(0);" class="nav-tab nav-tab-active" data-id="#property"><i class="cfa cfa-archive"></i><span class="label"> <?php _e('Property List', CFGP_NAME); ?></span></a>
+                            <a href="javascript:void(0);" class="nav-tab" data-id="#info"><i class="cfa cfa-info"></i><span class="label"> <?php _e('Info & Examples', CFGP_NAME); ?></span></a>
+                            <a href="javascript:void(0);" class="nav-tab" data-id="#preview"><i class="cfa cfa-globe"></i><span class="label"> <?php _e('Preview', CFGP_NAME); ?></span></a>
                         </nav>
                         
                         <div class="cfgp-tab-panel cfgp-tab-panel-active" id="property">

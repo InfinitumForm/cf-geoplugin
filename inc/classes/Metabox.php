@@ -507,8 +507,8 @@ function CF_GeoPlugin_Google_Map_GeoTag() {
             ?>
         </div>
         <div class="cfgp-col cfgp-col-sm-6 cfgp-col-6 cfgp-col-content-right cfgp-repeater-actions">
-        	<button type="button" class="button button-link cfgp-remove-seo-redirection"><i class="fa fa-times"></i> <?php _e( 'Remove', CFGP_NAME ); ?></button>
-        	<button type="button" class="button button-primary cfgp-add-seo-redirection"><i class="fa fa-plus"></i> <?php _e( 'Add New Redirection', CFGP_NAME ); ?></button>
+        	<button type="button" class="button button-link cfgp-remove-seo-redirection"><i class="cfa cfa-times"></i> <?php _e( 'Remove', CFGP_NAME ); ?></button>
+        	<button type="button" class="button button-primary cfgp-add-seo-redirection"><i class="cfa cfa-plus"></i> <?php _e( 'Add New Redirection', CFGP_NAME ); ?></button>
         </div>
     </div>
     <?php endforeach; ?>

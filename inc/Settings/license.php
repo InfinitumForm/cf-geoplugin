@@ -7,7 +7,7 @@ do_action('cfgp/page/license/save');
 
 ?>
 <div class="wrap cfgp-wrap" id="<?php echo $_GET['page']; ?>">
-	<h1 class="wp-heading-inline"><i class="fa fa-trophy"></i> <?php
+	<h1 class="wp-heading-inline"><i class="cfa cfa-trophy"></i> <?php
 		if( CFGP_U::api('lookup') == 'lifetime' ){
 			_e('Congratulations, you have a lifetime lookup!', CFGP_NAME);
 		} else if(CFGP_License::activated()) {

@@ -91,19 +91,19 @@ class CFGP_Sidebar extends CFGP_Global {
 	<?php do_action("cfgp/sidebar_statistic/list/before/{$current_screen_base}", $this); ?>
 	<li class="cfgp-statistic-address">
 		<?php if(CFGP_U::api('status') == 505) : ?>
-			<h3><span class="fa fa-close"></span> <?php _e('ERROR!',CFGP_NAME); ?></h3>
+			<h3><span class="cfa cfa-close"></span> <?php _e('ERROR!',CFGP_NAME); ?></h3>
 			<p><?php _e('API no longer supports this version of CF Geo Plugin',CFGP_NAME); ?></p>
 		<?php elseif(CFGP_U::api('status') == 417) : ?>
-			<h3><span class="fa fa-close"></span> <?php _e('NOT VALID!',CFGP_NAME); ?></h3>
+			<h3><span class="cfa cfa-close"></span> <?php _e('NOT VALID!',CFGP_NAME); ?></h3>
 			<p><?php _e('Your IP address is not valid or is in the private range.',CFGP_NAME); ?></p>
 		<?php elseif(CFGP_U::api('status') == 403) : ?>
-			<h3><span class="fa fa-ban"></span> <?php _e('BANNED!',CFGP_NAME); ?></h3>
+			<h3><span class="cfa cfa-ban"></span> <?php _e('BANNED!',CFGP_NAME); ?></h3>
 			<p><?php _e('Your domain is banned!',CFGP_NAME); ?></p>
 		<?php elseif(CFGP_U::api('status') == 402) : ?>
-			<h3><span class="fa fa-ban"></span> <?php _e('API is limited',CFGP_NAME); ?></h3>
+			<h3><span class="cfa cfa-ban"></span> <?php _e('API is limited',CFGP_NAME); ?></h3>
 			<p><?php _e('No Information',CFGP_NAME); ?></p>
 		<?php elseif(CFGP_U::api('status') == 401) : ?>
-			<h3><span class="fa fa-ban"></span> <?php _e('DISABLED!',CFGP_NAME); ?></h3>
+			<h3><span class="cfa cfa-ban"></span> <?php _e('DISABLED!',CFGP_NAME); ?></h3>
 			<p><?php _e('The API key is disabled because of unauthorized use!',CFGP_NAME); ?></p>
 		<?php elseif(CFGP_U::api('status') == 200) : ?>
 			<h3>
@@ -111,12 +111,12 @@ class CFGP_Sidebar extends CFGP_Global {
 				if($flag = CFGP_U::admin_country_flag(CFGP_U::api('country_code'))) {
 					echo $flag;
 				} else {
-					echo '<span class="fa fa-globe"></span>';
+					echo '<span class="cfa cfa-globe"></span>';
 				}
 			?> <?php echo CFGP_U::api('ip'); ?> (IPv<?php echo CFGP_U::api('ip_version'); ?>)</h3>
 			<p><?php echo CFGP_U::api('address'); ?></p>
 		<?php else : ?>
-			<h3><span class="fa fa-close"></span> <?php _e('ERROR!',CFGP_NAME); ?></h3>
+			<h3><span class="cfa cfa-close"></span> <?php _e('ERROR!',CFGP_NAME); ?></h3>
 			<p><?php _e('There was an error communicating with the server.',CFGP_NAME); ?></p>
 		<?php endif; ?>
 	</li>
@@ -247,7 +247,7 @@ class CFGP_Sidebar extends CFGP_Global {
 	?>
 <li class="cfgp-statistic-separator"></li>
 <li class="cfgp-statistic-plugin-details">
-	<h3><i class="fa fa-plug" aria-hidden="true"></i> <?php _e( 'CF Geo Plugin details', CFGP_NAME ); ?></h3>
+	<h3><i class="cfa cfa-plug" aria-hidden="true"></i> <?php _e( 'CF Geo Plugin details', CFGP_NAME ); ?></h3>
 	<ul>
 		<li><strong><?php _e( 'Last Update', CFGP_NAME ); ?>:</strong> <span><?php echo date(CFGP_DATE_TIME_FORMAT, strtotime($plugin->last_updated)); ?></span></li>
 		<li><strong><?php _e( 'Homepage', CFGP_NAME ); ?>:</strong> <span><a href="<?php echo $plugin->homepage ?>" target="_blank"><?php echo $plugin->homepage ?></a></span></li>
@@ -277,7 +277,7 @@ class CFGP_Sidebar extends CFGP_Global {
 <?php if($plugin_updated) : ?>
 <li class="cfgp-statistic-separator"></li>
 <li class="cfgp-statistic-plugin-details changelog has-update">
-	<h3><i class="fa fa-code-fork" aria-hidden="true"></i> <?php printf(__( 'NEW version is available - CF Geo Plugin ver.%s', CFGP_NAME ), $plugin->version); ?></h3>
+	<h3><i class="cfa cfa-code-fork" aria-hidden="true"></i> <?php printf(__( 'NEW version is available - CF Geo Plugin ver.%s', CFGP_NAME ), $plugin->version); ?></h3>
 	<?php
 	preg_match('@<h4>' . str_replace('.','\.',$plugin->version) . '</h4>.*?(<ul>(.*?)</ul>)@si', $plugin->sections['changelog'], $version_details, PREG_OFFSET_CAPTURE);
 	if(isset($version_details[1]) && isset($version_details[1][0])) {
@@ -309,22 +309,22 @@ class CFGP_Sidebar extends CFGP_Global {
 		}
 		
 		if(floatval($runtime) <= 0.1) {
-			echo '<span class="fa fa-battery-full incomparable'.$class.'" title="'.esc_attr__('Incomparable',CFGP_NAME).'"></span> <span class="cfgp-statistic-label incomparable">'.__('Incomparable',CFGP_NAME).'</span>';
+			echo '<span class="cfa cfa-battery-full incomparable'.$class.'" title="'.esc_attr__('Incomparable',CFGP_NAME).'"></span> <span class="cfgp-statistic-label incomparable">'.__('Incomparable',CFGP_NAME).'</span>';
 		}
 		else if(floatval($runtime) <= 0.5){
-			echo '<span class="fa fa-battery-full exellent'.$class.'" title="'.esc_attr__('Exellent',CFGP_NAME).'"></span> <span class="cfgp-statistic-label exellent">'.__('Exellent',CFGP_NAME).'</span>';
+			echo '<span class="cfa cfa-battery-full exellent'.$class.'" title="'.esc_attr__('Exellent',CFGP_NAME).'"></span> <span class="cfgp-statistic-label exellent">'.__('Exellent',CFGP_NAME).'</span>';
 		}
 		else if(floatval($runtime) <= 0.8){
-			echo '<span class="fa fa-battery-three-quarters perfect'.$class.'" title="'.esc_attr__('Perfect',CFGP_NAME).'"></span> <span class="cfgp-statistic-label perfect">'.__('Perfect',CFGP_NAME).'</span>';
+			echo '<span class="cfa cfa-battery-three-quarters perfect'.$class.'" title="'.esc_attr__('Perfect',CFGP_NAME).'"></span> <span class="cfgp-statistic-label perfect">'.__('Perfect',CFGP_NAME).'</span>';
 		}
 		else if(floatval($runtime) <= 1.2){
-			echo '<span class="fa fa-battery-half good'.$class.'" title="'.esc_attr__('Good',CFGP_NAME).'"></span> <span class="cfgp-statistic-label good">'.__('Good',CFGP_NAME).'</span>';
+			echo '<span class="cfa cfa-battery-half good'.$class.'" title="'.esc_attr__('Good',CFGP_NAME).'"></span> <span class="cfgp-statistic-label good">'.__('Good',CFGP_NAME).'</span>';
 		}
 		else if(floatval($runtime) <= 1.5){
-			echo '<span class="fa fa-battery-quarter week'.$class.'" title="'.esc_attr__('Week',CFGP_NAME).'"></span> <span class="cfgp-statistic-label week">'.__('Week',CFGP_NAME).'</span>';
+			echo '<span class="cfa cfa-battery-quarter week'.$class.'" title="'.esc_attr__('Week',CFGP_NAME).'"></span> <span class="cfgp-statistic-label week">'.__('Week',CFGP_NAME).'</span>';
 		}
 		else {
-			echo '<span class="fa fa-battery-empty bad'.$class.'" title="'.esc_attr__('Bad',CFGP_NAME).'"></span> <span class="cfgp-statistic-label bad">'.__('Bad',CFGP_NAME).'</span>';
+			echo '<span class="cfa cfa-battery-empty bad'.$class.'" title="'.esc_attr__('Bad',CFGP_NAME).'"></span> <span class="cfgp-statistic-label bad">'.__('Bad',CFGP_NAME).'</span>';
 		}
 	}
 	
@@ -336,19 +336,19 @@ class CFGP_Sidebar extends CFGP_Global {
 	public function cfgp_lookup_status_icon($lookup, $class='')
 	{
 		if($lookup === 'unlimited' || $lookup === 'lifetime'){
-			echo '<span class="fa fa-check '.$class.'" title="'.__('UNLIMITED',CFGP_NAME).'"></span>';
+			echo '<span class="cfa cfa-check '.$class.'" title="'.__('UNLIMITED',CFGP_NAME).'"></span>';
 		}
 		else if($lookup == 0){
-			echo '<span class="fa fa-ban '.$class.'" title="'.__('EXPIRED',CFGP_NAME).'"></span>';
+			echo '<span class="cfa cfa-ban '.$class.'" title="'.__('EXPIRED',CFGP_NAME).'"></span>';
 		}
 		else if($lookup <= CFGP_LIMIT && $lookup > (CFGP_LIMIT/2)){
-			echo '<span class="fa fa-hourglass-start '.$class.'" title="'.__('Available',CFGP_NAME).' '.$lookup.'"></span>';
+			echo '<span class="cfa cfa-hourglass-start '.$class.'" title="'.__('Available',CFGP_NAME).' '.$lookup.'"></span>';
 		}
 		else if($lookup <= (CFGP_LIMIT/2) && $lookup > (CFGP_LIMIT/3)){
-			echo '<span class="fa fa-hourglass-halp '.$class.'" title="'.__('Available',CFGP_NAME).' '.$lookup.'"></span>';
+			echo '<span class="cfa cfa-hourglass-halp '.$class.'" title="'.__('Available',CFGP_NAME).' '.$lookup.'"></span>';
 		}
 		else if($lookup <= (CFGP_LIMIT/3)){
-			echo '<span class="fa fa-hourglass-end '.$class.'" title="'.__('Available',CFGP_NAME).' '.$lookup.'"></span>';
+			echo '<span class="cfa cfa-hourglass-end '.$class.'" title="'.__('Available',CFGP_NAME).' '.$lookup.'"></span>';
 		}
 	}
 	

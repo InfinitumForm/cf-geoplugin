@@ -29,7 +29,7 @@ $API = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
 
 ?>
 <div class="wrap cfgp-wrap" id="<?php echo $_GET['page']; ?>">
-	<h1 class="wp-heading-inline"><i class="fa fa-map-marker"></i> <?php _e('CF Geo Plugin', CFGP_NAME); ?></h1>
+	<h1 class="wp-heading-inline"><i class="cfa cfa-map-marker"></i> <?php _e('CF Geo Plugin', CFGP_NAME); ?></h1>
     <hr class="wp-header-end">
 
     <div id="post">
@@ -41,13 +41,13 @@ $API = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
                     <div class="nav-tab-wrapper-chosen">
                         <nav class="nav-tab-wrapper">
                         	<?php do_action('cfgp/main_page/nav-tab/before'); ?>
-                            <a href="javascript:void(0);" class="nav-tab nav-tab-active" data-id="#shortcodes"><i class="fa fa-code"></i><span class="label"> <?php _e('Shortcodes', CFGP_NAME); ?></span></a>
+                            <a href="javascript:void(0);" class="nav-tab nav-tab-active" data-id="#shortcodes"><i class="cfa cfa-code"></i><span class="label"> <?php _e('Shortcodes', CFGP_NAME); ?></span></a>
                             <?php if(CFGP_Options::get_beta('enable_simple_shortcode')) : ?>
-                            	<a href="javascript:void(0);" class="nav-tab" data-id="#simple-shortcodes"><i class="fa fa-code"></i><span class="label"> <?php _e('Simple Shortcodes', CFGP_NAME); ?></span></a>
+                            	<a href="javascript:void(0);" class="nav-tab" data-id="#simple-shortcodes"><i class="cfa cfa-code"></i><span class="label"> <?php _e('Simple Shortcodes', CFGP_NAME); ?></span></a>
                             <?php endif; ?>
-                            <a href="javascript:void(0);" class="nav-tab" data-id="#tags"><i class="fa fa-tag"></i><span class="label"> <?php _e('Tags', CFGP_NAME); ?></span></a>
+                            <a href="javascript:void(0);" class="nav-tab" data-id="#tags"><i class="cfa cfa-tag"></i><span class="label"> <?php _e('Tags', CFGP_NAME); ?></span></a>
 							<?php if(CFGP_Options::get('enable_css')) : ?>
-                            	<a href="javascript:void(0);" class="nav-tab" data-id="#css-property"><i class="fa fa-css3"></i><span class="label"> <?php _e('CSS property', CFGP_NAME); ?></span></a>
+                            	<a href="javascript:void(0);" class="nav-tab" data-id="#css-property"><i class="cfa cfa-css3"></i><span class="label"> <?php _e('CSS property', CFGP_NAME); ?></span></a>
                             <?php endif; ?>
                             <?php do_action('cfgp/main_page/nav-tab/after'); ?>
                         </nav>

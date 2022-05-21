@@ -142,11 +142,11 @@ global $cfgp_version;
 if (function_exists('get_file_data') && $plugin_data = get_file_data(CFGP_FILE, array(
     'Version' => 'Version'
 ) , false)) {
-    $cfgp_version = $plugin_data['Version'];
+    $cfgp_version = (string)$plugin_data['Version'];
 }
 
 if (!$cfgp_version && preg_match('/\*[\s\t]+?version:[\s\t]+?([0-9.]+)/i', file_get_contents(CFGP_FILE) , $v)) {
-    $cfgp_version = $v[1];
+    $cfgp_version = (string)$v[1];
 }
 
 if (!defined('CFGP_VERSION')) {

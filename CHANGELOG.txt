@@ -1,5 +1,11 @@
 == Changelog ==
 
+= 8.2.8 =
+* Improved dashboard
+* Improved file includes
+* Improved plugin update
+* Removed deprecated and bad codes
+
 = 8.2.7 =
 * **PLUGIN UPDATE: Mandatory PHP extensions cURL and Multibyte String**
 * **WOOCOMMERCE UPDATE: Revisit WooCommerce settings after update**

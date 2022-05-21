@@ -74,7 +74,7 @@ class CFGP_Admin extends CFGP_Global {
 	// WP Hidden links by plugin setting page
 	public function plugin_action_links( $links ) {
 		$mylinks = array( 
-			'settings'	=> sprintf( '<a href="' . self_admin_url( 'admin.php?page=' . CFGP_NAME . '-settings' ) . '" class="cfgeo-plugins-action-settings">%s</a>', esc_html__( 'Settings', CFGP_NAME ) ), 
+			'settings'	=> sprintf( '<a href="' . esc_url( self_admin_url( 'admin.php?page=' . CFGP_NAME . '-settings' ) ) . '" class="cfgeo-plugins-action-settings">%s</a>', esc_html__( 'Settings', CFGP_NAME ) ), 
 			'documentation' => sprintf( '<a href="%s" target="_blank" rel="noopener noreferrer" class="cfgeo-plugins-action-documentation">%s</a>', esc_url( CFGP_STORE . '/documentation/' ), esc_html__( 'Documentation', CFGP_NAME ) ),
 		);
 
@@ -129,7 +129,7 @@ class CFGP_Admin extends CFGP_Global {
 				add_action('admin_footer', function(){ ?>
 <script id="cfgp-rss-feed-js" type="text/javascript">
 /* <![CDATA[ */
-(function(jCFGP){$feed=jCFGP('.cfgp-load-dashboard-rss-feed');if($feed.length>0){jCFGP.ajax({url:"<?php echo admin_url('/admin-ajax.php'); ?>",method:'post',accept:'text/html',data:{action:'cfgp_dashboard_rss_feed'},cache:true}).done(function(data){$feed.html(data).removeClass('cfgp-load-dashboard-rss-feed');});}}(jQuery||window.jQuery));
+(function(jCFGP){$feed=jCFGP('.cfgp-load-dashboard-rss-feed');if($feed.length>0){jCFGP.ajax({url:"<?php echo esc_url( admin_url('/admin-ajax.php') ); ?>",method:'post',accept:'text/html',data:{action:'cfgp_dashboard_rss_feed'},cache:true}).done(function(data){$feed.html(data).removeClass('cfgp-load-dashboard-rss-feed');});}}(jQuery||window.jQuery));
 /* ]]> */
 </script>
 				<?php }, 99);
@@ -234,6 +234,12 @@ class CFGP_Admin extends CFGP_Global {
 					foreach($data->posts as $i => $post)
 					{
 						$post = (object)$post;
+						
+						$post->post_url = sanitize_url($post->post_url ?? NULL);
+						$post->post_title = sanitize_text_field($post->post_title ?? NULL);
+						$post->post_date_gmt = sanitize_text_field($post->post_date_gmt ?? NULL);
+						$post->post_image_medium = sanitize_url($post->post_image_medium ?? NULL);
+						$post->post_excerpt = wp_kses_post(sanitize_textarea_field($post->post_excerpt ?? NULL));
 						
 						$DASH_RSS[]=sprintf('<li><a href="%1$s" target="_blank">%2$s</a></li>', esc_url($post->post_url), esc_html($post->post_title));
 						
@@ -562,8 +568,8 @@ class CFGP_Admin extends CFGP_Global {
 		
 		if(!$this->limit_scripts($page) && $page != 'index.php') return;
 		
-		wp_enqueue_style( CFGP_NAME . '-fontawesome', CFGP_ASSETS . '/css/font-awesome.min.css', array(), (string)CFGP_VERSION );
-		wp_enqueue_style( CFGP_NAME . '-admin', CFGP_ASSETS . '/css/style-admin.css', array(CFGP_NAME . '-fontawesome'), (string)CFGP_VERSION );
+		wp_enqueue_style( CFGP_NAME . '-fonts', CFGP_ASSETS . '/css/fonts.min.css', array(), CFGP_VERSION );
+		wp_enqueue_style( CFGP_NAME . '-admin', CFGP_ASSETS . '/css/style-admin.css', array(CFGP_NAME . '-fonts'), CFGP_VERSION );
 	}
 	
 	// Register CPT and taxonomies scripts
@@ -572,21 +578,27 @@ class CFGP_Admin extends CFGP_Global {
 		$post = '';
 		$url = '';
 		
-		if( isset( $_GET['taxonomy'] ) ) $post = $_GET['taxonomy'];
-		elseif( isset( $_GET['post'] ) )
-		{
+		if( isset( $_GET['taxonomy'] ) ) {
+			$post = $_GET['taxonomy'];
+		} else if( isset( $_GET['post'] ) ) {
 			$post = get_post( absint( $_GET['post'] ) );
 			$post = isset( $post->post_type ) ? $post->post_type : '';
+		} else if( isset( $_GET['post_type'] ) ) {
+			$post = $_GET['post_type'];
 		}
-		elseif( isset( $_GET['post_type'] ) ) $post = $_GET['post_type'];
 
-		if( !$this->limit_scripts( $post ) ) return false;
+		if( !$this->limit_scripts( $post ) ) {
+			return false;
+		}
 
-		if( $post === '' . CFGP_NAME . '-banner' ) $url = sprintf( 'edit.php?post_type=%s', $post );
-		else $url = sprintf( 'edit-tags.php?taxonomy=%s&post_type=%s-banner', $post, CFGP_NAME );
+		if( $post === '' . CFGP_NAME . '-banner' ) {
+			$url = sprintf( 'edit.php?post_type=%s', $post );
+		} else {
+			$url = sprintf( 'edit-tags.php?taxonomy=%s&post_type=%s-banner', $post, CFGP_NAME );
+		}
 		
-		wp_enqueue_style( CFGP_NAME . '-cpt', CFGP_ASSETS . '/css/style-cpt.css', 1, (string)CFGP_VERSION, false );
-		wp_enqueue_script( CFGP_NAME . '-cpt', CFGP_ASSETS . '/js/script-cpt.js', array('jquery'), (string)CFGP_VERSION, true );
+		wp_enqueue_style( CFGP_NAME . '-cpt', CFGP_ASSETS . '/css/style-cpt.css', 1, CFGP_VERSION, false );
+		wp_enqueue_script( CFGP_NAME . '-cpt', CFGP_ASSETS . '/js/script-cpt.js', array('jquery'), CFGP_VERSION, true );
 		wp_localize_script(CFGP_NAME . '-cpt', 'CFGP', array(
 			'ajaxurl' => CFGP_U::admin_url('admin-ajax.php'),
 			'label' => array(
@@ -630,10 +642,10 @@ class CFGP_Admin extends CFGP_Global {
 		wp_enqueue_script( CFGP_NAME . '-select2', CFGP_ASSETS . '/js/select2.min.js', array('jquery'), '4.1.0-rc.0', true );
 		
 		if( $page == 'nav-menus.php' ) {
-			wp_enqueue_style( CFGP_NAME . '-menus', CFGP_ASSETS . '/css/style-menus.css', array(CFGP_NAME . '-select2'), (string)CFGP_VERSION );
+			wp_enqueue_style( CFGP_NAME . '-menus', CFGP_ASSETS . '/css/style-menus.css', array(CFGP_NAME . '-select2'), CFGP_VERSION );
 		}
 		
-		wp_enqueue_script( CFGP_NAME . '-admin', CFGP_ASSETS . '/js/script-admin.js', array('jquery', CFGP_NAME . '-select2'), (string)CFGP_VERSION, true );
+		wp_enqueue_script( CFGP_NAME . '-admin', CFGP_ASSETS . '/js/script-admin.js', array('jquery', CFGP_NAME . '-select2'), CFGP_VERSION, true );
 		wp_localize_script(CFGP_NAME . '-admin', 'CFGP', array(
 			'ajaxurl' => CFGP_U::admin_url('admin-ajax.php'),
 			'adminurl' => self_admin_url('/'),

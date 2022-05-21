@@ -10,9 +10,9 @@ add_action('cfgp/page/seo_redirection/table', function(){ global $wpdb; ?>
 </div>
 <?php endif; ?>
 <div class="wrap wrap-cfgp" id="<?php echo sanitize_title($_GET['page']); ?>">
-	<h1 class="wp-heading-inline"><i class="fa fa-location-arrow"></i> <?php _e('SEO Redirection', CFGP_NAME); ?></h1>
+	<h1 class="wp-heading-inline"><i class="cfa cfa-location-arrow"></i> <?php _e('SEO Redirection', CFGP_NAME); ?></h1>
     <?php printf(
-		'<a href="%s" class="page-title-action button-cfgeo-seo-new"><i class="fa fa-plus"></i> %s</a> ',
+		'<a href="%s" class="page-title-action button-cfgeo-seo-new"><i class="cfa cfa-plus"></i> %s</a> ',
 		CFGP_U::admin_url('/admin.php?page=cf-geoplugin-seo-redirection&action=new&nonce='.wp_create_nonce(CFGP_NAME.'-seo-new')),
 		__('New SEO redirection', CFGP_NAME)
 	); ?>

@@ -6,7 +6,7 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
 $options = apply_filters('cfgp/settings', array());
 
 ?><div class="wrap cfgp-wrap" id="<?php echo CFGP_NAME; ?>-settings">
-    <h1 class="wp-heading-inline"><i class="fa fa-globe"></i> <?php _e('Settings', CFGP_NAME); ?></h1>
+    <h1 class="wp-heading-inline"><i class="cfa cfa-globe"></i> <?php _e('Settings', CFGP_NAME); ?></h1>
     <hr class="wp-header-end">
 
     <div id="post">
@@ -62,7 +62,7 @@ $options = apply_filters('cfgp/settings', array());
 							?>
 								<tr>
 									<th scope="row" valign="top" class="cfgp-label">
-									  <label for="cfgp-<?php echo esc_attr($input['name']); ?>"><?php echo esc_attr($input['label']); ?></label> <?php if(!empty($input['desc'])) : ?><i class="fa fa-question-circle fa-cfgeo-help cfgp-help" data-help="true" title="<?php echo esc_attr($input['desc']); ?>"></i><?php endif; ?>
+									  <label for="cfgp-<?php echo esc_attr($input['name']); ?>"><?php echo esc_attr($input['label']); ?></label> <?php if(!empty($input['desc'])) : ?><i class="cfa cfa-question-circle fa-cfgeo-help cfgp-help" data-help="true" title="<?php echo esc_attr($input['desc']); ?>"></i><?php endif; ?>
 									</th>
 									<td valign="top" class="cfgp-field">
 <?php

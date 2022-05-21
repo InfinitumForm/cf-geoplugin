@@ -59,7 +59,7 @@ class CFGP__Plugin__elementor extends CFGP_Global
 			'cf-geoplugin',
 			[
 				'title' => __( 'CF Geo Plugin', CFGP_NAME ),
-				'icon' => 'fa fa-map-marker',
+				'icon' => 'cfa cfa-map-marker',
 			]
 		);
 	}

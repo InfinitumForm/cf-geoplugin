@@ -16,7 +16,7 @@ if($NEW_API = CFGP_API::lookup(CFGP_U::request_string('cfgp_lookup'))){
 
 ?>
 <div class="wrap cfgp-wrap" id="<?php echo $_GET['page']; ?>">
-	<h1 class="wp-heading-inline"><i class="fa fa-globe"></i> <?php _e('Debug', CFGP_NAME); ?></h1>
+	<h1 class="wp-heading-inline"><i class="cfa cfa-globe"></i> <?php _e('Debug', CFGP_NAME); ?></h1>
     <hr class="wp-header-end">
     <div id="post">
     	<div id="poststuff" class="metabox-holder has-right-sidebar">
@@ -28,7 +28,7 @@ if($NEW_API = CFGP_API::lookup(CFGP_U::request_string('cfgp_lookup'))){
                     	<form method="get" autocomplete="off">
                         	<input type="text" value="<?php echo CFGP_U::request_string('cfgp_lookup'); ?>" name="cfgp_lookup" placeholder="<?php _e('IP Lookup', CFGP_NAME); ?>: <?php echo $API['ip']; ?>" autocomplete="off"> 
                             <button type="submit" class="button button-primary"><?php _e('Lookup', CFGP_NAME); ?></button>
-                            <a href="<?php echo CFGP_U::admin_url('admin.php?page=cf-geoplugin-debug'); ?>" target="_self" class="button" title=""><i class="fa fa-refresh"></i></a>
+                            <a href="<?php echo CFGP_U::admin_url('admin.php?page=cf-geoplugin-debug'); ?>" target="_self" class="button" title=""><i class="cfa cfa-refresh"></i></a>
                             <input type="hidden" name="page" value="cf-geoplugin-debug">
                             <input type="hidden" name="nonce" value="<?php echo wp_create_nonce(CFGP_NAME . '-lookup'); ?>">
                         </form>
@@ -36,13 +36,13 @@ if($NEW_API = CFGP_API::lookup(CFGP_U::request_string('cfgp_lookup'))){
                     
                     <div class="nav-tab-wrapper-chosen">
                         <nav class="nav-tab-wrapper">
-                        	<a href="javascript:void(0);" class="nav-tab nav-tab-active" data-id="#recived-data"><i class="fa fa-database"></i><span class="label"> <?php _e('Recived data', CFGP_NAME); ?></span></a>
-                            <a href="javascript:void(0);" class="nav-tab" data-id="#sent-data"><i class="fa fa-share-square"></i><span class="label"> <?php _e('Sent data', CFGP_NAME); ?></span></a>
-                            <a href="javascript:void(0);" class="nav-tab" data-id="#server-statistics"><i class="fa fa-server"></i><span class="label"> <?php _e('Server statistics', CFGP_NAME); ?></span></a>
+                        	<a href="javascript:void(0);" class="nav-tab nav-tab-active" data-id="#recived-data"><i class="cfa cfa-database"></i><span class="label"> <?php _e('Recived data', CFGP_NAME); ?></span></a>
+                            <a href="javascript:void(0);" class="nav-tab" data-id="#sent-data"><i class="cfa cfa-share-square"></i><span class="label"> <?php _e('Sent data', CFGP_NAME); ?></span></a>
+                            <a href="javascript:void(0);" class="nav-tab" data-id="#server-statistics"><i class="cfa cfa-server"></i><span class="label"> <?php _e('Server statistics', CFGP_NAME); ?></span></a>
                             <?php if( CFGP_Options::get('enable_gmap', 0) ): ?>
-                            <a href="javascript:void(0);" class="nav-tab" data-id="#google-map"><i class="fa fa-globe"></i><span class="label"> <?php _e('Google map', CFGP_NAME); ?></span></a>
+                            <a href="javascript:void(0);" class="nav-tab" data-id="#google-map"><i class="cfa cfa-globe"></i><span class="label"> <?php _e('Google map', CFGP_NAME); ?></span></a>
                             <?php endif; ?>
-                       <!--     <a href="javascript:void(0);" class="nav-tab" data-id="#debugger"><i class="fa fa-bug"></i><span class="label"> <?php _e('Debugger', CFGP_NAME); ?></span></a>  -->
+                       <!--     <a href="javascript:void(0);" class="nav-tab" data-id="#debugger"><i class="cfa cfa-bug"></i><span class="label"> <?php _e('Debugger', CFGP_NAME); ?></span></a>  -->
                         </nav>
                         
                         <div class="cfgp-tab-panel cfgp-tab-panel-active" id="recived-data">
