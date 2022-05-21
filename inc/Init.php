@@ -284,23 +284,12 @@ final class CFGP_Init{
 			if ( ! current_user_can( 'activate_plugins' ) ) {
 				return;
 			}
-			
-			// Get global variables
-			global $wpdb;
-			
 			// clear old cache
 			CFGP_U::flush_plugin_cache();
-			
 			// Let's reload textdomain
 			if ( is_textdomain_loaded( CFGP_NAME ) ) {
 				unload_textdomain( CFGP_NAME );
 			}
-			
-			// Include important library
-			if(!function_exists('dbDelta')){
-				require_once ABSPATH . DIRECTORY_SEPARATOR . 'wp-admin' . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'upgrade.php';
-			}
-			
 			// Add activation date
 			if($activation = get_option(CFGP_NAME . '-activation')) {
 				$activation[] = date('Y-m-d H:i:s');
@@ -308,60 +297,59 @@ final class CFGP_Init{
 			} else {
 				add_option(CFGP_NAME . '-activation', array(date('Y-m-d H:i:s')), false);
 			}
-
 			// Generate unique ID
 			if(!get_option(CFGP_NAME . '-ID')) {
 				add_option(CFGP_NAME . '-ID', 'cfgp_'.CFGP_U::generate_token(55).'_'.CFGP_U::generate_token(4), false);
 			}
-			
-			// Database control
-			$current_db_version = get_option(CFGP_NAME . '-db-version');
-			if( empty($current_db_version) || version_compare($current_db_version, CFGP_DATABASE_VERSION, '!=') )
-			{
-				// Get database collate
-				$charset_collate = $wpdb->get_charset_collate();
-				
-				## Create database table for the REST tokens
-				CFGP_REST::table_install();
-				## Create database table for the Cache
-				CFGP_DB_Cache::table_install();
-				
-				## Rename database table for the SEO redirection if old table exists
-				if(version_compare(CFGP_DATABASE_VERSION, '1.0.0', '>')) {
-					if( 
-						$wpdb->get_var("SHOW TABLES LIKE '{$wpdb->prefix}cf_geo_seo_redirection'") === "{$wpdb->prefix}cf_geo_seo_redirection" 
-						&& empty($wpdb->get_var("SHOW TABLES LIKE '{$wpdb->cfgp_rest_access_token}'"))
-					) {
-						$wpdb->query( "ALTER TABLE `{$wpdb->prefix}cf_geo_seo_redirection` RENAME TO `{$wpdb->cfgp_seo_redirection}`");
-					}
-				}
-				
-				## Create database table for the SEO redirection if plugin is new
-				CFGP_SEO_Table::table_install();
-				
-				## Rename database table for the SEO redirection if new and old table exists
-				if(version_compare(CFGP_DATABASE_VERSION, '1.0.0', '>')) {
-					if( 
-						$wpdb->get_var("SHOW TABLES LIKE '{$wpdb->prefix}cf_geo_seo_redirection'") === "{$wpdb->prefix}cf_geo_seo_redirection" 
-						&& $wpdb->get_var("SHOW TABLES LIKE '{$wpdb->cfgp_rest_access_token}'") === $wpdb->cfgp_rest_access_token
-					) {
-						// Reassign tables
-						$wpdb->query("INSERT INTO `{$wpdb->cfgp_seo_redirection}` (only_once, country, region, city, postcode, url, http_code, active, date) SELECT only_once, country, region, city, postcode, url, http_code, active, date FROM `{$wpdb->prefix}cf_geo_seo_redirection`");
-						// Delete old one
-						$wpdb->query( "DROP TABLE IF EXISTS `{$wpdb->prefix}cf_geo_seo_redirection`" );
-					}
-				}
-				
-				// Update database version
-				update_option(CFGP_NAME . '-db-version', CFGP_DATABASE_VERSION, false);
-			}
-			
+			// Install databases
+			self::install_update_database();
 			// Synchronize with old version of the plugin
 			CFGP_Options::sync_with_the_old_version_of_the_plugin();
-			
 			// Plugin statistic
 			CFGP_Anonymous_Statistic::activation( CFGP_Options::get() );
+			// Update plugin version
+			update_option(CFGP_NAME . '-version', CFGP_VERSION, false);
 		});
+	}
+	
+	/**
+	 * Run script on the plugin upgrade
+	 * @todo: https://wordpress.stackexchange.com/questions/144870/wordpress-update-plugin-hook-action-since-3-9
+	 * @since     8.0.0
+	 */
+	public static function upgrade() {
+		add_action( 'plugins_loaded', function () {
+			if ( ! current_user_can( 'activate_plugins' ) ) {
+				return;
+			}
+			
+			if(CFGP_VERSION !== get_option(CFGP_NAME . '-version', CFGP_VERSION)) {
+				// Get global variables
+				global $wpdb;
+				// clear old cache
+				CFGP_U::flush_plugin_cache();
+				// Let's reload textdomain
+				if ( is_textdomain_loaded( CFGP_NAME ) ) {
+					unload_textdomain( CFGP_NAME );
+				}
+				// Generate unique ID
+				if(!get_option(CFGP_NAME . '-ID')) {
+					add_option(CFGP_NAME . '-ID', 'cfgp_'.CFGP_U::generate_token(55).'_'.CFGP_U::generate_token(4), false);
+				}
+				// Install databases
+				self::install_update_database();
+				// Synchronize with old version of the plugin
+				CFGP_Options::sync_with_the_old_version_of_the_plugin();
+				// Plugin statistic
+				CFGP_Anonymous_Statistic::activation( CFGP_Options::get() );
+				// Update plugin version
+				update_option(CFGP_NAME . '-version', CFGP_VERSION, false);
+				// WP Refresh
+				if( wp_safe_redirect( CFGP_U::get_url() ) ) {
+					exit;
+				}
+			}
+		}, 1 );
 	}
 	
 	/**
@@ -390,6 +378,59 @@ final class CFGP_Init{
 			// Plugin statistic
 			CFGP_Anonymous_Statistic::deactivation();
 		});
+	}
+	
+	/**
+	 * Install Database
+	 * @since     8.2.8
+	 */
+	public static function install_update_database() {
+		global $wpdb;
+		// Database control
+		$current_db_version = get_option(CFGP_NAME . '-db-version');
+		if( empty($current_db_version) || version_compare($current_db_version, CFGP_DATABASE_VERSION, '!=') )
+		{
+			// Include important library
+			if(!function_exists('dbDelta')){
+				require_once ABSPATH . DIRECTORY_SEPARATOR . 'wp-admin' . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'upgrade.php';
+			}
+			// Get database collate
+			$charset_collate = $wpdb->get_charset_collate();
+			
+			## Create database table for the REST tokens
+			CFGP_REST::table_install();
+			## Create database table for the Cache
+			CFGP_DB_Cache::table_install();
+			
+			## Rename database table for the SEO redirection if old table exists
+			if(version_compare(CFGP_DATABASE_VERSION, '1.0.0', '>')) {
+				if( 
+					$wpdb->get_var("SHOW TABLES LIKE '{$wpdb->prefix}cf_geo_seo_redirection'") === "{$wpdb->prefix}cf_geo_seo_redirection" 
+					&& empty($wpdb->get_var("SHOW TABLES LIKE '{$wpdb->cfgp_rest_access_token}'"))
+				) {
+					$wpdb->query( "ALTER TABLE `{$wpdb->prefix}cf_geo_seo_redirection` RENAME TO `{$wpdb->cfgp_seo_redirection}`");
+				}
+			}
+			
+			## Create database table for the SEO redirection if plugin is new
+			CFGP_SEO_Table::table_install();
+			
+			## Rename database table for the SEO redirection if new and old table exists
+			if(version_compare(CFGP_DATABASE_VERSION, '1.0.0', '>')) {
+				if( 
+					$wpdb->get_var("SHOW TABLES LIKE '{$wpdb->prefix}cf_geo_seo_redirection'") === "{$wpdb->prefix}cf_geo_seo_redirection" 
+					&& $wpdb->get_var("SHOW TABLES LIKE '{$wpdb->cfgp_rest_access_token}'") === $wpdb->cfgp_rest_access_token
+				) {
+					// Reassign tables
+					$wpdb->query("INSERT INTO `{$wpdb->cfgp_seo_redirection}` (only_once, country, region, city, postcode, url, http_code, active, date) SELECT only_once, country, region, city, postcode, url, http_code, active, date FROM `{$wpdb->prefix}cf_geo_seo_redirection`");
+					// Delete old one
+					$wpdb->query( "DROP TABLE IF EXISTS `{$wpdb->prefix}cf_geo_seo_redirection`" );
+				}
+			}
+			
+			// Update database version
+			update_option(CFGP_NAME . '-db-version', CFGP_DATABASE_VERSION, false);
+		}
 	}
 	
 	/**

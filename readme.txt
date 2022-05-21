@@ -27,53 +27,60 @@ This plugin works as a [service](https://en.wikipedia.org/wiki/Software_as_a_ser
 
 = BENEFITS =
 
-> - **Country based** coronavirus informations via shortcode
-> - **World wide (global)** coronavirus informations via shortcode
->
 > <strong>SERVER & WORDPRESS</strong><br>
-> - **There is no need to buy expensive and heavy databases**
-> - **No effect on the site performances**
-> - **Full support** for the WooCommerce, Contact Form 7, Yoast SEO, WP Super Cache and other most popular plugins
+>
+> * **There is no need to buy expensive and heavy databases**
+> * **No effect on the site performances**
+> * **Full support** for the WooCommerce, Contact Form 7, Yoast SEO, WP Super Cache and other most popular plugins
 >
 > <strong>SEO INTEGRATIONS</strong><br>
-> - **Redirects visitors** to a blog page based on their geo informations by SEO rules
-> - **Redirects visitors** to a predefined URL based on their geo informations by SEO rules
-> - **Allows you to configure multiple redirection** rules as needed for the pages and entire website
-> - **Supports 301, 302, 303 & 304** HTTP redirection
-> - **Supports IPv4 and IPv6**
-> - **Geo Tag Generator** attach Geo Tags in the head of your website for the specific pages
-> - **Cache support***
+>
+> * **Redirects visitors** to a blog page based on their geo informations by SEO rules
+> * **Redirects visitors** to a predefined URL based on their geo informations by SEO rules
+> * **Allows you to configure multiple redirection** rules as needed for the pages and entire website
+> * **Supports 301, 302, 303 & 304** HTTP redirection
+> * **Supports IPv4 and IPv6**
+> * **Geo Tag Generator** attach Geo Tags in the head of your website for the specific pages
+> * **Cache support**
 >
 > <strong>GEOMARKETING</strong><br>
-> - **Create marketing campaigns** targeted only at certain locations.
-> - **Create landing pages** targeted only at certain locations.
-> - **Create banners, videos and any other content** targeted only at certain locations.
+>
+> * **Create marketing campaigns** targeted only at certain locations.
+> * **Create landing pages** targeted only at certain locations.
+> * **Create banners, videos and any other content** targeted only at certain locations.
 > 
 > <strong>E-COMMERCE | WooCommerce</strong><br>
-> - **Country Payment Control** for your WooCommerce installation
-> - **Display local currency**, local symbol or converter
-> - **Use currency converter** to calculate price in local currency
-> - **Use VAT** to check is current country under tax rate
-> - **Use EU** to check is country from the European Union
+>
+> * **Geolocate** for your customer location with CF Geo Plugin API
+> * **Payments Control** show or hide payment methods by country to prevent unwanted transactions
+> * **Geo Location logging** of your customers during orders
+> * **Country Payment Control** for your WooCommerce installation
+> * **Display local currency**, local symbol or converter
+> * **Use currency converter** to calculate price in local currency
+> * **Use VAT** to check is current country under tax rate
+> * **Use EU** to check is country from the European Union
 > 
 > <strong>ANTI SPAM PROTECTION</strong><br>
-> - **Spam protection** from the danger visitors or spammers
-> - **Blocking access** on the website from the specific user defined locations
-> - **Blocking IP Addresses** from accessing on the website
+>
+> * **Spam protection** from the danger visitors or spammers
+> * **Blocking access** on the website from the specific user defined locations
+> * **Blocking IP Addresses** from accessing on the website
 > 
 > <strong>LOCALIZATION</strong><br>
-> - **Redirect incoming traffic** to content in the local language or currency.
-> - Businesses with local branches **can direct customers to a relevant physical location** or local microsite.
+>
+> * **Redirect incoming traffic** to content in the local language or currency.
+> * Businesses with local branches **can direct customers to a relevant physical location** or local microsite.
 > 
 > <strong>LEGAL REQUIREMENTS</strong></br>
-> - **Filter required legal notices**, text, forms, etc. from countries for whom those content may not be relevant.
+>
+> * **Filter required legal notices**, text, forms, etc. from countries for whom those content may not be relevant.
 
 = Compatibility =
 
 This plugin is compatible with any Wordpress installation and many available plugins. We also do special compatible functions with:
 
 * [GPS for CF Geo Plugin](https://wordpress.org/plugins/cf-geoplugin-gps/) (Enable GPS lookup for the CF Geo Plugin and collect geodata from the mobile visitors.)
-* [WooCommerce](https://woocommerce.com/) (payment controls & currency converter)
+* [WooCommerce](https://woocommerce.com/) (geolocate, payment controls & currency converter)
 * [Wooplatnica](https://wordpress.org/plugins/wooplatnica/) (currency converter)
 * [Monarch](https://www.elegantthemes.com/plugins/monarch/) (Geo Banner support)
 * [Cloudflare](https://www.cloudflare.com/) (Cache and deep IP recognations)

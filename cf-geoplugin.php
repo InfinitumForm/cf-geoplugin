@@ -92,6 +92,8 @@ if($CFGP_Requirements->passes()) :
 	CFGP_Init::activation();
 	// Plugin deactivation
 	CFGP_Init::deactivation();
+	// Plugin upgrade
+	CFGP_Init::upgrade();
 	// Run plugin
 	CFGP_Init::run();
 	// Run plugin debug

@@ -35,14 +35,26 @@ if(get_option(CFGP_NAME . '-license')) {
 if(get_option(CFGP_NAME . '-rest')) {
 	delete_option(CFGP_NAME . '-rest');
 }
+if(get_option(CFGP_NAME . '-version')) {
+	delete_option(CFGP_NAME . '-version');
+}
 if(get_option(CFGP_NAME . '-db-version')) {
 	delete_option(CFGP_NAME . '-db-version');
+}
+if(get_option(CFGP_NAME . '-library-version')) {
+	delete_option(CFGP_NAME . '-library-version');
 }
 if(get_option(CFGP_NAME . '-reviewed')) {
 	delete_option(CFGP_NAME . '-reviewed');
 }
 if(get_option(CFGP_NAME . '-woo-transition')) {
 	delete_option(CFGP_NAME . '-woo-transition');
+}
+if(get_option(CFGP_NAME . '-postcode_children')) {
+	delete_option(CFGP_NAME . '-postcode_children');
+}
+if(get_option(CFGP_NAME . '_is_localhost_127.0.1.1')) {
+	delete_option(CFGP_NAME . '_is_localhost_127.0.1.1');
 }
 
 // Fix WooCommerce after our plugin
