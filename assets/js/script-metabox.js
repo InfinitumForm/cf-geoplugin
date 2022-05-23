@@ -1,6 +1,6 @@
 (function ($) {
 	var debounce,
-		loader = '<i class="fa fa-circle-o-notch fa-spin fa-fw"></i> ' + CFGP.label.loading,
+		loader = '<i class="cfa cfa-circle-o-notch cfa-spin cfa-fw"></i> ' + CFGP.label.loading,
 		/*
 		 * Select2 Initialization
 		 */

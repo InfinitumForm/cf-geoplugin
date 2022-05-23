@@ -2,7 +2,7 @@
 	var custom_uploader,
 		custom_uploader_timeout,
 		debounce,
-		loader = '<i class="fa fa-circle-o-notch fa-spin fa-fw"></i> ' + CFGP.label.loading,
+		loader = '<i class="cfa cfa-circle-o-notch cfa-spin cfa-fw"></i> ' + CFGP.label.loading,
 		/*
 		 * Menus control
 		 * @since 8.0.6
@@ -294,7 +294,7 @@
 					}
 				}
 				
-				container.html('<i class="fa fa-circle-o-notch fa-spin fa-fw"></i><span class="sr-only">Loading...</span>');
+				container.html('<i class="cfa cfa-circle-o-notch cfa-spin cfa-fw"></i><span class="sr-only">Loading...</span>');
 				$this.prop('disabled', true).addClass('disabled');
 				$.ajax({
 					url: (typeof ajaxurl !== 'undefined' ? ajaxurl : CFGP.ajaxurl),
