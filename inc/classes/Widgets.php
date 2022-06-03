@@ -29,6 +29,9 @@ class CFGP_Widgets extends CFGP_Global {
 			'CFGP_Widget_Currency_Converter',
 		));
 		
+		// For each class include file and collect widgets
+		$load_widgets = [];
+		
 		// For each class include file and register widget
 		if(!empty($classes) && is_array($classes)) {
 			foreach($classes as $i => $class){
@@ -40,14 +43,23 @@ class CFGP_Widgets extends CFGP_Global {
 				
 				// Register widget
 				if( class_exists($class) ) {
-					add_action( 'widgets_init', function() use (&$class){
-						if( class_exists($class) ){
-							register_widget( $class );
-						}
-					} );
+					$load_widgets[] = $class;
 				}
 				
 			}
+			
+			// Register widget
+			if( !empty($load_widgets) ) {
+				add_action( 'widgets_init', function() use ($load_widgets){
+					foreach($load_widgets as $widget) {
+						if( class_exists($widget) ) {
+							register_widget( $widget );
+						}
+					}
+				} );
+			}
+			
+			unset($load_widgets);
 		}
 	}
 	

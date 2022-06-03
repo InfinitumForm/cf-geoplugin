@@ -5,7 +5,7 @@ Tags: geolocation, locator, GeoIP, geo, geotargeting, seo, seo redirect, woocomm
 Requires at least: 5.0
 Tested up to: 6.0
 Requires PHP: 7.0
-Stable tag: 8.2.8
+Stable tag: 8.2.10
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -376,6 +376,15 @@ Please inform us if any of these errors occur via contact form on our website [h
 
 == Changelog ==
 
+= 8.2.10 =
+* Fixed loading widgets
+* Added support for the Kinsta
+* Code optimization
+
+= 8.2.9 =
+* Fixed browser detection
+* Improved operating system detection
+
 = 8.2.8 =
 * Improved dashboard
 * Improved file includes
@@ -592,6 +601,15 @@ Please inform us if any of these errors occur via contact form on our website [h
 
 == Upgrade Notice ==
 
+= 8.2.10 =
+* Fixed loading widgets
+* Added support for the Kinsta
+* Code optimization
+
+= 8.2.9 =
+* Fixed browser detection
+* Improved operating system detection
+
 = 8.2.8 =
 * Improved dashboard
 * Improved file includes
@@ -606,19 +624,6 @@ Please inform us if any of these errors occur via contact form on our website [h
 * Added WooCommerce sidebar widget for the geo location info log
 * Fixed WooCommerce geolocate for orders
 * Updated Library
-
-= 8.2.6 =
-* Adding browser and operating system recognition
-* Adding short codes for the desktop, mobile, browser and platform
-* Fixing UI and UX in the admin
-* Fixing plugin security
-* Improved debbuging
-
-= 8.2.5 =
-* **GREAT UPDATE - BACKUP IS REQUIRED**
-* Added new internal database cache
-* Fixed cache bugs
-* Added support for WordPress version 6.0
 
 == Other Notes ==
 
