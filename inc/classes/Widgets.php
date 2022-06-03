@@ -16,31 +16,38 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
 if(!class_exists('CFGP_Widgets')) :
 class CFGP_Widgets extends CFGP_Global {
 	private function __construct(){
+		$this->add_action('after_setup_theme', 'register', 10);
+	}
+	
+	/* 
+	 * Register widgets
+	 * @verson    1.0.2
+	 */
+	public function register(){
 		// Call main classes
 		$classes = apply_filters('cfgp/widget/classes', array(
 			'CFGP_Widget_Currency_Converter',
 		));
 		
-		global $class;
-		
 		// For each class include file and register widget
-		foreach($classes as $i => $class){
-			
-			// Include
-			if(!class_exists($class)) {
-				CFGP_U::include_once(CFGP_INC . '/widgets/' . str_replace('CFGP_Widget_', '', $class) . '.php');
+		if(!empty($classes) && is_array($classes)) {
+			foreach($classes as $i => $class){
+				
+				// Include
+				if( !class_exists($class) ) {
+					CFGP_U::include_once(CFGP_INC . '/widgets/' . str_replace('CFGP_Widget_', '', $class) . '.php');
+				}
+				
+				// Register widget
+				if( class_exists($class) ) {
+					add_action( 'widgets_init', function() use (&$class){
+						if( class_exists($class) ){
+							register_widget( $class );
+						}
+					} );
+				}
+				
 			}
-			
-			// Register widget
-			if(class_exists($class)) {
-				add_action( 'widgets_init', function(){
-					global $class;
-					if($class){
-						register_widget( $class );
-					}
-				} );
-			}
-			
 		}
 	}
 	

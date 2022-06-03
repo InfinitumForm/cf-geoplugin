@@ -30,24 +30,23 @@ class CFGP_Widget_Currency_Converter extends WP_Widget {
 		echo $args['before_widget'];
 		echo do_shortcode( sprintf(
 			'[cfgeo_full_converter title="%s" before_title="%s" after_title="%s" amount="%s" from="%s" to="%s"][/cfgeo_full_converter]',
-			esc_attr($instance['title']),
-			esc_attr($args['before_title']),
-			esc_attr($args['after_title']),
-			esc_attr($instance['amount']),
-			esc_attr($instance['from']),
-			esc_attr($instance['to'])
+			esc_attr($instance['title'] ?? ''),
+			esc_attr($args['before_title'] ?? ''),
+			esc_attr($args['after_title'] ?? ''),
+			esc_attr($instance['amount'] ?? ''),
+			esc_attr($instance['from'] ?? ''),
+			esc_attr($instance['to'] ?? '')
 		) );
 		echo $args['after_widget'];
 	}
 			  
 	// Creating widget Backend 
 	public function form( $instance ) {
-		$title = ( isset( $instance['title'] ) ) ? esc_html( $instance['title'] ) : esc_html__( 'Currency Converter', CFGP_NAME );
-		$amount = ( isset( $instance['amount'] ) ) ? esc_html( $instance['amount'] ) : esc_html__( 'Amount', CFGP_NAME );
-		$from = ( isset( $instance['from'] ) ) ? esc_html( $instance['from'] ) : esc_html__( 'From', CFGP_NAME );
-		$to = ( isset( $instance['to'] ) ) ? esc_html( $instance['to'] ) : esc_html__( 'To', CFGP_NAME );
-
-		?>
+		$title = $this->_sanitize_form_input($instance, 'title', 'text', esc_attr__( 'Currency Converter', CFGP_NAME ));
+		$amount = $this->_sanitize_form_input($instance, 'amount', 'text', esc_attr__( 'Amount', CFGP_NAME ));
+		$from = $this->_sanitize_form_input($instance, 'from', 'text', esc_attr__( 'From', CFGP_NAME ));
+		$to = $this->_sanitize_form_input($instance, 'to', 'text', esc_attr__( 'To', CFGP_NAME ));
+	?>
 		<p>
 			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_attr_e( 'Title:', CFGP_NAME ); ?></label> 
 			<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>">
@@ -64,18 +63,37 @@ class CFGP_Widget_Currency_Converter extends WP_Widget {
 			<label for="<?php echo esc_attr( $this->get_field_id( 'to' ) ); ?>"><?php esc_attr_e( 'To Label:', CFGP_NAME ); ?></label> 
 			<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'to' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'to' ) ); ?>" type="text" value="<?php echo esc_attr( $to ); ?>">
 		</p>
-		<?php 
+	<?php 
 	}
 		  
 	// Updating widget replacing old instances with new
 	public function update( $new_instance, $old_instance ) {
-		$instance = array();
-		$instance['title'] = ( isset( $new_instance['title'] ) && !empty( $new_instance['title'] ) ) ? sanitize_text_field( $new_instance['title'] ) : esc_html__( 'Currency Converter', CFGP_NAME );
-		$instance['amount'] = ( isset( $new_instance['amount'] ) && !empty( $new_instance['amount'] ) ) ? sanitize_text_field( $new_instance['amount'] ) : esc_html__( 'Amount', CFGP_NAME );
-		$instance['from'] = ( isset( $new_instance['from'] ) && !empty( $new_instance['from'] ) ) ? sanitize_text_field( $new_instance['from'] ) : esc_html__( 'From', CFGP_NAME );
-		$instance['to'] = ( isset( $new_instance['to'] ) && !empty( $new_instance['to'] ) ) ? sanitize_text_field( $new_instance['to'] ) : esc_html__( 'To', CFGP_NAME );
+		$instance = array();	
+		
+		$instance['title'] = $this->_sanitize_form_input($new_instance, 'title', 'text', esc_attr__( 'Currency Converter', CFGP_NAME ));
+		$instance['amount'] = $this->_sanitize_form_input($new_instance, 'amount', 'text', esc_attr__( 'Amount', CFGP_NAME ));
+		$instance['from'] = $this->_sanitize_form_input($new_instance, 'from', 'text', esc_attr__( 'From', CFGP_NAME ));
+		$instance['to'] = $this->_sanitize_form_input($new_instance, 'to', 'text', esc_attr__( 'To', CFGP_NAME ));
 
 		return $instance;
+	}
+	
+	private function _sanitize_form_input($new_instance, $name, $sanitize='text', $default=NULL) {
+		switch($sanitize) {
+			default:
+			case 'text':
+				return sanitize_text_field(isset($new_instance[$name]) && !empty($new_instance[$name]) ? $new_instance[$name] : $default);
+				break;
+				
+			case 'textarea':
+				return sanitize_textarea_field(isset($new_instance[$name]) && !empty($new_instance[$name]) ? $new_instance[$name] : $default);
+				break;
+				
+			case 'int':
+			case 'integer':
+				return absint(isset($new_instance[$name]) && !empty($new_instance[$name]) ? $new_instance[$name] : $default);
+				break;
+		}
 	}
 }
 endif;

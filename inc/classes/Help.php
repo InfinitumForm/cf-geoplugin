@@ -21,14 +21,14 @@ class CFGP_Help extends CFGP_Global {
 		$page = CFGP_U::request_string('page');
 		$function = str_replace('-', '_', $page);
 		if(method_exists($this, "help__{$function}")){
-			$this->add_action('current_screen', "help__{$function}");
+			$this->add_action('current_screen', "help__{$function}", 10);
 		}
 		
 		if(method_exists($this, "screen_option__{$function}")){
-			$this->add_filter('set-screen-option', "screen_option__{$function}", 10, 3);
+			$this->add_filter('set-screen-option', "screen_option__{$function}", 15, 3);
 		}
 		
-		if(CFGP_U::request_string('post_type') == 'cf-geoplugin-banner') {
+		if(CFGP_U::request_string('post_type') === 'cf-geoplugin-banner') {
 			$this->add_action('current_screen', 'help__cf_geoplugin_banner');
 		}
 	}
@@ -37,7 +37,12 @@ class CFGP_Help extends CFGP_Global {
 	 * SEO redirection screen option
 	 */
 	public function screen_option__cf_geoplugin_seo_redirection($status, $option, $value) {
-		if ( 'cfgp_seo_redirection_num_rows' == $option ){
+		if ( in_array(
+			$option,
+			array(
+				'cfgp_seo_redirection_num_rows'
+			)) !== false 
+		){
 			return $value;
 		}
 	}
@@ -88,11 +93,13 @@ class CFGP_Help extends CFGP_Global {
 	 */
 	public function help__cf_geoplugin_seo_redirection() {
 		
-		add_screen_option( 'per_page', [
-			'option'  => 'cfgp_seo_redirection_num_rows',
-			'default'   => 20,
-			'label'	  => __('Number of items per page', CFGP_NAME)
-		] );
+		add_screen_option( 'per_page', array(
+			'option' => 'cfgp_seo_redirection_num_rows',
+			'default' => 20,
+			'label' => __('Number of items per page', CFGP_NAME),
+			'min' => 10,
+			'max' => 500
+		) );
 		
 		get_current_screen()->add_help_tab( array(
 			'id'       => 'cfgp-seo-redirect-intro',
