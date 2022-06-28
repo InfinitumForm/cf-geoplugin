@@ -44,6 +44,11 @@
 if ( ! defined( 'WPINC' ) ) { die( "Don't mess with us." ); }
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
+// Start calculate runtime
+if ( ! defined( 'CFGP_START_RUNTIME' ) ){
+	define( 'CFGP_START_RUNTIME', microtime());
+}
+
 // Library version
 if ( ! defined( 'CFGP_LIBRARY_VERSION' ) ){
 	define( 'CFGP_LIBRARY_VERSION', '1.0.1');

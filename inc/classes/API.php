@@ -21,29 +21,45 @@ class CFGP_API extends CFGP_Global {
 			// Set host
 			$this->host = CFGP_U::get_host(true);
 			
-			// Collect geo data
-			$return = $this->get();
-			
-			// Fix response
-			if( !is_array($return) ) {
-				$return = [];
-			}
-			
-			// Add filter
-			$return = array_merge(
-				apply_filters( 'cfgp/api/default/fields', CFGP_Defaults::API_RETURN),
-				$return
-			);
-			
-			// Merge all
-			$return = apply_filters( 'cfgp/api/results', $return, CFGP_Defaults::API_RETURN);
+			if($dry_run !== true)
+			{
+				// Collect geo data
+				$return = $this->get();
+				
+				// Fix response
+				if( !is_array($return) ) {
+					$return = [];
+				}
+				
+				// Add filter
+				$return = array_merge(
+					apply_filters( 'cfgp/api/default/fields', CFGP_Defaults::API_RETURN),
+					$return
+				);
+				
+				// Merge all
+				$return = apply_filters( 'cfgp/api/results', $return, CFGP_Defaults::API_RETURN);
 
-			// Save API data to array
-			CFGP_Cache::set('API', $return);
-		
+				// Save API data to array
+				CFGP_Cache::set('API', $return);
+			}
 		} catch (Exception $e) {
 			throw new ErrorException('CFGP ERROR: ' . $e->getMessage());
 		}
+	}
+	
+	
+	/**
+	 * Fetch new geo informations
+	 *
+	 * @since    8.0.0
+	 */
+	public static function lookup($ip, $property = array()){
+		if($ip = CFGP_IP::filter($ip)) {
+			return self::instance(true)->get($ip, $property);
+		}
+		
+		return false;
 	}
 	
 	
@@ -74,10 +90,9 @@ class CFGP_API extends CFGP_Global {
 		$ip_slug = str_replace( array('.', ':'), '_', $ip );
 		
 		// DNS control
-		$check_dns = false;
-		if(isset($property['dns']) && $property['dns']) {
+		$check_dns = ($property['dns'] ?? CFGP_Options::get('enable_dns_lookup'));
+		if( $check_dns ) {
 			$ip_slug = $ip_slug . '_dns';
-			$check_dns = true;
 		}
 		
 		// Get base currency
@@ -112,7 +127,7 @@ class CFGP_API extends CFGP_Global {
 		if(empty($return))
 		{
 			// Build query
-			$pharams = apply_filters('cfgp/api/get/curl/pharams', array(
+			$request_pharams = apply_filters('cfgp/api/get/curl/pharams', array(
 				'ip' => $ip,
 				'server_ip' => CFGP_IP::server(),
 				'timestamp' => CFGP_TIME,
@@ -120,14 +135,19 @@ class CFGP_API extends CFGP_Global {
 				'email' => get_bloginfo('admin_email'),
 				'license' => get_option('cf_geo_defender_api_key'), // we need to keep in track some old activation keys
 				'base_convert' => $base_currency,
-				'dns' => (CFGP_Options::get('enable_dns_lookup') && CFGP_License::level() >= 1 ? 'true' : 'false'),
+				'dns' => ($check_dns/* && CFGP_License::level() >= 1*/ ? 'true' : 'false'),
 				'version' => CFGP_VERSION,
 				'wp_version' => get_bloginfo( 'version' )
 			));
 			// Build URL
-			$url = CFGP_Defaults::API['main'] . '?' . http_build_query($pharams, '', (ini_get('arg_separator.output') ?? '&amp;'), PHP_QUERY_RFC3986);
+			$request_url = CFGP_Defaults::API['main'] . '?' . http_build_query(
+				$request_pharams,
+				'',
+				(ini_get('arg_separator.output') ?? '&amp;'),
+				PHP_QUERY_RFC3986
+			);
 			// Fetch new informations
-			$response = CFGP_U::curl_get($url);
+			$response = CFGP_U::curl_get($request_url);
 			// Fix data and save to cache
 			if (!empty($response))
 			{
@@ -144,23 +164,56 @@ class CFGP_API extends CFGP_Global {
 					return $response;
 				}
 				
-				// Add browser data
-				$response = array_merge($response, array(
-					'browser' => CFGP_Browser::instance()->getBrowser(),
-					'browser_version' => CFGP_Browser::instance()->getVersion(),
-					'platform' => CFGP_Browser::instance()->getPlatform(),
-					'is_mobile' => (CFGP_Browser::instance()->isMobile() ? 1 : 0)
-				));
-				
 				// Fix proxy
 				if ( empty( $response['proxy'] ) ) {
 					$response['is_proxy'] = (CFGP_IP::is_proxy() ? 1 : 0);
-				} else {
-					$response['is_proxy'] = $response['proxy'];
 				}
 				
+				// Is localhost
+				$response['is_local_server'] = ($response['is_local_server'] ? 1 : 0);
 				
+				// Is is spam
+				$response['is_spam'] = ($response['is_spam'] ? 1 : 0);
+				
+				// Is is mobile
+				$response['is_mobile'] = ($response['is_mobile'] ? 1 : 0);
+				
+				// Is is vat
+				$response['is_vat'] = ($response['is_vat'] ? 1 : 0);
+				
+				// Is is EU
+				$response['is_eu'] = ($response['is_eu'] ? 1 : 0);
+				
+				// Is is limited
+				$response['limited'] = ($response['limited'] ? 1 : 0);
+				
+				// Calculate runtime
+				if( $response['runtime'] ) {
+					$runtime = $response['runtime'];
+				} else {
+					$runtime = (microtime() - CFGP_START_RUNTIME);
+					if( $runtime < 0 ) {
+						$runtime = -$runtime;
+					}
+				}
+				
+				// Cache
 				$return = $response;
+				
+				
+				// Append browser data after cache
+				$return = array_merge($return, array(
+					'browser'			=> CFGP_Browser::instance()->getBrowser(),
+					'browser_version'	=> CFGP_Browser::instance()->getVersion(),
+					'platform'			=> CFGP_Browser::instance()->getPlatform(),
+					'is_mobile'			=> (CFGP_Browser::instance()->isMobile() ? 1 : 0),
+					'runtime'			=> round($runtime, 6),
+				));
+				
+				// Development info
+				if( defined('CFGP_DEV_MODE') && CFGP_DEV_MODE ) {
+					$return['request_url'] = $request_url;
+				}
 			}
 		}
 		

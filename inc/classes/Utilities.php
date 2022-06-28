@@ -216,7 +216,7 @@ class CFGP_U {
 	 *
 	 * @since    4.0.4
 	 */
-	public static function curl_post( $url, $post_data = array(), $headers = '', $new_params = array(), $json = false )
+	public static function curl_post( $url, $post_data = array(), $headers = array(), $new_params = array(), $json = false )
 	{
 		$cache_name = 'cfgp-curl_post-'.md5(serialize(array($url, $headers, $new_params, $json)));
 		if(NULL !== ($cache = CFGP_Cache::get($cache_name))){
