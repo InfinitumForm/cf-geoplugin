@@ -262,6 +262,7 @@ class CFGP_U {
 		if( !is_wp_error( $request ) )
 		{
 			$output = wp_remote_retrieve_body( $request );
+			
 			if( is_wp_error( $output ) || empty( $output ) ) {
 				$output = false;
 			}
@@ -2359,6 +2360,38 @@ class CFGP_U {
 	 */
 	public static function strtolower($string) {
 		return ( function_exists('mb_strtolower') ? mb_strtolower($string) : strtolower($string) );
+	}
+	
+	/*
+	 * Adding safe hash functionality
+	 *
+	 * @param  $data
+	 * @param  $algo
+	 * @param  $binary
+	 * @param  $options
+	 *
+	 * @return string
+	 */
+	public static function hash($data, $algo = 'sha512', $binary = false, $options = array()) {
+		if( function_exists('hash') ) {
+			$algos = hash_algos();
+			
+			if( in_array($algo, $algos) ) {
+				return hash($algo, $data, $binary, $options);
+			} else if($algo === 'sha512' && in_array('whirlpool', $algos)) {
+				return hash('whirlpool', $data, $binary, $options);
+			} else if($algo === 'sha256' && in_array('ripemd256', $algos)) {
+				return hash('ripemd256', $data, $binary, $options);
+			} else if($algo === 'sha256' && in_array('snefru', $algos)) {
+				return hash('snefru', $data, $binary, $options);
+			} else if($algo === 'md5' && in_array('ripemd128', $algos)) {
+				return hash('ripemd128', $data, $binary, $options);
+			} else if($algo === 'ripemd128' && in_array('md5', $algos)) {
+				return hash('md5', $data, $binary, $options);
+			}
+		}
+		
+		return md5($data);
 	}
 }
 endif;

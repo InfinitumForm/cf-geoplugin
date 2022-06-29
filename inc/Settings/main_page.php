@@ -3,13 +3,25 @@
 if ( ! defined( 'WPINC' ) ) { die( "Don't mess with us." ); }
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-$remove_tags = array(
-	'error',
-	'error_message',
-	'timezoneName',
-	'state',
-	'zip'
-);
+if( defined('CFGP_DEV_MODE') && CFGP_DEV_MODE ) {
+	$remove_tags = array();
+} else {
+	$remove_tags = array(
+		'error',
+		'error_message',
+		'is_eu',
+		'is_vat',
+		'is_mobile',
+		'is_proxy',
+		'is_spam',
+		'limited',
+		'gps',
+		'license_hash',
+		'is_local_server'
+	);
+}
+
+$remove_tags = apply_filters('cfgp/main_page/remove_tags', $remove_tags);
 
 $gps_keys = array(
 	'address',

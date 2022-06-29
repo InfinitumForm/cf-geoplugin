@@ -95,6 +95,16 @@ class CFGP_API extends CFGP_Global {
 			$ip_slug = $ip_slug . '_dns';
 		}
 		
+		// Spam check
+		$spam_check = ( (
+			CFGP_Options::get('enable_spam_ip', 0) 
+			&& CFGP_Options::get('enable_defender', 0) 
+			&& CFGP_License::level( CFGP_Options::get('license_sku') ) > 0 
+		) ? 'true' : 'false' );
+		if( $spam_check ) {
+			$ip_slug = $ip_slug . '_spam_check';
+		}
+		
 		// Get base currency
 		if(isset($property['base_currency']) && $property['base_currency']) {
 			$base_currency = $property['base_currency'];
@@ -107,24 +117,51 @@ class CFGP_API extends CFGP_Global {
 		// Default returns
 		$return = array();
 		
+		// Hash IP slug
+		$ip_slug = CFGP_U::hash('sha512', $ip_slug);
+		
 		if($transient = CFGP_DB_Cache::get("cfgp-api-{$ip_slug}"))
 		{					
 			$return = $transient;
 			
-			$return['current_time']= date(CFGP_TIME_FORMAT, CFGP_TIME);
-			$return['current_date']= date(CFGP_DATE_FORMAT, CFGP_TIME);
+			$client_date = new DateTimeImmutable( 
+				date('c', CFGP_TIME),
+				new DateTimeZone( date_default_timezone_get() )
+			);
+			
+			if( $response->timezone !== date_default_timezone_get()) {
+				$new_client_date=$client_date->setTimeZone( new DateTimeZone( $return['timezone'] ) );
+				$return['timestamp_readable'] = $new_client_date->format( 'c' );
+				$return['timestamp'] = strtotime($return['timestamp_readable']);
+				$return['current_date'] = $new_client_date->format( 'F j, Y' );
+				$return['current_time'] = $new_client_date->format( 'H:i:s' );
+			} else {
+				$return['timestamp_readable'] = $client_date->format( 'c' );
+				$return['timestamp'] = strtotime($return['timestamp_readable']);
+				$return['current_date'] = $client_date->format( 'F j, Y' );
+				$return['current_time'] = $client_date->format( 'H:i:s' );
+			}
+			
 			$return['browser']= CFGP_Browser::instance()->getBrowser();
 			$return['browser_version']= CFGP_Browser::instance()->getVersion();
 			$return['platform']= CFGP_Browser::instance()->getPlatform();
 			$return['is_mobile']= (CFGP_Browser::instance()->isMobile() ? 1 : 0);
 			
-			if( $lookup = CFGP_DB_Cache::get('cfgp-api-available-lookup-' . $this->host) ) {
-				$return['lookup']=$lookup;
+			if( ($lookup = CFGP_DB_Cache::get('cfgp-api-available-lookup-' . $this->host)) ) {
+				$return['available_lookup']=$lookup;
 			}
+			
+			// Calculate runtime
+			$runtime = (microtime() - CFGP_START_RUNTIME);
+			if( $runtime < 0 ) {
+				$runtime = -$runtime;
+			}
+			
+			$return['runtime'] = $runtime;
 		}
 		
 		// Get new data
-		if(empty($return))
+		if( empty($return) )
 		{
 			// Build query
 			$request_pharams = apply_filters('cfgp/api/get/curl/pharams', array(
@@ -137,7 +174,8 @@ class CFGP_API extends CFGP_Global {
 				'base_convert' => $base_currency,
 				'dns' => ($check_dns/* && CFGP_License::level() >= 1*/ ? 'true' : 'false'),
 				'version' => CFGP_VERSION,
-				'wp_version' => get_bloginfo( 'version' )
+				'wp_version' => get_bloginfo( 'version' ),
+				'spam_check' => $spam_check
 			));
 			// Build URL
 			$request_url = CFGP_Defaults::API['main'] . '?' . http_build_query(
@@ -187,6 +225,22 @@ class CFGP_API extends CFGP_Global {
 				// Is is limited
 				$response['limited'] = ($response['limited'] ? 1 : 0);
 				
+				// Reassign
+				$return = $response;
+				
+				// Save lookup to session
+				if(is_numeric($return['available_lookup']) && $return['available_lookup'] <= CFGP_LIMIT) {
+					CFGP_DB_Cache::set('cfgp-api-available-lookup-' . $this->host, $return['available_lookup'], (DAY_IN_SECONDS*2));
+				} else if(
+					($return['available_lookup'] == 'unlimited' || $return['available_lookup'] == 'lifetime') 
+					&& CFGP_DB_Cache::get('cfgp-api-available-lookup-' . $this->host)
+				) {
+					CFGP_DB_Cache::delete('cfgp-api-available-lookup-' . $this->host);
+				}
+				
+				// Save to session
+				CFGP_DB_Cache::set("cfgp-api-{$ip_slug}", $return, (MINUTE_IN_SECONDS * CFGP_SESSION));
+				
 				// Calculate runtime
 				if( $response['runtime'] ) {
 					$runtime = $response['runtime'];
@@ -196,10 +250,6 @@ class CFGP_API extends CFGP_Global {
 						$runtime = -$runtime;
 					}
 				}
-				
-				// Cache
-				$return = $response;
-				
 				
 				// Append browser data after cache
 				$return = array_merge($return, array(
@@ -218,11 +268,43 @@ class CFGP_API extends CFGP_Global {
 		}
 		
 		// Return
-		return $return;
+		return apply_filters( 'cfgp/api/render/response', $return );
+	}
+	
+	
+	/*
+	 * Remove plugin cache
+	 */
+	public static function remove_cache(){
+		global $wpdb;
+		
+		// Remove plugins cache
+		if ( is_multisite() && is_main_site() && is_main_network() ) {
+			$wpdb->query("DELETE FROM
+				`{$wpdb->sitemeta}`
+			WHERE (
+					`{$wpdb->sitemeta}`.`option_name` LIKE '_site_transient_cfgp-api-%'
+				OR
+					`{$wpdb->sitemeta}`.`option_name` LIKE '_site_transient_timeout_cfgp-api-%'
+			)");
+			} else {
+			$wpdb->query("DELETE FROM
+				`{$wpdb->options}`
+			WHERE (
+					`{$wpdb->sitemeta}`.`option_name` LIKE '_transient_cfgp-api-%'
+				OR
+					`{$wpdb->sitemeta}`.`option_name` LIKE '_transient_timeout_cfgp-api-%'
+				OR
+					`{$wpdb->sitemeta}`.`option_name` LIKE '_site_transient_cfgp-api-%'
+				OR
+					`{$wpdb->sitemeta}`.`option_name` LIKE '_site_transient_timeout_cfgp-api-%'
+			)");
+		}
+		
+		CFGP_Cache::delete( 'API' );
 	}
 	
 
-	
 	/*
 	 * Instance
 	 * @verson    1.0.0

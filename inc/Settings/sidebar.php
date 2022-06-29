@@ -122,22 +122,22 @@ class CFGP_Sidebar extends CFGP_Global {
 	</li>
 	<li class="cfgp-statistic-limit">
 		<?php if(in_array(CFGP_U::api('status'), array(200,402))) : ?>
-			<h3><?php $this->cfgp_lookup_status_icon(CFGP_U::api('lookup')); ?> <?php _e('Lookup', CFGP_NAME); ?></h3>
-			<?php if(CFGP_U::api('lookup') === 'lifetime') : ?>
+			<h3><?php $this->cfgp_lookup_status_icon(CFGP_U::api('available_lookup')); ?> <?php _e('Lookup', CFGP_NAME); ?></h3>
+			<?php if(CFGP_U::api('available_lookup') === 'lifetime') : ?>
 				<p><?php _e('Congratulations, your license has provided you with a lifetime lookup.', CFGP_NAME); ?></p>
-			<?php elseif(CFGP_U::api('lookup') === 'unlimited') : ?>
+			<?php elseif(CFGP_U::api('available_lookup') === 'unlimited') : ?>
 				<?php if($license_expire = CFGP_License::expire_date()) : ?>
 					<p><?php _e('You have an unlimited lookup that you can use until:', CFGP_NAME); ?> <strong><?php echo $license_expire; ?></strong></p>
 				<?php else: ?>
 					<p><?php _e('You have an unlimited lookup.', CFGP_NAME); ?></p>
 				<?php endif; ?>
 			<?php else : ?>
-				<?php if(is_numeric(CFGP_U::api('lookup')) && CFGP_U::api('lookup') > 0) : ?>
-					<p><?php printf(__('You currently spent %1$d lookups of the %3$d lookups available. This means you have %2$d lookups left today.', CFGP_NAME), (CFGP_LIMIT-CFGP_U::api('lookup')), CFGP_U::api('lookup'), CFGP_LIMIT); ?></p>
-					<?php if(CFGP_U::api('lookup') <= (CFGP_LIMIT/3)) : ?>
+				<?php if(is_numeric(CFGP_U::api('available_lookup')) && CFGP_U::api('available_lookup') > 0) : ?>
+					<p><?php printf(__('You currently spent %1$d lookups of the %3$d lookups available. This means you have %2$d lookups left today.', CFGP_NAME), (CFGP_LIMIT-CFGP_U::api('available_lookup')), CFGP_U::api('available_lookup'), CFGP_LIMIT); ?></p>
+					<?php if(CFGP_U::api('available_lookup') <= (CFGP_LIMIT/3)) : ?>
 						<p style="color:#900"><?php _e('Your lookup expires soon, the site may be left without important functionality.', CFGP_NAME); ?></p>
 					<?php endif; ?>
-				<?php elseif(CFGP_U::api('lookup') == 0) : ?>
+				<?php elseif(CFGP_U::api('available_lookup') == 0) : ?>
 					<p style="color:#900"><?php _e('You spent the entire lookup. It will be available again the next day.', CFGP_NAME); ?></p>
 				<?php endif; ?>
 				<p><?php printf(
@@ -166,16 +166,15 @@ class CFGP_Sidebar extends CFGP_Global {
 	 * @since    8.0.0
 	 **/
 	public function sidebar_affiliate(){ ?>
-	<h4 style="text-align:center;"><?php _e('Special thanks to:', CFGP_NAME); ?></h4>
+	<h4 style="text-align:center;"><?php _e('Affiliates discounts up to 60%:', CFGP_NAME); ?></h4>
 <a href="https://www.digitalocean.com/?refcode=a4160dafc356&utm_campaign=Referral_Invite&utm_medium=Referral_Program&utm_source=badge" title="<?php esc_attr_e('CF Geo Plugin uses an API hosted on Digital Ocean servers. Get yours now!', CFGP_NAME); ?>" target="_blank"><img src="<?php echo CFGP_ASSETS; ?>/images/Logo-DigitalOcean.jpg" alt="<?php esc_attr_e('CF Geo Plugin Uses an API Hosted on Digital Ocean Cloud Servers. Get yours now!', CFGP_NAME); ?>" style="margin:0 auto 0 auto; display:block; width:100%; max-width:100%; height:auto; border: 1px solid #c3c4c7; box-shadow: 0 1px 1px rgb(0 0 0 / 4%);" /></a>
 
 <a href="https://portal.draxhost.com/?affid=1" title="<?php esc_attr_e('The CF Geo Plugin official site is hosted on Drax Host servers. Interested in affordable and secure hosting?', CFGP_NAME); ?>" target="_blank"><img src="<?php echo CFGP_ASSETS; ?>/images/Logo-Drax-Host.jpg" alt="<?php esc_attr_e('The CF Geo Plugin official site is hosted on Drax Host servers. Interested in affordable and secure hosting?', CFGP_NAME); ?>" style="margin:15px auto 0 auto; display:block; width:100%; max-width:100%; height:auto; border: 1px solid #c3c4c7; box-shadow: 0 1px 1px rgb(0 0 0 / 4%);" /></a>
 
 <a href="https://affiliates.nordvpn.com/publisher/#!/offer/15" title="<?php esc_attr_e('The CF Gep plugin recommends using Nord VPN for testing.', CFGP_NAME); ?>" class="affiliate-nordvpn" target="_blank"><img src="<?php echo CFGP_ASSETS; ?>/images/Logo-NordVPN.jpg" alt="<?php esc_attr_e('The CF Gep plugin recommends using Nord VPN for testing.', CFGP_NAME); ?>" style="margin:15px auto 0 auto; display:block; width:100%; max-width:100%; height:auto; border: 1px solid #c3c4c7; box-shadow: 0 1px 1px rgb(0 0 0 / 4%);" /></a>
-<?php /* ?>
-<h4 style="text-align:center;"><?php _e('Powered by:', CFGP_NAME); ?></h4>
-<a href="https://infinitumform.com/" title="<?php esc_attr_e('We have created many good projects, do you want to we create something for you?', CFGP_NAME); ?>" target="_blank"><img src="<?php echo CFGP_ASSETS; ?>/images/Logo-Infinitum-Form.jpg" alt="<?php esc_attr_e('We have created many good projects, do you want to we create something for you?', CFGP_NAME); ?>" style="margin:0 auto 0 auto; display:block; width:100%; max-width:100%; height:auto; border: 1px solid #c3c4c7; box-shadow: 0 1px 1px rgb(0 0 0 / 4%);" /></a>
-<?php */ ?>
+<hr style="margin:32px auto 32px auto;">
+<a href="https://infinitumform.com/" title="<?php esc_attr_e('We have created many good projects, do you want to we create something for you?', CFGP_NAME); ?>" target="_blank"><img src="<?php echo CFGP_ASSETS; ?>/images/developed-by.png" alt="<?php esc_attr_e('We have created many good projects, do you want to we create something for you?', CFGP_NAME); ?>" style="margin:0 auto; display:block; width:100%; max-width:200px; height:auto;" /></a>
+<hr style="margin:32px auto 32px auto;">
 	<?php }
 	
 	

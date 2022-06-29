@@ -166,7 +166,7 @@ add_action('cfgp/settings/tab-panel/after', function(){ if(CFGP_Options::get('en
 <?php
 $remove = array(
 	'status',
-	'lookup',
+	'available_lookup',
 	'version',
 	'credit',
 	'dmaCode',

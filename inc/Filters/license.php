@@ -20,7 +20,7 @@ add_action('admin_footer', function(){
  **/
 add_action('cfgp/page/license/content', function(){
 
-if( CFGP_U::api('lookup') != 'lifetime' ) :
+if( CFGP_U::api('available_lookup') != 'lifetime' ) :
 	
 	$select_options = array();
 
@@ -95,7 +95,7 @@ else : ?>
  *
  * @since    8.0.0
  **/
-add_action('cfgp/page/license/sidebar', function(){ if( CFGP_U::api('lookup') == 'lifetime' ) return;
+add_action('cfgp/page/license/sidebar', function(){ if( CFGP_U::api('available_lookup') == 'lifetime' ) return;
 ?>
 <div class="postbox">
 	<h3 class="hndle" style="margin-bottom:0;padding-bottom:0;"><span><?php _e('License Information', CFGP_NAME); ?></span></h3><hr>
@@ -111,7 +111,7 @@ add_action('cfgp/page/license/sidebar', function(){ if( CFGP_U::api('lookup') ==
             '<strong><a href="https://cfgeoplugin.com/privacy-policy/" target="_blank">' . __('Privacy Policy', CFGP_NAME) . '</a></strong>',
             '<strong><a href="https://cfgeoplugin.com/terms-and-conditions/" target="_blank">' . __('Terms & Conditions', CFGP_NAME) . '</a></strong>'
         ); ?></p>
-		<?php elseif(CFGP_U::api('lookup') === 'unlimited') : ?>
+		<?php elseif(CFGP_U::api('available_lookup') === 'unlimited') : ?>
 		<p style="font-weight:600;"><?php _e('An update error occurred and your license was not recorded on your server.'); ?></p>
 		<p><?php _e('This should not scare you because our API has recognized the problem and still gives you all the necessary information without restrictions.'); ?></p>
 		<p><?php _e('But for the plugin to work properly, please re-enter your license and activate the plugin to unlock all internal features.'); ?></p>
@@ -120,7 +120,7 @@ add_action('cfgp/page/license/sidebar', function(){ if( CFGP_U::api('lookup') ==
             __('You currently use a free version of plugin with a limited number of lookups. Each free version of this plugin is limited to %1$s lookups per day and you have only %2$s lookups available for today. If you want to have unlimited lookup, please enter your license key. If you are unsure and do not understand what this is about, read %3$s.', CFGP_NAME),
             
             '<strong>'.CFGP_LIMIT.'</strong>',
-            '<strong>'.CFGP_U::api('lookup').'</strong>',
+            '<strong>'.CFGP_U::api('available_lookup').'</strong>',
             '<strong><a href="https://cfgeoplugin.com/documentation/quick-start/what-do-i-get-from-unlimited-license" target="_blank">' . __('this article', CFGP_NAME) . '</a></strong>'
         ); ?></p>
         <p><?php printf(

@@ -26,7 +26,12 @@ class CFGP_Defender extends CFGP_Global {
 		
 		$ip = CFGP_U::api('ip');
 		
-		if( is_admin() && CFGP_U::request_bool('save_defender') && wp_verify_nonce(sanitize_text_field($_REQUEST['nonce']), CFGP_NAME.'-save-defender') !== false && isset( $_POST['block_proxy'] ) ) {
+		if(
+			is_admin()
+			&& CFGP_U::request_bool('save_defender')
+			&& wp_verify_nonce(sanitize_text_field($_REQUEST['nonce']), CFGP_NAME.'-save-defender') !== false
+			&& isset( $_POST['block_proxy'] ) 
+		) {
 			CFGP_U::set_defender_cookie();
 		}
 		
@@ -47,29 +52,21 @@ class CFGP_Defender extends CFGP_Global {
             die( wpautop( html_entity_decode( stripslashes( CFGP_Options::get('block_country_messages') ) ) ) );
         }
 
-        if( CFGP_Options::get('enable_spam_ip', 0) && CFGP_Options::get('enable_defender', 0) && CFGP_License::level( CFGP_Options::get('license_sku') ) > 0 )
-        {			
-			$response = false;
-			
-			if($ip)
-			{
-				$url = add_query_arg( 'ip', $ip, CFGP_Defaults::API['spam-checker'] );
-				$response = CFGP_U::curl_get( $url );
-            }
-			
-            if( !empty($response) )
-            {
-                if( isset( $response['return'] ) && $response['return'] === true && isset( $response['error'] ) && $response['error'] === false )
-                {
-					if( function_exists('http_response_code') && version_compare(PHP_VERSION, '5.4', '>=') ) {
-						http_response_code(403);
-					} else {
-						header( $this->header, true, 403 );
-					}
-                    
-                    die( wpautop( html_entity_decode( stripslashes( CFGP_Options::get('block_country_messages') ) ) ) );
-                }
-            }
+        if(
+			CFGP_Options::get('enable_spam_ip', 0) 
+			&& CFGP_Options::get('enable_defender', 0) 
+			&& CFGP_License::level( CFGP_Options::get('license_sku') ) > 0 
+		)
+        {
+			if( CFGP_U::api('is_spam') ) {
+				if( function_exists('http_response_code') && version_compare(PHP_VERSION, '5.4', '>=') ) {
+					http_response_code(403);
+				} else {
+					header( $this->header, true, 403 );
+				}
+				
+				die( wpautop( html_entity_decode( stripslashes( CFGP_Options::get('block_country_messages') ) ) ) );
+			}
         }
     }
 
@@ -118,9 +115,16 @@ class CFGP_Defender extends CFGP_Global {
             $country_check = CFGP_U::check_user_by_country( $geo['country_code'] );
             if( $country_check || empty( $geo['country_code'][0] ) )
             {
-                if( CFGP_U::check_user_by_city( $geo['city'] ) && ( CFGP_U::check_user_by_region( $geo['region_code'] ) || empty( $geo['region_code'][0] ) ) ) return true;
-                elseif( empty( $geo['city'][0] ) && CFGP_U::check_user_by_region( $geo['region_code'] ) ) return true;
-                elseif( empty( $geo['city'][0] ) && empty( $geo['region_code'][0] ) && $country_check ) return true;
+                if(
+					CFGP_U::check_user_by_city( $geo['city'] ) 
+					&& ( CFGP_U::check_user_by_region( $geo['region_code'] ) || empty( $geo['region_code'][0] ) )
+				) {
+					return true;
+				} elseif( empty( $geo['city'][0] ) && CFGP_U::check_user_by_region( $geo['region_code'] ) ) {
+					return true;
+				} elseif( empty( $geo['city'][0] ) && empty( $geo['region_code'][0] ) && $country_check ) {
+					return true;
+				}
             }
         }
 

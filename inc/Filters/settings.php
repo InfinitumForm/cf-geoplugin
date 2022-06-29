@@ -145,6 +145,7 @@ add_filter('cfgp/settings', function($options=array()){
 							),
 							'default' => 0
 						),
+						/*
 						array(
 							'name' => 'measurement_unit',
 							'label' => __('Measurement Unit', CFGP_NAME),
@@ -155,6 +156,7 @@ add_filter('cfgp/settings', function($options=array()){
 							),
 							'default' => 'km'
 						),
+						*/
 						array(
 							'name' => 'base_currency',
 							'label' => __('Base Currency', CFGP_NAME),

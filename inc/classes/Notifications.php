@@ -96,13 +96,13 @@ class CFGP_Notifications extends CFGP_Global{
 		if( CFGP_DB_Cache::get($transient) ) return;
 		
 		// Stop if lookup is unlimited or lifetime
-		if( CFGP_U::api('lookup') == 'unlimited' || CFGP_U::api('lookup') == 'lifetime' ) return;
+		if( CFGP_U::api('available_lookup') == 'unlimited' || CFGP_U::api('available_lookup') == 'lifetime' ) return;
 		
 		// Get emails
 		$emails = $this->get_admins();
 		
 		// Send email below 100
-		$lookup = CFGP_U::api('lookup');
+		$lookup = CFGP_U::api('available_lookup');
 		if( is_numeric($lookup) && $lookup <= 100 && $lookup > 1 && $emails )
 		{		
 			$message = array();

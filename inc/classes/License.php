@@ -150,7 +150,7 @@ class CFGP_License extends CFGP_Global{
 			3000	=> CFGP_Defaults::DEVELOPER_LICENSE
 		));
 		
-		if( CFGP_U::api('lookup') === 'lifetime' ) {
+		if( CFGP_U::api('available_lookup') === 'lifetime' ) {
 			return 1000;
 		}
 		
@@ -212,7 +212,7 @@ class CFGP_License extends CFGP_Global{
 			return self::$activated;
 		}
 		
-		if( CFGP_U::api('lookup') === 'lifetime' ) {
+		if( CFGP_U::api('available_lookup') === 'lifetime' ) {
 			self::$activated = true;
 			return self::$activated;
 		}
@@ -381,15 +381,22 @@ class CFGP_License extends CFGP_Global{
 			return;
 		}
 		
-		$post_data = array(
+		$request_pharams = array(
 			'license_key' => $license_key,
 			'sku' => $sku,
 			'action' => 'license_key_activate',
-			'store_code' => CFGP_STORE_CODE,
+		//	'store_code' => CFGP_STORE_CODE,
 			'domain' => CFGP_U::get_host(true)
 		);
 		
-		$response = CFGP_U::curl_post( CFGP_Defaults::API['authenticate'], $post_data, '', array(), false );
+		$request_url = CFGP_Defaults::API['authenticate'] . '?' . http_build_query(
+			$request_pharams,
+			'',
+			(ini_get('arg_separator.output') ?? '&amp;'),
+			PHP_QUERY_RFC3986
+		);
+
+		$response = CFGP_U::curl_get( $request_url );
 		
 		if(empty($response)){
 			CFGP_DB_Cache::delete('cfgp-license-response-success');

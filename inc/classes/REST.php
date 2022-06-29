@@ -493,7 +493,7 @@ class CFGP_REST extends CFGP_Global {
 							'response' => $value,
 							'error' => CFGP_U::api('error'),
 							'error_message' => CFGP_U::api('error_message'),
-							'lookup' => CFGP_U::api('lookup'),
+							'lookup' => CFGP_U::api('available_lookup'),
 							'status' => CFGP_U::api('status'),
 							'runtime' => CFGP_U::api('runtime')
 						) );

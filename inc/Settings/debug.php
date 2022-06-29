@@ -3,11 +3,20 @@
 if ( ! defined( 'WPINC' ) ) { die( "Don't mess with us." ); }
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-$remove_tags = apply_filters('cfgp/debug/remove_tags', array(
-	'timezoneName',
-	'state',
-	'zip'
-));
+if( defined('CFGP_DEV_MODE') && CFGP_DEV_MODE ) {
+	$remove_tags = array();
+} else {
+	$remove_tags = array(
+		'is_eu',
+		'is_vat',
+		'is_mobile',
+		'is_proxy',
+		'is_spam',
+		'license_hash'
+	);
+}
+
+$remove_tags = apply_filters('cfgp/debug/remove_tags', $remove_tags);
 
 $API = CFGP_Cache::get('API');
 if($NEW_API = CFGP_API::lookup(CFGP_U::request_string('cfgp_lookup'))){
