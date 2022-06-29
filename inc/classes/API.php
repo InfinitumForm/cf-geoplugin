@@ -129,7 +129,7 @@ class CFGP_API extends CFGP_Global {
 				new DateTimeZone( date_default_timezone_get() )
 			);
 			
-			if( $response->timezone !== date_default_timezone_get()) {
+			if( $return['timezone'] !== date_default_timezone_get()) {
 				$new_client_date=$client_date->setTimeZone( new DateTimeZone( $return['timezone'] ) );
 				$return['timestamp_readable'] = $new_client_date->format( 'c' );
 				$return['timestamp'] = strtotime($return['timestamp_readable']);
@@ -152,7 +152,7 @@ class CFGP_API extends CFGP_Global {
 			}
 			
 			// Calculate runtime
-			$runtime = (microtime() - CFGP_START_RUNTIME);
+			$runtime = (floatval(microtime()) - floatval(CFGP_START_RUNTIME));
 			if( $runtime < 0 ) {
 				$runtime = -$runtime;
 			}
@@ -245,7 +245,7 @@ class CFGP_API extends CFGP_Global {
 				if( $response['runtime'] ) {
 					$runtime = $response['runtime'];
 				} else {
-					$runtime = (microtime() - CFGP_START_RUNTIME);
+					$runtime = (floatval(microtime()) - floatval(CFGP_START_RUNTIME));
 					if( $runtime < 0 ) {
 						$runtime = -$runtime;
 					}
