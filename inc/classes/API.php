@@ -68,6 +68,9 @@ class CFGP_API extends CFGP_Global {
 		// Default fields
 		$default_fields = apply_filters( 'cfgp/api/default/fields', CFGP_Defaults::API_RETURN);
 		
+		// Is dev mode
+		$dev_mode = defined('CFGP_DEV_MODE') && CFGP_DEV_MODE;
+		
 		// Get IP
 		if(!empty($ip)) {
 			if(CFGP_IP::filter($ip) === false){
@@ -138,11 +141,6 @@ class CFGP_API extends CFGP_Global {
 				$return['current_time'] = $client_date->format( 'H:i:s' );
 			}
 			
-			$return['browser']= CFGP_Browser::instance()->getBrowser();
-			$return['browser_version']= CFGP_Browser::instance()->getVersion();
-			$return['platform']= CFGP_Browser::instance()->getPlatform();
-			$return['is_mobile']= (CFGP_Browser::instance()->isMobile() ? 1 : 0);
-			
 			if( ($lookup = CFGP_DB_Cache::get('cfgp-api-available-lookup-' . $this->host)) ) {
 				$return['available_lookup']=$lookup;
 			}
@@ -174,7 +172,7 @@ class CFGP_API extends CFGP_Global {
 				'spam_check' => $spam_check
 			));
 			// Build URL
-			$request_url = CFGP_Defaults::API['main'] . '?' . http_build_query(
+			$request_url = CFGP_Defaults::API[($dev_mode ? 'dev_' : '') . 'main'] . '?' . http_build_query(
 				$request_pharams,
 				'',
 				(ini_get('arg_separator.output') ?? '&amp;'),
@@ -234,34 +232,33 @@ class CFGP_API extends CFGP_Global {
 					CFGP_DB_Cache::delete('cfgp-api-available-lookup-' . $this->host);
 				}
 				
+				// Development info
+				if( $dev_mode ) {
+					$return['request_url'] = $request_url;
+				}
+				
 				// Save to session
 				CFGP_DB_Cache::set("cfgp-api-{$ip_slug}", $return, (MINUTE_IN_SECONDS * CFGP_SESSION));
 				
 				// Calculate runtime
-				if( $response['runtime'] ) {
-					$runtime = $response['runtime'];
-				} else {
+				if( empty($response['runtime']) ) {
 					$runtime = (floatval(microtime()) - floatval(CFGP_START_RUNTIME));
 					if( $runtime < 0 ) {
 						$runtime = -$runtime;
 					}
-				}
-				
-				// Append browser data after cache
-				$return = array_merge($return, array(
-					'browser'			=> CFGP_Browser::instance()->getBrowser(),
-					'browser_version'	=> CFGP_Browser::instance()->getVersion(),
-					'platform'			=> CFGP_Browser::instance()->getPlatform(),
-					'is_mobile'			=> (CFGP_Browser::instance()->isMobile() ? 1 : 0),
-					'runtime'			=> round($runtime, 6),
-				));
-				
-				// Development info
-				if( defined('CFGP_DEV_MODE') && CFGP_DEV_MODE ) {
-					$return['request_url'] = $request_url;
+					
+					$response['runtime'] = round($runtime, 6);
 				}
 			}
 		}
+		
+		// Append browser data after cache
+		$return = array_merge($return, array(
+			'browser'			=> CFGP_Browser::instance()->getBrowser(),
+			'browser_version'	=> CFGP_Browser::instance()->getVersion(),
+			'platform'			=> CFGP_Browser::instance()->getPlatform(),
+			'is_mobile'			=> (CFGP_Browser::instance()->isMobile() ? 1 : 0)
+		));
 		
 		// Return
 		return apply_filters( 'cfgp/api/render/response', $return );

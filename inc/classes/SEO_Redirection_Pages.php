@@ -205,7 +205,7 @@ class CFGP_SEO_Redirection_Pages extends CFGP_Global
 					{
 						// Redirect only once
 						if(isset($data['only_once']) ? $data['only_once'] : 0) {
-							$expire = apply_filters('cfgp/metabox/seo_redirection_pages/only_once/cookie_expire', (YEAR_IN_SECONDS*2), CFGP_TIME);
+							$expire = apply_filters('cfgp/seo/control_redirection_pages/cookie/expire', (YEAR_IN_SECONDS*2), CFGP_TIME);
 							CFGP_U::setcookie ($cookie_name, (CFGP_TIME.'_'.$expire), $expire);
 						}
 
