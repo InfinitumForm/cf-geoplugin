@@ -119,9 +119,9 @@ class CFGP_Defaults {
 	 */
 	const API = array(
 		// Standard CF Geo Plugin API URLs
-		'main'				=>	'http://192.168.1.10/api/',
-		'authenticate'		=>	'http://192.168.1.10/api/authentication',
-		'converter'			=>	'http://192.168.1.10/api/currency-converter',
+		'main'				=>	'http://209.97.157.196/v2/',
+		'authenticate'		=>	'http://209.97.157.196/v2/authentication',
+		'converter'			=>	'http://209.97.157.196/v2/currency-converter',
 		// 3rd party IPFY free API call for finding real IP address on the local machines
 		'ipfy'				=>	'https://api.ipify.org',
 		'smartIP'			=>	'https://smart-ip.net/myip',
@@ -186,7 +186,7 @@ class CFGP_Defaults {
 		'limit' 				=> NULL,
 		'license_hash' 			=> NULL,
 		'gps'					=> 0,
-		'error' 				=> NULL,
+		'error' 				=> 0,
 		'error_message' 		=> NULL,
 		'runtime' 				=> 0,
 		'status' 				=> NULL,
@@ -247,7 +247,8 @@ class CFGP_Defaults {
 		'available_lookup' => NULL,
 		'limit' => NULL,
 		'license_hash' => NULL,
-		'error' => false,
+		'error' => 0,
+		'error_message' => NULL,
 		'runtime' => 0,
 		'status' => NULL,
 		'official_url' => NULL,

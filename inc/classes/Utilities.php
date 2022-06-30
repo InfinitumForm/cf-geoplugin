@@ -2372,22 +2372,22 @@ class CFGP_U {
 	 *
 	 * @return string
 	 */
-	public static function hash($data, $algo = 'sha512', $binary = false, $options = array()) {
+	public static function hash($data, $algo = 'sha512', $binary = false) {
 		if( function_exists('hash') ) {
 			$algos = hash_algos();
 			
 			if( in_array($algo, $algos) ) {
-				return hash($algo, $data, $binary, $options);
+				return hash($algo, $data, $binary);
 			} else if($algo === 'sha512' && in_array('whirlpool', $algos)) {
-				return hash('whirlpool', $data, $binary, $options);
+				return hash('whirlpool', $data, $binary);
 			} else if($algo === 'sha256' && in_array('ripemd256', $algos)) {
-				return hash('ripemd256', $data, $binary, $options);
+				return hash('ripemd256', $data, $binary);
 			} else if($algo === 'sha256' && in_array('snefru', $algos)) {
-				return hash('snefru', $data, $binary, $options);
+				return hash('snefru', $data, $binary);
 			} else if($algo === 'md5' && in_array('ripemd128', $algos)) {
-				return hash('ripemd128', $data, $binary, $options);
+				return hash('ripemd128', $data, $binary);
 			} else if($algo === 'ripemd128' && in_array('md5', $algos)) {
-				return hash('md5', $data, $binary, $options);
+				return hash('md5', $data, $binary);
 			}
 		}
 		

@@ -55,11 +55,7 @@ class CFGP_API extends CFGP_Global {
 	 * @since    8.0.0
 	 */
 	public static function lookup($ip, $property = array()){
-		if($ip = CFGP_IP::filter($ip)) {
-			return self::instance(true)->get($ip, $property);
-		}
-		
-		return false;
+		return self::instance(true)->get($ip, $property);
 	}
 	
 	
@@ -68,7 +64,7 @@ class CFGP_API extends CFGP_Global {
 	 *
 	 * @since    8.0.0
 	 */
-	public function get($ip = NULL, $property = array()) {
+	private function get($ip = NULL, $property = array()) {
 		// Default fields
 		$default_fields = apply_filters( 'cfgp/api/default/fields', CFGP_Defaults::API_RETURN);
 		
@@ -118,8 +114,8 @@ class CFGP_API extends CFGP_Global {
 		$return = array();
 		
 		// Hash IP slug
-		$ip_slug = CFGP_U::hash('sha512', $ip_slug);
-		
+		$ip_slug = CFGP_U::hash($ip_slug);
+
 		if($transient = CFGP_DB_Cache::get("cfgp-api-{$ip_slug}"))
 		{					
 			$return = $transient;
