@@ -397,7 +397,7 @@ class CFGP_License extends CFGP_Global{
 		);
 
 		$response = CFGP_U::curl_get( $request_url );
-		
+
 		if(empty($response)){
 			CFGP_DB_Cache::delete('cfgp-license-response-success');
 			CFGP_DB_Cache::set('cfgp-license-response-errors', array(
@@ -438,15 +438,16 @@ class CFGP_License extends CFGP_Global{
 			CFGP_DB_Cache::delete('cfgp-license-response-errors');
 			// Update license
 			$update = array(
-				'key' => $response['data']['the_key'],
-				'id' => $response['data']['activation_id'],
-				'expire' => $response['data']['expire'],
-				'expire_date' => $response['data']['expire_date'],
-				'url' => $response['data']['url'],
-				'sku' => $response['data']['sku'],
-				'expired' => $response['data']['has_expired'],
-				'status' => ($response['data']['status'] == 'active')
+				'key' => $response['the_key'],
+				'id' => $response['activation_id'],
+				'expire' => $response['expire'],
+				'expire_date' => $response['expire_date'],
+				'url' => $response['url'],
+				'sku' => $response['sku'],
+				'expired' => $response['has_expired'],
+				'status' => ($response['status'] == 'active')
 			);
+			
 			self::set($update);
 			CFGP_DB_Cache::set('cfgp-license-response-success', $response['message'], DAY_IN_SECONDS);
 			// Clear special API cache
@@ -470,7 +471,7 @@ class CFGP_License extends CFGP_Global{
 		);
 		
 		$response = CFGP_U::curl_post( CFGP_Defaults::API['authenticate'], $post_data, '', array(), false );
-	
+	/*
 		if(empty($response)){
 			CFGP_DB_Cache::delete('cfgp-license-response-success');
 			CFGP_DB_Cache::set('cfgp-license-response-errors', array(
@@ -480,7 +481,7 @@ class CFGP_License extends CFGP_Global{
 			), DAY_IN_SECONDS);
 			return false;
 		}
-		
+	*/
 		/**
 		if( isset( $response['error'] ) && $response['error'] == true )
 		{
