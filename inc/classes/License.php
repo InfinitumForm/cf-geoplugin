@@ -377,7 +377,7 @@ class CFGP_License extends CFGP_Global{
 			CFGP_DB_Cache::delete('cfgp-license-response-success');
 			CFGP_DB_Cache::set('cfgp-license-response-errors', array(
 				'input_field' => $input_field_error
-			), YEAR_IN_SECONDS);
+			), DAY_IN_SECONDS);
 			return;
 		}
 		
@@ -404,7 +404,7 @@ class CFGP_License extends CFGP_Global{
 				'no_connection' => array(
 					__('Unable to connect to server.',CFGP_NAME)
 				)
-			), YEAR_IN_SECONDS);
+			), DAY_IN_SECONDS);
 			return false;
 		}
 		
@@ -416,13 +416,19 @@ class CFGP_License extends CFGP_Global{
 				$response['errors'] = $response['errors_raw'];
 			}
 			
-			CFGP_DB_Cache::set('cfgp-license-response-errors', (isset($response['errors']) ? $response['errors'] : array(
-				'api_error' => array_merge(array(
-					$response['message']
-				), array(
-					__('Make sure you select the license you purchased and enter the correct license key.',CFGP_NAME)
-				))
-			)), YEAR_IN_SECONDS);
+			CFGP_DB_Cache::set(
+				'cfgp-license-response-errors',
+				(
+					isset($response['errors']) ? $response['errors'] : array(
+						'api_error' => array_merge(array(
+							$response['message']
+						), array(
+							__('Make sure you select the license you purchased and enter the correct license key.',CFGP_NAME)
+						))
+					)
+				),
+				DAY_IN_SECONDS
+			);
 			
 			return false;
 		}
@@ -442,7 +448,7 @@ class CFGP_License extends CFGP_Global{
 				'status' => ($response['data']['status'] == 'active')
 			);
 			self::set($update);
-			CFGP_DB_Cache::set('cfgp-license-response-success', $response['message'], YEAR_IN_SECONDS);
+			CFGP_DB_Cache::set('cfgp-license-response-success', $response['message'], DAY_IN_SECONDS);
 			// Clear special API cache
 			CFGP_API::remove_cache();
 			return true;
@@ -471,7 +477,7 @@ class CFGP_License extends CFGP_Global{
 				'no_connection' => array(
 					__('Unable to connect to server.',CFGP_NAME)
 				)
-			), YEAR_IN_SECONDS);
+			), DAY_IN_SECONDS);
 			return false;
 		}
 		
@@ -483,7 +489,7 @@ class CFGP_License extends CFGP_Global{
 				'api_error' => array(
 					$response['message']
 				)
-			)), YEAR_IN_SECONDS);
+			)), DAY_IN_SECONDS);
 			return false;
 		}
 		else
@@ -493,7 +499,7 @@ class CFGP_License extends CFGP_Global{
 			CFGP_DB_Cache::delete('cfgp-license-response-success');
 			// Clear license
 			self::set(CFGP_Defaults::LICENSE);
-			CFGP_DB_Cache::set('cfgp-license-response-success', $response['message'], YEAR_IN_SECONDS);
+			CFGP_DB_Cache::set('cfgp-license-response-success', $response['message'], DAY_IN_SECONDS);
 			// Clear special API cache
 			CFGP_API::remove_cache();
 			return true;
@@ -512,7 +518,7 @@ class CFGP_License extends CFGP_Global{
 		CFGP_DB_Cache::delete('cfgp-license-response-success');
 		// Clear license
 		self::set(CFGP_Defaults::LICENSE);
-		CFGP_DB_Cache::set('cfgp-license-response-success', __('License successfully deactivated!',CFGP_NAME), YEAR_IN_SECONDS);
+		CFGP_DB_Cache::set('cfgp-license-response-success', __('License successfully deactivated!',CFGP_NAME), DAY_IN_SECONDS);
 		// Clear special API cache
 		CFGP_API::remove_cache();
 		return true;
@@ -536,7 +542,11 @@ class CFGP_License extends CFGP_Global{
 			$get_option = CFGP_Cache::set(
 				'license',
 				wp_parse_args(
-					( CFGP_NETWORK_ADMIN ? get_site_option( CFGP_NAME . '-license' ) : get_option( CFGP_NAME . '-license' ) ),
+					(
+						CFGP_NETWORK_ADMIN 
+						? get_site_option( CFGP_NAME . '-license' ) 
+						: get_option( CFGP_NAME . '-license' )
+					),
 					CFGP_Defaults::LICENSE
 				)
 			);
@@ -549,7 +559,15 @@ class CFGP_License extends CFGP_Global{
 			} else {
 				if(isset($get_option[$name])) {
 					// Return values
-					return apply_filters( 'cfgp/license/get', ((!empty($get_option[$name]) || $get_option[$name] === 0) ? $get_option[$name] : $default), $default);
+					return apply_filters(
+						'cfgp/license/get',
+						(
+							(!empty($get_option[$name]) || $get_option[$name] === 0) 
+							? $get_option[$name] 
+							: $default
+						),
+						$default
+					);
 				}
 			}
 		}
