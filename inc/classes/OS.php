@@ -386,7 +386,27 @@ if (!class_exists('CFGP_OS')):
 			
 			foreach ($regex_check as $regex => $value)
             {
-                if (preg_match('~\b(' . $regex . ')\b~i', $user_agent)) {
+                if (preg_match('~\b(' . str_replace( array (
+					'.',
+					'\\\.',
+					'\\.',
+					'-',
+					'\\\-',
+					'\\-',
+					'/',
+					'\\\/',
+					'\\/'
+				), array (
+					'\.',
+					'\.',
+					'\.',
+					'\-',
+					'\-',
+					'\-',
+					'\/',
+					'\/',
+					'\/'
+				), $regex ) . ')\b~i', $user_agent)) {
                     return $value;
                 }
             }
