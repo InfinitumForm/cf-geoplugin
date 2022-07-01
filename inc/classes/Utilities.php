@@ -2393,5 +2393,15 @@ class CFGP_U {
 		
 		return md5($data);
 	}
+	
+	
+	/*
+	 * Is dev mode
+	 *
+	 * @return bool
+	 */
+	public static function dev_mode() {
+		return defined('CFGP_DEV_MODE') && CFGP_DEV_MODE;
+	}
 }
 endif;

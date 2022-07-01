@@ -68,9 +68,6 @@ class CFGP_API extends CFGP_Global {
 		// Default fields
 		$default_fields = apply_filters( 'cfgp/api/default/fields', CFGP_Defaults::API_RETURN);
 		
-		// Is dev mode
-		$dev_mode = defined('CFGP_DEV_MODE') && CFGP_DEV_MODE;
-		
 		// Get IP
 		if(!empty($ip)) {
 			if(CFGP_IP::filter($ip) === false){
@@ -172,7 +169,7 @@ class CFGP_API extends CFGP_Global {
 				'spam_check' => $spam_check
 			));
 			// Build URL
-			$request_url = CFGP_Defaults::API[($dev_mode ? 'dev_' : '') . 'main'] . '?' . http_build_query(
+			$request_url = CFGP_Defaults::API[(CFGP_U::dev_mode() ? 'dev_' : '') . 'main'] . '?' . http_build_query(
 				$request_pharams,
 				'',
 				(ini_get('arg_separator.output') ?? '&amp;'),
@@ -233,7 +230,7 @@ class CFGP_API extends CFGP_Global {
 				}
 				
 				// Development info
-				if( $dev_mode ) {
+				if( CFGP_U::dev_mode() ) {
 					$return['request_url'] = $request_url;
 				}
 				

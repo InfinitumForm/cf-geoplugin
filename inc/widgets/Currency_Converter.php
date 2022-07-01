@@ -37,6 +37,7 @@ class CFGP_Widget_Currency_Converter extends WP_Widget {
 			esc_attr($instance['from'] ?? ''),
 			esc_attr($instance['to'] ?? '')
 		) );
+		
 		echo $args['after_widget'];
 	}
 			  

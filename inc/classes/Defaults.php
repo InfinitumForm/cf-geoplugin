@@ -119,9 +119,9 @@ class CFGP_Defaults {
 	 */
 	const API = array(
 		// Standard CF Geo Plugin API URLs
-		'main'				=>	'http://209.97.157.196/v2/',
-		'authenticate'		=>	'http://209.97.157.196/v2/authentication',
-		'converter'			=>	'http://209.97.157.196/v2/currency-converter',
+		'main'				=>	'http://159.203.150.139/v2/',
+		'authenticate'		=>	'http://159.203.150.139/v2/authentication',
+		'converter'			=>	'http://159.203.150.139/v2/currency-converter',
 		// Development API URLs
 		'dev_main'				=>	'http://192.168.1.10/api/',
 		'dev_authenticate'		=>	'http://192.168.1.10/api/authentication',

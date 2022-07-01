@@ -361,9 +361,6 @@ class CFGP_License extends CFGP_Global{
 		if(empty($license_key) || empty($sku)) {
 			$input_field_error = array();
 			
-			// Is dev mode
-			$dev_mode = defined('CFGP_DEV_MODE') && CFGP_DEV_MODE;
-			
 			if(empty($sku)) {
 				$input_field_error = array_merge($input_field_error, array(
 					__('You have not selected your license.',CFGP_NAME))
@@ -392,7 +389,7 @@ class CFGP_License extends CFGP_Global{
 			'domain' => CFGP_U::get_host(true)
 		);
 		
-		$request_url = CFGP_Defaults::API[($dev_mode ? 'dev_' : '') . 'authenticate'] . '?' . http_build_query(
+		$request_url = CFGP_Defaults::API[(CFGP_U::dev_mode() ? 'dev_' : '') . 'authenticate'] . '?' . http_build_query(
 			$request_pharams,
 			'',
 			(ini_get('arg_separator.output') ?? '&amp;'),
@@ -456,8 +453,6 @@ class CFGP_License extends CFGP_Global{
 	 * Deactivate plugin
 	 */
 	public static function deactivate(){
-		// Is dev mode
-		$dev_mode = defined('CFGP_DEV_MODE') && CFGP_DEV_MODE;
 			
 		$post_data = array(
 			'license_key' => self::get('key'),
@@ -468,7 +463,7 @@ class CFGP_License extends CFGP_Global{
 			'domain' => CFGP_U::get_host(true)
 		);
 		
-		$response = CFGP_U::curl_post( CFGP_Defaults::API[($dev_mode ? 'dev_' : '') . 'authenticate'], $post_data, '', array(), false );
+		$response = CFGP_U::curl_post( CFGP_Defaults::API[(CFGP_U::dev_mode() ? 'dev_' : '') . 'authenticate'], $post_data, '', array(), false );
 	
 		if(empty($response)){
 			CFGP_DB_Cache::delete('cfgp-license-response-success');

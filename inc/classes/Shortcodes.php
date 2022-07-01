@@ -51,6 +51,7 @@ class CFGP_Shortcodes extends CFGP_Global {
 		// Full converter shortcode
 		$this->add_shortcode( 'cfgeo_full_converter', 'cfgeo_full_converter' );
 		$this->add_action( 'wp_ajax_cfgeo_full_currency_converter', 'ajax__cfgeo_full_currency_converter' );
+		$this->add_action( 'wp_ajax_nopriv_cfgeo_full_currency_converter', 'ajax__cfgeo_full_currency_converter' );
 		
 		// Escape shortcodes
 		$this->add_shortcode( 'escape_shortcode', 'cfgeo_escape_shortcode' );
@@ -970,15 +971,12 @@ LIMIT 1
 		else
 		{
 			$api_params = array(
-				'from'		=> $from,
-				'to'		=> $to,
-				'amount'	=> $content
+				'referer' => CFGP_U::get_host(true)
 			);
-			$api_url = add_query_arg( $api_params, CFGP_Defaults::API['converter'] );
+			$api_url = add_query_arg( $api_params, CFGP_Defaults::API[(CFGP_U::dev_mode() ? 'dev_':'') . 'converter']."/{$from}/{$to}/{$content}" );
 
 			$result = CFGP_U::curl_get( $api_url );
 
-			$result = json_decode( $result, true );
 			if( ( isset( $result['error'] ) && $result['error'] == true ) || ( !isset( $result['return'] ) || $result['return'] == false ) ) return CFGP_U::generate_converter_output( $content, $symbol_from, $atts['align'], $atts['separator'] );
 
 			if( !isset( $result['to_amount'] ) || empty( $result['to_amount'] ) ){
@@ -1108,7 +1106,7 @@ LIMIT 1
 			wp_die();
 		}
 
-		$amount = filter_var( $_REQUEST['cfgp_currency_amount'], FILTER_SANITIZE_NUMBER_FLOAT,  FILTER_FLAG_ALLOW_FRACTION );
+		$amount = filter_var( sanitize_text_field($_REQUEST['cfgp_currency_amount']), FILTER_SANITIZE_NUMBER_FLOAT,  FILTER_FLAG_ALLOW_FRACTION );
 
 		if( empty( $amount ) )
 		{
@@ -1118,15 +1116,13 @@ LIMIT 1
 
 		$amount = str_replace( '-', '', $amount );
 		$api_params = array(
-			'from'		=> strtoupper( $_REQUEST['cfgp_currency_from'] ),
-			'to'		=> strtoupper( $_REQUEST['cfgp_currency_to'] ),
-			'amount'	=> $amount
+			'referer' => CFGP_U::get_host(true)
 		);
-		$api_url = add_query_arg( $api_params, CFGP_Defaults::API['converter'] );
+		$from = strtoupper( sanitize_text_field($_REQUEST['cfgp_currency_from']) );
+		$to = strtoupper( sanitize_text_field($_REQUEST['cfgp_currency_to']) );
+		$api_url = add_query_arg( $api_params, CFGP_Defaults::API[(CFGP_U::dev_mode() ? 'dev_':'') . 'converter']."/{$from}/{$to}/{$amount}" );
 
 		$result = CFGP_U::curl_get( $api_url );
-		
-		$result = json_decode( $result, true );
 
 		if( isset( $result['return'] ) )
 		{
