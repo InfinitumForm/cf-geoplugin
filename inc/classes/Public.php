@@ -41,8 +41,12 @@ class CFGP_Public extends CFGP_Global{
 		$this->add_action('shutdown', 'output_buffer_end', 100);
 	}
 	
+	/*
+	 * Enqueue Scripts
+	 * @verson    1.0.0
+	 */
 	public function enqueue_scripts($page) {
-		$min = (defined('CFGP_DEV_MODE') && CFGP_DEV_MODE ? '' : '.min');
+		$min = (CFGP_U::dev_mode() ? '' : '.min');
 		// Public shortcode style
 		wp_register_style( CFGP_NAME . '-public', CFGP_ASSETS . '/css/style-public' . $min . '.css', 1, (string)CFGP_VERSION );
 		// Public currency converter shortcode
@@ -215,17 +219,26 @@ class CFGP_Public extends CFGP_Global{
 		}
 	}
 	
-	// Output buffer start
+	/*
+	 * Output buffer start
+	 * @verson    1.0.0
+	 */
 	public function output_buffer_start() {
 		ob_start(array(&$this, 'output_buffer_callback'), 0, PHP_OUTPUT_HANDLER_REMOVABLE);
 	}
 
-	// Output buffer end
+	/*
+	 * Output buffer end
+	 * @verson    1.0.0
+	 */
 	public function output_buffer_end() {
 		ob_get_clean();
 	}
 	
-	// Output buffer callback
+	/*
+	 * Output buffer callback
+	 * @verson    1.0.0
+	 */
 	public function output_buffer_callback($content) {
 		
 		// Let's do a tags

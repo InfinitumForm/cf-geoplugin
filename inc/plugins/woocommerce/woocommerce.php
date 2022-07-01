@@ -69,7 +69,7 @@ class CFGP__Plugin__woocommerce extends CFGP_Global
 		$this->add_action( 'woocommerce_settings_tabs_cf_geoplugin_payment_restriction', 'cfgp_woocommerce_payment_settings' );
 		
 		// Add settings
-		 if( CFGP_License::level() >= 2 || (defined('CFGP_DEV_MODE') && CFGP_DEV_MODE))
+		 if( CFGP_License::level() >= 2 || CFGP_U::dev_mode())
 		{
 			// Save our settings for payments
 			$this->add_action( 'woocommerce_update_options_cf_geoplugin_payment_restriction', 'cfgp_woocommerce_payment_settings_save' );
@@ -612,12 +612,12 @@ if($flag = CFGP_U::admin_country_flag(get_post_meta($post->ID, '_billing_country
                     $custom_attributes['disabled'] = true;
                 }
 				
-				if(defined('CFGP_DEV_MODE') && CFGP_DEV_MODE && isset($custom_attributes['disabled'])){
+				if(CFGP_U::dev_mode() && isset($custom_attributes['disabled'])){
 					unset($custom_attributes['disabled']);
 				}
                 
                 $settings[] = array( 'name' => __( 'CF Geo Plugin Payments Control', CFGP_NAME ), 'type' => 'title', 'desc' => __( 'Configure payment methods for each country. Show or hide payment methods by country to prevent unwanted transactions.', CFGP_NAME ) . (
-				(isset($custom_attributes['disabled']) && $custom_attributes['disabled']) || (defined('CFGP_DEV_MODE') && CFGP_DEV_MODE)
+				(isset($custom_attributes['disabled']) && $custom_attributes['disabled']) || CFGP_U::dev_mode()
 				? ' <br><span style="color:#dc3545;">' . sprintf(__('This option is only enabled with the licensed version of the %s. You must use 1 year license or above.', CFGP_NAME), '<a href="' . CFGP_U::admin_url('admin.php?page=cf-geoplugin-activate') . '">WordPress Geo Plugin</a>') . '</span>'
 				: ''
 				) . '<hr>', 'id' => 'cf_geoplugin_payment_restriction' );

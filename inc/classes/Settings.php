@@ -189,7 +189,6 @@ class CFGP_Settings extends CFGP_Global {
 			'settings__callback'
 		);
 		
-		
 		if(CFGP_License::activated()) {
 			$this->add_submenu_page(
 				CFGP_NAME,
@@ -209,7 +208,7 @@ class CFGP_Settings extends CFGP_Global {
 				'license__callback'
 			);
 		}
-		
+			
 		if(CFGP_Options::get('enable_seo_redirection', 1))
 		{
 			global $submenu;

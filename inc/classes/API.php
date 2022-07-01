@@ -60,6 +60,43 @@ class CFGP_API extends CFGP_Global {
 	
 	
 	/**
+	 * Get cache key
+	 *
+	 * @since    8.0.0
+	 */
+	public static function cache_key($ip, $property = array()) {
+		// Keep property
+		$property = shortcode_atts(array(
+			'dns' => CFGP_Options::get('enable_dns_lookup')
+		), $property);
+		
+		// Start building key
+		$ip_slug = str_replace( array('.', ':'), '_', $ip );
+		
+		// DNS check
+		if( $property['dns'] ) {
+			$ip_slug = $ip_slug . '_dns';
+		}
+		
+		// Spam check
+		$spam_check = ( (
+			CFGP_Options::get('enable_spam_ip', 0) 
+			&& CFGP_Options::get('enable_defender', 0) 
+			&& CFGP_License::level( CFGP_Options::get('license_sku') ) > 0 
+		) ? 'true' : 'false' );
+		if( $spam_check ) {
+			$ip_slug = $ip_slug . '_spam_check';
+		}
+		
+		// Hash		
+		$ip_slug = CFGP_U::hash($ip_slug);
+		
+		// Return
+		return $ip_slug;
+	}
+	
+	
+	/**
 	 * Get geo informations
 	 *
 	 * @since    8.0.0
@@ -81,15 +118,9 @@ class CFGP_API extends CFGP_Global {
 		if( empty($ip) ) {
 			return $default_fields;
 		}
-
-		// generate IP like a slug
-		$ip_slug = str_replace( array('.', ':'), '_', $ip );
 		
 		// DNS control
 		$check_dns = ($property['dns'] ?? CFGP_Options::get('enable_dns_lookup'));
-		if( $check_dns ) {
-			$ip_slug = $ip_slug . '_dns';
-		}
 		
 		// Spam check
 		$spam_check = ( (
@@ -97,9 +128,6 @@ class CFGP_API extends CFGP_Global {
 			&& CFGP_Options::get('enable_defender', 0) 
 			&& CFGP_License::level( CFGP_Options::get('license_sku') ) > 0 
 		) ? 'true' : 'false' );
-		if( $spam_check ) {
-			$ip_slug = $ip_slug . '_spam_check';
-		}
 		
 		// Get base currency
 		if(isset($property['base_currency']) && $property['base_currency']) {
@@ -114,7 +142,7 @@ class CFGP_API extends CFGP_Global {
 		$return = array();
 		
 		// Hash IP slug
-		$ip_slug = CFGP_U::hash($ip_slug);
+		$ip_slug = self::cache_key($ip, $property);
 
 		if($transient = CFGP_DB_Cache::get("cfgp-api-{$ip_slug}"))
 		{					
@@ -169,7 +197,7 @@ class CFGP_API extends CFGP_Global {
 				'spam_check' => $spam_check
 			));
 			// Build URL
-			$request_url = CFGP_Defaults::API[(CFGP_U::dev_mode() ? 'dev_' : '') . 'main'] . '?' . http_build_query(
+			$request_url = CFGP_Defaults::API['main'] . '?' . http_build_query(
 				$request_pharams,
 				'',
 				(ini_get('arg_separator.output') ?? '&amp;'),

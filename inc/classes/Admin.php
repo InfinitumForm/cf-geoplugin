@@ -536,7 +536,6 @@ class CFGP_Admin extends CFGP_Global {
 			));
 		}
 		
-		
 		// Display Currency Converter in the topbar
 		if(
 			apply_filters('cfgp/topbar/currency/display', true)

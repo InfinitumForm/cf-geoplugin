@@ -389,7 +389,7 @@ class CFGP_License extends CFGP_Global{
 			'domain' => CFGP_U::get_host(true)
 		);
 		
-		$request_url = CFGP_Defaults::API[(CFGP_U::dev_mode() ? 'dev_' : '') . 'authenticate'] . '?' . http_build_query(
+		$request_url = CFGP_Defaults::API['authenticate'] . '?' . http_build_query(
 			$request_pharams,
 			'',
 			(ini_get('arg_separator.output') ?? '&amp;'),
@@ -469,7 +469,7 @@ class CFGP_License extends CFGP_Global{
 			'domain' => CFGP_U::get_host(true)
 		);
 		
-		$response = CFGP_U::curl_post( CFGP_Defaults::API[(CFGP_U::dev_mode() ? 'dev_' : '') . 'authenticate'], $post_data, '', array(), false );
+		$response = CFGP_U::curl_post( CFGP_Defaults::API['authenticate'], $post_data, '', array(), false );
 	
 		if(empty($response)){
 			CFGP_DB_Cache::delete('cfgp-license-response-success');

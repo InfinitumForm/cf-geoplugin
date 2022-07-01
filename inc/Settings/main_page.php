@@ -3,7 +3,7 @@
 if ( ! defined( 'WPINC' ) ) { die( "Don't mess with us." ); }
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-if( defined('CFGP_DEV_MODE') && CFGP_DEV_MODE ) {
+if( CFGP_U::dev_mode() ) {
 	$remove_tags = array();
 } else {
 	$remove_tags = array(

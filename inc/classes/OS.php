@@ -133,7 +133,7 @@ if (!class_exists('CFGP_OS')):
          */
         public static function get($user_agent = null)
         {
-            $os_array = array();
+			$os_array = array();
             if (empty($user_agent))
             {
                 if (function_exists('php_uname')) $user_agent = php_uname('a');
@@ -214,7 +214,6 @@ if (!class_exists('CFGP_OS')):
                     'openwrt' => 'Linux - openWRT',
                     'fedora' => 'Linux - Fedora',
                     'linux' => 'Linux',
-                    'Mac OS X 10.1[^0-9]' => 'Mac OS X Puma',
                     'sierra' => 'Mac OS - Sierra',
                     'mavericks' => 'Mac OS - Mavericks',
                     'yosemite' => 'Mac OS - Yosemite',
@@ -227,6 +226,10 @@ if (!class_exists('CFGP_OS')):
                 {
                     $os_array[$ver] = $name;
                 }
+				
+				$regex_check = apply_filters('cf_geoplugin_unix_version_regex', array(
+					'Mac OS X 10.1[^0-9]' => 'Mac OS X Puma'
+				));
             }
             else
             {
@@ -238,30 +241,20 @@ if (!class_exists('CFGP_OS')):
                     'windows 10 home' => 'Windows 10',
                     'windows 10 pro' => 'Windows 10',
                     'windows nt 10' => 'Windows 10',
-					
 					'win11' => 'Windows 11',
                     'windows 11' => 'Windows 11',
                     'windows 11 enterprise' => 'Windows 11',
                     'windows 11 home' => 'Windows 11',
                     'windows 11 pro' => 'Windows 11',
                     'windows nt 11' => 'Windows 11',
-					
                     'windows nt 6.3' => 'Windows 8.1',
                     'windows nt 6.2' => 'Windows 8',
-                    'windows nt 6.1|windows nt 7.0' => 'Windows 7',
                     'windows nt 6.0' => 'Windows Vista',
                     'windows nt 5.2' => 'Windows Server 2003/XP x64',
                     'windows nt 5.1' => 'Windows XP',
-                    'windows xp' => 'Windows XP',
-                    'windows nt 5.0|windows nt5.1|windows 2000' => 'Windows 2000',
                     'windows me' => 'Windows ME',
-                    'windows nt 4.0|winnt4.0' => 'Windows NT',
                     'windows ce' => 'Windows CE',
-                    'windows 98|win98' => 'Windows 98',
-                    'windows 95|win95' => 'Windows 95',
                     'win16' => 'Windows 3.11',
-                    'mac os x 10.1[^0-9]' => 'Mac OS X Puma',
-                    'macintosh|mac os x' => 'Mac OS X',
                     'mac_powerpc' => 'Mac OS 9',
                     'linux' => 'Linux',
                     'ubuntu' => 'Linux - Ubuntu',
@@ -271,25 +264,11 @@ if (!class_exists('CFGP_OS')):
                     'android' => 'Android',
                     'blackberry' => 'BlackBerry',
                     'webos' => 'Mobile',
-                    'Mac OS X 10.1[^0-9]' => 'Mac OS X Puma',
-                    '(media center pc).([0-9]{1,2}\.[0-9]{1,2})' => 'Windows Media Center',
-                    '(win)([0-9]{1,2}\.[0-9x]{1,2})' => 'Windows',
-                    '(win)([0-9]{2})' => 'Windows',
-                    '(windows)([0-9x]{2})' => 'Windows',
-                    '(winnt)([0-9]{1,2}\.[0-9]{1,2}){0,1}' => 'Windows NT',
-                    '(windows nt)(([0-9]{1,2}\.[0-9]{1,2}){0,1})' => 'Windows NT',
                     'Win 9x 4.90' => 'Windows ME',
-                    '(windows)([0-9]{1,2}\.[0-9]{1,2})' => 'Windows',
                     'win32' => 'Windows',
-                    '(java)([0-9]{1,2}\.[0-9]{1,2}\.[0-9]{1,2})' => 'Java',
-                    '(Solaris)([0-9]{1,2}\.[0-9x]{1,2}){0,1}' => 'Solaris',
                     'dos x86' => 'DOS',
                     'Mac OS X' => 'Mac OS X',
                     'Mac_PowerPC' => 'Macintosh PowerPC',
-                    '(mac|Macintosh)' => 'Mac OS',
-                    '(sunos)([0-9]{1,2}\.[0-9]{1,2}){0,1}' => 'SunOS',
-                    '(beos)([0-9]{1,2}\.[0-9]{1,2}){0,1}' => 'BeOS',
-                    '(risc os)([0-9]{1,2}\.[0-9]{1,2})' => 'RISC OS',
                     'unix' => 'Unix',
                     'os/2' => 'OS/2',
                     'freebsd' => 'FreeBSD',
@@ -300,23 +279,9 @@ if (!class_exists('CFGP_OS')):
                     'osf' => 'OSF',
                     'aix' => 'AIX',
                     'GNU Hurd' => 'GNU Hurd',
-                    '(fedora)' => 'Linux - Fedora',
-                    '(kubuntu)' => 'Linux - Kubuntu',
-                    '(ubuntu)' => 'Linux - Ubuntu',
-                    '(debian)' => 'Linux - Debian',
-                    '(CentOS)' => 'Linux - CentOS',
-                    '(Mandriva).([0-9]{1,3}(\.[0-9]{1,3})?(\.[0-9]{1,3})?)' => 'Linux - Mandriva',
-                    '(SUSE).([0-9]{1,3}(\.[0-9]{1,3})?(\.[0-9]{1,3})?)' => 'Linux - SUSE',
-                    '(Dropline)' => 'Linux - Slackware (Dropline GNOME)',
-                    '(ASPLinux)' => 'Linux - ASPLinux',
-                    '(Red Hat)' => 'Linux - Red Hat',
-                    '(linux)' => 'Linux',
-                    '(amigaos)([0-9]{1,2}\.[0-9]{1,2})' => 'AmigaOS',
                     'amiga-aweb' => 'AmigaOS',
                     'amiga' => 'Amiga',
                     'AvantGo' => 'PalmOS',
-                    '[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{1,3})' => 'Linux',
-                    '(webtv)/([0-9]{1,2}\.[0-9]{1,2})' => 'WebTV',
                     'Dreamcast' => 'Dreamcast OS',
                     'GetRight' => 'Windows',
                     'go!zilla' => 'Windows',
@@ -338,31 +303,90 @@ if (!class_exists('CFGP_OS')):
                     'Java' => 'Unknown',
                     'flashget' => 'Windows',
                     'MS FrontPage' => 'Windows',
-                    '(msproxy)/([0-9]{1,2}.[0-9]{1,2})' => 'Windows',
-                    '(msie)([0-9]{1,2}.[0-9]{1,2})' => 'Windows',
                     'libwww-perl' => 'Unix',
                     'UP.Browser' => 'Windows CE',
-                    'NetAnts' => 'Windows',
+                    'NetAnts' => 'Windows'
                 ));
+				
+				$regex_check = apply_filters('cf_geoplugin_os_version_regex', array(
+					'windows nt 6.1|windows nt 7.0' => 'Windows 7',
+					'(fedora)' => 'Linux - Fedora',
+					'(kubuntu)' => 'Linux - Kubuntu',
+					'(ubuntu)' => 'Linux - Ubuntu',
+					'(debian)' => 'Linux - Debian',
+					'(CentOS)' => 'Linux - CentOS',
+					'(Dropline)' => 'Linux - Slackware (Dropline GNOME)',
+					'(ASPLinux)' => 'Linux - ASPLinux',
+					'(Red Hat)' => 'Linux - Red Hat',
+					'(linux)' => 'Linux',
+					'windows nt 5.0|windows nt5.1|windows 2000' => 'Windows 2000',
+					'windows nt 4.0|winnt4.0' => 'Windows NT',
+					'windows 98|win98' => 'Windows 98',
+					'windows 95|win95' => 'Windows 95',
+					'mac os x 10.1[^0-9]' => 'Mac OS X Puma',
+					'macintosh|mac os x' => 'Mac OS X',
+					'(windows)([0-9]{1,2}\.[0-9]{1,2})' => 'Windows',
+					'Mac OS X 10.1[^0-9]' => 'Mac OS X Puma',
+					'(media center pc).([0-9]{1,2}\.[0-9]{1,2})' => 'Windows Media Center',
+					'(win)([0-9]{1,2}\.[0-9x]{1,2})' => 'Windows',
+					'(win)([0-9]{2})' => 'Windows',
+					'(windows)([0-9x]{2})' => 'Windows',
+					'(winnt)([0-9]{1,2}\.[0-9]{1,2}){0,1}' => 'Windows NT',
+					'(windows nt)(([0-9]{1,2}\.[0-9]{1,2}){0,1})' => 'Windows NT',
+					'(java)([0-9]{1,2}\.[0-9]{1,2}\.[0-9]{1,2})' => 'Java',
+					'(Solaris)([0-9]{1,2}\.[0-9x]{1,2}){0,1}' => 'Solaris',
+					'(mac|Macintosh)' => 'Mac OS',
+					'(sunos)([0-9]{1,2}\.[0-9]{1,2}){0,1}' => 'SunOS',
+					'(beos)([0-9]{1,2}\.[0-9]{1,2}){0,1}' => 'BeOS',
+					'(risc os)([0-9]{1,2}\.[0-9]{1,2})' => 'RISC OS',
+					'(Mandriva).([0-9]{1,3}(\.[0-9]{1,3})?(\.[0-9]{1,3})?)' => 'Linux - Mandriva',
+					'(SUSE).([0-9]{1,3}(\.[0-9]{1,3})?(\.[0-9]{1,3})?)' => 'Linux - SUSE',
+					'(amigaos)([0-9]{1,2}\.[0-9]{1,2})' => 'AmigaOS',
+					'[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{1,3})' => 'Linux',
+					'(webtv)/([0-9]{1,2}\.[0-9]{1,2})' => 'WebTV',
+					'(msproxy)/([0-9]{1,2}.[0-9]{1,2})' => 'Windows',
+					'(msie)([0-9]{1,2}.[0-9]{1,2})' => 'Windows'
+				));
             }
+			
             foreach ($os_array as $regex => $value)
             {
                 if (preg_match('~\b(' . str_replace( array (
 					'.',
 					'\\\.',
 					'\\.',
+					'-',
+					'\\\-',
+					'\\-',
 					'/',
 					'\\\/',
-					'\\/'
+					'\\/',
+					'!',
+					'\\\!',
+					'\\!',
+					' '
 				), array (
 					'\.',
 					'\.',
 					'\.',
+					'\-',
+					'\-',
+					'\-',
 					'\/',
 					'\/',
-					'\/'
-				), $regex ) . ')\b~i', $user_agent))
-                {
+					'\/',
+					'\!',
+					'\!',
+					'\!',
+					'\s'
+				), $regex ) . ')\b~i', $user_agent)) {
+                    return $value;
+                }
+            }
+			
+			foreach ($regex_check as $regex => $value)
+            {
+                if (preg_match('~\b(' . $regex . ')\b~i', $user_agent)) {
                     return $value;
                 }
             }

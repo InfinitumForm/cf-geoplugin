@@ -122,10 +122,6 @@ class CFGP_Defaults {
 		'main'				=>	'http://159.203.150.139/v2/',
 		'authenticate'		=>	'http://159.203.150.139/v2/authentication',
 		'converter'			=>	'http://159.203.150.139/v2/currency-converter',
-		// Development API URLs
-		'dev_main'				=>	'http://192.168.1.10/api/',
-		'dev_authenticate'		=>	'http://192.168.1.10/api/authentication',
-		'dev_converter'			=>	'http://192.168.1.10/api/currency-converter',
 		// 3rd party IPFY free API call for finding real IP address on the local machines
 		'ipfy'				=>	'https://api.ipify.org',
 		'smartIP'			=>	'https://smart-ip.net/myip',
