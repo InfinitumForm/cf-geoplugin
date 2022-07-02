@@ -351,7 +351,7 @@ if (!class_exists('CFGP_OS')):
 			
             foreach ($os_array as $regex => $value)
             {
-                if (preg_match('~\b(' . str_replace( array (
+                if (@preg_match('~\b(' . str_replace( array (
 					'.',
 					'\\\.',
 					'\\.',
@@ -386,7 +386,7 @@ if (!class_exists('CFGP_OS')):
 			
 			foreach ($regex_check as $regex => $value)
             {
-                if (preg_match('~\b(' . str_replace( array (
+                if (@preg_match('~\b(' . str_replace( array (
 					'.',
 					'\\\.',
 					'\\.',
