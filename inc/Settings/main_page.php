@@ -23,7 +23,7 @@ if( CFGP_U::dev_mode() ) {
 
 $remove_tags = apply_filters('cfgp/main_page/remove_tags', $remove_tags);
 
-$gps_keys = array(
+$gps_keys = apply_filters('cfgp/main_page/gps_keys', array(
 	'address',
 	'latitude',
 	'longitude',
@@ -34,8 +34,9 @@ $gps_keys = array(
 	'country_code',
 	'country',
 	'city',
-	'city_code'
-);
+	'city_code',
+	'district'
+));
 
 $API = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
 
@@ -52,7 +53,7 @@ $API = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
 
                     <div class="nav-tab-wrapper-chosen">
                         <nav class="nav-tab-wrapper">
-                        	<?php do_action('cfgp/main_page/nav-tab/before'); ?>
+                        	<?php do_action('cfgp/main_page/nav-tab/before', $API, $remove_tags, $gps_keys); ?>
                             <a href="javascript:void(0);" class="nav-tab nav-tab-active" data-id="#shortcodes"><i class="cfa cfa-code"></i><span class="label"> <?php _e('Shortcodes', CFGP_NAME); ?></span></a>
                             <?php if(CFGP_Options::get_beta('enable_simple_shortcode')) : ?>
                             	<a href="javascript:void(0);" class="nav-tab" data-id="#simple-shortcodes"><i class="cfa cfa-code"></i><span class="label"> <?php _e('Simple Shortcodes', CFGP_NAME); ?></span></a>
@@ -61,9 +62,9 @@ $API = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
 							<?php if(CFGP_Options::get('enable_css')) : ?>
                             	<a href="javascript:void(0);" class="nav-tab" data-id="#css-property"><i class="cfa cfa-css3"></i><span class="label"> <?php _e('CSS property', CFGP_NAME); ?></span></a>
                             <?php endif; ?>
-                            <?php do_action('cfgp/main_page/nav-tab/after'); ?>
+                            <?php do_action('cfgp/main_page/nav-tab/after', $API, $remove_tags, $gps_keys); ?>
                         </nav>
-                        <?php do_action('cfgp/main_page/tab-panel/before'); ?>
+                        <?php do_action('cfgp/main_page/tab-panel/before', $API, $remove_tags, $gps_keys); ?>
                         <div class="cfgp-tab-panel cfgp-tab-panel-active" id="shortcodes">
                         	<p><?php _e('These are short codes available for use in places where short codes can be executed.', CFGP_NAME); ?> <?php printf(__('The use and functionality of these short codes are described in our %s.', CFGP_NAME), '<a href="https://cfgeoplugin.com/documentation/quick-start/cf-geoplugin-shortcodes" target="_blank">' . __('documentation', CFGP_NAME) . '</a>'); ?></p>
                             <?php if($API) : ?>
@@ -250,7 +251,7 @@ $API = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
 						</div>
 						<?php endif; ?>
 
-                        <?php do_action('cfgp/main_page/tab-panel/after'); ?>
+                        <?php do_action('cfgp/main_page/tab-panel/after', $API, $remove_tags, $gps_keys); ?>
                    	</div>
 
                 </div>

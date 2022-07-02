@@ -45,6 +45,7 @@ if($NEW_API = CFGP_API::lookup(CFGP_U::request_string('cfgp_lookup'))){
                     
                     <div class="nav-tab-wrapper-chosen">
                         <nav class="nav-tab-wrapper">
+						<?php do_action('cfgp/debug/nav-tab/before'); ?>
                         	<a href="javascript:void(0);" class="nav-tab nav-tab-active" data-id="#recived-data"><i class="cfa cfa-database"></i><span class="label"> <?php _e('Recived data', CFGP_NAME); ?></span></a>
                             <a href="javascript:void(0);" class="nav-tab" data-id="#sent-data"><i class="cfa cfa-share-square"></i><span class="label"> <?php _e('Sent data', CFGP_NAME); ?></span></a>
                             <a href="javascript:void(0);" class="nav-tab" data-id="#server-statistics"><i class="cfa cfa-server"></i><span class="label"> <?php _e('Server statistics', CFGP_NAME); ?></span></a>
@@ -52,8 +53,10 @@ if($NEW_API = CFGP_API::lookup(CFGP_U::request_string('cfgp_lookup'))){
                             <a href="javascript:void(0);" class="nav-tab" data-id="#google-map"><i class="cfa cfa-globe"></i><span class="label"> <?php _e('Google map', CFGP_NAME); ?></span></a>
                             <?php endif; ?>
                        <!--     <a href="javascript:void(0);" class="nav-tab" data-id="#debugger"><i class="cfa cfa-bug"></i><span class="label"> <?php _e('Debugger', CFGP_NAME); ?></span></a>  -->
+					   <?php do_action('cfgp/debug/nav-tab/after'); ?>
                         </nav>
                         
+						<?php do_action('cfgp/debug/tab-panel/before'); ?>
                         <div class="cfgp-tab-panel cfgp-tab-panel-active" id="recived-data">
                         <p><?php echo sprintf( __( 'Information that the CF Geo Plugin API ver.%s receives', CFGP_NAME ), CFGP_VERSION ); ?></p>
                         <?php if($API) : ?>
@@ -341,6 +344,8 @@ if($NEW_API = CFGP_API::lookup(CFGP_U::request_string('cfgp_lookup'))){
                         <?php endif; ?>
                     <!--    <div class="cfgp-tab-panel" id="debugger"></div>    -->
 					</div>
+					
+					<?php do_action('cfgp/debug/tab-panel/after'); ?>
                     
                 </div>
             </div>
