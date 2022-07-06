@@ -86,6 +86,7 @@ class CFGP_Defaults {
 		'block_country_messages'		=>	'',
 		'block_proxy'					=>	0,
 		'redirect_enable'				=>	0,
+		'redirect_mode'					=>	2,
 		'redirect_disable_bots'			=>	0,
 		'redirect_country'				=>	'',
 		'redirect_region'				=>	'',

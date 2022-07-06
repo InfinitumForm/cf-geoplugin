@@ -53,12 +53,33 @@ class CFGP_SEO_Redirection_Pages extends CFGP_Global
 		
 		/**
 		 * Fire WordPress redirecion ASAP
-		 =======================================*/
-	//	/* 01 */ $this->add_action( 'plugins_loaded',		'seo_redirection', 1);
-	//	/* 02 */ $this->add_action( 'wp',					'seo_redirection', 1);
-	//	/* 03 */ $this->add_action( 'send_headers',			'seo_redirection', 1);
-	//	/* 04 */ $this->add_action( 'posts_selection',		'seo_redirection', 1); /* DANGER: Out of memory */
-		/* 05 */ $this->add_action( 'template_redirect',	'seo_redirection', 1);
+		 *
+		 * Here we have a couple of options to consider.
+		 * This is a list of actions that can serve:
+		 *
+		 * 01 $this->add_action( 'plugins_loaded',		'seo_redirection', 1);
+		 * 02 $this->add_action( 'wp',					'seo_redirection', 1);
+		 * 03 $this->add_action( 'send_headers',		'seo_redirection', 1);
+		 * 04 $this->add_action( 'posts_selection',		'seo_redirection', 1); // DANGER: Out of memory
+		 * 05 $this->add_action( 'template_redirect',	'seo_redirection', 1);
+		 */
+		switch( CFGP_Options::get('redirect_mode', 2) ) {
+			default:
+			case 1:
+				$this->add_action( 'template_redirect',	'seo_redirection', 1);
+				break;
+				
+			case 2:
+				$this->add_action( 'posts_selection',	'seo_redirection', 1);
+				$this->add_action( 'template_redirect',	'seo_redirection', 1);
+				break;
+				
+			case 3:
+				$this->add_action( 'wp',	'seo_redirection', 1);
+				$this->add_action( 'posts_selection',	'seo_redirection', 1);
+				$this->add_action( 'template_redirect',	'seo_redirection', 1);
+				break;
+		}
 	}
 	
 	public function seo_redirection(){

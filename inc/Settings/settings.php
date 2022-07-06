@@ -62,7 +62,7 @@ $options = apply_filters('cfgp/settings', array());
 							?>
 								<tr>
 									<th scope="row" valign="top" class="cfgp-label">
-									  <label for="cfgp-<?php echo esc_attr($input['name']); ?>"><?php echo esc_attr($input['label']); ?></label> <?php if(!empty($input['desc'])) : ?><i class="cfa cfa-question-circle fa-cfgeo-help cfgp-help" data-help="true" title="<?php echo esc_attr($input['desc']); ?>"></i><?php endif; ?>
+									  <label for="cfgp-<?php echo esc_attr($input['name']); ?>"><?php echo esc_attr($input['label']); ?></label> <?php if(!empty($input['desc'])) : ?><i class="cfa cfa-question-circle fa-cfgeo-help cfgp-help" data-help="true" data-title="<?php echo esc_attr($input['desc']); ?>"></i><?php endif; ?>
 									</th>
 									<td valign="top" class="cfgp-field">
 <?php

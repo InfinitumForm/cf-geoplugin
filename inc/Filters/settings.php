@@ -270,6 +270,18 @@ add_filter('cfgp/settings', function($options=array()){
 							'default' => 1
 						),
 						array(
+							'name' => 'redirect_mode',
+							'label' => __('Redirection mode', CFGP_NAME),
+							'desc' => __('SEO redirection works differently for each server. We suggest you try one of the options as the best for your server.', CFGP_NAME),
+							'type' => 'select',
+							'options' => array(
+								1 => __('Mode 1 (basic)', CFGP_NAME),
+								2 => __('Mode 2 (standard)', CFGP_NAME),
+								3 => __('Mode 3 (advanced)', CFGP_NAME)
+							),
+							'default' => 1
+						),
+						array(
 							'name' => 'enable_seo_csv',
 							'label' => __('Enable CSV Import/Export in Site Redirection', CFGP_NAME),
 							'desc' => __('This allow you to upload CSV to your SEO redirection or download/backup SEO redirection list in the CSV.', CFGP_NAME),
