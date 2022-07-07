@@ -197,7 +197,7 @@ class CFGP_API extends CFGP_Global {
 				'spam_check' => $spam_check
 			));
 			// Build URL
-			$request_url = CFGP_Defaults::API['main'] . '?' . http_build_query(
+			$request_url = CFGP_Defaults::API[(CFGP_Options::get('enable_ssl', 0) ? 'ssl_' : '') . 'main'] . '?' . http_build_query(
 				$request_pharams,
 				'',
 				(ini_get('arg_separator.output') ?? '&amp;'),

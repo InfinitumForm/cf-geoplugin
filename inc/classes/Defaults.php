@@ -123,6 +123,10 @@ class CFGP_Defaults {
 		'main'				=>	'http://159.203.150.139/v2/',
 		'authenticate'		=>	'http://159.203.150.139/v2/authentication',
 		'converter'			=>	'http://159.203.150.139/v2/currency-converter',
+		// SSL URLs
+		'ssl_main'				=>	'https://cdn-cfgeoplugin.com/v2/',
+		'ssl_authenticate'		=>	'https://cdn-cfgeoplugin.com/v2/authentication',
+		'ssl_converter'			=>	'https://cdn-cfgeoplugin.com/v2/currency-converter',		
 		// 3rd party IPFY free API call for finding real IP address on the local machines
 		'ipfy'				=>	'https://api.ipify.org',
 		'smartIP'			=>	'https://smart-ip.net/myip',
