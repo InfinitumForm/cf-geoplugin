@@ -1,5 +1,12 @@
 == Changelog ==
 
+= 8.3.0 =
+* Switched to new API keys
+* Added new utilities, endpoints, actions & filters
+* Added redirection modes
+* Removed unnecessary functionality
+* Optimized PHP code
+
 = 8.2.10 =
 * Fixed loading widgets
 * Added support for the Kinsta

@@ -376,6 +376,13 @@ Please inform us if any of these errors occur via contact form on our website [h
 
 == Changelog ==
 
+= 8.3.0 =
+* Switched to new API keys
+* Added new utilities, endpoints, actions & filters
+* Added redirection modes
+* Removed unnecessary functionality
+* Optimized PHP code
+
 = 8.2.10 =
 * Fixed loading widgets
 * Added support for the Kinsta
@@ -601,29 +608,12 @@ Please inform us if any of these errors occur via contact form on our website [h
 
 == Upgrade Notice ==
 
-= 8.2.10 =
-* Fixed loading widgets
-* Added support for the Kinsta
-* Code optimization
-
-= 8.2.9 =
-* Fixed browser detection
-* Improved operating system detection
-
-= 8.2.8 =
-* Improved dashboard
-* Improved file includes
-* Improved plugin update
-* Removed deprecated and bad codes
-
-= 8.2.7 =
-* **PLUGIN UPDATE: Mandatory PHP extensions cURL and Multibyte String**
-* **WOOCOMMERCE UPDATE: Revisit WooCommerce settings after update**
-* Added requirements for the PHP extensions cURL and Multibyte String
-* Added WooCommerce geo location info log to orders
-* Added WooCommerce sidebar widget for the geo location info log
-* Fixed WooCommerce geolocate for orders
-* Updated Library
+= 8.3.0 =
+* Switched to new API keys
+* Added new utilities, endpoints, actions & filters
+* Added redirection modes
+* Removed unnecessary functionality
+* Optimized PHP code
 
 == Other Notes ==
 
