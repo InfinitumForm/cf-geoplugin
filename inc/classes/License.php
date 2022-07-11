@@ -735,9 +735,9 @@ class CFGP_License extends CFGP_Global{
 				'sku' => 'CFGEOSWL',
 				'url' => 'https://cfgeoplugin.com/license/cf-geo-plugin-unlimited-personal-license',
 				'price' => array(
-					'amount' => 69,
+					'amount' => 62,
 					'regular' => 89,
-					'sale' => 69,
+					'sale' => 62,
 					'date' => array(
 						'sale_from' => NULL,
 						'sale_to' => NULL
@@ -753,9 +753,9 @@ class CFGP_License extends CFGP_Global{
 				'sku' => 'CFGEO3WL',
 				'url' => 'https://cfgeoplugin.com/license/cf-geo-plugin-unlimited-freelancer-license',
 				'price' => array(
-					'amount' => 89,
-					'regular' => 109,
-					'sale' => 89,
+					'amount' => 82,
+					'regular' => 132,
+					'sale' => 82,
 					'date' => array(
 						'sale_from' => NULL,
 						'sale_to' => NULL
@@ -771,9 +771,9 @@ class CFGP_License extends CFGP_Global{
 				'sku' => 'CFGEODWL',
 				'url' => 'https://cfgeoplugin.com/license/cf-geo-plugin-unlimited-business-license',
 				'price' => array(
-					'amount' => 289,
-					'regular' => 359,
-					'sale' => 289,
+					'amount' => 349,
+					'regular' => 499,
+					'sale' => 349,
 					'date' => array(
 						'sale_from' => NULL,
 						'sale_to' => NULL
