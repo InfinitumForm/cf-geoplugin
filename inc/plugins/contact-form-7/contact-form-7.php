@@ -33,9 +33,10 @@ class CFGP__Plugin__contact_form_7 extends CFGP_Global{
 	 * @since    4.0.0
 	 */
 	public function get_excluded(){
-		if(!$this->excluded)
-			$this->excluded = array_filter(array_map('trim', explode(',',$this->remove)));
-		return $this->excluded;
+		if(!$this->excluded) {
+			$this->excluded = array_filter(array_map('trim', explode(',', $this->remove)));
+		}
+		return apply_filters('cfgeo_wpcf7_excluded', $this->excluded);
 	}
 	
 	/**

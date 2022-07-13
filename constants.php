@@ -98,22 +98,22 @@ if (!defined('W3TC_DYNAMIC_SECURITY')) {
 
 // Disable email notifications
 if (!defined('CFGP_DISABLE_NOTIFICATION')) {
-    define('CFGP_DISABLE_NOTIFICATION', false);
+    define('CFGP_DISABLE_NOTIFICATION', true);
 }
 
 // Disable notification for the "License will expire soon"
 if (!defined('CFGP_DISABLE_NOTIFICATION_EXPIRE_SOON')) {
-    define('CFGP_DISABLE_NOTIFICATION_EXPIRE_SOON', false);
+    define('CFGP_DISABLE_NOTIFICATION_EXPIRE_SOON', true);
 }
 
 // Disable notification for the "Lookup expired"
 if (!defined('CFGP_DISABLE_NOTIFICATION_LOOKUP_EXPIRED')) {
-    define('CFGP_DISABLE_NOTIFICATION_LOOKUP_EXPIRED', false);
+    define('CFGP_DISABLE_NOTIFICATION_LOOKUP_EXPIRED', true);
 }
 
 // Disable notification for the "Lookup expires soon"
 if (!defined('CFGP_DISABLE_NOTIFICATION_LOOKUP_EXPIRE_SOON')) {
-    define('CFGP_DISABLE_NOTIFICATION_LOOKUP_EXPIRE_SOON', false);
+    define('CFGP_DISABLE_NOTIFICATION_LOOKUP_EXPIRE_SOON', true);
 }
 
 // Plugin URL root

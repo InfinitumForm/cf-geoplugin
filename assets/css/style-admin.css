@@ -249,9 +249,8 @@
 	padding:0;
 }
 
-.nav-tab-wrapper-chosen .cfgp-tab-panel .cfgp-form-group label{
-	display:block;
-	width:100%;
+.nav-tab-wrapper-chosen .cfgp-tab-panel .cfgp-form-group label.cfgp-form-radio{
+	display:inline-block;
 	margin-bottom:5px;
 }
 

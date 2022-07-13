@@ -5,7 +5,7 @@ Tags: geolocation, locator, GeoIP, geo, geotargeting, seo, seo redirect, woocomm
 Requires at least: 5.0
 Tested up to: 6.0
 Requires PHP: 7.0
-Stable tag: 8.3.1
+Stable tag: 8.3.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -376,6 +376,12 @@ Please inform us if any of these errors occur via contact form on our website [h
 
 == Changelog ==
 
+= 8.3.2 =
+* Fixed menu geolocations
+* Fixed notifications
+* Fixed Contact Form 7 inputs
+* Fixed Yoast SEO tags
+
 = 8.3.1 =
 * Improved Contact Form 7 integration
 * Improved PHP code
@@ -386,242 +392,14 @@ Please inform us if any of these errors occur via contact form on our website [h
 * Added redirection modes
 * Removed unnecessary functionality
 * Optimized PHP code
-
-= 8.2.10 =
-* Fixed loading widgets
-* Added support for the Kinsta
-* Code optimization
-
-= 8.2.9 =
-* Fixed browser detection
-* Improved operating system detection
-
-= 8.2.8 =
-* Improved dashboard
-* Improved file includes
-* Improved plugin update
-* Removed deprecated and bad codes
-
-= 8.2.7 =
-* **PLUGIN UPDATE: Mandatory PHP extensions cURL and Multibyte String**
-* **WOOCOMMERCE UPDATE: Revisit WooCommerce settings after update**
-* Added requirements for the PHP extensions cURL and Multibyte String
-* Added WooCommerce geo location info log to orders
-* Added WooCommerce sidebar widget for the geo location info log
-* Fixed WooCommerce geolocate for orders
-* Updated Library
-
-= 8.2.6 =
-* Adding browser and operating system recognition
-* Adding short codes for the desktop, mobile, browser and platform
-* Fixing UI and UX in the admin
-* Fixing plugin security
-* Improved debbuging
-
-= 8.2.5 =
-* **GREAT UPDATE - BACKUP IS REQUIRED**
-* Added new internal database cache
-* Fixed cache bugs
-* Added support for WordPress version 6.0
-
-= 8.2.4 =
-* Fixed WP WP_ADMIN_DIR constant
-
-= 8.2.3 =
-* Improved plugin integrations
-* Removed deprecated notices
-
-= 8.2.2 =
-* Fixed database error log
-
-= 8.2.1 =
-* Update database tables
-* Upgrade transliteration
-* Fixing problem with missing SEO redirection table in some servers
-
-= 8.2.0 =
-* Advanced IP address recognition algorithms
-* Improved legacy code support
-* Improved Settings
-
-= 8.1.11 =
-* Improved integration with WooCommerce
-* WooCommerce takes control of the base currency
-* Improved code quality
-
-= 8.1.10 =
-* Fixed memory leak
-* Fixed the problem with the geo banner on the cached site
-* Corrected UX
-
-= 8.1.9 =
-* Added navigation control by geo location
-* Fixed bugs with SEO redirection
-* Fixed bugs in license authentication
-* SEO redirection has been moved to a separate menu item
-* Fixed bugs with settings around base currency
-* Improved WooCommerce integration
-
-= 8.1.8 =
-* Improved IP address detection
-* Improved algorithm for local servers
-* Improved web bot detection
-* Fixed postcode search
-* Improved postcode detection
-* Added WooCommerce algorithm for advanced geolocation
-* Fixed WooCommerce detection for payment methods
-* Improved PHP code and bug fixes
-
-= 8.1.7 =
-* Fixed algorithm for SEO redirection
-* Improved filesystem
-* Improved local server verification
-
-= 8.1.6 =
-* **GREAT UPDATE - BACKUP IS REQUIRED**
-* New optimized libraries
-* Improved forms
-* Improved search for cities, regions and countries
-* Improved admin pages
-* Fixed SEO redirection for cached pages
-* Removed unnecessary code
-* Optimized JavaScript code
-* Optimized PHP code
-
-= 8.1.5 =
-* Fixing CF Geo Banner duplication problem
-* Fixing localhost problems
-
-= 8.1.4 =
-* Preparing code for advanced libraries that come with the following versions.
-* Fixed existing PHP errors
-* Improved PHP algorithm
-* Improved widgets
-* Improved shortcode
-
-= 8.1.3 =
-* Improved object caching and added garbage collector
-* Fixed issues with missing Wordpress features
-
-= 8.1.2 =
-* Fixing location search
-* Fixing SEO redirections for the certain countries
-* Fixing Geo banner for the certain countries
-
-= 8.1.1 =
-* Adding transitional code for the geo banner
-* Adding calling_code and country_code_3
-* Added new country flags
-* Added postcode library for the Serbia
-* Improved Woocommerce integration for the PayPal extensions
-* Fixed Geo banner cache
-* Fixed shortcode cache
-* Fixed license activation
-* Switched Geo banner from get_posts to direct MySQL query
-
-= 8.1.0 =
-* Added improved integration for the GPS module
-* Aded new action and filters
-* Fixed REST API security
-* Fixed JavaScript security
-* Fixed Shortcode cache
-* Improved Utilities
-* Improved public scripts
-* Improved cache flush
-
-= 8.0.10 =
-* Fixed license activation problems
-
-= 8.0.9 =
-* Added support for the new Windows servers
-* Fixed IP detection on the Windows IIS
-* Fixed CSV media uploads
-* Improved JavaScript
-
-= 8.0.8 =
-* Fixed plugin notifications
-* Improved API calls
-* Improved user experience
-* Improved action hooks
-
-= 8.0.7 =
-* **IMPORTANT UPDATE**
-* Fixed Elementor integration
-* Fixed REST API integration
-* Fixed cache algorithms
-* Optimized JavaScript code
-* Optimized CSS code
-* Improved page impact
-* Improved shortodes
-
-= 8.0.6 =
-* Fixed PROXY detection
-* Improved UX for mobile devices
-* Improved menus navigation control
-* JavaScript bugs fixed
-
-= 8.0.5 =
-* Added today's course at the topbar
-* Improved SEO redirection settings table
-* Improved file includes
-* Fixed plugin page URL's
-* Fixed plugin widgets
-* Improved global UI and UX
-* Fixed previous bugs
-
-= 8.0.4 =
-* **IMPORTANT UPDATE**
-* Added support for the custom URL menu item
-* Fixed SEO Redirection CSV upload
-* Fixed Geo Banner display problems
-* Fixed Geo Banner caching problems
-* Fixed absolute path of the PHP files
-* Added support for the IIS servers
-* Added support for the direct debug
-* Improved REST API response
-* Fixed JavaScript console error
-
-= 8.0.3 =
-* Fixed REST API route definition for the public users
-
-= 8.0.2 =
-* Improved JavaScript code
-* Fixed menu items integration and adapted to taxonomy
-* Improved widgets
-
-= 8.0.1 =
-* Added Menu item visibility based on the geo location
-* Fixed form error when getting old data
-* Improved security
-
-= 8.0.0 =
-* **GREAT UPDATE - BACKUP IS REQUIRED**
-* New optimized user experience based on the WordPress standard design with easy access to all information and settings
-* Added PROXY visit detection and the ability to block access
-* Advanced IP address recognition, enhanced support for Apache and Nginx servers
-* Included local libraries for Continents, Countries, Regions and Cities with autocomplete functionality
-* Maximally optimized PHP code with advanced caching algorithms with correct action hooks that allow advanced manipulation for developers
-* Fixed caching via REST
-* Improved SEO redirection with the possibility of import and export in the CSV format
-* Improved shortcodes
-* Licensing issues fixed
-* Fixed issues with SEO redirection
-* Fixed lookup leak issues
-* Fixed problems with banner and shortcode caching
-* Fixed issues with Siteground integration
 
 == Upgrade Notice ==
 
-= 8.3.1 =
-* Improved Contact Form 7 integration
-* Improved PHP code
-
-= 8.3.0 =
-* Switched to new API keys
-* Added new utilities, endpoints, actions & filters
-* Added redirection modes
-* Removed unnecessary functionality
-* Optimized PHP code
+= 8.3.2 =
+* Fixed menu geolocations
+* Fixed notifications
+* Fixed Contact Form 7 inputs
+* Fixed Yoast SEO tags
 
 == Other Notes ==
 

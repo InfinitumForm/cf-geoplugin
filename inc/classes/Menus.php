@@ -25,8 +25,6 @@ class CFGP_Menus extends CFGP_Global {
 		$this->add_filter( 'wp_get_nav_menu_items', 'restrict_menu_items', 1, 3);
 		$this->add_filter( 'template_redirect', 'restrict_page_access', 1, 0);
 		
-	//	$this->add_action( (CFGP_NETWORK_ADMIN ? 'network_admin_menu' : 'admin_menu'), 'add_pages',  10 );
-		
 		$this->add_filter( 'after_menu_locations_table', 'after_menu_locations_table', 10 );
 		
 		$this->add_action( 'wp_ajax_cfgp_geolocate_menu', 'ajax__geolocate_menu' );
@@ -280,7 +278,7 @@ class CFGP_Menus extends CFGP_Global {
 						'class'=>'cfgp_select2'
 					), '');
 				?></td>
-				<td  class="cfgp-menu-options" colspan="2" style="text-align:right">
+				<td  class="cfgp-menu-options" colspan="2" style="text-align:right;">
 					<input type="button" name="nav-menu-locations" class="button button-primary right" id="cfgp-menu-add-location" value="<?php esc_attr_e('+ Add New', CFGP_NAME); ?>">
 				</td>
 			</tr>
