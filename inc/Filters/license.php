@@ -31,7 +31,9 @@ if( CFGP_U::api('available_lookup') != 'lifetime' ) :
 			CFGP_License::deactivate();
 		}
 		
-		wp_safe_redirect( CFGP_U::admin_url('/admin.php?page=cf-geoplugin-activate') ); exit;
+		if( CFGP_U::redirect( CFGP_U::admin_url('/admin.php?page=cf-geoplugin-activate') ) ){
+			exit;
+		}
 	}
 
 	foreach(CFGP_License::get_product_data() as $i => $product){

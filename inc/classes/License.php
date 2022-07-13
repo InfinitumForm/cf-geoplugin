@@ -452,6 +452,7 @@ class CFGP_License extends CFGP_Global{
 			CFGP_DB_Cache::set('cfgp-license-response-success', $response['message'], DAY_IN_SECONDS);
 			// Clear special API cache
 			CFGP_API::remove_cache();
+			CFGP_DB_Cache::flush();
 			return true;
 		}
 	}
@@ -470,7 +471,14 @@ class CFGP_License extends CFGP_Global{
 			'domain' => CFGP_U::get_host(true)
 		);
 		
-		$response = CFGP_U::curl_post( CFGP_Defaults::API[(CFGP_Options::get('enable_ssl', 0) ? 'ssl_' : '') . 'authenticate'], $post_data, '', array(), false );
+		$request_url = CFGP_Defaults::API[(CFGP_Options::get('enable_ssl', 0) ? 'ssl_' : '') . 'authenticate'] . '?' . http_build_query(
+			$post_data,
+			'',
+			(ini_get('arg_separator.output') ?? '&amp;'),
+			PHP_QUERY_RFC3986
+		);
+		
+		$response = CFGP_U::curl_get( $request_url );
 	/*
 		if(empty($response)){
 			CFGP_DB_Cache::delete('cfgp-license-response-success');
@@ -522,6 +530,7 @@ class CFGP_License extends CFGP_Global{
 		CFGP_DB_Cache::set('cfgp-license-response-success', __('License successfully deactivated!',CFGP_NAME), DAY_IN_SECONDS);
 		// Clear special API cache
 		CFGP_API::remove_cache();
+		CFGP_DB_Cache::flush();
 		return true;
 	}
 	
