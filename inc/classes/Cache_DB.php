@@ -7,6 +7,8 @@
  * @package       cf-geoplugin
  * @author        Ivijan-Stefan Stipic
  * @version       1.0.0
+ *
+ * @todo          https://www.php.net/manual/en/function.spl-object-hash.php
  */
 if(!class_exists('CFGP_DB_Cache')) : class CFGP_DB_Cache {
 	

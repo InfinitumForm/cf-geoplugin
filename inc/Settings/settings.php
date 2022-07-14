@@ -101,7 +101,15 @@ switch($input['type'])
 
 
 	### CHECKBOX
-	case 'checkbox': $default = CFGP_Options::get($input['name'], (isset($input['default']) ? $input['default'] : [])); if(isset($input['options'])) : foreach($input['options'] as $i => $object) : ?>
+	case 'checkbox': 
+	$default = CFGP_Options::get($input['name'], (isset($input['default']) ? $input['default'] : []));
+	if(isset($input['options'])) : ?>
+	<input type="hidden" name="<?php
+	  echo CFGP_NAME;
+	?>[<?php
+	  echo $input['name'];
+	?>]" value="">
+	<?php foreach($input['options'] as $i => $object) : ?>
     <span class="input-radio<?php
           echo (isset($input['style']) ? ' ' . $input['style'] : '');
         ?>">

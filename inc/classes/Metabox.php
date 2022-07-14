@@ -86,7 +86,8 @@ if(!class_exists('CFGP_Metabox')) : class CFGP_Metabox extends CFGP_Global {
      */
 	public function add_seo_redirection(){
 		$screen = get_current_screen();
-		if(isset( $screen->post_type ) && in_array($screen->post_type, CFGP_Options::get('enable_seo_posts', array()))){
+		$enable_seo_posts = CFGP_Options::get('enable_seo_posts', array());
+		if($enable_seo_posts && isset( $screen->post_type ) && in_array($screen->post_type, $enable_seo_posts)){
 			$this->add_meta_box(
 				CFGP_NAME . '-page-seo-redirection',			// Unique ID
 				__( 'SEO Redirection', CFGP_NAME ),				// Box title
@@ -105,7 +106,8 @@ if(!class_exists('CFGP_Metabox')) : class CFGP_Metabox extends CFGP_Global {
      */
 	public function add_geo_tags(){
 		$screen = get_current_screen();
-		if(isset( $screen->post_type ) && in_array($screen->post_type, CFGP_Options::get('enable_geo_tag', array()))){
+		$enable_geo_tag = CFGP_Options::get('enable_geo_tag', array());
+		if($enable_geo_tag && isset( $screen->post_type ) && in_array($screen->post_type, $enable_geo_tag)){
 			$this->add_meta_box(
 				CFGP_NAME . '-geo-tags',						// Unique ID
 				__( 'Geo Tags', CFGP_NAME ),					// Box title
@@ -322,7 +324,11 @@ function CF_GeoPlugin_Google_Map_GeoTag() {
 	}
 	else
 	{
-		var url = '//maps.googleapis.com/maps/api/js?key=<?php echo esc_attr(CFGP_Options::get('map_api_key')); ?>',
+		var url = '<?php 
+			echo esc_attr(CFGP_Defaults::API['googleapis_map']); 
+		?>/api/js?key=<?php 
+			echo esc_attr(CFGP_Options::get('map_api_key')); 
+		?>',
 			head = document.getElementsByTagName('head')[0],
 			script = document.createElement("script");
 		
@@ -359,6 +365,7 @@ function CF_GeoPlugin_Google_Map_GeoTag() {
 	public function add_seo_redirection__callback( $post ){
 		
 		$seo_redirection = get_post_meta($post->ID, $this->metabox, true);
+		
 		if(empty($seo_redirection)){
 			$seo_redirection = get_post_meta($post->ID, CFGP_METABOX . 'redirection', true); // Depricated (it will be removed in the future)
 		}
@@ -520,21 +527,21 @@ function CF_GeoPlugin_Google_Map_GeoTag() {
 	 */
 	public function add_page_restriction() {
 		$screen = get_current_screen();
-		$this->add_meta_box(
-			CFGP_NAME . '-page-restriction',				// Unique ID
-			__( 'Page Restriction', CFGP_NAME ),			// Box title
-			'add_page_restriction__callback',						// Content callback, must be of type callable
-			$screen->post_type,								// Post type
-			'side'
-		);
+		if( isset( $screen->post_type ) && $screen->post_type === 'cf-geoplugin-banner' ) {
+			$this->add_meta_box(
+				CFGP_NAME . '-page-restriction',				// Unique ID
+				__( 'Page Restriction', CFGP_NAME ),			// Box title
+				'add_page_restriction__callback',				// Content callback, must be of type callable
+				$screen->post_type,								// Post type
+				'side'
+			);
+		}
 	}
 	
 	/**
 	 * Add page restriction callback
 	 */
 	public function add_page_restriction__callback( $post ){
-		$screen = get_current_screen();
-		if(isset( $screen->post_type ) && $screen->post_type === 'cf-geoplugin-banner') return;
 		?>
 <div class="cfgp-container cfgp-page-restriction-container cfgp-country-region-city-multiple-form">
 	<p><?php _e('Use these options if you want to hide the current page from visitors from a specific geo location without SEO redirection.', CFGP_NAME); ?></p>

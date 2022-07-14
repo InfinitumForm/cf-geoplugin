@@ -843,7 +843,7 @@ LIMIT 1
 		}
 		else
 		{
-			var url = '//maps.googleapis.com/maps/api/js?key=<?php echo CFGP_Options::get('map_api_key'); ?>',
+			var url = '<?php echo esc_attr(CFGP_Defaults::API['googleapis_map']); ?>/api/js?key=<?php echo CFGP_Options::get('map_api_key'); ?>',
 				head = document.getElementsByTagName('head')[0],
 				script = document.createElement("script");
 			

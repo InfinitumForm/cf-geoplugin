@@ -23,7 +23,7 @@ add_filter('cfgp/settings', function($options=array()){
 	
 	$default_value_seo = CFGP_Options::get('enable_seo_posts');
 	$default_value_geo_tags = CFGP_Options::get('enable_geo_tag');
-	
+
 	foreach( $get_post_types as $i => $obj )
 	{
 		if( in_array( $obj->name, array( 'attachment', 'nav_menu_item', 'custom_css', 'customize_changeset', 'user_request', 'cf-geoplugin-banner' ) ) ) continue;

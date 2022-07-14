@@ -130,7 +130,8 @@ class CFGP_Defaults {
 		// 3rd party IPFY free API call for finding real IP address on the local machines
 		'ipfy'				=>	'https://api.ipify.org',
 		'smartIP'			=>	'https://smart-ip.net/myip',
-		'indent'			=>	'https://ident.me'
+		'indent'			=>	'https://ident.me',
+		'googleapis_map'	=>	'//maps.googleapis.com/maps'
 	);
 	
 	/*
