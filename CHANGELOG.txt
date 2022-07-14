@@ -1,5 +1,9 @@
 == Changelog ==
 
+= 8.3.4 =
+* **IMPORTANT UPDATE**
+* Fixed memory leaking on custom post types
+
 = 8.3.3 =
 * Fixed license deactivation
 * Removed deprecated code

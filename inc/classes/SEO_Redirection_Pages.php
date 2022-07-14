@@ -70,13 +70,13 @@ class CFGP_SEO_Redirection_Pages extends CFGP_Global
 				break;
 				
 			case 2:
-				$this->add_action( 'posts_selection',	'seo_redirection', 1);
+				$this->add_action( 'send_headers',	'seo_redirection', 1);
 				$this->add_action( 'template_redirect',	'seo_redirection', 1);
 				break;
 				
 			case 3:
 				$this->add_action( 'wp',	'seo_redirection', 1);
-				$this->add_action( 'posts_selection',	'seo_redirection', 1);
+				$this->add_action( 'send_headers',	'seo_redirection', 1);
 				$this->add_action( 'template_redirect',	'seo_redirection', 1);
 				break;
 		}
