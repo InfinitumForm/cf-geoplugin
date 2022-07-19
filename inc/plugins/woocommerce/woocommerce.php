@@ -202,7 +202,7 @@ if($flag = CFGP_U::admin_country_flag($GEO->country_code)) {
 </p>
 	<?php
 		else :
-		$browser = CFGP_Browser::instance(get_post_meta($post->ID, '_customer_user_agent', true));
+		$_customer_user_agent = get_post_meta($post->ID, '_customer_user_agent', true);
 	?>
 <p><strong><?php esc_html_e( 'Order IP address:', CFGP_NAME ); ?></strong><br><?php
 if($flag = CFGP_U::admin_country_flag(get_post_meta($post->ID, '_billing_country', true))) {
@@ -223,11 +223,13 @@ if($flag = CFGP_U::admin_country_flag(get_post_meta($post->ID, '_billing_country
 	$location = array_filter($location);
 	echo esc_html( join(', ', $location) );
 ?></p>
+<?php if($_customer_user_agent) : $browser = CFGP_Browser::instance( $_customer_user_agent ); ?>
 <p><strong><?php esc_html_e( 'Customer User Agent:', CFGP_NAME ); ?></strong>
 	<br><?php esc_html_e( 'Platform:', CFGP_NAME ); ?> <?php echo esc_html($browser->getPlatform()); ?>
 	<br><?php esc_html_e( 'Browser:', CFGP_NAME ); ?> <?php echo esc_html($browser->getBrowser()); ?>
 	<br><?php esc_html_e( 'Version:', CFGP_NAME ); ?> <?php echo esc_html($browser->getVersion()); ?>
 </p>
+<?php endif; ?>
 <hr>
 <p class="description"><?php esc_html_e( 'NOTE: This geo location is based on the default WooCommerce algorithm.', CFGP_NAME ); ?></p>
 	<?php endif;

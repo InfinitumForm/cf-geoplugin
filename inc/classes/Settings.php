@@ -23,6 +23,7 @@ class CFGP_Settings extends CFGP_Global {
 		}
 		$this->add_action( (CFGP_NETWORK_ADMIN ? 'network_admin_menu' : 'admin_menu'), 'add_pages',  10 );
 		$this->add_action( 'admin_init', 'admin_init' );
+		add_filter( 'set-screen-option', [&$this, 'set_screen_option'], 30, 3 );
 	}
 	
 	// Initialize plugin settings
@@ -213,7 +214,7 @@ class CFGP_Settings extends CFGP_Global {
 		{
 			global $submenu;
 			
-			$this->add_menu_page(
+			$this->seo_redirection_page = $this->add_menu_page(
 				__('SEO Redirection',CFGP_NAME),
 				__('SEO Redirection',CFGP_NAME),
 				'manage_options',
@@ -222,6 +223,7 @@ class CFGP_Settings extends CFGP_Global {
 				'dashicons-location',
 				59
 			);
+			$this->add_action("load-{$this->seo_redirection_page}", 'add_seo_redirection_page_screen_option');
 		
 			$submenu[CFGP_NAME . '-seo-redirection'] = array(
 				array(
@@ -240,6 +242,31 @@ class CFGP_Settings extends CFGP_Global {
 					CFGP_U::admin_url('/admin.php?page=cf-geoplugin-seo-redirection&action=import&nonce='.wp_create_nonce(CFGP_NAME.'-seo-import-csv'))
 				)
 			);
+		}
+	}
+	
+	public function add_seo_redirection_page_screen_option () {
+		$screen = get_current_screen();
+ 
+		if(!is_object($screen) || $screen->id != $this->seo_redirection_page) {
+			return;
+		}
+	
+		add_screen_option( 'per_page', [
+			'label' => __( 'Devices per page', CFGP_NAME ),
+			'default' => 20,
+			'min' => 5,
+			'max' => 1000,
+			'option' => 'cfgp_seo_redirection_per_page'
+		] );
+	}
+	
+	/*
+     * Set global screen option
+	 */
+	public function set_screen_option ($status, $option, $value) {
+		if ( 'cfgp_seo_redirection_per_page' == $option ){
+			return $value;
 		}
 	}
 	

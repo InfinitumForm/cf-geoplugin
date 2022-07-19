@@ -87,7 +87,7 @@ if (!class_exists('CFGP_SEO_Table')):
 				$count['disabled'] = absint( $wpdb->get_var( $query . " WHERE `{$wpdb->cfgp_seo_redirection}`.`active` = 0" ) );
 			}
 			
-			if($count['enabled']) :
+			if( ($count['enabled']+$count['disabled']) > 0) :
 			?>
 			<ul class="subsubsub">
 				<li class="all"><a href="<?php echo add_query_arg('filter',NULL); ?>"<?php echo add_query_arg('filter','enabled'); ?>"<?php
@@ -268,18 +268,16 @@ if (!class_exists('CFGP_SEO_Table')):
 			$screen_option = $screen->get_option('per_page', 'option');
 			// retrieve the value of the option stored for the current user
 			$perpage = get_user_meta($user, $screen_option, true);
+			// get the default value if none is set
 			if ( empty ( $perpage) || $perpage < 1 ) {
-				// get the default value if none is set
 				$perpage = $screen->get_option( 'per_page', 'default' );
 			}
-			
 			// Make it absolute integer
 			if( empty($perpage) ) {
 				$perpage = 0;
 			} else {
 				$perpage = (int)$perpage;
 			}
-			
             /* -- Preparing your query -- */
             $query = "SELECT * FROM `{$wpdb->cfgp_seo_redirection}`";
 			

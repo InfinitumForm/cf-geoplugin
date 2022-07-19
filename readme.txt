@@ -5,7 +5,7 @@ Tags: geolocation, locator, GeoIP, geo, geotargeting, seo, seo redirect, woocomm
 Requires at least: 5.0
 Tested up to: 6.0
 Requires PHP: 7.0
-Stable tag: 8.3.4
+Stable tag: 8.3.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -376,6 +376,10 @@ Please inform us if any of these errors occur via contact form on our website [h
 
 == Changelog ==
 
+= 8.3.5 =
+* Fixed WooCommerce widget
+* Fixed SEO redirection table
+
 = 8.3.4 =
 * **IMPORTANT UPDATE**
 * Fixed memory leaking on custom post types
@@ -404,20 +408,13 @@ Please inform us if any of these errors occur via contact form on our website [h
 
 == Upgrade Notice ==
 
+= 8.3.5 =
+* Fixed WooCommerce widget
+* Fixed SEO redirection table
+
 = 8.3.4 =
 * **IMPORTANT UPDATE**
 * Fixed memory leaking on custom post types
-
-= 8.3.3 =
-* Fixed license deactivation
-* Removed deprecated code
-* Adding support for future PHP version
-
-= 8.3.2 =
-* Fixed menu geolocations
-* Fixed notifications
-* Fixed Contact Form 7 inputs
-* Fixed Yoast SEO tags
 
 == Other Notes ==
 
