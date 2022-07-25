@@ -83,7 +83,7 @@ class CFGP_REST extends CFGP_Global {
 	
 	/*
 	 * Request access token
-	 * https://somesite.com/wp-admin/admin-ajax.php?action=cf_geoplugin_authenticate
+	 * https://somesite.com/wp-json/cf-geoplugin/v1/authenticate
 	 *
 	 * Accept POST/GET:
 	 * @pharam    string  action            -API action
@@ -98,7 +98,28 @@ class CFGP_REST extends CFGP_Global {
 	 * @return    string  access_token      -Return only when authentication is successful
 	 * @return    string  message           -Return only when authentication is successful
 	 */
-	public function rest__authenticate( WP_REST_Request $request ) {
+	public function rest__authenticate ( WP_REST_Request $request ) {
+		
+	}
+	
+	/*
+	 * Lookup IP address
+	 * https://somesite.com/wp-json/cf-geoplugin/v1/lookup
+	 *
+	 * Accept POST/GET:
+	 * @pharam    string  action            -API action
+	 * @pharam    string  api_key           -API KEY
+	 * @pharam    string  access_token      -API Access token
+	 * @pharam    string  ip                -IP
+	 * @pharam    string  base_currency     -Base currency
+	 *
+	 * JSON:
+	 * @return    bool    error             -true/false
+	 * @return    string  error_message     -Return only when error exists
+	 * @return    int     code              -Allways exists
+	 * @return    Geo informations
+	 */
+	public function rest__lookup ( WP_REST_Request $request ) {
 		
 	}
 	
@@ -367,54 +388,14 @@ class CFGP_REST extends CFGP_Global {
 		add_action( 'rest_api_init', function (){
 			
 			$namespace = self::NAMESPACE_V1;
-			$routes = array();
-			
-			// Return individual responses
-			foreach(CFGP_U::api(false, CFGP_Defaults::API_RETURN) as $key => $value) {
-				
-				if( in_array(
-					$key,
-					array('error', 'error_message', 'lookup', 'status', 'runtime', 'zip', 'timezoneName')
-				) ) {
-					continue;
-				}
-				
-				register_rest_route( $namespace, '/return/'.$key, array(
-					'methods' => array('GET', 'POST'),
-					'permission_callback' => '__return_true',
-					'callback' => function( $data ) use ( $value ) {
-						
-						if( !isset($_REQUEST['key']) || (isset($_REQUEST['key']) && CFGP_U::KEY() !== $_REQUEST['key']) ) {
-							return new WP_REST_Response(array(
-								'error' => true,
-								'code' => 'not_authorized',
-								'error_message' => __('You are not authorized to access this information.', CFGP_NAME),
-								'status' => 404
-							));
-						}
-						
-						return new WP_REST_Response(array(
-							'response' => $value,
-							'error' => CFGP_U::api('error'),
-							'error_message' => CFGP_U::api('error_message'),
-							'lookup' => CFGP_U::api('available_lookup'),
-							'status' => CFGP_U::api('status'),
-							'runtime' => CFGP_U::api('runtime')
-						) );
-					},
-				), array(), true );
-				
-				$routes[] = home_url('/wp-json/' . self::NAMESPACE_V1 . '/return/'.$key);
-				
-			}
 			
 			// Return complete JSON response
 			register_rest_route( $namespace, '/return', array(
 				'methods' => array('GET', 'POST'),
 				'permission_callback' => '__return_true',
-				'callback' => function( $data ) use ( $routes ) {
+				'callback' => function( WP_REST_Request $data ) use ( $routes ) {
 					
-					if( !isset($_REQUEST['key']) || (isset($_REQUEST['key']) && CFGP_U::KEY() !== $_REQUEST['key']) ) {
+					if( CFGP_U::KEY() !== $data->get_param( 'key' ) ) {
 						return new WP_REST_Response(array(
 							'error' => true,
 							'code' => 'not_authorized',
@@ -423,12 +404,7 @@ class CFGP_REST extends CFGP_Global {
 						));
 					}
 			
-					$callback = array_merge(
-						CFGP_U::api(false, CFGP_Defaults::API_RETURN),
-						array(
-							'routes' => $routes
-						)
-					);
+					$callback = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
 					
 					foreach($callback as $key => $value) {
 						if( in_array(
@@ -441,15 +417,64 @@ class CFGP_REST extends CFGP_Global {
 					
 					return new WP_REST_Response($callback);
 				},
+				'args' => array(
+					'key' => array(
+						'validate_callback' => function($param, $request, $key) {
+							return !empty($param);
+						},
+						'required' => true
+					)
+				)
+			), array(), true );
+			
+			// Return individual responses			
+			register_rest_route( $namespace, '/return/(?P<pharam>[\w\d\-_]+)', array(
+				'methods' => array('GET', 'POST'),
+				'permission_callback' => '__return_true',
+				'callback' => function( WP_REST_Request $data ) {
+					
+					if( CFGP_U::KEY() !== $data->get_param( 'key' ) ) {
+						return new WP_REST_Response(array(
+							'error' => true,
+							'code' => 'not_authorized',
+							'error_message' => __('You are not authorized to access this information.', CFGP_NAME),
+						'key' => CFGP_U::KEY(),
+							'status' => 404
+						));
+					}
+					
+					return new WP_REST_Response(array(
+						'response' => CFGP_U::api( $data->get_param( 'pharam' ) ?? '' ),
+						'error' => CFGP_U::api('error'),
+						'error_message' => CFGP_U::api('error_message'),
+						'lookup' => CFGP_U::api('available_lookup'),
+						'status' => CFGP_U::api('status'),
+						'runtime' => CFGP_U::api('runtime')
+					) );
+				},
+				'args' => array(
+					'name' => array(
+						'validate_callback' => function($param, $request, $key) {
+							return (preg_match( '/[a-z0-9\-_]+/', $param ) !== false);
+						},
+						'pharam' => true
+					),
+					'key' => array(
+						'validate_callback' => function($param, $request, $key) {
+							return !empty($param);
+						},
+						'required' => true
+					)
+				)
 			), array(), true );
 			
 			// Fix Shortcode cache
 			register_rest_route( $namespace, '/cache/shortcode', array(
 				'methods' => array('GET', 'POST'),
 				'permission_callback' => '__return_true',
-				'callback' => function( $data )	{
+				'callback' => function( WP_REST_Request $data )	{
 					
-					if( !isset($_REQUEST['key']) || (isset($_REQUEST['key']) && CFGP_U::KEY() !== $_REQUEST['key']) ) {
+					if( CFGP_U::KEY() !== $data->get_param( 'key' ) ) {
 						return new WP_REST_Response(array(
 							'error' => true,
 							'code' => 'not_authorized',
@@ -529,7 +554,14 @@ class CFGP_REST extends CFGP_Global {
 						)
 					) );
 				},
-				
+				'args' => array(
+					'key' => array(
+						'validate_callback' => function($param, $request, $key) {
+							return !empty($param);
+						},
+						'required' => true
+					)
+				)
 			), array(), true );
 			
 			
@@ -537,9 +569,9 @@ class CFGP_REST extends CFGP_Global {
 			register_rest_route( $namespace, '/cache/banner', array(
 				'methods' => array('GET', 'POST'),
 				'permission_callback' => '__return_true',
-				'callback' => function( $data )	{
+				'callback' => function( WP_REST_Request $data )	{
 					
-					if( !isset($_REQUEST['key']) || (isset($_REQUEST['key']) && CFGP_U::KEY() !== $_REQUEST['key']) ) {
+					if( CFGP_U::KEY() !== $data->get_param( 'key' ) ) {
 						return new WP_REST_Response(array(
 							'error' => true,
 							'code' => 'not_authorized',
@@ -692,7 +724,14 @@ class CFGP_REST extends CFGP_Global {
 						)
 					) );
 				},
-				
+				'args' => array(
+					'key' => array(
+						'validate_callback' => function($param, $request, $key) {
+							return !empty($param);
+						},
+						'required' => true
+					)
+				)
 			), array(), true );
 		} );
 	}

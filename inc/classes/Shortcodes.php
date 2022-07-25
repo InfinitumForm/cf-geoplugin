@@ -105,6 +105,53 @@ class CFGP_Shortcodes extends CFGP_Global {
 		$this->add_action('wp_ajax_cf_geoplugin_shortcode_cache', 'ajax__shortcode_cache');
 		$this->add_action('wp_ajax_nopriv_cf_geoplugin_shortcode_cache', 'ajax__shortcode_cache');
 		
+		// Forbid cache when shortcode is in use
+		if( CFGP_Options::get('enable_cache', 0) ) {
+			$this->add_action('wp', 'never_cache_shortcode', 1);
+		}
+	}
+	
+	/**
+	 * If CF Geo Plugin shortcode exists
+	 *
+	 * @since      8.3.6
+	 * @version    1.0.0
+	 */
+	public static function exists() {
+		static $shortcode_exists = NULL;
+		
+		global $post, $page;
+		
+		if( is_null($shortcode_exists) ) {
+			if( function_exists('get_the_content') ) {		
+				$all_content = get_the_content();
+				if ($all_content && strpos($all_content, '[cfgeo') !== false || strpos($all_content, '[cf_geo') !== false) {
+					$shortcode_exists = true;
+				}
+				if($shortcode_exists !== true) {
+					$shortcode_exists = false;
+				}
+			}
+		}
+		
+		return $shortcode_exists;
+	}
+	
+	/**
+	 * Prevent page cache with shortcodes
+	 *
+	 * @since      8.3.6
+	 * @version    1.0.0
+	 */
+	function never_cache_shortcode() {
+		if( self::exists() ) {
+			if( !defined('DONOTCACHEPAGE') ) {
+				define( 'DONOTCACHEPAGE', true );
+			}
+			if( !defined('DONOTROCKETOPTIMIZE') ) {
+				define( 'DONOTROCKETOPTIMIZE', true );
+			}			
+		}
 	}
 	
 	/**

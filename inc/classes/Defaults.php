@@ -60,6 +60,7 @@ class CFGP_Defaults {
 		'enable_cloudflare'				=>	0,
 		'enable_dns_lookup'				=>	0,
 		'enable_rest'					=>	1,
+		'rest_api_mode'					=>  'ajax',
 		'proxy_ip'						=>	'',
 		'proxy_port'					=>	'',
 		'proxy'							=>	0,
