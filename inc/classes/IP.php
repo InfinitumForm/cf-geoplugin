@@ -442,88 +442,20 @@ class CFGP_IP extends CFGP_Global {
 		}
 		
 		$localhost = false;
-		
-		$blacklist=apply_filters('cfgp/is_localhost/blacklist', array(
-			'127.0.0.0'		=>	8,
-		//	'192.168.0.0'	=>	8,
-		//	'192.168.1.0'	=>	255,
-		//	'192.168.2.0'	=>	255,
-		//	'192.168.3.0'	=>	255,
-		));
-		
-		if(!empty($list) && is_array($list)){
-			$blacklist = array_merge($blacklist);
-		}
-		
-		$whitelist=array();
-		foreach($blacklist as $key=>$num)
-		{
-			// if address is not in range
-			if(is_int($key))
-			{
-				$whitelist[]=$num;
-			}
-			// addresses in range
-			else
-			{
-				// Parse IP and extract last number for mathing
-				$breakIP = explode('.', $key);
-				$lastNum = ((int)end($breakIP));
-				array_pop($breakIP);
-				$connectIP=join('.', $breakIP).'.';
-				
-				if($lastNum>=$num)
-				{
-					$whitelist[]=$key;
-				}
-				else
-				{
-					for($i=$lastNum; $i<=$num; $i++)
-					{
-						$whitelist[]=$connectIP.$i;
-					}
-				}
-				$breakIP = $lastNum = $connectIP = NULL;
-			}
-		}
-		$whitelist=array_map('trim', $whitelist);
-		$whitelist=array_filter($whitelist);
-		
-		$whitelist = apply_filters(
-				'cfgp/is_localhost/whitelist',
-				array_merge(array(
-					'::1',
-					'localhost'
-				), $whitelist),
-			$whitelist
-		);
-		
-		$remote_addr = $_SERVER['REMOTE_ADDR'] ?? NULL;
-		if($remote_addr && in_array($remote_addr, $whitelist)){
-			$localhost = true;
-		}
-	
-		if(!$localhost) {
-			$host = $_SERVER['HTTP_HOST'] ?? NULL;
-			if($host && in_array($host, $whitelist)){
-				$localhost = true;
-			}
-		}
-		
-		if(!$localhost && in_array($server_ip, $whitelist)){
-			$localhost = true;
-		}
-		
-		if( !$localhost && function_exists('gethostname') && in_array(gethostname(), apply_filters('cfgp/is_localhost/hostnames', array(
+
+		if( in_array(($_SERVER['REMOTE_ADDR'] ?? ''), array(
 			'localhost',
-			'localserver',
-			'ubuntu',
-			'raspberrypi',
-			'infinitumform.server.node.001',
-			'infinitumform.server.node.002',
-			'infinitumform.server.node.003',
-			'infinitumform.server.node.004'
-		))) ) {
+			'127.0.0.1',
+			'::1'
+		) ) ) {
+			$localhost = true;
+		}
+		
+		if( substr(($_SERVER['HTTP_HOST'] ?? ''),0,7) == '192.168' ) {
+			$localhost = true;
+		}
+		
+		if( strpos( ($_SERVER['HTTP_HOST'] ?? ''), 'localhost') !== false ) {
 			$localhost = true;
 		}
 		

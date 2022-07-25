@@ -1,5 +1,11 @@
 == Changelog ==
 
+= 8.3.6 =
+* Improved WP Rocket and SiteGround Cache
+* Improved REST API code
+* Removed unnecessary code
+* Fixed localhost problems
+
 = 8.3.5 =
 * Fixed WooCommerce widget
 * Fixed SEO redirection table
