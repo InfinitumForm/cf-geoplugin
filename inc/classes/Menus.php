@@ -152,16 +152,44 @@ class CFGP_Menus extends CFGP_Global {
 				'regions' => array(),
 				'cities' => array(),
 			), $item->type ) ) {
-				
 				if($control['enable'] == 1) {
 					$protect = false;
-		
-					if( CFGP_U::check_user_by_city($control['cities']) && CFGP_U::check_user_by_region($control['regions']) ) {
-						$protect = true;
-					} else if( CFGP_U::check_user_by_region($control['regions']) ) {
-						$protect = true;
-					} else if( CFGP_U::check_user_by_country($control['countries']) ) {
-						$protect = true;
+					
+					$mode = [NULL, 'country', 'region', 'city'];
+					$mode = $mode[ count( array_filter( array_map(
+						function($obj) {
+							return !empty($obj);
+						},
+						array(
+							$control['cities'],
+							$control['regions'],
+							$control['countries']
+						)
+					) ) ) ];
+					
+					switch ( $mode ) {
+						case 'country':
+						if( CFGP_U::check_user_by_country($control['countries']) ) {
+								$protect = true;
+							}
+							break;
+						case 'region':
+							if(
+								CFGP_U::check_user_by_region($control['regions']) 
+								&& CFGP_U::check_user_by_country($control['countries']) 
+							) {
+								$protect = true;
+							}
+							break;
+						case 'city':
+							if( 
+								CFGP_U::check_user_by_city($control['cities']) 
+								&& CFGP_U::check_user_by_region($control['regions']) 
+								&& CFGP_U::check_user_by_country($control['countries']) 
+							) {
+								$protect = true;
+							}
+							break;
 					}
 				
 					if( $protect ){
@@ -190,12 +218,41 @@ class CFGP_Menus extends CFGP_Global {
 			if($control['enable'] == 1) {
 				$protect = false;
 			
-				if( CFGP_U::check_user_by_city($control['cities']) && CFGP_U::check_user_by_region($control['regions']) ) {
-					$protect = true;
-				} else if( CFGP_U::check_user_by_region($control['regions']) ) {
-					$protect = true;
-				} else if( CFGP_U::check_user_by_country($control['countries']) ) {
-					$protect = true;
+				$mode = [NULL, 'country', 'region', 'city'];
+				$mode = $mode[ count( array_filter( array_map(
+					function($obj) {
+						return !empty($obj);
+					},
+					array(
+						$control['cities'],
+						$control['regions'],
+						$control['countries']
+					)
+				) ) ) ];
+				
+				switch ( $mode ) {
+					case 'country':
+					if( CFGP_U::check_user_by_country($control['countries']) ) {
+							$protect = true;
+						}
+						break;
+					case 'region':
+						if(
+							CFGP_U::check_user_by_region($control['regions']) 
+							&& CFGP_U::check_user_by_country($control['countries']) 
+						) {
+							$protect = true;
+						}
+						break;
+					case 'city':
+						if( 
+							CFGP_U::check_user_by_city($control['cities']) 
+							&& CFGP_U::check_user_by_region($control['regions']) 
+							&& CFGP_U::check_user_by_country($control['countries']) 
+						) {
+							$protect = true;
+						}
+						break;
 				}
 			
 				if( $protect ){

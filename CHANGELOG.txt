@@ -1,5 +1,10 @@
 == Changelog ==
 
+= 8.3.7 =
+* Improved hiding of the navigation menu by geolocation
+* Fixed PHP warnings
+* Fixed REST API subversion bugs
+
 = 8.3.6 =
 * Improved WP Rocket and SiteGround Cache
 * Improved REST API code

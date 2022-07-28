@@ -5,7 +5,7 @@ Tags: geolocation, locator, GeoIP, geo, geotargeting, seo, seo redirect, woocomm
 Requires at least: 5.0
 Tested up to: 6.0
 Requires PHP: 7.0
-Stable tag: 8.3.6
+Stable tag: 8.3.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -376,6 +376,11 @@ Please inform us if any of these errors occur via contact form on our website [h
 
 == Changelog ==
 
+= 8.3.7 =
+* Improved hiding of the navigation menu by geolocation
+* Fixed PHP warnings
+* Fixed REST API subversion bugs
+
 = 8.3.6 =
 * Improved WP Rocket and SiteGround Cache
 * Improved REST API code
@@ -413,6 +418,11 @@ Please inform us if any of these errors occur via contact form on our website [h
 * Optimized PHP code
 
 == Upgrade Notice ==
+
+= 8.3.7 =
+* Improved hiding of the navigation menu by geolocation
+* Fixed PHP warnings
+* Fixed REST API subversion bugs
 
 = 8.3.6 =
 * Improved WP Rocket and SiteGround Cache

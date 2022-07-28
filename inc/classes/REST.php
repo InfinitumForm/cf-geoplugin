@@ -393,7 +393,7 @@ class CFGP_REST extends CFGP_Global {
 			register_rest_route( $namespace, '/return', array(
 				'methods' => array('GET', 'POST'),
 				'permission_callback' => '__return_true',
-				'callback' => function( WP_REST_Request $data ) use ( $routes ) {
+				'callback' => function( WP_REST_Request $data ) {
 					
 					if( CFGP_U::KEY() !== $data->get_param( 'key' ) ) {
 						return new WP_REST_Response(array(
