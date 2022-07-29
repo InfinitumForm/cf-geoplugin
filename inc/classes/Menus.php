@@ -155,7 +155,7 @@ class CFGP_Menus extends CFGP_Global {
 				if($control['enable'] == 1) {
 					$protect = false;
 					
-					$mode = [NULL, 'country', 'region', 'city'];
+					$mode = array( NULL, 'country', 'region', 'city' );
 					$mode = $mode[ count( array_filter( array_map(
 						function($obj) {
 							return !empty($obj);
@@ -169,7 +169,7 @@ class CFGP_Menus extends CFGP_Global {
 					
 					switch ( $mode ) {
 						case 'country':
-						if( CFGP_U::check_user_by_country($control['countries']) ) {
+							if( CFGP_U::check_user_by_country($control['countries']) ) {
 								$protect = true;
 							}
 							break;
@@ -218,7 +218,7 @@ class CFGP_Menus extends CFGP_Global {
 			if($control['enable'] == 1) {
 				$protect = false;
 			
-				$mode = [NULL, 'country', 'region', 'city'];
+				$mode = array( NULL, 'country', 'region', 'city' );
 				$mode = $mode[ count( array_filter( array_map(
 					function($obj) {
 						return !empty($obj);
@@ -232,7 +232,7 @@ class CFGP_Menus extends CFGP_Global {
 				
 				switch ( $mode ) {
 					case 'country':
-					if( CFGP_U::check_user_by_country($control['countries']) ) {
+						if( CFGP_U::check_user_by_country($control['countries']) ) {
 							$protect = true;
 						}
 						break;
@@ -269,7 +269,7 @@ class CFGP_Menus extends CFGP_Global {
 	 * Include Geolocate Menus setting
 	 */
 	public function after_menu_locations_table(){
-		global $locations, $menu_locations, $num_locations;
+		global $locations, $menu_locations, $num_locations, $wpdb;
 		
 		if( $num_locations === 0 ) {
 			return;
@@ -279,6 +279,7 @@ class CFGP_Menus extends CFGP_Global {
 			$locations = get_registered_nav_menus();
 		}
 		
+		/*
 		$geolocate_menus = get_terms( array(
 			'taxonomy' => 'nav_menu',
 			'hide_empty' => false,
@@ -293,13 +294,31 @@ class CFGP_Menus extends CFGP_Global {
 				)
 			)
 		) );
+		*/
 		
-		if( $geolocate_menus ) {
-			foreach($geolocate_menus as $i => $geo_menu) {
-				$geolocate_menus[$i]->country = get_term_meta($geo_menu->term_id, 'country', true);
-				$geolocate_menus[$i]->location = get_term_meta($geo_menu->term_id, 'location', true);			
-			}
-		}
+		$geolocate_menus = $wpdb->get_results("
+			SELECT
+				`{$wpdb->terms}`.*,
+				(
+					SELECT `{$wpdb->termmeta}`.`meta_value` FROM `{$wpdb->termmeta}` 
+					WHERE `{$wpdb->termmeta}`.`term_id` = `{$wpdb->terms}`.`term_id` AND `meta_key` = 'country'
+				) AS `country`,
+				(
+					SELECT `{$wpdb->termmeta}`.`meta_value` FROM `{$wpdb->termmeta}` 
+					WHERE `{$wpdb->termmeta}`.`term_id` = `{$wpdb->terms}`.`term_id` AND `meta_key` = 'location'
+				) AS `location`
+			FROM `{$wpdb->terms}` WHERE `{$wpdb->terms}`.`term_id` IN (
+				SELECT `{$wpdb->term_taxonomy}`.`term_id` FROM `{$wpdb->term_taxonomy}`
+				WHERE `{$wpdb->term_taxonomy}`.`taxonomy` LIKE 'nav_menu'
+			) AND EXISTS(
+				SELECT `{$wpdb->termmeta}`.`meta_value` FROM `{$wpdb->termmeta}` 
+				WHERE `{$wpdb->termmeta}`.`term_id` = `{$wpdb->terms}`.`term_id` AND `meta_key` = 'country'
+			) AND EXISTS(
+				SELECT `{$wpdb->termmeta}`.`meta_value` FROM `{$wpdb->termmeta}` 
+				WHERE `{$wpdb->termmeta}`.`term_id` = `{$wpdb->terms}`.`term_id` AND `meta_key` = 'location'
+			)
+			ORDER BY `{$wpdb->terms}`.`term_id` DESC
+		");
 		
 		$countries = CFGP_Library::get_countries();
 ?>
@@ -407,21 +426,31 @@ class CFGP_Menus extends CFGP_Global {
 	 * Geolocate Menus
 	 */
 	public function wp_nav_menu_args ($args = array()) {
+		global $wpdb;
 		
-		if( $geolocate_menus = get_terms( array(
-			'taxonomy' => 'nav_menu',
-			'hide_empty' => false,
-			'meta_query' => array(
-				array(
-					'key' => 'country',
-					'compare' => 'EXISTS'
-				),
-				array(
-					'key' => 'location',
-					'compare' => 'EXISTS'
-				)
-			)
-		) ) ) :
+		if( $geolocate_menus = $wpdb->get_results("
+			SELECT
+				`{$wpdb->terms}`.*,
+				(
+					SELECT `{$wpdb->termmeta}`.`meta_value` FROM `{$wpdb->termmeta}` 
+					WHERE `{$wpdb->termmeta}`.`term_id` = `{$wpdb->terms}`.`term_id` AND `meta_key` = 'country'
+				) AS `country`,
+				(
+					SELECT `{$wpdb->termmeta}`.`meta_value` FROM `{$wpdb->termmeta}` 
+					WHERE `{$wpdb->termmeta}`.`term_id` = `{$wpdb->terms}`.`term_id` AND `meta_key` = 'location'
+				) AS `location`
+			FROM `{$wpdb->terms}` WHERE `{$wpdb->terms}`.`term_id` IN (
+				SELECT `{$wpdb->term_taxonomy}`.`term_id` FROM `{$wpdb->term_taxonomy}`
+				WHERE `{$wpdb->term_taxonomy}`.`taxonomy` LIKE 'nav_menu'
+			) AND EXISTS(
+				SELECT `{$wpdb->termmeta}`.`meta_value` FROM `{$wpdb->termmeta}` 
+				WHERE `{$wpdb->termmeta}`.`term_id` = `{$wpdb->terms}`.`term_id` AND `meta_key` = 'country'
+			) AND EXISTS(
+				SELECT `{$wpdb->termmeta}`.`meta_value` FROM `{$wpdb->termmeta}` 
+				WHERE `{$wpdb->termmeta}`.`term_id` = `{$wpdb->terms}`.`term_id` AND `meta_key` = 'location'
+			) 
+			ORDER BY `{$wpdb->terms}`.`term_id` DESC
+		") ) :
 		
 			// This retun 2 letter country code from CF Geo Plugin
 			$country_code = strtolower(CFGP_U::api('country_code'));
@@ -478,20 +507,31 @@ class CFGP_Menus extends CFGP_Global {
 			}
 		}
 		
-		if( $geolocate_menus = get_terms( array(
-			'taxonomy' => 'nav_menu',
-			'hide_empty' => false,
-			'meta_query' => array(
-				array(
-					'key' => 'country',
-					'compare' => 'EXISTS'
-				),
-				array(
-					'key' => 'location',
-					'compare' => 'EXISTS'
-				)
-			)
-		) ) ) :
+		global $wpdb;
+		
+		if( $geolocate_menus = $wpdb->get_results("
+			SELECT
+				`{$wpdb->terms}`.*,
+				(
+					SELECT `{$wpdb->termmeta}`.`meta_value` FROM `{$wpdb->termmeta}` 
+					WHERE `{$wpdb->termmeta}`.`term_id` = `{$wpdb->terms}`.`term_id` AND `meta_key` = 'country'
+				) AS `country`,
+				(
+					SELECT `{$wpdb->termmeta}`.`meta_value` FROM `{$wpdb->termmeta}` 
+					WHERE `{$wpdb->termmeta}`.`term_id` = `{$wpdb->terms}`.`term_id` AND `meta_key` = 'location'
+				) AS `location`
+			FROM `{$wpdb->terms}` WHERE `{$wpdb->terms}`.`term_id` IN (
+				SELECT `{$wpdb->term_taxonomy}`.`term_id` FROM `{$wpdb->term_taxonomy}`
+				WHERE `{$wpdb->term_taxonomy}`.`taxonomy` LIKE 'nav_menu'
+			) AND EXISTS(
+				SELECT `{$wpdb->termmeta}`.`meta_value` FROM `{$wpdb->termmeta}` 
+				WHERE `{$wpdb->termmeta}`.`term_id` = `{$wpdb->terms}`.`term_id` AND `meta_key` = 'country'
+			) AND EXISTS(
+				SELECT `{$wpdb->termmeta}`.`meta_value` FROM `{$wpdb->termmeta}` 
+				WHERE `{$wpdb->termmeta}`.`term_id` = `{$wpdb->terms}`.`term_id` AND `meta_key` = 'location'
+			) 
+			ORDER BY `{$wpdb->terms}`.`term_id` DESC
+		") ) :
 		
 		foreach($geolocate_menus as $i => $geo_menu) :
 		$geo_menu_location = get_term_meta($geo_menu->term_id, 'location', true);

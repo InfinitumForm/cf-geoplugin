@@ -244,37 +244,62 @@ class CFGP_SEO_Redirection extends CFGP_Global
 	 * Redirection for the enthire website
 	 */
 	private function do_redirection($redirect){
-		$country_check = CFGP_U::check_user_by_country( $redirect['country'] );
-
-		$country_empty = false;
-		$region_empty = false;
-		$city_empty = false;
-		$postcode_empty = false;
-		
-		if( $this->is_object_empty($redirect, 'country') ) $country_empty = true;
-		if( $this->is_object_empty($redirect, 'region') ) $region_empty = true;
-		if( $this->is_object_empty($redirect, 'city') ) $city_empty = true;
-		if( $this->is_object_empty($redirect, 'postcode') ) $postcode_empty = true;
-
-		if( isset( $redirect['url'] ) && filter_var($redirect['url'], FILTER_VALIDATE_URL) && ( $country_check || $country_empty ) )
-		{			
-			if( !$postcode_empty && CFGP_U::check_user_by_postcode( $redirect['postcode'] ) )
-			{
-				if($this->control_redirection( $redirect )) CFGP_U::redirect( $redirect['url'], $redirect['http_code'] );
-			}
-			elseif( $postcode_empty && CFGP_U::check_user_by_city( $redirect['city'] ) && ( CFGP_U::check_user_by_region( $redirect['region'] ) || $region_empty ) )
-			{
-				if($this->control_redirection( $redirect )) CFGP_U::redirect( $redirect['url'], $redirect['http_code'] );
-			}
-			elseif( $city_empty && CFGP_U::check_user_by_region( $redirect['region'] ) ) 
-			{
-				if($this->control_redirection( $redirect )) CFGP_U::redirect( $redirect['url'], $redirect['http_code'] );
-			}
-			elseif( $region_empty && $city_empty && $country_check && $postcode_empty ) 
-			{
-				if($this->control_redirection( $redirect )) CFGP_U::redirect( $redirect['url'], $redirect['http_code'] );
-			}
+		// Do redirection
+		$do_redirection = false;
+		// Generate redirection mode
+		$mode = array( NULL, 'country', 'region', 'city', 'postcode' );
+		$mode = $mode[ count( array_filter( array_map(
+			function($obj) {
+				return !empty($obj);
+			},
+			array(
+				$redirect['cities'],
+				$redirect['regions'],
+				$redirect['countries'],
+				$redirect['postcode']
+			)
+		) ) ) ];
+		// Switch mode
+		switch ( $mode ) {
+			case 'country':
+				if( CFGP_U::check_user_by_country($redirect['countries']) ) {
+					$do_redirection = true;
+				}
+				break;
+			case 'region':
+				if(
+					CFGP_U::check_user_by_region($redirect['regions']) 
+					&& CFGP_U::check_user_by_country($redirect['countries']) 
+				) {
+					$do_redirection = true;
+				}
+				break;
+			case 'city':
+				if( 
+					CFGP_U::check_user_by_city($redirect['cities']) 
+					&& CFGP_U::check_user_by_region($redirect['regions']) 
+					&& CFGP_U::check_user_by_country($redirect['countries']) 
+				) {
+					$do_redirection = true;
+				}
+				break;
+			case 'postcode':
+				if( 
+					CFGP_U::check_user_by_city($redirect['cities']) 
+					&& CFGP_U::check_user_by_region($redirect['regions']) 
+					&& CFGP_U::check_user_by_country($redirect['countries'])
+					&& CFGP_U::check_user_by_postcode($redirect['postcode']) 
+				) {
+					$do_redirection = true;
+				}
+				break;
 		}
+		// Let's redirect
+		if( $do_redirection && $this->control_redirection( $redirect )) {
+			return CFGP_U::redirect( $redirect['url'], $redirect['http_code'] );
+		}
+		// End
+		return false;
 	}
 	
 	/*
