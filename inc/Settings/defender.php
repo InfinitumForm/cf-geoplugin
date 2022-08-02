@@ -9,21 +9,6 @@ if( CFGP_U::request_bool('preview'))
 	exit;
 }
 
-$all_countries = get_terms(array(
-	'taxonomy'		=> 'cf-geoplugin-country',
-	'hide_empty'	=> false
-));
-
-$all_regions = get_terms(array(
-	'taxonomy'		=> 'cf-geoplugin-region',
-	'hide_empty'	=> false
-));
-
-$all_cities = get_terms(array(
-	'taxonomy'		=> 'cf-geoplugin-city',
-	'hide_empty'	=> false
-));
-
 if(CFGP_U::request_bool('save_defender') && wp_verify_nonce(sanitize_text_field($_REQUEST['nonce']), CFGP_NAME.'-save-defender') !== false && isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'POST')
 {
 	if( !isset( $_POST['block_country'] ) ) {
@@ -101,9 +86,7 @@ if(!empty($block_city) && !is_array($block_city) && preg_match('/\]|\[/', $block
                                 <div class="nav-tab-wrapper-chosen cfgp-country-region-city-multiple-form">
                                     <nav class="nav-tab-wrapper">
                                         <a href="javascript:void(0);" class="nav-tab nav-tab-active" data-id="#ip-restriction"><i class="cfa cfa-shield"></i><span class="label"> <?php _e('IP Restriction', CFGP_NAME); ?></span></a>
-                                        <a href="javascript:void(0);" class="nav-tab" data-id="#country-restriction"><i class="cfa cfa-globe"></i><span class="label"> <?php _e('Country Restriction', CFGP_NAME); ?></span></a>
-                                        <a href="javascript:void(0);" class="nav-tab" data-id="#region-restriction"><i class="cfa cfa-map-marker"></i><span class="label"> <?php _e('Region Restriction', CFGP_NAME); ?></span></a>
-                                        <a href="javascript:void(0);" class="nav-tab" data-id="#city-restriction"><i class="cfa cfa-building-o"></i><span class="label"> <?php _e('City Restriction', CFGP_NAME); ?></span></a>
+                                        <a href="javascript:void(0);" class="nav-tab" data-id="#location-restriction"><i class="cfa cfa-globe"></i><span class="label"> <?php _e('Location Restriction', CFGP_NAME); ?></span></a>
 										<a href="javascript:void(0);" class="nav-tab" data-id="#proxy-restriction"><i class="cfa cfa-sitemap"></i><span class="label"> <?php _e('Proxy Restriction', CFGP_NAME); ?></span></a>
                                     </nav>
                                     <div class="cfgp-tab-panel cfgp-tab-panel-active" id="ip-restriction">
@@ -112,7 +95,7 @@ if(!empty($block_city) && !is_array($block_city) && preg_match('/\]|\[/', $block
                                             <textarea class="form-control" id="block_ip" name="block_ip" rows="5" style="min-height:115px"><?php echo CFGP_Options::get('block_ip'); ?></textarea>
                                         </div>
                                     </div>
-                                    <div class="cfgp-tab-panel" id="country-restriction">
+                                    <div class="cfgp-tab-panel" id="location-restriction">
                                     	<div class="cfgp-form-group">
                                             <label for="block_country"><?php _e('Choose Countries',CFGP_NAME); ?>:</label>
 											<?php
@@ -128,9 +111,7 @@ if(!empty($block_city) && !is_array($block_city) && preg_match('/\]|\[/', $block
                                             <br>
                                             <button type="button" class="button cfgp-select-all" data-target="block_country"><object data="<?php echo CFGP_ASSETS . '/images/select.svg'; ?>" width="10" height="10"></object> <?php esc_attr_e( 'Select/Deselect all', CFGP_NAME ); ?></button>
                                         </div>
-                                    </div>
-                                    <div class="cfgp-tab-panel" id="region-restriction">
-                                    	<div class="cfgp-form-group">
+										<div class="cfgp-form-group">
                                             <label for="block_region"><?php _e('Choose Region',CFGP_NAME); ?>:</label>
                                             <?php
 												CFGP_Form::select_regions(
@@ -146,9 +127,7 @@ if(!empty($block_city) && !is_array($block_city) && preg_match('/\]|\[/', $block
 											<!-- br>
                                             <button type="button" class="button cfgp-select-all" data-target="block_region"><object data="<?php echo CFGP_ASSETS . '/images/select.svg'; ?>" width="10" height="10"></object> <?php esc_attr_e( 'Select/Deselect all', CFGP_NAME ); ?></button -->
                                         </div>
-                                    </div>
-                                    <div class="cfgp-tab-panel" id="city-restriction">
-                                    	<div class="cfgp-form-group">
+										<div class="cfgp-form-group">
                                             <label for="block_city"><?php _e('Choose Cities',CFGP_NAME); ?>:</label>
                                             <?php
 												CFGP_Form::select_cities(

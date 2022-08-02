@@ -379,6 +379,7 @@ Please inform us if any of these errors occur via contact form on our website [h
 = 8.3.8 =
 * Fixed SEO redirection algorithm
 * Improved memory cleaning
+* Improved site protection algorithm
 * Removed obsolete PHP codes
 
 = 8.3.7 =
@@ -427,6 +428,7 @@ Please inform us if any of these errors occur via contact form on our website [h
 = 8.3.8 =
 * Fixed SEO redirection algorithm
 * Improved memory cleaning
+* Improved site protection algorithm
 * Removed obsolete PHP codes
 
 = 8.3.7 =

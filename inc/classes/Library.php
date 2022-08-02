@@ -166,6 +166,22 @@ class CFGP_Library {
 			return $data;
 		}
 		
+		if( $data = (CFGP_DB_Cache::get('library/get_countries') ?? NULL) ){
+				
+			if($json === false){
+				$data = json_decode( $data, true );
+				if($data){
+					$tr = array();
+					foreach($data as $k=>$v){
+						$tr[strtolower($k)]=$v;
+					}
+					$data = $tr; unset($tr);
+				}
+			}
+			
+			return $data;
+		}
+		
 		$response = wp_remote_get(
 			CFGP_Defaults::API[(CFGP_Options::get('enable_ssl', 0) ? 'ssl_' : '') . 'countries'],
 			array(
@@ -178,6 +194,9 @@ class CFGP_Library {
 			$data = json_encode($data_array);
 			
 			$country_data = $data;
+			if( !empty($data) ) {
+				CFGP_DB_Cache::set('library/get_countries', $data, DAY_IN_SECONDS);
+			}
 			
 			if($json === false){
 				if($data_array){
@@ -347,7 +366,9 @@ class CFGP_Library {
 			$data = json_encode($data_array);
 			
 			$regions_data[$countries] = $data;
-			CFGP_DB_Cache::set('library/get_regions/' . $countries, $data, HOUR_IN_SECONDS);
+			if( !empty($data) ) {
+				CFGP_DB_Cache::set('library/get_regions/' . $countries, $data, HOUR_IN_SECONDS);
+			}
 			
 			if($json === false){
 				if($data_array){
@@ -556,7 +577,9 @@ class CFGP_Library {
 			$data = json_encode($data_array);
 			
 			$cities_data[$countries] = $data;
-			CFGP_DB_Cache::set('library/get_cities/' . $countries, $data, HOUR_IN_SECONDS);
+			if( !empty($data) ) {
+				CFGP_DB_Cache::set('library/get_cities/' . $countries, $data, HOUR_IN_SECONDS);
+			}
 			
 			if($json === false){
 				if($data_array){

@@ -712,3 +712,10 @@ button.cfgp-select-all {
 	font-size:14px;
 	min-width:300px;
 }
+
+#cf-geoplugin-defender #location-restriction .cfgp-form-group + .cfgp-form-group {
+	margin-top:0;
+}
+#cf-geoplugin-defender #location-restriction .cfgp-form-group:last-child {
+	margin-top:10px;
+}
