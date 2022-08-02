@@ -1,5 +1,10 @@
 == Changelog ==
 
+= 8.3.8 =
+* Fixed SEO redirection algorithm
+* Improved memory cleaning
+* Removed obsolete PHP codes
+
 = 8.3.7 =
 * Improved hiding of the navigation menu by geolocation
 * Fixed PHP warnings

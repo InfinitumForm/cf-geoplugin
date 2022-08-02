@@ -109,15 +109,7 @@ class CFGP_SEO_Redirection extends CFGP_Global
 			if($country || $country_code)
 			{
 				$where[]=$wpdb->prepare(
-					"(
-						TRIM(LOWER(`{$wpdb->cfgp_seo_redirection}`.`country`)) = %s
-						OR
-						TRIM(LOWER(`{$wpdb->cfgp_seo_redirection}`.`country`)) = %s
-						OR
-						TRIM(LOWER(`{$wpdb->cfgp_seo_redirection}`.`country`)) = %s
-						OR
-						TRIM(LOWER(`{$wpdb->cfgp_seo_redirection}`.`country`)) = %s
-					)",
+					"TRIM(LOWER(`{$wpdb->cfgp_seo_redirection}`.`country`)) IN( %s, %s, %s, %s )",
 					CFGP_U::strtolower($country_code),
 					sanitize_title(CFGP_U::transliterate($country)),
 					CFGP_U::strtolower(CFGP_U::transliterate($country)),
@@ -129,15 +121,7 @@ class CFGP_SEO_Redirection extends CFGP_Global
 			if($region || $region_code)
 			{
 				$where[]=$wpdb->prepare(
-					"(
-						TRIM(LOWER(`{$wpdb->cfgp_seo_redirection}`.`region`)) = %s
-						OR
-						TRIM(LOWER(`{$wpdb->cfgp_seo_redirection}`.`region`)) = %s
-						OR
-						TRIM(LOWER(`{$wpdb->cfgp_seo_redirection}`.`region`)) = %s
-						OR
-						TRIM(LOWER(`{$wpdb->cfgp_seo_redirection}`.`region`)) = %s
-					)",
+					"TRIM(LOWER(`{$wpdb->cfgp_seo_redirection}`.`region`)) IN( %s, %s, %s, %s )",
 					sanitize_title(CFGP_U::transliterate($region)),
 					CFGP_U::strtolower(CFGP_U::transliterate($region)),
 					CFGP_U::strtolower($region),
@@ -147,13 +131,7 @@ class CFGP_SEO_Redirection extends CFGP_Global
 			
 			if($city){
 				$where[]=$wpdb->prepare(
-					"(
-						TRIM(LOWER(`{$wpdb->cfgp_seo_redirection}`.`city`)) = %s
-						OR
-						TRIM(LOWER(`{$wpdb->cfgp_seo_redirection}`.`city`)) = %s
-						OR
-						TRIM(LOWER(`{$wpdb->cfgp_seo_redirection}`.`city`)) = %s
-					)",
+					"TRIM(LOWER(`{$wpdb->cfgp_seo_redirection}`.`city`)) IN( %s, %s, %s )",
 					sanitize_title(CFGP_U::transliterate($city)),
 					CFGP_U::strtolower(CFGP_U::transliterate($city)),
 					CFGP_U::strtolower($city)
@@ -191,7 +169,9 @@ class CFGP_SEO_Redirection extends CFGP_Global
 			{
 				foreach( $exact_redirects as $redirect )
 				{
-					$this->do_redirection( $redirect );
+					if( $this->do_redirection( $redirect ) ) {
+						exit;
+					}
 				}
 			}
 			else
@@ -205,7 +185,9 @@ class CFGP_SEO_Redirection extends CFGP_Global
 				{
 					foreach( $relative_redirects as $redirect )
 					{
-						$this->do_redirection( $redirect );
+						if( $this->do_redirection( $redirect ) ) {
+							exit;
+						}
 					}
 				}
 			}
@@ -253,41 +235,41 @@ class CFGP_SEO_Redirection extends CFGP_Global
 				return !empty($obj);
 			},
 			array(
-				$redirect['cities'],
-				$redirect['regions'],
-				$redirect['countries'],
+				$redirect['country'],
+				$redirect['region'],
+				$redirect['city'],
 				$redirect['postcode']
 			)
 		) ) ) ];
 		// Switch mode
 		switch ( $mode ) {
 			case 'country':
-				if( CFGP_U::check_user_by_country($redirect['countries']) ) {
+				if( CFGP_U::check_user_by_country($redirect['country']) ) {
 					$do_redirection = true;
 				}
 				break;
 			case 'region':
 				if(
 					CFGP_U::check_user_by_region($redirect['regions']) 
-					&& CFGP_U::check_user_by_country($redirect['countries']) 
+					&& CFGP_U::check_user_by_country($redirect['country']) 
 				) {
 					$do_redirection = true;
 				}
 				break;
 			case 'city':
 				if( 
-					CFGP_U::check_user_by_city($redirect['cities']) 
-					&& CFGP_U::check_user_by_region($redirect['regions']) 
-					&& CFGP_U::check_user_by_country($redirect['countries']) 
+					CFGP_U::check_user_by_city($redirect['city']) 
+					&& CFGP_U::check_user_by_region($redirect['region']) 
+					&& CFGP_U::check_user_by_country($redirect['country']) 
 				) {
 					$do_redirection = true;
 				}
 				break;
 			case 'postcode':
 				if( 
-					CFGP_U::check_user_by_city($redirect['cities']) 
-					&& CFGP_U::check_user_by_region($redirect['regions']) 
-					&& CFGP_U::check_user_by_country($redirect['countries'])
+					CFGP_U::check_user_by_city($redirect['city']) 
+					&& CFGP_U::check_user_by_region($redirect['region']) 
+					&& CFGP_U::check_user_by_country($redirect['country'])
 					&& CFGP_U::check_user_by_postcode($redirect['postcode']) 
 				) {
 					$do_redirection = true;

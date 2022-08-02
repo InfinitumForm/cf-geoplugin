@@ -83,7 +83,7 @@ class CFGP_U {
 	 * @return        object/null
 	 * @author        Ivijan-Stefan Stipic
 	*/
-	public static function get_user($user_id_or_email=NULL){
+	public static function get_user($user_id_or_email=NULL) {
 		
 		// If REQUEST is made
 		if(isset($_REQUEST['cfgp_user']) && empty($user_id_or_email))
@@ -1343,12 +1343,12 @@ class CFGP_U {
 			return CFGP_Cache::set('current_page_id', $p);
 		else if($page_id = self::get_page_ID__private__GET_page_id())
 			return CFGP_Cache::set('current_page_id', $page_id);
-		else if($wp && isset($wp->request) && function_exists('get_page_by_path') && ($current_page=get_page_by_path($wp->request)))
-			$page_id = CFGP_Cache::set('current_page_id', $current_page->ID);
 		else if(!is_admin() && $id = self::get_page_ID__private__query())
 			return $id;
 		else if($id = self::get_page_ID__private__page_for_posts())
 			return CFGP_Cache::set('current_page_id', get_option( 'page_for_posts' ));
+		else if($wp && isset($wp->request) && function_exists('get_page_by_path') && ($current_page=get_page_by_path($wp->request)))
+			$page_id = CFGP_Cache::set('current_page_id', $current_page->ID);
 
 		return false;
 	}
@@ -1436,12 +1436,8 @@ class CFGP_U {
 	public static function get_page() {
 		global $wp;
 		
+		// Get current page from cache
 		$current_page = CFGP_Cache::get('get_page');
-		
-		// Get page by path
-		if(!$current_page && isset($wp->request)) {
-			$current_page =  get_page_by_path($wp->request);
-		}
 		
 		// Get post by ID
 		if(!$current_page) {
@@ -1521,6 +1517,11 @@ class CFGP_U {
 		// Get post by GET pharam
 		if(!$current_page) {
 			$current_page = get_post(isset($_GET['p']) ? absint($_GET['p']) : NULL);
+		}
+		
+		// Get page by path
+		if(!$current_page && isset($wp->request) && !empty($wp->request)) {
+			$current_page =  get_page_by_path($wp->request);
 		}
 
 		return CFGP_Cache::set('get_page', $current_page);

@@ -97,39 +97,19 @@ class CFGP_SEO_Redirection_Pages extends CFGP_Global
 			}
 			
 			$enable_seo_posts = CFGP_Options::get('enable_seo_posts',array());
-			if(empty($enable_seo_posts) || is_array($enable_seo_posts) && in_array(get_post_type($current_page), $enable_seo_posts) === false){
+			if(
+				empty($enable_seo_posts) 
+				|| (
+					is_array($enable_seo_posts) 
+					&& in_array(get_post_type($current_page), $enable_seo_posts) === false
+				)
+			) {
 				return;
 			}
 			
 			$seo_redirection = get_post_meta($current_page->ID, $this->metabox, true);
 			
 			$strtolower = (function_exists('mb_strtolower') ? 'mb_strtolower' : 'strtolower');
-			
-			$current_country = array_filter(array(
-				sanitize_title(CFGP_U::transliterate(CFGP_U::api('country'))),
-				CFGP_U::transliterate(CFGP_U::api('country')),
-				CFGP_U::api('country'),
-				CFGP_U::api('country_code')
-			));
-			$current_country = array_map($strtolower, $current_country);
-			
-			$current_region = array_filter(array(
-				sanitize_title(CFGP_U::transliterate(CFGP_U::api('region'))),
-				CFGP_U::transliterate(CFGP_U::api('region')),
-				CFGP_U::api('region'),
-				CFGP_U::api('region_code')
-			));
-			$current_region = array_map($strtolower, $current_region);
-			
-			$current_city = array_filter(array(
-				sanitize_title(CFGP_U::transliterate(CFGP_U::api('city'))),
-				CFGP_U::transliterate(CFGP_U::api('city')),
-				CFGP_U::api('city')
-			));
-			$current_city = array_map($strtolower, $current_city);
-			
-			$current_postcode = array_filter(array(CFGP_U::api('region_code')));
-			$current_postcode = array_map($strtolower, $current_postcode);
 			
 			if($seo_redirection && is_array($seo_redirection))
 			{
@@ -151,78 +131,124 @@ class CFGP_SEO_Redirection_Pages extends CFGP_Global
 						continue;
 					}
 					
-					$country 	= array_map($strtolower, (isset($data['country']) ? $data['country'] : array()));
-					$region 	= array_map($strtolower, (isset($data['region']) ? $data['region'] : array()));
-					$city 		= array_map($strtolower, (isset($data['city']) ? $data['city'] : array()));
-					$postcode 	= array_map($strtolower, (isset($data['postcode']) ? $data['postcode'] : array()));
+					// Set redirection
+					$do_redirection = false;
 					
-					if(isset($data['exclude_country']) ? $data['exclude_country'] : false) {
-						$country=array();
-					}
+					// Get countries
+					$country 	= array_map( $strtolower, ( isset($data['country']) ? $data['country'] : array() ) );
 					$country = array_map( array('CFGP_U', 'transliterate'), $country );
 					
-					if(isset($data['exclude_region']) ? $data['exclude_region'] : false) {
-						$region=array();
-					}
+					// Get regions
+					$region 	= array_map( $strtolower, ( isset($data['region']) ? $data['region'] : array() ) );
 					$region = array_map( array('CFGP_U', 'transliterate'), $region );
 					
-					if(isset($data['exclude_city']) ? $data['exclude_city'] : false) {
-						$city=array();
-					}
+					// Get cities
+					$city 		= array_map( $strtolower, ( isset($data['city']) ? $data['city'] : array() ) );
 					$city = array_map( array('CFGP_U', 'transliterate'), $city );
 					
-					if(isset($data['exclude_postcode']) ? $data['exclude_postcode'] : false) {
-						$postcode=array();
-					}
+					// Get postcodes
+					$postcode 	= array_map( $strtolower, ( isset($data['postcode']) ? $data['postcode'] : array() ) );
 					
-					$http_code 	= (isset($data['http_code']) ? $data['http_code'] : 302);
+					// Get HTTP codes
+					$http_code 	= ( isset($data['http_code']) ? $data['http_code'] : 302 );
 					
-					$search_type = (isset($data['search_type']) ? $data['search_type'] : 'exact');
-					
-					// Let's check number of 
-					
-					// Search by values
-					$redirect = array();
-					
-					if(!empty($current_country)) {
-						foreach($country as $c){
-							if(!empty($c) && in_array($c, $current_country) !== false){
-								$redirect[] = 1;
-								break;
-							}
-						}
-					}
-					
-					if(!empty($current_region)) {
-						foreach($region as $r){
-							if(!empty($r) && in_array($r, $current_region) !== false){
-								$redirect[] = 1;
-								break;
-							}
-						}
-					}
-					
-					if(!empty($current_city)) {
-						foreach($city as $ct){
-							if(!empty($ct) && in_array($ct, $current_city) !== false){
-								$redirect[] = 1;
-								break;
-							}
-						}
-					}
-					
-					if(!empty($current_postcode)) {
-						foreach($postcode as $pc){
-							if(!empty($pc) && in_array($pc, $current_postcode) !== false){
-								$redirect[] = 1;
-								break;
-							}
-						}
-					}
-					
-					$redirect = count($redirect);
+					// Get search type
+					$search_type = ( isset($data['search_type']) ? $data['search_type'] : 'exact' );
 
-					if( $redirect > 0 )
+					// Generate redirection mode
+					$mode = array( NULL, 'country', 'region', 'city', 'postcode' );
+					$mode = $mode[ count( array_filter( array_map(
+						function($obj) {
+							return !empty($obj);
+						},
+						array(
+							$country,
+							$region,
+							$city,
+							$postcode
+						)
+					) ) ) ];
+					
+					// Exclude countries
+					if($data['exclude_country'] ?? NULL) {
+						$country=array();
+						$mode = 'async';
+					}
+					
+					// Exclude regions
+					if($data['exclude_region'] ?? NULL) {
+						$region=array();
+						$mode = 'async';
+					}
+					
+					// Exclude cities
+					if($data['exclude_city'] ?? NULL) {
+						$city=array();
+						$mode = 'async';
+					}
+					
+					// Exclude postcodes
+					if($data['exclude_postcode'] ?? NULL) {
+						$postcode=array();
+						$mode = 'async';
+					}
+
+					// Switch mode
+					switch ( $mode ) {
+						case 'async':
+							if( count( array_filter( array_map(
+								function($obj) {
+									return !empty($obj);
+								},
+								array(
+									CFGP_U::check_user_by_city($city),
+									CFGP_U::check_user_by_region($region),
+									CFGP_U::check_user_by_country($country),
+									CFGP_U::check_user_by_postcode($postcode) 
+								)
+							) ) ) ){
+								$do_redirection = true;
+							}
+							break;
+							
+						case 'country':
+							if( CFGP_U::check_user_by_country($country) ) {
+								$do_redirection = true;
+							}
+							break;
+							
+						case 'region':
+							if(
+								CFGP_U::check_user_by_region($region) 
+								&& CFGP_U::check_user_by_country($country) 
+							) {
+								$do_redirection = true;
+							}
+							break;
+							
+						case 'city':
+							if( 
+								CFGP_U::check_user_by_city($city) 
+								&& CFGP_U::check_user_by_region($region) 
+								&& CFGP_U::check_user_by_country($country) 
+							) {
+								$do_redirection = true;
+							}
+							break;
+							
+						case 'postcode':
+							if( 
+								CFGP_U::check_user_by_city($city) 
+								&& CFGP_U::check_user_by_region($region) 
+								&& CFGP_U::check_user_by_country($country)
+								&& CFGP_U::check_user_by_postcode($postcode) 
+							) {
+								$do_redirection = true;
+							}
+							break;
+					}
+					
+					if( $do_redirection )
 					{
 						// Redirect only once
 						if(isset($data['only_once']) ? $data['only_once'] : 0) {
@@ -231,7 +257,9 @@ class CFGP_SEO_Redirection_Pages extends CFGP_Global
 						}
 
 						// Redirections
-						CFGP_U::redirect( $url, $http_code );
+						if( CFGP_U::redirect( $url, $http_code ) ) {
+							exit;
+						}
 					}
 				}
 			}
