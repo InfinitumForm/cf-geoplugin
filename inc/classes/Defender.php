@@ -72,63 +72,100 @@ class CFGP_Defender extends CFGP_Global {
 
     // Check what to do with user
     public function check()
-    {
-		if(CFGP_U::is_bot()) return false;
+    {		
+		// Defender is disabled ???
+        if( CFGP_Options::get('enable_defender', 0) == 0 ) {
+			return false;
+		}
 		
-        if( CFGP_Options::get('enable_defender', 0) == 0 ) return false;
+		// Bots need to see this website
+		if(CFGP_U::is_bot()) {
+			return false;
+		}
 
-		if(CFGP_U::check_defender_cookie()) return false;
+		// Browser is allow to access to website
+		if(CFGP_U::check_defender_cookie()) {
+			return false;
+		}
 		
+		// Let's block proxy
 		if(CFGP_Options::get('block_proxy', 0) && CFGP_U::api('is_proxy') == 1) {
 			return true;
 		}
-		
-        $flag = false;
 
+		// Explode all IP's and block them... Yeah baby!
         $ips = preg_split( '/[,;\n|]+/', CFGP_Options::get('block_ip') );
 		$ips = array_map( 'trim', $ips );
-        if( in_array( CFGP_U::api('ip'), $ips, true ) !== false ) $flag = true;
-
-        if( $flag === false )
-        {
-			$block_country = CFGP_Options::get('block_country');
-			if(!empty($block_country) && !is_array($block_country) && preg_match('/\]|\[/', $block_country)){
-				$block_country = explode(']|[', $block_country);
-			}
-			
-			$block_region = CFGP_Options::get('block_region');
-			if(!empty($block_region) && !is_array($block_region) && preg_match('/\]|\[/', $block_region)){
-				$block_region = explode(']|[', $block_region);
-			}
-			
-			$block_city = CFGP_Options::get('block_city');
-			if(!empty($block_city) && !is_array($block_city) && preg_match('/\]|\[/', $block_city)){
-				$block_city = explode(']|[', $block_city);
-			}
-			
-            $geo = array(
-                'country_code'  => $block_country,
-                'region_code'   => $block_region,
-                'city'          => $block_city
-            );
-
-            $country_check = CFGP_U::check_user_by_country( $geo['country_code'] );
-            if( $country_check || empty( $geo['country_code'][0] ) )
-            {
-                if(
-					CFGP_U::check_user_by_city( $geo['city'] ) 
-					&& ( CFGP_U::check_user_by_region( $geo['region_code'] ) || empty( $geo['region_code'][0] ) )
-				) {
-					return true;
-				} elseif( empty( $geo['city'][0] ) && CFGP_U::check_user_by_region( $geo['region_code'] ) ) {
-					return true;
-				} elseif( empty( $geo['city'][0] ) && empty( $geo['region_code'][0] ) && $country_check ) {
+		$ips = array_filter( $ips );
+        if( in_array( CFGP_U::api('ip'), $ips, true ) !== false ){
+			return true;
+		} 
+		
+		// Get countries
+		$block_country = CFGP_Options::get('block_country');
+		if(!empty($block_country) && !is_array($block_country) && preg_match('/\]|\[/', $block_country)){
+			$block_country = explode(']|[', $block_country);
+			$block_country = array_map('trim', $block_country);
+			$block_country = array_filter($block_country);
+		}
+		
+		// Get regions
+		$block_region = CFGP_Options::get('block_region');
+		if(!empty($block_region) && !is_array($block_region) && preg_match('/\]|\[/', $block_region)){
+			$block_region = explode(']|[', $block_region);
+			$block_region = array_map('trim', $block_region);
+			$block_region = array_filter($block_region);
+		}
+		
+		// Get cities
+		$block_city = CFGP_Options::get('block_city');
+		if(!empty($block_city) && !is_array($block_city) && preg_match('/\]|\[/', $block_city)){
+			$block_city = explode(']|[', $block_city);
+			$block_city = array_map('trim', $block_city);
+			$block_city = array_filter($block_city);
+		}
+		
+		// Generate redirection mode
+		$mode = array( NULL, 'country', 'region', 'city' );
+		$mode = $mode[ count( array_filter( array_map(
+			function($obj) {
+				return !empty($obj);
+			},
+			array(
+				$block_country,
+				$block_region,
+				$block_city
+			)
+		) ) ) ];
+		
+		// Switch mode
+		switch ( $mode ) {
+			case 'country':
+				if( CFGP_U::check_user_by_country($block_country) ) {
 					return true;
 				}
-            }
-        }
-
-        return $flag;
+				break;
+			case 'region':
+				if(
+					CFGP_U::check_user_by_region($block_region) 
+					&& CFGP_U::check_user_by_country($block_country) 
+				) {
+					return true;
+				}
+				break;
+			case 'city':
+				if( 
+					CFGP_U::check_user_by_city($block_city) 
+					&& CFGP_U::check_user_by_region($block_region) 
+					&& CFGP_U::check_user_by_country($block_country) 
+				) {
+					return true;
+				}
+				break;
+		}
+		
+		// Hey, we are all good. Right?
+        return false;
     }
 	
 	/* 

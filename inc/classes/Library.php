@@ -145,9 +145,64 @@ class CFGP_Library {
 	
 	
 	/*
-	 * Get Country Data
+	 * Get Country Data by API
 	 */
 	public static function get_countries( $json = false ){
+		static $country_data = [];
+		
+		if( $data = ($country_data ?? NULL) ){
+				
+			if($json === false){
+				$data = json_decode( $data, true );
+				if($data){
+					$tr = array();
+					foreach($data as $k=>$v){
+						$tr[strtolower($k)]=$v;
+					}
+					$data = $tr; unset($tr);
+				}
+			}
+			
+			return $data;
+		}
+		
+		$response = wp_remote_get(
+			CFGP_Defaults::API[(CFGP_Options::get('enable_ssl', 0) ? 'ssl_' : '') . 'countries'],
+			array(
+				'Content-Type' => 'application/json; charset=utf-8'
+			)
+		);
+		if ( is_array( $response ) && ! is_wp_error( $response ) ) {
+			$data = json_decode( $response['body'] );
+			$data_array = (array)$data->countries;
+			$data = json_encode($data_array);
+			
+			$country_data = $data;
+			
+			if($json === false){
+				if($data_array){
+					$tr = array();
+					foreach($data_array as $k=>$v){
+						$tr[strtolower($k)]=$v;
+					}
+					$data = $tr; unset($tr, $data_array);
+				}
+			}
+			
+			return $data;
+		}
+		
+		if($json === false){
+			return array();
+		}
+		
+		return '{}';
+	}
+	
+	/*
+	 * Get Country Data by Library
+	 */
+	public static function get_countries_library( $json = false ){
 		static $country_data = [];
 		
 		if( $data = ($country_data ?? NULL) ){
@@ -216,10 +271,93 @@ class CFGP_Library {
 		return '{}';
 	}
 	
+	
 	/*
-	 * Get regions by country
+	 * Get regions by country from API
 	 */
-	public static function get_regions( $country_code, $json = false ){
+	public static function get_regions ($countries, $json=false) {
+		static $regions_data;
+		
+		if(empty($countries)) {
+			if($json === false){
+				return array();
+			}
+			return '{}';
+		}
+		
+		$countries = array_map('trim', $countries);
+		$countries = array_filter($countries);
+		$countries = array_map('strtolower', $countries);
+		$countries = join(',', $countries);
+		
+		
+		if( $data = ($regions_data[$countries] ?? NULL) ){
+				
+			if($json === false){
+				$data = json_decode( $data, true );
+				if($data){
+					$tr = array();
+					foreach($data as $k=>$v){
+						$tr[strtolower($k)]=$v;
+					}
+					$data = $tr; unset($tr);
+				}
+			}
+			
+			return $data;
+		}
+		
+		$response = wp_remote_get(
+			CFGP_Defaults::API[(CFGP_Options::get('enable_ssl', 0) ? 'ssl_' : '') . 'regions'] . '/' . $countries,
+			array(
+				'Content-Type' => 'application/json; charset=utf-8'
+			)
+		);
+		
+		if ( is_array( $response ) && ! is_wp_error( $response ) ) {
+			$response = json_decode( $response['body'], true );
+			$response = $response['regions'];
+			
+			$data_array = array();
+			
+			foreach( (array)$response as $country_code => $regions ) {
+				foreach( (array)$regions as $region ) {
+					if( in_array($region, $data_array) === false ) {
+						$data_array[] = mb_convert_encoding($region,'HTML-ENTITIES','UTF-8');
+					}
+				}
+			}
+			
+			$data = json_encode($data_array);
+			
+			$regions_data[$countries] = $data;
+			
+			if($json === false){
+				if($data_array){
+					$tr = array();
+					foreach($data_array as $k=>$v){
+						$tr[ strtolower($k) ]=$v;
+					}
+					$data = $tr; unset($tr, $data_array);
+				}
+			}
+			
+			return $data;
+		}
+		
+		if($json === false){
+			return array();
+		}
+		return '{}';
+	}
+	
+	
+	
+	
+	/*
+	 * Get regions by country from library
+	 */
+	public static function get_regions_library( $country_code, $json = false ){
 		static $country_region_data = array();
 		
 		$collection = array();
@@ -326,11 +464,107 @@ class CFGP_Library {
 		return $collection;
 	}
 	
+	/*
+	 * Get cities by country from API
+	 */	
+	public static function get_cities ($countries, $json=false) {
+		static $cities_data;
+		
+		if(empty($countries)) {
+			if($json === false){
+				return array();
+			}
+			return '{}';
+		}
+		
+		$countries = array_map('trim', $countries);
+		$countries = array_filter($countries);
+		$countries = array_map('strtolower', $countries);
+		$countries = join(',', $countries);
+		
+		
+		if( $data = ($cities_data[$countries] ?? NULL) ) {
+				
+			if($json === false){
+				$data = json_decode( $data, true );
+				if($data){
+					$tr = array();
+					foreach($data as $k=>$v){
+						$tr[strtolower($k)]=$v;
+					}
+					$data = $tr; unset($tr);
+				}
+			}
+			
+			return $data;
+		}
+		
+		if( $data = CFGP_DB_Cache::get('library/get_cities/' . $countries) ) {
+				
+			if($json === false){
+				$data = json_decode( $data, true );
+				if($data){
+					$tr = array();
+					foreach($data as $k=>$v){
+						$tr[strtolower($k)]=$v;
+					}
+					$data = $tr; unset($tr);
+				}
+			}
+			
+			return $data;
+		}
+		
+		$response = wp_remote_get(
+			CFGP_Defaults::API[(CFGP_Options::get('enable_ssl', 0) ? 'ssl_' : '') . 'cities'] . '/' . $countries,
+			array(
+				'Content-Type' => 'application/json; charset=utf-8'
+			)
+		);
+		
+		if ( is_array( $response ) && ! is_wp_error( $response ) ) {
+			$response = json_decode( $response['body'], true );
+			$response = $response['cities'];
+			
+			$data_array = array();
+			
+			foreach( (array)$response as $country_code => $cities ) {
+				foreach( (array)$cities as $city ) {
+					if( in_array($city, $data_array) === false ) {
+						$data_array[] = mb_convert_encoding($city,'HTML-ENTITIES','UTF-8');
+					}
+				}
+			}
+			
+			$data = json_encode($data_array);
+			
+			$cities_data[$countries] = $data;
+			CFGP_DB_Cache::set('library/get_cities/' . $countries, $data, HOUR_IN_SECONDS);
+			
+			if($json === false){
+				if($data_array){
+					$tr = array();
+					foreach($data_array as $k=>$v){
+						$tr[ strtolower($k) ]=$v;
+					}
+					$data = $tr; unset($tr, $data_array);
+				}
+			}
+			
+			return $data;
+		}
+		
+		if($json === false){
+			return array();
+		}
+		return '{}';
+	}
+	
 	
 	/*
-	 * Get cities by country
+	 * Get cities by country from Library
 	 */	
-	public static function get_cities( $country_code, $json = false ) {
+	public static function get_cities_library( $country_code, $json = false ) {
 		static $country_city_data = array();
 		
 		$collection = array();

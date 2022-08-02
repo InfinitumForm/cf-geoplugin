@@ -264,7 +264,7 @@ class CFGP_SEO_Redirection extends CFGP_Global
 				break;
 			case 'region':
 				if(
-					CFGP_U::check_user_by_region($redirect['regions']) 
+					CFGP_U::check_user_by_region($redirect['region']) 
 					&& CFGP_U::check_user_by_country($redirect['country']) 
 				) {
 					$do_redirection = true;
