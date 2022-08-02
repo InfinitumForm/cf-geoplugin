@@ -16,6 +16,8 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
 if (!class_exists('CFGP_SEO_Redirection')):
 class CFGP_SEO_Redirection extends CFGP_Global
 {
+	private $seo_redirection_cache = NULL;
+	
 	public function __construct()
 	{
 		// Is database table not exists
@@ -93,102 +95,114 @@ class CFGP_SEO_Redirection extends CFGP_Global
 			return;
 		}
 		
-		$country = CFGP_U::api('country');
-		$country_code = CFGP_U::api('country_code');
+		$relative_redirects = $exact_redirects = NULL;
 		
-		if( $country || $country_code )
+		if( empty($this->seo_redirection_cache) )
 		{
-			$region = CFGP_U::api('region');
-			$region_code = CFGP_U::api('region_code');
+		
+			$country = CFGP_U::api('country');
+			$country_code = CFGP_U::api('country_code');
 			
-			$city = CFGP_U::api('city');
-			$postcode = CFGP_U::api('region_code');
-			
-			$where = $where_relative = array();
-			
-			if($country || $country_code)
+			if( $country || $country_code )
 			{
-				$where[]=$wpdb->prepare(
-					"TRIM(LOWER(`{$wpdb->cfgp_seo_redirection}`.`country`)) IN( %s, %s, %s, %s )",
-					CFGP_U::strtolower($country_code),
-					sanitize_title(CFGP_U::transliterate($country)),
-					CFGP_U::strtolower(CFGP_U::transliterate($country)),
-					CFGP_U::strtolower($country)
-				);
+				$region = CFGP_U::api('region');
+				$region_code = CFGP_U::api('region_code');
 				
-			}
-			
-			if($region || $region_code)
-			{
-				$where[]=$wpdb->prepare(
-					"TRIM(LOWER(`{$wpdb->cfgp_seo_redirection}`.`region`)) IN( %s, %s, %s, %s )",
-					sanitize_title(CFGP_U::transliterate($region)),
-					CFGP_U::strtolower(CFGP_U::transliterate($region)),
-					CFGP_U::strtolower($region),
-					CFGP_U::strtolower($region_code)
-				);
-			}
-			
-			if($city){
-				$where[]=$wpdb->prepare(
-					"TRIM(LOWER(`{$wpdb->cfgp_seo_redirection}`.`city`)) IN( %s, %s, %s )",
-					sanitize_title(CFGP_U::transliterate($city)),
-					CFGP_U::strtolower(CFGP_U::transliterate($city)),
-					CFGP_U::strtolower($city)
-				);
-			}
-			
-			if($postcode) {
-				$where[]=$wpdb->prepare("TRIM(LOWER(`{$wpdb->cfgp_seo_redirection}`.`postcode`)) = %s", strtolower($postcode));
-			}
-			
-			if(!empty($where)) {
-				$where_exact = ' AND (' . join(' AND ', $where) . ')';
-				$where_relative = ' AND (' . join(' OR ', $where) . ')';
-			} else {
-				$where_exact = '';
-				$where_relative = '';
-			}
-			
-			$fields = "
-				TRIM(`{$wpdb->cfgp_seo_redirection}`.`url`) AS `url`,
-				TRIM(LOWER(`{$wpdb->cfgp_seo_redirection}`.`country`)) AS `country`,
-				TRIM(LOWER(`{$wpdb->cfgp_seo_redirection}`.`region`)) AS `region`,
-				TRIM(LOWER(`{$wpdb->cfgp_seo_redirection}`.`city`)) AS `city`,
-				TRIM(LOWER(`{$wpdb->cfgp_seo_redirection}`.`postcode`)) AS `postcode`,
-				`{$wpdb->cfgp_seo_redirection}`.`http_code` AS `http_code`,
-				`{$wpdb->cfgp_seo_redirection}`.`only_once` AS `only_once`
-			";
-			
-			$query = apply_filters(
-				'cfgp/seo/redirection/query/exact',
-				"SELECT {$fields} FROM `{$wpdb->cfgp_seo_redirection}` WHERE `{$wpdb->cfgp_seo_redirection}`.`active` = 1{$where_exact}"
-			);
-			$exact_redirects = $wpdb->get_results($query, ARRAY_A );
-			if( !empty($exact_redirects) )
-			{
-				foreach( $exact_redirects as $redirect )
+				$city = CFGP_U::api('city');
+				$postcode = CFGP_U::api('region_code');
+				
+				$where = $where_relative = array();
+				
+				if($country || $country_code)
 				{
-					if( $this->do_redirection( $redirect ) ) {
-						exit;
-					}
+					$where[]=$wpdb->prepare(
+						"TRIM(LOWER(`{$wpdb->cfgp_seo_redirection}`.`country`)) IN( %s, %s, %s, %s )",
+						CFGP_U::strtolower($country_code),
+						sanitize_title(CFGP_U::transliterate($country)),
+						CFGP_U::strtolower(CFGP_U::transliterate($country)),
+						CFGP_U::strtolower($country)
+					);
+					
+				}
+				
+				if($region || $region_code)
+				{
+					$where[]=$wpdb->prepare(
+						"TRIM(LOWER(`{$wpdb->cfgp_seo_redirection}`.`region`)) IN( %s, %s, %s, %s )",
+						sanitize_title(CFGP_U::transliterate($region)),
+						CFGP_U::strtolower(CFGP_U::transliterate($region)),
+						CFGP_U::strtolower($region),
+						CFGP_U::strtolower($region_code)
+					);
+				}
+				
+				if($city){
+					$where[]=$wpdb->prepare(
+						"TRIM(LOWER(`{$wpdb->cfgp_seo_redirection}`.`city`)) IN( %s, %s, %s )",
+						sanitize_title(CFGP_U::transliterate($city)),
+						CFGP_U::strtolower(CFGP_U::transliterate($city)),
+						CFGP_U::strtolower($city)
+					);
+				}
+				
+				if($postcode) {
+					$where[]=$wpdb->prepare("TRIM(LOWER(`{$wpdb->cfgp_seo_redirection}`.`postcode`)) = %s", strtolower($postcode));
+				}
+				
+				if(!empty($where)) {
+					$where_exact = ' AND (' . join(' AND ', $where) . ')';
+					$where_relative = ' AND (' . join(' OR ', $where) . ')';
+				} else {
+					$where_exact = $where_relative = '';
+				}
+				
+				$fields = "
+					TRIM(`{$wpdb->cfgp_seo_redirection}`.`url`) AS `url`,
+					TRIM(LOWER(`{$wpdb->cfgp_seo_redirection}`.`country`)) AS `country`,
+					TRIM(LOWER(`{$wpdb->cfgp_seo_redirection}`.`region`)) AS `region`,
+					TRIM(LOWER(`{$wpdb->cfgp_seo_redirection}`.`city`)) AS `city`,
+					TRIM(LOWER(`{$wpdb->cfgp_seo_redirection}`.`postcode`)) AS `postcode`,
+					`{$wpdb->cfgp_seo_redirection}`.`http_code` AS `http_code`,
+					`{$wpdb->cfgp_seo_redirection}`.`only_once` AS `only_once`
+				";
+				
+				$query = apply_filters(
+					'cfgp/seo/redirection/query/exact',
+					"SELECT {$fields} FROM `{$wpdb->cfgp_seo_redirection}` WHERE `{$wpdb->cfgp_seo_redirection}`.`active` = 1{$where_exact}"
+				);
+				$exact_redirects = $wpdb->get_results($query, ARRAY_A );
+				
+				if( empty($exact_redirects) ) {
+					$query = apply_filters(
+						'cfgp/seo/redirection/query/relative',
+						"SELECT {$fields} FROM `{$wpdb->cfgp_seo_redirection}` WHERE `{$wpdb->cfgp_seo_redirection}`.`active` = 1{$where_relative}"
+					);
+					$relative_redirects = $wpdb->get_results($query, ARRAY_A );
+				}
+				
+				$this->seo_redirection_cache = array(
+					'relative_redirects' => $relative_redirects,
+					'exact_redirects' => $exact_redirects
+				);
+			}
+		} else {
+			$relative_redirects = ($this->seo_redirection_cache['relative_redirects'] ?? NULL);
+			$exact_redirects = ($this->seo_redirection_cache['exact_redirects'] ?? NULL);
+		}
+		
+		
+		if( !empty($exact_redirects) ) {
+			foreach( $exact_redirects as $redirect )
+			{
+				if( $this->do_redirection( $redirect ) ) {
+					exit;
 				}
 			}
-			else
+		} else if( !empty($relative_redirects) ) {
+			foreach( $relative_redirects as $redirect )
 			{
-				$query = apply_filters(
-					'cfgp/seo/redirection/query/relative',
-					"SELECT {$fields} FROM `{$wpdb->cfgp_seo_redirection}` WHERE `{$wpdb->cfgp_seo_redirection}`.`active` = 1{$where_relative}"
-				);
-				$relative_redirects = $wpdb->get_results($query, ARRAY_A );
-				if( !empty($relative_redirects) )
-				{
-					foreach( $relative_redirects as $redirect )
-					{
-						if( $this->do_redirection( $redirect ) ) {
-							exit;
-						}
-					}
+				if( $this->do_redirection( $redirect ) ) {
+					exit;
 				}
 			}
 		}
