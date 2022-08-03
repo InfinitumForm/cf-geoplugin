@@ -389,9 +389,29 @@ add_filter('cfgp/settings', function($options=array()){
 								'max' => 300,
 								'step' => 1
 							)
+						)
+					)
+				),
+				
+				
+				array(
+					'id' => 'whitelist-settings',
+					'title' => __('Whitelist', CFGP_NAME),
+					'desc' => __('Enter the IP addresses you want to whitelist from the SEO redirections and defender.', CFGP_NAME),
+					'inputs' => array(
+						array(
+							'name' => 'ip_whitelist',
+							'label' => __('IP Whitelist', CFGP_NAME),
+							'type' => 'textarea',
+							'desc' => __('Separate IP addresses with a comma or a new line.', CFGP_NAME),
+							'default' => '',
+							'attr' => array(
+								'style' => 'min-height:115px',
+							)
 						),
 					)
 				),
+				
 				
 				array(
 					'id' => 'email-notification',

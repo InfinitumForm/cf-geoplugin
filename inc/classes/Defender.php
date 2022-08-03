@@ -23,9 +23,22 @@ class CFGP_Defender extends CFGP_Global {
 	// Protect site from visiting
     public function protect()
     {
+		// Defender is disabled ???
+        if( CFGP_Options::get('enable_defender', 0) == 0 ) {
+			return;
+		}
+		
+		// Browser is allow to access to website
+		if(CFGP_U::check_defender_cookie()) {
+			return;
+		}
 		
 		$ip = CFGP_U::api('ip');
 		
+		// Block on error
+		if(empty($ip) || CFGP_U::api('error')) return;		
+		
+		// Set cookie
 		if(
 			is_admin()
 			&& CFGP_U::request_bool('save_defender')
@@ -39,8 +52,20 @@ class CFGP_Defender extends CFGP_Global {
 			CFGP_U::set_defender_cookie();
 		}
 		
-		if(empty($ip) || CFGP_U::api('error')) return;
+		// Whitelist IP addresses
+		$whitelist_ips = preg_split( '/[,;\n|]+/', CFGP_Options::get('ip_whitelist') );
+		$whitelist_ips = array_map( 'trim', $whitelist_ips );
+		$whitelist_ips = array_filter( $whitelist_ips );
+		$whitelist_ips = apply_filters('cfgp/defender/whitelist/ip', $whitelist_ips, $ip);
+		if( 
+			!empty($whitelist_ips) 
+			&& is_array($whitelist_ips) 
+			&& in_array($ip, $whitelist_ips) !== false 
+		) {
+			return;
+		}
 		
+		// Check settings
         if( $this->check() )
         {
 			if( function_exists('http_response_code') ) {
@@ -52,9 +77,10 @@ class CFGP_Defender extends CFGP_Global {
             die( wpautop( html_entity_decode( stripslashes( CFGP_Options::get('block_country_messages') ) ) ) );
         }
 
+
+		// Block Spam
         if(
 			CFGP_Options::get('enable_spam_ip', 0) 
-			&& CFGP_Options::get('enable_defender', 0) 
 			&& CFGP_License::level( CFGP_Options::get('license_sku') ) > 0 
 		)
         {
@@ -73,21 +99,11 @@ class CFGP_Defender extends CFGP_Global {
     // Check what to do with user
     public function check()
     {		
-		// Defender is disabled ???
-        if( CFGP_Options::get('enable_defender', 0) == 0 ) {
-			return false;
-		}
-		
 		// Bots need to see this website
 		if(CFGP_U::is_bot()) {
 			return false;
 		}
 
-		// Browser is allow to access to website
-		if(CFGP_U::check_defender_cookie()) {
-			return false;
-		}
-		
 		// Let's block proxy
 		if(CFGP_Options::get('block_proxy', 0) && CFGP_U::api('is_proxy') == 1) {
 			return true;
@@ -137,7 +153,10 @@ class CFGP_Defender extends CFGP_Global {
 				$block_city
 			)
 		) ) ) ];
-		
+		if( empty($block_region) && !empty($block_city) ) {
+			$mode = 'country_city';
+		}
+
 		// Switch mode
 		switch ( $mode ) {
 			case 'country':
@@ -157,6 +176,14 @@ class CFGP_Defender extends CFGP_Global {
 				if( 
 					CFGP_U::check_user_by_city($block_city) 
 					&& CFGP_U::check_user_by_region($block_region) 
+					&& CFGP_U::check_user_by_country($block_country) 
+				) {
+					return true;
+				}
+				break;
+			case 'country_city':
+				if( 
+					CFGP_U::check_user_by_city($block_city) 
 					&& CFGP_U::check_user_by_country($block_country) 
 				) {
 					return true;

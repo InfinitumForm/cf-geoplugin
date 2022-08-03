@@ -107,7 +107,8 @@ class CFGP_Defaults {
 		'enable_js'						=>	1,
 		'hide_http_referrer_headers' 	=>	0,
 		'notification_recipient_emails'	=>	'',
-		'notification_recipient_type' 	=>	'all'
+		'notification_recipient_type' 	=>	'all',
+		'ip_whitelist'					=>	'127.0.0.1'
 	);
 
 

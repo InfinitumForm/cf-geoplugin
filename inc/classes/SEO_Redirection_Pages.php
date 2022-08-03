@@ -96,6 +96,20 @@ class CFGP_SEO_Redirection_Pages extends CFGP_Global
 				return;
 			}
 			
+			// Whitelist IP addresses
+			$whitelist_ips = preg_split( '/[,;\n|]+/', CFGP_Options::get('ip_whitelist') );
+			$whitelist_ips = array_map( 'trim', $whitelist_ips );
+			$whitelist_ips = array_filter( $whitelist_ips );
+			$whitelist_ips = apply_filters('cfgp/seo_redirection/whitelist/ip', $whitelist_ips, CFGP_U::api('ip'));	
+			$whitelist_ips = apply_filters('cfgp/seo_redirection/whitelist/ip/pages', $whitelist_ips, CFGP_U::api('ip'));				
+			if( 
+				!empty($whitelist_ips) 
+				&& is_array($whitelist_ips) 
+				&& in_array(CFGP_U::api('ip'), $whitelist_ips) !== false 
+			) {
+				return;
+			}
+			
 			$enable_seo_posts = CFGP_Options::get('enable_seo_posts',array());
 			if(
 				empty($enable_seo_posts) 
@@ -168,6 +182,30 @@ class CFGP_SEO_Redirection_Pages extends CFGP_Global
 							$postcode
 						)
 					) ) ) ];
+					if( 
+						!empty($country)
+						&& empty($region)
+						&& empty($postcode)
+						&& !empty($city) 
+					) {
+						$mode = 'country_city';
+					}
+					if(
+						!empty($country)
+						&& empty($region)
+						&& !empty($postcode)
+						&& !empty($city)
+					) {
+						$mode = 'country_city_postcode';
+					}
+					if(
+						!empty($country)
+						&& empty($region)
+						&& !empty($postcode)
+						&& empty($city)
+					) {
+						$mode = 'country_postcode';
+					}
 					
 					// Exclude countries
 					if($data['exclude_country'] ?? NULL) {
@@ -241,6 +279,34 @@ class CFGP_SEO_Redirection_Pages extends CFGP_Global
 								CFGP_U::check_user_by_city($city) 
 								&& CFGP_U::check_user_by_region($region) 
 								&& CFGP_U::check_user_by_country($country)
+								&& CFGP_U::check_user_by_postcode($postcode) 
+							) {
+								$do_redirection = true;
+							}
+							break;
+							
+						case 'country_city':
+							if( 
+								CFGP_U::check_user_by_city($city) 
+								&& CFGP_U::check_user_by_country($country) 
+							) {
+								$do_redirection = true;
+							}
+							break;
+							
+						case 'country_city_postcode':
+							if( 
+								CFGP_U::check_user_by_city($city) 
+								&& CFGP_U::check_user_by_country($country)
+								&& CFGP_U::check_user_by_postcode($postcode) 
+							) {
+								$do_redirection = true;
+							}
+							break;
+							
+						case 'country_postcode':
+							if( 
+								CFGP_U::check_user_by_country($country)
 								&& CFGP_U::check_user_by_postcode($postcode) 
 							) {
 								$do_redirection = true;

@@ -23,6 +23,9 @@ if(CFGP_U::request_bool('save_defender') && wp_verify_nonce(sanitize_text_field(
 	if( !isset( $_POST['block_proxy'] ) ) {
 		CFGP_Options::set( 'block_proxy', 0 );
 	}
+	if( !isset( $_POST['ip_whitelist'] ) ) {
+		CFGP_Options::set( 'ip_whitelist', '' );
+	}
 
 	$updates = array();
 	foreach( $_POST as $key => $value )
@@ -88,10 +91,11 @@ if(!empty($block_city) && !is_array($block_city) && preg_match('/\]|\[/', $block
                                         <a href="javascript:void(0);" class="nav-tab nav-tab-active" data-id="#ip-restriction"><i class="cfa cfa-shield"></i><span class="label"> <?php _e('IP Restriction', CFGP_NAME); ?></span></a>
                                         <a href="javascript:void(0);" class="nav-tab" data-id="#location-restriction"><i class="cfa cfa-globe"></i><span class="label"> <?php _e('Location Restriction', CFGP_NAME); ?></span></a>
 										<a href="javascript:void(0);" class="nav-tab" data-id="#proxy-restriction"><i class="cfa cfa-sitemap"></i><span class="label"> <?php _e('Proxy Restriction', CFGP_NAME); ?></span></a>
+										<a href="javascript:void(0);" class="nav-tab" data-id="#whitelist"><i class="cfa cfa-list"></i><span class="label"> <?php _e('Whitelist', CFGP_NAME); ?></span></a>
                                     </nav>
                                     <div class="cfgp-tab-panel cfgp-tab-panel-active" id="ip-restriction">
                                     	<div class="cfgp-form-group">
-                                            <label for="block_ip"><?php _e('IP address separated by comma',CFGP_NAME); ?>:</label>
+                                            <label for="block_ip"><?php _e('IP address separated by comma or by new line',CFGP_NAME); ?>:</label>
                                             <textarea class="form-control" id="block_ip" name="block_ip" rows="5" style="min-height:115px"><?php echo CFGP_Options::get('block_ip'); ?></textarea>
                                         </div>
                                     </div>
@@ -147,10 +151,6 @@ if(!empty($block_city) && !is_array($block_city) && preg_match('/\]|\[/', $block
 									<div class="cfgp-tab-panel" id="proxy-restriction">
 										<div class="cfgp-form-group">
 											<p><?php _e( 'Protect your site from unwanted visitors using proxies and VPNs with just one click.', CFGP_NAME ); ?></p>
-											<p><strong><?php _e( 'Warning: This option may also block your access to the site if your ISP uses a proxy to serve internet information. Therefore, you must place one cookie in your browser to avoid this problem for you.', CFGP_NAME ); ?></strong></p>
-											<p><?php _e( 'Copy this link and keep it in a secret and safe place:', CFGP_NAME ); ?></p>
-											<p><strong><code><?php echo home_url( '?cfgp_admin_access=' . CFGP_U::ID() ); ?></code></strong></p>
-											<p><?php _e( 'When you check this option, we will set a cookie for you automatically but you can use this link whenever the plugin blocks you from accessing your site.', CFGP_NAME ); ?></p>
 											<div class="cfgp-form-group-checkboxes">
 												<?php
 													CFGP_Form::radio(
@@ -168,7 +168,18 @@ if(!empty($block_city) && !is_array($block_city) && preg_match('/\]|\[/', $block
 											</div>
 										</div>
 									</div>
+									<div class="cfgp-tab-panel" id="whitelist">
+                                    	<div class="cfgp-form-group">
+                                            <label for="ip_whitelist"><?php _e('Enter the IP addresses you want to whitelist and separate them with a comma or a new line',CFGP_NAME); ?>:</label>
+                                            <textarea class="form-control" id="ip_whitelist" name="ip_whitelist" rows="5" style="min-height:115px"><?php echo CFGP_Options::get('ip_whitelist'); ?></textarea>
+                                        </div>
+                                    </div>
                                  </div>
+								 
+								 <p><strong><?php _e( 'Warning: This option may also block your access to the site if your ISP uses a proxy to serve internet information. Therefore, you must place one cookie in your browser to avoid this problem for you.', CFGP_NAME ); ?></strong></p>
+								<p><?php _e( 'Copy this link and keep it in a secret and safe place:', CFGP_NAME ); ?></p>
+								<p><strong><code><?php echo home_url( '?cfgp_admin_access=' . CFGP_U::ID() ); ?></code></strong></p>
+								<p><?php _e( 'When you check this option, we will set a cookie for you automatically but you can use this link whenever the plugin blocks you from accessing your site.', CFGP_NAME ); ?></p>
                                  
                                  <?php if(CFGP_Options::get('enable_spam_ip')): ?>
                                      <p><strong><?php printf(__( 'Automatic IP Address Blacklist Check is enabled. All of these IPs are from a safe source and most of them are bots and crawlers. Blacklisted IPs will be automatically recognized and blocked. If you don\'t want this kind of protection %s.', CFGP_NAME ),

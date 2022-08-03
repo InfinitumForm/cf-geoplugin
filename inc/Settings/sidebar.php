@@ -308,22 +308,22 @@ class CFGP_Sidebar extends CFGP_Global {
 		}
 		
 		if(floatval($runtime) <= 0.1) {
-			echo '<span class="cfa cfa-battery-full incomparable'.$class.'" title="'.esc_attr__('Incomparable',CFGP_NAME).'"></span> <span class="cfgp-statistic-label incomparable">'.__('Incomparable',CFGP_NAME).'</span>';
+			echo '<span class="cfa cfa-battery-full incomparable'.$class.'" aria-hidden="true" title="'.esc_attr__('Incomparable',CFGP_NAME).'"></span> <span class="cfgp-statistic-label incomparable">'.__('Incomparable',CFGP_NAME).'</span>';
 		}
 		else if(floatval($runtime) <= 0.5){
-			echo '<span class="cfa cfa-battery-full exellent'.$class.'" title="'.esc_attr__('Exellent',CFGP_NAME).'"></span> <span class="cfgp-statistic-label exellent">'.__('Exellent',CFGP_NAME).'</span>';
+			echo '<span class="cfa cfa-battery-full exellent'.$class.'" aria-hidden="true" title="'.esc_attr__('Exellent',CFGP_NAME).'"></span> <span class="cfgp-statistic-label exellent">'.__('Exellent',CFGP_NAME).'</span>';
 		}
 		else if(floatval($runtime) <= 0.8){
-			echo '<span class="cfa cfa-battery-three-quarters perfect'.$class.'" title="'.esc_attr__('Perfect',CFGP_NAME).'"></span> <span class="cfgp-statistic-label perfect">'.__('Perfect',CFGP_NAME).'</span>';
+			echo '<span class="cfa cfa-battery-three-quarters perfect'.$class.'" aria-hidden="true" title="'.esc_attr__('Perfect',CFGP_NAME).'"></span> <span class="cfgp-statistic-label perfect">'.__('Perfect',CFGP_NAME).'</span>';
 		}
 		else if(floatval($runtime) <= 1.2){
-			echo '<span class="cfa cfa-battery-half good'.$class.'" title="'.esc_attr__('Good',CFGP_NAME).'"></span> <span class="cfgp-statistic-label good">'.__('Good',CFGP_NAME).'</span>';
+			echo '<span class="cfa cfa-battery-half good'.$class.'" aria-hidden="true" title="'.esc_attr__('Good',CFGP_NAME).'"></span> <span class="cfgp-statistic-label good">'.__('Good',CFGP_NAME).'</span>';
 		}
 		else if(floatval($runtime) <= 1.5){
-			echo '<span class="cfa cfa-battery-quarter week'.$class.'" title="'.esc_attr__('Week',CFGP_NAME).'"></span> <span class="cfgp-statistic-label week">'.__('Week',CFGP_NAME).'</span>';
+			echo '<span class="cfa cfa-battery-quarter week'.$class.'" aria-hidden="true" title="'.esc_attr__('Week',CFGP_NAME).'"></span> <span class="cfgp-statistic-label week">'.__('Week',CFGP_NAME).'</span>';
 		}
 		else {
-			echo '<span class="cfa cfa-battery-empty bad'.$class.'" title="'.esc_attr__('Bad',CFGP_NAME).'"></span> <span class="cfgp-statistic-label bad">'.__('Bad',CFGP_NAME).'</span>';
+			echo '<span class="cfa cfa-battery-empty bad'.$class.'" aria-hidden="true" title="'.esc_attr__('Bad',CFGP_NAME).'"></span> <span class="cfgp-statistic-label bad">'.__('Bad',CFGP_NAME).'</span>';
 		}
 	}
 	
