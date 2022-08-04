@@ -166,6 +166,9 @@ class CFGP_Menus extends CFGP_Global {
 							$control['countries']
 						)
 					) ) ) ];
+					if( empty($control['regions']) && !empty($control['cities']) ) {
+						$mode = 'country_city';
+					}
 					
 					switch ( $mode ) {
 						case 'country':
@@ -185,6 +188,14 @@ class CFGP_Menus extends CFGP_Global {
 							if( 
 								CFGP_U::check_user_by_city($control['cities']) 
 								&& CFGP_U::check_user_by_region($control['regions']) 
+								&& CFGP_U::check_user_by_country($control['countries']) 
+							) {
+								$protect = true;
+							}
+							break;
+						case 'country_city':
+							if( 
+								CFGP_U::check_user_by_city($control['cities']) 
 								&& CFGP_U::check_user_by_country($control['countries']) 
 							) {
 								$protect = true;
@@ -229,6 +240,9 @@ class CFGP_Menus extends CFGP_Global {
 						$control['countries']
 					)
 				) ) ) ];
+				if( empty($control['regions']) && !empty($control['cities']) ) {
+					$mode = 'country_city';
+				}
 				
 				switch ( $mode ) {
 					case 'country':
@@ -248,6 +262,14 @@ class CFGP_Menus extends CFGP_Global {
 						if( 
 							CFGP_U::check_user_by_city($control['cities']) 
 							&& CFGP_U::check_user_by_region($control['regions']) 
+							&& CFGP_U::check_user_by_country($control['countries']) 
+						) {
+							$protect = true;
+						}
+						break;
+					case 'country_city':
+						if( 
+							CFGP_U::check_user_by_city($control['cities']) 
 							&& CFGP_U::check_user_by_country($control['countries']) 
 						) {
 							$protect = true;
