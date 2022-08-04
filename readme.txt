@@ -380,7 +380,11 @@ Please inform us if any of these errors occur via contact form on our website [h
 * Fixed SEO redirection algorithm
 * Improved memory cleaning
 * Improved site protection algorithm
+* Fixed currency calculator
+* Fixed localhost detection
 * Removed obsolete PHP codes
+* Improved security
+* Improved user interface
 
 = 8.3.7 =
 * Improved hiding of the navigation menu by geolocation
@@ -429,7 +433,11 @@ Please inform us if any of these errors occur via contact form on our website [h
 * Fixed SEO redirection algorithm
 * Improved memory cleaning
 * Improved site protection algorithm
+* Fixed currency calculator
+* Fixed localhost detection
 * Removed obsolete PHP codes
+* Improved security
+* Improved user interface
 
 = 8.3.7 =
 * Improved hiding of the navigation menu by geolocation

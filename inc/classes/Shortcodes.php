@@ -995,13 +995,19 @@ LIMIT 1
 					{
 						return CFGP_U::generate_converter_output( $content, '', $atts['align'], $atts['separator'] );
 					}
-					return CFGP_U::generate_converter_output( $content, $symbols[CFGP_U::api('base_currency')], $atts['align'], $atts['separator'] );
+					
+					return CFGP_U::generate_converter_output(
+						$content,
+						$symbols[CFGP_U::api('base_currency')],
+						$atts['align'],
+						$atts['separator']
+					);
 				}
 				
 				$total = number_format(($currency_converter * $amount), 2);
 				if($atts['no-symbol'] == 1)
 				{
-					return $total;
+					return esc_html($total);
 				}
 				return CFGP_U::generate_converter_output( $total, $symbol_to, $atts['align'], $atts['separator'] );
 			}
@@ -1012,7 +1018,13 @@ LIMIT 1
 				{
 					return CFGP_U::generate_converter_output( $content, '', $atts['align'], $atts['separator'] );
 				}
-				return CFGP_U::generate_converter_output( $content, $symbols[CFGP_U::api('base_currency')], $atts['align'], $atts['separator'] );
+				
+				return CFGP_U::generate_converter_output(
+					$content,
+					$symbols[CFGP_U::api('base_currency')],
+					$atts['align'],
+					$atts['separator']
+				);
 			}
 		}
 		else
@@ -1020,24 +1032,39 @@ LIMIT 1
 			$api_params = array(
 				'referer' => CFGP_U::get_host(true)
 			);
-			$api_url = add_query_arg( $api_params, CFGP_Defaults::API[(CFGP_Options::get('enable_ssl', 0) ? 'ssl_' : '') . 'converter']."/{$from}/{$to}/{$content}" );
+			$api_url = add_query_arg(
+				$api_params,
+				CFGP_Defaults::API[(CFGP_Options::get('enable_ssl', 0) ? 'ssl_' : '') 
+					. 'converter']."/{$from}/{$to}/{$content}"
+			);
 
 			$result = CFGP_U::curl_get( $api_url );
 
-			if( ( isset( $result['error'] ) && $result['error'] == true ) || ( !isset( $result['return'] ) || $result['return'] == false ) ) return CFGP_U::generate_converter_output( $content, $symbol_from, $atts['align'], $atts['separator'] );
-
+			if(
+				( isset( $result['error'] ) && $result['error'] == true ) 
+				|| (!isset( $result['return'] ) || $result['return'] == false )
+			) {
+				return CFGP_U::generate_converter_output( $content, $symbol_from, $atts['align'], $atts['separator'] );
+			}
+			
 			if( !isset( $result['to_amount'] ) || empty( $result['to_amount'] ) ){
 				if($atts['no-symbol'] == 1)
 				{
-					return $result['to_amount'];
+					return esc_html($result['to_amount']);
 				}
 				return CFGP_U::generate_converter_output( $content, $symbol_from, $atts['align'], $atts['separator'] );
 			}
 			if($atts['no-symbol'] == 1)
 			{
-				return $result['to_amount'];
+				return esc_html($result['to_amount']);
 			}
-			return CFGP_U::generate_converter_output( $result['to_amount'], $symbol_to, $atts['align'], $atts['separator'] );
+			
+			return CFGP_U::generate_converter_output(
+				$result['to_amount'],
+				$symbol_to,
+				$atts['align'],
+				$atts['separator']
+			);
 		}
 	}
 	

@@ -431,10 +431,8 @@ class CFGP_IP extends CFGP_Global {
 	 * @author   Ivijan-Stefan Stipic <creativform@gmail.com>
 	 * @return   (bool)   true/false
 	 */
-	public static function is_localhost(){		
-		$server_ip = self::server();
-		
-		$cache_name = CFGP_NAME . '_is_localhost_'. $server_ip;
+	public static function is_localhost(){
+		$cache_name = '__is_localhost';
 
 		// Return cached proxy
 		if(NULL !== ($is_localhost = CFGP_Cache::get($cache_name, NULL))) {
@@ -451,11 +449,24 @@ class CFGP_IP extends CFGP_Global {
 			$localhost = true;
 		}
 		
-		if( substr(($_SERVER['HTTP_HOST'] ?? ''),0,7) == '192.168' ) {
+		if( !$localhost && in_array(($_SERVER['SERVER_ADDR'] ?? ''), array(
+			'localhost',
+			'127.0.0.1',
+			'::1'
+		) ) ) {
 			$localhost = true;
 		}
 		
-		if( strpos( ($_SERVER['HTTP_HOST'] ?? ''), 'localhost') !== false ) {
+		if( 
+			!$localhost 
+			&& (
+				strpos(($_SERVER['SERVER_ADDR'] ?? ''), '192.168.0.') !== false
+				|| strpos(($_SERVER['SERVER_ADDR'] ?? ''), '192.168.1.') !== false
+				|| strpos(($_SERVER['SERVER_ADDR'] ?? ''), '192.168.2.') !== false
+				|| strpos(($_SERVER['SERVER_ADDR'] ?? ''), '192.168.3.') !== false
+				|| strpos( ($_SERVER['HTTP_HOST'] ?? ''), 'localhost') !== false
+			)
+		) {
 			$localhost = true;
 		}
 		

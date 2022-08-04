@@ -48,7 +48,7 @@ class CFGP_U {
 		if( $KEY = CFGP_Cache::get('REST_KEY') ) {
 			return $KEY;
 		}
-		return CFGP_Cache::set('REST_KEY', str_rot13(substr(CFGP_U::ID(), 6, 21)));
+		return CFGP_Cache::set('REST_KEY', hash('sha256',str_rot13(substr(CFGP_U::ID(), 6, 21))));
 	}
 	
 	/*
@@ -440,7 +440,7 @@ class CFGP_U {
 	 * @verson    1.0.0
 	*/
 	public static function set_defender_cookie (){
-		$token = self::ID();
+		$token = self::KEY();
 		$cookie_name = 'cfgp__' . str_rot13(substr( $token, 6, 8 ));
 		$time = (YEAR_IN_SECONDS*2);
 		return self::setcookie($cookie_name, $token, $time);
@@ -455,7 +455,7 @@ class CFGP_U {
 			return $check_defender_cookie;
 		}
 		
-		$token = self::ID();
+		$token = self::KEY();
 		$cookie_name = 'cfgp__' . str_rot13(substr( $token, 6, 8 ));
 		
 		return CFGP_Cache::set( 'check_defender_cookie', (isset($_COOKIE[$cookie_name]) && $_COOKIE[$cookie_name] === $token) );
@@ -466,7 +466,7 @@ class CFGP_U {
 	 * @verson    1.0.0
 	*/
 	public static function delete_defender_cookie (){
-		$token = self::ID();
+		$token = self::KEY();
 		$cookie_name = 'cfgp__' . str_rot13(substr( $token, 6, 8 ));
 		$time = absint((YEAR_IN_SECONDS*2)-CFGP_TIME);
 		return self::setcookie($cookie_name, $token, $time);
@@ -1665,8 +1665,11 @@ class CFGP_U {
 	 */
 	public static function generate_converter_output( $amount, $symbol, $position = 'L', $separator = '' )
 	{
-		if( strtoupper( $position ) === 'L' || strtoupper( $position ) == 'LEFT' ) return sprintf( '%s%s%s', $symbol, $separator, $amount );
-		else return sprintf( '%s%s%s', $amount, $separator, $symbol );
+		if( in_array( strtoupper( $position ), array('L', 'LEFT', 'LEVO') ) !== false ) {
+			return esc_html( sprintf( '%s%s%s', $symbol, $separator, $amount ) );
+		} else {
+			return esc_html( sprintf( '%s%s%s', $amount, $separator, $symbol ) );
+		}
 	}
 	
 	/*

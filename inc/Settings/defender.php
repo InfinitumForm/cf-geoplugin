@@ -178,7 +178,7 @@ if(!empty($block_city) && !is_array($block_city) && preg_match('/\]|\[/', $block
 								 
 								 <p><strong><?php _e( 'Warning: This option may also block your access to the site if your ISP uses a proxy to serve internet information. Therefore, you must place one cookie in your browser to avoid this problem for you.', CFGP_NAME ); ?></strong></p>
 								<p><?php _e( 'Copy this link and keep it in a secret and safe place:', CFGP_NAME ); ?></p>
-								<p><strong><code><?php echo home_url( '?cfgp_admin_access=' . CFGP_U::ID() ); ?></code></strong></p>
+								<p><strong><code><?php echo home_url( '?cfgp_admin_access=' . str_rot13(substr(CFGP_U::KEY(), 3, 32) )); ?></code></strong></p>
 								<p><?php _e( 'When you check this option, we will set a cookie for you automatically but you can use this link whenever the plugin blocks you from accessing your site.', CFGP_NAME ); ?></p>
                                  
                                  <?php if(CFGP_Options::get('enable_spam_ip')): ?>

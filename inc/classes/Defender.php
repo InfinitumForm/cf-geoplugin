@@ -48,7 +48,12 @@ class CFGP_Defender extends CFGP_Global {
 			CFGP_U::set_defender_cookie();
 		}
 		
-		if( CFGP_U::request_string('cfgp_admin_access') === CFGP_U::ID() ) {
+		if(
+			isset( $_REQUEST['cfgp_admin_access'] ) 
+			&& (
+				CFGP_U::request_string('cfgp_admin_access') === str_rot13(substr(CFGP_U::KEY(), 3, 32))
+			)
+		) {
 			CFGP_U::set_defender_cookie();
 		}
 		
