@@ -19,7 +19,7 @@ class CFGP__Plugin__woocommerce extends CFGP_Global
 
     private function __construct()
     {
-        $this->add_action( 'init', 'check_woocommerce_instalation', 10 );
+        $this->add_action( 'plugins_loaded', 'check_woocommerce_instalation', 99 );
 		
 		$this->cf_conversion 				= get_option( 'woocommerce_cf_geoplugin_conversion', 'original');
 		$this->cf_conversion_adjust 		= get_option( 'woocommerce_cf_geoplugin_conversion_adjust', 0);
@@ -696,8 +696,11 @@ if($flag = CFGP_U::admin_country_flag(get_post_meta($post->ID, '_billing_country
 		$original_gateways = $gateways;
         
 		if( !CFGP_U::api('country_code', NULL) || !CFGP_U::api('country', NULL) ) return $gateways;
-        
-        if( is_admin() ) return $gateways; // Very important check othervise will delete from settings and throw fatal error
+
+		// Very important check othervise will delete from settings and throw fatal error
+        if( is_admin() ) return $gateways;
+		
+		$current_country = strtolower( WC()->customer->get_billing_country() );
 
         if( is_array( $gateways ) )
         {
@@ -708,17 +711,40 @@ if($flag = CFGP_U::admin_country_flag(get_post_meta($post->ID, '_billing_country
 
                 if( empty( $countries ) || $type == 'cfgp_payment_woo' ) continue;
 
-                if( $type === 'cfgp_payment_disable' && CFGP_U::check_user_by_country( $countries ) ) 
+                if( 
+					$type === 'cfgp_payment_disable' 
+					&& in_array(
+						$current_country,
+						$countries
+					)
+				)
                 {
-                    if( isset( $gateways[ $gateway->id ] ) ) unset( $gateways[ $gateway->id ] );
+                    if( isset( $gateways[ $gateway->id ] ) ) {
+						unset( $gateways[ $gateway->id ] );
+					}
                 }
-                elseif( $type === 'cfgp_payment_enable' && !CFGP_U::check_user_by_country( $countries ) ) 
+                elseif(
+					$type === 'cfgp_payment_enable'
+					&& !in_array(
+						$current_country,
+						$countries
+					) 
+				) 
                 {
-                    if( isset( $gateways[ $gateway->id ] ) ) unset( $gateways[ $gateway->id ] );
+                    if( isset( $gateways[ $gateway->id ] ) ) {
+						unset( $gateways[ $gateway->id ] );
+					}
                 }
             }
         }
-        return apply_filters( 'cf_geoplugin_woocommerce_payment_disable', $gateways, $original_gateways, CFGP_U::api(false, CFGP_Defaults::API_RETURN) ); 
+		
+        return apply_filters(
+			'cf_geoplugin_woocommerce_payment_disable',
+			$gateways,
+			$current_country,
+			$original_gateways,
+			CFGP_U::api(false, CFGP_Defaults::API_RETURN)
+		); 
     }
 	
 	// Control of the some additional Woocommerce addons
