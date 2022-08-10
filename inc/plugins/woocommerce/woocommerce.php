@@ -700,7 +700,7 @@ if($flag = CFGP_U::admin_country_flag(get_post_meta($post->ID, '_billing_country
 		// Very important check othervise will delete from settings and throw fatal error
         if( is_admin() ) return $gateways;
 		
-		$current_country = strtolower( WC()->customer->get_billing_country() );
+		$current_country = strtolower( WC()->customer->get_billing_country() ?? CFGP_U::api('country_code') );
 
         if( is_array( $gateways ) )
         {
