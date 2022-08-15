@@ -146,35 +146,23 @@ class CFGP_IP extends CFGP_Global {
 			}
 		}
 		
-		// Let's ask server?
-		$external_servers = apply_filters('cfgp/ip/external_servers', array(
-			'https://ident.me',
-			'https://api.ipify.org',
-			'https://api.my-ip.io/ip',
-			'https://ip4.seeip.org'
-		));
-		
-		foreach($external_servers as $server) {
-			$request = wp_remote_get( $server, [
-				'timeout' => CFGP_Options::get('timeout', 5)
-			] );
-			if( !is_wp_error( $request ) ) {
-				$ip = wp_remote_retrieve_body( $request );
-				if(self::filter($ip)!==false) {
-					return CFGP_Cache::set('IP', $ip);
-				}
-			}
-		}
-		
 		// let's try the last thing, why not?
 		if( CFGP_U::is_connected() )
 		{
-			$result = NULL;
+			// Let's ask server?
+			$external_servers = apply_filters('cfgp/ip/external_servers', array(
+				'https://ident.me',
+				'https://api.ipify.org',
+				'https://api.my-ip.io/ip',
+				'https://ip4.seeip.org'
+			));
 			
-			if(function_exists('file_get_contents'))
-			{
-				foreach($external_servers as $server) {
-					$ip = @file_get_contents( $server, false );
+			foreach($external_servers as $server) {
+				$request = wp_remote_get( $server, [
+					'timeout' => CFGP_Options::get('timeout', 5)
+				] );
+				if( !is_wp_error( $request ) ) {
+					$ip = wp_remote_retrieve_body( $request );
 					if(self::filter($ip)!==false) {
 						return CFGP_Cache::set('IP', $ip);
 					}

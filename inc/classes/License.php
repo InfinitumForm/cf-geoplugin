@@ -479,41 +479,6 @@ class CFGP_License extends CFGP_Global{
 		);
 		
 		$response = CFGP_U::curl_get( $request_url );
-	/*
-		if(empty($response)){
-			CFGP_DB_Cache::delete('cfgp-license-response-success');
-			CFGP_DB_Cache::set('cfgp-license-response-errors', array(
-				'no_connection' => array(
-					__('Unable to connect to server.',CFGP_NAME)
-				)
-			), DAY_IN_SECONDS);
-			return false;
-		}
-	*/
-		/**
-		if( isset( $response['error'] ) && $response['error'] == true )
-		{
-			CFGP_DB_Cache::delete('cfgp-license-response-success');
-			CFGP_DB_Cache::set('cfgp-license-response-errors', (isset($response['errors']) ? $response['errors'] : array(
-				'api_error' => array(
-					$response['message']
-				)
-			)), DAY_IN_SECONDS);
-			return false;
-		}
-		else
-		{
-			// Clear responses if exists
-			CFGP_DB_Cache::delete('cfgp-license-response-errors');
-			CFGP_DB_Cache::delete('cfgp-license-response-success');
-			// Clear license
-			self::set(CFGP_Defaults::LICENSE);
-			CFGP_DB_Cache::set('cfgp-license-response-success', $response['message'], DAY_IN_SECONDS);
-			// Clear special API cache
-			CFGP_API::remove_cache();
-			return true;
-		}
-		**/
 		
 		/*
 		 * OK, we have some problems with some websites.

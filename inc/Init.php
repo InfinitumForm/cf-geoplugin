@@ -21,6 +21,7 @@ final class CFGP_Init{
 			'CFGP_Cache',					// Register cache
 			'CFGP_DB_Cache',				// Register database cache
 			'CFGP_API',						// Main API class
+			'CFGP_Language',				// Language class
 			'CFGP_Taxonomy',				// Register Taxonomy
 			'CFGP_Metabox',					// Metabox class
 			'CFGP_Geo_Banner',				// Register Post Type
@@ -129,6 +130,7 @@ final class CFGP_Init{
 			CFGP_CLASS . '/Taxonomy.php',				// Taxonomy class
 			CFGP_CLASS . '/Geo_Banner.php',				// Post Type class
 			CFGP_CLASS . '/API.php',					// API class
+			CFGP_CLASS . '/Languages.php',				// Languages class
 			CFGP_CLASS . '/Metabox.php',				// Metabox class
 			CFGP_CLASS . '/SEO.php',					// SEO class
 			CFGP_CLASS . '/SEO_Redirection.php',		// SEO Redirection class

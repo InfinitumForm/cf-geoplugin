@@ -417,7 +417,7 @@ class CFGP_Shortcodes extends CFGP_Global {
 		else
 			$type='';
 		
-		$flag = trim(strtolower($arg['country']));
+		$flag = trim(CFGP_U::strtolower($arg['country']));
 		
 		if($img_format===true){
 			if(strpos($arg['css'], 'max-width') === false) $arg['css'].=' max-width:'.$size;
