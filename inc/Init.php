@@ -21,7 +21,6 @@ final class CFGP_Init{
 			'CFGP_Cache',					// Register cache
 			'CFGP_DB_Cache',				// Register database cache
 			'CFGP_API',						// Main API class
-			'CFGP_Language',				// Language class
 			'CFGP_Taxonomy',				// Register Taxonomy
 			'CFGP_Metabox',					// Metabox class
 			'CFGP_Geo_Banner',				// Register Post Type
@@ -51,6 +50,11 @@ final class CFGP_Init{
 		// Menus class
 		if(CFGP_Options::get('enable_menus_control',1)){
 			$classes = array_merge($classes, array('CFGP_Menus'));
+		}
+		
+		// Menus class
+		if(CFGP_Options::get('enable_locale_control',0)){
+			$classes = array_merge($classes, array('CFGP_Language'));
 		}
 		
 		// Remove some classes in the special cases

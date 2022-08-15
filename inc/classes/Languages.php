@@ -17,9 +17,10 @@
 if ( ! defined( 'WPINC' ) ) { die( "Don't mess with us." ); }
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-if(!class_exists('CFGP_Language')) : class CFGP_Language {
+if(!class_exists('CFGP_Language')) : class CFGP_Language extends CFGP_Global {
+	
 	// ISO-3166-2 language codes
-	private $wp_locale_conversion = array(
+	private static $wp_locale_conversion = array(
 		'af' => array(
 			'name' => 'Afrikaans',
 			'code' => 'af',
@@ -727,11 +728,270 @@ if(!class_exists('CFGP_Language')) : class CFGP_Language {
 		)
 	);
 	
-	private function __construct() {
-		if ( is_admin() ) {
-			return;
-		}
-
+	// Country to known locale
+	private static $country_to_locale = array(
+		'ad' => 'ca',
+		'ae' => 'ar',
+		'af' => 'fa,ps',
+		'ag' => 'en',
+		'ai' => 'en',
+		'al' => 'sq',
+		'am' => 'hy',
+		'an' => 'nl,en',
+		'ao' => 'pt',
+		'aq' => 'en',
+		'ar' => 'es',
+		'as' => 'en,sm',
+		'at' => 'de',
+		'au' => 'en',
+		'aw' => 'nl,pap',
+		'ax' => 'sv',
+		'az' => 'az',
+		'ba' => 'bs,hr,sr',
+		'bb' => 'en',
+		'bd' => 'bn',
+		'be' => 'nl,fr,de',
+		'bf' => 'fr',
+		'bg' => 'bg',
+		'bh' => 'ar',
+		'bi' => 'fr',
+		'bj' => 'fr',
+		'bl' => 'fr',
+		'bm' => 'en',
+		'bn' => 'ms',
+		'bo' => 'es,qu,ay',
+		'br' => 'pt',
+		'bq' => 'nl,en',
+		'bs' => 'en',
+		'bt' => 'dz',
+		'bv' => 'no',
+		'bw' => 'en,tn',
+		'by' => 'be,ru',
+		'bz' => 'en',
+		'ca' => 'en,fr',
+		'cc' => 'en',
+		'cd' => 'fr',
+		'cf' => 'fr',
+		'cg' => 'fr',
+		'ch' => 'de,fr,it,rm',
+		'ci' => 'fr',
+		'ck' => 'en,rar',
+		'cl' => 'es',
+		'cm' => 'fr,en',
+		'cn' => 'zh',
+		'co' => 'es',
+		'cr' => 'es',
+		'cu' => 'es',
+		'cv' => 'pt',
+		'cw' => 'nl',
+		'cx' => 'en',
+		'cy' => 'el,tr',
+		'cz' => 'cs',
+		'de' => 'de',
+		'dj' => 'fr,ar,so',
+		'dk' => 'da',
+		'dm' => 'en',
+		'do' => 'es',
+		'dz' => 'ar',
+		'ec' => 'es',
+		'ee' => 'et',
+		'eg' => 'ar',
+		'eh' => 'ar,es,fr',
+		'er' => 'ti,ar,en',
+		'es' => 'es,ast,ca,eu,gl',
+		'et' => 'am,om',
+		'fi' => 'fi,sv,se',
+		'fj' => 'en',
+		'fk' => 'en',
+		'fm' => 'en',
+		'fo' => 'fo',
+		'fr' => 'fr',
+		'ga' => 'fr',
+		'gb' => 'en,ga,cy,gd,kw',
+		'gd' => 'en',
+		'ge' => 'ka',
+		'gf' => 'fr',
+		'gg' => 'en',
+		'gh' => 'en',
+		'gi' => 'en',
+		'gl' => 'kl,da',
+		'gm' => 'en',
+		'gn' => 'fr',
+		'gp' => 'fr',
+		'gq' => 'es,fr,pt',
+		'gr' => 'el',
+		'gs' => 'en',
+		'gt' => 'es',
+		'gu' => 'en,ch',
+		'gw' => 'pt',
+		'gy' => 'en',
+		'hk' => 'zh,en',
+		'hm' => 'en',
+		'hn' => 'es',
+		'hr' => 'hr',
+		'ht' => 'fr,ht',
+		'hu' => 'hu',
+		'id' => 'id',
+		'ie' => 'en,ga',
+		'il' => 'he',
+		'im' => 'en',
+		'in' => 'hi,en',
+		'io' => 'en',
+		'iq' => 'ar,ku',
+		'ir' => 'fa',
+		'is' => 'is',
+		'it' => 'it,de,fr',
+		'je' => 'en',
+		'jm' => 'en',
+		'jo' => 'ar',
+		'jp' => 'ja',
+		'ke' => 'sw,en',
+		'kg' => 'ky,ru',
+		'kh' => 'km',
+		'ki' => 'en',
+		'km' => 'ar,fr',
+		'kn' => 'en',
+		'kp' => 'ko',
+		'kr' => 'ko,en',
+		'kw' => 'ar',
+		'ky' => 'en',
+		'kz' => 'kk,ru',
+		'la' => 'lo',
+		'lb' => 'ar,fr',
+		'lc' => 'en',
+		'li' => 'de',
+		'lk' => 'si,ta',
+		'lr' => 'en',
+		'ls' => 'en,st',
+		'lt' => 'lt',
+		'lu' => 'lb,fr,de',
+		'lv' => 'lv',
+		'ly' => 'ar',
+		'ma' => 'ar',
+		'mc' => 'fr',
+		'md' => 'ru,uk,ro',
+		'me' => 'srp,sq,bs,hr,sr',
+		'mf' => 'fr',
+		'mg' => 'mg,fr',
+		'mh' => 'en,mh',
+		'mk' => 'mk',
+		'ml' => 'fr',
+		'mm' => 'my',
+		'mn' => 'mn',
+		'mo' => 'zh,en,pt',
+		'mp' => 'ch',
+		'mq' => 'fr',
+		'mr' => 'ar,fr',
+		'ms' => 'en',
+		'mt' => 'mt,en',
+		'mu' => 'mfe,fr,en',
+		'mv' => 'dv',
+		'mw' => 'en,ny',
+		'mx' => 'es',
+		'my' => 'ms,zh,en',
+		'mz' => 'pt',
+		'na' => 'en,sf,de',
+		'nc' => 'fr',
+		'ne' => 'fr',
+		'nf' => 'en,pih',
+		'ng' => 'en',
+		'ni' => 'es',
+		'nl' => 'nl',
+		'no' => 'nb,nn,no,se',
+		'np' => 'ne',
+		'nr' => 'na,en',
+		'nu' => 'niu,en',
+		'nz' => 'en,mi',
+		'om' => 'ar',
+		'pa' => 'es',
+		'pe' => 'es',
+		'pf' => 'fr',
+		'pg' => 'en,tpi,ho',
+		'ph' => 'en,tl',
+		'pk' => 'en,ur',
+		'pl' => 'pl',
+		'pm' => 'fr',
+		'pn' => 'en,pih',
+		'pr' => 'es,en',
+		'ps' => 'ar,he',
+		'pt' => 'pt',
+		'pw' => 'en,pau,ja,sov,tox',
+		'py' => 'es,gn',
+		'qa' => 'ar',
+		're' => 'fr',
+		'ro' => 'ro',
+		'rs' => 'sr',
+		'ru' => 'ru',
+		'rw' => 'rw,fr,en',
+		'sa' => 'ar',
+		'sb' => 'en',
+		'sc' => 'fr,en,crs',
+		'sd' => 'ar,en',
+		'se' => 'sv',
+		'sg' => 'en,ms,zh,ta',
+		'sh' => 'en',
+		'si' => 'sl',
+		'sj' => 'no',
+		'sk' => 'sk',
+		'sl' => 'en',
+		'sm' => 'it',
+		'sn' => 'fr',
+		'so' => 'so,ar',
+		'sr' => 'nl',
+		'st' => 'pt',
+		'ss' => 'en',
+		'sv' => 'es',
+		'sx' => 'nl,en',
+		'sy' => 'ar',
+		'sz' => 'en,ss',
+		'tc' => 'en',
+		'td' => 'fr,ar',
+		'tf' => 'fr',
+		'tg' => 'fr',
+		'th' => 'th',
+		'tj' => 'tg,ru',
+		'tk' => 'tkl,en,sm',
+		'tl' => 'pt,tet',
+		'tm' => 'tk',
+		'tn' => 'ar',
+		'to' => 'en',
+		'tr' => 'tr',
+		'tt' => 'en',
+		'tv' => 'en',
+		'tw' => 'zh',
+		'tz' => 'sw,en',
+		'ua' => 'uk',
+		'ug' => 'en,sw',
+		'um' => 'en',
+		'us' => 'en,es',
+		'uy' => 'es',
+		'uz' => 'uz,kaa',
+		'va' => 'it',
+		'vc' => 'en',
+		've' => 'es',
+		'vg' => 'en',
+		'vi' => 'en',
+		'vn' => 'vi',
+		'vu' => 'bi,en,fr',
+		'wf' => 'fr',
+		'ws' => 'sm,en',
+		'ye' => 'ar',
+		'yt' => 'fr',
+		'za' => 'zu,xh,af,st,tn,en',
+		'zm' => 'en',
+		'zw' => 'en,sn,nd'
+	);
+	
+	private function __construct() {	
+		$this->add_action('cfgp/api/return', 'add_new_api_objects', 10, 1);
+		$this->add_action('cfgp/api/render/response', 'add_new_api_objects', 10, 1);
+		$this->add_action('cfgp/api/results', 'add_new_api_objects', 10, 1);
+		$this->add_action('cfgp/api/default/fields', 'add_new_api_objects', 10, 1);
+	}
+	
+	public function add_new_api_objects ($return) {
+		$return['locale'] = self::get_locale();
+		return $return;
 	}
 
 	/**
@@ -741,7 +1001,7 @@ if(!class_exists('CFGP_Language')) : class CFGP_Language {
 	 *
 	 * @return string
 	 */
-	public static function country_to_locale_codes( $language ) {
+	public static function get_locale() {
 		$get_locale = CFGP_Cache::get('language_locale_code');
 		
 		if( !$get_locale ) {
@@ -753,11 +1013,11 @@ if(!class_exists('CFGP_Language')) : class CFGP_Language {
 			$get_locale = get_bloginfo('language');
 			
 			foreach($wp_locale_conversion as $locale => $obj) {
-				$locale = strtolower($locale);
-				if( strpos($locale, $country_code) !== false && strpos($locale, $region_code) !== false ) {
+				$search_locale = strtolower($locale);
+				if( strpos($search_locale, $country_code) !== false && strpos($search_locale, $region_code) !== false ) {
 					$get_locale = $locale;
 					break;
-				} else if( strpos($locale, $country_code) !== false ) {
+				} else if( strpos($search_locale, $country_code) !== false ) {
 					$get_locale = $locale;
 					break;
 				}

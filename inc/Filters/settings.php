@@ -145,18 +145,7 @@ add_filter('cfgp/settings', function($options=array()){
 							),
 							'default' => 0
 						),
-						/*
-						array(
-							'name' => 'measurement_unit',
-							'label' => __('Measurement Unit', CFGP_NAME),
-							'type' => 'radio',
-							'options' => array(
-								'km' => __('km', CFGP_NAME),
-								'mile' => __('mile', CFGP_NAME)
-							),
-							'default' => 'km'
-						),
-						*/
+						
 						array(
 							'name' => 'base_currency',
 							'label' => __('Base Currency', CFGP_NAME),
@@ -250,6 +239,17 @@ add_filter('cfgp/settings', function($options=array()){
 							'attr' => array(
 								'class' => 'enable-disable-rest'
 							)
+						),
+						array(
+							'name' => 'enable_locale_control',
+							'label' => __('Enable Locale Control', CFGP_NAME),
+							'desc' => __('This option includes the detection and automatic control of the site\'s language depending on the geo-location of the user.', CFGP_NAME),
+							'type' => 'radio',
+							'options' => array(
+								1 => __('Yes', CFGP_NAME),
+								0 => __('No', CFGP_NAME)
+							),
+							'default' => 'km'
 						),
 					)
 				),
