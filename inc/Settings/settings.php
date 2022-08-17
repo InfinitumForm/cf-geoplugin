@@ -93,7 +93,7 @@ switch($input['type'])
 			echo ($default === $value ? ' checked' : '');
 			echo (isset($input['readonly']) && $input['readonly'] ? ' readonly' : '');
 			echo (isset($input['disabled']) && $input['disabled'] ? ' disabled' : '');
-        ?>><?php echo $name; ?>
+        ?>><?php echo esc_html($name); ?>
     </span>
 	<?php endforeach; if(isset($input['info']) && !empty($input['info'])) : 
 		?><br><div class="cfgp-field-description cfgp-field-description-<?php echo esc_attr($input['type']); ?>"><?php echo wp_kses_post($input['info']); ?></div><?php 
@@ -190,7 +190,7 @@ switch($input['type'])
 		
 		echo (isset($input['readonly']) && $input['readonly'] ? ' readonly' : '');
 		echo (isset($input['disabled']) && $input['disabled'] ? ' disabled' : '');
-	?>><?php echo $default; ?></textarea>
+	?>><?php echo wp_kses_post($default); ?></textarea>
 	<?php if(isset($input['info']) && !empty($input['info'])) : 
 		?><br><div class="cfgp-field-description cfgp-field-description-<?php echo esc_attr($input['type']); ?>"><?php echo wp_kses_post($input['info']); ?></div><?php 
 	endif; ?>

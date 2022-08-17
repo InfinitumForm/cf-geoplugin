@@ -343,7 +343,7 @@ class CFGP_REST extends CFGP_Global {
 				$secret_key
 			));
 			
-			echo $secret_key;
+			echo esc_html($secret_key);
 		}
 		else
 		{

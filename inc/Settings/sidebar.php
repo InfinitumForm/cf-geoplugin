@@ -109,7 +109,7 @@ class CFGP_Sidebar extends CFGP_Global {
 			<h3>
 			<?php
 				if($flag = CFGP_U::admin_country_flag(CFGP_U::api('country_code'))) {
-					echo $flag;
+					echo wp_kses_post($flag);
 				} else {
 					echo '<span class="cfa cfa-globe"></span>';
 				}
@@ -127,7 +127,7 @@ class CFGP_Sidebar extends CFGP_Global {
 				<p><?php _e('Congratulations, your license has provided you with a lifetime lookup.', 'cf-geoplugin'); ?></p>
 			<?php elseif(CFGP_U::api('available_lookup') === 'unlimited') : ?>
 				<?php if($license_expire = CFGP_License::expire_date()) : ?>
-					<p><?php _e('You have an unlimited lookup that you can use until:', 'cf-geoplugin'); ?> <strong><?php echo $license_expire; ?></strong></p>
+					<p><?php _e('You have an unlimited lookup that you can use until:', 'cf-geoplugin'); ?> <strong><?php echo esc_html($license_expire); ?></strong></p>
 				<?php else: ?>
 					<p><?php _e('You have an unlimited lookup.', 'cf-geoplugin'); ?></p>
 				<?php endif; ?>
@@ -142,7 +142,7 @@ class CFGP_Sidebar extends CFGP_Global {
 				<?php endif; ?>
 				<p><?php printf(
 					__('If you want to have an %1$s, you need to %2$s.', 'cf-geoplugin'),
-					'<a href="<?php echo CFGP_STORE; ?>/documentation/quick-start/what-do-i-get-from-unlimited-license" target="_blank">'.__('unlimited lookup', 'cf-geoplugin').'</a>',
+					'<a href="<?php echo esc_url(CFGP_STORE); ?>/documentation/quick-start/what-do-i-get-from-unlimited-license" target="_blank">'.__('unlimited lookup', 'cf-geoplugin').'</a>',
 					'<a href="'.CFGP_U::admin_url('admin.php?page=cf-geoplugin-activate').'" target="_blank"><strong>'.__('activate the license', 'cf-geoplugin').'</strong></a>'
 				); ?></p>
 			<?php endif; ?>
@@ -167,13 +167,13 @@ class CFGP_Sidebar extends CFGP_Global {
 	 **/
 	public function sidebar_affiliate(){ ?>
 	<h4 style="text-align:center;"><?php _e('Affiliates discounts up to 60%:', 'cf-geoplugin'); ?></h4>
-<a href="https://www.digitalocean.com/?refcode=a4160dafc356&utm_campaign=Referral_Invite&utm_medium=Referral_Program&utm_source=badge" title="<?php esc_attr_e('CF Geo Plugin uses an API hosted on Digital Ocean servers. Get yours now!', 'cf-geoplugin'); ?>" target="_blank"><img src="<?php echo CFGP_ASSETS; ?>/images/Logo-DigitalOcean.jpg" alt="<?php esc_attr_e('CF Geo Plugin Uses an API Hosted on Digital Ocean Cloud Servers. Get yours now!', 'cf-geoplugin'); ?>" style="margin:0 auto 0 auto; display:block; width:100%; max-width:100%; height:auto; border: 1px solid #c3c4c7; box-shadow: 0 1px 1px rgb(0 0 0 / 4%);" /></a>
+<a href="https://www.digitalocean.com/?refcode=a4160dafc356&utm_campaign=Referral_Invite&utm_medium=Referral_Program&utm_source=badge" title="<?php esc_attr_e('CF Geo Plugin uses an API hosted on Digital Ocean servers. Get yours now!', 'cf-geoplugin'); ?>" target="_blank"><img src="<?php echo esc_url(CFGP_ASSETS); ?>/images/Logo-DigitalOcean.jpg" alt="<?php esc_attr_e('CF Geo Plugin Uses an API Hosted on Digital Ocean Cloud Servers. Get yours now!', 'cf-geoplugin'); ?>" style="margin:0 auto 0 auto; display:block; width:100%; max-width:100%; height:auto; border: 1px solid #c3c4c7; box-shadow: 0 1px 1px rgb(0 0 0 / 4%);" /></a>
 
-<a href="https://portal.draxhost.com/?affid=1" title="<?php esc_attr_e('The CF Geo Plugin official site is hosted on Drax Host servers. Interested in affordable and secure hosting?', 'cf-geoplugin'); ?>" target="_blank"><img src="<?php echo CFGP_ASSETS; ?>/images/Logo-Drax-Host.jpg" alt="<?php esc_attr_e('The CF Geo Plugin official site is hosted on Drax Host servers. Interested in affordable and secure hosting?', 'cf-geoplugin'); ?>" style="margin:15px auto 0 auto; display:block; width:100%; max-width:100%; height:auto; border: 1px solid #c3c4c7; box-shadow: 0 1px 1px rgb(0 0 0 / 4%);" /></a>
+<a href="https://portal.draxhost.com/?affid=1" title="<?php esc_attr_e('The CF Geo Plugin official site is hosted on Drax Host servers. Interested in affordable and secure hosting?', 'cf-geoplugin'); ?>" target="_blank"><img src="<?php echo esc_url(CFGP_ASSETS); ?>/images/Logo-Drax-Host.jpg" alt="<?php esc_attr_e('The CF Geo Plugin official site is hosted on Drax Host servers. Interested in affordable and secure hosting?', 'cf-geoplugin'); ?>" style="margin:15px auto 0 auto; display:block; width:100%; max-width:100%; height:auto; border: 1px solid #c3c4c7; box-shadow: 0 1px 1px rgb(0 0 0 / 4%);" /></a>
 
-<a href="https://affiliates.nordvpn.com/publisher/#!/offer/15" title="<?php esc_attr_e('The CF Gep plugin recommends using Nord VPN for testing.', 'cf-geoplugin'); ?>" class="affiliate-nordvpn" target="_blank"><img src="<?php echo CFGP_ASSETS; ?>/images/Logo-NordVPN.jpg" alt="<?php esc_attr_e('The CF Gep plugin recommends using Nord VPN for testing.', 'cf-geoplugin'); ?>" style="margin:15px auto 0 auto; display:block; width:100%; max-width:100%; height:auto; border: 1px solid #c3c4c7; box-shadow: 0 1px 1px rgb(0 0 0 / 4%);" /></a>
+<a href="https://affiliates.nordvpn.com/publisher/#!/offer/15" title="<?php esc_attr_e('The CF Gep plugin recommends using Nord VPN for testing.', 'cf-geoplugin'); ?>" class="affiliate-nordvpn" target="_blank"><img src="<?php echo esc_url(CFGP_ASSETS); ?>/images/Logo-NordVPN.jpg" alt="<?php esc_attr_e('The CF Gep plugin recommends using Nord VPN for testing.', 'cf-geoplugin'); ?>" style="margin:15px auto 0 auto; display:block; width:100%; max-width:100%; height:auto; border: 1px solid #c3c4c7; box-shadow: 0 1px 1px rgb(0 0 0 / 4%);" /></a>
 <hr style="margin:32px auto 32px auto;">
-<a href="https://infinitumform.com/" title="<?php esc_attr_e('We have created many good projects, do you want to we create something for you?', 'cf-geoplugin'); ?>" target="_blank"><img src="<?php echo CFGP_ASSETS; ?>/images/developed-by.png" alt="<?php esc_attr_e('We have created many good projects, do you want to we create something for you?', 'cf-geoplugin'); ?>" style="margin:0 auto; display:block; width:100%; max-width:200px; height:auto;" /></a>
+<a href="https://infinitumform.com/" title="<?php esc_attr_e('We have created many good projects, do you want to we create something for you?', 'cf-geoplugin'); ?>" target="_blank"><img src="<?php echo esc_url(CFGP_ASSETS); ?>/images/developed-by.png" alt="<?php esc_attr_e('We have created many good projects, do you want to we create something for you?', 'cf-geoplugin'); ?>" style="margin:0 auto; display:block; width:100%; max-width:200px; height:auto;" /></a>
 <hr style="margin:32px auto 32px auto;">
 	<?php }
 	
@@ -186,7 +186,7 @@ class CFGP_Sidebar extends CFGP_Global {
 	public function dashboard_feed(){ $RSS = CFGP_DB_Cache::get('cfgp-dashboard-rss'); ?>
 	<div class="wordpress-news hide-if-no-js<?php echo (empty($RSS) ? ' cfgp-load-dashboard-rss-feed' : ''); ?>">
 	<?php if($RSS) : ?>
-		<?php echo $RSS; ?>
+		<?php echo wp_kses_post($RSS); ?>
 	<?php else : ?>
 		<ul class="rss-widget">
 			<li style="background-color:transparent;"><?php _e('Loading...', 'cf-geoplugin'); ?></li>
@@ -194,9 +194,9 @@ class CFGP_Sidebar extends CFGP_Global {
 	<?php endif; ?>
 	</div>
 	<div class="community-events-footer">
-		<a href="<?php echo CFGP_STORE; ?>/category/announcements" target="_blank"><?php _e( 'Announcements', 'cf-geoplugin'); ?> <span class="screen-reader-text"><?php _e('(opens in a new tab)', 'cf-geoplugin'); ?></span><span aria-hidden="true" class="dashicons dashicons-external"></span></a>
-		| <a href="<?php echo CFGP_STORE; ?>/category/information" target="_blank"><?php _e( 'Information', 'cf-geoplugin'); ?> <span class="screen-reader-text">(opens in a new tab)</span><span aria-hidden="true" class="dashicons dashicons-external"></span></a>
-		| <a href="<?php echo CFGP_STORE; ?>/category/tutorial" target="_blank"><?php _e( 'Tutorial', 'cf-geoplugin'); ?> <span class="screen-reader-text"><?php _e('(opens in a new tab)', 'cf-geoplugin'); ?></span><span aria-hidden="true" class="dashicons dashicons-external"></span></a>
+		<a href="<?php echo esc_url(CFGP_STORE); ?>/category/announcements" target="_blank"><?php _e( 'Announcements', 'cf-geoplugin'); ?> <span class="screen-reader-text"><?php _e('(opens in a new tab)', 'cf-geoplugin'); ?></span><span aria-hidden="true" class="dashicons dashicons-external"></span></a>
+		| <a href="<?php echo esc_url(CFGP_STORE); ?>/category/information" target="_blank"><?php _e( 'Information', 'cf-geoplugin'); ?> <span class="screen-reader-text">(opens in a new tab)</span><span aria-hidden="true" class="dashicons dashicons-external"></span></a>
+		| <a href="<?php echo esc_url(CFGP_STORE); ?>/category/tutorial" target="_blank"><?php _e( 'Tutorial', 'cf-geoplugin'); ?> <span class="screen-reader-text"><?php _e('(opens in a new tab)', 'cf-geoplugin'); ?></span><span aria-hidden="true" class="dashicons dashicons-external"></span></a>
 	</div>
 	<?php }
 	
@@ -208,14 +208,14 @@ class CFGP_Sidebar extends CFGP_Global {
 	 **/
 	public function dashboard_footer(){ ?>
 	<p class="community-events-footer" id="cf-geoplugin-dashboard-footer" style="text-align:center;">
-		<a href="<?php echo CFGP_STORE; ?>/documentation/" target="_blank"><?php _e( 'Documentation', 'cf-geoplugin'); ?><span class="screen-reader-text"><?php _e('(opens in a new tab)', 'cf-geoplugin'); ?></span><span aria-hidden="true" class="dashicons dashicons-external"></span></a> 
-		| <a href="<?php echo CFGP_STORE; ?>/pricing/" target="_blank"><?php _e( 'Pricing', 'cf-geoplugin'); ?><span class="screen-reader-text"><?php _e('(opens in a new tab)', 'cf-geoplugin'); ?></span><span aria-hidden="true" class="dashicons dashicons-external"></span></a> 
-		| <a href="<?php echo CFGP_STORE; ?>/blog/" target="_blank"><?php _e( 'Blog', 'cf-geoplugin'); ?><span class="screen-reader-text"><?php _e('(opens in a new tab)', 'cf-geoplugin'); ?></span><span aria-hidden="true" class="dashicons dashicons-external"></span></a>
+		<a href="<?php echo esc_url(CFGP_STORE); ?>/documentation/" target="_blank"><?php _e( 'Documentation', 'cf-geoplugin'); ?><span class="screen-reader-text"><?php _e('(opens in a new tab)', 'cf-geoplugin'); ?></span><span aria-hidden="true" class="dashicons dashicons-external"></span></a> 
+		| <a href="<?php echo esc_url(CFGP_STORE); ?>/pricing/" target="_blank"><?php _e( 'Pricing', 'cf-geoplugin'); ?><span class="screen-reader-text"><?php _e('(opens in a new tab)', 'cf-geoplugin'); ?></span><span aria-hidden="true" class="dashicons dashicons-external"></span></a> 
+		| <a href="<?php echo esc_url(CFGP_STORE); ?>/blog/" target="_blank"><?php _e( 'Blog', 'cf-geoplugin'); ?><span class="screen-reader-text"><?php _e('(opens in a new tab)', 'cf-geoplugin'); ?></span><span aria-hidden="true" class="dashicons dashicons-external"></span></a>
 	</p>
 	<p class="community-events-footer" id="cf-geoplugin-dashboard-footer" style="text-align:center;">
-		<a href="<?php echo CFGP_STORE; ?>/terms-and-conditions/" target="_blank"><?php _e( 'Terms & Conditions', 'cf-geoplugin'); ?><span class="screen-reader-text"><?php _e('(opens in a new tab)', 'cf-geoplugin'); ?></span><span aria-hidden="true" class="dashicons dashicons-external"></span></a>
-		| <a href="<?php echo CFGP_STORE; ?>/privacy-policy/" target="_blank"><?php _e( 'Privacy Policy', 'cf-geoplugin'); ?><span class="screen-reader-text"><?php _e('(opens in a new tab)', 'cf-geoplugin'); ?></span><span aria-hidden="true" class="dashicons dashicons-external"></span></a>
-		| <a href="<?php echo CFGP_STORE; ?>/cookie-policy/" target="_blank"><?php _e( 'Cookie Policy', 'cf-geoplugin'); ?><span class="screen-reader-text"><?php _e('(opens in a new tab)', 'cf-geoplugin'); ?></span><span aria-hidden="true" class="dashicons dashicons-external"></span></a>
+		<a href="<?php echo esc_url(CFGP_STORE); ?>/terms-and-conditions/" target="_blank"><?php _e( 'Terms & Conditions', 'cf-geoplugin'); ?><span class="screen-reader-text"><?php _e('(opens in a new tab)', 'cf-geoplugin'); ?></span><span aria-hidden="true" class="dashicons dashicons-external"></span></a>
+		| <a href="<?php echo esc_url(CFGP_STORE); ?>/privacy-policy/" target="_blank"><?php _e( 'Privacy Policy', 'cf-geoplugin'); ?><span class="screen-reader-text"><?php _e('(opens in a new tab)', 'cf-geoplugin'); ?></span><span aria-hidden="true" class="dashicons dashicons-external"></span></a>
+		| <a href="<?php echo esc_url(CFGP_STORE); ?>/cookie-policy/" target="_blank"><?php _e( 'Cookie Policy', 'cf-geoplugin'); ?><span class="screen-reader-text"><?php _e('(opens in a new tab)', 'cf-geoplugin'); ?></span><span aria-hidden="true" class="dashicons dashicons-external"></span></a>
 	</p>
 	<p class="community-events-footer" id="cf-geoplugin-copyright" style="font-size:0.85em; text-align:center;">
 		<?php printf(__('Copyright © %d-%d CF Geo Plugin. All rights reserved.', 'cf-geoplugin'), 2015, date('Y')); ?>
@@ -247,7 +247,7 @@ class CFGP_Sidebar extends CFGP_Global {
 	<h3><i class="cfa cfa-plug" aria-hidden="true"></i> <?php _e( 'CF Geo Plugin details', 'cf-geoplugin'); ?></h3>
 	<ul>
 		<li><strong><?php _e( 'Last Update', 'cf-geoplugin'); ?>:</strong> <span><?php echo date(CFGP_DATE_TIME_FORMAT, strtotime($plugin->last_updated)); ?></span></li>
-		<li><strong><?php _e( 'Homepage', 'cf-geoplugin'); ?>:</strong> <span><a href="<?php echo $plugin->homepage ?>" target="_blank"><?php echo $plugin->homepage ?></a></span></li>
+		<li><strong><?php _e( 'Homepage', 'cf-geoplugin'); ?>:</strong> <span><a href="<?php echo esc_url($plugin->homepage); ?>" target="_blank"><?php echo esc_url($plugin->homepage) ?></a></span></li>
 		<li><strong><?php _e( 'WP Support', 'cf-geoplugin'); ?>:</strong> <span><?php
 			if(version_compare(get_bloginfo('version'), $plugin->requires, '>='))
 			{
@@ -262,11 +262,11 @@ class CFGP_Sidebar extends CFGP_Global {
 			preg_match("#^\d+(\.\d+)*#", PHP_VERSION, $match);
 			if(version_compare(PHP_VERSION, $plugin->requires_php, '>='))
 			{
-				printf('<span class="text-success">' . __( 'Supported on PHP version %s', 'cf-geoplugin') . '</span>', $match[0]);
+				printf('<span class="text-success">' . __( 'Supported on PHP version %s', 'cf-geoplugin') . '</span>', esc_html($match[0]));
 			}
 			else
 			{
-				printf('<span class="text-danger">' . __( 'Plugin not support PHP version %1$s. Please use PHP vesion %2$s or above.', 'cf-geoplugin') . '</span>', PHP_VERSION, $plugin->requires_php);
+				printf('<span class="text-danger">' . __( 'Plugin not support PHP version %1$s. Please use PHP vesion %2$s or above.', 'cf-geoplugin') . '</span>', PHP_VERSION, esc_html($plugin->requires_php));
 			}
 		?></li>
 	</ul>
@@ -286,22 +286,22 @@ class CFGP_Sidebar extends CFGP_Global {
 		}
 		
 		if(floatval($runtime) <= 0.1) {
-			echo '<span class="cfa cfa-battery-full incomparable'.$class.'" aria-hidden="true" title="'.esc_attr__('Incomparable', 'cf-geoplugin').'"></span> <span class="cfgp-statistic-label incomparable">'.__('Incomparable', 'cf-geoplugin').'</span>';
+			echo '<span class="cfa cfa-battery-full incomparable'.esc_attr($class).'" aria-hidden="true" title="'.esc_attr__('Incomparable', 'cf-geoplugin').'"></span> <span class="cfgp-statistic-label incomparable">'.__('Incomparable', 'cf-geoplugin').'</span>';
 		}
 		else if(floatval($runtime) <= 0.5){
-			echo '<span class="cfa cfa-battery-full exellent'.$class.'" aria-hidden="true" title="'.esc_attr__('Exellent', 'cf-geoplugin').'"></span> <span class="cfgp-statistic-label exellent">'.__('Exellent', 'cf-geoplugin').'</span>';
+			echo '<span class="cfa cfa-battery-full exellent'.esc_attr($class).'" aria-hidden="true" title="'.esc_attr__('Exellent', 'cf-geoplugin').'"></span> <span class="cfgp-statistic-label exellent">'.__('Exellent', 'cf-geoplugin').'</span>';
 		}
 		else if(floatval($runtime) <= 0.8){
-			echo '<span class="cfa cfa-battery-three-quarters perfect'.$class.'" aria-hidden="true" title="'.esc_attr__('Perfect', 'cf-geoplugin').'"></span> <span class="cfgp-statistic-label perfect">'.__('Perfect', 'cf-geoplugin').'</span>';
+			echo '<span class="cfa cfa-battery-three-quarters perfect'.esc_attr($class).'" aria-hidden="true" title="'.esc_attr__('Perfect', 'cf-geoplugin').'"></span> <span class="cfgp-statistic-label perfect">'.__('Perfect', 'cf-geoplugin').'</span>';
 		}
 		else if(floatval($runtime) <= 1.2){
-			echo '<span class="cfa cfa-battery-half good'.$class.'" aria-hidden="true" title="'.esc_attr__('Good', 'cf-geoplugin').'"></span> <span class="cfgp-statistic-label good">'.__('Good', 'cf-geoplugin').'</span>';
+			echo '<span class="cfa cfa-battery-half good'.esc_attr($class).'" aria-hidden="true" title="'.esc_attr__('Good', 'cf-geoplugin').'"></span> <span class="cfgp-statistic-label good">'.__('Good', 'cf-geoplugin').'</span>';
 		}
 		else if(floatval($runtime) <= 1.5){
-			echo '<span class="cfa cfa-battery-quarter week'.$class.'" aria-hidden="true" title="'.esc_attr__('Week', 'cf-geoplugin').'"></span> <span class="cfgp-statistic-label week">'.__('Week', 'cf-geoplugin').'</span>';
+			echo '<span class="cfa cfa-battery-quarter week'.esc_attr($class).'" aria-hidden="true" title="'.esc_attr__('Week', 'cf-geoplugin').'"></span> <span class="cfgp-statistic-label week">'.__('Week', 'cf-geoplugin').'</span>';
 		}
 		else {
-			echo '<span class="cfa cfa-battery-empty bad'.$class.'" aria-hidden="true" title="'.esc_attr__('Bad', 'cf-geoplugin').'"></span> <span class="cfgp-statistic-label bad">'.__('Bad', 'cf-geoplugin').'</span>';
+			echo '<span class="cfa cfa-battery-empty bad'.esc_attr($class).'" aria-hidden="true" title="'.esc_attr__('Bad', 'cf-geoplugin').'"></span> <span class="cfgp-statistic-label bad">'.__('Bad', 'cf-geoplugin').'</span>';
 		}
 	}
 	
@@ -313,19 +313,19 @@ class CFGP_Sidebar extends CFGP_Global {
 	public function cfgp_lookup_status_icon($lookup, $class='')
 	{
 		if($lookup === 'unlimited' || $lookup === 'lifetime'){
-			echo '<span class="cfa cfa-check '.$class.'" title="'.__('UNLIMITED', 'cf-geoplugin').'"></span>';
+			echo '<span class="cfa cfa-check '.esc_attr($class).'" title="'.esc_attr__('UNLIMITED', 'cf-geoplugin').'"></span>';
 		}
 		else if($lookup == 0){
-			echo '<span class="cfa cfa-ban '.$class.'" title="'.__('EXPIRED', 'cf-geoplugin').'"></span>';
+			echo '<span class="cfa cfa-ban '.esc_attr($class).'" title="'.esc_attr__('EXPIRED', 'cf-geoplugin').'"></span>';
 		}
 		else if($lookup <= CFGP_LIMIT && $lookup > (CFGP_LIMIT/2)){
-			echo '<span class="cfa cfa-hourglass-start '.$class.'" title="'.__('Available', 'cf-geoplugin').' '.$lookup.'"></span>';
+			echo '<span class="cfa cfa-hourglass-start '.esc_attr($class).'" title="'.esc_attr__('Available', 'cf-geoplugin').' '.esc_attr($lookup).'"></span>';
 		}
 		else if($lookup <= (CFGP_LIMIT/2) && $lookup > (CFGP_LIMIT/3)){
-			echo '<span class="cfa cfa-hourglass-halp '.$class.'" title="'.__('Available', 'cf-geoplugin').' '.$lookup.'"></span>';
+			echo '<span class="cfa cfa-hourglass-halp '.esc_attr($class).'" title="'.esc_attr__('Available', 'cf-geoplugin').' '.esc_attr($lookup).'"></span>';
 		}
 		else if($lookup <= (CFGP_LIMIT/3)){
-			echo '<span class="cfa cfa-hourglass-end '.$class.'" title="'.__('Available', 'cf-geoplugin').' '.$lookup.'"></span>';
+			echo '<span class="cfa cfa-hourglass-end '.esc_attr($class).'" title="'.esc_attr__('Available', 'cf-geoplugin').' '.esc_attr($lookup).'"></span>';
 		}
 	}
 	

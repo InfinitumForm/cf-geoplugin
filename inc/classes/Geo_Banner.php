@@ -156,7 +156,7 @@ LIMIT 1
 			$content = CFGP_U::the_content($cont);
 		}
 		
-		echo $content; exit;
+		echo wp_kses_post($content); exit;
 	}
 	
 	/**

@@ -144,7 +144,7 @@ class CFGP_Admin extends CFGP_Global {
 	public function ajax__rss_feed () {
 		$RSS = CFGP_DB_Cache::get('cfgp-rss');
 		if( !empty($RSS) ) {
-			echo $RSS;
+			echo wp_kses_post($RSS);
 			exit;
 		} else {
 			$RSS = $DASH_RSS = [];
@@ -208,7 +208,7 @@ class CFGP_Admin extends CFGP_Global {
 			{
 				$RSS = join("\r\n", $RSS);
 				CFGP_DB_Cache::set('cfgp-rss', $RSS, (MINUTE_IN_SECONDS * CFGP_SESSION));
-				echo $RSS;
+				echo wp_kses_post($RSS);
 				exit;
 			}
 		}
@@ -220,7 +220,7 @@ class CFGP_Admin extends CFGP_Global {
 	public function ajax__dashboard_rss_feed () {
 		$DASH_RSS = CFGP_DB_Cache::get('cfgp-dashboard-rss');
 		if( !empty($DASH_RSS) ) {
-			echo $DASH_RSS;
+			echo wp_kses_post($DASH_RSS);
 			exit;
 		} else {
 			$RSS = $DASH_RSS = [];
@@ -291,7 +291,7 @@ class CFGP_Admin extends CFGP_Global {
 			{
 				$DASH_RSS = '<ul class="rss-widget">' . join("\r\n", $DASH_RSS) . '</ul>';
 				CFGP_DB_Cache::set('cfgp-dashboard-rss', $DASH_RSS, (MINUTE_IN_SECONDS * CFGP_SESSION));
-				echo $DASH_RSS;
+				echo wp_kses_post($DASH_RSS);
 				exit;
 			}
 		}
