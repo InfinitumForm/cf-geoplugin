@@ -83,7 +83,7 @@ $API = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
 									), $API) as $key => $value) : if(in_array($key, $remove_tags)) continue; ?>
                                     <tr>
                                     <?php if(in_array($key, array('cfgeo_flag'))) : ?>
-                                    	<td><code>[<?php echo $key; ?>]</code></td>
+                                    	<td><code>[<?php echo esc_html($key); ?>]</code></td>
                                     <?php else : ?>
                                     	<td>
 											<code>[cfgeo return="<?php echo esc_attr($key); ?>"]</code>

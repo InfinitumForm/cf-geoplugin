@@ -35,9 +35,9 @@ if($NEW_API = CFGP_API::lookup(CFGP_U::request_string('cfgp_lookup'))){
 					
                     <div class="tablenav top">
                     	<form method="get" autocomplete="off">
-                        	<input type="text" value="<?php echo CFGP_U::request_string('cfgp_lookup'); ?>" name="cfgp_lookup" placeholder="<?php _e('IP Lookup', 'cf-geoplugin'); ?>: <?php echo $API['ip']; ?>" autocomplete="off"> 
+                        	<input type="text" value="<?php echo CFGP_U::request_string('cfgp_lookup'); ?>" name="cfgp_lookup" placeholder="<?php esc_attr_e('IP Lookup', 'cf-geoplugin'); ?>: <?php echo esc_attr($API['ip'] ?? NULL); ?>" autocomplete="off"> 
                             <button type="submit" class="button button-primary"><?php _e('Lookup', 'cf-geoplugin'); ?></button>
-                            <a href="<?php echo CFGP_U::admin_url('admin.php?page=cf-geoplugin-debug'); ?>" target="_self" class="button" title=""><i class="cfa cfa-refresh"></i></a>
+                            <a href="<?php echo esc_url(CFGP_U::admin_url('admin.php?page=cf-geoplugin-debug')); ?>" target="_self" class="button" title=""><i class="cfa cfa-refresh"></i></a>
                             <input type="hidden" name="page" value="cf-geoplugin-debug">
                             <input type="hidden" name="nonce" value="<?php echo wp_create_nonce(CFGP_NAME . '-lookup'); ?>">
                         </form>
@@ -113,43 +113,41 @@ if($NEW_API = CFGP_API::lookup(CFGP_U::request_string('cfgp_lookup'))){
                                 <tbody>
                                     <tr>
                                         <td><strong><?php _e( 'IP', 'cf-geoplugin'); ?></strong></td>
-                                        <td><?php echo CFGP_U::request_string('cfgp_lookup', CFGP_IP::get()); ?></td>
+                                        <td><?php echo esc_html( CFGP_U::request_string('cfgp_lookup', CFGP_IP::get()) ); ?></td>
                                         <td><?php _e( 'Your or Visitor\'s IP Address', 'cf-geoplugin'); ?></td>
                                     </tr>
                                     <tr>
                                         <td><strong><?php _e( 'Timestamp', 'cf-geoplugin'); ?></strong></td>
-                                        <td><?php echo CFGP_TIME; ?></td>
+                                        <td><?php echo esc_html( CFGP_TIME ); ?></td>
                                         <td><?php _e( 'Server Current Unix Timestamp', 'cf-geoplugin'); ?></td>
                                     </tr>
                                     <tr>
                                         <td><strong><?php _e( 'SIP', 'cf-geoplugin'); ?></strong></td>
-                                        <td><?php echo CFGP_IP::server() . (CFGP_U::proxy() ?' <strong><a class="text-danger" href="'.admin_url('admin.php?page=cf-geoplugin-settings').'">('.__('Proxy Enabled', 'cf-geoplugin').')</a></strong> ' : ''); ?></td>
+                                        <td><?php echo esc_html( CFGP_IP::server() ) . (CFGP_U::proxy() ?' <strong><a class="text-danger" href="'.admin_url('admin.php?page=cf-geoplugin-settings').'">('.esc_html__('Proxy Enabled', 'cf-geoplugin').')</a></strong> ' : ''); ?></td>
                                         <td><?php _e( 'Server IP Address' ); ?></td>
                                     </tr>
                                     <tr>
                                         <td><strong><?php _e( 'Host', 'cf-geoplugin'); ?></strong></td>
-                                        <td>
-                                        <?php echo CFGP_U::get_host(true); ?>
-                                        </td>
+                                        <td><?php echo esc_html( CFGP_U::get_host(true) ); ?></td>
                                         <td><?php _e( 'Server Host Name', 'cf-geoplugin'); ?></td>
                                     </tr>
                                     <tr>
                                         <td><strong><?php _e( 'Version', 'cf-geoplugin'); ?></strong></td>
-                                        <td><?php echo CFGP_VERSION; ?></td>
+                                        <td><?php echo esc_html( CFGP_VERSION ); ?></td>
                                         <td><?php _e( 'CF Geo Plugin Version', 'cf-geoplugin'); ?></td>
                                     </tr>
                                     <tr>
                                         <td><strong><?php _e( 'Email' ); ?></strong></td>
-                                        <td><?php echo get_bloginfo( 'admin_email' ); ?></td>
+                                        <td><?php echo esc_html( get_bloginfo( 'admin_email' ) ); ?></td>
                                         <td><?php _e('Admin e-mail address.', 'cf-geoplugin'); ?> <?php _e('Only reason why we collect your email address is because plugin support and robot prevention. Your email address will NOT be spammed or shared with 3rd party in any case and you can any time request from us on email <a href="mailto:support@cfgeoplugin.com">support@cfgeoplugin.com</a> to remove your all personal data from our system by GDPR rules.', 'cf-geoplugin'); ?></td>
                                     </tr>
                                     <tr>
                                         <td><strong><?php _e( 'License', 'cf-geoplugin'); ?></strong></td>
                                         <td><?php
 											if(CFGP_DEFENDER_ACTIVATED)
-												echo get_option("cf_geo_defender_api_key");
+												echo esc_html( get_option("cf_geo_defender_api_key") );
 											else
-												echo CFGP_Options::get('license_key');
+												echo esc_html( CFGP_Options::get('license_key') );
 										?></td>
                                         <td>
 											<?php _e( 'CF Geo Plugin License Key', 'cf-geoplugin'); ?>
@@ -157,7 +155,7 @@ if($NEW_API = CFGP_API::lookup(CFGP_U::request_string('cfgp_lookup'))){
 											if(CFGP_DEFENDER_ACTIVATED)
 												_e( 'Lifetime', 'cf-geoplugin');
 											else
-												echo ( !empty( $CF_GEOPLUGIN_OPTIONS['license_expire'] ) ? '<br><small>('.__( 'License Expire', 'cf-geoplugin') . ': <b>' . date("r",$CF_GEOPLUGIN_OPTIONS['license_expire']).'</b>)</small>' : '' )
+												echo ( !empty( $CF_GEOPLUGIN_OPTIONS['license_expire'] ) ? '<br><small>('.__( 'License Expire', 'cf-geoplugin') . ': <b>' . esc_html(date("r",$CF_GEOPLUGIN_OPTIONS['license_expire'])).'</b>)</small>' : '' )
 										?>
 										</td>
                                     </tr>
@@ -178,7 +176,7 @@ if($NEW_API = CFGP_API::lookup(CFGP_U::request_string('cfgp_lookup'))){
                                 <tbody>
                                 	<tr>
                                         <td><strong><?php _e( 'Plugin ID', 'cf-geoplugin'); ?></strong></td>
-                                        <td><?php echo CFGP_U::ID(); ?></td>
+                                        <td><?php echo esc_html( CFGP_U::ID() ); ?></td>
                                     </tr>
                                     <tr>
                                         <td><strong><?php _e( 'Plugin installed', 'cf-geoplugin'); ?></strong></td>
@@ -186,7 +184,7 @@ if($NEW_API = CFGP_API::lookup(CFGP_U::request_string('cfgp_lookup'))){
 											$plugin_installed = get_option(CFGP_NAME . '-activation');
 											if($plugin_installed && is_array($plugin_installed)){
 												$plugin_installed = array_shift($plugin_installed);
-												echo date(CFGP_DATE_TIME_FORMAT, strtotime($plugin_installed));
+												echo esc_html( date(CFGP_DATE_TIME_FORMAT, strtotime($plugin_installed)) );
 											} else {
 												$plugin_installed = NULL;
 												 echo '-';
@@ -200,7 +198,7 @@ if($NEW_API = CFGP_API::lookup(CFGP_U::request_string('cfgp_lookup'))){
 											if($plugin_activation && is_array($plugin_activation)){
 												$plugin_activation = end($plugin_activation);
 												if($plugin_activation != $plugin_installed) {
-													echo date(CFGP_DATE_TIME_FORMAT, strtotime($plugin_activation));
+													echo esc_html( date(CFGP_DATE_TIME_FORMAT, strtotime($plugin_activation)) );
 												} else echo '-';
 											} else echo '-';
 										?></td>
@@ -228,23 +226,23 @@ if($NEW_API = CFGP_API::lookup(CFGP_U::request_string('cfgp_lookup'))){
                                     </tr>
 									<tr>
                                         <td><strong><?php _e( 'Site title', 'cf-geoplugin'); ?></strong></td>
-                                        <td><?php bloginfo( 'name' ); ?></td>
+                                        <td><?php echo esc_html( get_bloginfo( 'name' ) ); ?></td>
                                     </tr>
                                     <tr>
                                         <td><strong><?php _e( 'Tagline', 'cf-geoplugin'); ?></strong></td>
-                                        <td><?php bloginfo( 'description' ); ?></td>
+                                        <td><?php echo esc_html( get_bloginfo( 'description' ) ); ?></td>
                                     </tr>
                                     <tr>
                                         <td><strong><?php _e( 'WordPress address (URL)', 'cf-geoplugin'); ?></strong></td>
-                                        <td><?php bloginfo( 'wpurl' ); ?></td>
+                                        <td><?php echo esc_html( get_bloginfo( 'wpurl' ) ); ?></td>
                                     </tr>
                                     <tr>
                                         <td><strong><?php _e( 'WordPress host', 'cf-geoplugin'); ?></strong></td>
-                                        <td><?php echo CFGP_U::get_host(); ?></td>
+                                        <td><?php echo esc_html( CFGP_U::get_host() ); ?></td>
                                     </tr>
 									<tr>
                                         <td><strong><?php _e( 'Server IP', 'cf-geoplugin'); ?></strong></td>
-                                        <td><?php echo CFGP_IP::server() . (CFGP_U::proxy() ?' <strong><a class="text-danger" href="'.admin_url('admin.php?page=cf-geoplugin-settings').'">('.__('Proxy Enabled', 'cf-geoplugin').')</a></strong> ' : ''); ?></td>
+                                        <td><?php echo esc_html( CFGP_IP::server() ) . (CFGP_U::proxy() ?' <strong><a class="text-danger" href="'.admin_url('admin.php?page=cf-geoplugin-settings').'">('.__('Proxy Enabled', 'cf-geoplugin').')</a></strong> ' : ''); ?></td>
                                     </tr>
                                     <tr>
                                         <td><strong><?php _e( 'WordPress multisite', 'cf-geoplugin'); ?></strong></td>
@@ -252,39 +250,39 @@ if($NEW_API = CFGP_API::lookup(CFGP_U::request_string('cfgp_lookup'))){
                                     </tr>
                                     <tr>
                                         <td><strong><?php _e( 'Admin email', 'cf-geoplugin'); ?></strong></td>
-                                        <td><?php echo get_bloginfo( 'admin_email' ); ?></td>
+                                        <td><?php echo esc_html( get_bloginfo( 'admin_email' ) ); ?></td>
                                     </tr>
                                     <tr>
                                         <td><strong><?php _e( 'Encoding for pages and feeds', 'cf-geoplugin'); ?></strong></td>
-                                        <td><?php echo get_bloginfo( 'charset' ); ?></td>
+                                        <td><?php echo esc_html( get_bloginfo( 'charset' ) ); ?></td>
                                     </tr>
                                     <tr>
                                         <td><strong><?php _e( 'WordPress version', 'cf-geoplugin'); ?></strong></td>
-                                        <td><?php echo bloginfo( 'version' ); ?></td>
+                                        <td><?php echo esc_html( get_bloginfo( 'version' ) ); ?></td>
                                     </tr>
                                     <tr>
                                         <td><strong><?php _e( 'Content-Type', 'cf-geoplugin'); ?></strong></td>
-                                        <td><?php echo bloginfo( 'html_type' ); ?></td>
+                                        <td><?php echo get_bloginfo( 'html_type' ); ?></td>
                                     </tr>
                                     <tr>
                                         <td><strong><?php _e( 'Language', 'cf-geoplugin'); ?></strong></td>
-                                        <td><?php echo bloginfo( 'language' ); ?></td>
+                                        <td><?php echo get_bloginfo( 'language' ); ?></td>
                                     </tr>
                                     <tr>
                                         <td><strong><?php _e( 'Server time', 'cf-geoplugin'); ?></strong></td>
-                                        <td><?php echo date( 'r' ); ?></td>
+                                        <td><?php echo esc_html( date( 'r' ) ); ?></td>
                                     </tr>
                                     <tr>
                                         <td><strong><?php _e( 'WordPress directory path', 'cf-geoplugin'); ?></strong></td>
-                                        <td><?php echo ABSPATH; ?></td>
+                                        <td><?php echo esc_html( ABSPATH ); ?></td>
                                     </tr>
                                     <tr>
                                         <td><strong><?php _e( 'PHP: Version', 'cf-geoplugin'); ?></strong></td>
-                                        <td>PHP <?php echo PHP_VERSION; ?></td>
+                                        <td>PHP <?php echo esc_html( PHP_VERSION ); ?></td>
                                     </tr>
                                     <tr>
                                         <td><strong><?php _e( 'PHP: Version ID', 'cf-geoplugin'); ?></strong></td>
-                                        <td><?php echo PHP_VERSION_ID; ?></td>
+                                        <td><?php echo esc_html( PHP_VERSION_ID ); ?></td>
                                     </tr>
                                     <tr>
                                         <td><strong><?php _e( 'PHP: Architecture', 'cf-geoplugin'); ?></strong></td>
@@ -292,21 +290,21 @@ if($NEW_API = CFGP_API::lookup(CFGP_U::request_string('cfgp_lookup'))){
                                     </tr>
 									<tr>
                                         <td><strong><?php _e( 'PHP: Memory usage of the plugin', 'cf-geoplugin'); ?></strong></td>
-                                        <td><?php echo CFGP_U::filesize(CFGP_Cache::get_size(), 2); ?></td>
+                                        <td><?php echo esc_html( CFGP_U::filesize(CFGP_Cache::get_size(), 2) ); ?></td>
                                     </tr>
                                     <tr>
                                         <td><strong><?php _e( 'PHP: Operting system', 'cf-geoplugin'); ?></strong></td>
-                                        <td><?php echo CFGP_OS::get(); ?> <?php printf(__('%dbit', 'cf-geoplugin'), CFGP_OS::architecture()); ?></td>
+                                        <td><?php echo esc_html( CFGP_OS::get() ); ?> <?php printf(__('%dbit', 'cf-geoplugin'), CFGP_OS::architecture()); ?></td>
                                     </tr>
                                     <tr>
                                         <td><strong><?php _e( 'Browser', 'cf-geoplugin'); ?></strong></td>
-                                        <td><?php printf(_x('%1$s (%2$s)', 'Debug: User agent (Browser)', 'cf-geoplugin'), CFGP_Browser::instance()->getBrowser(), CFGP_Browser::instance()->getVersion()); ?></td>
+                                        <td><?php printf(_x('%1$s (%2$s)', 'Debug: User agent (Browser)', 'cf-geoplugin'), esc_html( CFGP_Browser::instance()->getBrowser() ), esc_html( CFGP_Browser::instance()->getVersion() )); ?></td>
                                     </tr>
 									<tr>
                                         <td><strong><?php _e( 'User platform', 'cf-geoplugin'); ?></strong></td>
                                         <td><?php echo esc_html( trim( sprintf(
 											'%1$s %2$s',
-											CFGP_Browser::instance()->getPlatform(),
+											esc_html( CFGP_Browser::instance()->getPlatform() ),
 											(CFGP_Browser::instance()->isMobile() ? __( '(mobile device)', 'cf-geoplugin') : '')
 										) ) ); ?></td>
                                     </tr>
@@ -316,7 +314,7 @@ if($NEW_API = CFGP_API::lookup(CFGP_U::request_string('cfgp_lookup'))){
                                     </tr>
                                     <tr>
                                         <td><strong><?php _e( 'Plugin directory path', 'cf-geoplugin'); ?></strong></td>
-                                        <td><?php echo CFGP_ROOT; ?></td>
+                                        <td><?php echo esc_html( CFGP_ROOT ); ?></td>
                                     </tr>
                                     <tr>
                                         <td><strong><?php _e( 'Session API expire', 'cf-geoplugin'); ?></strong></td>
@@ -328,15 +326,15 @@ if($NEW_API = CFGP_API::lookup(CFGP_U::request_string('cfgp_lookup'))){
                         <?php if( CFGP_Options::get('enable_gmap', 0) ): ?>
                         <div class="cfgp-tab-panel" id="google-map">
                         <?php
-                        	echo do_shortcode( '[cfgeo_map width="100%" height="600px" longitude="'.$API['longitude'].'" latitude="'.$API['latitude'].'"]
+                        	echo do_shortcode( '[cfgeo_map width="100%" height="600px" longitude="'.esc_attr( $API['longitude'] ).'" latitude="'.esc_attr( $API['latitude'] ).'"]
 								<address>
-									<strong><big>'.CFGP_U::admin_country_flag($API['country_code']).' '.$API['ip'].'</big></strong><br /><br />
-									'.$API['city'].'<br />
-									'.$API['region'].(!empty($API['region_code'])?' ('.$API['region_code'].')':'').'<br />
-									'.$API['country'].'<br />
-									'.$API['continent'].(!empty($API['country_code'])?' ('.$API['country_code'].')':'').'<br /><br />
-									'.$API['longitude'].', '.$API['latitude'].'<br /><br />
-									'.$API['timezone'].'
+									<strong><big>'.CFGP_U::admin_country_flag($API['country_code']).' '.esc_html($API['ip']).'</big></strong><br /><br />
+									'.esc_html($API['city']).'<br />
+									'.esc_html($API['region']).(!empty($API['region_code'])?' ('.$API['region_code'].')':'').'<br />
+									'.esc_html($API['country']).'<br />
+									'.esc_html($API['continent']).(!empty($API['country_code'])?' ('.esc_html($API['country_code']).')':'').'<br /><br />
+									'.esc_html($API['longitude'].', '.$API['latitude']).'<br /><br />
+									'.esc_html($API['timezone']).'
 								</address>
 							[/cfgeo_map]' );
 						?>
