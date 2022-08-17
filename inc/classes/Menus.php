@@ -301,6 +301,23 @@ class CFGP_Menus extends CFGP_Global {
 			$locations = get_registered_nav_menus();
 		}
 		
+		/*
+		$geolocate_menus = get_terms( array(
+			'taxonomy' => 'nav_menu',
+			'hide_empty' => false,
+			'meta_query' => array(
+				array(
+					'key' => 'country',
+					'compare' => 'EXISTS'
+				),
+				array(
+					'key' => 'location',
+					'compare' => 'EXISTS'
+				)
+			)
+		) );
+		*/
+		
 		$geolocate_menus = $wpdb->get_results("
 			SELECT
 				`{$wpdb->terms}`.*,

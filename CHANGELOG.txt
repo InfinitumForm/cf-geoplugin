@@ -1,5 +1,8 @@
 == Changelog ==
 
+= 8.3.10 =
+* Update trademark names and banners
+
 = 8.3.9 =
 * Advanced geolocation for WooCommerce
 * Removed deprecated algorithms

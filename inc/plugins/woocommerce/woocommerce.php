@@ -425,7 +425,7 @@ if($flag = CFGP_U::admin_country_flag(get_post_meta($post->ID, '_billing_country
             {
                 $new_settings[$key] = array(
                     'title'    => __( 'Currency conversion options', CFGP_NAME ),
-                    'desc'     => __( 'This controls WordPress Geo Plugin conversion system', CFGP_NAME ),
+                    'desc'     => __( 'This controls CF Geo Plugin conversion system', CFGP_NAME ),
                     'css'      => 'min-width:350px',
                     'class'    => 'wc-enhanced-select',
                     'id'       => 'woocommerce_cf_geoplugin_conversion',
@@ -447,7 +447,7 @@ if($flag = CFGP_U::admin_country_flag(get_post_meta($post->ID, '_billing_country
                     'id'       => 'woocommerce_cf_geoplugin_conversion_rounded',
                     'default'  => 'no',
                     'type'     => 'checkbox',
-                    'desc_tip' => __( 'These option is added by the WordPress Geo Plugin.', CFGP_NAME )
+                    'desc_tip' => __( 'These option is added by the CF Geo Plugin.', CFGP_NAME )
                 );
                 $key++;
 				$new_settings[$key] = array(
@@ -463,7 +463,7 @@ if($flag = CFGP_U::admin_country_flag(get_post_meta($post->ID, '_billing_country
                         'neares'	=> __( 'Round nearest', CFGP_NAME ),
                         'down'		=> __( 'Round down', CFGP_NAME )
                     ),
-                    'desc_tip' => __( 'These option is added by the WordPress Geo Plugin.', CFGP_NAME )
+                    'desc_tip' => __( 'These option is added by the CF Geo Plugin.', CFGP_NAME )
                 );
                 $key++;
 				$new_settings[$key] = array(
@@ -480,7 +480,7 @@ if($flag = CFGP_U::admin_country_flag(get_post_meta($post->ID, '_billing_country
 						'step' => 1,
 						'autocomplete' => 'off'
 					),
-                    'desc_tip' => __( 'These option is added by the WordPress Geo Plugin.', CFGP_NAME )
+                    'desc_tip' => __( 'These option is added by the CF Geo Plugin.', CFGP_NAME )
                 );
                 $key++;
 				$new_settings[$key] = array(
@@ -490,7 +490,7 @@ if($flag = CFGP_U::admin_country_flag(get_post_meta($post->ID, '_billing_country
                     'id'       => 'woocommerce_cf_geoplugin_conversion_in_admin',
                     'default'  => 'yes',
                     'type'     => 'checkbox',
-                    'desc_tip' => __( 'These option is added by the WordPress Geo Plugin.', CFGP_NAME )
+                    'desc_tip' => __( 'These option is added by the CF Geo Plugin.', CFGP_NAME )
                 );
                 $key++;
             }
@@ -620,7 +620,7 @@ if($flag = CFGP_U::admin_country_flag(get_post_meta($post->ID, '_billing_country
                 
                 $settings[] = array( 'name' => __( 'CF Geo Plugin Payments Control', CFGP_NAME ), 'type' => 'title', 'desc' => __( 'Configure payment methods for each country. Show or hide payment methods by country to prevent unwanted transactions.', CFGP_NAME ) . (
 				(isset($custom_attributes['disabled']) && $custom_attributes['disabled']) || CFGP_U::dev_mode()
-				? ' <br><span style="color:#dc3545;">' . sprintf(__('This option is only enabled with the licensed version of the %s. You must use 1 year license or above.', CFGP_NAME), '<a href="' . CFGP_U::admin_url('admin.php?page=cf-geoplugin-activate') . '">WordPress Geo Plugin</a>') . '</span>'
+				? ' <br><span style="color:#dc3545;">' . sprintf(__('This option is only enabled with the licensed version of the %s. You must use 1 year license or above.', CFGP_NAME), '<a href="' . CFGP_U::admin_url('admin.php?page=cf-geoplugin-activate') . '">CF Geo Plugin</a>') . '</span>'
 				: ''
 				) . '<hr>', 'id' => 'cf_geoplugin_payment_restriction' );
 				$count = count($enabled_gateways); $x = 0;

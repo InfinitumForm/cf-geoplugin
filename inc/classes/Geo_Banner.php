@@ -37,14 +37,9 @@ class CFGP_Geo_Banner extends CFGP_Global {
 	 */
 	public function add_custom_single_template( $template ) {
 		global $post;
-		
-		if(
-			($post->post_type === 'cf-geoplugin-banner')
-			&& file_exists(CFGP_PLUGINS . '/elementor/page/cfgp-banner.php')
-		){
+		if( ($post->post_type === 'cf-geoplugin-banner') && file_exists(CFGP_PLUGINS . '/elementor/page/cfgp-banner.php') ){
 			$template = CFGP_PLUGINS . '/elementor/page/cfgp-banner.php';
 		}
-		
 		return $template;
 	}
 	
@@ -394,10 +389,10 @@ LIMIT 1
 		$screen = get_current_screen();
 		if(isset( $screen->post_type ) && $screen->post_type === 'cf-geoplugin-banner'){
 			$this->add_meta_box(
-				CFGP_NAME . '-banner-default-content',			// Unique ID
-				__('Geo Banner default content', CFGP_NAME),	// Box title
-				'add_meta_box__default_content',				// Content callback, must be of type callable
-				'cf-geoplugin-banner',							// Post type
+				CFGP_NAME . '-banner-default-content',					// Unique ID
+				__('Geo Banner default content', CFGP_NAME),			// Box title
+				'add_meta_box__default_content',						// Content callback, must be of type callable
+				'cf-geoplugin-banner',									// Post type
 				'advanced',
 				'high'
 			);

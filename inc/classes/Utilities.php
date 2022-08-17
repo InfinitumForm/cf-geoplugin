@@ -671,9 +671,9 @@ class CFGP_U {
 			
 		$hostInfo = self::parse_url();
 		if($clean) {
-			return preg_replace('/https?:\/\/|w{3}\./i','',self::strtolower($hostInfo['domain']));
+			return preg_replace('/https?:\/\/|w{3}\./i','',strtolower($hostInfo['domain']));
 		} else {
-			return self::strtolower($hostInfo['domain']);
+			return strtolower($hostInfo['domain']);
 		}
 	}
 	
@@ -1123,7 +1123,7 @@ class CFGP_U {
 			$country_code = $API['country_code'];
 		}
 		
-		$flag_slug = trim(self::strtolower($country_code));
+		$flag_slug = trim(strtolower($country_code));
 		
 		$md5 = md5($flag_slug.$size);
 		
@@ -2406,15 +2406,6 @@ class CFGP_U {
 	 */
 	public static function dev_mode() {
 		return defined('CFGP_DEV_MODE') && CFGP_DEV_MODE;
-	}
-	
-	/**
-	 * Determine if the hosting provider is WP Engine
-	 *
-	 * @return bool
-	 */
-	protected function is_wp_engine() {
-		return class_exists( 'WPE_API', false );
 	}
 }
 endif;

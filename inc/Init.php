@@ -52,11 +52,6 @@ final class CFGP_Init{
 			$classes = array_merge($classes, array('CFGP_Menus'));
 		}
 		
-		// Menus class
-		if(CFGP_Options::get('enable_locale_control',0)){
-			$classes = array_merge($classes, array('CFGP_Language'));
-		}
-		
 		// Remove some classes in the special cases
 		$remove_classes = apply_filters('cfgp/init/included/classes/remove', array(
 			'CFGP_Menus',
@@ -134,7 +129,6 @@ final class CFGP_Init{
 			CFGP_CLASS . '/Taxonomy.php',				// Taxonomy class
 			CFGP_CLASS . '/Geo_Banner.php',				// Post Type class
 			CFGP_CLASS . '/API.php',					// API class
-			CFGP_CLASS . '/Languages.php',				// Languages class
 			CFGP_CLASS . '/Metabox.php',				// Metabox class
 			CFGP_CLASS . '/SEO.php',					// SEO class
 			CFGP_CLASS . '/SEO_Redirection.php',		// SEO Redirection class
