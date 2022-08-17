@@ -244,6 +244,17 @@ class CFGP_API extends CFGP_Global {
 				// Is is limited
 				$response['limited'] = ($response['limited'] ? 1 : 0);
 				
+				// Escaping strings
+				foreach($response as $key=>$value) {
+					if( in_array($key, array('credit','error_message')) ) {
+						$response[$key] = wp_kses_post($value);
+					} else if(absint($value) == $value || floatval($value) == $value) {
+						$response[$key] = esc_attr($value);
+					} else {
+						$response[$key] = esc_html($value);
+					}
+				}
+				
 				// Reassign
 				$return = $response;
 				
@@ -259,7 +270,7 @@ class CFGP_API extends CFGP_Global {
 				
 				// Development info
 				if( CFGP_U::dev_mode() ) {
-					$return['request_url'] = $request_url;
+					$return['request_url'] = esc_url($request_url);
 				}
 				
 				// Save to session
