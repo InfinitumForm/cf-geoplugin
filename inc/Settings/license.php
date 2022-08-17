@@ -6,7 +6,7 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
 do_action('cfgp/page/license/save');
 
 ?>
-<div class="wrap cfgp-wrap" id="<?php echo $_GET['page']; ?>">
+<div class="wrap cfgp-wrap" id="<?php echo esc_attr(sanitize_text_field($_GET['page'] ?? NULL)); ?>">
 	<h1 class="wp-heading-inline"><i class="cfa cfa-trophy"></i> <?php
 		if( CFGP_U::api('available_lookup') == 'lifetime' ){
 			_e('Congratulations, you have a lifetime lookup!', 'cf-geoplugin');

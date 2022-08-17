@@ -41,7 +41,7 @@ $gps_keys = apply_filters('cfgp/main_page/gps_keys', array(
 $API = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
 
 ?>
-<div class="wrap cfgp-wrap" id="<?php echo $_GET['page']; ?>">
+<div class="wrap cfgp-wrap" id="<?php echo esc_attr(sanitize_text_field($_GET['page'] ?? NULL)); ?>">
 	<h1 class="wp-heading-inline"><i class="cfa cfa-map-marker"></i> <?php _e('CF Geo Plugin', 'cf-geoplugin'); ?></h1>
     <hr class="wp-header-end">
 

@@ -426,7 +426,7 @@ LIMIT 1
 			$banner = get_post_meta( $post->ID, CFGP_METABOX . 'banner_default', true );
 		}
 		?>
-<p style="color:#550000;"><?php _e( 'This content is shown only when the selected location is not found. This means that anyone who is not from the set location will see this content.', 'cf-geoplugin'); ?></p>
+<p style="color:#550000;"><?php esc_html_e( 'This content is shown only when the selected location is not found. This means that anyone who is not from the set location will see this content.', 'cf-geoplugin'); ?></p>
 <?php wp_editor( $banner, 'cfgp-banner-default-content', $settings = array('textarea_name'=>'cfgp-banner-default-content') );
 	}
 	

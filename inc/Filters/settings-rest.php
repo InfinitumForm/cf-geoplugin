@@ -21,7 +21,7 @@ add_action('cfgp/settings/tab-panel/after', function(){ if(CFGP_Options::get('en
         <?php endif; ?>
         <p><?php _e('The CF Geo Plugin REST API allows external apps to use geo information and make your WordPress like a geo information provider.', 'cf-geoplugin') ?></p>
         <h2 class="title"><?php _e('API KEY', 'cf-geoplugin') ?>:</h2>
-        <div><code style="font-size: large;width: 100%;text-align: center;font-weight: 800;padding: 10px; margin-left:13px;"><?php echo $api_key; ?></code></div>
+        <div><code style="font-size: large;width: 100%;text-align: center;font-weight: 800;padding: 10px; margin-left:13px;"><?php echo esc_html($api_key); ?></code></div>
         <h2 class="title"><?php _e('Secret API KEY', 'cf-geoplugin') ?>:</h2>
         <div><code id="cf-geoplugin-secret-key" style="font-size: large;width: 100%;text-align: center;font-weight: 800;padding: 10px; margin-left:13px;"><?php echo !empty($secret_key) ? $secret_key : ' - ' . __('Generate Secret Key', 'cf-geoplugin') . ' - '; ?></code> <button type="button"<?php echo ($secret_key ? ' data-confirm="'.esc_attr__('Are you sure you want to regenerate the secret key? If you do this, all your connections will be lost.', 'cf-geoplugin').'"' : '');?> data-nonce="<?php echo wp_create_nonce(CFGP_NAME.'-secret-key'); ?>" class="button" id="cf-geoplugin-generate-secret-key"><?php _e('Generate Secret Key', 'cf-geoplugin') ?></button></div>
         <h2 class="title"><?php _e('Documentation', 'cf-geoplugin') ?>:</h2>
@@ -208,11 +208,11 @@ endforeach;
 						if(count($tokens) > 0):
 						foreach($tokens as $i => $token):
 					?>
-                    <tr id="<?php echo $token->app_name.'-'.$i; ?>">
-                        <th><?php echo $token->token; ?></th>
-                        <td><?php echo $token->app_name_original; ?></td>
-                        <td><?php echo date(CFGP_DATE_TIME_FORMAT, strtotime($token->date_created)); ?></td>
-                        <td style="text-align:right;"><button type="button" data-remove="#<?php echo $token->app_name.'-'.$i; ?>" data-id="<?php echo $token->ID; ?>" data-confirm="<?php esc_attr_e('Are you sure you want to remove this access token?', 'cf-geoplugin'); ?>" data-nonce="<?php echo wp_create_nonce(CFGP_NAME.'-token-remove'); ?>" class="button cfgp-button-delete cfgp-button-token-remove"><?php _e('Remove', 'cf-geoplugin') ?></button></td>
+                    <tr id="<?php echo esc_attr($token->app_name.'-'.$i); ?>">
+                        <th><?php echo esc_html($token->token); ?></th>
+                        <td><?php echo esc_html($token->app_name_original); ?></td>
+                        <td><?php echo esc_html(date(CFGP_DATE_TIME_FORMAT, strtotime($token->date_created))); ?></td>
+                        <td style="text-align:right;"><button type="button" data-remove="#<?php echo esc_attr($token->app_name.'-'.$i); ?>" data-id="<?php echo esc_attr($token->ID); ?>" data-confirm="<?php esc_attr_e('Are you sure you want to remove this access token?', 'cf-geoplugin'); ?>" data-nonce="<?php echo wp_create_nonce(CFGP_NAME.'-token-remove'); ?>" class="button cfgp-button-delete cfgp-button-token-remove"><?php _e('Remove', 'cf-geoplugin') ?></button></td>
                     </tr>
                     <?php endforeach; else: ?>
                 	<tr>

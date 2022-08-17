@@ -6,7 +6,7 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
 $API = CFGP_Cache::get('API');
 
 ?>
-<div class="wrap cfgp-wrap" id="<?php echo $_GET['page']; ?>">
+<div class="wrap cfgp-wrap" id="<?php echo esc_attr(sanitize_text_field($_GET['page'] ?? NULL)); ?>">
 	<h1 class="wp-heading-inline"><i class="cfa cfa-globe"></i> <?php _e('Google Map', 'cf-geoplugin'); ?></h1>
     <hr class="wp-header-end">
     <div id="post">

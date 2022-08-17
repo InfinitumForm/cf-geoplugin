@@ -43,23 +43,23 @@ class CFGP_Menus extends CFGP_Global {
 			return;
 		}
 ?>
-<div class="cfgp-menu-item-restriction cfgp-menu-item-restriction-<?php echo $item_id; ?>" data-id="<?php echo $item_id; ?>" style="clear: both;">
+<div class="cfgp-menu-item-restriction cfgp-menu-item-restriction-<?php echo esc_attr($item_id); ?>" data-id="<?php echo esc_attr($item_id); ?>" style="clear: both;">
 	<p class="cfgp-menu-item cfgp-menu-item-enable-restriction">
-		<label for="edit-menu-item-enable-restriction-<?php echo $item_id; ?>">
-			<input type="checkbox" id="edit-menu-item-enable-restriction-<?php echo $item_id; ?>" name="cfgp_menu_enable_restriction[<?php echo $item_id; ?>]" value="1" data-id="<?php echo $item_id; ?>" <?php checked(1, $this->get_values( $item->object_id, 'enable', NULL, $item->type )); ?>> <?php _e('Enable geographic location control', 'cf-geoplugin'); ?>
+		<label for="edit-menu-item-enable-restriction-<?php echo esc_attr($item_id); ?>">
+			<input type="checkbox" id="edit-menu-item-enable-restriction-<?php echo esc_attr($item_id); ?>" name="cfgp_menu_enable_restriction[<?php echo esc_attr($item_id); ?>]" value="1" data-id="<?php echo esc_attr($item_id); ?>" <?php checked(1, $this->get_values( $item->object_id, 'enable', NULL, $item->type )); ?>> <?php esc_html_e('Enable geographic location control', 'cf-geoplugin'); ?>
 		</label>
 	</p>
-	<div class="cfgp-menu-item-restriction-locations cfgp-menu-item-restriction-locations-<?php echo $item_id; ?> cfgp-country-region-city-multiple-form">
+	<div class="cfgp-menu-item-restriction-locations cfgp-menu-item-restriction-locations-<?php echo esc_attr($item_id); ?> cfgp-country-region-city-multiple-form">
 		<p class="cfgp-menu-item cfgp-menu-item-countrues" style="clear: both;">
-			<label for="edit-menu-item-countrues-<?php echo $item_id; ?>"><?php _e('Hide in Countries', 'cf-geoplugin'); ?></label><br>
+			<label for="edit-menu-item-countrues-<?php echo esc_attr($item_id); ?>"><?php esc_html_e('Hide in Countries', 'cf-geoplugin'); ?></label><br>
 			<?php CFGP_Form::select_countries(array(
 				'name'=>"cfgp_menu_countries[{$item_id}]",
 				'id' => "edit-menu-item-countrues-{$item_id}"
 			), $this->get_values( $item->object_id, 'countries', array(), $item->type ), true, true); ?><br>
-			<button type="button" class="button cfgp-select-all" data-target="edit-menu-item-countrues-<?php echo $item_id; ?>"><object data="<?php echo CFGP_ASSETS . '/images/select.svg'; ?>" width="10" height="10"></object> <?php esc_attr_e( 'Select/Deselect all', 'cf-geoplugin'); ?></button>
+			<button type="button" class="button cfgp-select-all" data-target="edit-menu-item-countrues-<?php echo esc_attr($item_id); ?>"><object data="<?php echo CFGP_ASSETS . '/images/select.svg'; ?>" width="10" height="10"></object> <?php esc_attr_e( 'Select/Deselect all', 'cf-geoplugin'); ?></button>
 		</p>
 		<p class="cfgp-menu-item cfgp-menu-item-regions">
-			<label for="edit-menu-item-regions-<?php echo $item_id; ?>"><?php _e('Hide in Regions', 'cf-geoplugin'); ?></label><br>
+			<label for="edit-menu-item-regions-<?php echo esc_attr($item_id); ?>"><?php esc_html_e('Hide in Regions', 'cf-geoplugin'); ?></label><br>
 			<?php CFGP_Form::select_regions(array(
 				'name'=>"cfgp_menu_regions[{$item_id}]",
 				'id' => "edit-menu-item-regions-{$item_id}",
@@ -67,7 +67,7 @@ class CFGP_Menus extends CFGP_Global {
 			), $this->get_values( $item->object_id, 'regions', array(), $item->type ), true, true); ?>
 		</p>
 		<p class="cfgp-menu-item cfgp-menu-item-cities">
-			<label for="edit-menu-item-cities-<?php echo $item_id; ?>"><?php _e('Hide in Cities', 'cf-geoplugin'); ?></label><br>
+			<label for="edit-menu-item-cities-<?php echo esc_attr($item_id); ?>"><?php esc_html_e('Hide in Cities', 'cf-geoplugin'); ?></label><br>
 			<?php CFGP_Form::select_cities(array(
 				'name'=>"cfgp_menu_cities[{$item_id}]",
 				'id' => "edit-menu-item-cities-{$item_id}",
@@ -75,7 +75,7 @@ class CFGP_Menus extends CFGP_Global {
 			), $this->get_values( $item->object_id, 'cities', array(), $item->type ), true, true); ?>
 		</p>
 	</div>
-	<p class="cfgp-menu-item-description"><?php _e('If you enable this option, in selected locations navigation will be hidden from the public as well as direct access to the URL.', 'cf-geoplugin'); ?></p>
+	<p class="cfgp-menu-item-description"><?php esc_html_e('If you enable this option, in selected locations navigation will be hidden from the public as well as direct access to the URL.', 'cf-geoplugin'); ?></p>
 </div>
 		<?php
 	}
@@ -345,17 +345,17 @@ class CFGP_Menus extends CFGP_Global {
 		$countries = CFGP_Library::get_countries();
 ?>
 <div id="cfgp-menu-locations-wrap">
-	<h3><?php _e('Geolocate Menus', 'cf-geoplugin'); ?></h3>
-	<p><?php _e('Create a navigation menu based on the geolocation of your users.', 'cf-geoplugin'); ?></p>
-	<p><?php _e('The principle is simple. Make the default menu first in the standard way. Then come back here and create the navigations for the geo locations you want. After that, fill those locations with Menu items and your users will always see a navigation menu based on the geo location.', 'cf-geoplugin'); ?></p>
+	<h3><?php esc_html_e('Geolocate Menus', 'cf-geoplugin'); ?></h3>
+	<p><?php esc_html_e('Create a navigation menu based on the geolocation of your users.', 'cf-geoplugin'); ?></p>
+	<p><?php esc_html_e('The principle is simple. Make the default menu first in the standard way. Then come back here and create the navigations for the geo locations you want. After that, fill those locations with Menu items and your users will always see a navigation menu based on the geo location.', 'cf-geoplugin'); ?></p>
 	<table class="widefat fixed" id="menu-geo-locations-table">
 		<thead>
 			<tr>
 				<th scope="col" class="manage-column cfgp-menu-column-locations">
-					<label for="cfgp-menu-locations-select"><?php _e('Select Theme Location', 'cf-geoplugin'); ?></label>
+					<label for="cfgp-menu-locations-select"><?php esc_html_e('Select Theme Location', 'cf-geoplugin'); ?></label>
 				</th>
 				<th scope="col" class="manage-column cfgp-menu-column-country" colspan="3">
-					<label for="cfgp-menu-country-select"><?php _e('Select Country', 'cf-geoplugin'); ?></label>
+					<label for="cfgp-menu-country-select"><?php esc_html_e('Select Country', 'cf-geoplugin'); ?></label>
 				</th>
 			</tr>
 		</thead>
@@ -363,7 +363,7 @@ class CFGP_Menus extends CFGP_Global {
 			<tr>
 				<td class="cfgp-menu-locations-select">
 					<select name="cfgp-menu-locations-select" id="cfgp-menu-locations-select">
-						<option value="">—<?php _e('Select Location', 'cf-geoplugin'); ?>—</option>
+						<option value="">—<?php esc_html_e('Select Location', 'cf-geoplugin'); ?>—</option>
 					<?php foreach ( $locations as $location => $description ) : ?>
 						<option value="<?php echo esc_attr($location); ?>"><?php echo esc_html($description); ?></option>
 					<?php endforeach; ?>
@@ -384,16 +384,16 @@ class CFGP_Menus extends CFGP_Global {
 		<thead>
 			<tr>
 				<th scope="col">
-					<?php _e('Menu name', 'cf-geoplugin'); ?>
+					<?php esc_html_e('Menu name', 'cf-geoplugin'); ?>
 				</th>
 				<th scope="col">
-					<?php _e('Menu Location', 'cf-geoplugin'); ?>
+					<?php esc_html_e('Menu Location', 'cf-geoplugin'); ?>
 				</th>
 				<th scope="col">
-					<?php _e('Country Location', 'cf-geoplugin'); ?>
+					<?php esc_html_e('Country Location', 'cf-geoplugin'); ?>
 				</th>
 				<th scope="col" style="text-align: right;">
-					<?php _e('Options', 'cf-geoplugin'); ?>
+					<?php esc_html_e('Options', 'cf-geoplugin'); ?>
 				</th>
 			</tr>
 		</thead>
@@ -407,35 +407,35 @@ class CFGP_Menus extends CFGP_Global {
 				}
 			?>
 			<tr class="cfgp-menu-location-item" data-country="<?php echo esc_attr($geo_menu->country); ?>" data-location="<?php echo esc_attr($geo_menu->location); ?>" data-id="<?php echo esc_attr($geo_menu->term_id); ?>" id="cfgp-menu-location-item-<?php echo esc_attr($geo_menu->country); ?>-<?php echo esc_attr($geo_menu->location); ?>">
-				<td><?php echo $geo_menu->name; ?></td>
-				<td><?php echo $locations[$geo_menu->location]; ?></td>
-				<td><?php echo ($countries[$geo_menu->country] ?? $geo_menu->country); ?></td>
+				<td><?php echo esc_html($geo_menu->name); ?></td>
+				<td><?php echo esc_html($locations[$geo_menu->location]); ?></td>
+				<td><?php echo esc_html($countries[$geo_menu->country] ?? $geo_menu->country); ?></td>
 				<td style="text-align: right;">
 					<a href="javascript:void(0);" 
 						class="submitdelete deletion right cfgp-menu-remove-location" 
 						data-confirm="<?php esc_attr_e('Are you sure you want to delete the entire menu for this location?', 'cf-geoplugin'); ?>" 
-						data-id="<?php echo absint($geo_menu->term_id); ?>"><?php _e('Delete', 'cf-geoplugin'); ?></a>
+						data-id="<?php echo esc_attr(absint($geo_menu->term_id)); ?>"><?php esc_html_e('Delete', 'cf-geoplugin'); ?></a>
 				</td>
 			</tr>
 			<?php endforeach; else : ?>
 			<tr>
-				<td colspan="4"><?php _e('No menus for defined geolocations have been created yet.', 'cf-geoplugin'); ?></td>
+				<td colspan="4"><?php esc_html_e('No menus for defined geolocations have been created yet.', 'cf-geoplugin'); ?></td>
 			</tr>
 			<?php endif; ?>
 		</tbody>
 		<tfoot>
 			<tr>
 				<th scope="col">
-					<?php _e('Menu name', 'cf-geoplugin'); ?>
+					<?php esc_html_e('Menu name', 'cf-geoplugin'); ?>
 				</th>
 				<th scope="col">
-					<?php _e('Menu Location', 'cf-geoplugin'); ?>
+					<?php esc_html_e('Menu Location', 'cf-geoplugin'); ?>
 				</th>
 				<th scope="col">
-					<?php _e('Country Location', 'cf-geoplugin'); ?>
+					<?php esc_html_e('Country Location', 'cf-geoplugin'); ?>
 				</th>
 				<th scope="col" style="text-align: right;">
-					<?php _e('Options', 'cf-geoplugin'); ?>
+					<?php esc_html_e('Options', 'cf-geoplugin'); ?>
 				</th>
 			</tr>
 		</tfoot>
@@ -507,8 +507,8 @@ class CFGP_Menus extends CFGP_Global {
 		if($country && $location) {
 			$menu_name = sprintf(
 				__('%s for %s', 'cf-geoplugin'),
-				($locations[$location] ?? $location),
-				($countries[$country] ?? $country)
+				esc_html($locations[$location] ?? $location),
+				esc_html($countries[$country] ?? $country)
 			);
 			
 			$menu_slug = sanitize_title( join( '-', array('cfgp', $location, $country) ) );
@@ -563,19 +563,19 @@ class CFGP_Menus extends CFGP_Global {
 		}
 		?>
 		<tr class="cfgp-menu-location-item" data-country="<?php echo esc_attr($geo_menu_country); ?>" data-location="<?php echo esc_attr($geo_menu_location); ?>" data-id="<?php echo esc_attr($geo_menu->term_id); ?>" id="cfgp-menu-location-item-<?php echo esc_attr($geo_menu_country); ?>-<?php echo esc_attr($geo_menu_location); ?>">
-			<td><?php echo $geo_menu->name; ?></td>
-			<td><?php echo ($locations[$geo_menu_location] ?? $geo_menu_location); ?></td>
-			<td><?php echo ($countries[$geo_menu_country] ?? $geo_menu_country); ?></td>
+			<td><?php echo esc_html($geo_menu->name); ?></td>
+			<td><?php echo esc_html($locations[$geo_menu_location] ?? $geo_menu_location); ?></td>
+			<td><?php echo esc_html($countries[$geo_menu_country] ?? $geo_menu_country); ?></td>
 			<td style="text-align: right;">
 				<a href="javascript:void(0);" 
 					class="submitdelete deletion right cfgp-menu-remove-location" 
 					data-confirm="<?php esc_attr_e('Are you sure you want to delete the entire menu for this location?', 'cf-geoplugin'); ?>" 
-					data-id="<?php echo absint($geo_menu->term_id); ?>"><?php _e('Delete', 'cf-geoplugin'); ?></a>
+					data-id="<?php echo esc_attr(absint($geo_menu->term_id)); ?>"><?php esc_html_e('Delete', 'cf-geoplugin'); ?></a>
 			</td>
 		</tr>
 		<?php endforeach; else : ?>
 		<tr>
-			<td colspan="4"><?php _e('No menus for defined geolocations have been created yet.', 'cf-geoplugin'); ?></td>
+			<td colspan="4"><?php esc_html_e('No menus for defined geolocations have been created yet.', 'cf-geoplugin'); ?></td>
 		</tr>
 		<?php endif; exit;
 	}

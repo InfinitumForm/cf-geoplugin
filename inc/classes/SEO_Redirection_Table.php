@@ -90,22 +90,22 @@ if (!class_exists('CFGP_SEO_Table')):
 			if( ($count['enabled']+$count['disabled']) > 0) :
 			?>
 			<ul class="subsubsub">
-				<li class="all"><a href="<?php echo add_query_arg('filter',NULL); ?>"<?php echo add_query_arg('filter','enabled'); ?>"<?php
+				<li class="all"><a href="<?php echo esc_html(add_query_arg('filter',NULL)); ?>"<?php
 					if($filter == NULL) {
 						echo ' class="current" aria-current="page"';
 					}
-				?>><?php _e('All', 'cf-geoplugin'); ?> <span class="count">(<?php echo ($count['enabled']+$count['disabled']); ?>)</span></a> |</li>
-				<li class="enabled"><a href="<?php echo add_query_arg('filter','enabled'); ?>"<?php
+				?>><?php esc_html_e('All', 'cf-geoplugin'); ?> <span class="count">(<?php echo esc_html($count['enabled']+$count['disabled']); ?>)</span></a> |</li>
+				<li class="enabled"><a href="<?php echo esc_html(add_query_arg('filter','enabled')); ?>"<?php
 					if($filter == 'enabled') {
 						echo ' class="current" aria-current="page"';
 					}
-				?>><?php _e('Enabled', 'cf-geoplugin'); ?> <span class="count">(<?php echo $count['enabled']; ?>)</span></a> 
+				?>><?php esc_html_e('Enabled', 'cf-geoplugin'); ?> <span class="count">(<?php echo esc_html($count['enabled']); ?>)</span></a> 
 				<?php if($count['disabled']) : ?>|</li>
-				<li class="disabled"><a href="<?php echo add_query_arg('filter','disabled'); ?>"<?php echo add_query_arg('filter','enabled'); ?>"<?php
+				<li class="disabled"><a href="<?php echo esc_html(add_query_arg('filter','disabled')); ?>"<?php
 					if($filter == 'disabled') {
 						echo ' class="current" aria-current="page"';
 					}
-				?>><?php _e('Disabled', 'cf-geoplugin'); ?> <span class="count">(<?php echo $count['disabled']; ?>)</span></a></li>
+				?>><?php esc_html_e('Disabled', 'cf-geoplugin'); ?> <span class="count">(<?php echo esc_html($count['disabled']); ?>)</span></a></li>
 				<?php else : ?>
 				</li>
 				<?php endif; ?>
@@ -402,7 +402,7 @@ if (!class_exists('CFGP_SEO_Table')):
                 foreach ($records as $rec)
                 {
                     //Open the line
-                    echo '<tr id="cfgp_seo_row_' . (int)$rec->ID . '"'.($rec->active ? '' : ' class="cfgp-seo-table-row-inactive"').'>';
+                    echo '<tr id="cfgp_seo_row_' . esc_attr($rec->ID) . '"'.($rec->active ? '' : ' class="cfgp-seo-table-row-inactive"').'>';
 					
                     
 					foreach ($columns as $column_name => $column_display_name)
@@ -440,11 +440,11 @@ if (!class_exists('CFGP_SEO_Table')):
                         {
 							case "cb":
 								echo '<th scope="row" class="check-column">' . sprintf(
-									'<input type="checkbox" id="cb-select-%1$d" name="seo_redirection[]" value="%1$d" />', $rec->ID
+									'<input type="checkbox" id="cb-select-%1$d" name="seo_redirection[]" value="%1$d" />', esc_attr($rec->ID)
 								). '</th>';
 							break;
                             case "cfgp_seo_url":
-                                echo '<td ' . $attributes . '>';
+                                echo '<td ' . esc_html($attributes) . '>';
 									echo ($rec->active ? '' : '<sup>' . __('DISABLED', 'cf-geoplugin') . '</sup> ') . '<strong>' . esc_url($rec->url) . '</strong>';
 									echo '<div class="row-actions">
 										<span class="edit"><a href="' . esc_url($edit_link).'">' 
@@ -453,7 +453,7 @@ if (!class_exists('CFGP_SEO_Table')):
 										<span class="trash"><a href="' . esc_url($delete_link) . '" class="submitdelete"  onclick="if (confirm(\'' 
 											. esc_attr__('Are you sure you want to delete this redirection?', 'cf-geoplugin') 
 										. '\')){return true;}else{event.stopPropagation(); event.preventDefault();};">' 
-											. __('Delete', 'cf-geoplugin') 
+											. esc_html__('Delete', 'cf-geoplugin') 
 										. '</a></span>
 									</div>';
 								echo '</td>';
@@ -461,42 +461,46 @@ if (!class_exists('CFGP_SEO_Table')):
 							case "cfgp_seo_country":
                                 $country_code = '';
 								if($term = get_term_by('name', $rec->country, 'cf-geoplugin-country')){
-									if(!empty($term->description)) $country_code = ' (' . $term->description . ') ';
+									if(!empty($term->description)) {
+										$country_code = ' (' . esc_html($term->description) . ') ';
+									}
 								} else {
 									if(isset($data_countries[$rec->country])) {
-										$country_code = ' (' . $data_countries[$rec->country] . ') ';
+										$country_code = ' (' . esc_html($data_countries[$rec->country]) . ') ';
 									}
 								}
-								echo '<td ' . $attributes . '>' . esc_html($rec->country ? $rec->country . $country_code : '-') . '</td>';
+								echo '<td ' . esc_html($attributes) . '>' . esc_html($rec->country ? $rec->country . $country_code : '-') . '</td>';
                             break;
                             case "cfgp_seo_region":
 								$region_code = '';
 								if($term = get_term_by('name', $rec->region, 'cf-geoplugin-region')){
-									if(!empty($term->description)) $region_code = ' (' . $term->description . ') ';
+									if(!empty($term->description)) $region_code = ' (' . esc_html($term->description) . ') ';
 								}
-                                echo '<td ' . $attributes . '>' . esc_html($rec->region ? $rec->region . $region_code : '-') . '</td>';
+                                echo '<td ' . esc_html($attributes) . '>' . esc_html($rec->region ? $rec->region . $region_code : '-') . '</td>';
                             break;
                             case "cfgp_seo_city":
 								$city_code = '';
 								$city_name = $rec->city;
 								if($term = get_term_by('name', $rec->city, 'cf-geoplugin-city')){
-									if(!empty($term->description)) $city_code = ' (' . $term->description . ') ';
+									if(!empty($term->description)){
+										$city_code = ' (' . esc_html($term->description) . ') ';
+									}
 									$city_name = $term->name;
 								}
-                                echo '<td ' . $attributes . '>' . esc_html($city_name ? $city_name.$city_code : '-') . '</td>';
+                                echo '<td ' . esc_html($attributes) . '>' . esc_html($city_name ? $city_name.$city_code : '-') . '</td>';
                             break;
                             case "cfgp_seo_postcode":
 								$postcode = $rec->postcode;
 								if($term = get_term_by('name', $rec->postcode, 'cf-geoplugin-postcode')){
 									$postcode = $term->name;
 								}
-                                echo '<td ' . $attributes . '>' . esc_html($postcode ? $postcode : '-') . '</td>';
+                                echo '<td ' . esc_html($attributes) . '>' . esc_html($postcode ? $postcode : '-') . '</td>';
                             break;
 							case "cfgp_seo_http_code":
-                                echo '<td ' . $attributes . '>HTTP ' . esc_html($rec->http_code) . '</td>';
+                                echo '<td ' . esc_html($attributes) . '>HTTP ' . esc_html($rec->http_code) . '</td>';
                             break;
 							case "cfgp_seo_only_once":
-                                echo '<td ' . $attributes . '>' . esc_html($rec->only_once ? __('Only once', 'cf-geoplugin') : __('Always', 'cf-geoplugin') ). '</td>';
+                                echo '<td ' . esc_html($attributes) . '>' . esc_html($rec->only_once ? __('Only once', 'cf-geoplugin') : __('Always', 'cf-geoplugin') ). '</td>';
                             break;
                         }
                     }

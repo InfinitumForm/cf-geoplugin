@@ -24,7 +24,7 @@ if($NEW_API = CFGP_API::lookup(CFGP_U::request_string('cfgp_lookup'))){
 }
 
 ?>
-<div class="wrap cfgp-wrap" id="<?php echo $_GET['page']; ?>">
+<div class="wrap cfgp-wrap" id="<?php echo esc_attr(sanitize_text_field($_GET['page'] ?? NULL)); ?>">
 	<h1 class="wp-heading-inline"><i class="cfa cfa-globe"></i> <?php _e('Debug', 'cf-geoplugin'); ?></h1>
     <hr class="wp-header-end">
     <div id="post">

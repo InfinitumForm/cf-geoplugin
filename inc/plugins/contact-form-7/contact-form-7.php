@@ -142,7 +142,7 @@ class CFGP__Plugin__contact_form_7 extends CFGP_Global{
 					</div>
 
 					<div class="insert-box">
-						<input type="text" name="<?php echo $args['id']; ?>" class="tag code" readonly onfocus="this.select()" />
+						<input type="text" name="<?php echo esc_attr($args['id']); ?>" class="tag code" readonly onfocus="this.select()" />
 
 						<div class="submitbox">
 						<input type="button" class="button button-primary insert-tag" value="<?php

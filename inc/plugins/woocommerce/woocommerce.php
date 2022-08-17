@@ -776,12 +776,12 @@ if($flag = CFGP_U::admin_country_flag(get_post_meta($post->ID, '_billing_country
 		if( !empty($css) ) : $css = join(', ', $css); ?>
 <style id="cfgp-woocommerce-disable-payment-gateway-css" media="all">
 /* <![CDATA[ */
-<?php echo $css; ?>{display:none !important;}
+<?php echo esc_html($css); ?>{display:none !important;}
 /* ]]> */
 </style>
 <script id="cfgp-woocommerce-disable-payment-gateway-js" type="text/javascript">
 /* <![CDATA[ */
-(function(jCFGP){if(jCFGP){jCFGP(document).ready(function(){jCFGP(<?php printf('"%s"', $css); ?>).remove();});}}(jQuery||window.jQuery));
+(function(jCFGP){if(jCFGP){jCFGP(document).ready(function(){jCFGP(<?php printf('"%s"', esc_html($css)); ?>).remove();});}}(jQuery||window.jQuery));
 /* ]]> */
 </script>
 	<?php endif;

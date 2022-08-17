@@ -1113,14 +1113,14 @@ LIMIT 1
 									$label_amount = sprintf( '%s-%s', 'cfgp-currency-amount', CFGP_U::generate_token(5) );
 									$amount = ( isset( $instance['amount'] ) && !empty( $instance['amount'] ) ) ? esc_html( $instance['amount'] ) : esc_html__( 'Amount', 'cf-geoplugin');
 								?>
-								<label class="form-label cfgp-form-label" for="<?php echo $label_amount; ?>"><?php echo $amount ?></label>
-								<input type="text" name="cfgp_currency_amount" class="form-control cfgp-form-control" id="<?php echo $label_amount; ?>" placeholder="<?php echo $amount; ?>" autocomplete="off">
+								<label class="form-label cfgp-form-label" for="<?php echo esc_attr($label_amount); ?>"><?php echo esc_html($amount) ?></label>
+								<input type="text" name="cfgp_currency_amount" class="form-control cfgp-form-control" id="<?php echo esc_attr($label_amount); ?>" placeholder="<?php echo esc_attr($amount); ?>" autocomplete="off">
 							</div>
 							
 							<?php $label_from = sprintf( '%s-%s', 'cfgp-currency-from', CFGP_U::generate_token(5) ); ?>
 							<div class="form-group cfgp-form-group cfgp-form-group-from">
-								<label class="form-label cfgp-form-label" for="<?php echo $label_from; ?>"><?php echo ( isset( $instance['from'] ) && !empty( $instance['from'] ) ) ? esc_html( $instance['from'] ) : esc_html__( 'From', 'cf-geoplugin'); ?></label>
-								<select name="cfgp_currency_from" class="form-control cfgp-form-control cfgp-custom-select cfgp-col-10 cfgp-currency-from" id="<?php echo $label_from; ?>" data-show-subtext="true">
+								<label class="form-label cfgp-form-label" for="<?php echo esc_attr($label_from); ?>"><?php echo ( isset( $instance['from'] ) && !empty( $instance['from'] ) ) ? esc_html( $instance['from'] ) : esc_html__( 'From', 'cf-geoplugin'); ?></label>
+								<select name="cfgp_currency_from" class="form-control cfgp-form-control cfgp-custom-select cfgp-col-10 cfgp-currency-from" id="<?php echo esc_attr($label_from); ?>" data-show-subtext="true">
 									<?php
 										foreach( $currency_symbols as $key => $countries )
 										{
@@ -1137,8 +1137,8 @@ LIMIT 1
 	
 							<?php $label_to = sprintf( '%s-%s', 'cfgp-currency-to', CFGP_U::generate_token(5) ); ?>
 							<div class="form-group cfgp-form-group cfgp-form-group-to">
-								<label class="form-label cfgp-form-label" for="<?php echo $label_to; ?>"><?php echo ( isset( $instance['to'] ) && !empty( $instance['to'] ) ) ? esc_html( $instance['to'] ) : esc_html__( 'To', 'cf-geoplugin'); ?></label>
-								<select name="cfgp_currency_to" class="form-control cfgp-form-control cfgp-custom-select cfgp-col-10 cfgp-currency-to" id="<?php echo $label_to; ?>" data-show-subtext="true">
+								<label class="form-label cfgp-form-label" for="<?php echo esc_attr($label_to); ?>"><?php echo ( isset( $instance['to'] ) && !empty( $instance['to'] ) ) ? esc_html( $instance['to'] ) : esc_html__( 'To', 'cf-geoplugin'); ?></label>
+								<select name="cfgp_currency_to" class="form-control cfgp-form-control cfgp-custom-select cfgp-col-10 cfgp-currency-to" id="<?php echo esc_attr($label_to); ?>" data-show-subtext="true">
 									<?php
 										foreach( $currency_symbols as $key => $countries )
 										{
@@ -1247,7 +1247,15 @@ LIMIT 1
 				if( !isset( $result['from_code'] ) || empty( $result['from_code'] ) ) $result['from_code'] = 'X';
 				if( !isset( $result['to_code'] ) || empty( $result['to_code'] ) ) $result['to_code'] = 'X';
 
-				$message = sprintf( '<p class="cfgp-currency-results-amount"><span class="cfgp-currency-results-amount-current">%s %s</span><span class="cfgp-currency-results-amount-separator"> = </span><span class="cfgp-currency-results-amount-converted">%s %s</span></p><p class="cfgp-currency-results-info">%s &rarr; %s</p>', $result['from_amount'], $result['from_code'], $result['to_amount'], $result['to_code'], $result['from_name'], $result['to_name'] );
+				$message = sprintf(
+					'<p class="cfgp-currency-results-amount"><span class="cfgp-currency-results-amount-current">%s %s</span><span class="cfgp-currency-results-amount-separator"> = </span><span class="cfgp-currency-results-amount-converted">%s %s</span></p><p class="cfgp-currency-results-info">%s &rarr; %s</p>',
+					esc_html($result['from_amount']),
+					esc_html($result['from_code']),
+					esc_html($result['to_amount']),
+					esc_html($result['to_code']),
+					esc_html($result['from_name']),
+					esc_html($result['to_name'])
+				);
 			break;
 			default:
 				$message = '<b>' . esc_html__( 'Sorry currently we are not able to do conversion. Please try again later.', 'cf-geoplugin') . '</b>';
@@ -1256,7 +1264,7 @@ LIMIT 1
 		?>
 		<div class="cfgp-card <?php echo esc_attr($class); ?>">
 			<div class="cfgp-card-body">
-				<p class="cfgp-card-text"><?php echo $message; ?></p>
+				<p class="cfgp-card-text"><?php echo esc_html($message); ?></p>
 			</div>
 		</div>
 		<?php
@@ -1808,7 +1816,7 @@ LIMIT 1
 			'cfgeo_gps',
 			'cfgeo_map'
 		)) && preg_match('/cfgeo_([a-z_]+)/i', $shortcode, $match) ) {
-			echo do_shortcode('[cfgeo return="' . $match[1] . '"' . $attr . ']');
+			echo do_shortcode('[cfgeo return="' . esc_attr($match[1]) . '"' . $attr . ']');
 		} else {
 			if(empty($default)) {
 				echo do_shortcode('[' . $shortcode . $attr . ']');
