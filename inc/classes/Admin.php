@@ -378,7 +378,7 @@ class CFGP_Admin extends CFGP_Global {
 	public function admin_bar_menu_css() { if ( is_admin_bar_showing() ) : ?>
 <style media="all" id="cfgp-admin-bar-css">
 /* <![CDATA[ */
-#wpadminbar .ab-top-menu .menupop.<?php echo CFGP_NAME . '.' . CFGP_NAME . '-admin-bar-link'; ?> .ab-item > .cfgp-ab-icon:before {
+#wpadminbar .ab-top-menu .menupop.<?php echo esc_attr( CFGP_NAME . '.' . CFGP_NAME . '-admin-bar-link' ); ?> .ab-item > .cfgp-ab-icon:before {
 	font: normal 20px/1 dashicons;
     content: '\f231';
 	position: relative;
@@ -392,11 +392,11 @@ class CFGP_Admin extends CFGP_Global {
 	color: #a7aaad;
     color: rgba(240, 246, 252, 0.6);
 }
-#wpadminbar .ab-top-menu .menupop .<?php echo CFGP_NAME . '.' . CFGP_NAME . '-admin-bar-activate-link'; ?> .ab-item > .cfgp-ab-icon:before{
+#wpadminbar .ab-top-menu .menupop .<?php echo esc_attr( CFGP_NAME . '.' . CFGP_NAME . '-admin-bar-activate-link' ); ?> .ab-item > .cfgp-ab-icon:before{
 	content: '\f155';
 }
-#wpadminbar .ab-top-menu .menupop.<?php echo CFGP_NAME . '.' . CFGP_NAME . '-admin-bar-link'; ?>:hover .ab-item > .cfgp-ab-icon:before,
-#wpadminbar .ab-top-menu .menupop.<?php echo CFGP_NAME . '.' . CFGP_NAME . '-admin-bar-link'; ?>.hover .ab-item > .cfgp-ab-icon:before {
+#wpadminbar .ab-top-menu .menupop.<?php echo esc_attr( CFGP_NAME . '.' . CFGP_NAME . '-admin-bar-link' ); ?>:hover .ab-item > .cfgp-ab-icon:before,
+#wpadminbar .ab-top-menu .menupop.<?php echo esc_attr( CFGP_NAME . '.' . CFGP_NAME . '-admin-bar-link' ); ?>.hover .ab-item > .cfgp-ab-icon:before {
 	color: #72aee6;
 }
 #wpadminbar .ab-top-menu .cf-geoplugin-toolbar-course,

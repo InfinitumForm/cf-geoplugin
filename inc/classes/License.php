@@ -309,13 +309,13 @@ class CFGP_License extends CFGP_Global{
 			
 			<?php foreach($response as $key => $obj): ?>
                 <?php if(is_numeric($key)) : $code = self::response_error_code($key); ?>
-                    <h3><?php _e('Licensing Error', 'cf-geoplugin'); ?>: <?php echo $code['message']; ?></h3>
-                    <p><?php echo $code['info']; ?></p>
+                    <h3><?php _e('Licensing Error', 'cf-geoplugin'); ?>: <?php echo wp_kses_post($code['message']); ?></h3>
+                    <p><?php echo esc_html( $code['info'] ); ?></p>
                 <?php else: ?>
-                	<h3><?php _e('Licensing Error', 'cf-geoplugin'); ?>: <?php echo $error_label[$key]; ?></h3>
+                	<h3><?php _e('Licensing Error', 'cf-geoplugin'); ?>: <?php echo wp_kses_post($error_label[$key]); ?></h3>
                     <ol>
                     <?php foreach($obj as $message): ?>
-                        <li><?php echo $message; ?></li>
+                        <li><?php echo wp_kses_post( $message ); ?></li>
                     <?php endforeach; ?>
                     </ol>
                     <?php if($key == 'license_key'): ?>
@@ -344,7 +344,7 @@ class CFGP_License extends CFGP_Global{
 		{
 			ob_start(NULL, 0, PHP_OUTPUT_HANDLER_REMOVABLE); ?>
             <h3><?php _e('Activation succeeded', 'cf-geoplugin'); ?></h3>
-            <p><?php echo $response; ?></p>
+            <p><?php echo wp_kses_post( $response ); ?></p>
 			<?php
 			CFGP_DB_Cache::delete('cfgp-license-response-success');
 			printf('<div class="notice notice-success is-dismissible">%s</div>', ob_get_clean());

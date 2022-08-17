@@ -105,7 +105,7 @@ class CFGP_Public extends CFGP_Global{
 		if( !empty($css_show) ) :		
 		?>
 <!-- <?php _e('CF Geo Plugin CSS Classes', 'cf-geoplugin'); ?> -->
-<style media="all" id="cfgp-display-control-css" data-nonce="<?php echo wp_create_nonce( 'cfgeo-process-css-cache-ajax' ); ?>">*[class="cfgeo-show-in-"],*[class*="cfgeo-show-in-"],*[class^="cfgeo-show-in-"]{display: none;}<?php echo join(',', $css_hide); ?>{display:none !important;} <?php echo join(',', $css_show); ?>{display:block !important;}<?php do_action('cfgp/public/css'); ?></style>
+<style media="all" id="cfgp-display-control-css" data-nonce="<?php echo esc_attr( wp_create_nonce( 'cfgeo-process-css-cache-ajax' ) ); ?>">*[class="cfgeo-show-in-"],*[class*="cfgeo-show-in-"],*[class^="cfgeo-show-in-"]{display: none;}<?php echo esc_html( join(',', $css_hide) ); ?>{display:none !important;} <?php echo esc_html( join(',', $css_show) ); ?>{display:block !important;}<?php do_action('cfgp/public/css'); ?></style>
 		<?php endif;
 	}
 	

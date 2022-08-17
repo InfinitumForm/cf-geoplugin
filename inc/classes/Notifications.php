@@ -243,7 +243,7 @@ class CFGP_Notifications extends CFGP_Global{
   <head>
     <meta name="viewport" content="width=device-width" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title><?php echo $subject; ?></title>
+    <title><?php echo esc_html($subject); ?></title>
     <style>
       /* -------------------------------------
           GLOBAL RESETS
@@ -592,7 +592,7 @@ class CFGP_Notifications extends CFGP_Global{
                   <table role="presentation" border="0" cellpadding="0" cellspacing="0">
                     <tr>
                       <td>
-						<?php echo $content;?>
+						<?php echo wp_kses_post($content);?>
                       </td>
                     </tr>
                   </table>
@@ -608,8 +608,8 @@ class CFGP_Notifications extends CFGP_Global{
               <table role="presentation" border="0" cellpadding="0" cellspacing="0">
                 <tr>
                   <td class="content-block">
-                    <span class="apple-link"><?php printf(__('This email is automatically sent by CF Geo Plugin via site %1$s.', 'cf-geoplugin'), '<a href="' . get_bloginfo('url') . '" target="_blank">' . get_bloginfo('name') . '</a>'); ?><br>
-					<a href="<?php echo CFGP_STORE ?>/privacy-policy/" target="_blank"><?php _e('Privacy Policy', 'cf-geoplugin'); ?></a> | <a href="<?php echo CFGP_STORE ?>/terms-and-conditions/" target="_blank"><?php _e('Terms And Conditions', 'cf-geoplugin'); ?></a> | <a href="<?php echo CFGP_STORE ?>/documentation/" target="_blank"><?php _e('Documentation', 'cf-geoplugin'); ?></a> | <a href="<?php echo CFGP_STORE ?>/contact-and-support/" target="_blank"><?php _e('Contact & Support', 'cf-geoplugin'); ?></a></span>
+                    <span class="apple-link"><?php printf(__('This email is automatically sent by CF Geo Plugin via site %1$s.', 'cf-geoplugin'), '<a href="' . esc_url( get_bloginfo('url') ) . '" target="_blank">' . esc_html( get_bloginfo('name') ) . '</a>'); ?><br>
+					<a href="<?php echo esc_url( CFGP_STORE ) ?>/privacy-policy/" target="_blank"><?php esc_html_e('Privacy Policy', 'cf-geoplugin'); ?></a> | <a href="<?php echo esc_url( CFGP_STORE ) ?>/terms-and-conditions/" target="_blank"><?php esc_html_e('Terms And Conditions', 'cf-geoplugin'); ?></a> | <a href="<?php echo esc_url( CFGP_STORE ) ?>/documentation/" target="_blank"><?php esc_html_e('Documentation', 'cf-geoplugin'); ?></a> | <a href="<?php echo esc_url( CFGP_STORE ) ?>/contact-and-support/" target="_blank"><?php esc_html_e('Contact & Support', 'cf-geoplugin'); ?></a></span>
                   </td>
                 </tr>
                 <tr>
