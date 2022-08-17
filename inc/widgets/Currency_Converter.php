@@ -92,7 +92,7 @@ class CFGP_Widget_Currency_Converter extends WP_Widget {
 				
 			case 'int':
 			case 'integer':
-				return absint(isset($new_instance[$name]) && !empty($new_instance[$name]) ? $new_instance[$name] : $default);
+				return absint(sanitize_text_field(isset($new_instance[$name]) && !empty($new_instance[$name]) ? $new_instance[$name] : $default));
 				break;
 		}
 	}
