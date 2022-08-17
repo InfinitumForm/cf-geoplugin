@@ -25,7 +25,7 @@ do_action('cfgp/page/license/save');
                 </div>
             </div>
 			
-			<div class="inner-sidebar" id="<?php echo CFGP_NAME; ?>-license-sidebar">
+			<div class="inner-sidebar" id="<?php echo esc_attr(CFGP_NAME); ?>-license-sidebar">
 				<div id="side-sortables" class="meta-box-sortables ui-sortable">
 					<?php do_action('cfgp/page/license/sidebar'); ?>
 				</div>

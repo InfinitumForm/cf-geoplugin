@@ -225,7 +225,7 @@ if(!empty($block_city) && !is_array($block_city) && preg_match('/\]|\[/', $block
                 </div>
             </div>
 			
-			<div class="inner-sidebar" id="<?php echo CFGP_NAME; ?>-defender-sidebar">
+			<div class="inner-sidebar" id="<?php echo esc_attr(CFGP_NAME); ?>-defender-sidebar">
 				<div id="side-sortables" class="meta-box-sortables ui-sortable">
 					<?php do_action('cfgp/page/defender/sidebar'); ?>
 				</div>

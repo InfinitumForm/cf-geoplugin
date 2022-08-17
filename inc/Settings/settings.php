@@ -5,7 +5,7 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
 
 $options = apply_filters('cfgp/settings', array());
 
-?><div class="wrap cfgp-wrap" id="<?php echo CFGP_NAME; ?>-settings">
+?><div class="wrap cfgp-wrap" id="<?php echo esc_attr(CFGP_NAME); ?>-settings">
     <h1 class="wp-heading-inline"><i class="cfa cfa-globe"></i> <?php _e('Settings', 'cf-geoplugin'); ?></h1>
     <hr class="wp-header-end">
 
@@ -14,30 +14,30 @@ $options = apply_filters('cfgp/settings', array());
 
     		<div id="post-body">
     			<div id="post-body-content">
-            <form method="post" action="<?php echo CFGP_U::admin_url('admin.php?page=cf-geoplugin-settings&save_settings=true&nonce='.wp_create_nonce(CFGP_NAME.'-save-settings')); ?>">
-  		        <div class="<?php echo CFGP_NAME; ?>-sticky-button"><?php submit_button(); ?></div>
+            <form method="post" action="<?php echo esc_url( CFGP_U::admin_url('admin.php?page=cf-geoplugin-settings&save_settings=true&nonce='.wp_create_nonce(CFGP_NAME.'-save-settings')) ); ?>">
+  		        <div class="<?php echo esc_attr(CFGP_NAME); ?>-sticky-button"><?php submit_button(); ?></div>
                 <div class="nav-tab-wrapper-chosen">
                     <nav class="nav-tab-wrapper">
                       <?php do_action('cfgp/settings/nav-tab/before'); ?>
                     <?php foreach($options as $o=>$option) : ?>
-                        <a href="javascript:void(0);" class="nav-tab<?php echo ($o===0 ? ' nav-tab-active' : ''); ?>" data-id="#<?php echo esc_attr($option['id']); ?>"><?php echo $option['title']; ?></a>
+                        <a href="javascript:void(0);" class="nav-tab<?php echo esc_attr($o===0 ? ' nav-tab-active' : ''); ?>" data-id="#<?php echo esc_attr($option['id']); ?>"><?php echo esc_html($option['title']); ?></a>
                     <?php endforeach; ?>
                       <?php do_action('cfgp/settings/nav-tab/after'); ?>
                     </nav>
                     <?php do_action('cfgp/settings/tab-panel/before'); ?>
                 <?php foreach($options as $o=>$option) : ?>
-                    <div class="cfgp-tab-panel<?php echo ($o===0 ? ' cfgp-tab-panel-active' : ''); ?>" id="<?php echo esc_attr($option['id']); ?>">
+                    <div class="cfgp-tab-panel<?php echo esc_attr($o===0 ? ' cfgp-tab-panel-active' : ''); ?>" id="<?php echo esc_attr($option['id']); ?>">
                     <?php if(isset($option['sections']) && is_array($option['sections'])) :
         foreach($option['sections'] as $s=>$section) : if(isset($section['enabled']) && $section['enabled'] === false) continue; ?>
-        			<section class="cfgp-tab-panel-section" id="<?php echo sanitize_title($section['title']); ?>">
-                      <?php if(!empty($section['title'])) : ?><h2 class="title"><?php echo $section['title']; ?></h2><?php endif; ?>
+        			<section class="cfgp-tab-panel-section" id="<?php echo esc_attr(sanitize_title($section['title'])); ?>">
+                      <?php if(!empty($section['title'])) : ?><h2 class="title"><?php echo esc_html($section['title']); ?></h2><?php endif; ?>
                         <?php if(!empty($section['desc'])) : ?>
                           <?php if(is_array($section['desc'])) : ?>
                             <?php foreach($section['desc'] as $desc_text) : ?>
-                              <p class="cfgp-section-description"><?php echo $desc_text; ?></p>
+                              <p class="cfgp-section-description"><?php echo esc_html($desc_text); ?></p>
                             <?php endforeach; ?>
                           <?php else : ?>
-                            <p class="cfgp-section-description"><?php echo $section['desc']; ?></p>
+                            <p class="cfgp-section-description"><?php echo esc_html($section['desc']); ?></p>
                           <?php endif; ?>
                         <?php endif; ?>
                         <table class="form-table cfgp-form-table" role="presentation" id="<?php echo esc_attr($section['id']); ?>">
@@ -73,17 +73,17 @@ switch($input['type'])
 	$default = CFGP_Options::get($input['name'], (isset($input['default']) ? $input['default'] : ''));
 	if(isset($input['options'])) : foreach($input['options'] as $value => $name) : ?>
     <span class="input-radio<?php
-          echo (isset($input['style']) ? ' ' . $input['style'] : '');
+          echo esc_html(isset($input['style']) ? ' ' . $input['style'] : '');
         ?>">
         <input type="radio" name="<?php
-          echo CFGP_NAME;
+          echo esc_attr(CFGP_NAME);
         ?>[<?php
-          echo $input['name'];
+          echo esc_attr($input['name']);
         ?>]" value="<?php
           echo esc_attr($value);
         ?>" id="cfgp-<?php
           echo esc_attr($input['name']);
-        ?>-<?php echo $value; ?>"<?php
+        ?>-<?php echo esc_attr($value); ?>"<?php
 			if(isset($input['attr']) && !empty($input['attr']) && is_array($input['attr']))
 			{
 				foreach($input['attr'] as $attr=>$attr_value){
@@ -96,7 +96,7 @@ switch($input['type'])
         ?>><?php echo $name; ?>
     </span>
 	<?php endforeach; if(isset($input['info']) && !empty($input['info'])) : 
-		?><br><div class="cfgp-field-description cfgp-field-description-<?php echo $input['type']; ?>"><?php echo $input['info']; ?></div><?php 
+		?><br><div class="cfgp-field-description cfgp-field-description-<?php echo esc_attr($input['type']); ?>"><?php echo wp_kses_post($input['info']); ?></div><?php 
 	endif; endif; break;
 
 
@@ -105,19 +105,19 @@ switch($input['type'])
 	$default = CFGP_Options::get($input['name'], (isset($input['default']) ? $input['default'] : []));
 	if(isset($input['options'])) : ?>
 	<input type="hidden" name="<?php
-	  echo CFGP_NAME;
+	  echo esc_attr(CFGP_NAME);
 	?>[<?php
-	  echo $input['name'];
+	  echo esc_attr($input['name']);
 	?>]" value="">
 	<?php foreach($input['options'] as $i => $object) : ?>
     <span class="input-radio<?php
-          echo (isset($input['style']) ? ' ' . $input['style'] : '');
+          echo esc_html(isset($input['style']) ? ' ' . $input['style'] : '');
         ?>">
         <input type="checkbox" name="<?php
-          echo CFGP_NAME;
+          echo esc_attr(CFGP_NAME);
         ?>[<?php
-          echo $input['name'];
-        ?>][<?php echo $i; ?>]" value="<?php
+          echo esc_attr($input['name']);
+        ?>][<?php echo esc_attr($i); ?>]" value="<?php
           echo esc_attr($object['value']);
         ?>" id="<?php
           echo esc_attr($object['id']);
@@ -131,10 +131,10 @@ switch($input['type'])
 			echo (in_array($object['value'], $default) ? ' checked' : '');
 			echo (isset($input['readonly']) && $input['readonly'] ? ' readonly' : '');
 			echo (isset($input['disabled']) && $input['disabled'] ? ' disabled' : '');
-        ?>><?php echo $object['label']; ?>
+        ?>><?php echo esc_html($object['label']); ?>
     </span>
 	<?php endforeach; if(isset($input['info']) && !empty($input['info'])) : 
-		?><br><div class="cfgp-field-description cfgp-field-description-<?php echo $input['type']; ?>"><?php echo $input['info']; ?></div><?php 
+		?><br><div class="cfgp-field-description cfgp-field-description-<?php echo esc_attr($input['type']); ?>"><?php echo wp_kses_post($input['info']); ?></div><?php 
 	endif; endif; break;
 	
 	### INPUT
@@ -145,10 +145,10 @@ switch($input['type'])
 	case 'password':
 	case 'email':
 	$default = CFGP_Options::get($input['name'], (isset($input['default']) ? $input['default'] : '')); ?>
-	<input type="<?php echo $input['type']; ?>" name="<?php
-	  echo CFGP_NAME;
+	<input type="<?php echo esc_attr($input['type']); ?>" name="<?php
+	  echo esc_attr(CFGP_NAME);
 	?>[<?php
-	  echo $input['name'];
+	  echo esc_attr($input['name']);
 	?>]" value="<?php
 	  echo esc_attr($default);
 	?>" id="cfgp-<?php
@@ -166,17 +166,17 @@ switch($input['type'])
 		echo (isset($input['disabled']) && $input['disabled'] ? ' disabled' : '');
 	?>>
 	<?php if(isset($input['info']) && !empty($input['info'])) : 
-		?><br><div class="cfgp-field-description cfgp-field-description-<?php echo $input['type']; ?>"><?php echo $input['info']; ?></div><?php 
+		?><br><div class="cfgp-field-description cfgp-field-description-<?php echo esc_attr($input['type']); ?>"><?php echo wp_kses_post($input['info']); ?></div><?php 
 	endif; ?>
 	<?php break;
 	
 	### TEXTAREA
 	case 'textarea':
 	$default = CFGP_Options::get($input['name'], (isset($input['default']) ? $input['default'] : '')); ?>
-	<textarea type="<?php echo $input['type']; ?>" name="<?php
-	  echo CFGP_NAME;
+	<textarea type="<?php echo esc_attr($input['type']); ?>" name="<?php
+	  echo esc_attr(CFGP_NAME);
 	?>[<?php
-	  echo $input['name'];
+	  echo esc_attr($input['name']);
 	?>]" id="cfgp-<?php
 	  echo esc_attr($input['name']);
 	?>"<?php
@@ -192,7 +192,7 @@ switch($input['type'])
 		echo (isset($input['disabled']) && $input['disabled'] ? ' disabled' : '');
 	?>><?php echo $default; ?></textarea>
 	<?php if(isset($input['info']) && !empty($input['info'])) : 
-		?><br><div class="cfgp-field-description cfgp-field-description-<?php echo $input['type']; ?>"><?php echo $input['info']; ?></div><?php 
+		?><br><div class="cfgp-field-description cfgp-field-description-<?php echo esc_attr($input['type']); ?>"><?php echo wp_kses_post($input['info']); ?></div><?php 
 	endif; ?>
 	<?php break;
 	
@@ -200,9 +200,9 @@ switch($input['type'])
 	### SELECT
 	case 'select': $default = CFGP_Options::get($input['name'], (isset($input['default']) ? $input['default'] : '')); ?>
 	<select name="<?php
-	  echo CFGP_NAME;
+	  echo esc_attr(CFGP_NAME);
 	?>[<?php
-	  echo $input['name'];
+	  echo esc_attr($input['name']);
 	?>]" id="cfgp-<?php
 	  echo esc_attr($input['name']);
 	?>"<?php
@@ -218,11 +218,11 @@ switch($input['type'])
 		echo (isset($input['disabled']) && $input['disabled'] ? ' disabled' : '');
 	?>>
 	<?php foreach($input['options'] as $value => $label) : ?>
-    	<option value="<?php echo esc_attr($value); ?>"<?php echo ($default == $value ? ' selected' : ''); ?>><?php echo $label; ?></option>
+    	<option value="<?php echo esc_attr($value); ?>"<?php echo ($default == $value ? ' selected' : ''); ?>><?php echo esc_html($label); ?></option>
     <?php endforeach; ?>
     </select>
 	<?php if(isset($input['info']) && !empty($input['info'])) : 
-		?><br><div class="cfgp-field-description cfgp-field-description-<?php echo $input['type']; ?>"><?php echo $input['info']; ?></div><?php 
+		?><br><div class="cfgp-field-description cfgp-field-description-<?php echo esc_attr($input['type']); ?>"><?php echo wp_kses_post($input['info']); ?></div><?php 
 	endif; ?>
 	<?php break;
 	
@@ -230,9 +230,9 @@ switch($input['type'])
 	### MULTIPLE
 	case 'multiple': $default = CFGP_Options::get($input['name'], (isset($input['default']) ? $input['default'] : [])); ?>
 	<select name="<?php
-	  echo CFGP_NAME;
+	  echo esc_attr(CFGP_NAME);
 	?>[<?php
-	  echo $input['name'];
+	  echo esc_attr($input['name']);
 	?>]" id="cfgp-<?php
 	  echo esc_attr($input['name']);
 	?>"<?php
@@ -248,11 +248,11 @@ switch($input['type'])
 		echo (isset($input['disabled']) && $input['disabled'] ? ' disabled' : '');
 	?> multiple>
 	<?php foreach($input['options'] as $value => $label) : ?>
-    	<option value="<?php echo esc_attr($value); ?>"<?php echo (in_array($value, $default) ? ' selected' : ''); ?>><?php echo $label; ?></option>
+    	<option value="<?php echo esc_attr($value); ?>"<?php echo (in_array($value, $default) ? ' selected' : ''); ?>><?php echo esc_html($label); ?></option>
     <?php endforeach; ?>
     </select>
 	<?php if(isset($input['info']) && !empty($input['info'])) : 
-		?><br><div class="cfgp-field-description cfgp-field-description-<?php echo $input['type']; ?>"><?php echo $input['info']; ?></div><?php 
+		?><br><div class="cfgp-field-description cfgp-field-description-<?php echo esc_attr($input['type']); ?>"><?php echo wp_kses_post($input['info']); ?></div><?php 
 	endif; ?>
 	<?php break;
 }
@@ -275,7 +275,7 @@ switch($input['type'])
     			</div>
     		</div>
 			
-			<div class="inner-sidebar" id="<?php echo CFGP_NAME; ?>-settings-sidebar">
+			<div class="inner-sidebar" id="<?php echo esc_attr(CFGP_NAME); ?>-settings-sidebar">
     			<div id="side-sortables" class="meta-box-sortables ui-sortable">
     				<?php do_action('cfgp/page/settings/sidebar'); ?>
     			</div>

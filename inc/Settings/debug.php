@@ -348,7 +348,7 @@ if($NEW_API = CFGP_API::lookup(CFGP_U::request_string('cfgp_lookup'))){
                 </div>
             </div>
 			
-			<div class="inner-sidebar" id="<?php echo CFGP_NAME; ?>-debug-sidebar">
+			<div class="inner-sidebar" id="<?php echo esc_attr(CFGP_NAME); ?>-debug-sidebar">
 				<div id="side-sortables" class="meta-box-sortables ui-sortable">
 					<?php do_action('cfgp/page/debug/sidebar'); ?>
 				</div>
