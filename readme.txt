@@ -378,6 +378,7 @@ Please inform us if any of these errors occur via contact form on our website [h
 
 = 8.3.10 =
 * Update trademark names and banners
+* Update plugin security
 
 = 8.3.9 =
 * Advanced geolocation for WooCommerce
@@ -438,6 +439,7 @@ Please inform us if any of these errors occur via contact form on our website [h
 
 = 8.3.10 =
 * Update trademark names and banners
+* Update plugin security
 
 = 8.3.9 =
 * Advanced geolocation for WooCommerce

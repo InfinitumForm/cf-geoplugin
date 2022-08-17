@@ -2,6 +2,7 @@
 
 = 8.3.10 =
 * Update trademark names and banners
+* Update plugin security
 
 = 8.3.9 =
 * Advanced geolocation for WooCommerce
