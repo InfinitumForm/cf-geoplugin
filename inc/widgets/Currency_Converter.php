@@ -20,8 +20,8 @@ class CFGP_Widget_Currency_Converter extends WP_Widget {
 	function __construct() {
 		parent::__construct(
 			'CFGP_Widget_Currency_Converter', 
-			__('Currency Converter', CFGP_NAME), 
-			array( 'description' => __( 'Convert any currency.', CFGP_NAME ), ) 
+			__('Currency Converter', 'cf-geoplugin'), 
+			array( 'description' => __( 'Convert any currency.', 'cf-geoplugin'), ) 
 		);
 	}
 	  
@@ -43,25 +43,25 @@ class CFGP_Widget_Currency_Converter extends WP_Widget {
 			  
 	// Creating widget Backend 
 	public function form( $instance ) {
-		$title = $this->_sanitize_form_input($instance, 'title', 'text', esc_attr__( 'Currency Converter', CFGP_NAME ));
-		$amount = $this->_sanitize_form_input($instance, 'amount', 'text', esc_attr__( 'Amount', CFGP_NAME ));
-		$from = $this->_sanitize_form_input($instance, 'from', 'text', esc_attr__( 'From', CFGP_NAME ));
-		$to = $this->_sanitize_form_input($instance, 'to', 'text', esc_attr__( 'To', CFGP_NAME ));
+		$title = $this->_sanitize_form_input($instance, 'title', 'text', esc_attr__( 'Currency Converter', 'cf-geoplugin'));
+		$amount = $this->_sanitize_form_input($instance, 'amount', 'text', esc_attr__( 'Amount', 'cf-geoplugin'));
+		$from = $this->_sanitize_form_input($instance, 'from', 'text', esc_attr__( 'From', 'cf-geoplugin'));
+		$to = $this->_sanitize_form_input($instance, 'to', 'text', esc_attr__( 'To', 'cf-geoplugin'));
 	?>
 		<p>
-			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_attr_e( 'Title:', CFGP_NAME ); ?></label> 
+			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_attr_e( 'Title:', 'cf-geoplugin'); ?></label> 
 			<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>">
 		</p>
 		<p>
-			<label for="<?php echo esc_attr( $this->get_field_id( 'amount' ) ); ?>"><?php esc_attr_e( 'Amount Label:', CFGP_NAME ); ?></label> 
+			<label for="<?php echo esc_attr( $this->get_field_id( 'amount' ) ); ?>"><?php esc_attr_e( 'Amount Label:', 'cf-geoplugin'); ?></label> 
 			<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'amount' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'amount' ) ); ?>" type="text" value="<?php echo esc_attr( $amount ); ?>">
 		</p>
 		<p>
-			<label for="<?php echo esc_attr( $this->get_field_id( 'from' ) ); ?>"><?php esc_attr_e( 'From Label:', CFGP_NAME ); ?></label> 
+			<label for="<?php echo esc_attr( $this->get_field_id( 'from' ) ); ?>"><?php esc_attr_e( 'From Label:', 'cf-geoplugin'); ?></label> 
 			<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'from' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'from' ) ); ?>" type="text" value="<?php echo esc_attr( $from ); ?>">
 		</p>
 		<p>
-			<label for="<?php echo esc_attr( $this->get_field_id( 'to' ) ); ?>"><?php esc_attr_e( 'To Label:', CFGP_NAME ); ?></label> 
+			<label for="<?php echo esc_attr( $this->get_field_id( 'to' ) ); ?>"><?php esc_attr_e( 'To Label:', 'cf-geoplugin'); ?></label> 
 			<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'to' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'to' ) ); ?>" type="text" value="<?php echo esc_attr( $to ); ?>">
 		</p>
 	<?php 
@@ -71,10 +71,10 @@ class CFGP_Widget_Currency_Converter extends WP_Widget {
 	public function update( $new_instance, $old_instance ) {
 		$instance = array();	
 		
-		$instance['title'] = $this->_sanitize_form_input($new_instance, 'title', 'text', esc_attr__( 'Currency Converter', CFGP_NAME ));
-		$instance['amount'] = $this->_sanitize_form_input($new_instance, 'amount', 'text', esc_attr__( 'Amount', CFGP_NAME ));
-		$instance['from'] = $this->_sanitize_form_input($new_instance, 'from', 'text', esc_attr__( 'From', CFGP_NAME ));
-		$instance['to'] = $this->_sanitize_form_input($new_instance, 'to', 'text', esc_attr__( 'To', CFGP_NAME ));
+		$instance['title'] = $this->_sanitize_form_input($new_instance, 'title', 'text', esc_attr__( 'Currency Converter', 'cf-geoplugin'));
+		$instance['amount'] = $this->_sanitize_form_input($new_instance, 'amount', 'text', esc_attr__( 'Amount', 'cf-geoplugin'));
+		$instance['from'] = $this->_sanitize_form_input($new_instance, 'from', 'text', esc_attr__( 'From', 'cf-geoplugin'));
+		$instance['to'] = $this->_sanitize_form_input($new_instance, 'to', 'text', esc_attr__( 'To', 'cf-geoplugin'));
 
 		return $instance;
 	}

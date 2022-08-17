@@ -94,11 +94,11 @@ class CFGP_SEO extends CFGP_Global {
 						// Validate
 						if($num_saved > 0)
 						{
-						//	CFGP_DB_Cache::set('cfgp-seo-form-success', __('CSV uploaded successfully.', CFGP_NAME), YEAR_IN_SECONDS);
+						//	CFGP_DB_Cache::set('cfgp-seo-form-success', __('CSV uploaded successfully.', 'cf-geoplugin'), YEAR_IN_SECONDS);
 							
 							wp_send_json(array(
 								'return'=>true,
-								'message' => __('An error occurred while saving data to the database. We have restored your old parameters. There is no change here.', CFGP_NAME)
+								'message' => __('An error occurred while saving data to the database. We have restored your old parameters. There is no change here.', 'cf-geoplugin')
 							));
 						}
 						else
@@ -112,7 +112,7 @@ class CFGP_SEO extends CFGP_Global {
 							
 							wp_send_json(array(
 								'return'=>false,
-								'message' => __('An error occurred while saving data to the database. We have restored your old parameters. There is no change here.', CFGP_NAME)
+								'message' => __('An error occurred while saving data to the database. We have restored your old parameters. There is no change here.', 'cf-geoplugin')
 							));
 						}
 					}
@@ -120,7 +120,7 @@ class CFGP_SEO extends CFGP_Global {
 					{
 						wp_send_json(array(
 							'return'=>false,
-							'message' => sprintf(__('We did not find any valid CSV data. We did not make any changes. Make sure you have all %d columns properly defined.', CFGP_NAME), $columns_max)
+							'message' => sprintf(__('We did not find any valid CSV data. We did not make any changes. Make sure you have all %d columns properly defined.', 'cf-geoplugin'), $columns_max)
 						));
 					}
 				}
@@ -128,7 +128,7 @@ class CFGP_SEO extends CFGP_Global {
 				{
 					wp_send_json(array(
 						'return'=>false,
-					'message' => __('There was an error unpacking the CSV file. Check the format of your CSV file.', CFGP_NAME)
+					'message' => __('There was an error unpacking the CSV file. Check the format of your CSV file.', 'cf-geoplugin')
 					));
 				}
 			}
@@ -136,7 +136,7 @@ class CFGP_SEO extends CFGP_Global {
 			{
 				wp_send_json(array(
 					'return'=>false,
-					'message' => __('CSV file not defined.', CFGP_NAME)
+					'message' => __('CSV file not defined.', 'cf-geoplugin')
 				));
 			}
 		}
@@ -144,7 +144,7 @@ class CFGP_SEO extends CFGP_Global {
 		{
 			wp_send_json(array(
 				'return'=>false,
-				'message' => __('There was an error validating the data. Please refresh the page and try again.', CFGP_NAME)
+				'message' => __('There was an error validating the data. Please refresh the page and try again.', 'cf-geoplugin')
 			));
 		}
 	}
@@ -160,7 +160,7 @@ class CFGP_SEO extends CFGP_Global {
 				$redirection_url = CFGP_U::request_string('url');
 			
 				if(empty($redirection_url)) {
-					CFGP_DB_Cache::set('cfgp-seo-form-error', __('Redirect URL is a required field.', CFGP_NAME), YEAR_IN_SECONDS);
+					CFGP_DB_Cache::set('cfgp-seo-form-error', __('Redirect URL is a required field.', 'cf-geoplugin'), YEAR_IN_SECONDS);
 				}
 				else
 				{
@@ -176,11 +176,11 @@ class CFGP_SEO extends CFGP_Global {
 					
 					if(is_wp_error($save))
 					{
-						CFGP_DB_Cache::set('cfgp-seo-form-error', __('This redirection was not saved due to a database error. Please try again.', CFGP_NAME), YEAR_IN_SECONDS);
+						CFGP_DB_Cache::set('cfgp-seo-form-error', __('This redirection was not saved due to a database error. Please try again.', 'cf-geoplugin'), YEAR_IN_SECONDS);
 					}
 					else
 					{
-						CFGP_DB_Cache::set('cfgp-seo-form-success', __('Settings saved.', CFGP_NAME), YEAR_IN_SECONDS);
+						CFGP_DB_Cache::set('cfgp-seo-form-success', __('Settings saved.', 'cf-geoplugin'), YEAR_IN_SECONDS);
 						
 						$parse_url = CFGP_U::parse_url();
 						$url = $parse_url['url'];
@@ -203,7 +203,7 @@ class CFGP_SEO extends CFGP_Global {
 				$redirection_url = CFGP_U::request_string('url');
 				
 				if(empty($redirection_url)) {
-					CFGP_DB_Cache::set('cfgp-seo-form-error', __('Redirect URL is a required field.', CFGP_NAME), YEAR_IN_SECONDS);
+					CFGP_DB_Cache::set('cfgp-seo-form-error', __('Redirect URL is a required field.', 'cf-geoplugin'), YEAR_IN_SECONDS);
 				}
 				else
 				{
@@ -220,11 +220,11 @@ class CFGP_SEO extends CFGP_Global {
 					
 					if(is_wp_error($save))
 					{
-						CFGP_DB_Cache::set('cfgp-seo-form-error', __('This redirection was not saved due to a database error. Please try again.', CFGP_NAME), YEAR_IN_SECONDS);
+						CFGP_DB_Cache::set('cfgp-seo-form-error', __('This redirection was not saved due to a database error. Please try again.', 'cf-geoplugin'), YEAR_IN_SECONDS);
 					}
 					else
 					{
-						CFGP_DB_Cache::set('cfgp-seo-form-success', __('Settings saved.', CFGP_NAME), YEAR_IN_SECONDS);
+						CFGP_DB_Cache::set('cfgp-seo-form-success', __('Settings saved.', 'cf-geoplugin'), YEAR_IN_SECONDS);
 					}
 				}
 			}
@@ -242,7 +242,7 @@ class CFGP_SEO extends CFGP_Global {
 			$url = remove_query_arg('nonce', $url);
 			$url = remove_query_arg('id', $url);
 			
-			CFGP_DB_Cache::set('cfgp-seo-form-success', __('Deleted.', CFGP_NAME), YEAR_IN_SECONDS);
+			CFGP_DB_Cache::set('cfgp-seo-form-success', __('Deleted.', 'cf-geoplugin'), YEAR_IN_SECONDS);
 			
 			if(!headers_sent()) {
 				wp_safe_redirect($url);

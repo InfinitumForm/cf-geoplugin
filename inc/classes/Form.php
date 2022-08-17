@@ -40,7 +40,7 @@ class CFGP_Form {
 		}
 		if($multiple) {
 			if(!isset($attr['data-placeholder'])) {
-				$attr['data-placeholder'] = __( 'Choose countries...', CFGP_NAME );
+				$attr['data-placeholder'] = __( 'Choose countries...', 'cf-geoplugin');
 			}
 		}
 		if($data = CFGP_Library::get_countries()){
@@ -83,7 +83,7 @@ class CFGP_Form {
 		}
 		if($multiple) {
 			if(!isset($attr['data-placeholder'])) {
-				$attr['data-placeholder'] = __( 'Choose regions...', CFGP_NAME );
+				$attr['data-placeholder'] = __( 'Choose regions...', 'cf-geoplugin');
 			}
 		}
 		
@@ -132,7 +132,7 @@ class CFGP_Form {
 		}
 		if($multiple) {
 			if(!isset($attr['data-placeholder'])) {
-				$attr['data-placeholder'] = __( 'Choose cities...', CFGP_NAME );
+				$attr['data-placeholder'] = __( 'Choose cities...', 'cf-geoplugin');
 			}
 		}
 		
@@ -194,7 +194,7 @@ class CFGP_Form {
 		}
 		if($multiple) {
 			if(!isset($attr['data-placeholder'])) {
-				$attr['data-placeholder'] = __( 'Choose postcodes...', CFGP_NAME );
+				$attr['data-placeholder'] = __( 'Choose postcodes...', 'cf-geoplugin');
 			}
 		}
 		
@@ -252,7 +252,7 @@ class CFGP_Form {
 		if(is_array($options))
 		{
 			if(!isset($attr['data-placeholder'])) {
-				$attr['data-placeholder'] = __( 'Choose options...', CFGP_NAME );
+				$attr['data-placeholder'] = __( 'Choose options...', 'cf-geoplugin');
 			}
 			
 			if(!isset($attr['id'])){

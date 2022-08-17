@@ -42,7 +42,7 @@ $API = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
 
 ?>
 <div class="wrap cfgp-wrap" id="<?php echo $_GET['page']; ?>">
-	<h1 class="wp-heading-inline"><i class="cfa cfa-map-marker"></i> <?php _e('CF Geo Plugin', CFGP_NAME); ?></h1>
+	<h1 class="wp-heading-inline"><i class="cfa cfa-map-marker"></i> <?php _e('CF Geo Plugin', 'cf-geoplugin'); ?></h1>
     <hr class="wp-header-end">
 
     <div id="post">
@@ -54,25 +54,25 @@ $API = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
                     <div class="nav-tab-wrapper-chosen">
                         <nav class="nav-tab-wrapper">
                         	<?php do_action('cfgp/main_page/nav-tab/before', $API, $remove_tags, $gps_keys); ?>
-                            <a href="javascript:void(0);" class="nav-tab nav-tab-active" data-id="#shortcodes"><i class="cfa cfa-code"></i><span class="label"> <?php _e('Shortcodes', CFGP_NAME); ?></span></a>
+                            <a href="javascript:void(0);" class="nav-tab nav-tab-active" data-id="#shortcodes"><i class="cfa cfa-code"></i><span class="label"> <?php _e('Shortcodes', 'cf-geoplugin'); ?></span></a>
                             <?php if(CFGP_Options::get_beta('enable_simple_shortcode')) : ?>
-                            	<a href="javascript:void(0);" class="nav-tab" data-id="#simple-shortcodes"><i class="cfa cfa-code"></i><span class="label"> <?php _e('Simple Shortcodes', CFGP_NAME); ?></span></a>
+                            	<a href="javascript:void(0);" class="nav-tab" data-id="#simple-shortcodes"><i class="cfa cfa-code"></i><span class="label"> <?php _e('Simple Shortcodes', 'cf-geoplugin'); ?></span></a>
                             <?php endif; ?>
-                            <a href="javascript:void(0);" class="nav-tab" data-id="#tags"><i class="cfa cfa-tag"></i><span class="label"> <?php _e('Tags', CFGP_NAME); ?></span></a>
+                            <a href="javascript:void(0);" class="nav-tab" data-id="#tags"><i class="cfa cfa-tag"></i><span class="label"> <?php _e('Tags', 'cf-geoplugin'); ?></span></a>
 							<?php if(CFGP_Options::get('enable_css')) : ?>
-                            	<a href="javascript:void(0);" class="nav-tab" data-id="#css-property"><i class="cfa cfa-css3"></i><span class="label"> <?php _e('CSS property', CFGP_NAME); ?></span></a>
+                            	<a href="javascript:void(0);" class="nav-tab" data-id="#css-property"><i class="cfa cfa-css3"></i><span class="label"> <?php _e('CSS property', 'cf-geoplugin'); ?></span></a>
                             <?php endif; ?>
                             <?php do_action('cfgp/main_page/nav-tab/after', $API, $remove_tags, $gps_keys); ?>
                         </nav>
                         <?php do_action('cfgp/main_page/tab-panel/before', $API, $remove_tags, $gps_keys); ?>
                         <div class="cfgp-tab-panel cfgp-tab-panel-active" id="shortcodes">
-                        	<p><?php _e('These are short codes available for use in places where short codes can be executed.', CFGP_NAME); ?> <?php printf(__('The use and functionality of these short codes are described in our %s.', CFGP_NAME), '<a href="https://cfgeoplugin.com/documentation/quick-start/cf-geoplugin-shortcodes" target="_blank">' . __('documentation', CFGP_NAME) . '</a>'); ?></p>
+                        	<p><?php _e('These are short codes available for use in places where short codes can be executed.', 'cf-geoplugin'); ?> <?php printf(__('The use and functionality of these short codes are described in our %s.', 'cf-geoplugin'), '<a href="https://cfgeoplugin.com/documentation/quick-start/cf-geoplugin-shortcodes" target="_blank">' . __('documentation', 'cf-geoplugin') . '</a>'); ?></p>
                             <?php if($API) : ?>
                             <table class="wp-list-table widefat fixed striped table-view-list posts table-cf-geoplugin-shortcodes">
                                 <thead>
                                     <tr>
-                                        <th><?php _e('Shortcode',CFGP_NAME); ?></th>
-                                        <th><?php _e('Return',CFGP_NAME); ?></th>
+                                        <th><?php _e('Shortcode', 'cf-geoplugin'); ?></th>
+                                        <th><?php _e('Return', 'cf-geoplugin'); ?></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -98,7 +98,7 @@ $API = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
 												}
 											?></span>
 											<?php if($API['gps'] == 1 && in_array($key, $gps_keys)) : ?>
-											<sup class="cfgp-gps-marker"><b><?php _e('GPS',CFGP_NAME); ?></b></sup>
+											<sup class="cfgp-gps-marker"><b><?php _e('GPS', 'cf-geoplugin'); ?></b></sup>
 											<?php endif; ?>
 										</td>
                                     </tr>
@@ -107,8 +107,8 @@ $API = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <th><?php _e('Shortcode',CFGP_NAME); ?></th>
-                                        <th><?php _e('Return',CFGP_NAME); ?></th>
+                                        <th><?php _e('Shortcode', 'cf-geoplugin'); ?></th>
+                                        <th><?php _e('Return', 'cf-geoplugin'); ?></th>
                                     </tr>
                                 </tfoot>
                             </table>
@@ -116,14 +116,14 @@ $API = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
                         </div>
                         <?php if(CFGP_Options::get_beta('enable_simple_shortcode')) : ?>
                             <div class="cfgp-tab-panel" id="simple-shortcodes">
-                                <p><?php _e('These are short codes available for use in places where short codes can be executed.', CFGP_NAME); ?> <?php printf(__('The use and functionality of these short codes are described in our %s.', CFGP_NAME), '<a href="https://cfgeoplugin.com/documentation/quick-start/cf-geoplugin-shortcodes" target="_blank">' . __('documentation', CFGP_NAME) . '</a>'); ?></p>
-                                <p><?php _e('These shortcodes only have the purpose to return available geo-information. You can\'t include, exclude or add default values. Just display geodata following with appropriate shortcodes.', CFGP_NAME); ?></p>
+                                <p><?php _e('These are short codes available for use in places where short codes can be executed.', 'cf-geoplugin'); ?> <?php printf(__('The use and functionality of these short codes are described in our %s.', 'cf-geoplugin'), '<a href="https://cfgeoplugin.com/documentation/quick-start/cf-geoplugin-shortcodes" target="_blank">' . __('documentation', 'cf-geoplugin') . '</a>'); ?></p>
+                                <p><?php _e('These shortcodes only have the purpose to return available geo-information. You can\'t include, exclude or add default values. Just display geodata following with appropriate shortcodes.', 'cf-geoplugin'); ?></p>
                                 <?php if($API) : ?>
                                 <table class="wp-list-table widefat fixed striped table-view-list posts table-cf-geoplugin-shortcodes">
                                     <thead>
                                         <tr>
-                                            <th><?php _e('Shortcode',CFGP_NAME); ?></th>
-                                            <th><?php _e('Return',CFGP_NAME); ?></th>
+                                            <th><?php _e('Shortcode', 'cf-geoplugin'); ?></th>
+                                            <th><?php _e('Return', 'cf-geoplugin'); ?></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -143,7 +143,7 @@ $API = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
 													}
 												?></span>
 												<?php if($API['gps'] == 1 && in_array($key, $gps_keys)) : ?>
-												<sup class="cfgp-gps-marker"><b><?php _e('GPS',CFGP_NAME); ?></b></sup>
+												<sup class="cfgp-gps-marker"><b><?php _e('GPS', 'cf-geoplugin'); ?></b></sup>
 												<?php endif; ?>
 											</td>
                                         </tr>
@@ -152,8 +152,8 @@ $API = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
                                     </tbody>
                                     <tfoot>
                                         <tr>
-                                            <th><?php _e('Shortcode',CFGP_NAME); ?></th>
-                                            <th><?php _e('Return',CFGP_NAME); ?></th>
+                                            <th><?php _e('Shortcode', 'cf-geoplugin'); ?></th>
+                                            <th><?php _e('Return', 'cf-geoplugin'); ?></th>
                                         </tr>
                                     </tfoot>
                                 </table>
@@ -161,13 +161,13 @@ $API = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
                             </div>
                         <?php endif; ?>
                         <div class="cfgp-tab-panel" id="tags">
-                       		<p><?php _e('These special tags are intended for quick insertion of geo information into pages and posts. These tags allow the use of geo information in the titles & content of pages, categories and other taxonomy. It can also be used in widgets, various page builders and supports several SEO plugins like Yoast, All in One Seo Pack, SEO Framework and WordPress SEO Plugin by Rank Math.', CFGP_NAME); ?></p>
+                       		<p><?php _e('These special tags are intended for quick insertion of geo information into pages and posts. These tags allow the use of geo information in the titles & content of pages, categories and other taxonomy. It can also be used in widgets, various page builders and supports several SEO plugins like Yoast, All in One Seo Pack, SEO Framework and WordPress SEO Plugin by Rank Math.', 'cf-geoplugin'); ?></p>
                             <?php if($API) : ?>
                             <table class="wp-list-table widefat fixed striped table-view-list posts table-cf-geoplugin-shortcodes">
                                 <thead>
                                     <tr>
-                                        <th><?php _e('Shortcode',CFGP_NAME); ?></th>
-                                        <th><?php _e('Return',CFGP_NAME); ?></th>
+                                        <th><?php _e('Shortcode', 'cf-geoplugin'); ?></th>
+                                        <th><?php _e('Return', 'cf-geoplugin'); ?></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -184,7 +184,7 @@ $API = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
 												}
 											?></span>
 											<?php if($API['gps'] == 1 && in_array($key, $gps_keys)) : ?>
-											<sup class="cfgp-gps-marker"><b><?php _e('GPS',CFGP_NAME); ?></b></sup>
+											<sup class="cfgp-gps-marker"><b><?php _e('GPS', 'cf-geoplugin'); ?></b></sup>
 											<?php endif; ?>
 										</td>
                                     </tr>
@@ -193,8 +193,8 @@ $API = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <th><?php _e('Shortcode',CFGP_NAME); ?></th>
-                                        <th><?php _e('Return',CFGP_NAME); ?></th>
+                                        <th><?php _e('Shortcode', 'cf-geoplugin'); ?></th>
+                                        <th><?php _e('Return', 'cf-geoplugin'); ?></th>
                                     </tr>
                                 </tfoot>
                             </table>
@@ -204,17 +204,17 @@ $API = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
 						<?php if(CFGP_Options::get('enable_css')) : ?>
 						<div class="cfgp-tab-panel" id="css-property">
 							
-							<p><?php _e('The CF Geo Plugin has dynamic CSS settings that can hide or display some content if you use it properly.',CFGP_NAME); ?></p>
-							<p><b><big><?php _e('How to use it?',CFGP_NAME); ?></big></b></p>
-							<p><?php _e('These CSS settings are dynamic and depend on the geolocation of the visitor.',CFGP_NAME); ?></p>
-							<p><?php printf(__('A different CSS setting is generated for each state, city, region according to the following principle: %s or %s, where the %s is actually a geo-location name in lowercase letters and multiple words separated by a minus sign.',CFGP_NAME), '<code>cfgeo-show-in-' . __('{property}',CFGP_NAME) . '</code>', '<code>cfgeo-hide-from-' . __('{property}',CFGP_NAME) . '</code>', '<code>' . __('{property}',CFGP_NAME) . '</code>'); ?></p>
-							<p><?php _e('These CSS settings you can insert inside your HTML via class attribute just like any other CSS setting.',CFGP_NAME); ?></p>
+							<p><?php _e('The CF Geo Plugin has dynamic CSS settings that can hide or display some content if you use it properly.', 'cf-geoplugin'); ?></p>
+							<p><b><big><?php _e('How to use it?', 'cf-geoplugin'); ?></big></b></p>
+							<p><?php _e('These CSS settings are dynamic and depend on the geolocation of the visitor.', 'cf-geoplugin'); ?></p>
+							<p><?php printf(__('A different CSS setting is generated for each state, city, region according to the following principle: %s or %s, where the %s is actually a geo-location name in lowercase letters and multiple words separated by a minus sign.', 'cf-geoplugin'), '<code>cfgeo-show-in-' . __('{property}', 'cf-geoplugin') . '</code>', '<code>cfgeo-hide-from-' . __('{property}', 'cf-geoplugin') . '</code>', '<code>' . __('{property}', 'cf-geoplugin') . '</code>'); ?></p>
+							<p><?php _e('These CSS settings you can insert inside your HTML via class attribute just like any other CSS setting.', 'cf-geoplugin'); ?></p>
 
 							<table class="wp-list-table widefat fixed striped table-view-list posts table-cf-geoplugin-shortcodes">
                                 <thead>
                                     <tr>
-                                        <th><?php _e('Show content',CFGP_NAME); ?></th>
-                                        <th><?php _e('Hide content',CFGP_NAME); ?></th>
+                                        <th><?php _e('Show content', 'cf-geoplugin'); ?></th>
+                                        <th><?php _e('Hide content', 'cf-geoplugin'); ?></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -243,8 +243,8 @@ $API = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <th><?php _e('Show content',CFGP_NAME); ?></th>
-                                        <th><?php _e('Hide content',CFGP_NAME); ?></th>
+                                        <th><?php _e('Show content', 'cf-geoplugin'); ?></th>
+                                        <th><?php _e('Hide content', 'cf-geoplugin'); ?></th>
                                     </tr>
                                 </tfoot>
                             </table>

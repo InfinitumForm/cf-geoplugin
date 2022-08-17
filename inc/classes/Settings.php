@@ -85,7 +85,7 @@ class CFGP_Settings extends CFGP_Global {
 	public function notices__saved(){
 		printf(
 			'<div class="notice notice-success is-dismissible"><p>%s</p></div>',
-			__('Settings saved.', CFGP_NAME)
+			__('Settings saved.', 'cf-geoplugin')
 		);
 	}
 	
@@ -95,24 +95,24 @@ class CFGP_Settings extends CFGP_Global {
 			{
 				printf(
 					'<div class="notice notice-error"><h3 style="margin: 1em 0 0 0;">%s</h3><p>%s</p></div>',
-					__('NONCE ERROR!', CFGP_NAME),
-					__('Nonce is incorrect or has expired. Please refresh the page and try again. Unable to save settings.', CFGP_NAME)
+					__('NONCE ERROR!', 'cf-geoplugin'),
+					__('Nonce is incorrect or has expired. Please refresh the page and try again. Unable to save settings.', 'cf-geoplugin')
 				);
 			}
 			else if($_GET['rstr_response'] == 'error_form')
 			{
 				printf(
 					'<div class="notice notice-error"><h3 style="margin: 1em 0 0 0;">%s</h3><p>%s</p></div>',
-					__('FORM ERROR!', CFGP_NAME),
-					__('The form was not submitted regularly. Unable to save settings.', CFGP_NAME)
+					__('FORM ERROR!', 'cf-geoplugin'),
+					__('The form was not submitted regularly. Unable to save settings.', 'cf-geoplugin')
 				);
 			}
 			else if($_GET['rstr_response'] == 'error_options')
 			{
 				printf(
 					'<div class="notice notice-error"><h3 style="margin: 1em 0 0 0;">%s</h3><p>%s</p></div>',
-					__('FORM ERROR!', CFGP_NAME),
-					__('The form was not submitted regularly. Unable to save settings.', CFGP_NAME)
+					__('FORM ERROR!', 'cf-geoplugin'),
+					__('The form was not submitted regularly. Unable to save settings.', 'cf-geoplugin')
 				);
 			}
 		else return; endif;
@@ -126,8 +126,8 @@ class CFGP_Settings extends CFGP_Global {
 		}
 		
 		$this->add_menu_page(
-			__( 'Geo Plugin', CFGP_NAME ),
-			__( 'Geo Plugin', CFGP_NAME ),
+			__( 'Geo Plugin', 'cf-geoplugin'),
+			__( 'Geo Plugin', 'cf-geoplugin'),
 			'manage_options',
 			CFGP_NAME,
 			'main_page__callback',
@@ -138,8 +138,8 @@ class CFGP_Settings extends CFGP_Global {
 		{
 			$this->add_submenu_page(
 				CFGP_NAME,
-				__('Google Map',CFGP_NAME),
-				__('Google Map',CFGP_NAME),
+				__('Google Map', 'cf-geoplugin'),
+				__('Google Map', 'cf-geoplugin'),
 				'manage_options',
 				CFGP_NAME . '-google-map',
 				'google_map__callback'
@@ -149,8 +149,8 @@ class CFGP_Settings extends CFGP_Global {
 		{
 			$this->add_submenu_page(
 				CFGP_NAME,
-				__('Site Protection',CFGP_NAME),
-				__('Site Protection',CFGP_NAME),
+				__('Site Protection', 'cf-geoplugin'),
+				__('Site Protection', 'cf-geoplugin'),
 				'manage_options',
 				CFGP_NAME . '-defender',
 				'defender__callback'
@@ -159,8 +159,8 @@ class CFGP_Settings extends CFGP_Global {
 		if(CFGP_Options::get('enable_banner', false)) {
 			$this->add_submenu_page(
 				CFGP_NAME,
-				__('Geo Banner',CFGP_NAME),
-				__('Geo Banner',CFGP_NAME),
+				__('Geo Banner', 'cf-geoplugin'),
+				__('Geo Banner', 'cf-geoplugin'),
 				'manage_options',
 				CFGP_U::admin_url('edit.php?post_type=' . CFGP_NAME . '-banner')
 			);
@@ -168,23 +168,23 @@ class CFGP_Settings extends CFGP_Global {
 		
 		$this->add_submenu_page(
 			CFGP_NAME,
-			__('Postcode',CFGP_NAME),
-			__('Postcodes',CFGP_NAME),
+			__('Postcode', 'cf-geoplugin'),
+			__('Postcodes', 'cf-geoplugin'),
 			'manage_options',
 			CFGP_U::admin_url('edit-tags.php?taxonomy=' . CFGP_NAME . '-postcode&post_type=' . CFGP_NAME . '-banner')
 		);
 		$this->add_submenu_page(
 			CFGP_NAME,
-			__('Debug Mode',CFGP_NAME),
-			__('Debug Mode',CFGP_NAME),
+			__('Debug Mode', 'cf-geoplugin'),
+			__('Debug Mode', 'cf-geoplugin'),
 			'manage_options',
 			CFGP_NAME . '-debug',
 			'debug__callback'
 		);
 		$this->add_submenu_page(
 			CFGP_NAME,
-			__('Settings',CFGP_NAME),
-			__('Settings',CFGP_NAME),
+			__('Settings', 'cf-geoplugin'),
+			__('Settings', 'cf-geoplugin'),
 			'manage_options',
 			CFGP_NAME . '-settings',
 			'settings__callback'
@@ -193,8 +193,8 @@ class CFGP_Settings extends CFGP_Global {
 		if(CFGP_License::activated()) {
 			$this->add_submenu_page(
 				CFGP_NAME,
-				__('License',CFGP_NAME),
-				__('License',CFGP_NAME),
+				__('License', 'cf-geoplugin'),
+				__('License', 'cf-geoplugin'),
 				'manage_options',
 				CFGP_NAME . '-activate',
 				'license__callback'
@@ -202,8 +202,8 @@ class CFGP_Settings extends CFGP_Global {
 		} else {		
 			$this->add_submenu_page(
 				CFGP_NAME,
-				__('Activate Unlimited',CFGP_NAME),
-				'<span class="dashicons dashicons-star-filled"></span> '.__('Activate Unlimited',CFGP_NAME),
+				__('Activate Unlimited', 'cf-geoplugin'),
+				'<span class="dashicons dashicons-star-filled"></span> '.__('Activate Unlimited', 'cf-geoplugin'),
 				'manage_options',
 				CFGP_NAME . '-activate',
 				'license__callback'
@@ -215,8 +215,8 @@ class CFGP_Settings extends CFGP_Global {
 			global $submenu;
 			
 			$this->seo_redirection_page = $this->add_menu_page(
-				__('SEO Redirection',CFGP_NAME),
-				__('SEO Redirection',CFGP_NAME),
+				__('SEO Redirection', 'cf-geoplugin'),
+				__('SEO Redirection', 'cf-geoplugin'),
 				'manage_options',
 				CFGP_NAME . '-seo-redirection',
 				'seo_redirection__callback',
@@ -227,17 +227,17 @@ class CFGP_Settings extends CFGP_Global {
 		
 			$submenu[CFGP_NAME . '-seo-redirection'] = array(
 				array(
-					__( 'SEO Redirection', CFGP_NAME ),
+					__( 'SEO Redirection', 'cf-geoplugin'),
 					'manage_options',
 					CFGP_U::admin_url('/admin.php?page=cf-geoplugin-seo-redirection')
 				),
 				array(
-					__( 'Add New', CFGP_NAME ),
+					__( 'Add New', 'cf-geoplugin'),
 					'manage_options',
 					CFGP_U::admin_url('/admin.php?page=cf-geoplugin-seo-redirection&action=new&nonce='.wp_create_nonce(CFGP_NAME.'-seo-new'))
 				),
 				array(
-					__( 'Import/Export', CFGP_NAME ),
+					__( 'Import/Export', 'cf-geoplugin'),
 					'manage_options',
 					CFGP_U::admin_url('/admin.php?page=cf-geoplugin-seo-redirection&action=import&nonce='.wp_create_nonce(CFGP_NAME.'-seo-import-csv'))
 				)
@@ -253,7 +253,7 @@ class CFGP_Settings extends CFGP_Global {
 		}
 	
 		add_screen_option( 'per_page', [
-			'label' => __( 'Devices per page', CFGP_NAME ),
+			'label' => __( 'Devices per page', 'cf-geoplugin'),
 			'default' => 20,
 			'min' => 5,
 			'max' => 1000,

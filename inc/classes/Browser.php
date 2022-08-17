@@ -95,14 +95,14 @@ if (!class_exists('CFGP_Browser')): class CFGP_Browser {
     */
     public function reset() {
         $this->_agent = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
-        $this->_browser_name = esc_html__('unknown', CFGP_NAME);
-        $this->_version = esc_html__('unknown', CFGP_NAME);
-        $this->_platform = esc_html__('unknown', CFGP_NAME);
-        $this->_os = esc_html__('unknown', CFGP_NAME);
+        $this->_browser_name = esc_html__('unknown', 'cf-geoplugin');
+        $this->_version = esc_html__('unknown', 'cf-geoplugin');
+        $this->_platform = esc_html__('unknown', 'cf-geoplugin');
+        $this->_os = esc_html__('unknown', 'cf-geoplugin');
         $this->_is_aol = false;
         $this->_is_mobile = false;
         $this->_is_robot = false;
-        $this->_aol_version = esc_html__('unknown', CFGP_NAME);
+        $this->_aol_version = esc_html__('unknown', 'cf-geoplugin');
     }
 
     /**
@@ -208,10 +208,10 @@ if (!class_exists('CFGP_Browser')): class CFGP_Browser {
     * @return string formatted string with a summary of the browser
     */
     public function __toString() {
-        return '<strong>' . esc_html__('Browser Name:', CFGP_NAME) . '</strong>' . $this->getBrowser() . '<br/>' . PHP_EOL .
-               '<strong>' . esc_html__('Browser Version:', CFGP_NAME) . '</strong>' . $this->getVersion() . '<br/>' . PHP_EOL .
-               '<strong>' . esc_html__('Browser User Agent String:', CFGP_NAME) . '</strong>' . $this->getUserAgent() . '<br/>' . PHP_EOL .
-               '<strong>' . esc_html__('Platform:', CFGP_NAME) . '</strong>' . $this->getPlatform() . '<br/>';
+        return '<strong>' . esc_html__('Browser Name:', 'cf-geoplugin') . '</strong>' . $this->getBrowser() . '<br/>' . PHP_EOL .
+               '<strong>' . esc_html__('Browser Version:', 'cf-geoplugin') . '</strong>' . $this->getVersion() . '<br/>' . PHP_EOL .
+               '<strong>' . esc_html__('Browser User Agent String:', 'cf-geoplugin') . '</strong>' . $this->getUserAgent() . '<br/>' . PHP_EOL .
+               '<strong>' . esc_html__('Platform:', 'cf-geoplugin') . '</strong>' . $this->getPlatform() . '<br/>';
     }
     /**
      * Protected routine to calculate and determine what the browser is in use (including platform)
@@ -292,7 +292,7 @@ if (!class_exists('CFGP_Browser')): class CFGP_Browser {
 
     protected function checkForAol() {
         $this->setAol(false);
-        $this->setAolVersion(esc_html__('unknown', CFGP_NAME));
+        $this->setAolVersion(esc_html__('unknown', 'cf-geoplugin'));
 
         if( stripos($this->_agent,'aol') !== false ) {
             $aversion = explode(' ',stristr($this->_agent, 'AOL'));
@@ -665,7 +665,7 @@ if (!class_exists('CFGP_Browser')): class CFGP_Browser {
                 $this->setVersion($aversion[0]);
             }
             else {
-                $this->setVersion(esc_html__('unknown', CFGP_NAME));
+                $this->setVersion(esc_html__('unknown', 'cf-geoplugin'));
             }
             $this->setBrowser(self::BROWSER_SAFARI);
             return true;
@@ -681,7 +681,7 @@ if (!class_exists('CFGP_Browser')): class CFGP_Browser {
                 $this->setVersion($aversion[0]);
             }
             else {
-                $this->setVersion(esc_html__('unknown', CFGP_NAME));
+                $this->setVersion(esc_html__('unknown', 'cf-geoplugin'));
             }
             $this->setMobile(true);
             $this->setBrowser(self::BROWSER_IPHONE);
@@ -698,7 +698,7 @@ if (!class_exists('CFGP_Browser')): class CFGP_Browser {
                 $this->setVersion($aversion[0]);
             }
             else {
-                $this->setVersion(esc_html__('unknown', CFGP_NAME));
+                $this->setVersion(esc_html__('unknown', 'cf-geoplugin'));
             }
             $this->setMobile(true);
             $this->setBrowser(self::BROWSER_IPAD);
@@ -715,7 +715,7 @@ if (!class_exists('CFGP_Browser')): class CFGP_Browser {
                 $this->setVersion($aversion[0]);
             }
             else {
-                $this->setVersion(esc_html__('unknown', CFGP_NAME));
+                $this->setVersion(esc_html__('unknown', 'cf-geoplugin'));
             }
             $this->setMobile(true);
             $this->setBrowser(self::BROWSER_IPOD);
@@ -732,7 +732,7 @@ if (!class_exists('CFGP_Browser')): class CFGP_Browser {
                 $this->setVersion($aversion[0]);
             }
             else {
-                $this->setVersion(esc_html__('unknown', CFGP_NAME));
+                $this->setVersion(esc_html__('unknown', 'cf-geoplugin'));
             }
             $this->setMobile(true);
             $this->setBrowser(self::BROWSER_ANDROID);

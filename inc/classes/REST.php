@@ -219,21 +219,21 @@ class CFGP_REST extends CFGP_Global {
 				else
 				{
 					wp_send_json(array_merge(self::$return, array(
-						'error_message' => __('Secret key is invalid.', CFGP_NAME)
+						'error_message' => __('Secret key is invalid.', 'cf-geoplugin')
 					)), 400);
 				}
 			}
 			else
 			{
 				wp_send_json(array_merge(self::$return, array(
-					'error_message' => __('API key is invalid.', CFGP_NAME)
+					'error_message' => __('API key is invalid.', 'cf-geoplugin')
 				)), 400);
 			}
 		}
 		else
 		{
 			wp_send_json(array_merge(self::$return, array(
-				'error_message' => __('Required fields are not defined.', CFGP_NAME)
+				'error_message' => __('Required fields are not defined.', 'cf-geoplugin')
 			)), 400);
 		}
 	}
@@ -306,14 +306,14 @@ class CFGP_REST extends CFGP_Global {
 			else
 			{
 				wp_send_json(array_merge(self::$return, array(
-					'error_message' => __('Access token is invalid.', CFGP_NAME)
+					'error_message' => __('Access token is invalid.', 'cf-geoplugin')
 				)), 400);
 			}
 		}
 		else
 		{
 			wp_send_json(array_merge(self::$return, array(
-				'error_message' => __('API key is invalid.', CFGP_NAME)
+				'error_message' => __('API key is invalid.', 'cf-geoplugin')
 			)), 400);
 		}
 	}
@@ -323,7 +323,7 @@ class CFGP_REST extends CFGP_Global {
 	 */
 	public function ajax__license_error(){
 		wp_send_json(array_merge(self::$return, array(
-			'error_message' => __('You do not have the appropriate CF GeoPlugin license. REST API is allowed only for the BUSINESS LICENSE.', CFGP_NAME)
+			'error_message' => __('You do not have the appropriate CF GeoPlugin license. REST API is allowed only for the BUSINESS LICENSE.', 'cf-geoplugin')
 		)), 400);
 	}
 	
@@ -399,7 +399,7 @@ class CFGP_REST extends CFGP_Global {
 						return new WP_REST_Response(array(
 							'error' => true,
 							'code' => 'not_authorized',
-							'error_message' => __('You are not authorized to access this information.', CFGP_NAME),
+							'error_message' => __('You are not authorized to access this information.', 'cf-geoplugin'),
 							'status' => 404
 						));
 					}
@@ -437,7 +437,7 @@ class CFGP_REST extends CFGP_Global {
 						return new WP_REST_Response(array(
 							'error' => true,
 							'code' => 'not_authorized',
-							'error_message' => __('You are not authorized to access this information.', CFGP_NAME),
+							'error_message' => __('You are not authorized to access this information.', 'cf-geoplugin'),
 						'key' => CFGP_U::KEY(),
 							'status' => 404
 						));
@@ -478,7 +478,7 @@ class CFGP_REST extends CFGP_Global {
 						return new WP_REST_Response(array(
 							'error' => true,
 							'code' => 'not_authorized',
-							'error_message' => __('You are not authorized to access this information.', CFGP_NAME),
+							'error_message' => __('You are not authorized to access this information.', 'cf-geoplugin'),
 							'status' => 404
 						));
 					}
@@ -490,7 +490,7 @@ class CFGP_REST extends CFGP_Global {
 							array(
 								'response' => NULL,
 								'error' => true,
-								'error_message' => __('Important parameters are missing!', CFGP_NAME),
+								'error_message' => __('Important parameters are missing!', 'cf-geoplugin'),
 								'status' => 404
 							)
 						);
@@ -575,7 +575,7 @@ class CFGP_REST extends CFGP_Global {
 						return new WP_REST_Response(array(
 							'error' => true,
 							'code' => 'not_authorized',
-							'error_message' => __('You are not authorized to access this information.', CFGP_NAME),
+							'error_message' => __('You are not authorized to access this information.', 'cf-geoplugin'),
 							'status' => 404
 						));
 					}
@@ -586,7 +586,7 @@ class CFGP_REST extends CFGP_Global {
 							array(
 								'response' => NULL,
 								'error' => true,
-								'error_message' => __('Important parameters are missing!', CFGP_NAME),
+								'error_message' => __('Important parameters are missing!', 'cf-geoplugin'),
 								'status' => 404
 							)
 						);
@@ -901,7 +901,7 @@ class CFGP_REST extends CFGP_Global {
 					return false;
 				}
 				
-			//	error_log(sprintf(__('The database table "%s" not exists! You can try to reactivate the CF Geo Plugin to correct this error.', CFGP_NAME), $wpdb->cfgp_seo_redirection));
+			//	error_log(sprintf(__('The database table "%s" not exists! You can try to reactivate the CF Geo Plugin to correct this error.', 'cf-geoplugin'), $wpdb->cfgp_seo_redirection));
 				
 				$cache = false;
 			} else {

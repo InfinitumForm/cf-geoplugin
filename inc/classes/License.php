@@ -23,19 +23,19 @@ class CFGP_License extends CFGP_Global{
 	 */
 	public static function name($sku=false){
 		$license_names = array(
-			CFGP_Defaults::BASIC_LICENSE			=> __('UNLIMITED Basic License (1 month)',CFGP_NAME),
-			CFGP_Defaults::PERSONAL_LICENSE			=> __('UNLIMITED Personal License (1 year)',CFGP_NAME),
-			CFGP_Defaults::PERSONAL_LICENSE_4Y		=> __('UNLIMITED Personal License (4 years)',CFGP_NAME),
-			CFGP_Defaults::FREELANCER_LICENSE		=> __('UNLIMITED Freelancer License (1 year)',CFGP_NAME),
-			CFGP_Defaults::FREELANCER_LICENSE_4Y	=> __('UNLIMITED Freelancer License (4 years)',CFGP_NAME),
-			CFGP_Defaults::BUSINESS_LICENSE			=> __('UNLIMITED Business License (1 year)',CFGP_NAME),
-			CFGP_Defaults::BUSINESS_LICENSE_4Y		=> __('UNLIMITED Business License (4 years)',CFGP_NAME),
-			CFGP_Defaults::LIFETIME_LICENSE			=> __('UNLIMITED Lifetime License',CFGP_NAME),
+			CFGP_Defaults::BASIC_LICENSE			=> __('UNLIMITED Basic License (1 month)', 'cf-geoplugin'),
+			CFGP_Defaults::PERSONAL_LICENSE			=> __('UNLIMITED Personal License (1 year)', 'cf-geoplugin'),
+			CFGP_Defaults::PERSONAL_LICENSE_4Y		=> __('UNLIMITED Personal License (4 years)', 'cf-geoplugin'),
+			CFGP_Defaults::FREELANCER_LICENSE		=> __('UNLIMITED Freelancer License (1 year)', 'cf-geoplugin'),
+			CFGP_Defaults::FREELANCER_LICENSE_4Y	=> __('UNLIMITED Freelancer License (4 years)', 'cf-geoplugin'),
+			CFGP_Defaults::BUSINESS_LICENSE			=> __('UNLIMITED Business License (1 year)', 'cf-geoplugin'),
+			CFGP_Defaults::BUSINESS_LICENSE_4Y		=> __('UNLIMITED Business License (4 years)', 'cf-geoplugin'),
+			CFGP_Defaults::LIFETIME_LICENSE			=> __('UNLIMITED Lifetime License', 'cf-geoplugin'),
 		);
 		
 		if( CFGP_DEV_MODE )
 		{
-			$license_names[CFGP_Defaults::DEVELOPER_LICENSE] = __('UNLIMITED Developer License', CFGP_NAME);
+			$license_names[CFGP_Defaults::DEVELOPER_LICENSE] = __('UNLIMITED Developer License', 'cf-geoplugin');
 		}
 		
 		$license_names = apply_filters('cfgp/license/names', $license_names);
@@ -296,33 +296,33 @@ class CFGP_License extends CFGP_Global{
 		if($response) 
 		{
 			$error_label = array(
-				'license_key' 	=> __('License Key',CFGP_NAME),
-				'activation_id' => __('Activation ID',CFGP_NAME),
-				'domain' 		=> __('Domain',CFGP_NAME),
-				'sku' 			=> __('SKU',CFGP_NAME),
-				'store_code'	=> __('Store Code',CFGP_NAME),
-				'no_connection'	=> __('No Connection',CFGP_NAME),
-				'api_error'		=> __('API Error',CFGP_NAME),
-				'input_field'	=> __('Input Field',CFGP_NAME)
+				'license_key' 	=> __('License Key', 'cf-geoplugin'),
+				'activation_id' => __('Activation ID', 'cf-geoplugin'),
+				'domain' 		=> __('Domain', 'cf-geoplugin'),
+				'sku' 			=> __('SKU', 'cf-geoplugin'),
+				'store_code'	=> __('Store Code', 'cf-geoplugin'),
+				'no_connection'	=> __('No Connection', 'cf-geoplugin'),
+				'api_error'		=> __('API Error', 'cf-geoplugin'),
+				'input_field'	=> __('Input Field', 'cf-geoplugin')
 			);
 			ob_start(NULL, 0, PHP_OUTPUT_HANDLER_REMOVABLE); ?>
 			
 			<?php foreach($response as $key => $obj): ?>
                 <?php if(is_numeric($key)) : $code = self::response_error_code($key); ?>
-                    <h3><?php _e('Licensing Error',CFGP_NAME); ?>: <?php echo $code['message']; ?></h3>
+                    <h3><?php _e('Licensing Error', 'cf-geoplugin'); ?>: <?php echo $code['message']; ?></h3>
                     <p><?php echo $code['info']; ?></p>
                 <?php else: ?>
-                	<h3><?php _e('Licensing Error',CFGP_NAME); ?>: <?php echo $error_label[$key]; ?></h3>
+                	<h3><?php _e('Licensing Error', 'cf-geoplugin'); ?>: <?php echo $error_label[$key]; ?></h3>
                     <ol>
                     <?php foreach($obj as $message): ?>
                         <li><?php echo $message; ?></li>
                     <?php endforeach; ?>
                     </ol>
                     <?php if($key == 'license_key'): ?>
-                        <p><?php _e('You must enter a valid license key in order to continue with licensing your plugin installation.',CFGP_NAME);?></p>
-                        <p><?php _e('Second reason why this may happen can be that you must choose a valid "License Type". If you purchase a "Personal License" and get a license key, you must enter that license key and choose license type to validate your key. If the key does not match your type you are not able to finish activation.',CFGP_NAME);?></p>
+                        <p><?php _e('You must enter a valid license key in order to continue with licensing your plugin installation.', 'cf-geoplugin');?></p>
+                        <p><?php _e('Second reason why this may happen can be that you must choose a valid "License Type". If you purchase a "Personal License" and get a license key, you must enter that license key and choose license type to validate your key. If the key does not match your type you are not able to finish activation.', 'cf-geoplugin');?></p>
                     <?php elseif($key == 'sku'): ?>
-                        <p><?php _e('One of the reasons why this may happen can be that you must choose a valid "License Type". If you purchase a "Personal License" and get a license key, you must enter that license key and choose license type to validate your key. If the key does not match your type you are not able to finish activation.',CFGP_NAME);?></p>
+                        <p><?php _e('One of the reasons why this may happen can be that you must choose a valid "License Type". If you purchase a "Personal License" and get a license key, you must enter that license key and choose license type to validate your key. If the key does not match your type you are not able to finish activation.', 'cf-geoplugin');?></p>
                     <?php endif; ?>
                 <?php endif; ?>
 			<?php endforeach; ?>
@@ -343,7 +343,7 @@ class CFGP_License extends CFGP_Global{
 		if($response) 
 		{
 			ob_start(NULL, 0, PHP_OUTPUT_HANDLER_REMOVABLE); ?>
-            <h3><?php _e('Activation succeeded', CFGP_NAME); ?></h3>
+            <h3><?php _e('Activation succeeded', 'cf-geoplugin'); ?></h3>
             <p><?php echo $response; ?></p>
 			<?php
 			CFGP_DB_Cache::delete('cfgp-license-response-success');
@@ -363,16 +363,16 @@ class CFGP_License extends CFGP_Global{
 			
 			if(empty($sku)) {
 				$input_field_error = array_merge($input_field_error, array(
-					__('You have not selected your license.',CFGP_NAME))
+					__('You have not selected your license.', 'cf-geoplugin'))
 				);
 			}
 			if(empty($license_key)) {
 				$input_field_error = array_merge($input_field_error, array(
-					__('License key field is empty.',CFGP_NAME))
+					__('License key field is empty.', 'cf-geoplugin'))
 				);	
 			}
 			$input_field_error = array_merge($input_field_error, array(
-				__('Make sure you select the license you purchased and enter the correct license key.',CFGP_NAME))
+				__('Make sure you select the license you purchased and enter the correct license key.', 'cf-geoplugin'))
 			);
 			CFGP_DB_Cache::delete('cfgp-license-response-success');
 			CFGP_DB_Cache::set('cfgp-license-response-errors', array(
@@ -402,7 +402,7 @@ class CFGP_License extends CFGP_Global{
 			CFGP_DB_Cache::delete('cfgp-license-response-success');
 			CFGP_DB_Cache::set('cfgp-license-response-errors', array(
 				'no_connection' => array(
-					__('Unable to connect to server.',CFGP_NAME)
+					__('Unable to connect to server.', 'cf-geoplugin')
 				)
 			), DAY_IN_SECONDS);
 			return false;
@@ -423,7 +423,7 @@ class CFGP_License extends CFGP_Global{
 						'api_error' => array_merge(array(
 							$response['message']
 						), array(
-							__('Make sure you select the license you purchased and enter the correct license key.',CFGP_NAME)
+							__('Make sure you select the license you purchased and enter the correct license key.', 'cf-geoplugin')
 						))
 					)
 				),
@@ -484,7 +484,7 @@ class CFGP_License extends CFGP_Global{
 			CFGP_DB_Cache::delete('cfgp-license-response-success');
 			CFGP_DB_Cache::set('cfgp-license-response-errors', array(
 				'no_connection' => array(
-					__('Unable to connect to server.',CFGP_NAME)
+					__('Unable to connect to server.', 'cf-geoplugin')
 				)
 			), DAY_IN_SECONDS);
 			return false;
@@ -527,7 +527,7 @@ class CFGP_License extends CFGP_Global{
 		CFGP_DB_Cache::delete('cfgp-license-response-success');
 		// Clear license
 		self::set(CFGP_Defaults::LICENSE);
-		CFGP_DB_Cache::set('cfgp-license-response-success', __('License successfully deactivated!',CFGP_NAME), DAY_IN_SECONDS);
+		CFGP_DB_Cache::set('cfgp-license-response-success', __('License successfully deactivated!', 'cf-geoplugin'), DAY_IN_SECONDS);
 		// Clear special API cache
 		CFGP_API::remove_cache();
 		CFGP_DB_Cache::flush();
@@ -645,60 +645,60 @@ class CFGP_License extends CFGP_Global{
 		// Error codes
 		$error_code = array(
 			1 => array(
-				'message' => __('Invalid code', CFGP_NAME),
-				'info' => __('Store code provided do not match the one set for the API.', CFGP_NAME),
+				'message' => __('Invalid code', 'cf-geoplugin'),
+				'info' => __('Store code provided do not match the one set for the API.', 'cf-geoplugin'),
 			),
 			2 => array(
-				'message' => __('Invalid license key', CFGP_NAME),
-				'info' => __('License key provided do not match the license key string format established by the API. (regex validation).', CFGP_NAME),
+				'message' => __('Invalid license key', 'cf-geoplugin'),
+				'info' => __('License key provided do not match the license key string format established by the API. (regex validation).', 'cf-geoplugin'),
 			),
 			3 => array(
-				'message' => __('Invalid license key', CFGP_NAME),
-				'info' => __('SKU provided do not match the product SKU associated with the license key.', CFGP_NAME),
+				'message' => __('Invalid license key', 'cf-geoplugin'),
+				'info' => __('SKU provided do not match the product SKU associated with the license key.', 'cf-geoplugin'),
 			),
 			4 => array(
-				'message' => __('Invalid license key', CFGP_NAME),
-				'info' => __('License key provided do not match the license key string format established by the API. (missing dash validation).', CFGP_NAME),
+				'message' => __('Invalid license key', 'cf-geoplugin'),
+				'info' => __('License key provided do not match the license key string format established by the API. (missing dash validation).', 'cf-geoplugin'),
 			),
 			5 => array(
-				'message' => __('Invalid license key', CFGP_NAME),
-				'info' => __('License key provided was not found in the database.', CFGP_NAME),
+				'message' => __('Invalid license key', 'cf-geoplugin'),
+				'info' => __('License key provided was not found in the database.', 'cf-geoplugin'),
 			),
 			100 => array(
-				'message' => __('Required', CFGP_NAME),
-				'info' => __('No SKU was provided in the request.', CFGP_NAME),
+				'message' => __('Required', 'cf-geoplugin'),
+				'info' => __('No SKU was provided in the request.', 'cf-geoplugin'),
 			),
 			101 => array(
-				'message' => __('Required', CFGP_NAME),
-				'info' => __('No license key code was provided in the request.', CFGP_NAME),
+				'message' => __('Required', 'cf-geoplugin'),
+				'info' => __('No license key code was provided in the request.', 'cf-geoplugin'),
 			),
 			102 => array(
-				'message' => __('Required', CFGP_NAME),
-				'info' => __('No store code was provided in the request.', CFGP_NAME),
+				'message' => __('Required', 'cf-geoplugin'),
+				'info' => __('No store code was provided in the request.', 'cf-geoplugin'),
 			),
 			103 => array(
-				'message' => __('Required', CFGP_NAME),
-				'info' => __('No activation ID was provided in the request.', CFGP_NAME),
+				'message' => __('Required', 'cf-geoplugin'),
+				'info' => __('No activation ID was provided in the request.', 'cf-geoplugin'),
 			),
 			104 => array(
-				'message' => __('Required', CFGP_NAME),
-				'info' => __('No domain was provided in the request.', CFGP_NAME),
+				'message' => __('Required', 'cf-geoplugin'),
+				'info' => __('No domain was provided in the request.', 'cf-geoplugin'),
 			),
 			200 => array(
-				'message' => __('License key has expired', CFGP_NAME),
-				'info' => __('License key provided has expired.', CFGP_NAME),
+				'message' => __('License key has expired', 'cf-geoplugin'),
+				'info' => __('License key provided has expired.', 'cf-geoplugin'),
 			),
 			201 => array(
-				'message' => __('License key activation limit reached. Deactivate one of the registered activations to proceed', CFGP_NAME),
-				'info' => __('License key provided has reached the limit of activations allowed.', CFGP_NAME),
+				'message' => __('License key activation limit reached. Deactivate one of the registered activations to proceed', 'cf-geoplugin'),
+				'info' => __('License key provided has reached the limit of activations allowed.', 'cf-geoplugin'),
 			),
 			202 => array(
-				'message' => __('License key domain activation limit reached. Deactivate one or more of the registered activations to proceed', CFGP_NAME),
-				'info' => __('License key provided has reached the domain limit allowed.', CFGP_NAME),
+				'message' => __('License key domain activation limit reached. Deactivate one or more of the registered activations to proceed', 'cf-geoplugin'),
+				'info' => __('License key provided has reached the domain limit allowed.', 'cf-geoplugin'),
 			),
 			203 => array(
-				'message' => __('Invalid activation', CFGP_NAME),
-				'info' => __('Activation ID provided was not found.', CFGP_NAME),
+				'message' => __('Invalid activation', 'cf-geoplugin'),
+				'info' => __('Activation ID provided was not found.', 'cf-geoplugin'),
 			),
 		);
 		
@@ -709,8 +709,8 @@ class CFGP_License extends CFGP_Global{
 		
 		// Not found
 		return array(
-			'message' => __('Undefined error', CFGP_NAME),
-			'info' => __('This error is not defined and you need to contact the author of the plugin for more information.', CFGP_NAME),
+			'message' => __('Undefined error', 'cf-geoplugin'),
+			'info' => __('This error is not defined and you need to contact the author of the plugin for more information.', 'cf-geoplugin'),
 		);
 	}
 	

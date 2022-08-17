@@ -312,50 +312,6 @@ class CFGP_IP extends CFGP_Global {
 				return CFGP_Cache::set('IP-server', $ip);
 			}
 		}
-		// Running CLI
-		if(stristr(PHP_OS, 'WIN'))
-		{
-			if(function_exists('shell_exec'))
-			{
-				if(file_exists(CFGP_SHELL . '/win_find_server_ip.cmd') && is_executable(CFGP_SHELL . '/win_find_server_ip.cmd'))
-				{
-					if($ips = shell_exec(CFGP_SHELL . '/win_find_server_ip.cmd'))
-					{
-						$ips = preg_split('/[\s\n\r]+/', $ips);
-						$ips = array_filter($ips);
-						
-						if(!empty($ips))
-						{
-							$ip = end($ips);
-							if(self::validate_any($ip) !== false) {
-								return CFGP_Cache::set('IP-server', $ip);
-							}
-						}
-					}
-				}
-			}
-		}
-		else 
-		{
-			if(function_exists('shell_exec'))
-			{
-				if(file_exists(CFGP_SHELL . '/unix_find_server_ip.sh') && is_executable(CFGP_SHELL . '/unix_find_server_ip.sh'))
-				{
-					if($ips = shell_exec(CFGP_SHELL . '/unix_find_server_ip.sh'))
-					{
-						$ips = preg_split('/[\s\n\r]+/', $ips);
-						$ips = array_filter($ips);
-						
-						if(!empty($ips))
-						{
-							$ip = end($ips);
-							if(self::validate_any($ip) !== false)
-								return CFGP_Cache::set('IP-server', $ip);
-						}
-					}
-				}
-			}
-		}
 		
 		if (version_compare(PHP_VERSION, '5.3.0', '>=') && function_exists('gethostname')) {
 			$gethostname = preg_replace(array('~https?:\/\/~','~^w{3}\.~'),'',gethostbyname(gethostname()));

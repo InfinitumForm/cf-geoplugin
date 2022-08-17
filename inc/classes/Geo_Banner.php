@@ -173,22 +173,22 @@ LIMIT 1
 		
 		$projects   = array(
 			'labels'				=> array(
-				'name'               		=> __( 'Geo Banner',CFGP_NAME ),
-				'singular_name'      		=> __( 'Geo Banner',CFGP_NAME ),
-				'add_new'            		=> __( 'Add New Banner',CFGP_NAME),
-				'add_new_item'       		=> __( "Add New Banner",CFGP_NAME),
-				'edit_item'          		=> __( "Edit Banner",CFGP_NAME),
-				'new_item'           		=> __( "New Banner",CFGP_NAME),
-				'view_item'          		=> __( "View Banner",CFGP_NAME),
-				'search_items'       		=> __( "Search Banner",CFGP_NAME),
-				'not_found'          		=> __( 'No Banner Found',CFGP_NAME),
-				'not_found_in_trash' 		=> __( 'No Banner Found in Trash',CFGP_NAME),
+				'name'               		=> __( 'Geo Banner', 'cf-geoplugin'),
+				'singular_name'      		=> __( 'Geo Banner', 'cf-geoplugin'),
+				'add_new'            		=> __( 'Add New Banner', 'cf-geoplugin'),
+				'add_new_item'       		=> __( "Add New Banner", 'cf-geoplugin'),
+				'edit_item'          		=> __( "Edit Banner", 'cf-geoplugin'),
+				'new_item'           		=> __( "New Banner", 'cf-geoplugin'),
+				'view_item'          		=> __( "View Banner", 'cf-geoplugin'),
+				'search_items'       		=> __( "Search Banner", 'cf-geoplugin'),
+				'not_found'          		=> __( 'No Banner Found', 'cf-geoplugin'),
+				'not_found_in_trash' 		=> __( 'No Banner Found in Trash', 'cf-geoplugin'),
 				'parent_item_colon'  		=> '',
-				'featured_image'	 		=> __('Banner Image',CFGP_NAME),
-				'set_featured_image'		=> __('Select Banner Image',CFGP_NAME),
-				'remove_featured_image'		=> __('Remove Banner Image',CFGP_NAME),
-				'use_featured_image'		=> __('Use Banner Image',CFGP_NAME),
-				'insert_into_item'			=> __('Insert Into Banner',CFGP_NAME)
+				'featured_image'	 		=> __('Banner Image', 'cf-geoplugin'),
+				'set_featured_image'		=> __('Select Banner Image', 'cf-geoplugin'),
+				'remove_featured_image'		=> __('Remove Banner Image', 'cf-geoplugin'),
+				'use_featured_image'		=> __('Use Banner Image', 'cf-geoplugin'),
+				'insert_into_item'			=> __('Insert Into Banner', 'cf-geoplugin')
 			),
 			'public'            	=> true,
 			'exclude_from_search'	=> true,
@@ -288,8 +288,8 @@ LIMIT 1
 		$url=CFGP_U::parse_url();
 		if(strpos($url['url'],'post_type=cf-geoplugin-banner')!==false)
 		{
-			$column_name['cf_geo_banner_shortcode'] = __('Shortcode',CFGP_NAME);
-			$column_name['cf_geo_banner_locations'] = __('Locations',CFGP_NAME);
+			$column_name['cf_geo_banner_shortcode'] = __('Shortcode', 'cf-geoplugin');
+			$column_name['cf_geo_banner_locations'] = __('Locations', 'cf-geoplugin');
 		}
 		return $column_name;
 	}
@@ -307,8 +307,8 @@ LIMIT 1
 			if ($column_name == 'cf_geo_banner_shortcode')
 			{
 				echo '<ul>';
-				echo '<li><strong>' . __('Standard',CFGP_NAME) . ':</strong><br><code>[cfgeo_banner id="' . $post_ID . '"]</code></li>';
-				echo '<li><strong>' . __('Advanced',CFGP_NAME) . ':</strong><br><code>[cfgeo_banner id="' . $post_ID . '"]' . __('Default content', CFGP_NAME) . '[/cfgeo_banner]</code></li>';
+				echo '<li><strong>' . __('Standard', 'cf-geoplugin') . ':</strong><br><code>[cfgeo_banner id="' . $post_ID . '"]</code></li>';
+				echo '<li><strong>' . __('Advanced', 'cf-geoplugin') . ':</strong><br><code>[cfgeo_banner id="' . $post_ID . '"]' . __('Default content', 'cf-geoplugin') . '[/cfgeo_banner]</code></li>';
 				echo '</ul>';
 			}
 			else if ($column_name == 'cf_geo_banner_locations')
@@ -316,10 +316,10 @@ LIMIT 1
 				$print=array();
 				
 				foreach(array(
-					__('Countries',CFGP_NAME)	=>	'country',
-					__('Regions',CFGP_NAME)		=>	'region',
-					__('Cities',CFGP_NAME)		=>	'city',
-					__('Postcodes',CFGP_NAME)	=>	'postcode'
+					__('Countries', 'cf-geoplugin')	=>	'country',
+					__('Regions', 'cf-geoplugin')		=>	'region',
+					__('Cities', 'cf-geoplugin')		=>	'city',
+					__('Postcodes', 'cf-geoplugin')	=>	'postcode'
 				) as $name=>$field)
 				{
 					$get_post_meta = get_post_meta($post_ID, "cfgp-banner-location-{$field}", true);
@@ -346,10 +346,10 @@ LIMIT 1
 				{
 					// list taxonomies
 					foreach(array(
-						__('Countries',CFGP_NAME)	=>	'cf-geoplugin-country',
-						__('Regions',CFGP_NAME)		=>	'cf-geoplugin-region',
-						__('Cities',CFGP_NAME)		=>	'cf-geoplugin-city',
-						__('Postcode',CFGP_NAME)	=>	'cf-geoplugin-postcode'
+						__('Countries', 'cf-geoplugin')	=>	'cf-geoplugin-country',
+						__('Regions', 'cf-geoplugin')		=>	'cf-geoplugin-region',
+						__('Cities', 'cf-geoplugin')		=>	'cf-geoplugin-city',
+						__('Postcode', 'cf-geoplugin')	=>	'cf-geoplugin-postcode'
 					) as $name=>$taxonomy)
 					{
 						// list all terms
@@ -376,7 +376,7 @@ LIMIT 1
 				}
 				else
 				{
-					echo '( ' . __('undefined',CFGP_NAME) . ' )';
+					echo '( ' . __('undefined', 'cf-geoplugin') . ' )';
 				}
 			}
 		}
@@ -390,7 +390,7 @@ LIMIT 1
 		if(isset( $screen->post_type ) && $screen->post_type === 'cf-geoplugin-banner'){
 			$this->add_meta_box(
 				CFGP_NAME . '-banner-default-content',					// Unique ID
-				__('Geo Banner default content', CFGP_NAME),			// Box title
+				__('Geo Banner default content', 'cf-geoplugin'),			// Box title
 				'add_meta_box__default_content',						// Content callback, must be of type callable
 				'cf-geoplugin-banner',									// Post type
 				'advanced',
@@ -399,7 +399,7 @@ LIMIT 1
 			
 			$this->add_meta_box(
 				CFGP_NAME . '-banner-sc',			// Unique ID
-				__( 'Shortcodes', CFGP_NAME ),		// Box title
+				__( 'Shortcodes', 'cf-geoplugin'),		// Box title
 				'add_meta_box__shortcode',			// Content callback, must be of type callable
 				'cf-geoplugin-banner',				// Post type
 				'advanced',
@@ -407,7 +407,7 @@ LIMIT 1
 			);
 			$this->add_meta_box(
 				CFGP_NAME . '-banner-settings',		// Unique ID
-				__( 'Settings', CFGP_NAME ),		// Box title
+				__( 'Settings', 'cf-geoplugin'),		// Box title
 				'add_meta_box__settings',			// Content callback, must be of type callable
 				'cf-geoplugin-banner',				// Post type
 				'side'
@@ -426,7 +426,7 @@ LIMIT 1
 			$banner = get_post_meta( $post->ID, CFGP_METABOX . 'banner_default', true );
 		}
 		?>
-<p style="color:#550000;"><?php _e( 'This content is shown only when the selected location is not found. This means that anyone who is not from the set location will see this content.', CFGP_NAME ); ?></p>
+<p style="color:#550000;"><?php _e( 'This content is shown only when the selected location is not found. This means that anyone who is not from the set location will see this content.', 'cf-geoplugin'); ?></p>
 <?php wp_editor( $banner, 'cfgp-banner-default-content', $settings = array('textarea_name'=>'cfgp-banner-default-content') );
 	}
 	
@@ -439,25 +439,25 @@ LIMIT 1
 
 		// Get old taxonomies from the prevous version and merge with new one
 		$taxonomy_list = array(
-			__('Select Countries',CFGP_NAME)	=>	array(
+			__('Select Countries', 'cf-geoplugin')	=>	array(
 				'taxonomy' => 'cf-geoplugin-country',
 				'post_meta' => 'cfgp-banner-location',
 				'field' => 'country',
 				'function' => 'select_countries'
 			),
-			__('Select Regions',CFGP_NAME)	=>	array(
+			__('Select Regions', 'cf-geoplugin')	=>	array(
 				'taxonomy' => 'cf-geoplugin-region',
 				'post_meta' => 'cfgp-banner-location',
 				'field' => 'region',
 				'function' => 'select_regions'
 			),
-			__('Select Cites',CFGP_NAME)		=>	array(
+			__('Select Cites', 'cf-geoplugin')		=>	array(
 				'taxonomy' => 'cf-geoplugin-city',
 				'post_meta' => 'cfgp-banner-location',
 				'field' => 'city',
 				'function' => 'select_cities'
 			),
-			__('Select Postcodes',CFGP_NAME)		=>	array(
+			__('Select Postcodes', 'cf-geoplugin')		=>	array(
 				'taxonomy' => 'cf-geoplugin-postcode',
 				'post_meta' => 'cfgp-banner-location',
 				'field' => 'postcode',
@@ -511,9 +511,9 @@ LIMIT 1
     public function add_meta_box__shortcode( $post )
     {
         echo '<ul>';
-        echo '<li><strong>' . __('Standard',CFGP_NAME) . ':</strong><br><code>[cfgeo_banner id="'.$post->ID.'"]</code></li>';
-        echo '<li><strong>' . __('Advanced',CFGP_NAME) . ':</strong><br><code>[cfgeo_banner id="'.$post->ID.'"]' . __('Default content',CFGP_NAME) . '[/cfgeo_banner]</code></li>';
-		echo '<li><strong>' . __('Enable Cache',CFGP_NAME) . ':</strong><br><code>[cfgeo_banner id="'.$post->ID.'" cache]' . __('Default content',CFGP_NAME) . '[/cfgeo_banner]</code></li>';
+        echo '<li><strong>' . __('Standard', 'cf-geoplugin') . ':</strong><br><code>[cfgeo_banner id="'.$post->ID.'"]</code></li>';
+        echo '<li><strong>' . __('Advanced', 'cf-geoplugin') . ':</strong><br><code>[cfgeo_banner id="'.$post->ID.'"]' . __('Default content', 'cf-geoplugin') . '[/cfgeo_banner]</code></li>';
+		echo '<li><strong>' . __('Enable Cache', 'cf-geoplugin') . ':</strong><br><code>[cfgeo_banner id="'.$post->ID.'" cache]' . __('Default content', 'cf-geoplugin') . '[/cfgeo_banner]</code></li>';
         echo '</ul>';
     }
 	

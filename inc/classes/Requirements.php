@@ -36,13 +36,13 @@ if(!class_exists('CFGP_Requirements')) : class CFGP_Requirements {
 		
 		$this->required_php_extensions = array(
 			'curl_version' => (object)array(
-				'name' => esc_html( 'cURL', CFGP_NAME),
-				'desc' => esc_html( 'cURL PHP extension', CFGP_NAME),
+				'name' => esc_html( 'cURL', 'cf-geoplugin'),
+				'desc' => esc_html( 'cURL PHP extension', 'cf-geoplugin'),
 				'link' => esc_url('https://www.php.net/manual/en/curl.installation.php')
 			),
 			'mb_substr' => (object)array(
-				'name' => esc_html( 'Multibyte String', CFGP_NAME),
-				'desc' => esc_html( 'Multibyte String PHP extension (mbstring)', CFGP_NAME),
+				'name' => esc_html( 'Multibyte String', 'cf-geoplugin'),
+				'desc' => esc_html( 'Multibyte String PHP extension (mbstring)', 'cf-geoplugin'),
 				'link' => esc_url('https://www.php.net/manual/en/mbstring.installation.php')
 			)
 		);
@@ -58,12 +58,12 @@ if(!class_exists('CFGP_Requirements')) : class CFGP_Requirements {
 		if( version_compare($current_db_version, CFGP_DATABASE_VERSION, '!=') ) {
 			add_action( 'admin_notices', function () {
 				echo '<div class="notice notice-info" id="cf-geoplugin-database-update">';
-					echo '<p><strong>'.sprintf(__('%1$s database update required!', CFGP_NAME), esc_html( $this->title ), esc_html( CFGP_DATABASE_VERSION )).'</strong></p>';
-					echo '<p>'.sprintf(__('%1$s has been updated! To keep things running smoothly, we have to update your database to the newest version.', CFGP_NAME), esc_html( $this->title ), esc_html( CFGP_DATABASE_VERSION )).'</p>';
+					echo '<p><strong>'.sprintf(__('%1$s database update required!', 'cf-geoplugin'), esc_html( $this->title ), esc_html( CFGP_DATABASE_VERSION )).'</strong></p>';
+					echo '<p>'.sprintf(__('%1$s has been updated! To keep things running smoothly, we have to update your database to the newest version.', 'cf-geoplugin'), esc_html( $this->title ), esc_html( CFGP_DATABASE_VERSION )).'</p>';
 					echo '<p class="submit"><a href="'.add_query_arg([
 						'cf_geoplugin_db_update' => 'true',
 						'cf_geoplugin_nonce' => wp_create_nonce('cf_geoplugin_db_update')
-					]).'" class="button button-primary">'.__('Update Database', CFGP_NAME).'</a></p>';
+					]).'" class="button button-primary">'.__('Update Database', 'cf-geoplugin').'</a></p>';
 				echo '</div>';
 			} );
 			return false;
@@ -81,8 +81,8 @@ if(!class_exists('CFGP_Requirements')) : class CFGP_Requirements {
 					deactivate_plugins( plugin_basename( $this->file ) );
 					wp_mail(
 						get_option('admin_email'),
-						sprintf(__('NOTICE: The %s is disabled for some reason!', CFGP_NAME), $this->title),
-						sprintf(__("There has been some incompatibility with your server and %s is disabled.\r\n\r\nPlease visit your admin panel, go to plugins page and check what is causing this problem.", CFGP_NAME), $this->title)
+						sprintf(__('NOTICE: The %s is disabled for some reason!', 'cf-geoplugin'), $this->title),
+						sprintf(__("There has been some incompatibility with your server and %s is disabled.\r\n\r\nPlease visit your admin panel, go to plugins page and check what is causing this problem.", 'cf-geoplugin'), $this->title)
 					);
 				}
 			} );
@@ -107,15 +107,15 @@ if(!class_exists('CFGP_Requirements')) : class CFGP_Requirements {
 		
 		add_action( 'admin_notices', function () {
 			echo '<div class="notice notice-error">';
-			printf('<p><strong>%s</strong></p><ol>', sprintf(__('%s requires the following PHP modules (extensions) to be activated:', CFGP_NAME), $this->title));
+			printf('<p><strong>%s</strong></p><ol>', sprintf(__('%s requires the following PHP modules (extensions) to be activated:', 'cf-geoplugin'), $this->title));
 			foreach($this->required_php_extensions as $fn => $obj) {
 				if( !function_exists($fn) ) {
-					printf('<li>%1$s - <a href="%2s" target="_blank">%3$s</a></li>', $obj->desc, $obj->link, __('install', CFGP_NAME));
+					printf('<li>%1$s - <a href="%2s" target="_blank">%3$s</a></li>', $obj->desc, $obj->link, __('install', 'cf-geoplugin'));
 				}
 			}
 			echo '</ol>';
-			printf('<p>%s</p>', __('Without these PHP modules you will not be able to use this plugin.', CFGP_NAME));
-			printf('<p>%s</p>', __('Your hosting providers can help you to solve this problem. Contact them and request activation of the missing PHP modules.', CFGP_NAME));
+			printf('<p>%s</p>', __('Without these PHP modules you will not be able to use this plugin.', 'cf-geoplugin'));
+			printf('<p>%s</p>', __('Your hosting providers can help you to solve this problem. Contact them and request activation of the missing PHP modules.', 'cf-geoplugin'));
 			echo '</div>';
 		} );
 		
@@ -131,7 +131,7 @@ if(!class_exists('CFGP_Requirements')) : class CFGP_Requirements {
 		} else {
 			add_action( 'admin_notices', function () {
 				echo '<div class="notice notice-error">';
-				echo '<p>'.sprintf(__('The %1$s cannot run on PHP versions older than PHP %2$s. Please contact your host and ask them to upgrade.', CFGP_NAME), esc_html( $this->title ), $this->php).'</p>';
+				echo '<p>'.sprintf(__('The %1$s cannot run on PHP versions older than PHP %2$s. Please contact your host and ask them to upgrade.', 'cf-geoplugin'), esc_html( $this->title ), $this->php).'</p>';
 				echo '</div>';
 			} );
 			return false;
@@ -147,7 +147,7 @@ if(!class_exists('CFGP_Requirements')) : class CFGP_Requirements {
 		} else {
 			add_action( 'admin_notices', function () {
 				echo '<div class="notice notice-error">';
-				echo '<p>'.sprintf(__('The %1$s cannot run on WordPress versions older than %2$s. Please update your WordPress installation.', CFGP_NAME), esc_html( $this->title ), $this->wp).'</p>';
+				echo '<p>'.sprintf(__('The %1$s cannot run on WordPress versions older than %2$s. Please update your WordPress installation.', 'cf-geoplugin'), esc_html( $this->title ), $this->wp).'</p>';
 				echo '</div>';
 			} );
 			return false;
@@ -184,7 +184,7 @@ font-weight:600;
 /* ]]> */
 </style>
 <div class="cf-geoplugin-upgrade-notice">
-<h3><?php printf(__('Important upgrade notice for the version %s:', CFGP_NAME), $response->new_version); ?></h3>
+<h3><?php printf(__('Important upgrade notice for the version %s:', 'cf-geoplugin'), $response->new_version); ?></h3>
 <div class="cf-geoplugin-upgrade-notice-list">
 	<?php echo str_replace(
 		array(
@@ -198,7 +198,7 @@ font-weight:600;
 	); ?>
 </div>
 <div class="cf-geoplugin-upgrade-notice-info">
-	<?php _e('NOTE: Before doing the update, it would be a good idea to backup your WordPress installations and settings.', CFGP_NAME); ?>
+	<?php _e('NOTE: Before doing the update, it would be a good idea to backup your WordPress installations and settings.', 'cf-geoplugin'); ?>
 </div>
 </div> 
 		<?php endif;

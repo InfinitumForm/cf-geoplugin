@@ -77,7 +77,7 @@ class CFGP_Notifications extends CFGP_Global{
 		$reviewurl = esc_url( 'https://wordpress.org/support/plugin/cf-geoplugin/reviews/?filter=5#new-post' );
 	 
 		printf(
-			'<div class="notice notice-info"><h3>'.__('You have been using <b> %1$s </b> plugin for a while. We hope you liked it!', CFGP_NAME).'</h3><p>'.__('Please give us a quick rating, it works as a boost for us to keep working on the plugin!', CFGP_NAME).'</p><p class="void-review-btn"><a href="%2$s" class="button button-primary" target="_blank">'.__('Rate Now!', CFGP_NAME).'</a> &nbsp;&nbsp;<a href="%3$s" class="void-grid-review-done">'.__('I\'ve already done that!', CFGP_NAME).'</a></p></div>',
+			'<div class="notice notice-info"><h3>'.__('You have been using <b> %1$s </b> plugin for a while. We hope you liked it!', 'cf-geoplugin').'</h3><p>'.__('Please give us a quick rating, it works as a boost for us to keep working on the plugin!', 'cf-geoplugin').'</p><p class="void-review-btn"><a href="%2$s" class="button button-primary" target="_blank">'.__('Rate Now!', 'cf-geoplugin').'</a> &nbsp;&nbsp;<a href="%3$s" class="void-grid-review-done">'.__('I\'ve already done that!', 'cf-geoplugin').'</a></p></div>',
 			$plugin_info['Name'],
 			$reviewurl,
 			$dont_disturb
@@ -106,23 +106,23 @@ class CFGP_Notifications extends CFGP_Global{
 		if( is_numeric($lookup) && $lookup <= 100 && $lookup > 1 && $emails )
 		{		
 			$message = array();
-			$message[]= '<p>' . __('Hi there,', CFGP_NAME) . '</p>';
-			$message[]= '<p>' . __('Your lookup will expire soon and geo plugin services will be unavailable until the next day.', CFGP_NAME) . '</p>';
+			$message[]= '<p>' . __('Hi there,', 'cf-geoplugin') . '</p>';
+			$message[]= '<p>' . __('Your lookup will expire soon and geo plugin services will be unavailable until the next day.', 'cf-geoplugin') . '</p>';
 			$message[]= '<p>' . sprintf(
-				__('If your site has a large traffic and you need the full functionality of the plugin, you need to get the appropriate license and activate the %1$s.', CFGP_NAME),
-				'<a href="' . CFGP_STORE . '/pricing/" target="_blank">' . __('UNLIMITED LOOKUP.', CFGP_NAME) . '</a>'
+				__('If your site has a large traffic and you need the full functionality of the plugin, you need to get the appropriate license and activate the %1$s.', 'cf-geoplugin'),
+				'<a href="' . CFGP_STORE . '/pricing/" target="_blank">' . __('UNLIMITED LOOKUP.', 'cf-geoplugin') . '</a>'
 			) . '</p>';
 			$message[]= '<p>' . sprintf(
-				__('You currently have %1$d lookups left for today and if you want to have an unlimited lookup, you need to %s.', CFGP_NAME),
+				__('You currently have %1$d lookups left for today and if you want to have an unlimited lookup, you need to %s.', 'cf-geoplugin'),
 				$lookup,
-				'<a href="' . CFGP_STORE . '/pricing/" target="_blank">' . __('extend your license', CFGP_NAME) . '</a>'
+				'<a href="' . CFGP_STORE . '/pricing/" target="_blank">' . __('extend your license', 'cf-geoplugin') . '</a>'
 			) . '</p>';
 			
 			$message = apply_filters('cfgp/notification/message/body/expire_soon', $message);
 
 			$this->send(
 				$emails,
-				__('CF GEO PLUGIN NOTIFICATION - Today\'s lookup expires soon', CFGP_NAME),
+				__('CF GEO PLUGIN NOTIFICATION - Today\'s lookup expires soon', 'cf-geoplugin'),
 				$message
 			);
 			CFGP_DB_Cache::set($transient, CFGP_TIME, DAY_IN_SECONDS); // 24 hours
@@ -576,7 +576,7 @@ class CFGP_Notifications extends CFGP_Global{
     </style>
   </head>
   <body class="">
-	<span class="preheader"><?php printf(__('If you no longer wish to receive these notifications, please read how to %1$s.', CFGP_NAME), '<a href="' . CFGP_STORE . '/documentation/advanced-usage/php-integration/constants/cfgp_disable_notification/" target="_blank">' . __('disable this notifications', CFGP_NAME) . '</a>'); ?></span>
+	<span class="preheader"><?php printf(__('If you no longer wish to receive these notifications, please read how to %1$s.', 'cf-geoplugin'), '<a href="' . CFGP_STORE . '/documentation/advanced-usage/php-integration/constants/cfgp_disable_notification/" target="_blank">' . __('disable this notifications', 'cf-geoplugin') . '</a>'); ?></span>
     <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="body">
       <tr>
         <td>&nbsp;</td>
@@ -608,18 +608,18 @@ class CFGP_Notifications extends CFGP_Global{
               <table role="presentation" border="0" cellpadding="0" cellspacing="0">
                 <tr>
                   <td class="content-block">
-                    <span class="apple-link"><?php printf(__('This email is automatically sent by CF Geo Plugin via site %1$s.', CFGP_NAME), '<a href="' . get_bloginfo('url') . '" target="_blank">' . get_bloginfo('name') . '</a>'); ?><br>
-					<a href="<?php echo CFGP_STORE ?>/privacy-policy/" target="_blank"><?php _e('Privacy Policy', CFGP_NAME); ?></a> | <a href="<?php echo CFGP_STORE ?>/terms-and-conditions/" target="_blank"><?php _e('Terms And Conditions', CFGP_NAME); ?></a> | <a href="<?php echo CFGP_STORE ?>/documentation/" target="_blank"><?php _e('Documentation', CFGP_NAME); ?></a> | <a href="<?php echo CFGP_STORE ?>/contact-and-support/" target="_blank"><?php _e('Contact & Support', CFGP_NAME); ?></a></span>
+                    <span class="apple-link"><?php printf(__('This email is automatically sent by CF Geo Plugin via site %1$s.', 'cf-geoplugin'), '<a href="' . get_bloginfo('url') . '" target="_blank">' . get_bloginfo('name') . '</a>'); ?><br>
+					<a href="<?php echo CFGP_STORE ?>/privacy-policy/" target="_blank"><?php _e('Privacy Policy', 'cf-geoplugin'); ?></a> | <a href="<?php echo CFGP_STORE ?>/terms-and-conditions/" target="_blank"><?php _e('Terms And Conditions', 'cf-geoplugin'); ?></a> | <a href="<?php echo CFGP_STORE ?>/documentation/" target="_blank"><?php _e('Documentation', 'cf-geoplugin'); ?></a> | <a href="<?php echo CFGP_STORE ?>/contact-and-support/" target="_blank"><?php _e('Contact & Support', 'cf-geoplugin'); ?></a></span>
                   </td>
                 </tr>
                 <tr>
                   <td class="content-block powered-by">
-                    <?php printf(__('Powered by  %1$s.', CFGP_NAME), '<a href="' . CFGP_STORE . '" target="_blank">CF Geo Plugin</a>'); ?>
+                    <?php printf(__('Powered by  %1$s.', 'cf-geoplugin'), '<a href="' . CFGP_STORE . '" target="_blank">CF Geo Plugin</a>'); ?>
                   </td>
                 </tr>
 				<tr>
                   <td class="content-block powered-by"><br><br>
-                    <?php printf(__('If you no longer wish to receive these notifications, please read how to %1$s.', CFGP_NAME), '<a href="' . CFGP_STORE . '/documentation/advanced-usage/php-integration/constants/cfgp_disable_notification/" target="_blank">' . __('disable this notifications', CFGP_NAME) . '</a>'); ?>
+                    <?php printf(__('If you no longer wish to receive these notifications, please read how to %1$s.', 'cf-geoplugin'), '<a href="' . CFGP_STORE . '/documentation/advanced-usage/php-integration/constants/cfgp_disable_notification/" target="_blank">' . __('disable this notifications', 'cf-geoplugin') . '</a>'); ?>
                   </td>
                 </tr>
               </table>

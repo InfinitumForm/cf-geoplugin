@@ -4,12 +4,6 @@
  *
  * Geo Controller
  *
- * @package           cf-geoplugin
- * @link              https://github.com/CreativForm/cf-geoplugin
- * @author            Ivijan-Stefan Stipic <ivijan.stefan@gmail.com>
- * @copyright         2014-2022 Ivijan-Stefan Stipic
- * @license           GPL v2 or later
- *
  * Plugin Name:       Geo Controller
  * Plugin URI:        https://cfgeoplugin.com/
  * Description:       Create Dynamic Content, Banners and Images on Your Website Based On Visitor Geo Location By Using Shortcodes With CF Geo Plugin.

@@ -82,29 +82,6 @@ if (!class_exists('CFGP_OS')):
         */
         public static function is_os64()
         {
-            // Let's ask system directly
-            if (function_exists('shell_exec'))
-            {
-                if (self::is_win())
-                {
-                    // Is Windows OS
-                    $shell = shell_exec('wmic os get osarchitecture');
-                    if (!empty($shell))
-                    {
-                        if (strpos($shell, '64') !== false) return true;
-                    }
-                }
-                else
-                {
-                    // Let's check some UNIX approach if is possible
-                    $shell = shell_exec('uname -m');
-                    if (!empty($shell))
-                    {
-                        if (strpos($shell, '64') !== false) return true;
-                    }
-                }
-            }
-
             // Check if PHP is 64 bit vesion (PHP 64bit only running on 64bit OS version)
             $is_php64 = self::is_php64();
             if ($is_php64) return true;
@@ -136,10 +113,12 @@ if (!class_exists('CFGP_OS')):
 			$os_array = array();
             if (empty($user_agent))
             {
-                if (function_exists('php_uname')) $user_agent = php_uname('a');
-                else if (function_exists('shell_exec') && !self::is_win()) $user_agent = shell_exec('uname -a');
-                else if (function_exists('shell_exec') && self::is_win()) $user_agent = shell_exec('ver');
-                else $user_agent = NULL;
+                if (function_exists('php_uname')) {
+					$user_agent = php_uname('a');
+                } else {
+					$user_agent = NULL;
+				}
+				
                 // Get Windows versions
                 foreach (apply_filters('cf_geoplugin_windows_version', array(
                     '95',
@@ -363,7 +342,7 @@ if (!class_exists('CFGP_OS')):
                     return $value;
                 }
             }
-            return __('undefined', CFGP_NAME);
+            return __('undefined', 'cf-geoplugin');
         }
 		
 		/**

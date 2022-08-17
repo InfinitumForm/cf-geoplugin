@@ -74,8 +74,8 @@ class CFGP_Admin extends CFGP_Global {
 	// WP Hidden links by plugin setting page
 	public function plugin_action_links( $links ) {
 		$mylinks = array( 
-			'settings'	=> sprintf( '<a href="' . esc_url( self_admin_url( 'admin.php?page=' . CFGP_NAME . '-settings' ) ) . '" class="cfgeo-plugins-action-settings">%s</a>', esc_html__( 'Settings', CFGP_NAME ) ), 
-			'documentation' => sprintf( '<a href="%s" target="_blank" rel="noopener noreferrer" class="cfgeo-plugins-action-documentation">%s</a>', esc_url( CFGP_STORE . '/documentation/' ), esc_html__( 'Documentation', CFGP_NAME ) ),
+			'settings'	=> sprintf( '<a href="' . esc_url( self_admin_url( 'admin.php?page=' . CFGP_NAME . '-settings' ) ) . '" class="cfgeo-plugins-action-settings">%s</a>', esc_html__( 'Settings', 'cf-geoplugin') ), 
+			'documentation' => sprintf( '<a href="%s" target="_blank" rel="noopener noreferrer" class="cfgeo-plugins-action-documentation">%s</a>', esc_url( CFGP_STORE . '/documentation/' ), esc_html__( 'Documentation', 'cf-geoplugin') ),
 		);
 
 		return array_merge( $links, $mylinks );
@@ -90,13 +90,13 @@ class CFGP_Admin extends CFGP_Global {
 			/*	'cfgp_donate' => sprintf(
 					'<a href="%s" target="_blank" rel="noopener noreferrer" class="cfgeo-plugins-action-donation">%s</a>',
 					esc_url( 'https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=creativform@gmail.com' ),
-					esc_html__( 'Donate', CFGP_NAME )
+					esc_html__( 'Donate', 'cf-geoplugin')
 				),	*/
 				'cfgp_vote'	=> sprintf(
 					'<a href="%s" target="_blank" rel="noopener noreferrer" class="cfgeo-plugins-action-vote" title="%s"><span style="color:#ffa000; font-size: 15px; bottom: -1px; position: relative;">&#9733;&#9733;&#9733;&#9733;&#9733;</span> %s</a>',
 					esc_url( 'https://wordpress.org/support/plugin/cf-geoplugin/reviews/?filter=5' ),
-					esc_attr__( 'Give us five if you like!', CFGP_NAME ),
-					esc_html__( '5 Stars?', CFGP_NAME )
+					esc_attr__( 'Give us five if you like!', 'cf-geoplugin'),
+					esc_html__( '5 Stars?', 'cf-geoplugin')
 				)
 			);
 
@@ -112,7 +112,7 @@ class CFGP_Admin extends CFGP_Global {
 		
 		wp_add_dashboard_widget(
 			CFGP_NAME . '-dashboard-statistic', 
-			__( 'CF Geo Plugin', CFGP_NAME ),
+			__( 'CF Geo Plugin', 'cf-geoplugin'),
 			function (){
 				do_action('cfgp/dashboard/widget/statistic');
 			},
@@ -124,7 +124,7 @@ class CFGP_Admin extends CFGP_Global {
 		
 		wp_add_dashboard_widget(
 			CFGP_NAME . '-dashboard-feed', 
-			__( 'CF Geo Plugin Live News & Info', CFGP_NAME ),
+			__( 'CF Geo Plugin Live News & Info', 'cf-geoplugin'),
 			function (){
 				add_action('admin_footer', function(){ ?>
 <script id="cfgp-rss-feed-js" type="text/javascript">
@@ -179,7 +179,7 @@ class CFGP_Admin extends CFGP_Global {
 									esc_url($post->post_image_medium),
 									esc_html($post->post_excerpt),
 									esc_url($post->post_url),
-									__('Read more at CF Geo Plugin', CFGP_NAME),
+									__('Read more at CF Geo Plugin', 'cf-geoplugin'),
 									date(CFGP_DATE_FORMAT, strtotime($post->post_date_gmt))
 								);
 							} else {
@@ -189,7 +189,7 @@ class CFGP_Admin extends CFGP_Global {
 									esc_url($post->post_image_medium),
 									esc_html($post->post_excerpt),
 									esc_url($post->post_url),
-									__('Read more at CF Geo Plugin', CFGP_NAME),
+									__('Read more at CF Geo Plugin', 'cf-geoplugin'),
 									date(CFGP_DATE_FORMAT, strtotime($post->post_date_gmt))
 								);
 							}
@@ -213,7 +213,7 @@ class CFGP_Admin extends CFGP_Global {
 			}
 		}
 		
-		_e('No news for today.', CFGP_NAME);
+		_e('No news for today.', 'cf-geoplugin');
 		exit;
 	}
 	
@@ -261,7 +261,7 @@ class CFGP_Admin extends CFGP_Global {
 									esc_url($post->post_image_medium),
 									esc_html($post->post_excerpt),
 									esc_url($post->post_url),
-									__('Read more at CF Geo Plugin', CFGP_NAME),
+									__('Read more at CF Geo Plugin', 'cf-geoplugin'),
 									date(CFGP_DATE_FORMAT, strtotime($post->post_date_gmt))
 								);
 							} else {
@@ -271,7 +271,7 @@ class CFGP_Admin extends CFGP_Global {
 									esc_url($post->post_image_medium),
 									esc_html($post->post_excerpt),
 									esc_url($post->post_url),
-									__('Read more at CF Geo Plugin', CFGP_NAME),
+									__('Read more at CF Geo Plugin', 'cf-geoplugin'),
 									date(CFGP_DATE_FORMAT, strtotime($post->post_date_gmt))
 								);
 							}
@@ -296,34 +296,34 @@ class CFGP_Admin extends CFGP_Global {
 			}
 		}
 		
-		_e('No news for today.', CFGP_NAME);
+		_e('No news for today.', 'cf-geoplugin');
 		exit;
 	}
 	
 	// Rename county table
 	public function rename__cf_geoplugin_country__column ($theme_columns){
-		$theme_columns['name'] = __('Country code', CFGP_NAME);
-		$theme_columns['description'] = __('Country full name', CFGP_NAME);
+		$theme_columns['name'] = __('Country code', 'cf-geoplugin');
+		$theme_columns['description'] = __('Country full name', 'cf-geoplugin');
 		return $theme_columns;
 	}
 	
 	// Rename region table
 	public function rename__cf_geoplugin_region__column ($theme_columns){
-		$theme_columns['name'] = __('Region code', CFGP_NAME);
-		$theme_columns['description'] = __('Region full name', CFGP_NAME);
+		$theme_columns['name'] = __('Region code', 'cf-geoplugin');
+		$theme_columns['description'] = __('Region full name', 'cf-geoplugin');
 		return $theme_columns;
 	}
 	
 	// Rename city table
 	public function rename__cf_geoplugin_city__column ($theme_columns){
-		$theme_columns['name'] = __('City name', CFGP_NAME);
+		$theme_columns['name'] = __('City name', 'cf-geoplugin');
 		unset($theme_columns['description']);
 		return $theme_columns;
 	}
 	
 	// Rename postcode table
 	public function rename__cf_geoplugin_postcode__column ($theme_columns){
-		$theme_columns['name'] = __('Postcode', CFGP_NAME);
+		$theme_columns['name'] = __('Postcode', 'cf-geoplugin');
 		unset($theme_columns['description']);
 		return $theme_columns;
 	}
@@ -341,15 +341,15 @@ class CFGP_Admin extends CFGP_Global {
 		}
 		
 		$privacy_policy = array(
-			__( 'This site uses the CF Geo Plugin to display public visitor information based on IP addresses that can then be collected or used for various purposes depending on the settings of the plugin.', CFGP_NAME ),
+			__( 'This site uses the CF Geo Plugin to display public visitor information based on IP addresses that can then be collected or used for various purposes depending on the settings of the plugin.', 'cf-geoplugin'),
 			
-			__( 'CF Geo Plugin is a GeoMarketing tool that allows you to have full geo control of your WordPress. CF Geo Plugin gives you the ability to attach content, geographic information, geo tags, Google Maps to posts, pages, widgets and custom templates by using simple options, shortcodes, PHP code or JavaScript. It also lets you specify a default geographic location for your entire WordPress blog, do SEO redirection, spam protection, WooCommerce control and many more. CF Geo Plugin help you to increase conversion, do better SEO, capture leads on your blog or landing pages.', CFGP_NAME ),
+			__( 'CF Geo Plugin is a GeoMarketing tool that allows you to have full geo control of your WordPress. CF Geo Plugin gives you the ability to attach content, geographic information, geo tags, Google Maps to posts, pages, widgets and custom templates by using simple options, shortcodes, PHP code or JavaScript. It also lets you specify a default geographic location for your entire WordPress blog, do SEO redirection, spam protection, WooCommerce control and many more. CF Geo Plugin help you to increase conversion, do better SEO, capture leads on your blog or landing pages.', 'cf-geoplugin'),
 			
-			sprintf(__( 'This website uses API services, technology and goods from the CF Geo Plugin and that part belongs to the <a href="%1$s" target="_blank">CF Geo Plugin Privacy Policy</a>.', CFGP_NAME ), CFGP_STORE . '/privacy-policy/')
+			sprintf(__( 'This website uses API services, technology and goods from the CF Geo Plugin and that part belongs to the <a href="%1$s" target="_blank">CF Geo Plugin Privacy Policy</a>.', 'cf-geoplugin'), CFGP_STORE . '/privacy-policy/')
 		);
 	 
 		wp_add_privacy_policy_content(
-			__( 'CF Geo Plugin', CFGP_NAME ),
+			__( 'CF Geo Plugin', 'cf-geoplugin'),
 			wp_kses_post( wpautop( join((PHP_EOL . PHP_EOL), $privacy_policy), false ) )
 		);
 	}
@@ -420,22 +420,22 @@ class CFGP_Admin extends CFGP_Global {
 		
 		$wp_admin_bar->add_node(array(
 			'id' => CFGP_NAME . '-admin-bar-link',
-			'title' => '<span class="cfgp-ab-icon"></span>' . __('Geo Plugin', CFGP_NAME), 
+			'title' => '<span class="cfgp-ab-icon"></span>' . __('Geo Plugin', 'cf-geoplugin'), 
 			'href' => esc_url(CFGP_U::admin_url('admin.php?page=cf-geoplugin')), 
 			'meta' => array(
 				'class' => CFGP_NAME . ' ' . CFGP_NAME . '-admin-bar-link',
-				'title' => __('Geo Plugin', CFGP_NAME),
+				'title' => __('Geo Plugin', 'cf-geoplugin'),
 			)
 		));
 		
 		$wp_admin_bar->add_menu(array(
 			'parent' => CFGP_NAME . '-admin-bar-link',
 			'id' => CFGP_NAME . '-admin-bar-shortcodes-link',
-			'title' => __('Shortcodes', CFGP_NAME), 
+			'title' => __('Shortcodes', 'cf-geoplugin'), 
 			'href' => esc_url(CFGP_U::admin_url('admin.php?page=' . CFGP_NAME)), 
 			'meta' => array(
 				'class' => CFGP_NAME . ' ' . CFGP_NAME . '-admin-bar-shortcodes-link',
-				'title' => __('Shortcodes', CFGP_NAME),
+				'title' => __('Shortcodes', 'cf-geoplugin'),
 			)
 		));
 		if(CFGP_Options::get('enable_gmap', false))
@@ -443,11 +443,11 @@ class CFGP_Admin extends CFGP_Global {
 			$wp_admin_bar->add_menu(array(
 				'parent' => CFGP_NAME . '-admin-bar-link',
 				'id' => CFGP_NAME . '-admin-bar-google-map-link',
-				'title' => __('Google Map', CFGP_NAME), 
+				'title' => __('Google Map', 'cf-geoplugin'), 
 				'href' => esc_url(CFGP_U::admin_url('admin.php?page=' . CFGP_NAME . '-google-map')), 
 				'meta' => array(
 					'class' => CFGP_NAME . ' ' . CFGP_NAME . '-admin-bar-google-map-link',
-					'title' => __('Google Map', CFGP_NAME),
+					'title' => __('Google Map', 'cf-geoplugin'),
 				)
 			));
 		}
@@ -456,11 +456,11 @@ class CFGP_Admin extends CFGP_Global {
 			$wp_admin_bar->add_menu(array(
 				'parent' => CFGP_NAME . '-admin-bar-link',
 				'id' => CFGP_NAME . '-admin-bar-defender-link',
-				'title' => __('Site Protection', CFGP_NAME), 
+				'title' => __('Site Protection', 'cf-geoplugin'), 
 				'href' => esc_url(CFGP_U::admin_url('admin.php?page=' . CFGP_NAME . '-defender')), 
 				'meta' => array(
 					'class' => CFGP_NAME . ' ' . CFGP_NAME . '-admin-bar-defender-link',
-					'title' => __('Site Protection', CFGP_NAME),
+					'title' => __('Site Protection', 'cf-geoplugin'),
 				)
 			));
 		}
@@ -468,11 +468,11 @@ class CFGP_Admin extends CFGP_Global {
 			$wp_admin_bar->add_menu(array(
 				'parent' => CFGP_NAME . '-admin-bar-link',
 				'id' => CFGP_NAME . '-admin-bar-banner-link',
-				'title' => __('Geo Banner', CFGP_NAME), 
+				'title' => __('Geo Banner', 'cf-geoplugin'), 
 				'href' => esc_url(CFGP_U::admin_url('admin.php?page=' . CFGP_NAME . '-banner')), 
 				'meta' => array(
 					'class' => CFGP_NAME . ' ' . CFGP_NAME . '-admin-bar-banner-link',
-					'title' => __('Geo Banner', CFGP_NAME),
+					'title' => __('Geo Banner', 'cf-geoplugin'),
 				)
 			));
 		}
@@ -481,11 +481,11 @@ class CFGP_Admin extends CFGP_Global {
 			$wp_admin_bar->add_menu(array(
 				'parent' => CFGP_NAME . '-admin-bar-link',
 				'id' => CFGP_NAME . '-admin-bar-seo-redirection-link',
-				'title' => __('SEO Redirection', CFGP_NAME), 
+				'title' => __('SEO Redirection', 'cf-geoplugin'), 
 				'href' => esc_url(CFGP_U::admin_url('admin.php?page=' . CFGP_NAME . '-seo-redirection')), 
 				'meta' => array(
 					'class' => CFGP_NAME . ' ' . CFGP_NAME . '-admin-bar-seo-redirection-link',
-					'title' => __('SEO Redirection', CFGP_NAME),
+					'title' => __('SEO Redirection', 'cf-geoplugin'),
 				)
 			));
 		}
@@ -493,22 +493,22 @@ class CFGP_Admin extends CFGP_Global {
 		$wp_admin_bar->add_menu(array(
 			'parent' => CFGP_NAME . '-admin-bar-link',
 			'id' => CFGP_NAME . '-admin-bar-settings-link',
-			'title' => __('Settings', CFGP_NAME), 
+			'title' => __('Settings', 'cf-geoplugin'), 
 			'href' => esc_url(CFGP_U::admin_url('admin.php?page=' . CFGP_NAME . '-settings')), 
 			'meta' => array(
 				'class' => CFGP_NAME . ' ' . CFGP_NAME . '-admin-bar-settings-link',
-				'title' => __('Settings', CFGP_NAME),
+				'title' => __('Settings', 'cf-geoplugin'),
 			)
 		));
 		
 		$wp_admin_bar->add_menu(array(
 			'parent' => CFGP_NAME . '-admin-bar-link',
 			'id' => CFGP_NAME . '-admin-bar-debug-link',
-			'title' => __('Debug Mode', CFGP_NAME), 
+			'title' => __('Debug Mode', 'cf-geoplugin'), 
 			'href' => esc_url(CFGP_U::admin_url('admin.php?page=' . CFGP_NAME . '-debug')), 
 			'meta' => array(
 				'class' => CFGP_NAME . ' ' . CFGP_NAME . '-admin-bar-debug-link',
-				'title' => __('Debug Mode', CFGP_NAME),
+				'title' => __('Debug Mode', 'cf-geoplugin'),
 			)
 		));
 		
@@ -516,22 +516,22 @@ class CFGP_Admin extends CFGP_Global {
 			$wp_admin_bar->add_menu(array(
 				'parent' => CFGP_NAME . '-admin-bar-link',
 				'id' => CFGP_NAME . '-admin-bar-activate-link',
-				'title' => __('License', CFGP_NAME), 
+				'title' => __('License', 'cf-geoplugin'), 
 				'href' => esc_url(CFGP_U::admin_url('admin.php?page=' . CFGP_NAME . '-activate')), 
 				'meta' => array(
 					'class' => CFGP_NAME . ' ' . CFGP_NAME . '-admin-bar-activate-link',
-					'title' => __('License', CFGP_NAME),
+					'title' => __('License', 'cf-geoplugin'),
 				)
 			));
 		} else {
 			$wp_admin_bar->add_menu(array(
 				'parent' => CFGP_NAME . '-admin-bar-link',
 				'id' => CFGP_NAME . '-admin-bar-activate-link',
-				'title' => '<span class="cfgp-ab-icon"></span>' . __('Activate Unlimited', CFGP_NAME), 
+				'title' => '<span class="cfgp-ab-icon"></span>' . __('Activate Unlimited', 'cf-geoplugin'), 
 				'href' => esc_url(CFGP_U::admin_url('admin.php?page=' . CFGP_NAME . '-activate')), 
 				'meta' => array(
 					'class' => CFGP_NAME . ' ' . CFGP_NAME . '-admin-bar-activate-link',
-					'title' => __('Activate Unlimited', CFGP_NAME),
+					'title' => __('Activate Unlimited', 'cf-geoplugin'),
 				)
 			));
 		}
@@ -547,7 +547,7 @@ class CFGP_Admin extends CFGP_Global {
 				'cfgp/topbar/currency/title',
 				sprintf(
 					'%s: %s &#8646; %s',
-					__('Today\'s course', CFGP_NAME),
+					__('Today\'s course', 'cf-geoplugin'),
 					'<span class="cfgp-topbar-currency-from">' . ( 1 . '' . CFGP_Options::get('base_currency') ) . '</span>',
 					'<span class="cfgp-topbar-currency-to">' . ( number_format($currency_converter, 2) . '' . CFGP_U::api('currency') ) . '</span>'
 				)
@@ -593,7 +593,7 @@ class CFGP_Admin extends CFGP_Global {
 		if( $post === '' . CFGP_NAME . '-banner' ) {
 			$url = sprintf( 'edit.php?post_type=%s', $post );
 		} else {
-			$url = sprintf( 'edit-tags.php?taxonomy=%s&post_type=%s-banner', $post, CFGP_NAME );
+			$url = sprintf( 'edit-tags.php?taxonomy=%s&post_type=%s-banner', $post, 'cf-geoplugin');
 		}
 		
 		wp_enqueue_style( CFGP_NAME . '-cpt', CFGP_ASSETS . '/css/style-cpt.css', 1, CFGP_VERSION, false );
@@ -601,30 +601,30 @@ class CFGP_Admin extends CFGP_Global {
 		wp_localize_script(CFGP_NAME . '-cpt', 'CFGP', array(
 			'ajaxurl' => CFGP_U::admin_url('admin-ajax.php'),
 			'label' => array(
-				'unload' => __('Data will lost , Do you wish to continue?',CFGP_NAME),
-				'loading' => __('Loading...',CFGP_NAME),
-				'not_found' => __('Not Found!',CFGP_NAME),
-				'placeholder' => __('Search',CFGP_NAME),
+				'unload' => __('Data will lost , Do you wish to continue?', 'cf-geoplugin'),
+				'loading' => __('Loading...', 'cf-geoplugin'),
+				'not_found' => __('Not Found!', 'cf-geoplugin'),
+				'placeholder' => __('Search', 'cf-geoplugin'),
 				'taxonomy' => array(
 					'country' => array(
-						'name' => __('Country code',CFGP_NAME),
-						'name_info' => __('Country codes are short (2 letters) alphabetic or numeric geographical codes developed to represent countries and dependent areas, for use in data processing and communications.',CFGP_NAME),
-						'description' => __('Country full name',CFGP_NAME),
-						'description_info' => __('The name of the country must be written in English without spelling errors.',CFGP_NAME),
+						'name' => __('Country code', 'cf-geoplugin'),
+						'name_info' => __('Country codes are short (2 letters) alphabetic or numeric geographical codes developed to represent countries and dependent areas, for use in data processing and communications.', 'cf-geoplugin'),
+						'description' => __('Country full name', 'cf-geoplugin'),
+						'description_info' => __('The name of the country must be written in English without spelling errors.', 'cf-geoplugin'),
 					),
 					'region' => array(
-						'name' => __('Region code',CFGP_NAME),
-						'name_info' => __('Region codes are short (2 letters) alphabetic or numeric geographical codes developed to represent countries and dependent areas, for use in data processing and communications.',CFGP_NAME),
-						'description' => __('Region full name',CFGP_NAME),
-						'description_info' => __('The name of the region must be written in English without spelling errors.',CFGP_NAME),
+						'name' => __('Region code', 'cf-geoplugin'),
+						'name_info' => __('Region codes are short (2 letters) alphabetic or numeric geographical codes developed to represent countries and dependent areas, for use in data processing and communications.', 'cf-geoplugin'),
+						'description' => __('Region full name', 'cf-geoplugin'),
+						'description_info' => __('The name of the region must be written in English without spelling errors.', 'cf-geoplugin'),
 					),
 					'city' => array(
-						'name' => __('City name',CFGP_NAME),
-						'name_info' => __('The city name must be written in the original city name.',CFGP_NAME),
+						'name' => __('City name', 'cf-geoplugin'),
+						'name_info' => __('The city name must be written in the original city name.', 'cf-geoplugin'),
 					),
 					'postcode' => array(
-						'name' => __('Postcode',CFGP_NAME),
-						'name_info' => __('The postcode name must be written in the original international format.',CFGP_NAME),
+						'name' => __('Postcode', 'cf-geoplugin'),
+						'name_info' => __('The postcode name must be written in the original international format.', 'cf-geoplugin'),
 					)
 				)
 			),
@@ -649,64 +649,64 @@ class CFGP_Admin extends CFGP_Global {
 			'ajaxurl' => CFGP_U::admin_url('admin-ajax.php'),
 			'adminurl' => self_admin_url('/'),
 			'label' => array(
-				'upload_csv' => __('Select or Upload CSV file',CFGP_NAME),
-				'unload' => __('Data will lost , Do you wish to continue?',CFGP_NAME),
-				'loading' => __('Loading...',CFGP_NAME),
-				'not_found' => __('Not Found!',CFGP_NAME),
+				'upload_csv' => __('Select or Upload CSV file', 'cf-geoplugin'),
+				'unload' => __('Data will lost , Do you wish to continue?', 'cf-geoplugin'),
+				'loading' => __('Loading...', 'cf-geoplugin'),
+				'not_found' => __('Not Found!', 'cf-geoplugin'),
 				'alert' => array(
-					'close' => __('Close',CFGP_NAME)
+					'close' => __('Close', 'cf-geoplugin')
 				),
 				'rss' => array(
-					'no_news' => __('There are no news at the moment.',CFGP_NAME),
-					'error' => __("ERROR! Can't load news feed.",CFGP_NAME)
+					'no_news' => __('There are no news at the moment.', 'cf-geoplugin'),
+					'error' => __("ERROR! Can't load news feed.", 'cf-geoplugin')
 				),
 				'settings' => array(
-					'saved' => __('Option saved successfuly!',CFGP_NAME),
-					'fail' => __('There was some unexpected system error. Changes not saved!',CFGP_NAME),
-					'false' => __('Changes not saved for unexpected reasons. Try again!',CFGP_NAME),
-					'error' => __('Option you provide not match to global variables. Permission denied!',CFGP_NAME)
+					'saved' => __('Option saved successfuly!', 'cf-geoplugin'),
+					'fail' => __('There was some unexpected system error. Changes not saved!', 'cf-geoplugin'),
+					'false' => __('Changes not saved for unexpected reasons. Try again!', 'cf-geoplugin'),
+					'error' => __('Option you provide not match to global variables. Permission denied!', 'cf-geoplugin')
 				),
 				'csv' => array(
-					'saved' => __('Successfuly saved %d records.',CFGP_NAME),
-					'fail' => __('Failed to add %d rows.',CFGP_NAME),
-					'upload' =>	__('Upload CSV file.',CFGP_NAME),
-					'filetype' => __('The file must be comma separated CSV type',CFGP_NAME),
-					'exit' => __('Are you sure, you want to exit?\nChanges wont be saved!',CFGP_NAME),
-					'delete' =>	__('Are you sure, you want to delete this redirection?',CFGP_NAME),
-					'missing_url' => __('URL Missing. Please insert URL from your CSV file or choose file from the library.',CFGP_NAME),
+					'saved' => __('Successfuly saved %d records.', 'cf-geoplugin'),
+					'fail' => __('Failed to add %d rows.', 'cf-geoplugin'),
+					'upload' =>	__('Upload CSV file.', 'cf-geoplugin'),
+					'filetype' => __('The file must be comma separated CSV type', 'cf-geoplugin'),
+					'exit' => __('Are you sure, you want to exit?\nChanges wont be saved!', 'cf-geoplugin'),
+					'delete' =>	__('Are you sure, you want to delete this redirection?', 'cf-geoplugin'),
+					'missing_url' => __('URL Missing. Please insert URL from your CSV file or choose file from the library.', 'cf-geoplugin'),
 				),
 				'rest' => array(
-					'delete' => __("Are you sure, you want to delete this access token?",CFGP_NAME),
-					'error' => __("Can't delete access token because unexpected reasons.",CFGP_NAME),
+					'delete' => __("Are you sure, you want to delete this access token?", 'cf-geoplugin'),
+					'error' => __("Can't delete access token because unexpected reasons.", 'cf-geoplugin'),
 				),
 				'footer_menu' => array(
-					'documentation' =>	__('Documentation',CFGP_NAME),
-					'contact' => __('Contact',CFGP_NAME),
-					'blog' => __('Blog',CFGP_NAME),
-					'faq' => __('FAQ',CFGP_NAME),
-					'thank_you' => __('Thank you for using',CFGP_NAME)
+					'documentation' =>	__('Documentation', 'cf-geoplugin'),
+					'contact' => __('Contact', 'cf-geoplugin'),
+					'blog' => __('Blog', 'cf-geoplugin'),
+					'faq' => __('FAQ', 'cf-geoplugin'),
+					'thank_you' => __('Thank you for using', 'cf-geoplugin')
 				),
 				'seo_redirection' => array(
-					'bulk_delete' => __('Are you sure you want to delete all these SEO redirects? You will no longer be able to recover data. We suggest to you made a backup before deleting.',CFGP_NAME),
-					'not_selected' => __('You didn\'t select anything.',CFGP_NAME)
+					'bulk_delete' => __('Are you sure you want to delete all these SEO redirects? You will no longer be able to recover data. We suggest to you made a backup before deleting.', 'cf-geoplugin'),
+					'not_selected' => __('You didn\'t select anything.', 'cf-geoplugin')
 				),
 				'select2' => array(
 					'not_found' => array(
-						'country' => __('Country not found.',CFGP_NAME),
-						'region' => __('Region not found.',CFGP_NAME),
-						'city' => __('City not found.',CFGP_NAME),
-						'postcode' => esc_attr__('Postcode not found.',CFGP_NAME)
+						'country' => __('Country not found.', 'cf-geoplugin'),
+						'region' => __('Region not found.', 'cf-geoplugin'),
+						'city' => __('City not found.', 'cf-geoplugin'),
+						'postcode' => esc_attr__('Postcode not found.', 'cf-geoplugin')
 					),
 					'type_to_search' => array(
-						'country' => esc_attr__('Start typing the name of the country.',CFGP_NAME),
-						'region' => esc_attr__('Start typing the name of the region.',CFGP_NAME),
-						'city' => esc_attr__('Start typing the name of a city.',CFGP_NAME),
-						'postcode' => esc_attr__('Start typing the postcode.',CFGP_NAME)
+						'country' => esc_attr__('Start typing the name of the country.', 'cf-geoplugin'),
+						'region' => esc_attr__('Start typing the name of the region.', 'cf-geoplugin'),
+						'city' => esc_attr__('Start typing the name of a city.', 'cf-geoplugin'),
+						'postcode' => esc_attr__('Start typing the postcode.', 'cf-geoplugin')
 					),
-					'searching' => __('Searching, please wait...',CFGP_NAME),
-					'removeItem' => __('Remove Item',CFGP_NAME),
-					'removeAllItems' => __('Remove all items',CFGP_NAME),
-					'loadingMore' => __('Loading more results, please wait...',CFGP_NAME)
+					'searching' => __('Searching, please wait...', 'cf-geoplugin'),
+					'removeItem' => __('Remove Item', 'cf-geoplugin'),
+					'removeAllItems' => __('Remove all items', 'cf-geoplugin'),
+					'loadingMore' => __('Loading more results, please wait...', 'cf-geoplugin')
 				)
 			)
 		));
@@ -716,7 +716,7 @@ class CFGP_Admin extends CFGP_Global {
 	 * Limit scripts
 	 */
 	public function limit_scripts($page){
-		if(strpos($page, CFGP_NAME) !== false) return true;
+		if(strpos($page, 'cf-geoplugin') !== false) return true;
 		return false;
 	}
 	

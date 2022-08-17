@@ -28,7 +28,7 @@ class CFGP_Elementor_Content_Widget extends \Elementor\Widget_Base {
 	 *
 	 * @return string Widget title.
 	 */
-	public function get_title() { return __('Geo Text Editor', CFGP_NAME); }
+	public function get_title() { return __('Geo Text Editor', 'cf-geoplugin'); }
 
 	/**
 	 * Get widget icon.
@@ -87,7 +87,7 @@ class CFGP_Elementor_Content_Widget extends \Elementor\Widget_Base {
 		$this->start_controls_section(
 			'content_section',
 			[
-				'label' => __( 'Image settings', CFGP_NAME ),
+				'label' => __( 'Image settings', 'cf-geoplugin'),
 				'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
 			]
 		);
@@ -97,27 +97,27 @@ class CFGP_Elementor_Content_Widget extends \Elementor\Widget_Base {
 			$repeater->add_control(
 				'content',
 				[
-					'label' => __( 'Text Editor', CFGP_NAME ),
+					'label' => __( 'Text Editor', 'cf-geoplugin'),
 					'type' => \Elementor\Controls_Manager::WYSIWYG,
 					'default' => '',
-					'placeholder' => __( 'Set the content that appears for the defined location.', CFGP_NAME ),
+					'placeholder' => __( 'Set the content that appears for the defined location.', 'cf-geoplugin'),
 				]
 			);
 			
 			$repeater->add_control(
 				'location',
 				[
-					'label' => __( 'Display Location', CFGP_NAME ),
+					'label' => __( 'Display Location', 'cf-geoplugin'),
 					'type' => \Elementor\Controls_Manager::TEXT,
-					'description' => __( 'Comma separated city, region, country, continent name or the code where you want to display this image.', CFGP_NAME ),
-					'placeholder' => __( 'US, Toronto, Europe...', CFGP_NAME ),
+					'description' => __( 'Comma separated city, region, country, continent name or the code where you want to display this image.', 'cf-geoplugin'),
+					'placeholder' => __( 'US, Toronto, Europe...', 'cf-geoplugin'),
 				]
 			);
 			
 		$this->add_control(
 			'list',
 			[
-				'label' => __( 'Add content for each geolocation', CFGP_NAME ),
+				'label' => __( 'Add content for each geolocation', 'cf-geoplugin'),
 				'type' => \Elementor\Controls_Manager::REPEATER,
 				'fields' => $repeater->get_controls(),
 				'default' => [],
@@ -128,7 +128,7 @@ class CFGP_Elementor_Content_Widget extends \Elementor\Widget_Base {
 		$this->add_control(
 			'default_options',
 			[
-				'label' => __( 'Default Options', CFGP_NAME ),
+				'label' => __( 'Default Options', 'cf-geoplugin'),
 				'type' => \Elementor\Controls_Manager::HEADING,
 				'separator' => 'before',
 			]
@@ -137,10 +137,10 @@ class CFGP_Elementor_Content_Widget extends \Elementor\Widget_Base {
 		$this->add_control(
 			'enable_default_content',
 			[
-				'label' => __( 'Enable Default Content', CFGP_NAME ),
+				'label' => __( 'Enable Default Content', 'cf-geoplugin'),
 				'type' => \Elementor\Controls_Manager::SWITCHER,
-				'label_on' => __( 'Yes', CFGP_NAME ),
-				'label_off' => __( 'No', CFGP_NAME ),
+				'label_on' => __( 'Yes', 'cf-geoplugin'),
+				'label_off' => __( 'No', 'cf-geoplugin'),
 				'return_value' => 'yes',
 				'default' => '',
 			]
@@ -149,10 +149,10 @@ class CFGP_Elementor_Content_Widget extends \Elementor\Widget_Base {
 		$this->add_control(
 			'default_content',
 			[
-				'label' => __( 'Text Editor', CFGP_NAME ),
+				'label' => __( 'Text Editor', 'cf-geoplugin'),
 				'type' => \Elementor\Controls_Manager::WYSIWYG,
 				'default' => '',
-				'placeholder' => __( 'Set the content that appears for the defined location.', CFGP_NAME ),
+				'placeholder' => __( 'Set the content that appears for the defined location.', 'cf-geoplugin'),
 			]
 		);
 		
@@ -170,7 +170,7 @@ class CFGP_Elementor_Content_Widget extends \Elementor\Widget_Base {
 		$this->start_controls_section(
 			'style_section_0',
 			array(
-				'label' => __( 'Content style', CFGP_NAME ),
+				'label' => __( 'Content style', 'cf-geoplugin'),
 				'tab' => \Elementor\Controls_Manager::TAB_STYLE,
 			)
 		);
@@ -178,7 +178,7 @@ class CFGP_Elementor_Content_Widget extends \Elementor\Widget_Base {
 				\Elementor\Group_Control_Typography::get_type(),
 				array(
 					'name' => 'typography',
-					'label' => __( 'Typography', CFGP_NAME ),
+					'label' => __( 'Typography', 'cf-geoplugin'),
 					'scheme' => \Elementor\Core\Schemes\Typography::TYPOGRAPHY_3,
 					'selector' => "{$class}, {$class} p"
 				)
@@ -188,7 +188,7 @@ class CFGP_Elementor_Content_Widget extends \Elementor\Widget_Base {
 				\Elementor\Group_Control_Typography::get_type(),
 				array(
 					'name' => 'typography_link',
-					'label' => __( 'Link typography', CFGP_NAME ),
+					'label' => __( 'Link typography', 'cf-geoplugin'),
 					'scheme' => \Elementor\Core\Schemes\Typography::TYPOGRAPHY_3,
 					'selector' => "{$class} a, {$class} a:active"
 				)
@@ -198,7 +198,7 @@ class CFGP_Elementor_Content_Widget extends \Elementor\Widget_Base {
 				\Elementor\Group_Control_Typography::get_type(),
 				array(
 					'name' => 'typography_link_hover',
-					'label' => __( 'Link hover typography', CFGP_NAME ),
+					'label' => __( 'Link hover typography', 'cf-geoplugin'),
 					'scheme' => \Elementor\Core\Schemes\Typography::TYPOGRAPHY_3,
 					'selector' => "{$class} a:hover, {$class} a:focus"
 				)
@@ -208,7 +208,7 @@ class CFGP_Elementor_Content_Widget extends \Elementor\Widget_Base {
 				\Elementor\Group_Control_Text_Shadow::get_type(),
 				array(
 					'name' => 'text_shadow',
-					'label' => __( 'Text Shadow', CFGP_NAME ),
+					'label' => __( 'Text Shadow', 'cf-geoplugin'),
 					'selector' => "{$class}, {$class} p"
 				)
 			);
@@ -218,7 +218,7 @@ class CFGP_Elementor_Content_Widget extends \Elementor\Widget_Base {
 		$this->start_controls_section(
 			'style_section_1',
 			array(
-				'label' => __( 'Headers', CFGP_NAME ),
+				'label' => __( 'Headers', 'cf-geoplugin'),
 				'tab' => \Elementor\Controls_Manager::TAB_STYLE,
 			)
 		);

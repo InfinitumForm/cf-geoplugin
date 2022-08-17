@@ -58,12 +58,12 @@ class CFGP_U {
 	*/
 	public static function get_http_codes(){
 		return apply_filters( 'cfgp_http_codes', array(
-			301 => __( '301 - Moved Permanently', CFGP_NAME ),
-			302 => __( '302 - Found (Moved temporarily)', CFGP_NAME ),
-			303 => __( '303 - See Other', CFGP_NAME ),
-			307 => __( '307 - Temporary Redirect (since HTTP/1.1)', CFGP_NAME ),
-			308 => __( '308 - Permanent Redirect', CFGP_NAME ),
-			404 => __( '404 - Not Found (not recommended)', CFGP_NAME )
+			301 => __( '301 - Moved Permanently', 'cf-geoplugin'),
+			302 => __( '302 - Found (Moved temporarily)', 'cf-geoplugin'),
+			303 => __( '303 - See Other', 'cf-geoplugin'),
+			307 => __( '307 - Temporary Redirect (since HTTP/1.1)', 'cf-geoplugin'),
+			308 => __( '308 - Permanent Redirect', 'cf-geoplugin'),
+			404 => __( '404 - Not Found (not recommended)', 'cf-geoplugin')
 		));
 	}
 	
@@ -623,7 +623,7 @@ class CFGP_U {
 					$location = wp_validate_redirect( $location, apply_filters( 'cfgp/safe_redirect/fallback', site_url(), $status ) );
 				}
 				// Do redirection
-				return wp_redirect( $location, $status, CFGP_NAME );
+				return wp_redirect( $location, $status, 'cf-geoplugin');
 			}
 			else
 			{
@@ -1251,19 +1251,10 @@ class CFGP_U {
 	}
 	
 	/*
-	 * Request Array
-	 */
-	public static function request_array($name, $sanitize = 'sanitize_text_field', $default = array()){
-		$request = isset( $_REQUEST[$name] ) && !empty( $_REQUEST[$name] ) ? ((array)$_REQUEST[$name]) : $default;
-		$request = CFGP_Options::sanitize($request);
-		return $request;
-	}
-	
-	/*
 	 * Request Bool
 	 */
 	public static function request_bool($name){
-		return (isset($_REQUEST[$name]) && $_REQUEST[$name] == 'true');
+		return (isset($_REQUEST[$name]) && sanitize_text_field( $_REQUEST[$name] ) == 'true');
 	}
 	
 	/*
@@ -1392,7 +1383,7 @@ class CFGP_U {
 	// Get page ID by mySQL query
 	protected static function get_page_ID__private__query(){
 		global $wpdb;
-		$actual_link = rtrim($_SERVER['REQUEST_URI'], '/');
+		$actual_link = rtrim(sanitize_text_field($_SERVER['REQUEST_URI']), '/');
 		$parts = explode('/', $actual_link);
 		if(!empty($parts))
 		{
@@ -1410,7 +1401,7 @@ class CFGP_U {
 							TRIM(`{$wpdb->posts}`.`post_name`) <> ''
 						LIMIT 1",
 						'publish',
-						sanitize_title($slug)
+						esc_sql( sanitize_title($slug) )
 					)
 				))
 				{
@@ -1801,27 +1792,27 @@ class CFGP_U {
 		}
 		if( $short_name ) {
 			$size = array(
-				__('B', CFGP_NAME),
-				__('KB', CFGP_NAME),
-				__('MB', CFGP_NAME),
-				__('GB', CFGP_NAME),
-				__('TB', CFGP_NAME),
-				__('PB', CFGP_NAME),
-				__('EB', CFGP_NAME),
-				__('ZB', CFGP_NAME),
-				__('YB', CFGP_NAME)
+				__('B', 'cf-geoplugin'),
+				__('KB', 'cf-geoplugin'),
+				__('MB', 'cf-geoplugin'),
+				__('GB', 'cf-geoplugin'),
+				__('TB', 'cf-geoplugin'),
+				__('PB', 'cf-geoplugin'),
+				__('EB', 'cf-geoplugin'),
+				__('ZB', 'cf-geoplugin'),
+				__('YB', 'cf-geoplugin')
 			);
 		} else {
 			$size = array(
-				__('byte', CFGP_NAME),
-				__('kilobyte', CFGP_NAME),
-				__('megabyte', CFGP_NAME),
-				__('gigabyte', CFGP_NAME),
-				__('terabyte', CFGP_NAME),
-				__('petabyte', CFGP_NAME),
-				__('exabyte', CFGP_NAME),
-				__('zettabyte', CFGP_NAME),
-				__('yottabyte', CFGP_NAME)
+				__('byte', 'cf-geoplugin'),
+				__('kilobyte', 'cf-geoplugin'),
+				__('megabyte', 'cf-geoplugin'),
+				__('gigabyte', 'cf-geoplugin'),
+				__('terabyte', 'cf-geoplugin'),
+				__('petabyte', 'cf-geoplugin'),
+				__('exabyte', 'cf-geoplugin'),
+				__('zettabyte', 'cf-geoplugin'),
+				__('yottabyte', 'cf-geoplugin')
 			);
 		}
 		$factor = floor((strlen($bytes) - 1) / 3);

@@ -72,7 +72,7 @@ class CFGP_Debug extends CFGP_Global {
 	public static function write( $path, $filename = 'cf_geoplugin_debug.log' ) {
 		// Check is there is a logs
 		if( empty(self::$data) ) {
-			throw new Exception( sprintf(__('There is no logs', CFGP_NAME)) );
+			throw new Exception( sprintf(__('There is no logs', 'cf-geoplugin')) );
 			return 0;
 		}
 		
@@ -87,14 +87,14 @@ class CFGP_Debug extends CFGP_Global {
 			mkdir($path, 0644, true);
 			
 			if( !file_exists($path) ) {
-				throw new Exception( sprintf( __('There is no directory on the path: "%s"', CFGP_NAME), $path) );
+				throw new Exception( sprintf( __('There is no directory on the path: "%s"', 'cf-geoplugin'), $path) );
 				return -1;
 			}
 		}
 		
 		// Check is directory writable
 		if( !is_writable($path) ) {
-			throw new Exception( sprintf(__('Directory "%s" is not writable', CFGP_NAME), $path) );
+			throw new Exception( sprintf(__('Directory "%s" is not writable', 'cf-geoplugin'), $path) );
 			return -2;
 		}
 		
@@ -112,7 +112,7 @@ class CFGP_Debug extends CFGP_Global {
 			fwrite($fo, '+=====================================================================' . PHP_EOL, 79);
 			$title = sprintf(
 				'| %s - %s',
-				__('CF Geo Plugin Debug', CFGP_NAME),
+				__('CF Geo Plugin Debug', 'cf-geoplugin'),
 				date('Y-m-d H:i:s p e')
 			);
 			fwrite($fo, $title . PHP_EOL, (strlen($title . PHP_EOL)+8));
@@ -127,7 +127,7 @@ class CFGP_Debug extends CFGP_Global {
 		}
 		
 		// Everything fail
-		throw new Exception( sprintf(__('Unable to write file: "%s"', CFGP_NAME), $full_path) );
+		throw new Exception( sprintf(__('Unable to write file: "%s"', 'cf-geoplugin'), $full_path) );
 		return false;
 	}
 	

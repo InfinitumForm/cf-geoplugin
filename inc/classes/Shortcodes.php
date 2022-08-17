@@ -251,7 +251,7 @@ class CFGP_Shortcodes extends CFGP_Global {
 			}
 			else
 			{
-				return CFGP_U::fragment_caching(__('CF GEOPLUGIN NOTICE: -Please define "include" or "exclude" attributes inside your shortcode on this shortcode mode.', CFGP_NAME), $cache);
+				return CFGP_U::fragment_caching(__('CF GEOPLUGIN NOTICE: -Please define "include" or "exclude" attributes inside your shortcode on this shortcode mode.', 'cf-geoplugin'), $cache);
 			}
 		}
 		else
@@ -1084,13 +1084,13 @@ LIMIT 1
 
 		$instance = shortcode_atts(
 			array(
-				'title'	=> __( 'Currency converter', CFGP_NAME ),
+				'title'	=> __( 'Currency converter', 'cf-geoplugin'),
 				'before_title' => '',
 				'after_title'	=> '',
 				'amount'	=> 1,
-				'from'		=> __( 'From', CFGP_NAME ),
-				'to'		=> __( 'To', CFGP_NAME ),
-				'convert'	=> __( 'Convert', CFGP_NAME ),
+				'from'		=> __( 'From', 'cf-geoplugin'),
+				'to'		=> __( 'To', 'cf-geoplugin'),
+				'convert'	=> __( 'Convert', 'cf-geoplugin'),
 			), 
 			$atts, 
 			'cfgeo_full_converter'
@@ -1111,7 +1111,7 @@ LIMIT 1
 							<div class="form-group cfgp-form-group cfgp-form-group-amount">
 								<?php 
 									$label_amount = sprintf( '%s-%s', 'cfgp-currency-amount', CFGP_U::generate_token(5) );
-									$amount = ( isset( $instance['amount'] ) && !empty( $instance['amount'] ) ) ? esc_html( $instance['amount'] ) : esc_html__( 'Amount', CFGP_NAME );
+									$amount = ( isset( $instance['amount'] ) && !empty( $instance['amount'] ) ) ? esc_html( $instance['amount'] ) : esc_html__( 'Amount', 'cf-geoplugin');
 								?>
 								<label class="form-label cfgp-form-label" for="<?php echo $label_amount; ?>"><?php echo $amount ?></label>
 								<input type="text" name="cfgp_currency_amount" class="form-control cfgp-form-control" id="<?php echo $label_amount; ?>" placeholder="<?php echo $amount; ?>" autocomplete="off">
@@ -1119,7 +1119,7 @@ LIMIT 1
 							
 							<?php $label_from = sprintf( '%s-%s', 'cfgp-currency-from', CFGP_U::generate_token(5) ); ?>
 							<div class="form-group cfgp-form-group cfgp-form-group-from">
-								<label class="form-label cfgp-form-label" for="<?php echo $label_from; ?>"><?php echo ( isset( $instance['from'] ) && !empty( $instance['from'] ) ) ? esc_html( $instance['from'] ) : esc_html__( 'From', CFGP_NAME ); ?></label>
+								<label class="form-label cfgp-form-label" for="<?php echo $label_from; ?>"><?php echo ( isset( $instance['from'] ) && !empty( $instance['from'] ) ) ? esc_html( $instance['from'] ) : esc_html__( 'From', 'cf-geoplugin'); ?></label>
 								<select name="cfgp_currency_from" class="form-control cfgp-form-control cfgp-custom-select cfgp-col-10 cfgp-currency-from" id="<?php echo $label_from; ?>" data-show-subtext="true">
 									<?php
 										foreach( $currency_symbols as $key => $countries )
@@ -1137,7 +1137,7 @@ LIMIT 1
 	
 							<?php $label_to = sprintf( '%s-%s', 'cfgp-currency-to', CFGP_U::generate_token(5) ); ?>
 							<div class="form-group cfgp-form-group cfgp-form-group-to">
-								<label class="form-label cfgp-form-label" for="<?php echo $label_to; ?>"><?php echo ( isset( $instance['to'] ) && !empty( $instance['to'] ) ) ? esc_html( $instance['to'] ) : esc_html__( 'To', CFGP_NAME ); ?></label>
+								<label class="form-label cfgp-form-label" for="<?php echo $label_to; ?>"><?php echo ( isset( $instance['to'] ) && !empty( $instance['to'] ) ) ? esc_html( $instance['to'] ) : esc_html__( 'To', 'cf-geoplugin'); ?></label>
 								<select name="cfgp_currency_to" class="form-control cfgp-form-control cfgp-custom-select cfgp-col-10 cfgp-currency-to" id="<?php echo $label_to; ?>" data-show-subtext="true">
 									<?php
 										foreach( $currency_symbols as $key => $countries )
@@ -1156,7 +1156,7 @@ LIMIT 1
 								<p class="cfgp-currency-converted"></p>
 							</div>
 							<div class="cfgp-form-group cfgp-form-group-submit">
-								<button type="submit" class="button submit cfgp-btn cfgp-btn-calculate"><?php esc_html_e( $instance['convert'], CFGP_NAME ); ?></button>
+								<button type="submit" class="button submit cfgp-btn cfgp-btn-calculate"><?php esc_html_e( $instance['convert'], 'cf-geoplugin'); ?></button>
 								<button type="button" class="button submit cfgp-btn cfgp-exchange-currency">&#8646;</button> 
 							</div>
                             <?php wp_nonce_field( 'cfgeo_full_currency_converter', 'cfgeo_currency_converter_nonce__' ); ?>
@@ -1219,13 +1219,13 @@ LIMIT 1
 		switch( $message_type )
 		{
 			case 'error_direct':
-				$message = '<b>' . esc_html__( 'Direct access is forbidden!', CFGP_NAME ) . '</b>';
+				$message = '<b>' . esc_html__( 'Direct access is forbidden!', 'cf-geoplugin') . '</b>';
 			break;
 			case 'error_user': 
-				$message = '<b>' . esc_html__( 'Please enter valid decimal or integer format.', CFGP_NAME ) . '</b>';
+				$message = '<b>' . esc_html__( 'Please enter valid decimal or integer format.', 'cf-geoplugin') . '</b>';
 			break;
 			case 'error_api':
-				$message = '<b>' . esc_html__( 'Sorry currently we are not able to do conversion. Please try again later.', CFGP_NAME ) . '</b>';
+				$message = '<b>' . esc_html__( 'Sorry currently we are not able to do conversion. Please try again later.', 'cf-geoplugin') . '</b>';
 			break;
 			case 'success':
 				$class = 'cfgp-success';
@@ -1241,8 +1241,8 @@ LIMIT 1
 					$result['to_amount'] = '1';
 				}
 		
-				if( !isset( $result['from_name'] ) || empty( $result['from_name'] ) ) $result['from_name'] = esc_html__( 'Undefined', CFGP_NAME );
-				if( !isset( $result['to_name'] ) || empty( $result['to_name'] ) ) $result['to_name'] = esc_html__( 'Undefined', CFGP_NAME );;
+				if( !isset( $result['from_name'] ) || empty( $result['from_name'] ) ) $result['from_name'] = esc_html__( 'Undefined', 'cf-geoplugin');
+				if( !isset( $result['to_name'] ) || empty( $result['to_name'] ) ) $result['to_name'] = esc_html__( 'Undefined', 'cf-geoplugin');;
 		
 				if( !isset( $result['from_code'] ) || empty( $result['from_code'] ) ) $result['from_code'] = 'X';
 				if( !isset( $result['to_code'] ) || empty( $result['to_code'] ) ) $result['to_code'] = 'X';
@@ -1250,7 +1250,7 @@ LIMIT 1
 				$message = sprintf( '<p class="cfgp-currency-results-amount"><span class="cfgp-currency-results-amount-current">%s %s</span><span class="cfgp-currency-results-amount-separator"> = </span><span class="cfgp-currency-results-amount-converted">%s %s</span></p><p class="cfgp-currency-results-info">%s &rarr; %s</p>', $result['from_amount'], $result['from_code'], $result['to_amount'], $result['to_code'], $result['from_name'], $result['to_name'] );
 			break;
 			default:
-				$message = '<b>' . esc_html__( 'Sorry currently we are not able to do conversion. Please try again later.', CFGP_NAME ) . '</b>';
+				$message = '<b>' . esc_html__( 'Sorry currently we are not able to do conversion. Please try again later.', 'cf-geoplugin') . '</b>';
 			break;
 		}
 		?>

@@ -37,11 +37,11 @@ if (!class_exists('CFGP_SEO_Table')):
 		public function get_bulk_actions() {
 
 			return array(
-				'enable' => __( 'Enable Redirection', CFGP_NAME ),
-				'disable' => __( 'Disable Redirection', CFGP_NAME ),
-				'only_once' => __( 'Redirect Only Once', CFGP_NAME ),
-				'always' => __( 'Always Redirect', CFGP_NAME ),
-				'delete' => __( 'Delete', CFGP_NAME )
+				'enable' => __( 'Enable Redirection', 'cf-geoplugin'),
+				'disable' => __( 'Disable Redirection', 'cf-geoplugin'),
+				'only_once' => __( 'Redirect Only Once', 'cf-geoplugin'),
+				'always' => __( 'Always Redirect', 'cf-geoplugin'),
+				'delete' => __( 'Delete', 'cf-geoplugin')
 			);
 	
 		}
@@ -94,18 +94,18 @@ if (!class_exists('CFGP_SEO_Table')):
 					if($filter == NULL) {
 						echo ' class="current" aria-current="page"';
 					}
-				?>><?php _e('All', CFGP_NAME); ?> <span class="count">(<?php echo ($count['enabled']+$count['disabled']); ?>)</span></a> |</li>
+				?>><?php _e('All', 'cf-geoplugin'); ?> <span class="count">(<?php echo ($count['enabled']+$count['disabled']); ?>)</span></a> |</li>
 				<li class="enabled"><a href="<?php echo add_query_arg('filter','enabled'); ?>"<?php
 					if($filter == 'enabled') {
 						echo ' class="current" aria-current="page"';
 					}
-				?>><?php _e('Enabled', CFGP_NAME); ?> <span class="count">(<?php echo $count['enabled']; ?>)</span></a> 
+				?>><?php _e('Enabled', 'cf-geoplugin'); ?> <span class="count">(<?php echo $count['enabled']; ?>)</span></a> 
 				<?php if($count['disabled']) : ?>|</li>
 				<li class="disabled"><a href="<?php echo add_query_arg('filter','disabled'); ?>"<?php echo add_query_arg('filter','enabled'); ?>"<?php
 					if($filter == 'disabled') {
 						echo ' class="current" aria-current="page"';
 					}
-				?>><?php _e('Disabled', CFGP_NAME); ?> <span class="count">(<?php echo $count['disabled']; ?>)</span></a></li>
+				?>><?php _e('Disabled', 'cf-geoplugin'); ?> <span class="count">(<?php echo $count['disabled']; ?>)</span></a></li>
 				<?php else : ?>
 				</li>
 				<?php endif; ?>
@@ -122,7 +122,7 @@ if (!class_exists('CFGP_SEO_Table')):
 				$action = 'bulk-' . $this->_args['plural'];
 	
 				if ( ! wp_verify_nonce( $nonce, $action ) )
-					wp_die( __( 'Nope! Security check failed!', CFGP_NAME ) );
+					wp_die( __( 'Nope! Security check failed!', 'cf-geoplugin') );
 	
 			}
 	
@@ -131,9 +131,9 @@ if (!class_exists('CFGP_SEO_Table')):
 			switch ( $action ) {
 	
 				case 'delete':
-					$checkboxes = CFGP_U::request_array('seo_redirection');
-					if(!empty($checkboxes))
+					if( isset($_POST['seo_redirection']) && !empty($_POST['seo_redirection']) && is_array($_POST['seo_redirection']) )
 					{
+						$checkboxes = array_map('sanitize_text_field', $_POST['seo_redirection']);
 						$checkboxes = array_map('absint', $checkboxes);
 						if($checkboxes = array_filter($checkboxes))
 						{
@@ -146,9 +146,9 @@ if (!class_exists('CFGP_SEO_Table')):
 					
 				case 'enable':
 				case 'disable':
-					$checkboxes = CFGP_U::request_array('seo_redirection');
-					if(!empty($checkboxes))
+					if( isset($_POST['seo_redirection']) && !empty($_POST['seo_redirection']) && is_array($_POST['seo_redirection']) )
 					{
+						$checkboxes = array_map('sanitize_text_field', $_POST['seo_redirection']);
 						$checkboxes = array_map('absint', $checkboxes);
 						if($checkboxes = array_filter($checkboxes))
 						{
@@ -162,9 +162,9 @@ if (!class_exists('CFGP_SEO_Table')):
 				
 				case 'only_once':
 				case 'always':
-					$checkboxes = CFGP_U::request_array('seo_redirection');
-					if(!empty($checkboxes))
+					if( isset($_POST['seo_redirection']) && !empty($_POST['seo_redirection']) && is_array($_POST['seo_redirection']) )
 					{
+						$checkboxes = array_map('sanitize_text_field', $_POST['seo_redirection']);
 						$checkboxes = array_map('absint', $checkboxes);
 						if($checkboxes = array_filter($checkboxes))
 						{
@@ -197,7 +197,7 @@ if (!class_exists('CFGP_SEO_Table')):
 						'nonce' => wp_create_nonce(CFGP_NAME.'-seo-import-csv')
 					));
 				
-					printf('<a aria="button" href="%s" class="button"><i class="cfa cfa-upload"></i> %s</a> ', $seo_import_csv, __('Import From CSV', CFGP_NAME));
+					printf('<a aria="button" href="%s" class="button"><i class="cfa cfa-upload"></i> %s</a> ', $seo_import_csv, __('Import From CSV', 'cf-geoplugin'));
 					
 					if($exists){
 						
@@ -206,7 +206,7 @@ if (!class_exists('CFGP_SEO_Table')):
 							'nonce' => wp_create_nonce(CFGP_NAME.'-seo-export-csv')
 						));
 						
-						printf('<a aria="button" href="%s" class="button"><i class="cfa cfa-table"></i> %s</a> ', $seo_export_csv, __('Export CSV', CFGP_NAME));
+						printf('<a aria="button" href="%s" class="button"><i class="cfa cfa-table"></i> %s</a> ', $seo_export_csv, __('Export CSV', 'cf-geoplugin'));
 					}
 					
 				echo '</div>';
@@ -221,13 +221,13 @@ if (!class_exists('CFGP_SEO_Table')):
         {
             return array(
 				'cb'    => '<input type="checkbox">',
-                'cfgp_seo_url' => __('URL', CFGP_NAME),
-                'cfgp_seo_country' => __('Country', CFGP_NAME),
-                'cfgp_seo_region' => __('Region', CFGP_NAME),
-                'cfgp_seo_city' => __('City', CFGP_NAME),
-                'cfgp_seo_postcode' => __('Postcode', CFGP_NAME),
-				'cfgp_seo_http_code' => __('Status Code', CFGP_NAME),
-				'cfgp_seo_only_once' => __('Redirect', CFGP_NAME)
+                'cfgp_seo_url' => __('URL', 'cf-geoplugin'),
+                'cfgp_seo_country' => __('Country', 'cf-geoplugin'),
+                'cfgp_seo_region' => __('Region', 'cf-geoplugin'),
+                'cfgp_seo_city' => __('City', 'cf-geoplugin'),
+                'cfgp_seo_postcode' => __('Postcode', 'cf-geoplugin'),
+				'cfgp_seo_http_code' => __('Status Code', 'cf-geoplugin'),
+				'cfgp_seo_only_once' => __('Redirect', 'cf-geoplugin')
             );
         }
 
@@ -445,15 +445,15 @@ if (!class_exists('CFGP_SEO_Table')):
 							break;
                             case "cfgp_seo_url":
                                 echo '<td ' . $attributes . '>';
-									echo ($rec->active ? '' : '<sup>' . __('DISABLED', CFGP_NAME) . '</sup> ') . '<strong>' . esc_url($rec->url) . '</strong>';
+									echo ($rec->active ? '' : '<sup>' . __('DISABLED', 'cf-geoplugin') . '</sup> ') . '<strong>' . esc_url($rec->url) . '</strong>';
 									echo '<div class="row-actions">
 										<span class="edit"><a href="' . esc_url($edit_link).'">' 
-											. __('Edit', CFGP_NAME) 
+											. __('Edit', 'cf-geoplugin') 
 										. '</a> | </span>
 										<span class="trash"><a href="' . esc_url($delete_link) . '" class="submitdelete"  onclick="if (confirm(\'' 
-											. esc_attr__('Are you sure you want to delete this redirection?', CFGP_NAME) 
+											. esc_attr__('Are you sure you want to delete this redirection?', 'cf-geoplugin') 
 										. '\')){return true;}else{event.stopPropagation(); event.preventDefault();};">' 
-											. __('Delete', CFGP_NAME) 
+											. __('Delete', 'cf-geoplugin') 
 										. '</a></span>
 									</div>';
 								echo '</td>';
@@ -496,7 +496,7 @@ if (!class_exists('CFGP_SEO_Table')):
                                 echo '<td ' . $attributes . '>HTTP ' . esc_html($rec->http_code) . '</td>';
                             break;
 							case "cfgp_seo_only_once":
-                                echo '<td ' . $attributes . '>' . esc_html($rec->only_once ? __('Only once', CFGP_NAME) : __('Always', CFGP_NAME) ). '</td>';
+                                echo '<td ' . $attributes . '>' . esc_html($rec->only_once ? __('Only once', 'cf-geoplugin') : __('Always', 'cf-geoplugin') ). '</td>';
                             break;
                         }
                     }
@@ -521,7 +521,7 @@ if (!class_exists('CFGP_SEO_Table')):
 						return false;
 					}
 					
-				//	error_log(sprintf(__('The database table "%s" not exists! You can try to reactivate the CF Geo Plugin to correct this error.', CFGP_NAME), $wpdb->cfgp_seo_redirection));
+				//	error_log(sprintf(__('The database table "%s" not exists! You can try to reactivate the CF Geo Plugin to correct this error.', 'cf-geoplugin'), $wpdb->cfgp_seo_redirection));
 					
 					$cache = false;
 				} else {

@@ -44,22 +44,22 @@ add_action('cfgp/page/seo_redirection/form/content', function(){
 ?>
 <?php if( !CFGP_SEO_Table::table_exists() ) : ?>
 <div class="notice notice-error"> 
-	<p><?php printf(__('The database table "%s" not exists! You can try to reactivate the CF Geo Plugin to correct this error.', CFGP_NAME), "<strong>{$wpdb->cfgp_seo_redirection}</strong>"); ?></p>
+	<p><?php printf(__('The database table "%s" not exists! You can try to reactivate the CF Geo Plugin to correct this error.', 'cf-geoplugin'), "<strong>{$wpdb->cfgp_seo_redirection}</strong>"); ?></p>
 </div>
 <?php endif; ?>
 <div class="postbox">
-	<h3 class="hndle" style="margin-bottom:0;padding-bottom:0;"><span><?php _e('SEO Redirection Global Params', CFGP_NAME); ?></span></h3><hr>
+	<h3 class="hndle" style="margin-bottom:0;padding-bottom:0;"><span><?php _e('SEO Redirection Global Params', 'cf-geoplugin'); ?></span></h3><hr>
 	<div class="inside">
     	<?php CFGP_Form::input('hidden', array('name'=>'id','value'=>$ID)); ?>
     	<table class="form-table cfgp-form-table cfgp-country-region-city-multiple-form" role="presentation" id="cfgp-new-seo-redirection">
         	<tbody>
                 <tr>
-                    <th scope="row" valign="top" class="cfgp-label"><label><?php _e('Enable this redirection', CFGP_NAME); ?></label></th>
+                    <th scope="row" valign="top" class="cfgp-label"><label><?php _e('Enable this redirection', 'cf-geoplugin'); ?></label></th>
                     <td valign="top"><?php
 						CFGP_Form::radio(
 							array(
-								1 => __('Enable', CFGP_NAME),
-								0 => __('Disable', CFGP_NAME)
+								1 => __('Enable', 'cf-geoplugin'),
+								0 => __('Disable', 'cf-geoplugin')
 							),
 							array('name'=>'redirect_enable'),
 							$redirect_enable
@@ -67,44 +67,44 @@ add_action('cfgp/page/seo_redirection/form/content', function(){
 					?></td>
                 </tr>
                 <tr>
-                    <th scope="row" valign="top" class="cfgp-label"><label for="country"><?php _e('Select Country', CFGP_NAME); ?></label></th>
+                    <th scope="row" valign="top" class="cfgp-label"><label for="country"><?php _e('Select Country', 'cf-geoplugin'); ?></label></th>
                     <td valign="top"><?php 
 						CFGP_Form::select_countries(array('name'=>'country', 'class'=>'cfgp_select2'), $select_country);
 					?></td>
                 </tr>
                 <tr>
-                    <th scope="row" valign="top" class="cfgp-label"><label for="region"><?php _e('Select Region', CFGP_NAME); ?></label></th>
+                    <th scope="row" valign="top" class="cfgp-label"><label for="region"><?php _e('Select Region', 'cf-geoplugin'); ?></label></th>
                     <td valign="top"><?php
 						CFGP_Form::select_regions(array('name'=>'region', 'country_code' => $select_country, 'class'=>'cfgp_select2'), $select_region);
 					?></td>
                 </tr>
                 <tr>
-                    <th scope="row" valign="top" class="cfgp-label"><label for="city"><?php _e('Select City', CFGP_NAME); ?></label></th>
+                    <th scope="row" valign="top" class="cfgp-label"><label for="city"><?php _e('Select City', 'cf-geoplugin'); ?></label></th>
                     <td valign="top"><?php
 						CFGP_Form::select_cities(array('name'=>'city', 'country_code' => $select_country, 'class'=>'cfgp_select2'), $select_city);
 					?></td>
                 </tr>
                 <tr>
-                    <th scope="row" valign="top" class="cfgp-label"><label for="postcode"><?php _e('Select Postcode', CFGP_NAME); ?></label></th>
+                    <th scope="row" valign="top" class="cfgp-label"><label for="postcode"><?php _e('Select Postcode', 'cf-geoplugin'); ?></label></th>
                     <td valign="top"><?php
 						CFGP_Form::select_postcodes(array('name'=>'postcode', 'class'=>'cfgp_select2'), $select_postcode);
 					?></td>
                 </tr>
                 <tr>
-                    <th scope="row" valign="top" class="cfgp-label"><label for="url"><?php _e('Redirect URL', CFGP_NAME); ?></label></th>
+                    <th scope="row" valign="top" class="cfgp-label"><label for="url"><?php _e('Redirect URL', 'cf-geoplugin'); ?></label></th>
                     <td valign="top"><?php CFGP_Form::input('url', array('name'=>'url','value'=>$redirection_url, 'style'=>'width:100%;max-width:50%;')); ?></td>
                 </tr>
                 <tr>
-                    <th scope="row" valign="top" class="cfgp-label"><label for="http_code"><?php _e('HTTP Code', CFGP_NAME); ?></label></th>
+                    <th scope="row" valign="top" class="cfgp-label"><label for="http_code"><?php _e('HTTP Code', 'cf-geoplugin'); ?></label></th>
                     <td valign="top"><?php CFGP_Form::select_http_code(array('name'=>'http_code'), $http_code); ?></td>
                 </tr>
                 <tr>
-                    <th scope="row" valign="top" class="cfgp-label"><label><?php _e('Redirection', CFGP_NAME); ?></label></th>
+                    <th scope="row" valign="top" class="cfgp-label"><label><?php _e('Redirection', 'cf-geoplugin'); ?></label></th>
                     <td valign="top"><?php
 						CFGP_Form::radio(
 							array(
-								1 => __('only once', CFGP_NAME),
-								0 => __('always', CFGP_NAME)
+								1 => __('only once', 'cf-geoplugin'),
+								0 => __('always', 'cf-geoplugin')
 							),
 							array('name'=>'only_once'),
 							$only_once
@@ -113,7 +113,7 @@ add_action('cfgp/page/seo_redirection/form/content', function(){
                 </tr>
             </tbody>
         </table>
-        <p class="submit"><button type="submit" class="button button-primary"><?php _e('Save Redirection', CFGP_NAME); ?></button><?php if($ID): ?> <a href="<?php echo CFGP_U::admin_url('admin.php?page='.CFGP_NAME.'-seo-redirection'); ?>" class="button" style="float:right"><?php _e('Go back to list', CFGP_NAME); ?></a><?php endif; ?></p>
+        <p class="submit"><button type="submit" class="button button-primary"><?php _e('Save Redirection', 'cf-geoplugin'); ?></button><?php if($ID): ?> <a href="<?php echo CFGP_U::admin_url('admin.php?page='.CFGP_NAME.'-seo-redirection'); ?>" class="button" style="float:right"><?php _e('Go back to list', 'cf-geoplugin'); ?></a><?php endif; ?></p>
     </div>
 </div>
 <?php });
@@ -124,9 +124,9 @@ add_action('cfgp/page/seo_redirection/form', function(){
 <div class="wrap wrap-cfgp" id="<?php echo sanitize_title($_GET['page']); ?>">
 	<h1 class="wp-heading-inline"><i class="cfa cfa-location-arrow"></i> <?php
 		if($action == 'edit') {
-			_e('Edit SEO redirection', CFGP_NAME);
+			_e('Edit SEO redirection', 'cf-geoplugin');
 		} else {
-			_e('Add new SEO redirection', CFGP_NAME);
+			_e('Add new SEO redirection', 'cf-geoplugin');
 		}
 	?></h1>
 	<?php 
@@ -134,7 +134,7 @@ add_action('cfgp/page/seo_redirection/form', function(){
 			printf(
 				'<a href="%s" class="page-title-action button-cfgeo-seo-new"><i class="cfa cfa-plus"></i> %s</a> ',
 				CFGP_U::admin_url('admin.php?page=cf-geoplugin-seo-redirection&action=new&nonce='.wp_create_nonce(CFGP_NAME.'-seo-new')),
-				__('New SEO redirection', CFGP_NAME)
+				__('New SEO redirection', 'cf-geoplugin')
 			);
 		}
 	?>

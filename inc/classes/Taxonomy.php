@@ -35,23 +35,23 @@ if(!class_exists('CFGP_Taxonomy')) : class CFGP_Taxonomy extends CFGP_Global {
 				'cf-geoplugin-country', 'cf-geoplugin-banner',
 				array(
 					'labels'			=> array(
-						'name' 					=> __('Countries',CFGP_NAME),
-						'singular_name' 		=> __('Country',CFGP_NAME),
-						'menu_name' 			=> __('Countries',CFGP_NAME),
-						'all_items' 			=> __('All Countries',CFGP_NAME),
-						'edit_item' 			=> __('Edit Country',CFGP_NAME),
-						'view_item' 			=> __('View Country',CFGP_NAME),
-						'update_item' 			=> __('Update Country',CFGP_NAME),
-						'add_new_item' 			=> __('Add New Country',CFGP_NAME),
-						'new_item_name' 		=> __('New Country Name',CFGP_NAME),
-						'parent_item' 			=> __('Parent Country',CFGP_NAME),
-						'parent_item_colon' 	=> __('Parent Country',CFGP_NAME),
+						'name' 					=> __('Countries', 'cf-geoplugin'),
+						'singular_name' 		=> __('Country', 'cf-geoplugin'),
+						'menu_name' 			=> __('Countries', 'cf-geoplugin'),
+						'all_items' 			=> __('All Countries', 'cf-geoplugin'),
+						'edit_item' 			=> __('Edit Country', 'cf-geoplugin'),
+						'view_item' 			=> __('View Country', 'cf-geoplugin'),
+						'update_item' 			=> __('Update Country', 'cf-geoplugin'),
+						'add_new_item' 			=> __('Add New Country', 'cf-geoplugin'),
+						'new_item_name' 		=> __('New Country Name', 'cf-geoplugin'),
+						'parent_item' 			=> __('Parent Country', 'cf-geoplugin'),
+						'parent_item_colon' 	=> __('Parent Country', 'cf-geoplugin'),
 					),
 					'hierarchical'		=> true,
 					'show_ui'			=> false,
 					'public'		 	=> false,
-					'label'          	=> __('Countries',CFGP_NAME),
-					'singular_label' 	=> __('Country',CFGP_NAME),
+					'label'          	=> __('Countries', 'cf-geoplugin'),
+					'singular_label' 	=> __('Country', 'cf-geoplugin'),
 					'rewrite'        	=> true,
 					'query_var'			=> false,
 					'show_tagcloud'		=> false,
@@ -66,23 +66,23 @@ if(!class_exists('CFGP_Taxonomy')) : class CFGP_Taxonomy extends CFGP_Global {
 				'cf-geoplugin-region', 'cf-geoplugin-banner',
 				array(
 					'labels'			=> array(
-						'name' 					=> __('Regions',CFGP_NAME),
-						'singular_name' 		=> __('Region',CFGP_NAME),
-						'menu_name' 			=> __('Regions',CFGP_NAME),
-						'all_items' 			=> __('All Regions',CFGP_NAME),
-						'edit_item' 			=> __('Edit Region',CFGP_NAME),
-						'view_item' 			=> __('View Region',CFGP_NAME),
-						'update_item' 			=> __('Update Region',CFGP_NAME),
-						'add_new_item' 			=> __('Add New Region',CFGP_NAME),
-						'new_item_name' 		=> __('New Region Name',CFGP_NAME),
-						'parent_item' 			=> __('Parent Region',CFGP_NAME),
-						'parent_item_colon' 	=> __('Parent Region',CFGP_NAME),
+						'name' 					=> __('Regions', 'cf-geoplugin'),
+						'singular_name' 		=> __('Region', 'cf-geoplugin'),
+						'menu_name' 			=> __('Regions', 'cf-geoplugin'),
+						'all_items' 			=> __('All Regions', 'cf-geoplugin'),
+						'edit_item' 			=> __('Edit Region', 'cf-geoplugin'),
+						'view_item' 			=> __('View Region', 'cf-geoplugin'),
+						'update_item' 			=> __('Update Region', 'cf-geoplugin'),
+						'add_new_item' 			=> __('Add New Region', 'cf-geoplugin'),
+						'new_item_name' 		=> __('New Region Name', 'cf-geoplugin'),
+						'parent_item' 			=> __('Parent Region', 'cf-geoplugin'),
+						'parent_item_colon' 	=> __('Parent Region', 'cf-geoplugin'),
 					),
 					'hierarchical'   	=> true,
 					'show_ui'			=> false,
 					'public'		 	=> false,
-					'label'          	=> __('Regions',CFGP_NAME),
-					'singular_label' 	=> __('Region',CFGP_NAME),
+					'label'          	=> __('Regions', 'cf-geoplugin'),
+					'singular_label' 	=> __('Region', 'cf-geoplugin'),
 					'rewrite'        	=> true,
 					'query_var'			=> false,
 					'show_tagcloud'		=> false,
@@ -106,23 +106,23 @@ if(!class_exists('CFGP_Taxonomy')) : class CFGP_Taxonomy extends CFGP_Global {
 				'cf-geoplugin-city', 'cf-geoplugin-banner',
 				array(
 					'labels'			=> array(
-						'name' 					=> __('Cities',CFGP_NAME),
-						'singular_name' 		=> __('City',CFGP_NAME),
-						'menu_name' 			=> __('Cities',CFGP_NAME),
-						'all_items' 			=> __('All Cities',CFGP_NAME),
-						'edit_item' 			=> __('Edit City',CFGP_NAME),
-						'view_item' 			=> __('View City',CFGP_NAME),
-						'update_item' 			=> __('Update City',CFGP_NAME),
-						'add_new_item' 			=> __('Add New City',CFGP_NAME),
-						'new_item_name' 		=> __('New City Name',CFGP_NAME),
-						'parent_item' 			=> __('Parent City',CFGP_NAME),
-						'parent_item_colon' 	=> __('Parent City',CFGP_NAME),
+						'name' 					=> __('Cities', 'cf-geoplugin'),
+						'singular_name' 		=> __('City', 'cf-geoplugin'),
+						'menu_name' 			=> __('Cities', 'cf-geoplugin'),
+						'all_items' 			=> __('All Cities', 'cf-geoplugin'),
+						'edit_item' 			=> __('Edit City', 'cf-geoplugin'),
+						'view_item' 			=> __('View City', 'cf-geoplugin'),
+						'update_item' 			=> __('Update City', 'cf-geoplugin'),
+						'add_new_item' 			=> __('Add New City', 'cf-geoplugin'),
+						'new_item_name' 		=> __('New City Name', 'cf-geoplugin'),
+						'parent_item' 			=> __('Parent City', 'cf-geoplugin'),
+						'parent_item_colon' 	=> __('Parent City', 'cf-geoplugin'),
 					),
 					'hierarchical'   	=> true,
 					'show_ui'			=> false,
 					'public'		 	=> false,
-					'label'          	=> __('Cities',CFGP_NAME),
-					'singular_label' 	=> __('City',CFGP_NAME),
+					'label'          	=> __('Cities', 'cf-geoplugin'),
+					'singular_label' 	=> __('City', 'cf-geoplugin'),
 					'rewrite'        	=> true,
 					'query_var'			=> false,
 					'show_tagcloud'		=> false,
@@ -146,25 +146,25 @@ if(!class_exists('CFGP_Taxonomy')) : class CFGP_Taxonomy extends CFGP_Global {
 				'cf-geoplugin-postcode', 'cf-geoplugin-banner',
 				array(
 					'labels'			=> array(
-						'name' 					=> __('Postcodes',CFGP_NAME),
-						'name_field_description'=> __('The postcode name must be written in the original international format.',CFGP_NAME),
-						'singular_name' 		=> __('Postcode',CFGP_NAME),
-						'menu_name' 			=> __('Postcodes',CFGP_NAME),
-						'all_items' 			=> __('All Postcodes',CFGP_NAME),
-						'edit_item' 			=> __('Edit Postcode',CFGP_NAME),
-						'view_item' 			=> __('View Postcode',CFGP_NAME),
-						'update_item' 			=> __('Update Postcode',CFGP_NAME),
-						'add_new_item' 			=> __('Add New Postcode',CFGP_NAME),
-						'new_item_name' 		=> __('New Postcode Name',CFGP_NAME),
-						'parent_item' 			=> __('Parent Postcode',CFGP_NAME),
-						'parent_item_colon' 	=> __('Parent Postcode',CFGP_NAME),
-						'slug_field_description'=> __('The “slug” is the URL-friendly version of the postcode. It is usually all lowercase and contains only letters, numbers, and hyphens.',CFGP_NAME),
+						'name' 					=> __('Postcodes', 'cf-geoplugin'),
+						'name_field_description'=> __('The postcode name must be written in the original international format.', 'cf-geoplugin'),
+						'singular_name' 		=> __('Postcode', 'cf-geoplugin'),
+						'menu_name' 			=> __('Postcodes', 'cf-geoplugin'),
+						'all_items' 			=> __('All Postcodes', 'cf-geoplugin'),
+						'edit_item' 			=> __('Edit Postcode', 'cf-geoplugin'),
+						'view_item' 			=> __('View Postcode', 'cf-geoplugin'),
+						'update_item' 			=> __('Update Postcode', 'cf-geoplugin'),
+						'add_new_item' 			=> __('Add New Postcode', 'cf-geoplugin'),
+						'new_item_name' 		=> __('New Postcode Name', 'cf-geoplugin'),
+						'parent_item' 			=> __('Parent Postcode', 'cf-geoplugin'),
+						'parent_item_colon' 	=> __('Parent Postcode', 'cf-geoplugin'),
+						'slug_field_description'=> __('The “slug” is the URL-friendly version of the postcode. It is usually all lowercase and contains only letters, numbers, and hyphens.', 'cf-geoplugin'),
 					),
 					'hierarchical'   	=> true,
 					'show_ui'			=> true,
 					'public'		 	=> false,
-					'label'          	=> __('Postcodes',CFGP_NAME),
-					'singular_label' 	=> __('Postcode',CFGP_NAME),
+					'label'          	=> __('Postcodes', 'cf-geoplugin'),
+					'singular_label' 	=> __('Postcode', 'cf-geoplugin'),
 					'rewrite'        	=> true,
 					'query_var'			=> false,
 					'show_tagcloud'		=> false,
@@ -185,14 +185,14 @@ if(!class_exists('CFGP_Taxonomy')) : class CFGP_Taxonomy extends CFGP_Global {
 	// Add fields to taxonomy postcodes on the new page
 	function add_postcode_fields( $taxonomy ) { ?>
 <div class="form-field term-country-wrap">
-	<label for="country"><?php _e('Country',CFGP_NAME); ?></label>
+	<label for="country"><?php _e('Country', 'cf-geoplugin'); ?></label>
 	<?php CFGP_Form::select_countries(array('name'=>'country', 'class'=>'cfgp_select2')); ?>
-	<p><?php _e('Select the country where this postcode is from.',CFGP_NAME); ?></p>
+	<p><?php _e('Select the country where this postcode is from.', 'cf-geoplugin'); ?></p>
 </div>
 <div class="form-field term-city-wrap">
-	<label for="city"><?php _e('City name (optional)',CFGP_NAME); ?></label>
+	<label for="city"><?php _e('City name (optional)', 'cf-geoplugin'); ?></label>
 	<?php CFGP_Form::input('text', array('name'=>'city')); ?>
-	<p><?php _e('Add city name for this postcode.',CFGP_NAME); ?></p>
+	<p><?php _e('Add city name for this postcode.', 'cf-geoplugin'); ?></p>
 </div>
 	<?php }
 	
@@ -203,20 +203,20 @@ if(!class_exists('CFGP_Taxonomy')) : class CFGP_Taxonomy extends CFGP_Global {
 	?>
 <tr class="form-field term-country-wrap">
 	<th>
-		<label for="country"><?php _e('Country',CFGP_NAME); ?></label>
+		<label for="country"><?php _e('Country', 'cf-geoplugin'); ?></label>
 	</th>
 	<td>
 		<?php CFGP_Form::select_countries(array('name'=>'country', 'class'=>'cfgp_select2'), $country); ?>
-		<p class="description"><?php _e('Select the country where this postcode is from.',CFGP_NAME); ?></p>
+		<p class="description"><?php _e('Select the country where this postcode is from.', 'cf-geoplugin'); ?></p>
 	</td>
 </tr>
 <tr class="form-field term-city-wrap">
 	<th>
-		<label for="city"><?php _e('City name (optional)',CFGP_NAME); ?></label>
+		<label for="city"><?php _e('City name (optional)', 'cf-geoplugin'); ?></label>
 	</th>
 	<td>
 		<?php CFGP_Form::input('text', array('name'=>'city', 'value'=>$city)); ?>
-		<p class="description"><?php _e('Add city name for this postcode.',CFGP_NAME); ?></p>
+		<p class="description"><?php _e('Add city name for this postcode.', 'cf-geoplugin'); ?></p>
 	</td>
 </tr>
 	<?php }
@@ -226,8 +226,8 @@ if(!class_exists('CFGP_Taxonomy')) : class CFGP_Taxonomy extends CFGP_Global {
 		if(isset($columns['posts'])) {
 			unset($columns['posts']);
 		}
-		$columns['country'] = __('Country',CFGP_NAME);
-		$columns['city'] = __('City',CFGP_NAME);
+		$columns['country'] = __('Country', 'cf-geoplugin');
+		$columns['city'] = __('City', 'cf-geoplugin');
 		return $columns;
 	}
 	

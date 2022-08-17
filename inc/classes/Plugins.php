@@ -47,11 +47,11 @@ if(!class_exists('CFGP_Plugins')) :
 						$plugin_options[]= array(
 							'name' => 'enable-' . $dir_name,
 							'label' => $plugin_info->name,
-							'desc' => sprintf(__('Enable %s integration.', CFGP_NAME), $plugin_info->name),
+							'desc' => sprintf(__('Enable %s integration.', 'cf-geoplugin'), $plugin_info->name),
 							'type' => 'radio',
 							'options' => array(
-								1 => __('Yes', CFGP_NAME),
-								0 => __('No', CFGP_NAME)
+								1 => __('Yes', 'cf-geoplugin'),
+								0 => __('No', 'cf-geoplugin')
 							),
 							'default' => 0
 						);
@@ -68,13 +68,13 @@ if(!class_exists('CFGP_Plugins')) :
 				// Tab
 				array(
 					'id' => 'plugin_support',
-					'title' => __('Plugin Support', CFGP_NAME),
+					'title' => __('Plugin Support', 'cf-geoplugin'),
 					// Section
 					'sections' => array(
 						array(
 							'id' => 'enable-plugins',
-							'title' => __('Enable Plugins', CFGP_NAME),
-							'desc' => __('Allow CF Geo Plugin to integrate with existing installed plugins.', CFGP_NAME),
+							'title' => __('Enable Plugins', 'cf-geoplugin'),
+							'desc' => __('Allow CF Geo Plugin to integrate with existing installed plugins.', 'cf-geoplugin'),
 							'inputs' => $plugin_options
 						)
 					)

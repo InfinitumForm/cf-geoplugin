@@ -28,7 +28,7 @@ class CFGP_Elementor_Eu_Widget extends \Elementor\Widget_Base {
 	 *
 	 * @return string Widget title.
 	 */
-	public function get_title() { return __('European Union control', CFGP_NAME); }
+	public function get_title() { return __('European Union control', 'cf-geoplugin'); }
 
 	/**
 	 * Get widget icon.
@@ -73,43 +73,43 @@ class CFGP_Elementor_Eu_Widget extends \Elementor\Widget_Base {
 		$this->start_controls_section(
 			'content_section',
 			array(
-				'label' => __( 'Options', CFGP_NAME ),
+				'label' => __( 'Options', 'cf-geoplugin'),
 				'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
 			)
 		);
 			$this->add_control(
 				'eu_control',
 				array(
-					'label'	=> __( 'Show or hide', CFGP_NAME ),
+					'label'	=> __( 'Show or hide', 'cf-geoplugin'),
 					'type' => \Elementor\Controls_Manager::SWITCHER,
-					'label_on' => __( 'Show', CFGP_NAME ),
-					'label_off' => __( 'Hide', CFGP_NAME ),
+					'label_on' => __( 'Show', 'cf-geoplugin'),
+					'label_off' => __( 'Hide', 'cf-geoplugin'),
 					'return_value' => true,
 					'default' => true,
-					'description' => __( 'You can chose, do you want to show or hide this widget for the European Union visitors.', CFGP_NAME )
+					'description' => __( 'You can chose, do you want to show or hide this widget for the European Union visitors.', 'cf-geoplugin')
 				)
 			);
 			
 			$this->add_control(
 				'content',
 				array(
-					'label' => __( 'Content', CFGP_NAME ),
+					'label' => __( 'Content', 'cf-geoplugin'),
 					'type' => \Elementor\Controls_Manager::WYSIWYG,
-					'default' => __( 'Your content goes here...', CFGP_NAME ),
-					'placeholder' => __( 'Place your content.', CFGP_NAME ),
+					'default' => __( 'Your content goes here...', 'cf-geoplugin'),
+					'placeholder' => __( 'Place your content.', 'cf-geoplugin'),
 				)
 			);
 			
 			$this->add_control(
 				'preview',
 				array(
-					'label'	=> __( 'Preview mode', CFGP_NAME ),
+					'label'	=> __( 'Preview mode', 'cf-geoplugin'),
 					'type' => \Elementor\Controls_Manager::SWITCHER,
-					'label_on' => __( 'Preview', CFGP_NAME ),
-					'label_off' => __( 'Normal', CFGP_NAME ),
+					'label_on' => __( 'Preview', 'cf-geoplugin'),
+					'label_off' => __( 'Normal', 'cf-geoplugin'),
 					'return_value' => true,
 					'default' => true,
-					'description' => __( 'This is an administrator-only option. Leave it enabled so you can see the content you are editing.', CFGP_NAME )
+					'description' => __( 'This is an administrator-only option. Leave it enabled so you can see the content you are editing.', 'cf-geoplugin')
 				)
 			);
 		$this->end_controls_section();
@@ -122,7 +122,7 @@ class CFGP_Elementor_Eu_Widget extends \Elementor\Widget_Base {
 		$this->start_controls_section(
 			'style_section_0',
 			array(
-				'label' => __( 'Content style', CFGP_NAME ),
+				'label' => __( 'Content style', 'cf-geoplugin'),
 				'tab' => \Elementor\Controls_Manager::TAB_STYLE,
 			)
 		);
@@ -130,7 +130,7 @@ class CFGP_Elementor_Eu_Widget extends \Elementor\Widget_Base {
 				\Elementor\Core\Schemes\Typography::get_type(),
 				array(
 					'name' => 'content_typography',
-					'label' => __( 'Typography', CFGP_NAME ),
+					'label' => __( 'Typography', 'cf-geoplugin'),
 					'scheme' => \Elementor\Core\Schemes\Typography::TYPOGRAPHY_3,
 					'selector' => "{$class}, {$class} p"
 				)
@@ -140,7 +140,7 @@ class CFGP_Elementor_Eu_Widget extends \Elementor\Widget_Base {
 				\Elementor\Core\Schemes\Typography::get_type(),
 				array(
 					'name' => 'content_typography_link',
-					'label' => __( 'Link typography', CFGP_NAME ),
+					'label' => __( 'Link typography', 'cf-geoplugin'),
 					'scheme' => \Elementor\Core\Schemes\Typography::TYPOGRAPHY_3,
 					'selector' => "{$class} a, {$class} a:active"
 				)
@@ -150,7 +150,7 @@ class CFGP_Elementor_Eu_Widget extends \Elementor\Widget_Base {
 				\Elementor\Core\Schemes\Typography::get_type(),
 				array(
 					'name' => 'content_typography_link_hover',
-					'label' => __( 'Link hover typography', CFGP_NAME ),
+					'label' => __( 'Link hover typography', 'cf-geoplugin'),
 					'scheme' => \Elementor\Core\Schemes\Typography::TYPOGRAPHY_3,
 					'selector' => "{$class} a:hover, {$class} a:focus"
 				)
@@ -160,7 +160,7 @@ class CFGP_Elementor_Eu_Widget extends \Elementor\Widget_Base {
 				\Elementor\Group_Control_Text_Shadow::get_type(),
 				array(
 					'name' => 'text_shadow',
-					'label' => __( 'Text Shadow', CFGP_NAME ),
+					'label' => __( 'Text Shadow', 'cf-geoplugin'),
 					'selector' => "{$class}, {$class} p"
 				)
 			);
@@ -169,7 +169,7 @@ class CFGP_Elementor_Eu_Widget extends \Elementor\Widget_Base {
 				\Elementor\Group_Control_Border::get_type(),
 				array(
 					'name' => 'p_border',
-					'label' => __( 'Border', CFGP_NAME ),
+					'label' => __( 'Border', 'cf-geoplugin'),
 					'selector' => "{$class}, {$class} p"
 				)
 			);
@@ -178,7 +178,7 @@ class CFGP_Elementor_Eu_Widget extends \Elementor\Widget_Base {
 				\Elementor\Group_Control_Background::get_type(),
 				[
 					'name' => 'p_background',
-					'label' => __( 'Background', CFGP_NAME ),
+					'label' => __( 'Background', 'cf-geoplugin'),
 					'types' => [ 'classic', 'gradient', 'video' ],
 					'selector' => "{$class}, {$class} p"
 				]
@@ -191,7 +191,7 @@ class CFGP_Elementor_Eu_Widget extends \Elementor\Widget_Base {
 			$this->start_controls_section(
 				"style_section_{$i}",
 				array(
-					'label' => __( "Heading H{$i}", CFGP_NAME ),
+					'label' => __( "Heading H{$i}", 'cf-geoplugin'),
 					'tab' => \Elementor\Controls_Manager::TAB_STYLE,
 				)
 			);
@@ -200,7 +200,7 @@ class CFGP_Elementor_Eu_Widget extends \Elementor\Widget_Base {
 					\Elementor\Core\Schemes\Typography::get_type(),
 					array(
 						'name' => "heading_typography_{$i}",
-						'label' => __( 'Typography', CFGP_NAME ),
+						'label' => __( 'Typography', 'cf-geoplugin'),
 						'scheme' => \Elementor\Core\Schemes\Typography::TYPOGRAPHY_1,
 						'selector' => "{$class} h{$i}"
 					)
@@ -210,7 +210,7 @@ class CFGP_Elementor_Eu_Widget extends \Elementor\Widget_Base {
 					\Elementor\Group_Control_Text_Shadow::get_type(),
 					array(
 						'name' => "heading_text_shadow_{$i}",
-						'label' => __( 'Text Shadow', CFGP_NAME ),
+						'label' => __( 'Text Shadow', 'cf-geoplugin'),
 						'selector' => "{$class} h{$i}"
 					)
 				);
@@ -219,7 +219,7 @@ class CFGP_Elementor_Eu_Widget extends \Elementor\Widget_Base {
 					\Elementor\Group_Control_Border::get_type(),
 					array(
 						'name' => "heading_border_{$i}",
-						'label' => __( 'Border', CFGP_NAME ),
+						'label' => __( 'Border', 'cf-geoplugin'),
 						'selector' => "{$class} h{$i}"
 					)
 				);
@@ -228,7 +228,7 @@ class CFGP_Elementor_Eu_Widget extends \Elementor\Widget_Base {
 					\Elementor\Group_Control_Background::get_type(),
 					array(
 						'name' => "heading_background_{$i}",
-						'label' => __( 'Background', CFGP_NAME ),
+						'label' => __( 'Background', 'cf-geoplugin'),
 						'types' => [ 'classic', 'gradient', 'video' ],
 						'selector' => "{$class} h{$i}"
 					)
@@ -240,7 +240,7 @@ class CFGP_Elementor_Eu_Widget extends \Elementor\Widget_Base {
 		$this->start_controls_section(
 			'style_section_blockquote',
 			array(
-				'label' => __( 'Blockquote', CFGP_NAME ),
+				'label' => __( 'Blockquote', 'cf-geoplugin'),
 				'tab' => \Elementor\Controls_Manager::TAB_STYLE,
 			)
 		);
@@ -249,7 +249,7 @@ class CFGP_Elementor_Eu_Widget extends \Elementor\Widget_Base {
 				\Elementor\Core\Schemes\Typography::get_type(),
 				array(
 					'name' => 'content_typography_blockquote',
-					'label' => __( 'Typography', CFGP_NAME ),
+					'label' => __( 'Typography', 'cf-geoplugin'),
 					'scheme' => \Elementor\Core\Schemes\Typography::TYPOGRAPHY_3,
 					'selector' => "{$class} blockquote"
 				)
@@ -259,7 +259,7 @@ class CFGP_Elementor_Eu_Widget extends \Elementor\Widget_Base {
 				\Elementor\Group_Control_Text_Shadow::get_type(),
 				array(
 					'name' => 'text_shadow_blockquote',
-					'label' => __( 'Text Shadow', CFGP_NAME ),
+					'label' => __( 'Text Shadow', 'cf-geoplugin'),
 					'selector' => "{$class} blockquote"
 				)
 			);
@@ -268,7 +268,7 @@ class CFGP_Elementor_Eu_Widget extends \Elementor\Widget_Base {
 				\Elementor\Group_Control_Border::get_type(),
 				array(
 					'name' => 'blockquote_border',
-					'label' => __( 'Border', CFGP_NAME ),
+					'label' => __( 'Border', 'cf-geoplugin'),
 					'selector' => "{$class} blockquote"
 				)
 			);
@@ -277,7 +277,7 @@ class CFGP_Elementor_Eu_Widget extends \Elementor\Widget_Base {
 				\Elementor\Group_Control_Background::get_type(),
 				[
 					'name' => 'blockquote_background',
-					'label' => __( 'Background', CFGP_NAME ),
+					'label' => __( 'Background', 'cf-geoplugin'),
 					'types' => [ 'classic', 'gradient', 'video' ],
 					'selector' => "{$class} blockquote"
 				]

@@ -28,7 +28,7 @@ class CFGP_Elementor_Image_Widget extends \Elementor\Widget_Base {
 	 *
 	 * @return string Widget title.
 	 */
-	public function get_title() { return __('Geo Image', CFGP_NAME); }
+	public function get_title() { return __('Geo Image', 'cf-geoplugin'); }
 
 	/**
 	 * Get widget icon.
@@ -87,7 +87,7 @@ class CFGP_Elementor_Image_Widget extends \Elementor\Widget_Base {
 		$this->start_controls_section(
 			'content_section',
 			[
-				'label' => __( 'Image settings', CFGP_NAME ),
+				'label' => __( 'Image settings', 'cf-geoplugin'),
 				'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
 			]
 		);
@@ -97,7 +97,7 @@ class CFGP_Elementor_Image_Widget extends \Elementor\Widget_Base {
 			$repeater->add_control(
 				'image',
 				[
-					'label' => __( 'Choose Image', CFGP_NAME ),
+					'label' => __( 'Choose Image', 'cf-geoplugin'),
 					'type' => \Elementor\Controls_Manager::MEDIA,
 					'default' => [
 						'url' => \Elementor\Utils::get_placeholder_image_src(),
@@ -108,7 +108,7 @@ class CFGP_Elementor_Image_Widget extends \Elementor\Widget_Base {
 			$repeater->add_control(
 				'image_size',
 				[
-					'label' => __( 'Image Size', CFGP_NAME ),
+					'label' => __( 'Image Size', 'cf-geoplugin'),
 					'type' => \Elementor\Controls_Manager::SELECT,
 					'default' => 'large',
 					'options' => $image_sizes,
@@ -118,28 +118,28 @@ class CFGP_Elementor_Image_Widget extends \Elementor\Widget_Base {
 			$repeater->add_control(
 				'location',
 				[
-					'label' => __( 'Display Location', CFGP_NAME ),
+					'label' => __( 'Display Location', 'cf-geoplugin'),
 					'type' => \Elementor\Controls_Manager::TEXT,
-					'description' => __( 'Comma separated city, region, country, continent name or the code where you want to display this image.', CFGP_NAME ),
-					'placeholder' => __( 'US, Toronto, Europe...', CFGP_NAME ),
+					'description' => __( 'Comma separated city, region, country, continent name or the code where you want to display this image.', 'cf-geoplugin'),
+					'placeholder' => __( 'US, Toronto, Europe...', 'cf-geoplugin'),
 				]
 			);
 			
 			$repeater->add_control(
 				'alt',
 				[
-					'label' => __( 'Alt', CFGP_NAME ),
+					'label' => __( 'Alt', 'cf-geoplugin'),
 					'type' => \Elementor\Controls_Manager::TEXT,
-					'description' => __( 'Alternate image title.', CFGP_NAME ),
+					'description' => __( 'Alternate image title.', 'cf-geoplugin'),
 				]
 			);
 			
 			$repeater->add_control(
 				'link',
 				[
-					'label' => __( 'Link', CFGP_NAME ),
+					'label' => __( 'Link', 'cf-geoplugin'),
 					'type' => \Elementor\Controls_Manager::URL,
-					'placeholder' => __( 'https://your-link.com', CFGP_NAME ),
+					'placeholder' => __( 'https://your-link.com', 'cf-geoplugin'),
 					'show_external' => true,
 					'default' => [
 						'url' => '',
@@ -150,7 +150,7 @@ class CFGP_Elementor_Image_Widget extends \Elementor\Widget_Base {
 		$this->add_control(
 			'list',
 			[
-				'label' => __( 'Coose image for each geolocation', CFGP_NAME ),
+				'label' => __( 'Coose image for each geolocation', 'cf-geoplugin'),
 				'type' => \Elementor\Controls_Manager::REPEATER,
 				'fields' => $repeater->get_controls(),
 				'default' => [],
@@ -161,7 +161,7 @@ class CFGP_Elementor_Image_Widget extends \Elementor\Widget_Base {
 		$this->add_control(
 			'default_options',
 			[
-				'label' => __( 'Default Options', CFGP_NAME ),
+				'label' => __( 'Default Options', 'cf-geoplugin'),
 				'type' => \Elementor\Controls_Manager::HEADING,
 				'separator' => 'before',
 			]
@@ -170,10 +170,10 @@ class CFGP_Elementor_Image_Widget extends \Elementor\Widget_Base {
 			$this->add_control(
 				'enable_default_image',
 				[
-					'label' => __( 'Enable Default Image', CFGP_NAME ),
+					'label' => __( 'Enable Default Image', 'cf-geoplugin'),
 					'type' => \Elementor\Controls_Manager::SWITCHER,
-					'label_on' => __( 'Yes', CFGP_NAME ),
-					'label_off' => __( 'No', CFGP_NAME ),
+					'label_on' => __( 'Yes', 'cf-geoplugin'),
+					'label_off' => __( 'No', 'cf-geoplugin'),
 					'return_value' => 'yes',
 					'default' => '',
 				]
@@ -182,7 +182,7 @@ class CFGP_Elementor_Image_Widget extends \Elementor\Widget_Base {
 			$this->add_control(
 				'default_image',
 				[
-					'label' => __( 'Default Image', CFGP_NAME ),
+					'label' => __( 'Default Image', 'cf-geoplugin'),
 					'type' => \Elementor\Controls_Manager::MEDIA,
 					'default' => [
 						'url' => \Elementor\Utils::get_placeholder_image_src(),
@@ -193,7 +193,7 @@ class CFGP_Elementor_Image_Widget extends \Elementor\Widget_Base {
 			$this->add_control(
 				'default_image_size',
 				[
-					'label' => __( 'Default Image Size', CFGP_NAME ),
+					'label' => __( 'Default Image Size', 'cf-geoplugin'),
 					'type' => \Elementor\Controls_Manager::SELECT,
 					'default' => 'large',
 					'options' => $image_sizes,
@@ -203,18 +203,18 @@ class CFGP_Elementor_Image_Widget extends \Elementor\Widget_Base {
 			$this->add_control(
 				'default_alt',
 				[
-					'label' => __( 'Default Alt', CFGP_NAME ),
+					'label' => __( 'Default Alt', 'cf-geoplugin'),
 					'type' => \Elementor\Controls_Manager::TEXT,
-					'description' => __( 'Default alternate image title.', CFGP_NAME ),
+					'description' => __( 'Default alternate image title.', 'cf-geoplugin'),
 				]
 			);
 			
 			$this->add_control(
 				'default_link',
 				[
-					'label' => __( 'Default Link', CFGP_NAME ),
+					'label' => __( 'Default Link', 'cf-geoplugin'),
 					'type' => \Elementor\Controls_Manager::URL,
-					'placeholder' => __( 'https://your-link.com', CFGP_NAME ),
+					'placeholder' => __( 'https://your-link.com', 'cf-geoplugin'),
 					'show_external' => true,
 					'default' => [
 						'url' => '',
@@ -232,7 +232,7 @@ class CFGP_Elementor_Image_Widget extends \Elementor\Widget_Base {
 		$this->start_controls_section(
 			'style_section_0',
 			[
-				'label' => __( 'Image Settings', CFGP_NAME ),
+				'label' => __( 'Image Settings', 'cf-geoplugin'),
 				'tab' => \Elementor\Controls_Manager::TAB_STYLE,
 			]
 		);
@@ -240,20 +240,20 @@ class CFGP_Elementor_Image_Widget extends \Elementor\Widget_Base {
 			$this->add_responsive_control(
 				'image_align',
 				[
-					'label' => __( 'Image Alignment', CFGP_NAME ),
+					'label' => __( 'Image Alignment', 'cf-geoplugin'),
 					'type' => \Elementor\Controls_Manager::CHOOSE,
 					'devices' => [ 'desktop', 'tablet', 'mobile' ],
 					'options' => [
 						'0 auto 0 0' => [
-							'title' => __( 'Left', CFGP_NAME ),
+							'title' => __( 'Left', 'cf-geoplugin'),
 							'icon' => 'eicon-h-align-left',
 						],
 						'0 auto' => [
-							'title' => __( 'Center', CFGP_NAME ),
+							'title' => __( 'Center', 'cf-geoplugin'),
 							'icon' => 'eicon-h-align-center',
 						],
 						'0 0 0 auto' => [
-							'title' => __( 'Right', CFGP_NAME ),
+							'title' => __( 'Right', 'cf-geoplugin'),
 							'icon' => 'eicon-h-align-right',
 						],
 					],
@@ -270,7 +270,7 @@ class CFGP_Elementor_Image_Widget extends \Elementor\Widget_Base {
 				[
 					'name' => 'image_border',
 					'devices' => [ 'desktop', 'tablet', 'mobile' ],
-					'label' => __( 'Image Border', CFGP_NAME ),
+					'label' => __( 'Image Border', 'cf-geoplugin'),
 					'selector' => "{$class}"
 				]
 			);
@@ -280,7 +280,7 @@ class CFGP_Elementor_Image_Widget extends \Elementor\Widget_Base {
 				[
 					'name' => 'image_shadow',
 					'devices' => [ 'desktop', 'tablet', 'mobile' ],
-					'label' => __( 'Image Shadow', CFGP_NAME ),
+					'label' => __( 'Image Shadow', 'cf-geoplugin'),
 					'selector' => "{$class}"
 				]
 			);
@@ -310,7 +310,7 @@ class CFGP_Elementor_Image_Widget extends \Elementor\Widget_Base {
 		if($settings['enable_default_image'] == 'yes')
 		{
 			if(empty($settings['default_image']['id'])){
-				echo '<strong>-- ' . __('You must define a default image for this option to work.', CFGP_NAME) . ' --</strong>';
+				echo '<strong>-- ' . __('You must define a default image for this option to work.', 'cf-geoplugin') . ' --</strong>';
 				return;
 			}
 			
@@ -325,7 +325,7 @@ class CFGP_Elementor_Image_Widget extends \Elementor\Widget_Base {
 		else
 		{
 			if(empty($settings['list'])){
-				echo '<strong>' . __('Please define one or more images.', CFGP_NAME) . '</strong>';
+				echo '<strong>' . __('Please define one or more images.', 'cf-geoplugin') . '</strong>';
 				return;
 			}
 		}

@@ -112,7 +112,7 @@ class CFGP__Plugin__woocommerce extends CFGP_Global
 		foreach($settings as &$option) {
 			if($option['id'] === 'woocommerce_default_customer_address') {
 				$option['options'] = array_merge($option['options'], array(
-					'cf_geoplugin' => __('Geolocate (by CF Geo Plugin)', CFGP_NAME)
+					'cf_geoplugin' => __('Geolocate (by CF Geo Plugin)', 'cf-geoplugin')
 				));
 			}
 		}
@@ -169,7 +169,7 @@ class CFGP__Plugin__woocommerce extends CFGP_Global
 		if( isset( $screen->post_type ) && in_array($screen->post_type, ['shop_order']) ){
 			$this->add_meta_box(
 				CFGP_NAME . '-log',								// Unique ID
-				__( 'GEO Location Info', CFGP_NAME ),			// Box title
+				__( 'GEO Location Info', 'cf-geoplugin'),			// Box title
 				'geo_location_info__callback',					// Content callback, must be of type callable
 				$screen->post_type,								// Post type
 				'side',
@@ -185,34 +185,34 @@ class CFGP__Plugin__woocommerce extends CFGP_Global
 		if($GEO = get_post_meta($post->ID, '_cfgp_location_log', true)):
 		$GEO = (object)$GEO;
 ?>
-<p><strong><?php esc_html_e( 'Order IP address:', CFGP_NAME ); ?></strong><br><?php
+<p><strong><?php esc_html_e( 'Order IP address:', 'cf-geoplugin'); ?></strong><br><?php
 if($flag = CFGP_U::admin_country_flag($GEO->country_code)) {
 	echo $flag;
 } else {
 	echo '<span class="cfa cfa-globe"></span>';
 }
 ?>&nbsp;&nbsp;<big><?php echo esc_html($GEO->ip); ?></big></p>
-<p><strong><?php esc_html_e( 'Order Timestamp:', CFGP_NAME ); ?></strong><br><?php echo esc_html($GEO->timestamp_readable); ?></p>
-<p><strong><?php esc_html_e( 'Order Location:', CFGP_NAME ); ?></strong><br><?php echo esc_html($GEO->address); ?></p>
-<p><strong><?php esc_html_e( 'Timezone:', CFGP_NAME ); ?></strong><br><?php echo esc_html($GEO->timezone); ?></p>
-<p><strong><?php esc_html_e( 'Customer User Agent:', CFGP_NAME ); ?></strong>
-	<br><?php esc_html_e( 'Platform:', CFGP_NAME ); ?> <?php echo esc_html($GEO->platform); ?>
-	<br><?php esc_html_e( 'Browser:', CFGP_NAME ); ?> <?php echo esc_html($GEO->browser); ?>
-	<br><?php esc_html_e( 'Version:', CFGP_NAME ); ?> <?php echo esc_html($GEO->browser_version); ?>
+<p><strong><?php esc_html_e( 'Order Timestamp:', 'cf-geoplugin'); ?></strong><br><?php echo esc_html($GEO->timestamp_readable); ?></p>
+<p><strong><?php esc_html_e( 'Order Location:', 'cf-geoplugin'); ?></strong><br><?php echo esc_html($GEO->address); ?></p>
+<p><strong><?php esc_html_e( 'Timezone:', 'cf-geoplugin'); ?></strong><br><?php echo esc_html($GEO->timezone); ?></p>
+<p><strong><?php esc_html_e( 'Customer User Agent:', 'cf-geoplugin'); ?></strong>
+	<br><?php esc_html_e( 'Platform:', 'cf-geoplugin'); ?> <?php echo esc_html($GEO->platform); ?>
+	<br><?php esc_html_e( 'Browser:', 'cf-geoplugin'); ?> <?php echo esc_html($GEO->browser); ?>
+	<br><?php esc_html_e( 'Version:', 'cf-geoplugin'); ?> <?php echo esc_html($GEO->browser_version); ?>
 </p>
 	<?php
 		else :
 		$_customer_user_agent = get_post_meta($post->ID, '_customer_user_agent', true);
 	?>
-<p><strong><?php esc_html_e( 'Order IP address:', CFGP_NAME ); ?></strong><br><?php
+<p><strong><?php esc_html_e( 'Order IP address:', 'cf-geoplugin'); ?></strong><br><?php
 if($flag = CFGP_U::admin_country_flag(get_post_meta($post->ID, '_billing_country', true))) {
 	echo $flag;
 } else {
 	echo '<span class="cfa cfa-globe"></span>';
 }
 ?>&nbsp;&nbsp;<big><?php echo esc_html(get_post_meta($post->ID, '_customer_ip_address', true)); ?></big></p>
-<p><strong><?php esc_html_e( 'Order Timestamp:', CFGP_NAME ); ?></strong><br><?php echo date('D, j M Y, H:i:s O', strtotime($post->post_date_gmt)) ?></p>
-<p><strong><?php esc_html_e( 'Order Location:', CFGP_NAME ); ?></strong><br><?php
+<p><strong><?php esc_html_e( 'Order Timestamp:', 'cf-geoplugin'); ?></strong><br><?php echo date('D, j M Y, H:i:s O', strtotime($post->post_date_gmt)) ?></p>
+<p><strong><?php esc_html_e( 'Order Location:', 'cf-geoplugin'); ?></strong><br><?php
 	$country = get_post_meta($post->ID, '_billing_country', true);
 	$location = array(
 		get_post_meta($post->ID, '_billing_city', true),
@@ -224,14 +224,14 @@ if($flag = CFGP_U::admin_country_flag(get_post_meta($post->ID, '_billing_country
 	echo esc_html( join(', ', $location) );
 ?></p>
 <?php if($_customer_user_agent) : $browser = CFGP_Browser::instance( $_customer_user_agent ); ?>
-<p><strong><?php esc_html_e( 'Customer User Agent:', CFGP_NAME ); ?></strong>
-	<br><?php esc_html_e( 'Platform:', CFGP_NAME ); ?> <?php echo esc_html($browser->getPlatform()); ?>
-	<br><?php esc_html_e( 'Browser:', CFGP_NAME ); ?> <?php echo esc_html($browser->getBrowser()); ?>
-	<br><?php esc_html_e( 'Version:', CFGP_NAME ); ?> <?php echo esc_html($browser->getVersion()); ?>
+<p><strong><?php esc_html_e( 'Customer User Agent:', 'cf-geoplugin'); ?></strong>
+	<br><?php esc_html_e( 'Platform:', 'cf-geoplugin'); ?> <?php echo esc_html($browser->getPlatform()); ?>
+	<br><?php esc_html_e( 'Browser:', 'cf-geoplugin'); ?> <?php echo esc_html($browser->getBrowser()); ?>
+	<br><?php esc_html_e( 'Version:', 'cf-geoplugin'); ?> <?php echo esc_html($browser->getVersion()); ?>
 </p>
 <?php endif; ?>
 <hr>
-<p class="description"><?php esc_html_e( 'NOTE: This geo location is based on the default WooCommerce algorithm.', CFGP_NAME ); ?></p>
+<p class="description"><?php esc_html_e( 'NOTE: This geo location is based on the default WooCommerce algorithm.', 'cf-geoplugin'); ?></p>
 	<?php endif;
 	}
 	
@@ -411,64 +411,64 @@ if($flag = CFGP_U::admin_country_flag(get_post_meta($post->ID, '_billing_country
             if( $values['id'] === 'woocommerce_default_customer_address' )
             {
 				$new_settings[$key] = array(
-                    'title'    => __( 'GEO location info log', CFGP_NAME ),
-                    'desc'     => __( 'Activate your customer\'s geo location log.', CFGP_NAME ),
+                    'title'    => __( 'GEO location info log', 'cf-geoplugin'),
+                    'desc'     => __( 'Activate your customer\'s geo location log.', 'cf-geoplugin'),
                     'class'    => 'wc-enhanced-checkbox',
                     'id'       => 'woocommerce_cf_geoplugin_save_checkout_location',
                     'default'  => 'no',
                     'type'     => 'checkbox',
-                    'desc_tip' => __( 'By activating this option, you enable the geolocation of your customers to be anonymously logged and displayed within the orders.', CFGP_NAME )
+                    'desc_tip' => __( 'By activating this option, you enable the geolocation of your customers to be anonymously logged and displayed within the orders.', 'cf-geoplugin')
                 );
 				$key++;
 			}
 			else if( $values['id'] === 'woocommerce_currency_pos' )
             {
                 $new_settings[$key] = array(
-                    'title'    => __( 'Currency conversion options', CFGP_NAME ),
-                    'desc'     => __( 'This controls CF Geo Plugin conversion system', CFGP_NAME ),
+                    'title'    => __( 'Currency conversion options', 'cf-geoplugin'),
+                    'desc'     => __( 'This controls CF Geo Plugin conversion system', 'cf-geoplugin'),
                     'css'      => 'min-width:350px',
                     'class'    => 'wc-enhanced-select',
                     'id'       => 'woocommerce_cf_geoplugin_conversion',
                     'default'  => 'original',
                     'type'     => 'select',
                     'options'  => array(
-                        'original'  => __( 'Show original price only', CFGP_NAME ),
-                        'converted' => __( 'Show converted price only', CFGP_NAME ),
-                        'both'      => __( 'Show original and converted price', CFGP_NAME ),
-                        'inversion' => __( 'Show converted and original price', CFGP_NAME )
+                        'original'  => __( 'Show original price only', 'cf-geoplugin'),
+                        'converted' => __( 'Show converted price only', 'cf-geoplugin'),
+                        'both'      => __( 'Show original and converted price', 'cf-geoplugin'),
+                        'inversion' => __( 'Show converted and original price', 'cf-geoplugin')
                     ),
                     'desc_tip' => true,
                 );
                 $key++;
 				$new_settings[$key] = array(
-                    'title'    => __( 'Convert to round price', CFGP_NAME ),
-                    'desc'     => __( 'Force all converted prices to be round number.', CFGP_NAME ),
+                    'title'    => __( 'Convert to round price', 'cf-geoplugin'),
+                    'desc'     => __( 'Force all converted prices to be round number.', 'cf-geoplugin'),
                     'class'    => 'wc-enhanced-checkbox',
                     'id'       => 'woocommerce_cf_geoplugin_conversion_rounded',
                     'default'  => 'no',
                     'type'     => 'checkbox',
-                    'desc_tip' => __( 'These option is added by the CF Geo Plugin.', CFGP_NAME )
+                    'desc_tip' => __( 'These option is added by the CF Geo Plugin.', 'cf-geoplugin')
                 );
                 $key++;
 				$new_settings[$key] = array(
-                    'title'    => __( 'Round price option', CFGP_NAME ),
-                    'desc'     => __( 'Set the round price to the desired increase.', CFGP_NAME ),
+                    'title'    => __( 'Round price option', 'cf-geoplugin'),
+                    'desc'     => __( 'Set the round price to the desired increase.', 'cf-geoplugin'),
                     'css'      => 'min-width:150px; max-width:200px;',
                     'class'    => 'wc-enhanced-select',
                     'id'       => 'woocommerce_cf_geoplugin_conversion_rounded_option',
                     'default'  => 'up',
                     'type'     => 'select',
                     'options'  => array(
-                        'up'		=> __( 'Round up', CFGP_NAME ),
-                        'neares'	=> __( 'Round nearest', CFGP_NAME ),
-                        'down'		=> __( 'Round down', CFGP_NAME )
+                        'up'		=> __( 'Round up', 'cf-geoplugin'),
+                        'neares'	=> __( 'Round nearest', 'cf-geoplugin'),
+                        'down'		=> __( 'Round down', 'cf-geoplugin')
                     ),
-                    'desc_tip' => __( 'These option is added by the CF Geo Plugin.', CFGP_NAME )
+                    'desc_tip' => __( 'These option is added by the CF Geo Plugin.', 'cf-geoplugin')
                 );
                 $key++;
 				$new_settings[$key] = array(
-                    'title'    => __( 'Currency converter adjust', CFGP_NAME ),
-                    'desc'     => __( 'Put the number in percent (%) to regulate the converted price. (This increase price by ##%)', CFGP_NAME ),
+                    'title'    => __( 'Currency converter adjust', 'cf-geoplugin'),
+                    'desc'     => __( 'Put the number in percent (%) to regulate the converted price. (This increase price by ##%)', 'cf-geoplugin'),
                     'css'      => 'min-width:50px; max-width:80px;',
                     'class'    => 'wc-enhanced-text',
                     'id'       => 'woocommerce_cf_geoplugin_conversion_adjust',
@@ -480,17 +480,17 @@ if($flag = CFGP_U::admin_country_flag(get_post_meta($post->ID, '_billing_country
 						'step' => 1,
 						'autocomplete' => 'off'
 					),
-                    'desc_tip' => __( 'These option is added by the CF Geo Plugin.', CFGP_NAME )
+                    'desc_tip' => __( 'These option is added by the CF Geo Plugin.', 'cf-geoplugin')
                 );
                 $key++;
 				$new_settings[$key] = array(
-                    'title'    => __( 'Not convert in wp-admin', CFGP_NAME ),
-                    'desc'     => __( 'Remove conversion price from admin panel and show only original prices.', CFGP_NAME ),
+                    'title'    => __( 'Not convert in wp-admin', 'cf-geoplugin'),
+                    'desc'     => __( 'Remove conversion price from admin panel and show only original prices.', 'cf-geoplugin'),
                     'class'    => 'wc-enhanced-checkbox',
                     'id'       => 'woocommerce_cf_geoplugin_conversion_in_admin',
                     'default'  => 'yes',
                     'type'     => 'checkbox',
-                    'desc_tip' => __( 'These option is added by the CF Geo Plugin.', CFGP_NAME )
+                    'desc_tip' => __( 'These option is added by the CF Geo Plugin.', 'cf-geoplugin')
                 );
                 $key++;
             }
@@ -558,7 +558,7 @@ if($flag = CFGP_U::admin_country_flag(get_post_meta($post->ID, '_billing_country
     // Show our settings tabs
     public function cfgp_woocommerce_tabs( $settings_tabs )
     {
-        $settings_tabs['cf_geoplugin_payment_restriction'] = __( 'Payments Control', CFGP_NAME );
+        $settings_tabs['cf_geoplugin_payment_restriction'] = __( 'Payments Control', 'cf-geoplugin');
        
         return $settings_tabs;
     }
@@ -618,9 +618,9 @@ if($flag = CFGP_U::admin_country_flag(get_post_meta($post->ID, '_billing_country
 					unset($custom_attributes['disabled']);
 				}
                 
-                $settings[] = array( 'name' => __( 'CF Geo Plugin Payments Control', CFGP_NAME ), 'type' => 'title', 'desc' => __( 'Configure payment methods for each country. Show or hide payment methods by country to prevent unwanted transactions.', CFGP_NAME ) . (
+                $settings[] = array( 'name' => __( 'CF Geo Plugin Payments Control', 'cf-geoplugin'), 'type' => 'title', 'desc' => __( 'Configure payment methods for each country. Show or hide payment methods by country to prevent unwanted transactions.', 'cf-geoplugin') . (
 				(isset($custom_attributes['disabled']) && $custom_attributes['disabled']) || CFGP_U::dev_mode()
-				? ' <br><span style="color:#dc3545;">' . sprintf(__('This option is only enabled with the licensed version of the %s. You must use 1 year license or above.', CFGP_NAME), '<a href="' . CFGP_U::admin_url('admin.php?page=cf-geoplugin-activate') . '">CF Geo Plugin</a>') . '</span>'
+				? ' <br><span style="color:#dc3545;">' . sprintf(__('This option is only enabled with the licensed version of the %s. You must use 1 year license or above.', 'cf-geoplugin'), '<a href="' . CFGP_U::admin_url('admin.php?page=cf-geoplugin-activate') . '">CF Geo Plugin</a>') . '</span>'
 				: ''
 				) . '<hr>', 'id' => 'cf_geoplugin_payment_restriction' );
 				$count = count($enabled_gateways); $x = 0;
@@ -633,22 +633,22 @@ if($flag = CFGP_U::admin_country_flag(get_post_meta($post->ID, '_billing_country
                     $method_setting_id = sprintf( '%s', $gateway->id );
 					
                     $settings[ $method_setting_id ] = array(
-                        'name'     => __( 'Choose desired method', CFGP_NAME ),
+                        'name'     => __( 'Choose desired method', 'cf-geoplugin'),
                         'id'       => sprintf( 'woocommerce_cfgp_method_%s', $method_setting_id ),
                         'type'     => 'select',
                         'class'    => 'wc-enhanced-select',
                         'default'  => 'cfgp_payment_woo',
                         'css'      => 'min-width:400px;',
                         'options'  => array(
-                            'cfgp_payment_woo'      => __( 'Woocommerce Default', CFGP_NAME ),
-                            'cfgp_payment_enable'   => __( 'Enable only in selected countries', CFGP_NAME ),
-                            'cfgp_payment_disable'  => __( 'Disable only for selected countries', CFGP_NAME ),
+                            'cfgp_payment_woo'      => __( 'Woocommerce Default', 'cf-geoplugin'),
+                            'cfgp_payment_enable'   => __( 'Enable only in selected countries', 'cf-geoplugin'),
+                            'cfgp_payment_disable'  => __( 'Disable only for selected countries', 'cf-geoplugin'),
                         ),
                         'custom_attributes' => $custom_attributes,
                     );
 
                     $settings[ $select_setting_id ] = array(
-                        'name'     => __( 'Select countries', CFGP_NAME ),
+                        'name'     => __( 'Select countries', 'cf-geoplugin'),
                         'class'    => 'wc-enhanced-select',
                         'id'       => sprintf( 'woocommerce_cfgp_method_%s', $select_setting_id ),
                         'default'  => '',
@@ -659,7 +659,7 @@ if($flag = CFGP_U::admin_country_flag(get_post_meta($post->ID, '_billing_country
                     );
 /*
 					$settings[ $checkbox_setting_id ] = array(
-                        'name'     => __( 'Disable currency conversion for this method', CFGP_NAME ),
+                        'name'     => __( 'Disable currency conversion for this method', 'cf-geoplugin'),
                         'id'       => sprintf( 'woocommerce_cfgp_method_%s_disable_currency', $method_setting_id ),
                         'type'     => 'checkbox',
                         'class'    => 'wc-enhanced-checkbox',
@@ -677,14 +677,14 @@ if($flag = CFGP_U::admin_country_flag(get_post_meta($post->ID, '_billing_country
             }
             else 
             {
-                $settings[] = array( 'name' => __( 'CF Geo Plugin Payments Control', CFGP_NAME ), 'type' => 'title', 'desc' => '<b>' . __( 'Currently we are not able to show desired options. Please try again later.', CFGP_NAME ) . '</b>', 'id' => 'cf_geoplugin_payment_restriction' );
+                $settings[] = array( 'name' => __( 'CF Geo Plugin Payments Control', 'cf-geoplugin'), 'type' => 'title', 'desc' => '<b>' . __( 'Currently we are not able to show desired options. Please try again later.', 'cf-geoplugin') . '</b>', 'id' => 'cf_geoplugin_payment_restriction' );
                 $settings[] = array( 'type' => 'sectionend', 'id' => 'cf_geoplugin_payment_restriction' );
                 return apply_filters( 'cf_geoplugin_payment_restriction_settings', $settings );
             }
         }
         else 
         {
-            $settings[] = array( 'name' => __( 'CF Geo Plugin Payments Control', CFGP_NAME ), 'type' => 'title', 'desc' => '<b>' . __( 'No enabled woocommerce payments yet.', CFGP_NAME ), 'id' => 'cf_geoplugin_payment_restriction' . '</b>' );
+            $settings[] = array( 'name' => __( 'CF Geo Plugin Payments Control', 'cf-geoplugin'), 'type' => 'title', 'desc' => '<b>' . __( 'No enabled woocommerce payments yet.', 'cf-geoplugin'), 'id' => 'cf_geoplugin_payment_restriction' . '</b>' );
             $settings[] = array( 'type' => 'sectionend', 'id' => 'cf_geoplugin_payment_restriction' );
             return apply_filters( 'cf_geoplugin_payment_restriction_settings', $settings );
         }

@@ -6,7 +6,7 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
 $options = apply_filters('cfgp/settings', array());
 
 ?><div class="wrap cfgp-wrap" id="<?php echo CFGP_NAME; ?>-settings">
-    <h1 class="wp-heading-inline"><i class="cfa cfa-globe"></i> <?php _e('Settings', CFGP_NAME); ?></h1>
+    <h1 class="wp-heading-inline"><i class="cfa cfa-globe"></i> <?php _e('Settings', 'cf-geoplugin'); ?></h1>
     <hr class="wp-header-end">
 
     <div id="post">
