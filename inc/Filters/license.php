@@ -51,12 +51,12 @@ if( CFGP_U::api('available_lookup') != 'lifetime' ) :
 		$select_options[]=sprintf(
 			'<label for="%1$s"><input type="radio" name="license_sku" id="%1$s" value="%3$s" data-url="%4$s"%5$s><div class="cfgp-form-product-checkbox-item"><h3>%2$s</h3><h4>%7$s:</h4><span class="cfgp-form-product-checkbox-price">%6$s</span></div><small><a href="%4$s" target="_blank">%8$s</a></small></label>',
 			esc_attr($product['slug']),
-			$name,
+			wp_kses_post($name),
 			esc_attr($product['sku']),
 			(!empty($product['url']) ? esc_url($product['url']) : 'javascript:void();'),
 			(CFGP_License::get('sku', CFGP_U::request_string('license_sku')) == $product['sku'] ? ' checked' : '')
 			.(CFGP_License::activated() || CFGP_IP::is_localhost() ? ' disabled' : ''),
-			$price,
+			wp_kses_post($price),
 			__('Price', 'cf-geoplugin'),
 			(!empty($product['url']) ? (CFGP_DEV_MODE && $product['sku']=='CFGEODEV' ? __('You must become a developer for this license', 'cf-geoplugin') : __('Learn more about this product', 'cf-geoplugin')) : '')
 		);
@@ -109,7 +109,7 @@ add_action('cfgp/page/license/sidebar', function(){ if( CFGP_U::api('available_l
         	<p><?php printf(
     __('Thank you for using an unlimited license. Your license is active until %1$s. It would be great to expand your license by that date. After expiration date you will experience plugin limitations.<br><br>To review or deactivate your license, please go to your %2$s.', 'cf-geoplugin'),
     '<strong>' . (CFGP_License::get('expire') == 0 ? __('never', 'cf-geoplugin') : CFGP_License::expire_date()) . '</strong>',
-	'<a href="' . CFGP_License::get('url') . '" target="_blank">' . __('CF Geo Plugin account', 'cf-geoplugin') . '</a>'
+	'<a href="' . esc_url(CFGP_License::get('url')) . '" target="_blank">' . __('CF Geo Plugin account', 'cf-geoplugin') . '</a>'
 ); ?></p>
 			<p><?php printf(
             __('Do not forget that by purchasing and using the license you have agreed to our %2$s in accordance with the %1$s.'),
@@ -124,8 +124,8 @@ add_action('cfgp/page/license/sidebar', function(){ if( CFGP_U::api('available_l
         <p><?php printf(
             __('You currently use a free version of plugin with a limited number of lookups. Each free version of this plugin is limited to %1$s lookups per day and you have only %2$s lookups available for today. If you want to have unlimited lookup, please enter your license key. If you are unsure and do not understand what this is about, read %3$s.', 'cf-geoplugin'),
             
-            '<strong>'.CFGP_LIMIT.'</strong>',
-            '<strong>'.CFGP_U::api('available_lookup').'</strong>',
+            '<strong>'.esc_html(CFGP_LIMIT).'</strong>',
+            '<strong>'.esc_html(CFGP_U::api('available_lookup')).'</strong>',
             '<strong><a href="https://cfgeoplugin.com/documentation/quick-start/what-do-i-get-from-unlimited-license" target="_blank">' . __('this article', 'cf-geoplugin') . '</a></strong>'
         ); ?></p>
         <p><?php printf(

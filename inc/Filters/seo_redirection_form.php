@@ -121,7 +121,7 @@ add_action('cfgp/page/seo_redirection/form/content', function(){
 add_action('cfgp/page/seo_redirection/form', function(){
 	$action = CFGP_U::request_string('action');	
 ?>
-<div class="wrap wrap-cfgp" id="<?php echo sanitize_title($_GET['page']); ?>">
+<div class="wrap wrap-cfgp" id="<?php echo esc_attr(sanitize_title($_GET['page'] ?? NULL)); ?>">
 	<h1 class="wp-heading-inline"><i class="cfa cfa-location-arrow"></i> <?php
 		if($action == 'edit') {
 			_e('Edit SEO redirection', 'cf-geoplugin');

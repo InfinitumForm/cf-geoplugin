@@ -9,7 +9,7 @@ add_action('cfgp/page/seo_redirection/table', function(){ global $wpdb; ?>
 	<p><?php printf(__('The database table "%s" not exists! You can try to reactivate the CF Geo Plugin to correct this error.', 'cf-geoplugin'), "<strong>{$wpdb->cfgp_seo_redirection}</strong>"); ?></p>
 </div>
 <?php endif; ?>
-<div class="wrap wrap-cfgp" id="<?php echo sanitize_title($_GET['page']); ?>">
+<div class="wrap wrap-cfgp" id="<?php echo esc_attr(sanitize_title($_GET['page'] ?? NULL)); ?>">
 	<h1 class="wp-heading-inline"><i class="cfa cfa-location-arrow"></i> <?php _e('SEO Redirection', 'cf-geoplugin'); ?></h1>
     <?php printf(
 		'<a href="%s" class="page-title-action button-cfgeo-seo-new"><i class="cfa cfa-plus"></i> %s</a> ',
@@ -23,11 +23,11 @@ add_action('cfgp/page/seo_redirection/table', function(){ global $wpdb; ?>
             <form method="get" id="seo-redirection-table-search">
                 <p class="search-box">
                     <label class="screen-reader-text" for="post-search-input"><?php _e('Search Redirections', 'cf-geoplugin'); ?>:</label>
-                    <input type="search" id="post-search-input" name="s" value="<?php echo CFGP_U::request_string('s'); ?>">
+                    <input type="search" id="post-search-input" name="s" value="<?php echo esc_attr(CFGP_U::request_string('s')); ?>">
                     <input type="submit" id="search-submit" class="button" value="<?php esc_attr_e('Search Redirections', 'cf-geoplugin'); ?>">
-                    <input type="hidden" value="<?php echo CFGP_U::request_string('page'); ?>" name="page">
-                    <input type="hidden" value="<?php echo CFGP_U::request_string('filter'); ?>" name="filter">
-					<input type="hidden" value="<?php echo wp_create_nonce(CFGP_NAME.'-seo-search') ?>" name="_wpnonce">
+                    <input type="hidden" value="<?php echo esc_attr(CFGP_U::request_string('page')); ?>" name="page">
+                    <input type="hidden" value="<?php echo esc_attr(CFGP_U::request_string('filter')); ?>" name="filter">
+					<input type="hidden" value="<?php echo esc_attr(wp_create_nonce(CFGP_NAME.'-seo-search')); ?>" name="_wpnonce">
                 </p>
             </form>
             <form method="post" id="seo-redirection-table-form">
