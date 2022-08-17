@@ -55,8 +55,8 @@ class CFGP_Library {
 							|| strpos(CFGP_U::strtolower($country_name), $search) !== false 
 						) {
 							$results[$country_code]=array(
-								'id' => $country_code,
-								'text' => $country_name
+								'id' => esc_attr($country_code),
+								'text' => esc_html($country_name)
 							);
 						}
 					}
@@ -76,8 +76,8 @@ class CFGP_Library {
 								|| strpos(CFGP_U::strtolower($region_real_code), $search) !== false 
 							) {
 								$results[$region_code]=array(
-									'id' => $region_code,
-									'text' => $region_name
+									'id' => esc_attr($region_code),
+									'text' => esc_html($region_name)
 								);
 							}
 						}
@@ -96,8 +96,8 @@ class CFGP_Library {
 								|| strpos(CFGP_U::strtolower($city_code), $search) !== false 
 							) {
 								$results[$city_code]=array(
-									'id' => $city_code,
-									'text' => $city
+									'id' => esc_attr($city_code),
+									'text' => esc_html($city)
 								);
 							}
 						}
@@ -116,8 +116,8 @@ class CFGP_Library {
 								|| strpos(CFGP_U::strtolower($city_name), $search) !== false 
 							) {
 								$results[$postcode_code]=array(
-									'id' => $postcode_code,
-									'text' => $postcode . ' - ' . $city_name
+									'id' => esc_attr($postcode_code),
+									'text' => esc_html($postcode . ' - ' . $city_name)
 								);
 							}
 						}
@@ -157,7 +157,7 @@ class CFGP_Library {
 				if($data){
 					$tr = array();
 					foreach($data as $k=>$v){
-						$tr[strtolower($k)]=$v;
+						$tr[strtolower(esc_attr($k))]=esc_attr($v);
 					}
 					$data = $tr; unset($tr);
 				}
@@ -173,7 +173,7 @@ class CFGP_Library {
 				if($data){
 					$tr = array();
 					foreach($data as $k=>$v){
-						$tr[strtolower($k)]=$v;
+						$tr[strtolower(esc_attr($k))]=esc_attr($v);
 					}
 					$data = $tr; unset($tr);
 				}
@@ -202,7 +202,7 @@ class CFGP_Library {
 				if($data_array){
 					$tr = array();
 					foreach($data_array as $k=>$v){
-						$tr[strtolower($k)]=$v;
+						$tr[strtolower(esc_attr($k))]=esc_attr($v);
 					}
 					$data = $tr; unset($tr, $data_array);
 				}
@@ -218,79 +218,7 @@ class CFGP_Library {
 		return '{}';
 	}
 	
-	/*
-	 * Get Country Data by Library
-	 */
-	public static function get_countries_library( $json = false ){
-		static $country_data = [];
 		
-		if( $data = ($country_data ?? NULL) ){
-				
-			if($json === false){
-				$data = json_decode( $data, true );
-				if($data){
-					$tr = array();
-					foreach($data as $k=>$v){
-						$tr[strtolower($k)]=$v;
-					}
-					$data = $tr; unset($tr);
-				}
-			}
-			
-			return $data;
-		}
-	
-		$file_base = CFGP_LIBRARY;
-		$file_path = DIRECTORY_SEPARATOR;
-		$file_name = 'countries.json';
-		
-		$file = apply_filters('cfgp/library/countries/path', array(
-			'path' => "{$file_base}{$file_path}{$file_name}",
-			'file_base' => $file_base,
-			'file_path' => $file_path,
-			'file_name' => $file_name
-		));
-			
-		if(isset($file['path']) && file_exists($file['path'])){
-			$data = '';
-			$fh = fopen($file['path'],'r');
-				while (($line = stream_get_line($fh, 1024)) !== false){
-					$data.=$line;
-					fflush($fh);
-				}
-			fclose($fh); unset($fh);
-			
-			if( empty($data) ) {
-				if($json === false){
-					return array();
-				}
-				return '{}';
-			}
-			
-			$country_data = $data;
-			
-			if($json === false){
-				$data = json_decode( $data, true );
-				if($data){
-					$tr = array();
-					foreach($data as $k=>$v){
-						$tr[strtolower($k)]=$v;
-					}
-					$data = $tr; unset($tr);
-				}
-			}
-			
-			return $data;
-		}
-		
-		if($json === false){
-			return array();
-		}
-		
-		return '{}';
-	}
-	
-	
 	/*
 	 * Get regions by country from API
 	 */
@@ -317,7 +245,7 @@ class CFGP_Library {
 				if($data){
 					$tr = array();
 					foreach($data as $k=>$v){
-						$tr[strtolower($k)]=$v;
+						$tr[strtolower(esc_attr($k))]=esc_attr($v);
 					}
 					$data = $tr; unset($tr);
 				}
@@ -333,7 +261,7 @@ class CFGP_Library {
 				if($data){
 					$tr = array();
 					foreach($data as $k=>$v){
-						$tr[strtolower($k)]=$v;
+						$tr[strtolower(esc_attr($k))]=esc_attr($v);
 					}
 					$data = $tr; unset($tr);
 				}
@@ -358,7 +286,7 @@ class CFGP_Library {
 			foreach( (array)$response as $country_code => $regions ) {
 				foreach( (array)$regions as $region ) {
 					if( in_array($region, $data_array) === false ) {
-						$data_array[] = mb_convert_encoding($region,'HTML-ENTITIES','UTF-8');
+						$data_array[] = esc_attr(mb_convert_encoding($region,'HTML-ENTITIES','UTF-8'));
 					}
 				}
 			}
@@ -374,7 +302,7 @@ class CFGP_Library {
 				if($data_array){
 					$tr = array();
 					foreach($data_array as $k=>$v){
-						$tr[ strtolower($k) ]=$v;
+						$tr[strtolower(esc_attr($k))]=esc_attr($v);
 					}
 					$data = $tr; unset($tr, $data_array);
 				}
@@ -389,118 +317,6 @@ class CFGP_Library {
 		return '{}';
 	}
 	
-	
-	
-	
-	/*
-	 * Get regions by country from library
-	 */
-	public static function get_regions_library( $country_code, $json = false ){
-		static $country_region_data = array();
-		
-		$collection = array();
-		
-		if(!empty($country_code))
-		{
-			$file_base = CFGP_LIBRARY . DIRECTORY_SEPARATOR . 'regions';
-			
-			if(is_array($country_code)) {
-				$country_codes = array_map('strtolower', $country_code);
-				
-				foreach($country_codes as $country_code){
-					$country_code = strtolower($country_code);
-					if(strlen($country_code) > 2){
-						continue;
-					}
-				
-					if( isset($country_region_data[$country_code]) ) {
-						$collection = array_merge($collection, $country_region_data[$country_code]);
-					} else {
-						$file_path = DIRECTORY_SEPARATOR . "{$country_code}";
-						$file_name = DIRECTORY_SEPARATOR . "{$country_code}.json";
-						
-						$file = apply_filters('cfgp/library/regions/path', array(
-							'path' => "{$file_base}{$file_path}{$file_name}",
-							'file_base' => $file_base,
-							'file_path' => $file_path,
-							'file_name' => $file_name,
-							'country_code' => $country_code
-						));
-						
-						$file = apply_filters("cfgp/library/regions/path/{$country_code}", $file);
-						
-						if(isset($file['path']) && file_exists($file['path'])){
-							$data = '';
-							$fh = fopen($file['path'],'r');
-								while (($line = stream_get_line($fh, 1024)) !== false){
-									$data.=$line;
-									fflush($fh);
-								}
-							fclose($fh); unset($fh);
-							
-							if( !empty($data) ) {
-								$country_region_data[$country_code] = json_decode( $data, true );
-								$collection = array_merge($collection, $country_region_data[$country_code]);
-							}
-						}
-					}
-				}
-			} else {
-				$country_code = strtolower($country_code);
-				if(strlen($country_code) > 2){
-					return array();
-				}
-				
-				if( isset($country_region_data[$country_code]) ) {
-					$collection = $country_region_data[$country_code];
-				} else {
-					$file_path = DIRECTORY_SEPARATOR . "{$country_code}";
-					$file_name = DIRECTORY_SEPARATOR . "{$country_code}.json";
-					
-					$file = apply_filters('cfgp/library/regions/path', array(
-						'path' => "{$file_base}{$file_path}{$file_name}",
-						'file_base' => $file_base,
-						'file_path' => $file_path,
-						'file_name' => $file_name,
-						'country_code' => $country_code
-					));
-					
-					$file = apply_filters("cfgp/library/regions/path/{$country_code}", $file);
-					
-					if(isset($file['path']) && file_exists($file['path'])){
-						$data = '';
-						$fh = fopen($file['path'],'r');
-							while (($line = stream_get_line($fh, 1024)) !== false){
-								$data.=$line;
-								fflush($fh);
-							}
-						fclose($fh); unset($fh);
-						
-						if( !empty($data) ) {
-							$collection = json_decode( $data, true );
-							$country_region_data[$country_code] = $collection;
-						}
-					}
-				}
-			}
-		}
-		
-		if(isset($data)){
-			$data = NULL;
-		}
-		
-		if(!empty($collection)) {
-			$collection = array_unique($collection);
-		}
-		
-		$collection = apply_filters('cfgp/library/regions/collection', $collection);
-		
-		if($json === true) {
-			return json_encode($collection);
-		}
-		
-		return $collection;
-	}
 	
 	/*
 	 * Get cities by country from API
@@ -528,7 +344,7 @@ class CFGP_Library {
 				if($data){
 					$tr = array();
 					foreach($data as $k=>$v){
-						$tr[strtolower($k)]=$v;
+						$tr[strtolower(esc_attr($k))]=esc_attr($v);
 					}
 					$data = $tr; unset($tr);
 				}
@@ -544,7 +360,7 @@ class CFGP_Library {
 				if($data){
 					$tr = array();
 					foreach($data as $k=>$v){
-						$tr[strtolower($k)]=$v;
+						$tr[strtolower(esc_attr($k))]=esc_attr($v);
 					}
 					$data = $tr; unset($tr);
 				}
@@ -569,7 +385,7 @@ class CFGP_Library {
 			foreach( (array)$response as $country_code => $cities ) {
 				foreach( (array)$cities as $city ) {
 					if( in_array($city, $data_array) === false ) {
-						$data_array[] = mb_convert_encoding($city,'HTML-ENTITIES','UTF-8');
+						$data_array[] = esc_attr(mb_convert_encoding($city,'HTML-ENTITIES','UTF-8'));
 					}
 				}
 			}
@@ -585,7 +401,7 @@ class CFGP_Library {
 				if($data_array){
 					$tr = array();
 					foreach($data_array as $k=>$v){
-						$tr[ strtolower($k) ]=$v;
+						$tr[strtolower(esc_attr($k))]=esc_attr($v);
 					}
 					$data = $tr; unset($tr, $data_array);
 				}
@@ -598,117 +414,6 @@ class CFGP_Library {
 			return array();
 		}
 		return '{}';
-	}
-	
-	
-	/*
-	 * Get cities by country from Library
-	 */	
-	public static function get_cities_library( $country_code, $json = false ) {
-		static $country_city_data = array();
-		
-		$collection = array();
-		
-		if(!empty($country_code))
-		{
-			$file_base = CFGP_LIBRARY . DIRECTORY_SEPARATOR . 'cities';
-			
-			if(is_array($country_code)) {
-				$country_codes = array_map('strtolower', $country_code);
-				
-				foreach($country_codes as $country_code){
-					$country_code = strtolower($country_code);
-					if(strlen($country_code) > 2){
-						continue;
-					}
-				
-					if( isset($country_city_data[$country_code]) ) {
-						$collection = array_merge($collection, $country_city_data[$country_code]);
-					} else {
-						$file_path = DIRECTORY_SEPARATOR . "{$country_code}";
-						$file_name = DIRECTORY_SEPARATOR . "{$country_code}.json";
-						
-						$file = apply_filters('cfgp/library/cities/path', array(
-							'path' => "{$file_base}{$file_path}{$file_name}",
-							'file_base' => $file_base,
-							'file_path' => $file_path,
-							'file_name' => $file_name,
-							'country_code' => $country_code
-						));
-						
-						$file = apply_filters("cfgp/library/cities/path/{$country_code}", $file);
-						
-						if(isset($file['path']) && file_exists($file['path'])){
-							$data = '';
-							$fh = fopen($file['path'],'r');
-								while (($line = stream_get_line($fh, 1024)) !== false){
-									$data.=$line;
-									fflush($fh);
-								}
-							fclose($fh); unset($fh);
-							
-							if( !empty($data) ) {
-								$country_city_data[$country_code] = json_decode( $data, true );
-								$collection = array_merge($collection, $country_city_data[$country_code]);
-							}
-						}
-					}
-				}
-			} else {
-				$country_code = strtolower($country_code);
-				if(strlen($country_code) > 2){
-					return array();
-				}
-				
-				if( isset($country_city_data[$country_code]) ) {
-					$collection = $country_city_data[$country_code];
-				} else {
-					$file_path = DIRECTORY_SEPARATOR . "{$country_code}";
-					$file_name = DIRECTORY_SEPARATOR . "{$country_code}.json";
-					
-					$file = apply_filters('cfgp/library/cities/path', array(
-						'path' => "{$file_base}{$file_path}{$file_name}",
-						'file_base' => $file_base,
-						'file_path' => $file_path,
-						'file_name' => $file_name,
-						'country_code' => $country_code
-					));
-					
-					$file = apply_filters("cfgp/library/cities/path/{$country_code}", $file);
-					
-					if(isset($file['path']) && file_exists($file['path'])){
-						$data = '';
-						$fh = fopen($file['path'],'r');
-							while (($line = stream_get_line($fh, 1024)) !== false){
-								$data.=$line;
-								fflush($fh);
-							}
-						fclose($fh); unset($fh);
-						
-						if( !empty($data) ) {
-							$collection = json_decode( $data, true );
-							$country_city_data[$country_code] = $collection;
-						}
-					}
-				}
-			}
-		}
-		
-		if(isset($data)){
-			$data = NULL;
-		}
-		
-		if(!empty($collection)) {
-			$collection = array_unique($collection);
-		}
-		
-		$collection = apply_filters('cfgp/library/cities/collection', $collection);
-		
-		if($json === true) {
-			return json_encode($collection);
-		}
-		
-		return $collection;
 	}
 	
 	
