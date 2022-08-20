@@ -139,7 +139,7 @@ class CFGP_U {
 	 *
 	 * @since    4.0.4
 	 */
-	public static function curl_get( $url, $headers = '', $new_params = array(), $json = false )
+	public static function curl_get( $url, $headers = '', $new_params = [], $json = false )
 	{
 		
 		$cache_name = 'cfgp-curl_get-'.md5(serialize(array($url, $headers, $new_params, $json)));
@@ -216,7 +216,7 @@ class CFGP_U {
 	 *
 	 * @since    4.0.4
 	 */
-	public static function curl_post( $url, $post_data = array(), $headers = array(), $new_params = array(), $json = false )
+	public static function curl_post( $url, $post_data = [], $headers = [], $new_params = [], $json = false )
 	{
 		$cache_name = 'cfgp-curl_post-'.md5(serialize(array($url, $headers, $new_params, $json)));
 		if(NULL !== ($cache = CFGP_Cache::get($cache_name))){
@@ -397,7 +397,7 @@ class CFGP_U {
 					'slug' => false,                      // string
 					'support_threads' => false,           // int
 					'support_threads_resolved' => false,  // int
-					'tags' => false,                      // array( )
+					'tags' => false,                      // []
 					'tested' => false,                    // version string
 					'version' => false,                   // version string
 					'versions' => false,                  // array( [version] url )
@@ -988,7 +988,7 @@ class CFGP_U {
 	 * PRIVATE: Set stream context
 	 * @since	1.3.5
 	 */
-	public static function set_stream_context( $header = array(), $method = 'POST', $content = '' )
+	public static function set_stream_context( $header = [], $method = 'POST', $content = '' )
 	{	
 		$header = array_merge( array( 'Content-Type: application/x-www-form-urlencoded' ), $header );
 		
@@ -1008,7 +1008,7 @@ class CFGP_U {
 	 *
 	 * @since    7.0.0
 	 **/
-	public static function array_find_deep($array, $search, $keys = array())
+	public static function array_find_deep($array, $search, $keys = [])
 	{
 		foreach($array as $key => $value) {
 			if (is_array($value)) {
@@ -1020,7 +1020,7 @@ class CFGP_U {
 				return array_merge($keys, array($key));
 			}
 		}
-		return array();
+		return [];
 	}
 	
 	/**
@@ -1454,7 +1454,7 @@ class CFGP_U {
 			)
 		) {
 			
-			$attr = array();
+			$attr = [];
 			if(isset($wp->query_vars['name'])) {
 				$attr['name'] = $wp->query_vars['name'];
 			}
@@ -1467,7 +1467,7 @@ class CFGP_U {
 				|| isset($wp->query_vars['minute'])
 				|| isset($wp->query_vars['second'])
 			){
-				$attr['date_query'] = array();
+				$attr['date_query'] = [];
 				
 				if(isset($wp->query_vars['year'])){
 					$attr['date_query']['year']= $wp->query_vars['year'];
@@ -1668,7 +1668,7 @@ class CFGP_U {
 	 */
 	public static function is_plugin_active($plugin)
 	{
-		static $active_plugins = array();
+		static $active_plugins = [];
 		
 		if( !isset($active_plugins[$plugin]) ) {
 			if(!function_exists('is_plugin_active')) {
@@ -2397,6 +2397,61 @@ class CFGP_U {
 	 */
 	public static function dev_mode() {
 		return defined('CFGP_DEV_MODE') && CFGP_DEV_MODE;
+	}
+	
+	/*
+	 * Is dev mode
+	 *
+	 * @return bool
+	 */
+	public static function allowed_html_tags_for_page() {
+		$wp_kses_allowed_html = wp_kses_allowed_html('post');
+		$wp_kses_allowed_html = array_merge($wp_kses_allowed_html, array(
+			'input' => array(
+				'name' => true,
+				'type' => true,
+				'style' => true,
+				'class' => true,
+				'id' => true,
+				'value' => true,
+				'data-url' => true,
+				'disabled' => true,
+				'readonly' => true,
+				'checked' => true
+			),
+			'textarea' => array(
+				'name' => true,
+				'style' => true,
+				'class' => true,
+				'id' => true,
+				'data-url' => true,
+				'disabled' => true,
+				'readonly' => true
+			),
+			'select' => array(
+				'name' => true,
+				'style' => true,
+				'class' => true,
+				'id' => true,
+				'disabled' => true,
+				'readonly' => true
+			),
+			'option' => array(
+				'name' => true,
+				'style' => true,
+				'class' => true,
+				'id' => true,
+				'selected' => true
+			),
+			'optgroup' => array(
+				'name' => true,
+				'style' => true,
+				'class' => true,
+				'id' => true
+			)
+		));
+		
+		return apply_filters('cfgp/allowed_html_tags_for_page', $wp_kses_allowed_html);
 	}
 }
 endif;

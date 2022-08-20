@@ -148,7 +148,7 @@ class CFGP_REST extends CFGP_Global {
 	 */
 	public function ajax__authenticate(){
 		$allowed = array('api_key','secret_key','app_name');
-		$GET = array();
+		$GET = [];
 		foreach($allowed as $field){
 			if(isset($_REQUEST[$field])) {
 				$GET[$field] = CFGP_U::request_string($field);
@@ -258,7 +258,7 @@ class CFGP_REST extends CFGP_Global {
 	public function ajax__lookup(){
 		$allowed = array('api_key','access_token','ip','base_currency');
 		
-		$GET = array();
+		$GET = [];
 		foreach($allowed as $field){
 			$GET[$field] = CFGP_U::request_string($field);
 		}
@@ -425,7 +425,7 @@ class CFGP_REST extends CFGP_Global {
 						'required' => true
 					)
 				)
-			), array(), true );
+			), [], true );
 			
 			// Return individual responses			
 			register_rest_route( $namespace, '/return/(?P<pharam>[\w\d\-_]+)', array(
@@ -466,7 +466,7 @@ class CFGP_REST extends CFGP_Global {
 						'required' => true
 					)
 				)
-			), array(), true );
+			), [], true );
 			
 			// Fix Shortcode cache
 			register_rest_route( $namespace, '/cache/shortcode', array(
@@ -498,7 +498,7 @@ class CFGP_REST extends CFGP_Global {
 					
 					$options = unserialize(urldecode(base64_decode(sanitize_text_field(CFGP_U::request_string('options')))));
 					
-					$attr = array();
+					$attr = [];
 					if(!empty($options) && is_array($options))
 					{
 						foreach($options as $key => $value) {
@@ -522,7 +522,7 @@ class CFGP_REST extends CFGP_Global {
 					
 					$attr = str_replace(' cache', '', $attr) . ' no_cache';
 					
-					$return = array();
+					$return = [];
 					
 					if( !in_array($shortcode, array(
 						'cfgeo_flag',
@@ -562,7 +562,7 @@ class CFGP_REST extends CFGP_Global {
 						'required' => true
 					)
 				)
-			), array(), true );
+			), [], true );
 			
 			
 			// Fix Banner cache
@@ -624,7 +624,7 @@ class CFGP_REST extends CFGP_Global {
 						'cf-geoplugin-city' => 'cfgp-banner-location-city'
 					) as $get_post_terms=>$update_post_meta) {
 						if($all_terms = wp_get_post_terms($setup['id'], $get_post_terms, array('fields' => 'all'))) {
-							$tax_collection=array();
+							$tax_collection=[];
 							foreach($all_terms as $i=>$fetch)
 							{
 								$tax_collection[]=$fetch->slug;
@@ -732,7 +732,7 @@ class CFGP_REST extends CFGP_Global {
 						'required' => true
 					)
 				)
-			), array(), true );
+			), [], true );
 		} );
 	}
 	
@@ -790,7 +790,7 @@ class CFGP_REST extends CFGP_Global {
 	 *
 	 * @return   (array)                               plugin options
 	 */
-	public static function set($name_or_array=array(), $value=NULL)
+	public static function set($name_or_array=[], $value=NULL)
 	{
 		
 		// Get plugin options
@@ -845,7 +845,7 @@ class CFGP_REST extends CFGP_Global {
 	public static function sanitize( $str ){
 		if( is_array($str) )
 		{
-			$data = array();
+			$data = [];
 			foreach($str as $key => $obj)
 			{
 				$data[$key]=CFGP_Options::sanitize( $obj ); 

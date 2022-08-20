@@ -19,7 +19,7 @@ if(!class_exists('CFGP_Form')) :
 class CFGP_Form {
 	
 	// Select HTTP code
-	public static function select_http_code($attr = array(), $selected = '', $echo = true){
+	public static function select_http_code($attr = [], $selected = '', $echo = true){
 		$http_forms = CFGP_U::get_http_codes();
 		$return = self::select($http_forms, $attr, $selected, false);
 		if($echo) {
@@ -30,9 +30,9 @@ class CFGP_Form {
 	}
 	
 	// Select countries
-	public static function select_countries($attr = array(), $selected = '', $multiple=false, $echo = true){
+	public static function select_countries($attr = [], $selected = '', $multiple=false, $echo = true){
 		if($multiple) {
-			$options = array();
+			$options = [];
 		} else {
 			$options = array(
 				'' => ''
@@ -73,9 +73,9 @@ class CFGP_Form {
 	}
 	
 	// Select regions
-	public static function select_regions($attr = array(), $selected = '', $multiple=false, $echo = true){
+	public static function select_regions($attr = [], $selected = '', $multiple=false, $echo = true){
 		if($multiple) {
-			$options = array();
+			$options = [];
 		} else {
 			$options = array(
 				'' => ''
@@ -122,9 +122,9 @@ class CFGP_Form {
 	}
 	
 	// Select cities
-	public static function select_cities($attr = array(), $selected = '', $multiple=false, $echo = true){
+	public static function select_cities($attr = [], $selected = '', $multiple=false, $echo = true){
 		if($multiple) {
-			$options = array();
+			$options = [];
 		} else {
 			$options = array(
 				'' => ''
@@ -184,9 +184,9 @@ class CFGP_Form {
 	}
 	
 	// Select postcodes
-	public static function select_postcodes($attr = array(), $selected = '', $multiple=false, $echo = true){
+	public static function select_postcodes($attr = [], $selected = '', $multiple=false, $echo = true){
 		if($multiple) {
-			$options = array();
+			$options = [];
 		} else {
 			$options = array(
 				'' => ''
@@ -242,11 +242,11 @@ class CFGP_Form {
 	}
 	
 	// Multiple select
-	public static function select_multiple($options=array(), $attr = array(), $selected = '', $echo = true){
-		$options_render = array();
+	public static function select_multiple($options=[], $attr = [], $selected = '', $echo = true){
+		$options_render = [];
 		
 		if(empty($options)){
-			$options = array();
+			$options = [];
 		}
 		
 		if(is_array($options))
@@ -311,8 +311,8 @@ class CFGP_Form {
 	}
 	
 	// Select option
-	public static function select($options=array(), $attr = array(), $selected = '', $echo = true){
-		$options_render = array();
+	public static function select($options=[], $attr = [], $selected = '', $echo = true){
+		$options_render = [];
 		
 		if(!empty($options) && is_array($options))
 		{
@@ -337,15 +337,15 @@ class CFGP_Form {
 	}
 	
 	// Checkbox
-	public static function checkbox($options=array(), $echo = true){
-		$input_radio = array();
+	public static function checkbox($options=[], $echo = true){
+		$input_radio = [];
 		
 		if(!empty($options) && is_array($options))
 		{
 			$i = 0;
 			foreach($options as $name=>$option)
 			{
-				$attr = array();
+				$attr = [];
 				
 				$attr['type'] = 'checkbox';
 				$attr['name'] = $name;
@@ -399,8 +399,8 @@ class CFGP_Form {
 	}
 	
 	// Radio buttons
-	public static function radio($options=array(), $attr = array(), $checked = '', $disabled = '', $echo = true){
-		$input_radio = array();
+	public static function radio($options=[], $attr = [], $checked = '', $disabled = '', $echo = true){
+		$input_radio = [];
 		
 		if(!empty($options) && is_array($options))
 		{
@@ -465,7 +465,7 @@ class CFGP_Form {
 		
 		if(isset($attr['country_code'])) unset($attr['country_code']);
 		
-		$attributes = array();
+		$attributes = [];
 		if(!empty($attr) && is_array($attr))
 		{
 			if(isset($attr['id'])){

@@ -184,7 +184,7 @@ echo "	\"{$key}\" : " . ($value === 0 ? 0 : ($value === '' ? '""' : (is_int($val
 }
 endforeach;
 ?>
-	"code" : <?php echo CFGP_U::api('status') . "\n"; ?>
+	"code" : <?php echo esc_attr(CFGP_U::api('status')) . "\n"; ?>
 }</pre>
 			<p><?php _e('You can use these JSON information in your external app anywhere. TIP: In order for your external app to be fast, it would be good to make this call once and record in a temporary session that will expire after a few minutes.', 'cf-geoplugin') ?></p>
         </div>

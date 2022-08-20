@@ -69,7 +69,7 @@ class CFGP_Widget_Currency_Converter extends WP_Widget {
 		  
 	// Updating widget replacing old instances with new
 	public function update( $new_instance, $old_instance ) {
-		$instance = array();	
+		$instance = [];	
 		
 		$instance['title'] = $this->_sanitize_form_input($new_instance, 'title', 'text', esc_attr__( 'Currency Converter', 'cf-geoplugin'));
 		$instance['amount'] = $this->_sanitize_form_input($new_instance, 'amount', 'text', esc_attr__( 'Amount', 'cf-geoplugin'));

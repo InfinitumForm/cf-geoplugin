@@ -542,7 +542,7 @@ if($flag = CFGP_U::admin_country_flag(get_post_meta($post->ID, '_billing_country
     // Returns array of currency code ( 3 letters ) and converted rate
     public function get_currency_and_symbol()
     {
-        $return_value = array();
+        $return_value = [];
 
         $currency_code =  (CFGP_U::api('currency') ? strtoupper( (string)CFGP_U::api('currency') ) : '' );
         $currency_converted = ( (float)CFGP_U::api('currency_converter') > 0 ? (float)CFGP_U::api('currency_converter') : 1 );
@@ -579,10 +579,10 @@ if($flag = CFGP_U::admin_country_flag(get_post_meta($post->ID, '_billing_country
         global $wp_version;
         $WC = WC();
 
-        $settings = array();
+        $settings = [];
 
         $gateways = WC()->payment_gateways->get_available_payment_gateways();
-        $enabled_gateways = array();
+        $enabled_gateways = [];
 
         if( !empty( $gateways ) && is_array( $gateways ) ) 
         {
@@ -601,14 +601,14 @@ if($flag = CFGP_U::admin_country_flag(get_post_meta($post->ID, '_billing_country
             
             if( !empty( $all_countries ) && is_array( $all_countries ) )
             {
-                $countries_options = array();
+                $countries_options = [];
                 foreach( $all_countries as $country_code => $country_name )
                 {
                     $countries_options[ $country_code ] = sprintf( '%s - %s', $country_code, $country_name );
                 }
 
 
-                $custom_attributes = array();
+                $custom_attributes = [];
                 if( CFGP_License::level() < 2 && CFGP_License::activated() )
                 {
                     $custom_attributes['disabled'] = true;

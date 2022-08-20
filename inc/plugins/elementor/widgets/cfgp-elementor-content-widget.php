@@ -267,7 +267,7 @@ class CFGP_Elementor_Content_Widget extends \Elementor\Widget_Base {
 		
 		if(!$content) return;
 		
-		printf('<div class="%1$s">%2$s</div>', self::$slug, $content);
+		printf('<div class="%1$s">%2$s</div>', esc_attr(self::$slug), wp_kses_post($content));
 	}
 	
 	/**

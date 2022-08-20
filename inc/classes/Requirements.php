@@ -21,7 +21,7 @@ if(!class_exists('CFGP_Requirements')) : class CFGP_Requirements {
 	private $wp = '5.4';
 	private $slug = 'cf-geoplugin';
 	private $file;
-	private $required_php_extensions = array();
+	private $required_php_extensions = [];
 
 	public function __construct( $args ) {
 		foreach ( array( 'title', 'php', 'wp', 'file' ) as $setting ) {

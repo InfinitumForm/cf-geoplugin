@@ -24,7 +24,7 @@ if(!class_exists('CFGP_Plugins')) :
 			'elementor' 		=> 'elementor'
 		);
 		
-		function __construct( $options=array(), $only_object = false ) {
+		function __construct( $options=[], $only_object = false ) {
 			$this->include_plugins($options, $only_object);
 			$this->add_filter( 'cfgp/settings', 'cfgp_settings' );
 			$this->add_filter( 'cfgp/settings/default', 'cfgp_settings_default' );
@@ -34,15 +34,15 @@ if(!class_exists('CFGP_Plugins')) :
 		 * Add plugins settings
 		 * @verson    1.0.0
 		 */
-		public function cfgp_settings ($options =array()){
-			$plugin_options = array();
+		public function cfgp_settings ($options =[]){
+			$plugin_options = [];
 			
 			$this->plugins = apply_filters('cfgp/plugins', $this->plugins);				
 			foreach($this->plugins as $dir_name=>$file_name){
 				$addon = CFGP_PLUGINS . "/{$dir_name}/{$dir_name}.php";
 				if( file_exists($addon) && CFGP_U::is_plugin_active("{$dir_name}/{$file_name}.php") )
 				{
-					if($plugin_info = CFGP_U::plugin_info(array(), $dir_name))
+					if($plugin_info = CFGP_U::plugin_info([], $dir_name))
 					{
 						$plugin_options[]= array(
 							'name' => 'enable-' . $dir_name,
@@ -86,8 +86,8 @@ if(!class_exists('CFGP_Plugins')) :
 		 * Add default plugin security settings
 		 * @verson    1.0.0
 		 */
-		public function cfgp_settings_default ($options =array()){
-			$plugin_options = array();
+		public function cfgp_settings_default ($options =[]){
+			$plugin_options = [];
 			
 			$this->plugins = apply_filters('cfgp/plugins', $this->plugins);				
 			foreach($this->plugins as $dir_name=>$file_name){
@@ -105,7 +105,7 @@ if(!class_exists('CFGP_Plugins')) :
 		 * Include WordPress plugins support
 		 * @verson    1.0.0
 		 */
-		private function include_plugins( $options=array(), $only_object = false ){
+		private function include_plugins( $options=[], $only_object = false ){
 			if($only_object === false)
 			{							
 				$this->plugins = apply_filters('cfgp/plugins', $this->plugins);
@@ -138,7 +138,7 @@ if(!class_exists('CFGP_Plugins')) :
 		 * Instance
 		 * @verson    1.0.0
 		 */
-		public static function instance($options = array(), $only_object = false ) {
+		public static function instance($options = [], $only_object = false ) {
 			$class = self::class;
 			$instance = CFGP_Cache::get($class);
 			if ( !$instance ) {

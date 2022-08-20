@@ -253,7 +253,7 @@ if(!class_exists('CFGP_Taxonomy')) : class CFGP_Taxonomy extends CFGP_Global {
 			update_term_meta(
 				$term_id,
 				'country',
-				strtolower(sanitize_text_field( $_POST[ 'country' ] ))
+				CFGP_U::strtolower(sanitize_text_field( $_POST[ 'country' ] ))
 			);
 		}
 		
@@ -266,7 +266,7 @@ if(!class_exists('CFGP_Taxonomy')) : class CFGP_Taxonomy extends CFGP_Global {
 			update_term_meta(
 				$term_id,
 				'city_slug',
-				sanitize_title( $_POST[ 'city' ] )
+				sanitize_title( sanitize_text_field( $_POST[ 'city' ] ) )
 			);
 		}
 		

@@ -113,7 +113,7 @@ add_action('cfgp/page/seo_redirection/form/content', function(){
                 </tr>
             </tbody>
         </table>
-        <p class="submit"><button type="submit" class="button button-primary"><?php _e('Save Redirection', 'cf-geoplugin'); ?></button><?php if($ID): ?> <a href="<?php echo CFGP_U::admin_url('admin.php?page='.CFGP_NAME.'-seo-redirection'); ?>" class="button" style="float:right"><?php _e('Go back to list', 'cf-geoplugin'); ?></a><?php endif; ?></p>
+        <p class="submit"><button type="submit" class="button button-primary"><?php _e('Save Redirection', 'cf-geoplugin'); ?></button><?php if($ID): ?> <a href="<?php echo esc_url(CFGP_U::admin_url('admin.php?page='.CFGP_NAME.'-seo-redirection')); ?>" class="button" style="float:right"><?php _e('Go back to list', 'cf-geoplugin'); ?></a><?php endif; ?></p>
     </div>
 </div>
 <?php });

@@ -27,7 +27,7 @@ class CFGP_IP extends CFGP_Global {
 	{
 		if($ip = CFGP_Cache::get('IP')) return $ip;
 		
-		$findIP=array();
+		$findIP=[];
 		$blacklistIP = self::blocked();
 		
 		// Enable cloudflare
@@ -56,13 +56,13 @@ class CFGP_IP extends CFGP_Global {
 			
 			// Check in $_SERVER
 			if (isset($_SERVER[$http]) && !empty($_SERVER[$http])){
-				$ip = wp_unslash( $_SERVER[$http] );
+				$ip = wp_unslash( sanitize_text_field( $_SERVER[$http] ) );
 			}
 			
 			// check in getenv() for any case
 			if(empty($ip) && function_exists('getenv'))
 			{
-				$ip = wp_unslash( getenv($http) );
+				$ip = wp_unslash( sanitize_text_field( getenv($http) ) );
 			}
 			
 			// Check if here is multiple IP's
@@ -74,7 +74,7 @@ class CFGP_IP extends CFGP_Global {
 				$ips=array_map('trim',$ips);
 				$ips=array_filter($ips);
 				
-				$ipf=array();
+				$ipf=[];
 				foreach($ips as $ipx)
 				{
 					if(self::filter($ipx, $blacklistIP) !== false)
@@ -124,7 +124,7 @@ class CFGP_IP extends CFGP_Global {
 				$ips=array_map('wp_unslash',$ips);
 				$ips=array_map('sanitize_text_field',$ips);
 				
-				$ipf=array();
+				$ipf=[];
 				foreach($ips as $ipx)
 				{
 					if(self::filter($ipx, $blacklistIP)!==false)
@@ -194,7 +194,7 @@ class CFGP_IP extends CFGP_Global {
 	 * @pharam  $list - array of bad IP's  IP => RANGE or IP
 	 * @return  $array of blacklisted IP's
 	 */
-	public static function blocked($list=array())
+	public static function blocked($list=[])
 	{
 		
 		if($ip_blocked = CFGP_Cache::get('IP-blocked')){
@@ -229,7 +229,7 @@ class CFGP_IP extends CFGP_Global {
 			$blacklist = array_merge($blacklist);
 		}
 		
-		$blacklistIP=array();
+		$blacklistIP=[];
 		foreach($blacklist as $key=>$num)
 		{
 			// if address is not in range
@@ -280,7 +280,9 @@ class CFGP_IP extends CFGP_Global {
 		}
 		
 		$proxy = CFGP_U::proxy();
-		if($proxy) $_SERVER['SERVER_ADDR'] = CFGP_Options::get('proxy_ip');
+		if($proxy){
+			$_SERVER['SERVER_ADDR'] = CFGP_Options::get('proxy_ip');
+		}
 	
 		$findIP=apply_filters( 'cfgp/ip/server_constants', array(
 			'SERVER_ADDR',
@@ -294,17 +296,17 @@ class CFGP_IP extends CFGP_Global {
 		{
 			// Check in $_SERVER
 			if (isset($_SERVER[$http]) && !empty($_SERVER[$http])){
-				$ip=$_SERVER[$http];
+				$ip=wp_unslash( sanitize_text_field( $_SERVER[$http] ) );
 			}
 			
 			if(empty($ip) && function_exists("getenv"))
 			{
-				$ip = getenv($http);
+				$ip = wp_unslash( sanitize_text_field( getenv($http) ) );
 			}
 			// Check if here is multiple IP's
 			if($http == 'SERVER_NAME')
 			{
-				$ip = (isset($_SERVER['SERVER_NAME']) && function_exists('gethostbyname') ? gethostbyname($_SERVER['SERVER_NAME']) : '');
+				$ip = sanitize_text_field( isset($_SERVER['SERVER_NAME']) && function_exists('gethostbyname') ? gethostbyname($_SERVER['SERVER_NAME']) : '' );
 			}
 			// Check if IP is real and valid
 			if(self::validate_any($ip))
@@ -436,7 +438,7 @@ class CFGP_IP extends CFGP_Global {
 	 * @author  Ivijan-Stefan Stipic <creativform@gmail.com>
 	 * @return  (string) IP address or (bool) false
 	 */
-	public static function filter($ip, $blacklistIP=array())
+	public static function filter($ip, $blacklistIP=[])
 	{
 		do_action('cfgp/ip/filter', $ip, $blacklistIP);
 		$ip = rest_is_ip_address($ip);

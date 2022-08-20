@@ -69,7 +69,7 @@ class CFGP_Geo_Banner extends CFGP_Global {
 			'cf-geoplugin-city' => 'cfgp-banner-location-city'
 		) as $get_post_terms=>$update_post_meta) {
 			if($all_terms = wp_get_post_terms($setup['id'], $get_post_terms, array('fields' => 'all'))) {
-				$tax_collection=array();
+				$tax_collection=[];
 				foreach($all_terms as $i=>$fetch)
 				{
 					$tax_collection[]=$fetch->slug;
@@ -249,25 +249,25 @@ LIMIT 1
 		update_post_meta( $post_id, 'cfgp-banner-default', wp_kses_post(CFGP_U::request('cfgp-banner-default-content', NULL)) );
 		delete_post_meta( $post_id, CFGP_METABOX . 'banner_default' );
 		
-		if( $country = CFGP_Options::sanitize( CFGP_U::request('cfgp-banner-location-country', array()) ) ) {
+		if( $country = CFGP_Options::sanitize( CFGP_U::request('cfgp-banner-location-country', []) ) ) {
 			update_post_meta( $post_id, 'cfgp-banner-location-country', $country);
 		} else {
 			delete_post_meta( $post_id, 'cfgp-banner-location-country' );
 		}
 		
-		if( $region = CFGP_Options::sanitize( CFGP_U::request('cfgp-banner-location-region', array()) ) ) {
+		if( $region = CFGP_Options::sanitize( CFGP_U::request('cfgp-banner-location-region', []) ) ) {
 			update_post_meta( $post_id, 'cfgp-banner-location-region', $region);
 		} else {
 			delete_post_meta( $post_id, 'cfgp-banner-location-region' );
 		}
 		
-		if( $city = CFGP_Options::sanitize( CFGP_U::request('cfgp-banner-location-city', array()) ) ) {
+		if( $city = CFGP_Options::sanitize( CFGP_U::request('cfgp-banner-location-city', []) ) ) {
 			update_post_meta( $post_id, 'cfgp-banner-location-city', $city);
 		} else {
 			delete_post_meta( $post_id, 'cfgp-banner-location-city' );
 		}
 		
-		if( $postcode = CFGP_Options::sanitize( CFGP_U::request('cfgp-banner-location-postcode', array()) ) ) {
+		if( $postcode = CFGP_Options::sanitize( CFGP_U::request('cfgp-banner-location-postcode', []) ) ) {
 			update_post_meta( $post_id, 'cfgp-banner-location-postcode', $postcode);
 		} else {
 			delete_post_meta( $post_id, 'cfgp-banner-location-postcode' );
@@ -313,7 +313,7 @@ LIMIT 1
 			}
 			else if ($column_name == 'cf_geo_banner_locations')
 			{				
-				$print=array();
+				$print=[];
 				
 				foreach(array(
 					__('Countries', 'cf-geoplugin')	=>	'country',
@@ -354,7 +354,7 @@ LIMIT 1
 					{
 						// list all terms
 						$all_terms = wp_get_post_terms($post_ID, $taxonomy, array('fields' => 'all'));
-						$part=array();
+						$part=[];
 						foreach($all_terms as $i=>$fetch)
 						{
 							$edit_link = get_edit_term_link( $fetch->term_id, $taxonomy, 'cf-geoplugin-banner' );
@@ -435,7 +435,7 @@ LIMIT 1
      */
 	public function add_meta_box__settings( $post )
 	{
-		$country_code = array();
+		$country_code = [];
 
 		// Get old taxonomies from the prevous version and merge with new one
 		$taxonomy_list = array(
@@ -472,7 +472,7 @@ LIMIT 1
 		{
 			// list all terms
 			$all_terms = wp_get_post_terms($post->ID, $option['taxonomy'], array('fields' => 'all'));
-			$data=array();
+			$data=[];
 			foreach($all_terms as $i=>$fetch) {
 				$data[]=$fetch->slug;
 			}

@@ -105,7 +105,7 @@ class CFGP_Notifications extends CFGP_Global{
 		$lookup = CFGP_U::api('available_lookup');
 		if( is_numeric($lookup) && $lookup <= 100 && $lookup > 1 && $emails )
 		{		
-			$message = array();
+			$message = [];
 			$message[]= '<p>' . __('Hi there,', 'cf-geoplugin') . '</p>';
 			$message[]= '<p>' . __('Your lookup will expire soon and geo plugin services will be unavailable until the next day.', 'cf-geoplugin') . '</p>';
 			$message[]= '<p>' . sprintf(
@@ -132,7 +132,7 @@ class CFGP_Notifications extends CFGP_Global{
 	/*
 	 * Send message
 	 */
-	public function send($email, $subject, $message, $headers = array(), $attachments = array()){
+	public function send($email, $subject, $message, $headers = [], $attachments = []){
 		$this->add_filter( 'wp_mail_content_type', '_content_type');
 		
 		if(is_array($message)) $message = join(PHP_EOL,$message);
@@ -190,7 +190,7 @@ class CFGP_Notifications extends CFGP_Global{
 	 * Get admins email
 	 */
 	private function get_admins(){		
-		$emails = array();
+		$emails = [];
 		
 		if(CFGP_Options::get('notification_recipient_type') == 'manual')
 		{

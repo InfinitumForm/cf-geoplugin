@@ -102,7 +102,7 @@ class CFGP_Defaults {
 		'first_plugin_activation'		=>	1,
 		'log_errors'					=>	0,
 		'enable_seo_posts'				=>	array('post', 'page'),
-		'enable_geo_tag'				=>	array(),
+		'enable_geo_tag'				=>	[],
 		'enable_css'					=>	1,
 		'enable_js'						=>	1,
 		'hide_http_referrer_headers' 	=>	0,

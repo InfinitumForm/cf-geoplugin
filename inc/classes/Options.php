@@ -93,7 +93,7 @@ class CFGP_Options
 	 *
 	 * @return   (array)                               plugin options
 	 */
-	public static function set($name_or_array=array(), $value=NULL)
+	public static function set($name_or_array=[], $value=NULL)
 	{
 		// Clear cache;
 		$clear_cache = false;
@@ -204,7 +204,7 @@ class CFGP_Options
 	public static function sanitize( $str ){
 		if( is_array($str) )
 		{
-			$data = array();
+			$data = [];
 			if(!empty($str)) {
 				foreach($str as $key => $obj) {
 					$data[$key]=self::sanitize( $obj ); 
@@ -286,7 +286,7 @@ class CFGP_Options
 				CFGP_License::activate($old_options['license_key'], $old_options['license_sku']);
 			}
 			// Set the other options properly
-			$new_options = array();
+			$new_options = [];
 			foreach($old_options as $option => $value){
 				if( in_array($option, CFGP_Defaults::OPTIONS) ) {
 					$new_options[$option] = $value;

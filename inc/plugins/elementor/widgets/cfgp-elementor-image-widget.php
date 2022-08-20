@@ -334,11 +334,11 @@ class CFGP_Elementor_Image_Widget extends \Elementor\Widget_Base {
 		{
 			if(CFGP_U::recursive_array_search($fetch['location'], CFGP_U::api(false, CFGP_Defaults::API_RETURN))){		
 				$image = [
-					'ID' => $fetch['image']['id'],
-					'url' => $fetch['image']['url'],
-					'size' => $fetch['image_size'],
-					'alt' => $fetch['alt'],
-					'link' => $fetch['link']
+					'ID' => esc_attr($fetch['image']['id']),
+					'url' => esc_attr($fetch['image']['url']),
+					'size' => esc_attr($fetch['image_size']),
+					'alt' => esc_attr($fetch['alt']),
+					'link' => esc_attr($fetch['link'])
 				];
 				break;
 			}
@@ -350,7 +350,7 @@ class CFGP_Elementor_Image_Widget extends \Elementor\Widget_Base {
 //		echo '<pre>', var_dump($image), '</pre>';
 
 		if(!empty($image['link']['url'])){
-			echo '<a href="' . $image['link']['url'] . '"' . $target . $nofollow . '>';
+			echo '<a href="' . esc_url( $image['link']['url'] ) . '"' .esc_html( $target . $nofollow ) . '>';
 		}
 
 		echo wp_get_attachment_image(
@@ -358,8 +358,8 @@ class CFGP_Elementor_Image_Widget extends \Elementor\Widget_Base {
 			$image['size'],
 			false,
 			[
-				'class' => self::$slug,
-				'alt'	=> $image['alt']
+				'class' => esc_attr(self::$slug),
+				'alt'	=> esc_attr($image['alt'])
 			]
 		);
 		

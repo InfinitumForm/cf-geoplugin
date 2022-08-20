@@ -310,8 +310,8 @@ class CFGP_Elementor_Vat_Widget extends \Elementor\Widget_Base {
 			$show = true;
 		
 		if( $show && !empty($settings['content'])) : ?>
-			<div class="elementor-text-editor elementor-clearfix elementor-inline-editing <?php echo self::$slug; ?> cf-geoplugin-<?php echo self::$slug; ?>">
-				<?php echo do_shortcode($settings['content']); ?>
+			<div class="elementor-text-editor elementor-clearfix elementor-inline-editing <?php echo esc_attr(self::$slug); ?> cf-geoplugin-<?php echo esc_attr(self::$slug); ?>">
+				<?php echo wp_kses_post(do_shortcode($settings['content'])); ?>
 			</div>
 		<?php endif;
 	}

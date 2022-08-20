@@ -79,7 +79,7 @@ class CFGP_Public extends CFGP_Global{
 		
 		if(empty($CFGEO)) return;
 		
-		$css_show = $css_hide = array();
+		$css_show = $css_hide = [];
 		
 		$allowed_css = apply_filters( 'cfgp/public/css/allowed', array(
 			'country',
@@ -133,7 +133,7 @@ class CFGP_Public extends CFGP_Global{
 	<?php
 
 		$exclude = array_map('trim', apply_filters( 'cfgp/public/js/exclude', explode(',','state,continentCode,areaCode,dmaCode,timezoneName,currencySymbol,currencyConverter,error,status,runtime,error_message')));
-		$js = array();
+		$js = [];
 		
 		$CFGEO = array_merge($CFGEO,array(
 			'flag' => '',
@@ -185,7 +185,7 @@ class CFGP_Public extends CFGP_Global{
 	public function append_geo_tags() {
 		$post = get_post();
 
-		if($post && is_object($post) && in_array($post->post_type, CFGP_Options::get('enable_geo_tag', array())))
+		if($post && is_object($post) && in_array($post->post_type, CFGP_Options::get('enable_geo_tag', [])))
 		{
 			$geo_data = apply_filters( 'cfgp/public/geo_tags', array(
 				'geo.enable'	=> get_post_meta( $post->ID, 'cfgp-geotag-enable',	true ),

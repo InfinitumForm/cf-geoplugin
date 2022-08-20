@@ -22,7 +22,7 @@ add_action('cfgp/page/license/content', function(){
 
 if( CFGP_U::api('available_lookup') != 'lifetime' ) :
 	
-	$select_options = array();
+	$select_options = [];
 
 	if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		if(wp_verify_nonce(CFGP_U::request_string('nonce'), CFGP_NAME.'-activate-license') !== false){
@@ -66,7 +66,7 @@ if( CFGP_U::api('available_lookup') != 'lifetime' ) :
 <div class="cfgp-license-container">
 	    
     <div class="cfgp-form-product-checkbox">
-    	<?php echo join(PHP_EOL, $select_options); ?>
+    	<?php echo wp_kses( join(PHP_EOL, $select_options), CFGP_U::allowed_html_tags_for_page() ); ?>
         <div class="cfgp-form-product-license">
         	<div class="cfgp-form-product-license-item">
             	<label for="license_key"><?php _e('License Key', 'cf-geoplugin'); ?></label>

@@ -18,10 +18,10 @@ if(!class_exists('CF_Geoplugin')) : class CF_Geoplugin{
 	private $data = NULL;
 	
 	// Construct API response
-	function __construct($options=array()){
+	function __construct($options=[]){
 		// Fetch new data via API
 		if( !empty($options) ) {
-			$property = array();
+			$property = [];
 			
 			if( isset($options['base_currency']) ){
 				$property['base_currency']=$options['base_currency'];

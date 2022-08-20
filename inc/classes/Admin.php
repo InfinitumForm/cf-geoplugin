@@ -148,7 +148,7 @@ class CFGP_Admin extends CFGP_Global {
 			exit;
 		} else {
 			$RSS = $DASH_RSS = [];
-			$data = CFGP_U::curl_get( CFGP_STORE . '/wp-ajax.php?action=cfgp_get_posts_data&numberposts=10&posts_per_page=10', '', array(), false);
+			$data = CFGP_U::curl_get( CFGP_STORE . '/wp-ajax.php?action=cfgp_get_posts_data&numberposts=10&posts_per_page=10', '', [], false);
 			if($data)
 			{
 				$data = (object)$data;
@@ -224,7 +224,7 @@ class CFGP_Admin extends CFGP_Global {
 			exit;
 		} else {
 			$RSS = $DASH_RSS = [];
-			$data = CFGP_U::curl_get( CFGP_STORE . '/wp-ajax.php?action=cfgp_get_posts_data&numberposts=10&posts_per_page=10', '', array(), false);
+			$data = CFGP_U::curl_get( CFGP_STORE . '/wp-ajax.php?action=cfgp_get_posts_data&numberposts=10&posts_per_page=10', '', [], false);
 			if($data)
 			{
 				$data = (object)$data;
@@ -567,7 +567,7 @@ class CFGP_Admin extends CFGP_Global {
 		
 		if(!$this->limit_scripts($page) && $page != 'index.php') return;
 		
-		wp_enqueue_style( CFGP_NAME . '-fonts', CFGP_ASSETS . '/css/fonts.min.css', array(), CFGP_VERSION );
+		wp_enqueue_style( CFGP_NAME . '-fonts', CFGP_ASSETS . '/css/fonts.min.css', [], CFGP_VERSION );
 		wp_enqueue_style( CFGP_NAME . '-admin', CFGP_ASSETS . '/css/style-admin.css', array(CFGP_NAME . '-fonts'), CFGP_VERSION );
 	}
 	
@@ -578,12 +578,12 @@ class CFGP_Admin extends CFGP_Global {
 		$url = '';
 		
 		if( isset( $_GET['taxonomy'] ) ) {
-			$post = $_GET['taxonomy'];
+			$post = sanitize_text_field($_GET['taxonomy']);
 		} else if( isset( $_GET['post'] ) ) {
-			$post = get_post( absint( $_GET['post'] ) );
+			$post = get_post( absint( sanitize_text_field( $_GET['post'] ) ) );
 			$post = isset( $post->post_type ) ? $post->post_type : '';
 		} else if( isset( $_GET['post_type'] ) ) {
-			$post = $_GET['post_type'];
+			$post = sanitize_text_field($_GET['post_type']);
 		}
 
 		if( !$this->limit_scripts( $post ) ) {

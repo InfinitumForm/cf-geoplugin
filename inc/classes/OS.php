@@ -110,7 +110,7 @@ if (!class_exists('CFGP_OS')):
          */
         public static function get($user_agent = null)
         {
-			$os_array = array();
+			$os_array = [];
             if (empty($user_agent))
             {
                 if (function_exists('php_uname')) {

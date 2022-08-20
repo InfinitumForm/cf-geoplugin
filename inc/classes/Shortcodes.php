@@ -324,7 +324,7 @@ class CFGP_Shortcodes extends CFGP_Global {
 		
 		$exclude = array_map('trim', explode(',','gps,is_vat,is_proxy,is_mobile,in_eu,state,continentCode,areaCode,dmaCode,timezoneName,currencySymbol,currencyConverter'));
 		
-		$generate=array();
+		$generate=[];
 		foreach($CFGEO as $key => $value )
 		{
 			if(in_array($key, $exclude, true) === false)
@@ -428,7 +428,7 @@ class CFGP_Shortcodes extends CFGP_Global {
 		if( !empty($arg['css']) ){
 			$css = NULL;
 
-			$ss = array();
+			$ss = [];
 			$csss = array_map('trim',explode(';', $arg['css']));
 			foreach($csss as $val){
 				if(!empty($val)){
@@ -439,7 +439,7 @@ class CFGP_Shortcodes extends CFGP_Global {
 			
 			if(count($ss)>0)
 			{
-				$scss = array();
+				$scss = [];
 				foreach($ss as $key=>$val) $scss[]=sprintf('%s:%s',$key,$val); 
 				$css = join(';',$scss);
 			}
@@ -450,7 +450,7 @@ class CFGP_Shortcodes extends CFGP_Global {
 		
 		if( !empty($arg['class']) ){
 			$classes = explode(" ", $arg['class']);
-			$cc = array();
+			$cc = [];
 			foreach($classes as $val){
 				if(!empty($val)) $cc[]=$val;
 			}
@@ -558,7 +558,7 @@ class CFGP_Shortcodes extends CFGP_Global {
 			'cf-geoplugin-city' => 'cfgp-banner-location-city'
 		) as $get_post_terms=>$update_post_meta) {
 			if($all_terms = wp_get_post_terms($setup['id'], $get_post_terms, array('fields' => 'all'))) {
-				$tax_collection=array();
+				$tax_collection=[];
 				foreach($all_terms as $i=>$fetch)
 				{
 					$tax_collection[]=$fetch->slug;
@@ -587,7 +587,7 @@ class CFGP_Shortcodes extends CFGP_Global {
 		}
 		
 		$class		= sanitize_html_class($setup['class']);
-		$classes	= (empty($class) ? array() : array_map('trim',explode(' ', $class)));
+		$classes	= (empty($class) ? [] : array_map('trim',explode(' ', $class)));
 		$classes[]	= 'cf-geoplugin-banner';
 		
 		if($cache != false){
@@ -724,7 +724,7 @@ LIMIT 1
 
 		$content = trim($content);
 		
-		$attributes = array();
+		$attributes = [];
 		$attributes[]='data-zoom="'.esc_attr($att->zoom).'"';
 		$attributes[]='data-draggable="'.esc_attr($att->draggable).'"';
 		$attributes[]='data-scaleControl="'.esc_attr($att->scaleControl).'"';
@@ -890,7 +890,7 @@ LIMIT 1
 		}
 		else
 		{
-			var url = '<?php echo esc_attr(CFGP_Defaults::API['googleapis_map']); ?>/api/js?key=<?php echo CFGP_Options::get('map_api_key'); ?>',
+			var url = '<?php echo esc_url(CFGP_Defaults::API['googleapis_map']); ?>/api/js?key=<?php echo CFGP_Options::get('map_api_key'); ?>',
 				head = document.getElementsByTagName('head')[0],
 				script = document.createElement("script");
 			
@@ -1213,7 +1213,7 @@ LIMIT 1
 	/**
 	 * Show conversion card message
 	 */
-	public function show_conversion_card_message( $message_type, $result = array() )
+	public function show_conversion_card_message( $message_type, $result = [] )
 	{
 		$class = 'cfgp-error';
 		switch( $message_type )
@@ -1744,7 +1744,7 @@ LIMIT 1
 	}
 	
 	/* Cache content wrapper */
-	private static function __cache($shortcode, $content, $options=array(), $default = '', $cache = false) {
+	private static function __cache($shortcode, $content, $options=[], $default = '', $cache = false) {
 		if( $cache ) {
 			$shortcode = esc_attr($shortcode);
 			$shortcode = trim($shortcode);
@@ -1780,7 +1780,7 @@ LIMIT 1
 		$options = unserialize(urldecode(base64_decode(sanitize_text_field(CFGP_U::request_string('options')))));
 		
 		
-		$attr = array();
+		$attr = [];
 		if(!empty($options) && is_array($options))
 		{
 			foreach($options as $key => $value) {
@@ -1816,12 +1816,21 @@ LIMIT 1
 			'cfgeo_gps',
 			'cfgeo_map'
 		)) && preg_match('/cfgeo_([a-z_]+)/i', $shortcode, $match) ) {
-			echo do_shortcode('[cfgeo return="' . esc_attr($match[1]) . '"' . $attr . ']');
+			echo wp_kses(
+				do_shortcode('[cfgeo return="' . esc_attr($match[1]) . '"' . $attr . ']'),
+				CFGP_U::allowed_html_tags_for_page()
+			);
 		} else {
 			if(empty($default)) {
-				echo do_shortcode('[' . $shortcode . $attr . ']');
+				echo wp_kses(
+					do_shortcode('[' . $shortcode . $attr . ']'),
+					CFGP_U::allowed_html_tags_for_page()
+				);
 			} else {
-				echo do_shortcode('[' . $shortcode . $attr . ']' . $content . '[/' . $shortcode . ']');
+				echo wp_kses(
+					do_shortcode('[' . $shortcode . $attr . ']' . $content . '[/' . $shortcode . ']'),
+					CFGP_U::allowed_html_tags_for_page()
+				);
 			}
 		}
 		

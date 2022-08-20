@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
 
 if(!class_exists('CFGP_Debug')) :
 class CFGP_Debug extends CFGP_Global {
-	private static $data = array();
+	private static $data = [];
 	
 	/*
 	 * Save informations to array

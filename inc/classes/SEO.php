@@ -271,7 +271,7 @@ class CFGP_SEO extends CFGP_Global {
 			$result = $wpdb->get_results("SELECT country, region, city, postcode, url, http_code, active, only_once FROM {$table} WHERE 1", ARRAY_A);
 			
 			$num_fields = count($result); 
-			$headers = array(); 
+			$headers = []; 
 			foreach($result[0] as $header => $value) 
 			{     
 				$headers[] = $header; 

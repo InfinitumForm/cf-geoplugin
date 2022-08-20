@@ -58,13 +58,13 @@ class CFGP_License extends CFGP_Global{
 	public static function get_product_data(){
 		$response = CFGP_DB_Cache::get('cfgp-get-product-data');
 		if(!$response) {
-			if($return = CFGP_U::curl_get(CFGP_STORE . '/wp-admin/admin-ajax.php?action=cfgp_get_product_data', '', array(), false))
+			if($return = CFGP_U::curl_get(CFGP_STORE . '/wp-admin/admin-ajax.php?action=cfgp_get_product_data', '', [], false))
 			{
 				if($return['error'] === false && $return['lenght'] > 0){
 					$response = $return['products'];
 					
 					if( !empty($response) ) {
-						$reorder = array();
+						$reorder = [];
 						foreach(array(
 							CFGP_Defaults::BASIC_LICENSE,
 							CFGP_Defaults::PERSONAL_LICENSE,
@@ -123,7 +123,7 @@ class CFGP_License extends CFGP_Global{
 			)));
 		}
 
-		return empty($response) ? array() : $response;
+		return empty($response) ? [] : $response;
 	}
 	
 	
@@ -279,7 +279,7 @@ class CFGP_License extends CFGP_Global{
 		};
 		
 		if(NULL === $expire_date) {
-			$expire_date = array();
+			$expire_date = [];
 		}
 		
 		$expire_date[$format] = $generate_date($format);
@@ -359,7 +359,7 @@ class CFGP_License extends CFGP_Global{
 	public static function activate($license_key, $sku){
 		
 		if(empty($license_key) || empty($sku)) {
-			$input_field_error = array();
+			$input_field_error = [];
 			
 			if(empty($sku)) {
 				$input_field_error = array_merge($input_field_error, array(
@@ -594,7 +594,7 @@ class CFGP_License extends CFGP_Global{
 	 *
 	 * @return   (array)                               plugin options
 	 */
-	public static function set($name_or_array=array(), $value=NULL)
+	public static function set($name_or_array=[], $value=NULL)
 	{
 		
 		// Get plugin options

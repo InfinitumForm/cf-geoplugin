@@ -61,39 +61,39 @@ $API = CFGP_Cache::get('API');
                                     </tr>
                                     <tr>
                                         <td><strong>zoom</strong></td>
-                                        <td><strong><?php _e('Integer', 'cf-geoplugin'); ?></strong> - <?php _e('Most roadmap imagery is available from zoom levels 0 to 18.', 'cf-geoplugin'); ?><br><br><strong>-<?php _e('Default is', 'cf-geoplugin'); ?> <?php echo CFGP_Options::get("map_zoom"); ?></strong></td>
+                                        <td><strong><?php _e('Integer', 'cf-geoplugin'); ?></strong> - <?php _e('Most roadmap imagery is available from zoom levels 0 to 18.', 'cf-geoplugin'); ?><br><br><strong>-<?php _e('Default is', 'cf-geoplugin'); ?> <?php echo esc_html(CFGP_Options::get("map_zoom")); ?></strong></td>
                                     </tr>
                                     <tr>
                                         <td><strong>width</strong></td>
-                                        <td><strong><?php _e('Accept numeric value in percentage or pixels (% or px)', 'cf-geoplugin'); ?></strong> - <?php _e('Width of your map.', 'cf-geoplugin'); ?><br><br><strong>-<?php _e('Default is', 'cf-geoplugin'); ?> <?php echo CFGP_Options::get("map_width"); ?>.</strong></td>
+                                        <td><strong><?php _e('Accept numeric value in percentage or pixels (% or px)', 'cf-geoplugin'); ?></strong> - <?php _e('Width of your map.', 'cf-geoplugin'); ?><br><br><strong>-<?php _e('Default is', 'cf-geoplugin'); ?> <?php echo esc_html(CFGP_Options::get("map_width")); ?>.</strong></td>
                                     </tr>
                                     <tr>
                                         <td><strong>height</strong></td>
-                                        <td><strong><?php _e('Accept numeric value in percentage or pixels (% or px)', 'cf-geoplugin'); ?></strong> - <?php _e('Height of your map.', 'cf-geoplugin'); ?><br><br><strong>-<?php _e('Default is', 'cf-geoplugin'); ?> <?php echo CFGP_Options::get("map_height"); ?>.</strong></td>
+                                        <td><strong><?php _e('Accept numeric value in percentage or pixels (% or px)', 'cf-geoplugin'); ?></strong> - <?php _e('Height of your map.', 'cf-geoplugin'); ?><br><br><strong>-<?php _e('Default is', 'cf-geoplugin'); ?> <?php echo esc_html(CFGP_Options::get("map_height")); ?>.</strong></td>
                                     </tr>
                                     <tr>
                                         <td><strong>scrollwheel</strong></td>
-                                        <td><strong><?php _e('Integer 1 or 0', 'cf-geoplugin'); ?></strong> - <?php _e('If', 'cf-geoplugin'); ?> <em>0</em>, <?php _e('disables scrollwheel zooming on the map.', 'cf-geoplugin'); ?><br><br><strong>-<?php _e('Default is', 'cf-geoplugin'); ?> <?php echo CFGP_Options::get("map_scrollwheel"); ?></strong></td>
+                                        <td><strong><?php _e('Integer 1 or 0', 'cf-geoplugin'); ?></strong> - <?php _e('If', 'cf-geoplugin'); ?> <em>0</em>, <?php _e('disables scrollwheel zooming on the map.', 'cf-geoplugin'); ?><br><br><strong>-<?php _e('Default is', 'cf-geoplugin'); ?> <?php echo esc_html(CFGP_Options::get("map_scrollwheel")); ?></strong></td>
                                     </tr>
                                     <tr>
                                         <td><strong>navigationControl</strong></td>
-                                        <td><strong><?php _e('Integer 1 or 0', 'cf-geoplugin'); ?></strong> - <?php _e('If', 'cf-geoplugin'); ?> <em>0</em>, <?php _e('disables navigation on the map. The initial enabled/disabled state of the Map type control.', 'cf-geoplugin'); ?><br><br><strong>-<?php _e('Default is', 'cf-geoplugin'); ?> <?php echo CFGP_Options::get("map_navigationControl"); ?></strong></td>
+                                        <td><strong><?php _e('Integer 1 or 0', 'cf-geoplugin'); ?></strong> - <?php _e('If', 'cf-geoplugin'); ?> <em>0</em>, <?php _e('disables navigation on the map. The initial enabled/disabled state of the Map type control.', 'cf-geoplugin'); ?><br><br><strong>-<?php _e('Default is', 'cf-geoplugin'); ?> <?php echo esc_html(CFGP_Options::get("map_navigationControl")); ?></strong></td>
                                     </tr>
                                     <tr>
                                         <td><strong>mapTypeControl</strong></td>
-                                        <td><strong><?php _e('Integer 1 or 0', 'cf-geoplugin'); ?></strong> - <?php _e('The initial enabled/disabled state of the Map type control.', 'cf-geoplugin'); ?><br><br><strong>-<?php _e('Default is', 'cf-geoplugin'); ?> <?php echo CFGP_Options::get("map_scaleControl"); ?></strong></td>
+                                        <td><strong><?php _e('Integer 1 or 0', 'cf-geoplugin'); ?></strong> - <?php _e('The initial enabled/disabled state of the Map type control.', 'cf-geoplugin'); ?><br><br><strong>-<?php _e('Default is', 'cf-geoplugin'); ?> <?php echo esc_html(CFGP_Options::get("map_scaleControl")); ?></strong></td>
                                     </tr>
                                     <tr>
                                         <td><strong>scaleControl</strong></td>
-                                        <td><strong><?php _e('Integer 1 or 0', 'cf-geoplugin'); ?></strong> - <?php _e('The initial display options for the Scale control.', 'cf-geoplugin'); ?><br><br><strong>-<?php _e('Default is', 'cf-geoplugin'); ?> <?php echo CFGP_Options::get("map_mapTypeControl"); ?></strong></td>
+                                        <td><strong><?php _e('Integer 1 or 0', 'cf-geoplugin'); ?></strong> - <?php _e('The initial display options for the Scale control.', 'cf-geoplugin'); ?><br><br><strong>-<?php _e('Default is', 'cf-geoplugin'); ?> <?php echo esc_html(CFGP_Options::get("map_mapTypeControl")); ?></strong></td>
                                     </tr>
                                     <tr>
                                         <td><strong>draggable</strong></td>
-                                        <td><strong><?php _e('Integer 1 or 0', 'cf-geoplugin'); ?></strong> - <?php _e('If', 'cf-geoplugin'); ?> <em>0</em>, <?php _e('the object can be dragged across the map and the underlying feature will have its geometry updated.', 'cf-geoplugin'); ?> <br><br><strong>-<?php _e('Default is', 'cf-geoplugin'); ?> <?php echo CFGP_Options::get("map_draggable"); ?>.</strong></td>
+                                        <td><strong><?php _e('Integer 1 or 0', 'cf-geoplugin'); ?></strong> - <?php _e('If', 'cf-geoplugin'); ?> <em>0</em>, <?php _e('the object can be dragged across the map and the underlying feature will have its geometry updated.', 'cf-geoplugin'); ?> <br><br><strong>-<?php _e('Default is', 'cf-geoplugin'); ?> <?php echo esc_html(CFGP_Options::get("map_draggable")); ?>.</strong></td>
                                     </tr>
                                     <tr>
                                         <td><strong>infoMaxWidth</strong></td>
-                                        <td><strong><?php _e('Integer from 0 to 600', 'cf-geoplugin'); ?></strong> - <?php _e('Maximum width of info popup inside map.', 'cf-geoplugin'); ?><br><br><strong>-<?php _e('Default is', 'cf-geoplugin'); ?> <?php echo CFGP_Options::get("map_infoMaxWidth"); ?></strong></td>
+                                        <td><strong><?php _e('Integer from 0 to 600', 'cf-geoplugin'); ?></strong> - <?php _e('Maximum width of info popup inside map.', 'cf-geoplugin'); ?><br><br><strong>-<?php _e('Default is', 'cf-geoplugin'); ?> <?php echo esc_html(CFGP_Options::get("map_infoMaxWidth")); ?></strong></td>
                                     </tr>
                                 </tbody>
                                 <tfoot>

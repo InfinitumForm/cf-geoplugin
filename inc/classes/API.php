@@ -54,7 +54,7 @@ class CFGP_API extends CFGP_Global {
 	 *
 	 * @since    8.0.0
 	 */
-	public static function lookup($ip, $property = array()){
+	public static function lookup($ip, $property = []){
 		return self::instance(true)->get($ip, $property);
 	}
 	
@@ -64,7 +64,7 @@ class CFGP_API extends CFGP_Global {
 	 *
 	 * @since    8.0.0
 	 */
-	public static function cache_key($ip, $property = array()) {
+	public static function cache_key($ip, $property = []) {
 		// Keep property
 		$property = shortcode_atts(array(
 			'dns' => CFGP_Options::get('enable_dns_lookup')
@@ -101,7 +101,7 @@ class CFGP_API extends CFGP_Global {
 	 *
 	 * @since    8.0.0
 	 */
-	private function get($ip = NULL, $property = array()) {
+	private function get($ip = NULL, $property = []) {
 		// Default fields
 		$default_fields = apply_filters( 'cfgp/api/default/fields', CFGP_Defaults::API_RETURN);
 		
@@ -139,7 +139,7 @@ class CFGP_API extends CFGP_Global {
 		}
 		
 		// Default returns
-		$return = array();
+		$return = [];
 		
 		// Hash IP slug
 		$ip_slug = self::cache_key($ip, $property);

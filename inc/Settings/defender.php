@@ -27,7 +27,7 @@ if(CFGP_U::request_bool('save_defender') && wp_verify_nonce(sanitize_text_field(
 		CFGP_Options::set( 'ip_whitelist', '' );
 	}
 
-	$updates = array();
+	$updates = [];
 	foreach( $_POST as $key => $value )
 	{
 		if($key == 'submit') continue;
@@ -75,12 +75,12 @@ if(!empty($block_city) && !is_array($block_city) && preg_match('/\]|\[/', $block
 
         	<div id="post-body">
             	<div id="post-body-content">
-					<form method="post" action="<?php echo CFGP_U::admin_url('admin.php?page=cf-geoplugin-defender&save_defender=true&nonce='.wp_create_nonce(CFGP_NAME.'-save-defender')); ?>">
+					<form method="post" action="<?php echo esc_url(CFGP_U::admin_url('admin.php?page=cf-geoplugin-defender&save_defender=true&nonce='.wp_create_nonce(CFGP_NAME.'-save-defender'))); ?>">
                     	<div class="nav-tab-wrapper-chosen">
                         	<nav class="nav-tab-wrapper">
                             	<a href="javascript:void(0);" class="nav-tab nav-tab-active" data-id="#defender-settings"><i class="cfa cfa-wrench"></i><span class="label"> <?php _e('General Defender Settings', 'cf-geoplugin'); ?></span></a>
                                 <a href="javascript:void(0);" class="nav-tab" data-id="#defender-settings-page"><i class="cfa cfa-file"></i><span class="label"> <?php _e('Defender page', 'cf-geoplugin'); ?></span></a>
-                                <a href="<?php echo CFGP_U::admin_url('admin.php?page=cf-geoplugin-defender&preview=true'); ?>" class="nav-tab" target="_blank"><i class="cfa cfa-desktop"></i><span class="label"> <?php _e('Preview', 'cf-geoplugin'); ?></span></a>
+                                <a href="<?php echo esc_url(CFGP_U::admin_url('admin.php?page=cf-geoplugin-defender&preview=true')); ?>" class="nav-tab" target="_blank"><i class="cfa cfa-desktop"></i><span class="label"> <?php _e('Preview', 'cf-geoplugin'); ?></span></a>
                             </nav>
                             
                             <div class="cfgp-tab-panel cfgp-tab-panel-active" id="defender-settings">
@@ -96,7 +96,7 @@ if(!empty($block_city) && !is_array($block_city) && preg_match('/\]|\[/', $block
                                     <div class="cfgp-tab-panel cfgp-tab-panel-active" id="ip-restriction">
                                     	<div class="cfgp-form-group">
                                             <label for="block_ip"><?php _e('IP address separated by comma or by new line', 'cf-geoplugin'); ?>:</label>
-                                            <textarea class="form-control" id="block_ip" name="block_ip" rows="5" style="min-height:115px"><?php echo CFGP_Options::get('block_ip'); ?></textarea>
+                                            <textarea class="form-control" id="block_ip" name="block_ip" rows="5" style="min-height:115px"><?php echo wp_kses_post(CFGP_Options::get('block_ip')); ?></textarea>
                                         </div>
                                     </div>
                                     <div class="cfgp-tab-panel" id="location-restriction">
@@ -113,7 +113,7 @@ if(!empty($block_city) && !is_array($block_city) && preg_match('/\]|\[/', $block
 												);
 											?>
                                             <br>
-                                            <button type="button" class="button cfgp-select-all" data-target="block_country"><object data="<?php echo CFGP_ASSETS . '/images/select.svg'; ?>" width="10" height="10"></object> <?php esc_attr_e( 'Select/Deselect all', 'cf-geoplugin'); ?></button>
+                                            <button type="button" class="button cfgp-select-all" data-target="block_country"><object data="<?php echo esc_url(CFGP_ASSETS . '/images/select.svg'); ?>" width="10" height="10"></object> <?php esc_attr_e( 'Select/Deselect all', 'cf-geoplugin'); ?></button>
                                         </div>
 										<div class="cfgp-form-group">
                                             <label for="block_region"><?php _e('Choose Region', 'cf-geoplugin'); ?>:</label>
@@ -129,7 +129,7 @@ if(!empty($block_city) && !is_array($block_city) && preg_match('/\]|\[/', $block
 												);
 											?>
 											<!-- br>
-                                            <button type="button" class="button cfgp-select-all" data-target="block_region"><object data="<?php echo CFGP_ASSETS . '/images/select.svg'; ?>" width="10" height="10"></object> <?php esc_attr_e( 'Select/Deselect all', 'cf-geoplugin'); ?></button -->
+                                            <button type="button" class="button cfgp-select-all" data-target="block_region"><object data="<?php echo esc_url(CFGP_ASSETS . '/images/select.svg'); ?>" width="10" height="10"></object> <?php esc_attr_e( 'Select/Deselect all', 'cf-geoplugin'); ?></button -->
                                         </div>
 										<div class="cfgp-form-group">
                                             <label for="block_city"><?php _e('Choose Cities', 'cf-geoplugin'); ?>:</label>
@@ -145,7 +145,7 @@ if(!empty($block_city) && !is_array($block_city) && preg_match('/\]|\[/', $block
 												);
 											?>
 											<!-- br>
-                                            <button type="button" class="button cfgp-select-all" data-target="block_city"><object data="<?php echo CFGP_ASSETS . '/images/select.svg'; ?>" width="10" height="10"></object> <?php esc_attr_e( 'Select/Deselect all', 'cf-geoplugin'); ?></button -->
+                                            <button type="button" class="button cfgp-select-all" data-target="block_city"><object data="<?php echo esc_url(CFGP_ASSETS . '/images/select.svg'); ?>" width="10" height="10"></object> <?php esc_attr_e( 'Select/Deselect all', 'cf-geoplugin'); ?></button -->
                                         </div>
                                     </div>
 									<div class="cfgp-tab-panel" id="proxy-restriction">
@@ -171,7 +171,7 @@ if(!empty($block_city) && !is_array($block_city) && preg_match('/\]|\[/', $block
 									<div class="cfgp-tab-panel" id="whitelist">
                                     	<div class="cfgp-form-group">
                                             <label for="ip_whitelist"><?php _e('Enter the IP addresses you want to whitelist and separate them with a comma or a new line', 'cf-geoplugin'); ?>:</label>
-                                            <textarea class="form-control" id="ip_whitelist" name="ip_whitelist" rows="5" style="min-height:115px"><?php echo CFGP_Options::get('ip_whitelist'); ?></textarea>
+                                            <textarea class="form-control" id="ip_whitelist" name="ip_whitelist" rows="5" style="min-height:115px"><?php echo wp_kses_post(CFGP_Options::get('ip_whitelist')); ?></textarea>
                                         </div>
                                     </div>
                                  </div>

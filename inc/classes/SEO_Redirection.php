@@ -124,7 +124,7 @@ class CFGP_SEO_Redirection extends CFGP_Global
 				$city = CFGP_U::api('city');
 				$postcode = CFGP_U::api('region_code');
 				
-				$where = $where_relative = array();
+				$where = $where_relative = [];
 				
 				if($country || $country_code)
 				{

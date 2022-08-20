@@ -29,7 +29,7 @@ class CFGP_Media extends CFGP_Global {
 	/**
 	 * Allow .csv uploads
 	 */
-	public function upload_mimes($mimes = array()) {
+	public function upload_mimes($mimes = []) {
 		$mimes['csv'] = "text/csv";
 		return $mimes;
 	}

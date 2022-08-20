@@ -57,7 +57,7 @@ global $cfgp_version;
 /*
  * Main plugin constants
  */
-$CFGEO = array();
+$CFGEO = [];
 
 // Main plugin file
 if ( ! defined( 'CFGP_FILE' ) ) {

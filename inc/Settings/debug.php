@@ -4,7 +4,7 @@ if ( ! defined( 'WPINC' ) ) { die( "Don't mess with us." ); }
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
 if( CFGP_U::dev_mode() ) {
-	$remove_tags = array();
+	$remove_tags = [];
 } else {
 	$remove_tags = array(
 		'is_eu',

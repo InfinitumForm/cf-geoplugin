@@ -110,7 +110,7 @@ class CFGP_SEO_Redirection_Pages extends CFGP_Global
 				return;
 			}
 			
-			$enable_seo_posts = CFGP_Options::get('enable_seo_posts',array());
+			$enable_seo_posts = CFGP_Options::get('enable_seo_posts',[]);
 			if(
 				empty($enable_seo_posts) 
 				|| (
@@ -149,19 +149,19 @@ class CFGP_SEO_Redirection_Pages extends CFGP_Global
 					$do_redirection = false;
 					
 					// Get countries
-					$country 	= array_map( $strtolower, ( isset($data['country']) ? $data['country'] : array() ) );
+					$country 	= array_map( $strtolower, ( isset($data['country']) ? $data['country'] : [] ) );
 					$country = array_map( array('CFGP_U', 'transliterate'), $country );
 					
 					// Get regions
-					$region 	= array_map( $strtolower, ( isset($data['region']) ? $data['region'] : array() ) );
+					$region 	= array_map( $strtolower, ( isset($data['region']) ? $data['region'] : [] ) );
 					$region = array_map( array('CFGP_U', 'transliterate'), $region );
 					
 					// Get cities
-					$city 		= array_map( $strtolower, ( isset($data['city']) ? $data['city'] : array() ) );
+					$city 		= array_map( $strtolower, ( isset($data['city']) ? $data['city'] : [] ) );
 					$city = array_map( array('CFGP_U', 'transliterate'), $city );
 					
 					// Get postcodes
-					$postcode 	= array_map( $strtolower, ( isset($data['postcode']) ? $data['postcode'] : array() ) );
+					$postcode 	= array_map( $strtolower, ( isset($data['postcode']) ? $data['postcode'] : [] ) );
 					
 					// Get HTTP codes
 					$http_code 	= ( isset($data['http_code']) ? $data['http_code'] : 302 );
@@ -209,25 +209,25 @@ class CFGP_SEO_Redirection_Pages extends CFGP_Global
 					
 					// Exclude countries
 					if($data['exclude_country'] ?? NULL) {
-						$country=array();
+						$country=[];
 						$mode = 'async';
 					}
 					
 					// Exclude regions
 					if($data['exclude_region'] ?? NULL) {
-						$region=array();
+						$region=[];
 						$mode = 'async';
 					}
 					
 					// Exclude cities
 					if($data['exclude_city'] ?? NULL) {
-						$city=array();
+						$city=[];
 						$mode = 'async';
 					}
 					
 					// Exclude postcodes
 					if($data['exclude_postcode'] ?? NULL) {
-						$postcode=array();
+						$postcode=[];
 						$mode = 'async';
 					}
 

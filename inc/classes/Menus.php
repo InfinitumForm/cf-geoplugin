@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
 if(!class_exists('CFGP_Menus')) :
 class CFGP_Menus extends CFGP_Global {
 	// Save cached object data
-	private $menu_options = array();
+	private $menu_options = [];
 	
 	public function __construct(){
 		$this->add_action( 'wp_nav_menu_item_custom_fields', 'field__enble', 10, 2 );
@@ -55,24 +55,24 @@ class CFGP_Menus extends CFGP_Global {
 			<?php CFGP_Form::select_countries(array(
 				'name'=>"cfgp_menu_countries[{$item_id}]",
 				'id' => "edit-menu-item-countrues-{$item_id}"
-			), $this->get_values( $item->object_id, 'countries', array(), $item->type ), true, true); ?><br>
-			<button type="button" class="button cfgp-select-all" data-target="edit-menu-item-countrues-<?php echo esc_attr($item_id); ?>"><object data="<?php echo CFGP_ASSETS . '/images/select.svg'; ?>" width="10" height="10"></object> <?php esc_attr_e( 'Select/Deselect all', 'cf-geoplugin'); ?></button>
+			), $this->get_values( $item->object_id, 'countries', [], $item->type ), true, true); ?><br>
+			<button type="button" class="button cfgp-select-all" data-target="edit-menu-item-countrues-<?php echo esc_attr($item_id); ?>"><object data="<?php echo esc_url(CFGP_ASSETS . '/images/select.svg'); ?>" width="10" height="10"></object> <?php esc_attr_e( 'Select/Deselect all', 'cf-geoplugin'); ?></button>
 		</p>
 		<p class="cfgp-menu-item cfgp-menu-item-regions">
 			<label for="edit-menu-item-regions-<?php echo esc_attr($item_id); ?>"><?php esc_html_e('Hide in Regions', 'cf-geoplugin'); ?></label><br>
 			<?php CFGP_Form::select_regions(array(
 				'name'=>"cfgp_menu_regions[{$item_id}]",
 				'id' => "edit-menu-item-regions-{$item_id}",
-				'country_code' => $this->get_values( $item->object_id, 'countries', array(), $item->type )
-			), $this->get_values( $item->object_id, 'regions', array(), $item->type ), true, true); ?>
+				'country_code' => $this->get_values( $item->object_id, 'countries', [], $item->type )
+			), $this->get_values( $item->object_id, 'regions', [], $item->type ), true, true); ?>
 		</p>
 		<p class="cfgp-menu-item cfgp-menu-item-cities">
 			<label for="edit-menu-item-cities-<?php echo esc_attr($item_id); ?>"><?php esc_html_e('Hide in Cities', 'cf-geoplugin'); ?></label><br>
 			<?php CFGP_Form::select_cities(array(
 				'name'=>"cfgp_menu_cities[{$item_id}]",
 				'id' => "edit-menu-item-cities-{$item_id}",
-				'country_code' => $this->get_values( $item->object_id, 'countries', array(), $item->type )
-			), $this->get_values( $item->object_id, 'cities', array(), $item->type ), true, true); ?>
+				'country_code' => $this->get_values( $item->object_id, 'countries', [], $item->type )
+			), $this->get_values( $item->object_id, 'cities', [], $item->type ), true, true); ?>
 		</p>
 	</div>
 	<p class="cfgp-menu-item-description"><?php esc_html_e('If you enable this option, in selected locations navigation will be hidden from the public as well as direct access to the URL.', 'cf-geoplugin'); ?></p>
@@ -85,14 +85,25 @@ class CFGP_Menus extends CFGP_Global {
 	 */
 	public function update__nav_menu_item( $menu_id, $menu_item_db_id, $item ) {
 		// Clear cache
-		$this->menu_options = array();
+		$this->menu_options = [];
 		// Set controls
 		$control = CFGP_Options::sanitize( array(
-			'enable' => ($_POST['cfgp_menu_enable_restriction'][$menu_item_db_id] ?? NULL),
-			'countries' => ($_POST['cfgp_menu_countries'][$menu_item_db_id] ?? array()),
-			'regions' => ($_POST['cfgp_menu_regions'][$menu_item_db_id] ?? array()),
-			'cities' => ($_POST['cfgp_menu_cities'][$menu_item_db_id] ?? array()),
+			'enable' => sanitize_text_field($_POST['cfgp_menu_enable_restriction'][$menu_item_db_id] ?? NULL),
+			'countries' => ($_POST['cfgp_menu_countries'][$menu_item_db_id] ?? []),
+			'regions' => ($_POST['cfgp_menu_regions'][$menu_item_db_id] ?? []),
+			'cities' => ($_POST['cfgp_menu_cities'][$menu_item_db_id] ?? []),
 		) );
+		
+		// Sanitization array
+		if( !empty($control['countries']) ) {
+			$control['countries'] = array_map('sanitize_text_field', $control['countries']);
+		}
+		if( !empty($control['regions']) ) {
+			$control['regions'] = array_map('sanitize_text_field', $control['regions']);
+		}
+		if( !empty($control['cities']) ) {
+			$control['cities'] = array_map('sanitize_text_field', $control['cities']);
+		}
 		
 		// Custom links need to be saved as post meta with menu ID
 		if( in_array($item['menu-item-type'], array('custom')) )
@@ -148,9 +159,9 @@ class CFGP_Menus extends CFGP_Global {
 		foreach ( $items as $key => $item ) {
 			if( $control = $this->get_values( (in_array($item->type, array('custom')) ? $item->ID : $item->object_id), NULL, array(
 				'enable' => NULL,
-				'countries' => array(),
-				'regions' => array(),
-				'cities' => array(),
+				'countries' => [],
+				'regions' => [],
+				'cities' => [],
 			), $item->type ) ) {
 				if($control['enable'] == 1) {
 					$protect = false;
@@ -222,9 +233,9 @@ class CFGP_Menus extends CFGP_Global {
 		$page_id = get_the_ID();
 		if( $control = $this->get_values( $page_id, NULL, array(
 			'enable' => NULL,
-			'countries' => array(),
-			'regions' => array(),
-			'cities' => array(),
+			'countries' => [],
+			'regions' => [],
+			'cities' => [],
 		) ) ) {
 			if($control['enable'] == 1) {
 				$protect = false;
@@ -447,7 +458,7 @@ class CFGP_Menus extends CFGP_Global {
 	/*
 	 * Geolocate Menus
 	 */
-	public function wp_nav_menu_args ($args = array()) {
+	public function wp_nav_menu_args ($args = []) {
 		global $wpdb;
 		
 		if( $geolocate_menus = $wpdb->get_results("
@@ -584,7 +595,7 @@ class CFGP_Menus extends CFGP_Global {
 	 * Geolocate Menus remove menu
 	 */
 	public function ajax__geolocate_remove_menu () {
-		if( $term_id = ($_POST['term_id'] ?? NULL) ) {
+		if( $term_id = absint(sanitize_text_field($_POST['term_id'] ?? 0)) ) {
 			if( $nav_menu_items = get_posts( array(
 				'post_type' => 'nav_menu_item',
 				'numberposts' => -1,

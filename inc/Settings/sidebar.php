@@ -113,8 +113,8 @@ class CFGP_Sidebar extends CFGP_Global {
 				} else {
 					echo '<span class="cfa cfa-globe"></span>';
 				}
-			?> <?php echo CFGP_U::api('ip'); ?> (IPv<?php echo CFGP_U::api('ip_version'); ?>)</h3>
-			<p><?php echo CFGP_U::api('address'); ?></p>
+			?> <?php echo esc_html(CFGP_U::api('ip')); ?> (IPv<?php echo esc_html(CFGP_U::api('ip_version')); ?>)</h3>
+			<p><?php echo esc_html(CFGP_U::api('address')); ?></p>
 		<?php else : ?>
 			<h3><span class="cfa cfa-close"></span> <?php _e('ERROR!', 'cf-geoplugin'); ?></h3>
 			<p><?php _e('There was an error communicating with the server.', 'cf-geoplugin'); ?></p>

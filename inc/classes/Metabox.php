@@ -39,9 +39,9 @@ if(!class_exists('CFGP_Metabox')) : class CFGP_Metabox extends CFGP_Global {
 		$post_type = get_post_type($post_id);
 		
 		// SEO Redirection
-		if(in_array($post_type, CFGP_Options::get('enable_seo_posts', array()))) {
-			$save = array(); $i=0;
-			if($prepared_data = CFGP_U::request($this->metabox, array()))
+		if(in_array($post_type, CFGP_Options::get('enable_seo_posts', []))) {
+			$save = []; $i=0;
+			if($prepared_data = CFGP_U::request($this->metabox, []))
 			{
 				if(is_array($prepared_data))
 				{
@@ -62,7 +62,7 @@ if(!class_exists('CFGP_Metabox')) : class CFGP_Metabox extends CFGP_Global {
 		}
 		
 		// Geo Tags
-		if(in_array($post_type, CFGP_Options::get('enable_geo_tag', array()))) {
+		if(in_array($post_type, CFGP_Options::get('enable_geo_tag', []))) {
 			if( CFGP_U::request('cfgp-geotag-enable', false) ) {
 				foreach(array(
 					'cfgp-dc-title',
@@ -86,7 +86,7 @@ if(!class_exists('CFGP_Metabox')) : class CFGP_Metabox extends CFGP_Global {
      */
 	public function add_seo_redirection(){
 		$screen = get_current_screen();
-		$enable_seo_posts = CFGP_Options::get('enable_seo_posts', array());
+		$enable_seo_posts = CFGP_Options::get('enable_seo_posts', []);
 		if($enable_seo_posts && isset( $screen->post_type ) && in_array($screen->post_type, $enable_seo_posts)){
 			$this->add_meta_box(
 				CFGP_NAME . '-page-seo-redirection',			// Unique ID
@@ -106,7 +106,7 @@ if(!class_exists('CFGP_Metabox')) : class CFGP_Metabox extends CFGP_Global {
      */
 	public function add_geo_tags(){
 		$screen = get_current_screen();
-		$enable_geo_tag = CFGP_Options::get('enable_geo_tag', array());
+		$enable_geo_tag = CFGP_Options::get('enable_geo_tag', []);
 		if($enable_geo_tag && isset( $screen->post_type ) && in_array($screen->post_type, $enable_geo_tag)){
 			$this->add_meta_box(
 				CFGP_NAME . '-geo-tags',						// Unique ID
@@ -408,7 +408,7 @@ function CF_GeoPlugin_Google_Map_GeoTag() {
             <label for="country"><?php _e('Choose Countries', 'cf-geoplugin'); ?></label>
             <?php CFGP_Form::select_countries(array('name'=>"{$this->metabox}[{$i}][country]", 'id'=>"{$this->metabox}-{$i}-country"), $country, true);?>
             <span class="description"><?php _e( 'Select the countries you want to redirect.', 'cf-geoplugin'); ?></span>
-            <button type="button" class="cfgp-select-all" data-target="<?php echo "{$this->metabox}-{$i}-country"; ?>"><object data="<?php echo CFGP_ASSETS . '/images/select.svg'; ?>" width="10" height="10"></object> <?php esc_attr_e( 'Select all', 'cf-geoplugin'); ?></button>&nbsp;&nbsp;&nbsp;&nbsp;
+            <button type="button" class="cfgp-select-all" data-target="<?php echo "{$this->metabox}-{$i}-country"; ?>"><object data="<?php echo esc_url(CFGP_ASSETS . '/images/select.svg'); ?>" width="10" height="10"></object> <?php esc_attr_e( 'Select all', 'cf-geoplugin'); ?></button>&nbsp;&nbsp;&nbsp;&nbsp;
 			<?php
 				CFGP_Form::checkbox(
 					array(
@@ -578,15 +578,15 @@ function CF_GeoPlugin_Google_Map_GeoTag() {
 		if(
 			isset( $screen->post_type )
 			&& (
-				in_array($screen->post_type, CFGP_Options::get('enable_seo_posts', array()))
-				|| in_array($screen->post_type, CFGP_Options::get('enable_geo_tag', array()))
+				in_array($screen->post_type, CFGP_Options::get('enable_seo_posts', []))
+				|| in_array($screen->post_type, CFGP_Options::get('enable_geo_tag', []))
 				|| $screen->post_type === 'cf-geoplugin-banner'
 			)
 		){
 			$url = CFGP_U::get_url();
 			
 			
-			wp_enqueue_style( CFGP_NAME . '-fontawesome', CFGP_ASSETS . '/css/font-awesome.min.css', array(), (string)CFGP_VERSION );
+			wp_enqueue_style( CFGP_NAME . '-fontawesome', CFGP_ASSETS . '/css/font-awesome.min.css', [], (string)CFGP_VERSION );
 			wp_enqueue_style( CFGP_NAME . '-metabox', CFGP_ASSETS . '/css/style-metabox.css', array(CFGP_NAME . '-fontawesome'), (string)CFGP_VERSION, false );
 			
 			wp_enqueue_style( CFGP_NAME . '-select2', CFGP_ASSETS . '/css/select2.min.css', 1,  '4.1.0-rc.0' );

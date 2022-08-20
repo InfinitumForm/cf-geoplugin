@@ -113,7 +113,7 @@ class CFGP__Plugin__contact_form_7 extends CFGP_Global{
 				$key,
 				$key,
 				function ( $contact_form, $args = '' ) {
-					$args = wp_parse_args( $args, array() );
+					$args = wp_parse_args( $args, [] );
 				?>
 					<div class="control-box">
 					<fieldset>

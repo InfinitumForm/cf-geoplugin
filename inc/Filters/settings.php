@@ -4,9 +4,9 @@ if ( ! defined( 'WPINC' ) ) { die( "Don't mess with us." ); }
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
 
-add_filter('cfgp/settings', function($options=array()){
+add_filter('cfgp/settings', function($options=[]){
 	// Set currency
-	$currency = array();
+	$currency = [];
 	foreach( CFGP_Defaults::CURRENCY_NAME as $currency_code => $currency_name ) {
 		$currency[$currency_code] = sprintf('%s - %s (%s)', $currency_code, $currency_name, (CFGP_Defaults::CURRENCY_SYMBOL[$currency_code] ?? $currency_code));
 	}
@@ -19,7 +19,7 @@ add_filter('cfgp/settings', function($options=array()){
 		'objects'
 	));
 	
-	$seo_redirections = $geo_tags = array();
+	$seo_redirections = $geo_tags = [];
 	
 	$default_value_seo = CFGP_Options::get('enable_seo_posts');
 	$default_value_geo_tags = CFGP_Options::get('enable_geo_tag');
@@ -44,7 +44,7 @@ add_filter('cfgp/settings', function($options=array()){
 	
 	}
 	
-	$gmap_zoom_options=array();
+	$gmap_zoom_options=[];
 	for($i=1; $i <= 18; ++$i){
 		$gmap_zoom_options[$i]=$i;
 	}

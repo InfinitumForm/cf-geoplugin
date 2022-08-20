@@ -16,9 +16,9 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
 if(!class_exists('CFGP_Shortcodes_Automat')) :
 class CFGP_Shortcodes_Automat extends CFGP_Global
 {
-    protected $settings = array();
+    protected $settings = [];
 
-    public function  __construct( $settings = array() )
+    public function  __construct( $settings = [] )
     {
         $this->settings = $settings;
     }
