@@ -322,11 +322,6 @@ class CFGP_CSV{
 			}
 		}
 		
-		
-	//	echo '<pre>', var_dump(['linebreak'=>$CSV_LINEBREAK, 'enclosure'=>$CSV_ENCLOSURE, 'delimiter'=>$CSV_DELIMITER], $r), '</pre>'; exit;
-		
-	//	echo '<pre>', var_dump($r), '</pre>'; exit;
-		
 		return $r;
 	}
 	

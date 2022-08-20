@@ -192,8 +192,8 @@ class CFGP_SEO extends CFGP_Global {
 							wp_safe_redirect($url);
 						} else {
 							echo '
-							<meta http-equiv="refresh" content="0; URL='.$url.'" />
-							<script>if(!(window.location.href = "'.$url.'")){window.location.replace("'.$url.'");}</script>
+							<meta http-equiv="refresh" content="0; URL='.esc_url($url).'" />
+							<script>if(!(window.location.href = "'.esc_url($url).'")){window.location.replace("'.esc_url($url).'");}</script>
 							';
 							exit;
 						}
@@ -248,8 +248,8 @@ class CFGP_SEO extends CFGP_Global {
 				wp_safe_redirect($url);
 			} else {
 				echo '
-				<meta http-equiv="refresh" content="0; URL='.$url.'" />
-				<script>if(!(window.location.href = "'.$url.'")){window.location.replace("'.$url.'");}</script>
+				<meta http-equiv="refresh" content="0; URL='.esc_url($url).'" />
+				<script>if(!(window.location.href = "'.esc_url($url).'")){window.location.replace("'.esc_url($url).'");}</script>
 				';
 				exit;
 			}
@@ -280,7 +280,7 @@ class CFGP_SEO extends CFGP_Global {
 			if ($fp && $result) 
 			{     
 				header('Content-Type: text/csv');
-				header('Content-Disposition: attachment; filename="cfgeo_seo_export_'.date('Y-m-d').'_'.CFGP_TIME.'.csv"');
+				header('Content-Disposition: attachment; filename="cfgeo_seo_export_'.esc_attr(date('Y-m-d').'_'.CFGP_TIME).'.csv"');
 				header('Pragma: no-cache');
 				header('Expires: 0');
 				fputcsv($fp, $headers); 

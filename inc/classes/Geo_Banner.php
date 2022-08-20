@@ -372,7 +372,7 @@ LIMIT 1
 				// print terms
 				if(count($print)>0)
 				{
-					echo '<ul>'.join("\r\n", $print).'</ul>';
+					echo wp_kses_post('<ul>'.join("\r\n", $print).'</ul>');
 				}
 				else
 				{
@@ -511,9 +511,9 @@ LIMIT 1
     public function add_meta_box__shortcode( $post )
     {
         echo '<ul>';
-        echo '<li><strong>' . __('Standard', 'cf-geoplugin') . ':</strong><br><code>[cfgeo_banner id="'.$post->ID.'"]</code></li>';
-        echo '<li><strong>' . __('Advanced', 'cf-geoplugin') . ':</strong><br><code>[cfgeo_banner id="'.$post->ID.'"]' . __('Default content', 'cf-geoplugin') . '[/cfgeo_banner]</code></li>';
-		echo '<li><strong>' . __('Enable Cache', 'cf-geoplugin') . ':</strong><br><code>[cfgeo_banner id="'.$post->ID.'" cache]' . __('Default content', 'cf-geoplugin') . '[/cfgeo_banner]</code></li>';
+        echo '<li><strong>' . __('Standard', 'cf-geoplugin') . ':</strong><br><code>[cfgeo_banner id="'.esc_attr($post->ID).'"]</code></li>';
+        echo '<li><strong>' . __('Advanced', 'cf-geoplugin') . ':</strong><br><code>[cfgeo_banner id="'.esc_attr($post->ID).'"]' . __('Default content', 'cf-geoplugin') . '[/cfgeo_banner]</code></li>';
+		echo '<li><strong>' . __('Enable Cache', 'cf-geoplugin') . ':</strong><br><code>[cfgeo_banner id="'.esc_attr($post->ID).'" cache]' . __('Default content', 'cf-geoplugin') . '[/cfgeo_banner]</code></li>';
         echo '</ul>';
     }
 	

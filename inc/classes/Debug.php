@@ -56,11 +56,11 @@ class CFGP_Debug extends CFGP_Global {
 	public static function print( $echo = false ) {
 		if( $echo === true ) {
 			if( !empty(self::$data) ) {
-				echo join(PHP_EOL, self::$data);
+				echo wp_kses_post( join(PHP_EOL, self::$data) );
 			}
 		} else {
 			if( !empty(self::$data) ) {
-				return join(PHP_EOL, self::$data);
+				return wp_kses_post( join(PHP_EOL, self::$data) );
 			}
 			return NULL;
 		}

@@ -262,11 +262,11 @@ if($NEW_API = CFGP_API::lookup(CFGP_U::request_string('cfgp_lookup'))){
                                     </tr>
                                     <tr>
                                         <td><strong><?php _e( 'Content-Type', 'cf-geoplugin'); ?></strong></td>
-                                        <td><?php echo get_bloginfo( 'html_type' ); ?></td>
+                                        <td><?php echo esc_html( get_bloginfo( 'html_type' ) ); ?></td>
                                     </tr>
                                     <tr>
                                         <td><strong><?php _e( 'Language', 'cf-geoplugin'); ?></strong></td>
-                                        <td><?php echo get_bloginfo( 'language' ); ?></td>
+                                        <td><?php echo esc_html( get_bloginfo( 'language' ) ); ?></td>
                                     </tr>
                                     <tr>
                                         <td><strong><?php _e( 'Server time', 'cf-geoplugin'); ?></strong></td>

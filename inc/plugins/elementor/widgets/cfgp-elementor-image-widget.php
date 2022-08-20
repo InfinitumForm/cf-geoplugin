@@ -346,8 +346,6 @@ class CFGP_Elementor_Image_Widget extends \Elementor\Widget_Base {
 		
 		$target = $image['link']['is_external'] ? ' target="_blank"' : '';
 		$nofollow = $image['link']['nofollow'] ? ' rel="nofollow"' : '';
-		
-//		echo '<pre>', var_dump($image), '</pre>';
 
 		if(!empty($image['link']['url'])){
 			echo '<a href="' . esc_url( $image['link']['url'] ) . '"' .esc_html( $target . $nofollow ) . '>';

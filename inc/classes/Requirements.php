@@ -159,8 +159,6 @@ if(!class_exists('CFGP_Requirements')) : class CFGP_Requirements {
 	 */
 	function in_plugin_update_message($args, $response) {
 		
-	//	echo '<pre>', var_dump($response), '</pre>';
-		
 	   if (isset($response->upgrade_notice) && strlen(trim($response->upgrade_notice)) > 0) : ?>
 <style media="all" id="cfgp-plugin-update-message-css">
 /* <![CDATA[ */
