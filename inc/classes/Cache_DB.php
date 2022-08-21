@@ -81,7 +81,7 @@ if(!class_exists('CFGP_DB_Cache')) : class CFGP_DB_Cache {
 				global $wpdb;
 				
 				$save = $wpdb->query( $wpdb->prepare("
-					INSERT INTO `{$wpdb->cfgp_cache}` (`key`, `value`, `expire`)
+					INSERT IGNORE INTO `{$wpdb->cfgp_cache}` (`key`, `value`, `expire`)
 					VALUES (%s, %s, %d)
 				", $key, $value, $expire ));
 			}
