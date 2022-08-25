@@ -217,7 +217,7 @@ LIMIT 1
 		// Remove cookie if they exists
 		if(isset($_COOKIE) && !empty($_COOKIE))
 		{
-			$cookie_name = '__cfgp_seo_' . $id . '_once_';
+			$cookie_name = '__cfgp_seo_' . esc_attr($id) . '_once_';
 			foreach($_COOKIE as $key => $value)
 			{
 				if(strpos($key, $cookie_name) !== false)
@@ -307,8 +307,8 @@ LIMIT 1
 			if ($column_name == 'cf_geo_banner_shortcode')
 			{
 				echo '<ul>';
-				echo '<li><strong>' . __('Standard', 'cf-geoplugin') . ':</strong><br><code>[cfgeo_banner id="' . $post_ID . '"]</code></li>';
-				echo '<li><strong>' . __('Advanced', 'cf-geoplugin') . ':</strong><br><code>[cfgeo_banner id="' . $post_ID . '"]' . __('Default content', 'cf-geoplugin') . '[/cfgeo_banner]</code></li>';
+				echo '<li><strong>' . __('Standard', 'cf-geoplugin') . ':</strong><br><code>[cfgeo_banner id="' . esc_attr($post_ID) . '"]</code></li>';
+				echo '<li><strong>' . __('Advanced', 'cf-geoplugin') . ':</strong><br><code>[cfgeo_banner id="' . esc_attr($post_ID) . '"]' . __('Default content', 'cf-geoplugin') . '[/cfgeo_banner]</code></li>';
 				echo '</ul>';
 			}
 			else if ($column_name == 'cf_geo_banner_locations')
@@ -317,8 +317,8 @@ LIMIT 1
 				
 				foreach(array(
 					__('Countries', 'cf-geoplugin')	=>	'country',
-					__('Regions', 'cf-geoplugin')		=>	'region',
-					__('Cities', 'cf-geoplugin')		=>	'city',
+					__('Regions', 'cf-geoplugin')	=>	'region',
+					__('Cities', 'cf-geoplugin')	=>	'city',
 					__('Postcodes', 'cf-geoplugin')	=>	'postcode'
 				) as $name=>$field)
 				{
@@ -336,7 +336,7 @@ LIMIT 1
 							}, $get_post_meta);
 						}
 					
-						$print[]='<li><strong>' . $name . ':</strong><br>';
+						$print[]='<li><strong>' . esc_html($name) . ':</strong><br>';
 							$print[]=join(', ', $get_post_meta);
 						$print[]='<li>';
 					}
@@ -358,11 +358,11 @@ LIMIT 1
 						foreach($all_terms as $i=>$fetch)
 						{
 							$edit_link = get_edit_term_link( $fetch->term_id, $taxonomy, 'cf-geoplugin-banner' );
-							$part[]='<a href="' . esc_url($edit_link) . '">' . $fetch->name . ( !empty($fetch->description) ? ' (' . $fetch->description . ')' : NULL ) . '</a>';
+							$part[]='<a href="' . esc_url($edit_link) . '">' . esc_html($fetch->name . ( !empty($fetch->description) ? ' (' . $fetch->description . ')' : NULL )) . '</a>';
 						}
 						if(count($part)>0)
 						{
-							$print[]='<li><strong>' . $name . ':</strong><br>';
+							$print[]='<li><strong>' . esc_html($name) . ':</strong><br>';
 								$print[]=join(', ', $part);
 							$print[]='<li>';
 						}
@@ -477,7 +477,7 @@ LIMIT 1
 				$data[]=$fetch->slug;
 			}
 			
-			$get_post_meta = get_post_meta($post->ID, "{$option['post_meta']}-{$option['field']}", true);
+			$get_post_meta = get_post_meta($post->ID, esc_attr("{$option['post_meta']}-{$option['field']}"), true);
 			
 			if(!empty($get_post_meta)){
 				$data = array_merge($data, $get_post_meta);

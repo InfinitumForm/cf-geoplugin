@@ -427,7 +427,7 @@ final class CFGP_Init{
 	}
 	
 	/**
-	 * Delete Expired CF Geo Plugin Transients
+	 * Delete Expired Geo Controller Transients
 	 * @since     8.0.0
 	 */
 	private static function delete_expired_transients( $force_db = false ) {

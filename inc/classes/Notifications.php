@@ -122,7 +122,7 @@ class CFGP_Notifications extends CFGP_Global{
 
 			$this->send(
 				$emails,
-				__('CF GEO PLUGIN NOTIFICATION - Today\'s lookup expires soon', 'cf-geoplugin'),
+				__('Geo Controller NOTIFICATION - Today\'s lookup expires soon', 'cf-geoplugin'),
 				$message
 			);
 			CFGP_DB_Cache::set($transient, CFGP_TIME, DAY_IN_SECONDS); // 24 hours
@@ -608,13 +608,13 @@ class CFGP_Notifications extends CFGP_Global{
               <table role="presentation" border="0" cellpadding="0" cellspacing="0">
                 <tr>
                   <td class="content-block">
-                    <span class="apple-link"><?php printf(__('This email is automatically sent by CF Geo Plugin via site %1$s.', 'cf-geoplugin'), '<a href="' . esc_url( get_bloginfo('url') ) . '" target="_blank">' . esc_html( get_bloginfo('name') ) . '</a>'); ?><br>
+                    <span class="apple-link"><?php printf(__('This email is automatically sent by Geo Controller via site %1$s.', 'cf-geoplugin'), '<a href="' . esc_url( get_bloginfo('url') ) . '" target="_blank">' . esc_html( get_bloginfo('name') ) . '</a>'); ?><br>
 					<a href="<?php echo esc_url( CFGP_STORE ) ?>/privacy-policy/" target="_blank"><?php esc_html_e('Privacy Policy', 'cf-geoplugin'); ?></a> | <a href="<?php echo esc_url( CFGP_STORE ) ?>/terms-and-conditions/" target="_blank"><?php esc_html_e('Terms And Conditions', 'cf-geoplugin'); ?></a> | <a href="<?php echo esc_url( CFGP_STORE ) ?>/documentation/" target="_blank"><?php esc_html_e('Documentation', 'cf-geoplugin'); ?></a> | <a href="<?php echo esc_url( CFGP_STORE ) ?>/contact-and-support/" target="_blank"><?php esc_html_e('Contact & Support', 'cf-geoplugin'); ?></a></span>
                   </td>
                 </tr>
                 <tr>
                   <td class="content-block powered-by">
-                    <?php printf(__('Powered by  %1$s.', 'cf-geoplugin'), '<a href="' . CFGP_STORE . '" target="_blank">CF Geo Plugin</a>'); ?>
+                    <?php printf(__('Powered by  %1$s.', 'cf-geoplugin'), '<a href="' . CFGP_STORE . '" target="_blank">Geo Controller</a>'); ?>
                   </td>
                 </tr>
 				<tr>

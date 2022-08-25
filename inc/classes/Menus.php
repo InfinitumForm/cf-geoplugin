@@ -485,7 +485,7 @@ class CFGP_Menus extends CFGP_Global {
 			ORDER BY `{$wpdb->terms}`.`term_id` DESC
 		") ) :
 		
-			// This retun 2 letter country code from CF Geo Plugin
+			// This retun 2 letter country code from Geo Controller
 			$country_code = strtolower(CFGP_U::api('country_code'));
 			
 			// Assign location

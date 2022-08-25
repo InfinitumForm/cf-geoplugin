@@ -19,7 +19,7 @@ add_action('cfgp/settings/tab-panel/after', function(){ if(CFGP_Options::get('en
         <?php if(CFGP_License::level() <= 4): ?>
         <p class="text-danger"><?php _e('NOTE: The REST API is only functional for the Business License', 'cf-geoplugin') ?></p>
         <?php endif; ?>
-        <p><?php _e('The CF Geo Plugin REST API allows external apps to use geo information and make your WordPress like a geo information provider.', 'cf-geoplugin') ?></p>
+        <p><?php _e('The Geo Controller REST API allows external apps to use geo information and make your WordPress like a geo information provider.', 'cf-geoplugin') ?></p>
         <h2 class="title"><?php _e('API KEY', 'cf-geoplugin') ?>:</h2>
         <div><code style="font-size: large;width: 100%;text-align: center;font-weight: 800;padding: 10px; margin-left:13px;"><?php echo esc_html($api_key); ?></code></div>
         <h2 class="title"><?php _e('Secret API KEY', 'cf-geoplugin') ?>:</h2>
@@ -37,7 +37,7 @@ add_action('cfgp/settings/tab-panel/after', function(){ if(CFGP_Options::get('en
         
         <div class="cfgp-tab-panel cfgp-tab-panel-active" id="authentication">
         	<h2 class="title"><?php _e('Authentication endpoint', 'cf-geoplugin') ?>:</h2>
-            <p><?php _e('Endpoint used to authenticate connection between CF Geo Plugin on your site and your external app.', 'cf-geoplugin') ?></p>
+            <p><?php _e('Endpoint used to authenticate connection between Geo Controller on your site and your external app.', 'cf-geoplugin') ?></p>
             <p><code><?php echo admin_url('admin-ajax.php?action=cf_geoplugin_authenticate'); ?></code></p>
             <p><?php _e('Expected GET or POST parameters.', 'cf-geoplugin') ?></p>
             <table class="wp-list-table widefat fixed striped table-view-list posts">

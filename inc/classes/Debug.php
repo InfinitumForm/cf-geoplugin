@@ -112,7 +112,7 @@ class CFGP_Debug extends CFGP_Global {
 			fwrite($fo, '+=====================================================================' . PHP_EOL, 79);
 			$title = sprintf(
 				'| %s - %s',
-				__('CF Geo Plugin Debug', 'cf-geoplugin'),
+				__('Geo Controller Debug', 'cf-geoplugin'),
 				date('Y-m-d H:i:s p e')
 			);
 			fwrite($fo, $title . PHP_EOL, (strlen($title . PHP_EOL)+8));

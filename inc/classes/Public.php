@@ -104,8 +104,8 @@ class CFGP_Public extends CFGP_Global{
 
 		if( !empty($css_show) ) :		
 		?>
-<!-- <?php _e('CF Geo Plugin CSS Classes', 'cf-geoplugin'); ?> -->
-<style media="all" id="cfgp-display-control-css" data-nonce="<?php echo esc_attr( wp_create_nonce( 'cfgeo-process-css-cache-ajax' ) ); ?>">*[class="cfgeo-show-in-"],*[class*="cfgeo-show-in-"],*[class^="cfgeo-show-in-"]{display: none;}<?php echo esc_html( join(',', $css_hide) ); ?>{display:none !important;} <?php echo esc_html( join(',', $css_show) ); ?>{display:block !important;}<?php do_action('cfgp/public/css'); ?></style>
+<!-- <?php _e('Geo Controller CSS Classes', 'cf-geoplugin'); ?> -->
+<style media="all" id="cfgp-display-control-css" data-nonce="<?php echo esc_attr( wp_create_nonce( 'cfgeo-process-css-cache-ajax' ) ); ?>">*[class="cfgeo-show-in-"],*[class*="cfgeo-show-in-"],*[class^="cfgeo-show-in-"]{display: none;}<?php echo esc_attr( join(',', $css_hide) ); ?>{display:none !important;} <?php echo esc_attr( join(',', $css_show) ); ?>{display:block !important;}<?php do_action('cfgp/public/css'); ?></style>
 		<?php endif;
 	}
 	
@@ -167,7 +167,7 @@ class CFGP_Public extends CFGP_Global{
 		
 		$js = apply_filters('cfgp/public/js/objects', $js);
 		
-		echo ',' . join(',', $js);
+		echo wp_kses_post(',' . join(',', $js));
 	?>}
 	window.cfgeo = cf.geoplugin;
 	window.wp.geo = window.cfgeo;

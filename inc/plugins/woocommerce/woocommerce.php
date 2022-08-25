@@ -10,7 +10,7 @@ if( !class_exists( 'CFGP__Plugin__woocommerce' ) ):
 class CFGP__Plugin__woocommerce extends CFGP_Global
 {	
     /**
-     * CF Geo Plugin converter option
+     * Geo Controller converter option
      */
     private $cf_conversion					= 'original';
 	private $cf_conversion_adjust 			= 0;
@@ -106,13 +106,13 @@ class CFGP__Plugin__woocommerce extends CFGP_Global
 		CFGP_U::flush_plugin_cache();
 	}
 	
-	// Add CF Geo Plugin option to general settings
+	// Add Geo Controller option to general settings
 	public function woocommerce_general_settings ($settings) {
 		
 		foreach($settings as &$option) {
 			if($option['id'] === 'woocommerce_default_customer_address') {
 				$option['options'] = array_merge($option['options'], array(
-					'cf_geoplugin' => __('Geolocate (by CF Geo Plugin)', 'cf-geoplugin')
+					'cf_geoplugin' => __('Geolocate (by Geo Controller)', 'cf-geoplugin')
 				));
 			}
 		}
@@ -425,7 +425,7 @@ if($flag = CFGP_U::admin_country_flag(get_post_meta($post->ID, '_billing_country
             {
                 $new_settings[$key] = array(
                     'title'    => __( 'Currency conversion options', 'cf-geoplugin'),
-                    'desc'     => __( 'This controls CF Geo Plugin conversion system', 'cf-geoplugin'),
+                    'desc'     => __( 'This controls Geo Controller conversion system', 'cf-geoplugin'),
                     'css'      => 'min-width:350px',
                     'class'    => 'wc-enhanced-select',
                     'id'       => 'woocommerce_cf_geoplugin_conversion',
@@ -447,7 +447,7 @@ if($flag = CFGP_U::admin_country_flag(get_post_meta($post->ID, '_billing_country
                     'id'       => 'woocommerce_cf_geoplugin_conversion_rounded',
                     'default'  => 'no',
                     'type'     => 'checkbox',
-                    'desc_tip' => __( 'These option is added by the CF Geo Plugin.', 'cf-geoplugin')
+                    'desc_tip' => __( 'These option is added by the Geo Controller.', 'cf-geoplugin')
                 );
                 $key++;
 				$new_settings[$key] = array(
@@ -463,7 +463,7 @@ if($flag = CFGP_U::admin_country_flag(get_post_meta($post->ID, '_billing_country
                         'neares'	=> __( 'Round nearest', 'cf-geoplugin'),
                         'down'		=> __( 'Round down', 'cf-geoplugin')
                     ),
-                    'desc_tip' => __( 'These option is added by the CF Geo Plugin.', 'cf-geoplugin')
+                    'desc_tip' => __( 'These option is added by the Geo Controller.', 'cf-geoplugin')
                 );
                 $key++;
 				$new_settings[$key] = array(
@@ -480,7 +480,7 @@ if($flag = CFGP_U::admin_country_flag(get_post_meta($post->ID, '_billing_country
 						'step' => 1,
 						'autocomplete' => 'off'
 					),
-                    'desc_tip' => __( 'These option is added by the CF Geo Plugin.', 'cf-geoplugin')
+                    'desc_tip' => __( 'These option is added by the Geo Controller.', 'cf-geoplugin')
                 );
                 $key++;
 				$new_settings[$key] = array(
@@ -490,7 +490,7 @@ if($flag = CFGP_U::admin_country_flag(get_post_meta($post->ID, '_billing_country
                     'id'       => 'woocommerce_cf_geoplugin_conversion_in_admin',
                     'default'  => 'yes',
                     'type'     => 'checkbox',
-                    'desc_tip' => __( 'These option is added by the CF Geo Plugin.', 'cf-geoplugin')
+                    'desc_tip' => __( 'These option is added by the Geo Controller.', 'cf-geoplugin')
                 );
                 $key++;
             }
@@ -618,9 +618,9 @@ if($flag = CFGP_U::admin_country_flag(get_post_meta($post->ID, '_billing_country
 					unset($custom_attributes['disabled']);
 				}
                 
-                $settings[] = array( 'name' => __( 'CF Geo Plugin Payments Control', 'cf-geoplugin'), 'type' => 'title', 'desc' => __( 'Configure payment methods for each country. Show or hide payment methods by country to prevent unwanted transactions.', 'cf-geoplugin') . (
+                $settings[] = array( 'name' => __( 'Geo Controller Payments Control', 'cf-geoplugin'), 'type' => 'title', 'desc' => __( 'Configure payment methods for each country. Show or hide payment methods by country to prevent unwanted transactions.', 'cf-geoplugin') . (
 				(isset($custom_attributes['disabled']) && $custom_attributes['disabled']) || CFGP_U::dev_mode()
-				? ' <br><span style="color:#dc3545;">' . sprintf(__('This option is only enabled with the licensed version of the %s. You must use 1 year license or above.', 'cf-geoplugin'), '<a href="' . CFGP_U::admin_url('admin.php?page=cf-geoplugin-activate') . '">CF Geo Plugin</a>') . '</span>'
+				? ' <br><span style="color:#dc3545;">' . sprintf(__('This option is only enabled with the licensed version of the %s. You must use 1 year license or above.', 'cf-geoplugin'), '<a href="' . CFGP_U::admin_url('admin.php?page=cf-geoplugin-activate') . '">Geo Controller</a>') . '</span>'
 				: ''
 				) . '<hr>', 'id' => 'cf_geoplugin_payment_restriction' );
 				$count = count($enabled_gateways); $x = 0;
@@ -677,14 +677,14 @@ if($flag = CFGP_U::admin_country_flag(get_post_meta($post->ID, '_billing_country
             }
             else 
             {
-                $settings[] = array( 'name' => __( 'CF Geo Plugin Payments Control', 'cf-geoplugin'), 'type' => 'title', 'desc' => '<b>' . __( 'Currently we are not able to show desired options. Please try again later.', 'cf-geoplugin') . '</b>', 'id' => 'cf_geoplugin_payment_restriction' );
+                $settings[] = array( 'name' => __( 'Geo Controller Payments Control', 'cf-geoplugin'), 'type' => 'title', 'desc' => '<b>' . __( 'Currently we are not able to show desired options. Please try again later.', 'cf-geoplugin') . '</b>', 'id' => 'cf_geoplugin_payment_restriction' );
                 $settings[] = array( 'type' => 'sectionend', 'id' => 'cf_geoplugin_payment_restriction' );
                 return apply_filters( 'cf_geoplugin_payment_restriction_settings', $settings );
             }
         }
         else 
         {
-            $settings[] = array( 'name' => __( 'CF Geo Plugin Payments Control', 'cf-geoplugin'), 'type' => 'title', 'desc' => '<b>' . __( 'No enabled woocommerce payments yet.', 'cf-geoplugin'), 'id' => 'cf_geoplugin_payment_restriction' . '</b>' );
+            $settings[] = array( 'name' => __( 'Geo Controller Payments Control', 'cf-geoplugin'), 'type' => 'title', 'desc' => '<b>' . __( 'No enabled woocommerce payments yet.', 'cf-geoplugin'), 'id' => 'cf_geoplugin_payment_restriction' . '</b>' );
             $settings[] = array( 'type' => 'sectionend', 'id' => 'cf_geoplugin_payment_restriction' );
             return apply_filters( 'cf_geoplugin_payment_restriction_settings', $settings );
         }

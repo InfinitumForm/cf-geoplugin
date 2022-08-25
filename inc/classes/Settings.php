@@ -126,8 +126,8 @@ class CFGP_Settings extends CFGP_Global {
 		}
 		
 		$this->add_menu_page(
-			__( 'Geo Plugin', 'cf-geoplugin'),
-			__( 'Geo Plugin', 'cf-geoplugin'),
+			__( 'Geo Controller', 'cf-geoplugin'),
+			__( 'Geo Controller', 'cf-geoplugin'),
 			'manage_options',
 			CFGP_NAME,
 			'main_page__callback',

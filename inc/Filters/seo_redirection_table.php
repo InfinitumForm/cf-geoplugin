@@ -6,7 +6,7 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
 add_action('cfgp/page/seo_redirection/table', function(){ global $wpdb; ?>
 <?php if( !CFGP_SEO_Table::table_exists() ) : ?>
 <div class="notice notice-error"> 
-	<p><?php printf(__('The database table "%s" not exists! You can try to reactivate the CF Geo Plugin to correct this error.', 'cf-geoplugin'), "<strong>{$wpdb->cfgp_seo_redirection}</strong>"); ?></p>
+	<p><?php printf(__('The database table "%s" not exists! You can try to reactivate the Geo Controller to correct this error.', 'cf-geoplugin'), "<strong>{$wpdb->cfgp_seo_redirection}</strong>"); ?></p>
 </div>
 <?php endif; ?>
 <div class="wrap wrap-cfgp" id="<?php echo esc_attr(sanitize_title($_GET['page'] ?? NULL)); ?>">

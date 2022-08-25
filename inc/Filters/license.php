@@ -109,7 +109,7 @@ add_action('cfgp/page/license/sidebar', function(){ if( CFGP_U::api('available_l
         	<p><?php printf(
     __('Thank you for using an unlimited license. Your license is active until %1$s. It would be great to expand your license by that date. After expiration date you will experience plugin limitations.<br><br>To review or deactivate your license, please go to your %2$s.', 'cf-geoplugin'),
     '<strong>' . (CFGP_License::get('expire') == 0 ? __('never', 'cf-geoplugin') : CFGP_License::expire_date()) . '</strong>',
-	'<a href="' . esc_url(CFGP_License::get('url')) . '" target="_blank">' . __('CF Geo Plugin account', 'cf-geoplugin') . '</a>'
+	'<a href="' . esc_url(CFGP_License::get('url')) . '" target="_blank">' . __('Geo Controller account', 'cf-geoplugin') . '</a>'
 ); ?></p>
 			<p><?php printf(
             __('Do not forget that by purchasing and using the license you have agreed to our %2$s in accordance with the %1$s.'),

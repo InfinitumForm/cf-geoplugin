@@ -92,7 +92,7 @@ class CFGP_Sidebar extends CFGP_Global {
 	<li class="cfgp-statistic-address">
 		<?php if(CFGP_U::api('status') == 505) : ?>
 			<h3><span class="cfa cfa-close"></span> <?php _e('ERROR!', 'cf-geoplugin'); ?></h3>
-			<p><?php _e('API no longer supports this version of CF Geo Plugin', 'cf-geoplugin'); ?></p>
+			<p><?php _e('API no longer supports this version of Geo Controller', 'cf-geoplugin'); ?></p>
 		<?php elseif(CFGP_U::api('status') == 417) : ?>
 			<h3><span class="cfa cfa-close"></span> <?php _e('NOT VALID!', 'cf-geoplugin'); ?></h3>
 			<p><?php _e('Your IP address is not valid or is in the private range.', 'cf-geoplugin'); ?></p>
@@ -167,9 +167,9 @@ class CFGP_Sidebar extends CFGP_Global {
 	 **/
 	public function sidebar_affiliate(){ ?>
 	<h4 style="text-align:center;"><?php _e('Affiliates discounts up to 60%:', 'cf-geoplugin'); ?></h4>
-<a href="https://www.digitalocean.com/?refcode=a4160dafc356&utm_campaign=Referral_Invite&utm_medium=Referral_Program&utm_source=badge" title="<?php esc_attr_e('CF Geo Plugin uses an API hosted on Digital Ocean servers. Get yours now!', 'cf-geoplugin'); ?>" target="_blank"><img src="<?php echo esc_url(CFGP_ASSETS); ?>/images/Logo-DigitalOcean.jpg" alt="<?php esc_attr_e('CF Geo Plugin Uses an API Hosted on Digital Ocean Cloud Servers. Get yours now!', 'cf-geoplugin'); ?>" style="margin:0 auto 0 auto; display:block; width:100%; max-width:100%; height:auto; border: 1px solid #c3c4c7; box-shadow: 0 1px 1px rgb(0 0 0 / 4%);" /></a>
+<a href="https://www.digitalocean.com/?refcode=a4160dafc356&utm_campaign=Referral_Invite&utm_medium=Referral_Program&utm_source=badge" title="<?php esc_attr_e('Geo Controller uses an API hosted on Digital Ocean servers. Get yours now!', 'cf-geoplugin'); ?>" target="_blank"><img src="<?php echo esc_url(CFGP_ASSETS); ?>/images/Logo-DigitalOcean.jpg" alt="<?php esc_attr_e('Geo Controller Uses an API Hosted on Digital Ocean Cloud Servers. Get yours now!', 'cf-geoplugin'); ?>" style="margin:0 auto 0 auto; display:block; width:100%; max-width:100%; height:auto; border: 1px solid #c3c4c7; box-shadow: 0 1px 1px rgb(0 0 0 / 4%);" /></a>
 
-<a href="https://portal.draxhost.com/?affid=1" title="<?php esc_attr_e('The CF Geo Plugin official site is hosted on Drax Host servers. Interested in affordable and secure hosting?', 'cf-geoplugin'); ?>" target="_blank"><img src="<?php echo esc_url(CFGP_ASSETS); ?>/images/Logo-Drax-Host.jpg" alt="<?php esc_attr_e('The CF Geo Plugin official site is hosted on Drax Host servers. Interested in affordable and secure hosting?', 'cf-geoplugin'); ?>" style="margin:15px auto 0 auto; display:block; width:100%; max-width:100%; height:auto; border: 1px solid #c3c4c7; box-shadow: 0 1px 1px rgb(0 0 0 / 4%);" /></a>
+<a href="https://portal.draxhost.com/?affid=1" title="<?php esc_attr_e('The Geo Controller official site is hosted on Drax Host servers. Interested in affordable and secure hosting?', 'cf-geoplugin'); ?>" target="_blank"><img src="<?php echo esc_url(CFGP_ASSETS); ?>/images/Logo-Drax-Host.jpg" alt="<?php esc_attr_e('The Geo Controller official site is hosted on Drax Host servers. Interested in affordable and secure hosting?', 'cf-geoplugin'); ?>" style="margin:15px auto 0 auto; display:block; width:100%; max-width:100%; height:auto; border: 1px solid #c3c4c7; box-shadow: 0 1px 1px rgb(0 0 0 / 4%);" /></a>
 
 <a href="https://affiliates.nordvpn.com/publisher/#!/offer/15" title="<?php esc_attr_e('The CF Gep plugin recommends using Nord VPN for testing.', 'cf-geoplugin'); ?>" class="affiliate-nordvpn" target="_blank"><img src="<?php echo esc_url(CFGP_ASSETS); ?>/images/Logo-NordVPN.jpg" alt="<?php esc_attr_e('The CF Gep plugin recommends using Nord VPN for testing.', 'cf-geoplugin'); ?>" style="margin:15px auto 0 auto; display:block; width:100%; max-width:100%; height:auto; border: 1px solid #c3c4c7; box-shadow: 0 1px 1px rgb(0 0 0 / 4%);" /></a>
 <hr style="margin:32px auto 32px auto;">
@@ -218,7 +218,7 @@ class CFGP_Sidebar extends CFGP_Global {
 		| <a href="<?php echo esc_url(CFGP_STORE); ?>/cookie-policy/" target="_blank"><?php _e( 'Cookie Policy', 'cf-geoplugin'); ?><span class="screen-reader-text"><?php _e('(opens in a new tab)', 'cf-geoplugin'); ?></span><span aria-hidden="true" class="dashicons dashicons-external"></span></a>
 	</p>
 	<p class="community-events-footer" id="cf-geoplugin-copyright" style="font-size:0.85em; text-align:center;">
-		<?php printf(__('Copyright © %d-%d CF Geo Plugin. All rights reserved.', 'cf-geoplugin'), 2015, date('Y')); ?>
+		<?php printf(__('Copyright © %d-%d Geo Controller. All rights reserved.', 'cf-geoplugin'), 2015, date('Y')); ?>
 	</p>
 	<?php }
 	
@@ -244,7 +244,7 @@ class CFGP_Sidebar extends CFGP_Global {
 	?>
 <li class="cfgp-statistic-separator"></li>
 <li class="cfgp-statistic-plugin-details">
-	<h3><i class="cfa cfa-plug" aria-hidden="true"></i> <?php _e( 'CF Geo Plugin details', 'cf-geoplugin'); ?></h3>
+	<h3><i class="cfa cfa-plug" aria-hidden="true"></i> <?php _e( 'Geo Controller details', 'cf-geoplugin'); ?></h3>
 	<ul>
 		<li><strong><?php _e( 'Last Update', 'cf-geoplugin'); ?>:</strong> <span><?php echo date(CFGP_DATE_TIME_FORMAT, strtotime($plugin->last_updated)); ?></span></li>
 		<li><strong><?php _e( 'Homepage', 'cf-geoplugin'); ?>:</strong> <span><a href="<?php echo esc_url($plugin->homepage); ?>" target="_blank"><?php echo esc_url($plugin->homepage) ?></a></span></li>

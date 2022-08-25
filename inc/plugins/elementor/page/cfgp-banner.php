@@ -2,7 +2,7 @@
 /**
  * CF Geo Banner page
  *
- * @package CF Geo Plugin
+ * @package Geo Controller
  * @since 7.12.14
  * @version 0.0.1
  * @author Ivijan-Stefan Stipic

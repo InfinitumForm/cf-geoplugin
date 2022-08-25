@@ -42,7 +42,7 @@ $API = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
 
 ?>
 <div class="wrap cfgp-wrap" id="<?php echo esc_attr(sanitize_text_field($_GET['page'] ?? NULL)); ?>">
-	<h1 class="wp-heading-inline"><i class="cfa cfa-map-marker"></i> <?php _e('CF Geo Plugin', 'cf-geoplugin'); ?></h1>
+	<h1 class="wp-heading-inline"><i class="cfa cfa-map-marker"></i> <?php _e('Geo Controller', 'cf-geoplugin'); ?></h1>
     <hr class="wp-header-end">
 
     <div id="post">
@@ -204,7 +204,7 @@ $API = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
 						<?php if(CFGP_Options::get('enable_css')) : ?>
 						<div class="cfgp-tab-panel" id="css-property">
 							
-							<p><?php _e('The CF Geo Plugin has dynamic CSS settings that can hide or display some content if you use it properly.', 'cf-geoplugin'); ?></p>
+							<p><?php _e('The Geo Controller has dynamic CSS settings that can hide or display some content if you use it properly.', 'cf-geoplugin'); ?></p>
 							<p><b><big><?php _e('How to use it?', 'cf-geoplugin'); ?></big></b></p>
 							<p><?php _e('These CSS settings are dynamic and depend on the geolocation of the visitor.', 'cf-geoplugin'); ?></p>
 							<p><?php printf(__('A different CSS setting is generated for each state, city, region according to the following principle: %s or %s, where the %s is actually a geo-location name in lowercase letters and multiple words separated by a minus sign.', 'cf-geoplugin'), '<code>cfgeo-show-in-' . __('{property}', 'cf-geoplugin') . '</code>', '<code>cfgeo-hide-from-' . __('{property}', 'cf-geoplugin') . '</code>', '<code>' . __('{property}', 'cf-geoplugin') . '</code>'); ?></p>

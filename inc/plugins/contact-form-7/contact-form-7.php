@@ -118,7 +118,7 @@ class CFGP__Plugin__contact_form_7 extends CFGP_Global{
 					<div class="control-box">
 					<fieldset>
 					<legend><?php
-						printf(esc_html__( 'To use "%s" tag added by CF Geo Plugin, you need to define tag name and use it into your form. This tag will create hidden input field what will pickup geo information from the your visitor.', 'cf-geoplugin'), '<b>' . $args['id'] . '</b>');
+						printf(esc_html__( 'To use "%s" tag added by Geo Controller, you need to define tag name and use it into your form. This tag will create hidden input field what will pickup geo information from the your visitor.', 'cf-geoplugin'), '<b>' . $args['id'] . '</b>');
 					?></legend>
 
 					<table class="form-table">

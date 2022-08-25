@@ -74,7 +74,7 @@ if(!class_exists('CFGP_Plugins')) :
 						array(
 							'id' => 'enable-plugins',
 							'title' => __('Enable Plugins', 'cf-geoplugin'),
-							'desc' => __('Allow CF Geo Plugin to integrate with existing installed plugins.', 'cf-geoplugin'),
+							'desc' => __('Allow Geo Controller to integrate with existing installed plugins.', 'cf-geoplugin'),
 							'inputs' => $plugin_options
 						)
 					)

@@ -12,7 +12,7 @@
  *      echo 'You have FireFox version 2 or greater';
  *   }
  *
- * This cool class improved and integrated inside CF Geo Plugin by Ivijan-Stefan Stipić (http://infinitumform.com/)
+ * This cool class improved and integrated inside Geo Controller by Ivijan-Stefan Stipić (http://infinitumform.com/)
 */
 if (!class_exists('CFGP_Browser')): class CFGP_Browser {
     private $_agent = '';
@@ -94,7 +94,7 @@ if (!class_exists('CFGP_Browser')): class CFGP_Browser {
     * Reset all properties
     */
     public function reset() {
-        $this->_agent = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
+        $this->_agent = sanitize_text_field(isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '');
         $this->_browser_name = esc_html__('unknown', 'cf-geoplugin');
         $this->_version = esc_html__('unknown', 'cf-geoplugin');
         $this->_platform = esc_html__('unknown', 'cf-geoplugin');

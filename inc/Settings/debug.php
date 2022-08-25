@@ -58,7 +58,7 @@ if($NEW_API = CFGP_API::lookup(CFGP_U::request_string('cfgp_lookup'))){
                         
 						<?php do_action('cfgp/debug/tab-panel/before'); ?>
                         <div class="cfgp-tab-panel cfgp-tab-panel-active" id="recived-data">
-                        <p><?php echo sprintf( __( 'Information that the CF Geo Plugin API ver.%s receives', 'cf-geoplugin'), CFGP_VERSION ); ?></p>
+                        <p><?php echo sprintf( __( 'Information that the Geo Controller API ver.%s receives', 'cf-geoplugin'), CFGP_VERSION ); ?></p>
                         <?php if($API) : ?>
                             <table class="wp-list-table widefat fixed striped table-view-list posts table-cf-geoplugin-debug-recived-data">
                                 <thead>
@@ -99,7 +99,7 @@ if($NEW_API = CFGP_API::lookup(CFGP_U::request_string('cfgp_lookup'))){
                         </div>
                         
                         <div class="cfgp-tab-panel" id="sent-data">
-                        	<p><?php _e( 'This information are sent to CF Geo Plugin API. All of this informations (hostname, IP and timezone) are available for general public, world wide and we only use them for API purpose which helps plugin to determine the exact location of the visitors and prevent accidental collapse between the IP address. Your IP and email address is also a guarantee that you\'re not a robot or some spamming software.', 'cf-geoplugin'); ?></p>
+                        	<p><?php _e( 'This information are sent to Geo Controller API. All of this informations (hostname, IP and timezone) are available for general public, world wide and we only use them for API purpose which helps plugin to determine the exact location of the visitors and prevent accidental collapse between the IP address. Your IP and email address is also a guarantee that you\'re not a robot or some spamming software.', 'cf-geoplugin'); ?></p>
                             <p><?php printf( __( 'If you are concerned about your private informations, please read the %s', 'cf-geoplugin'), '<a href="http://cfgeoplugin.com/privacy-policy" target="_blank">'.__('Privacy Policy', 'cf-geoplugin').'</a>' ); ?></p>
                             
                             <table class="wp-list-table widefat fixed striped table-view-list posts table-cf-geoplugin-debug-server-statistics"> 
@@ -134,7 +134,7 @@ if($NEW_API = CFGP_API::lookup(CFGP_U::request_string('cfgp_lookup'))){
                                     <tr>
                                         <td><strong><?php _e( 'Version', 'cf-geoplugin'); ?></strong></td>
                                         <td><?php echo esc_html( CFGP_VERSION ); ?></td>
-                                        <td><?php _e( 'CF Geo Plugin Version', 'cf-geoplugin'); ?></td>
+                                        <td><?php _e( 'Geo Controller Version', 'cf-geoplugin'); ?></td>
                                     </tr>
                                     <tr>
                                         <td><strong><?php _e( 'Email' ); ?></strong></td>
@@ -150,7 +150,7 @@ if($NEW_API = CFGP_API::lookup(CFGP_U::request_string('cfgp_lookup'))){
 												echo esc_html( CFGP_Options::get('license_key') );
 										?></td>
                                         <td>
-											<?php _e( 'CF Geo Plugin License Key', 'cf-geoplugin'); ?>
+											<?php _e( 'Geo Controller License Key', 'cf-geoplugin'); ?>
 											<?php
 											if(CFGP_DEFENDER_ACTIVATED)
 												_e( 'Lifetime', 'cf-geoplugin');

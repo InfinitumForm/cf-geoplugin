@@ -16,7 +16,7 @@ if ( ! defined( 'WPINC' ) ) { die( "Don't mess with us." ); }
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
 if(!class_exists('CFGP_Requirements')) : class CFGP_Requirements {
-	private $title = 'CF Geo Plugin';
+	private $title = 'Geo Controller';
 	private $php = '7.0.0';
 	private $wp = '5.4';
 	private $slug = 'cf-geoplugin';

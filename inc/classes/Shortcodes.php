@@ -112,7 +112,7 @@ class CFGP_Shortcodes extends CFGP_Global {
 	}
 	
 	/**
-	 * If CF Geo Plugin shortcode exists
+	 * If Geo Controller shortcode exists
 	 *
 	 * @since      8.3.6
 	 * @version    1.0.0

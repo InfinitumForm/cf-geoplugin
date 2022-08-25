@@ -179,7 +179,7 @@ class CFGP_Admin extends CFGP_Global {
 									esc_url($post->post_image_medium),
 									esc_html($post->post_excerpt),
 									esc_url($post->post_url),
-									__('Read more at CF Geo Plugin', 'cf-geoplugin'),
+									__('Read more at CF Geo Plugin site', 'cf-geoplugin'),
 									date(CFGP_DATE_FORMAT, strtotime($post->post_date_gmt))
 								);
 							} else {
@@ -189,7 +189,7 @@ class CFGP_Admin extends CFGP_Global {
 									esc_url($post->post_image_medium),
 									esc_html($post->post_excerpt),
 									esc_url($post->post_url),
-									__('Read more at CF Geo Plugin', 'cf-geoplugin'),
+									__('Read more at CF Geo Plugin site', 'cf-geoplugin'),
 									date(CFGP_DATE_FORMAT, strtotime($post->post_date_gmt))
 								);
 							}
@@ -261,7 +261,7 @@ class CFGP_Admin extends CFGP_Global {
 									esc_url($post->post_image_medium),
 									esc_html($post->post_excerpt),
 									esc_url($post->post_url),
-									__('Read more at CF Geo Plugin', 'cf-geoplugin'),
+									__('Read more at CF Geo Plugin site', 'cf-geoplugin'),
 									date(CFGP_DATE_FORMAT, strtotime($post->post_date_gmt))
 								);
 							} else {
@@ -271,7 +271,7 @@ class CFGP_Admin extends CFGP_Global {
 									esc_url($post->post_image_medium),
 									esc_html($post->post_excerpt),
 									esc_url($post->post_url),
-									__('Read more at CF Geo Plugin', 'cf-geoplugin'),
+									__('Read more at CF Geo Plugin site', 'cf-geoplugin'),
 									date(CFGP_DATE_FORMAT, strtotime($post->post_date_gmt))
 								);
 							}
@@ -341,15 +341,15 @@ class CFGP_Admin extends CFGP_Global {
 		}
 		
 		$privacy_policy = array(
-			__( 'This site uses the CF Geo Plugin to display public visitor information based on IP addresses that can then be collected or used for various purposes depending on the settings of the plugin.', 'cf-geoplugin'),
+			__( 'This site uses the Geo Controller (known as CF Geo Plugin) to display public visitor information based on IP addresses that can then be collected or used for various purposes depending on the settings of the plugin.', 'cf-geoplugin'),
 			
-			__( 'CF Geo Plugin is a GeoMarketing tool that allows you to have full geo control of your WordPress. CF Geo Plugin gives you the ability to attach content, geographic information, geo tags, Google Maps to posts, pages, widgets and custom templates by using simple options, shortcodes, PHP code or JavaScript. It also lets you specify a default geographic location for your entire WordPress blog, do SEO redirection, spam protection, WooCommerce control and many more. CF Geo Plugin help you to increase conversion, do better SEO, capture leads on your blog or landing pages.', 'cf-geoplugin'),
+			__( 'Geo Controller is a Geomarketing tool that allows you to have full geo control of your WordPress. Geo Controller gives you the ability to attach content, geographic information, geo tags, Google Maps to posts, pages, widgets and custom templates by using simple options, shortcodes, PHP code or JavaScript. It also lets you specify a default geographic location for your entire WordPress blog, do SEO redirection, spam protection, WooCommerce control and many more. Geo Controller help you to increase conversion, do better SEO, capture leads on your blog or landing pages.', 'cf-geoplugin'),
 			
-			sprintf(__( 'This website uses API services, technology and goods from the CF Geo Plugin and that part belongs to the <a href="%1$s" target="_blank">CF Geo Plugin Privacy Policy</a>.', 'cf-geoplugin'), CFGP_STORE . '/privacy-policy/')
+			sprintf(__( 'This website uses API services, technology and goods from the Geo Controller and that part belongs to the <a href="%1$s" target="_blank">Geo Controller Privacy Policy</a>.', 'cf-geoplugin'), CFGP_STORE . '/privacy-policy/')
 		);
 	 
 		wp_add_privacy_policy_content(
-			__( 'CF Geo Plugin', 'cf-geoplugin'),
+			__( 'Geo Controller', 'cf-geoplugin'),
 			wp_kses_post( wpautop( join((PHP_EOL . PHP_EOL), $privacy_policy), false ) )
 		);
 	}

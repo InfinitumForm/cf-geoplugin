@@ -54,7 +54,7 @@ add_action('cfgp/table/after/shortcodes', function($API){ ?>
                     sprintf(
                         ' ' . __('GPS is enabled only with %s extension', 'cf-geoplugin'),
                         sprintf(
-                            '<a href="%1$s" class="thickbox open-plugin-details-modal" target="_blank">' . __('CF Geo Plugin GPS', 'cf-geoplugin') . '</a>',
+                            '<a href="%1$s" class="thickbox open-plugin-details-modal" target="_blank">' . __('Geo Controller GPS', 'cf-geoplugin') . '</a>',
                             CFGP_U::admin_url('plugin-install.php?tab=plugin-information&plugin=cf-geoplugin-gps&TB_iframe=true&width=772&height=923')
                         )
                     )
@@ -127,7 +127,7 @@ add_action('cfgp/table/after/simple_shortcodes', function($API){ ?>
                     sprintf(
                         ' ' . __('GPS is enabled only with %s extension', 'cf-geoplugin'),
                         sprintf(
-                            '<a href="%1$s" class="thickbox open-plugin-details-modal" target="_blank">' . __('CF Geo Plugin GPS', 'cf-geoplugin') . '</a>',
+                            '<a href="%1$s" class="thickbox open-plugin-details-modal" target="_blank">' . __('Geo Controller GPS', 'cf-geoplugin') . '</a>',
                             CFGP_U::admin_url('plugin-install.php?tab=plugin-information&plugin=cf-geoplugin-gps&TB_iframe=true&width=772&height=923')
                         )
                     )

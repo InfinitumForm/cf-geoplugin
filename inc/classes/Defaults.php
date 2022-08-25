@@ -118,10 +118,10 @@ class CFGP_Defaults {
 	);
 	
 	/*
-	 * API calls used inside CF Geo Plugin.
+	 * API calls used inside Geo Controller.
 	 */
 	const API = array(
-		// Standard CF Geo Plugin API URLs
+		// Standard Geo Controller API URLs
 		'main'				=>	'http://159.203.150.139/v2/',
 		'authenticate'		=>	'http://159.203.150.139/v2/authentication',
 		'converter'			=>	'http://159.203.150.139/v2/currency-converter',

@@ -58,7 +58,7 @@ class CFGP__Plugin__elementor extends CFGP_Global
 		$elements_manager->add_category(
 			'cf-geoplugin',
 			[
-				'title' => __( 'CF Geo Plugin', 'cf-geoplugin'),
+				'title' => __( 'Geo Controller', 'cf-geoplugin'),
 				'icon' => 'cfa cfa-map-marker',
 			]
 		);
@@ -172,7 +172,7 @@ class CFGP__Plugin__elementor extends CFGP_Global
 		$message = sprintf(
 			/* translators: 1: Plugin name 2: Elementor 3: Required Elementor version */
 			esc_html__( '%1$s requires %2$s version %3$s or greater.', 'cf-geoplugin'),
-			'<strong>' . esc_html__( 'CF Geo Plugin', 'cf-geoplugin') . '</strong>',
+			'<strong>' . esc_html__( 'Geo Controller', 'cf-geoplugin') . '</strong>',
 			'<strong>' . esc_html__( 'Elementor', 'cf-geoplugin') . '</strong>',
 			'<strong>' . self::MINIMUM_ELEMENTOR_VERSION . '</strong>'
 		);
@@ -191,7 +191,7 @@ class CFGP__Plugin__elementor extends CFGP_Global
 		$message = sprintf(
 			/* translators: 1: Plugin name 2: PHP 3: Required PHP version */
 			esc_html__( '%1$s requires %2$s version %3$s or greater.', 'cf-geoplugin'),
-			'<strong>' . esc_html__( 'CF Geo Plugin', 'cf-geoplugin') . '</strong>',
+			'<strong>' . esc_html__( 'Geo Controller', 'cf-geoplugin') . '</strong>',
 			'<strong>' . esc_html__( 'PHP', 'cf-geoplugin') . '</strong>',
 			'<strong>' . self::MINIMUM_PHP_VERSION . '</strong>'
 		);

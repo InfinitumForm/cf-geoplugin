@@ -59,7 +59,7 @@ add_filter('cfgp/settings', function($options=[]){
 				array(
 					'id' => 'wordpress-settings',
 					'title' => __('WordPress Settings', 'cf-geoplugin'),
-					'desc' => __('These settings only affect CF Geo Plugin functionality and connection between plugin and WordPress setup. Use it smart and careful.', 'cf-geoplugin'),
+					'desc' => __('These settings only affect Geo Controller functionality and connection between plugin and WordPress setup. Use it smart and careful.', 'cf-geoplugin'),
 					'inputs' => array(
 						/*array(
 							'name' => 'enable_update',
@@ -75,7 +75,7 @@ add_filter('cfgp/settings', function($options=[]){
 						/*array(
 							'name' => 'enable_dashboard_widget',
 							'label' => __('Enable Dashboard Widget', 'cf-geoplugin'),
-							'desc' => __('Enable CF Geo Plugin widget in the dashboard area.', 'cf-geoplugin'),
+							'desc' => __('Enable Geo Controller widget in the dashboard area.', 'cf-geoplugin'),
 							'type' => 'radio',
 							'options' => array(
 								1 => __('Yes', 'cf-geoplugin'),
@@ -218,7 +218,7 @@ add_filter('cfgp/settings', function($options=[]){
 						array(
 							'name' => 'enable_css',
 							'label' => __('Enable CSS property', 'cf-geoplugin'),
-							'desc' => __('The CF Geo Plugin has dynamic CSS settings that can hide or display some content if you use it properly.', 'cf-geoplugin'),
+							'desc' => __('The Geo Controller has dynamic CSS settings that can hide or display some content if you use it properly.', 'cf-geoplugin'),
 							'type' => 'radio',
 							'options' => array(
 								1 => __('Yes', 'cf-geoplugin'),
@@ -229,7 +229,7 @@ add_filter('cfgp/settings', function($options=[]){
 						array(
 							'name' => 'enable_js',
 							'label' => __('Enable JavaScript property', 'cf-geoplugin'),
-							'desc' => __('Enable CF Geo Plugin JavaScript support.', 'cf-geoplugin'),
+							'desc' => __('Enable Geo Controller JavaScript support.', 'cf-geoplugin'),
 							'type' => 'radio',
 							'options' => array(
 								1 => __('Yes', 'cf-geoplugin'),
@@ -240,7 +240,7 @@ add_filter('cfgp/settings', function($options=[]){
 						array(
 							'name' => 'enable_rest',
 							'label' => __('Enable REST API', 'cf-geoplugin'),
-							'desc' => __('The CF Geo Plugin REST API allows external apps to use geo informations from your website.', 'cf-geoplugin'),
+							'desc' => __('The Geo Controller REST API allows external apps to use geo informations from your website.', 'cf-geoplugin'),
 							'type' => 'radio',
 							'options' => array(
 								1 => __('Yes', 'cf-geoplugin'),
@@ -418,7 +418,7 @@ add_filter('cfgp/settings', function($options=[]){
 					'enabled' => !( ( defined( 'CFGP_DISABLE_NOTIFICATION' ) && CFGP_DISABLE_NOTIFICATION ) === true),
 					'title' => __('E-mail Notification Settings', 'cf-geoplugin'),
 					'desc' => array(
-						__('CF Geo Plugin sends notifications in 3 cases: 1) When you reach less than 50 lookups, 2) When the lookup expires, 3) When the license expires.', 'cf-geoplugin'),
+						__('Geo Controller sends notifications in 3 cases: 1) When you reach less than 50 lookups, 2) When the lookup expires, 3) When the license expires.', 'cf-geoplugin'),
 						sprintf(
 							__('This option is very important and cannot be turned off via these settings. But if you want to turn off this notifications, %s.', 'cf-geoplugin'),
 							'<a href="https://cfgeoplugin.com/documentation/advanced-usage/php-integration/constants/cfgp_disable_notification" target="_blank">' . __('read this documentation', 'cf-geoplugin') . '</a>'
@@ -454,7 +454,7 @@ add_filter('cfgp/settings', function($options=[]){
 				array(
 					'id' => 'beta',
 					'title' => __('BETA Testing & Advanced Features', 'cf-geoplugin'),
-					'desc' => __('Here you can enable BETA functionality and test it. In many cases, normally you should not have any problems but some functionality is new and experimental that means if any conflict happens, you must be aware of this. If many users find this functionality useful we may keep this functionality and include it as standard functionality of CF Geo Plugin.', 'cf-geoplugin'),
+					'desc' => __('Here you can enable BETA functionality and test it. In many cases, normally you should not have any problems but some functionality is new and experimental that means if any conflict happens, you must be aware of this. If many users find this functionality useful we may keep this functionality and include it as standard functionality of Geo Controller.', 'cf-geoplugin'),
 					'inputs' => array(
 						array(
 							'name' => 'enable_beta',
@@ -616,7 +616,7 @@ add_filter('cfgp/settings', function($options=[]){
 							'name' => 'map_latitude',
 							'label' => __('Default Latitude', 'cf-geoplugin'),
 							'type' => 'text',
-							'desc' => __('Leave blank for CF Geo Plugin default support or place custom value.', 'cf-geoplugin'),
+							'desc' => __('Leave blank for Geo Controller default support or place custom value.', 'cf-geoplugin'),
 							'default' => '',
 							'attr' => array(
 								'autocomplete'=>'off',
@@ -627,7 +627,7 @@ add_filter('cfgp/settings', function($options=[]){
 							'name' => 'map_longitude',
 							'label' => __('Default Longitude', 'cf-geoplugin'),
 							'type' => 'text',
-							'desc' => __('Leave blank for CF Geo Plugin default support or place custom value.', 'cf-geoplugin'),
+							'desc' => __('Leave blank for Geo Controller default support or place custom value.', 'cf-geoplugin'),
 							'default' => '',
 							'attr' => array(
 								'autocomplete'=>'off',
