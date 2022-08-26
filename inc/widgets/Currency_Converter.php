@@ -27,8 +27,7 @@ class CFGP_Widget_Currency_Converter extends WP_Widget {
 	  
 	// Creating widget front-end
 	public function widget( $args, $instance ) {
-		echo $args['before_widget'];
-		echo do_shortcode( sprintf(
+		echo wp_kses_post( $args['before_widget'] . do_shortcode( sprintf(
 			'[cfgeo_full_converter title="%s" before_title="%s" after_title="%s" amount="%s" from="%s" to="%s"][/cfgeo_full_converter]',
 			esc_attr($instance['title'] ?? ''),
 			esc_attr($args['before_title'] ?? ''),
@@ -36,9 +35,7 @@ class CFGP_Widget_Currency_Converter extends WP_Widget {
 			esc_attr($instance['amount'] ?? ''),
 			esc_attr($instance['from'] ?? ''),
 			esc_attr($instance['to'] ?? '')
-		) );
-		
-		echo $args['after_widget'];
+		) ) . $args['after_widget'] );
 	}
 			  
 	// Creating widget Backend 

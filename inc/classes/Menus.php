@@ -88,22 +88,11 @@ class CFGP_Menus extends CFGP_Global {
 		$this->menu_options = [];
 		// Set controls
 		$control = CFGP_Options::sanitize( array(
-			'enable' => sanitize_text_field($_POST['cfgp_menu_enable_restriction'][$menu_item_db_id] ?? NULL),
-			'countries' => ($_POST['cfgp_menu_countries'][$menu_item_db_id] ?? []),
-			'regions' => ($_POST['cfgp_menu_regions'][$menu_item_db_id] ?? []),
-			'cities' => ($_POST['cfgp_menu_cities'][$menu_item_db_id] ?? []),
+			'enable' => sanitize_text_field( $_POST['cfgp_menu_enable_restriction'][$menu_item_db_id] ?? NULL ),
+			'countries' => array_map( 'sanitize_text_field', ($_POST['cfgp_menu_countries'][$menu_item_db_id] ?? []) ),
+			'regions' => array_map( 'sanitize_text_field', ($_POST['cfgp_menu_regions'][$menu_item_db_id] ?? []) ),
+			'cities' => array_map( 'sanitize_text_field', ($_POST['cfgp_menu_cities'][$menu_item_db_id] ?? []) )
 		) );
-		
-		// Sanitization array
-		if( !empty($control['countries']) ) {
-			$control['countries'] = array_map('sanitize_text_field', $control['countries']);
-		}
-		if( !empty($control['regions']) ) {
-			$control['regions'] = array_map('sanitize_text_field', $control['regions']);
-		}
-		if( !empty($control['cities']) ) {
-			$control['cities'] = array_map('sanitize_text_field', $control['cities']);
-		}
 		
 		// Custom links need to be saved as post meta with menu ID
 		if( in_array($item['menu-item-type'], array('custom')) )

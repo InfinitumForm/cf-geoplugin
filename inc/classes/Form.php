@@ -23,7 +23,7 @@ class CFGP_Form {
 		$http_forms = CFGP_U::get_http_codes();
 		$return = self::select($http_forms, $attr, $selected, false);
 		if($echo) {
-			echo $return;
+			echo wp_kses_post($return);
 		} else {
 			return $return;
 		}
@@ -66,7 +66,7 @@ class CFGP_Form {
 			$return = self::select($options, $attr, $selected, false);
 		}
 		if($echo) {
-			echo $return;
+			echo wp_kses_post($return);
 		} else {
 			return $return;
 		}
@@ -115,7 +115,7 @@ class CFGP_Form {
 		}
 		
 		if($echo) {
-			echo $return;
+			echo wp_kses_post($return);
 		} else {
 			return $return;
 		}
@@ -177,7 +177,7 @@ class CFGP_Form {
 			$return = self::select($options, $attr, $selected, false);
 		}
 		if($echo) {
-			echo $return;
+			echo wp_kses_post($return);
 		} else {
 			return $return;
 		}
@@ -235,7 +235,7 @@ class CFGP_Form {
 			$return = self::select($options, $attr, $selected, false);
 		}
 		if($echo) {
-			echo $return;
+			echo wp_kses_post($return);
 		} else {
 			return $return;
 		}
@@ -304,7 +304,7 @@ class CFGP_Form {
 		$select = apply_filters('cfgp/form/select_multiple', sprintf($select, $attr, $options_render), $attr, $options_render);
 		
 		if($echo) {
-			echo $select;
+			echo wp_kses_post($select);
 		} else {
 			return $select;
 		}
@@ -330,7 +330,7 @@ class CFGP_Form {
 		$select = apply_filters('cfgp/form/select', sprintf($select, $attr, $options_render), $attr, $options_render);
 		
 		if($echo) {
-			echo $select;
+			echo wp_kses_post($select);
 		} else {
 			return $select;
 		}
@@ -392,7 +392,7 @@ class CFGP_Form {
 		$return = apply_filters('cfgp/form/checkbox', "<span class=\"input-checkbox\">{$input_radio}</span>", $options, $input_radio);
 
 		if($echo) {
-			echo $return;
+			echo wp_kses_post($return);
 		} else {
 			return $return;
 		}
@@ -433,7 +433,7 @@ class CFGP_Form {
 		$return = apply_filters('cfgp/form/radio', "<span class=\"input-radio\">{$input_radio}</span>", $attr, $input_radio);
 
 		if($echo) {
-			echo $return;
+			echo wp_kses_post($return);
 		} else {
 			return $return;
 		}
@@ -454,7 +454,7 @@ class CFGP_Form {
 		$input = "<input type=\"{$type}\" {$attr}>";
 		
 		if($echo) {
-			echo $input;
+			echo wp_kses_post($input);
 		} else {
 			return $input;
 		}
@@ -488,7 +488,7 @@ class CFGP_Form {
 		$attributes = join(' ', $attributes);
 		
 		if($echo) {
-			echo $attributes;
+			echo wp_kses_post($attributes);
 		} else {
 			return $attributes;
 		}

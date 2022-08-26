@@ -216,12 +216,12 @@ class CFGP_Options
 		{			
 			if(is_numeric($str))
 			{
+				$str = sanitize_text_field( $str );
+				
 				if(intval( $str ) == $str) {
 					$str = intval( $str );
 				} else if(floatval($str) == $str) {
 					$str = floatval( $str );
-				} else {
-					$str = sanitize_text_field( $str );
 				}
 			}
 			else if(filter_var($str, FILTER_VALIDATE_URL) !== false)
@@ -247,7 +247,7 @@ class CFGP_Options
 			{
 				$str = html_entity_decode($str);
 				if(preg_match('/<\/?[a-z][\s\S]*>/i', $str)) {
-					$str = wp_kses($str, wp_kses_allowed_html('post'));
+					$str = wp_kses_post( $str );
 				} else if( preg_match('/[\n]/', $str) ) {
 					$str = sanitize_textarea_field( $str );
 				} else {
