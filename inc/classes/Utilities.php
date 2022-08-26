@@ -188,15 +188,6 @@ class CFGP_U {
 				$output = false;
 			}
 		}
-
-		if( empty( $output ) )
-		{
-			if(function_exists('file_get_contents'))
-			{
-				$context = self::set_stream_context( $headers );
-				$output = @file_get_contents( $url, false, $context );
-			}
-		}
 		
 		if( empty( $output ) ) {
 			return CFGP_Cache::set($cache_name, false);
@@ -265,15 +256,6 @@ class CFGP_U {
 			
 			if( is_wp_error( $output ) || empty( $output ) ) {
 				$output = false;
-			}
-		}
-
-		if( empty( $output ) )
-		{
-			if(function_exists('file_get_contents'))
-			{
-				$context = self::set_stream_context( $headers, 'POST', http_build_query($post_data) );
-				$output = @file_get_contents( $url, false, $context );
 			}
 		}
 		
@@ -458,7 +440,7 @@ class CFGP_U {
 		$token = self::KEY();
 		$cookie_name = 'cfgp__' . str_rot13(substr( $token, 6, 8 ));
 		
-		return CFGP_Cache::set( 'check_defender_cookie', (isset($_COOKIE[$cookie_name]) && $_COOKIE[$cookie_name] === $token) );
+		return CFGP_Cache::set( 'check_defender_cookie', ( isset($_COOKIE[$cookie_name]) && sanitize_text_field($_COOKIE[$cookie_name]) === $token ) );
 	}
 
 	/*
@@ -686,15 +668,23 @@ class CFGP_U {
 		$parse_url = CFGP_Cache::get('parse_url');
 		
 		if(!$parse_url) {
-			$http = 'http'.( self::is_ssl() ?'s':'');
-			$domain = preg_replace('%:/{3,}%i','://',rtrim($http,'/').'://'.(isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : ''));
+			$http = 'http' . ( self::is_ssl() ? 's' : '');
+			$domain = preg_replace(
+				'%:/{3,}%i',
+				'://',
+				rtrim($http,'/') . '://' . sanitize_text_field(isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '')
+			);
 			$domain = rtrim($domain,'/');
-			$url = preg_replace('%:/{3,}%i','://',$domain.'/'.(isset($_SERVER['REQUEST_URI']) && !empty( $_SERVER['REQUEST_URI'] ) ? ltrim($_SERVER['REQUEST_URI'], '/'): ''));
+			$url = preg_replace(
+				'%:/{3,}%i',
+				'://',
+				$domain . '/' . (isset($_SERVER['REQUEST_URI']) && !empty( $_SERVER['REQUEST_URI'] ) ? sanitize_text_field(ltrim($_SERVER['REQUEST_URI'], '/')) : '')
+			);
 				
 			$parse_url = CFGP_Cache::set('parse_url', array(
 				'method'	=>	$http,
 				'home_fold'	=>	str_replace($domain,'',home_url()),
-				'url'		=>	$url,
+				'url'		=>	esc_url($url),
 				'domain'	=>	$domain,
 			));
 		}

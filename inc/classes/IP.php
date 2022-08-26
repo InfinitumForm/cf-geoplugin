@@ -31,8 +31,11 @@ class CFGP_IP extends CFGP_Global {
 		$blacklistIP = self::blocked();
 		
 		// Enable cloudflare
-		if (CFGP_Options::get('enable_cloudflare', false) && isset($_SERVER['HTTP_CF_CONNECTING_IP']) && !empty($_SERVER['HTTP_CF_CONNECTING_IP']))
-		{
+		if (
+			CFGP_Options::get('enable_cloudflare', false) 
+			&& isset($_SERVER['HTTP_CF_CONNECTING_IP']) 
+			&& !empty($_SERVER['HTTP_CF_CONNECTING_IP'])
+		) {
 			$findIP[]='HTTP_CF_CONNECTING_IP';
 		}
 		
@@ -170,11 +173,10 @@ class CFGP_IP extends CFGP_Global {
 		if( CFGP_U::is_connected() )
 		{
 			$result = NULL;
-			
-			if(function_exists('file_get_contents'))
-			{
-				foreach($external_servers as $server) {
-					$ip = @file_get_contents( $server, false );
+			foreach($external_servers as $server) {					
+				$response = wp_remote_get($server);
+				if ( is_array( $response ) && !is_wp_error( $response ) ) {
+					$ip = $response['body'];
 					if(self::filter($ip)!==false) {
 						return CFGP_Cache::set('IP', $ip);
 					}

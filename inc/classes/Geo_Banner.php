@@ -218,8 +218,9 @@ LIMIT 1
 		if(isset($_COOKIE) && !empty($_COOKIE))
 		{
 			$cookie_name = '__cfgp_seo_' . esc_attr($id) . '_once_';
-			foreach($_COOKIE as $key => $value)
+			foreach( array_keys($_COOKIE) as $key )
 			{
+				$key = sanitize_text_field($key);
 				if(strpos($key, $cookie_name) !== false)
 				{
 					CFGP_U::setcookie($key, CFGP_TIME . '', (CFGP_TIME-((365 * DAY_IN_SECONDS) * 2)));

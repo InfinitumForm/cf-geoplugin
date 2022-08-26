@@ -28,6 +28,11 @@ if(CFGP_U::request_bool('save_defender') && wp_verify_nonce(sanitize_text_field(
 	}
 
 	$updates = [];
+	/*
+	 * Let's read POST, sanitize and save inside database
+	 *
+	 * Santization is added inside CFGP_Options::sanitize();
+	 */
 	foreach( $_POST as $key => $value )
 	{
 		if($key == 'submit') continue;
