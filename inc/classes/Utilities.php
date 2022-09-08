@@ -1782,27 +1782,27 @@ class CFGP_U {
 		}
 		if( $short_name ) {
 			$size = array(
-				__('B', 'cf-geoplugin'),
-				__('KB', 'cf-geoplugin'),
-				__('MB', 'cf-geoplugin'),
-				__('GB', 'cf-geoplugin'),
-				__('TB', 'cf-geoplugin'),
-				__('PB', 'cf-geoplugin'),
-				__('EB', 'cf-geoplugin'),
-				__('ZB', 'cf-geoplugin'),
-				__('YB', 'cf-geoplugin')
+				esc_html__('B', 'cf-geoplugin'),
+				esc_html__('KB', 'cf-geoplugin'),
+				esc_html__('MB', 'cf-geoplugin'),
+				esc_html__('GB', 'cf-geoplugin'),
+				esc_html__('TB', 'cf-geoplugin'),
+				esc_html__('PB', 'cf-geoplugin'),
+				esc_html__('EB', 'cf-geoplugin'),
+				esc_html__('ZB', 'cf-geoplugin'),
+				esc_html__('YB', 'cf-geoplugin')
 			);
 		} else {
 			$size = array(
-				__('byte', 'cf-geoplugin'),
-				__('kilobyte', 'cf-geoplugin'),
-				__('megabyte', 'cf-geoplugin'),
-				__('gigabyte', 'cf-geoplugin'),
-				__('terabyte', 'cf-geoplugin'),
-				__('petabyte', 'cf-geoplugin'),
-				__('exabyte', 'cf-geoplugin'),
-				__('zettabyte', 'cf-geoplugin'),
-				__('yottabyte', 'cf-geoplugin')
+				esc_html__('byte', 'cf-geoplugin'),
+				esc_html__('kilobyte', 'cf-geoplugin'),
+				esc_html__('megabyte', 'cf-geoplugin'),
+				esc_html__('gigabyte', 'cf-geoplugin'),
+				esc_html__('terabyte', 'cf-geoplugin'),
+				esc_html__('petabyte', 'cf-geoplugin'),
+				esc_html__('exabyte', 'cf-geoplugin'),
+				esc_html__('zettabyte', 'cf-geoplugin'),
+				esc_html__('yottabyte', 'cf-geoplugin')
 			);
 		}
 		$factor = floor((strlen($bytes) - 1) / 3);
@@ -1869,11 +1869,7 @@ class CFGP_U {
 			$path = [$path];
 		}
 
-		if( '\\' === DIRECTORY_SEPARATOR ) {
-			$path = array_map(function($include){
-				return str_replace('/', DIRECTORY_SEPARATOR, $include);
-			}, $path);
-		}
+		$path = self::convert_path( $path );
 		
 		$i = 0;
 		foreach($path as $include){
@@ -1898,11 +1894,7 @@ class CFGP_U {
 			$path = [$path];
 		}
 
-		if( '\\' === DIRECTORY_SEPARATOR ) {
-			$path = array_map(function($include){
-				return str_replace('/', DIRECTORY_SEPARATOR, $include);
-			}, $path);
-		}
+		$path = self::convert_path( $path );
 		
 		$i = 0;
 		foreach($path as $include){
@@ -1913,6 +1905,29 @@ class CFGP_U {
 		}
 		
 		return ($i > 0);
+	}
+	
+	
+	/*
+	 * Converts the file path to the format of its environment
+	 *
+	 * @param  $path
+	 *
+	 * @return string
+	 */
+	public static function convert_path ( $path ) {
+		
+		if( '\\' === DIRECTORY_SEPARATOR ) {
+			if( is_array($path) ) {
+				$path = array_map(function($p){
+					return str_replace('/', DIRECTORY_SEPARATOR, $p);
+				}, $path);
+			} else {
+				$path = str_replace('/', DIRECTORY_SEPARATOR, $path);
+			}
+		}
+		
+		return $path;
 	}
 	
 	/*

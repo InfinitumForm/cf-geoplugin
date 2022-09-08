@@ -67,13 +67,6 @@ $wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}cfgp_rest_access_token" );
 $wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}cfgp_seo_redirection" );
 $wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}cfgp_cache" );
 
-// Plugin statistic - remove
-$statistic = rtrim(plugin_dir_path(__FILE__), '/') . '/inc/classes/Statistic.php';
-if( file_exists($statistic) ) {
-	include_once $statistic;
-	CFGP_Anonymous_Statistic::uninstall();
-}
-
 // Remove plugins cache
 if ( is_multisite() && is_main_site() && is_main_network() ) {
 	$wpdb->query("DELETE FROM

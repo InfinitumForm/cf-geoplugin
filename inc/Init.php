@@ -102,7 +102,6 @@ final class CFGP_Init{
 		
 		// Include file classes
 		$includes = apply_filters('cfgp/init/include_classes', array(
-			CFGP_CLASS . '/Statistic.php',				// Plugin statistic
 			CFGP_CLASS . '/Cache.php',					// Memory control class
 			CFGP_CLASS . '/Cache_DB.php',				// Cache control class
 			CFGP_CLASS . '/OS.php',						// Operating System info and tool class
@@ -298,8 +297,6 @@ final class CFGP_Init{
 			self::install_update_database();
 			// Synchronize with old version of the plugin
 			CFGP_Options::sync_with_the_old_version_of_the_plugin();
-			// Plugin statistic
-			CFGP_Anonymous_Statistic::activation( CFGP_Options::get() );
 			// Update plugin version
 			update_option(CFGP_NAME . '-version', CFGP_VERSION, false);
 		});
@@ -333,8 +330,6 @@ final class CFGP_Init{
 				self::install_update_database();
 				// Synchronize with old version of the plugin
 				CFGP_Options::sync_with_the_old_version_of_the_plugin();
-				// Plugin statistic
-				CFGP_Anonymous_Statistic::activation( CFGP_Options::get() );
 				// Update plugin version
 				update_option(CFGP_NAME . '-version', CFGP_VERSION, false);
 				// WP Refresh
@@ -367,9 +362,6 @@ final class CFGP_Init{
 			} else {
 				add_option(CFGP_NAME . '-deactivation', array(date('Y-m-d H:i:s')), false);
 			}
-			
-			// Plugin statistic
-			CFGP_Anonymous_Statistic::deactivation();
 		});
 	}
 	
