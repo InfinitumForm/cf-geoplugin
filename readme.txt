@@ -5,7 +5,7 @@ Tags: geolocation, locator, GeoIP, geo, geotargeting, seo, seo redirect, woocomm
 Requires at least: 5.0
 Tested up to: 6.0
 Requires PHP: 7.0
-Stable tag: 8.3.10
+Stable tag: 8.3.11
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -376,6 +376,9 @@ Please inform us if any of these errors occur via contact form on our website [h
 
 == Changelog ==
 
+= 8.3.11 =
+* Fixing problem with localhost detection
+
 = 8.3.10 =
 * Update trademark names and banners
 * Update plugin security
@@ -437,28 +440,12 @@ Please inform us if any of these errors occur via contact form on our website [h
 
 == Upgrade Notice ==
 
+= 8.3.11 =
+* Fixing problem with localhost detection
+
 = 8.3.10 =
 * Update trademark names and banners
 * Update plugin security
-
-= 8.3.9 =
-* Advanced geolocation for WooCommerce
-* Removed deprecated algorithms
-
-= 8.3.8 =
-* Fixed SEO redirection algorithm
-* Improved memory cleaning
-* Improved site protection algorithm
-* Fixed currency calculator
-* Fixed localhost detection
-* Removed obsolete PHP codes
-* Improved security
-* Improved user interface
-
-= 8.3.7 =
-* Improved hiding of the navigation menu by geolocation
-* Fixed PHP warnings
-* Fixed REST API subversion bugs
 
 == Other Notes ==
 

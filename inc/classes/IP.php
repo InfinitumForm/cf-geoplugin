@@ -392,7 +392,28 @@ class CFGP_IP extends CFGP_Global {
 	 * @return   (bool)   true/false
 	 */
 	public static function is_localhost(){
+		
+		// Cloudflare
+		if( CFGP_Options::get('enable_cloudflare', false)
+			&& isset($_SERVER['HTTP_CF_CONNECTING_IP'])
+			&& !empty($_SERVER['HTTP_CF_CONNECTING_IP'])
+		) {
+			return false;
+		}
+		
+		// Set cache name
 		$cache_name = '__is_localhost';
+		
+		// Get Remote address properly
+		if (filter_has_var(INPUT_SERVER, 'REMOTE_ADDR')) {
+			$ip = filter_input(INPUT_SERVER, 'REMOTE_ADDR', FILTER_VALIDATE_IP);
+		} else if (filter_has_var(INPUT_ENV, 'REMOTE_ADDR')) {
+			$ip = filter_input(INPUT_ENV, 'REMOTE_ADDR', FILTER_VALIDATE_IP);
+		} else if (isset($_SERVER['REMOTE_ADDR'])) {
+			$ip = filter_var($_SERVER['REMOTE_ADDR'], FILTER_VALIDATE_IP);
+		} else {
+			$ip = null;
+		}
 
 		// Return cached proxy
 		if(NULL !== ($is_localhost = CFGP_Cache::get($cache_name, NULL))) {
@@ -401,15 +422,7 @@ class CFGP_IP extends CFGP_Global {
 		
 		$localhost = false;
 
-		if( in_array(($_SERVER['REMOTE_ADDR'] ?? ''), array(
-			'localhost',
-			'127.0.0.1',
-			'::1'
-		) ) ) {
-			$localhost = true;
-		}
-		
-		if( !$localhost && in_array(($_SERVER['SERVER_ADDR'] ?? ''), array(
+		if( in_array($ip, array(
 			'localhost',
 			'127.0.0.1',
 			'::1'
@@ -420,11 +433,10 @@ class CFGP_IP extends CFGP_Global {
 		if( 
 			!$localhost 
 			&& (
-				strpos(($_SERVER['SERVER_ADDR'] ?? ''), '192.168.0.') !== false
-				|| strpos(($_SERVER['SERVER_ADDR'] ?? ''), '192.168.1.') !== false
-				|| strpos(($_SERVER['SERVER_ADDR'] ?? ''), '192.168.2.') !== false
-				|| strpos(($_SERVER['SERVER_ADDR'] ?? ''), '192.168.3.') !== false
-				|| strpos( ($_SERVER['HTTP_HOST'] ?? ''), 'localhost') !== false
+				strpos($ip, '192.168.0.') !== false
+				|| strpos($ip, '192.168.1.') !== false
+				|| strpos($ip, '192.168.2.') !== false
+				|| strpos($ip, '192.168.3.') !== false
 			)
 		) {
 			$localhost = true;

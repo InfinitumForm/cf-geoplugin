@@ -7,7 +7,7 @@
  * Plugin Name:       Geo Controller
  * Plugin URI:        https://cfgeoplugin.com/
  * Description:       Create Dynamic Content, Banners and Images on Your Website Based On Visitor Geo Location By Using Shortcodes With Geo Controller.
- * Version:           8.3.10
+ * Version:           8.3.11
  * Requires at least: 5.0
  * Requires PHP:      7.0
  * Author:            INFINITUM FORM
