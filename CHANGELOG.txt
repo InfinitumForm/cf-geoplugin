@@ -1,5 +1,8 @@
 == Changelog ==
 
+= 8.3.12 =
+* Fixing Currency Converter
+
 = 8.3.11 =
 * Fixing problem with localhost detection
 

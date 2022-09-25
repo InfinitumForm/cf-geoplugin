@@ -1647,9 +1647,9 @@ class CFGP_U {
 	public static function generate_converter_output( $amount, $symbol, $position = 'L', $separator = '' )
 	{
 		if( in_array( strtoupper( $position ), array('L', 'LEFT', 'LEVO') ) !== false ) {
-			return esc_html( sprintf( '%s%s%s', $symbol, $separator, $amount ) );
+			return wp_kses_post( sprintf( '%s%s%s', $symbol, $separator, $amount ) );
 		} else {
-			return esc_html( sprintf( '%s%s%s', $amount, $separator, $symbol ) );
+			return wp_kses_post( sprintf( '%s%s%s', $amount, $separator, $symbol ) );
 		}
 	}
 	

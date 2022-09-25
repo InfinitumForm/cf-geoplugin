@@ -1264,7 +1264,7 @@ LIMIT 1
 		?>
 		<div class="cfgp-card <?php echo esc_attr($class); ?>">
 			<div class="cfgp-card-body">
-				<p class="cfgp-card-text"><?php echo esc_html($message); ?></p>
+				<p class="cfgp-card-text"><?php echo wp_kses_post($message); ?></p>
 			</div>
 		</div>
 		<?php
