@@ -2422,7 +2422,17 @@ class CFGP_U {
 				'data-url' => true,
 				'disabled' => true,
 				'readonly' => true,
-				'checked' => true
+				'checked' => true,
+				'placeholder' => true,
+				'min' => true,
+				'max' => true,
+				'formnovalidate' => true,
+				'formtarget' => true,
+				'formmethod' => true,
+				'formenctype' => true,
+				'formaction' => true,
+				'form' => true,
+				'autocomplete' => true
 			),
 			'textarea' => array(
 				'name' => true,
@@ -2431,7 +2441,9 @@ class CFGP_U {
 				'id' => true,
 				'data-url' => true,
 				'disabled' => true,
-				'readonly' => true
+				'readonly' => true,
+				'placeholder' => true,
+				'autocomplete' => true
 			),
 			'select' => array(
 				'name' => true,
@@ -2439,20 +2451,43 @@ class CFGP_U {
 				'class' => true,
 				'id' => true,
 				'disabled' => true,
-				'readonly' => true
+				'readonly' => true,
+				'placeholder' => true,
+				'autocomplete' => true
 			),
 			'option' => array(
 				'name' => true,
 				'style' => true,
 				'class' => true,
 				'id' => true,
-				'selected' => true
+				'selected' => true,
+				'disabled' => true,
+				'readonly' => true,
+				'autocomplete' => true
 			),
 			'optgroup' => array(
 				'name' => true,
 				'style' => true,
 				'class' => true,
-				'id' => true
+				'id' => true,
+				'placeholder' => true,
+				'disabled' => true,
+				'readonly' => true,
+				'autocomplete' => true
+			),
+			'form' => array(
+				'name' => true,
+				'style' => true,
+				'class' => true,
+				'id' => true,
+				'method' => true,
+				'autocomplete' => true,
+				'disabled' => true,
+				'readonly' => true,
+				'enctype' => true,
+				'novalidate' => true,
+				'rel' => true,
+				'target' => true
 			)
 		));
 		
