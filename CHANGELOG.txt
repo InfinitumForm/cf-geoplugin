@@ -1,5 +1,9 @@
 == Changelog ==
 
+= 8.3.14 =
+* Fixing EU shortcodes
+* Preparing for the APCu caching
+
 = 8.3.13 =
 * Fixing admin form formatting
 

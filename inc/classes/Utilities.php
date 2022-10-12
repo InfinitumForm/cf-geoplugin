@@ -582,7 +582,7 @@ class CFGP_U {
 		
 		// Check good status code
 		if ($safe && ($status < 300 || 399 < $status) ) {
-			new Exception( __( 'HTTP redirect status code must be a redirection code, 3xx.' ) );
+			new Exception( __( 'HTTP redirect status code must be a redirection code, 3xx.', 'cf-geoplugin' ) );
 			return false;
 		}
 		
@@ -2453,7 +2453,11 @@ class CFGP_U {
 				'disabled' => true,
 				'readonly' => true,
 				'placeholder' => true,
-				'autocomplete' => true
+				'autocomplete' => true,
+				'multiple' => true,
+				'data-type' => true,
+				'data-country_codes' => true,
+				'data-placeholder' => true,
 			),
 			'option' => array(
 				'name' => true,

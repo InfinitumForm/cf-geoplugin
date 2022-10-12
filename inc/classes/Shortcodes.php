@@ -322,7 +322,7 @@ class CFGP_Shortcodes extends CFGP_Global {
 			wp_enqueue_script( CFGP_NAME . '-public' );
 		}
 		
-		$exclude = array_map('trim', explode(',','gps,is_vat,is_proxy,is_mobile,in_eu,state,continentCode,areaCode,dmaCode,timezoneName,currencySymbol,currencyConverter'));
+		$exclude = array_map('trim', explode(',','gps,is_vat,is_proxy,is_mobile,is_eu,state,continentCode,areaCode,dmaCode,timezoneName,currencySymbol,currencyConverter'));
 		
 		$generate=[];
 		foreach($CFGEO as $key => $value )
@@ -1562,7 +1562,7 @@ LIMIT 1
 			}
 		}
 		
-		if(isset($CFGEO['in_eu']) && $CFGEO['in_eu'])
+		if(isset($CFGEO['is_eu']) && $CFGEO['is_eu'])
 		{
 			return self::__cache($tag, $content, (array)$array, $default, $cache);
 		}
@@ -1611,9 +1611,9 @@ LIMIT 1
 			}
 		}
 		
-		if(isset($CFGEO['in_eu']))
+		if(isset($CFGEO['is_eu']))
 		{
-			if(!$CFGEO['in_eu'])
+			if(!$CFGEO['is_eu'])
 			{
 				return self::__cache($tag, $content, (array)$array, $default, $cache);
 			}

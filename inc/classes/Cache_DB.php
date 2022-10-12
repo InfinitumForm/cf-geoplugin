@@ -8,7 +8,12 @@
  * @author        Ivijan-Stefan Stipic
  * @version       1.0.0
  *
- * @todo          https://www.php.net/manual/en/function.spl-object-hash.php
+ * @todo:         Hash objects for the better security.
+ *                https://www.php.net/manual/en/function.spl-object-hash.php
+ *
+ * @todo          APCu is an in-memory key-value store for PHP.
+ *                https://www.php.net/manual/en/book.apcu.php
+ *
  */
 if(!class_exists('CFGP_DB_Cache')) : class CFGP_DB_Cache {
 	
