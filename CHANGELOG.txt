@@ -1,5 +1,11 @@
 == Changelog ==
 
+= 8.3.15 =
+* Adding new info box in the settings
+* Adding new support for the GPS extension
+* Adding new function `CFGP_U::array_insert_after_key`
+* Fixing WooCommerce default country address
+
 = 8.3.14 =
 * Fixing EU shortcodes
 * Preparing for the APCu caching

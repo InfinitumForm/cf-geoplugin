@@ -5,7 +5,7 @@ Tags: geolocation, locator, GeoIP, geo, geotargeting, seo, seo redirect, woocomm
 Requires at least: 5.0
 Tested up to: 6.0
 Requires PHP: 7.0
-Stable tag: 8.3.14
+Stable tag: 8.3.15
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -376,6 +376,12 @@ Please inform us if any of these errors occur via contact form on our website [h
 
 == Changelog ==
 
+= 8.3.15 =
+* Adding new info box in the settings
+* Adding new support for the GPS extension
+* Adding new function `CFGP_U::array_insert_after_key`
+* Fixing WooCommerce default country address
+
 = 8.3.14 =
 * Fixing EU shortcodes
 * Preparing for the APCu caching
@@ -449,6 +455,12 @@ Please inform us if any of these errors occur via contact form on our website [h
 * Optimized PHP code
 
 == Upgrade Notice ==
+
+= 8.3.15 =
+* Adding new info box in the settings
+* Adding new support for the GPS extension
+* Adding new function `CFGP_U::array_insert_after_key`
+* Fixing WooCommerce default country address
 
 = 8.3.14 =
 * Fixing EU shortcodes

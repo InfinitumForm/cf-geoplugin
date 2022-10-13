@@ -88,6 +88,7 @@ class CFGP__Plugin__woocommerce extends CFGP_Global
 		// Add Geo plugin to settings
 		$this->add_filter( 'woocommerce_general_settings', 'woocommerce_general_settings', 10, 2 );
 		// Apply geolocation to woocommerce
+		
 		if('cf_geoplugin' === get_option( 'woocommerce_default_customer_address' )) {
 			$this->add_filter( 'woocommerce_get_geolocation', 'woocommerce_get_geolocation', 10, 2 );
 			$this->add_filter( 'woocommerce_geolocation_ajax_get_location_hash', 'woocommerce_geolocation_ajax_get_location_hash', 10, 1 );
@@ -145,13 +146,18 @@ class CFGP__Plugin__woocommerce extends CFGP_Global
 			$customer = WC()->customer;
 		}
 
-		if ( empty( $customer ) ) {
+		if ( !empty( $customer ) && $customer->get_id() ) {
+			// Void
+		} else {
 			$location = array(
 				CFGP_U::api('country_code'),
 				CFGP_U::api('region'),
 				CFGP_U::api('postcode'),
 				CFGP_U::api('city')
 			);
+			
+			WC()->customer->set_billing_country(CFGP_U::api('country_code'));
+			WC()->customer->set_shipping_country(CFGP_U::api('country_code'));
 		}
 		
 		return $location;
