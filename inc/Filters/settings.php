@@ -606,7 +606,7 @@ add_filter('cfgp/settings', function($options=[]){
 							'name' => 'map_api_key',
 							'label' => __('Google Map API Key', 'cf-geoplugin'),
 							'type' => 'text',
-							'desc' => __('In some countries Google Maps JavaScript API applications require authentication.', 'cf-geoplugin'),
+							'desc' => __('Google Maps JavaScript API applications require authentication.', 'cf-geoplugin'),
 							'default' => '',
 							'attr' => array(
 								'autocomplete'=>'off',
@@ -756,4 +756,4 @@ add_filter('cfgp/settings', function($options=[]){
 
 	return $options;
 	
-},1,0);
+},1,1);

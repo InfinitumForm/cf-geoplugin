@@ -68,6 +68,12 @@ $options = apply_filters('cfgp/settings', []);
 <?php
 switch($input['type'])
 {
+	### INFOBOX
+	case 'info': if(isset($input['info'])) : ?>
+	<div class="cfgp-field-description cfgp-field-description-<?php echo esc_attr($input['type']); ?>"><?php echo wp_kses_post($input['info']); ?></div>
+	<?php endif; break;
+	
+	
 	### RADIO
 	case 'radio':
 	$default = CFGP_Options::get($input['name'], (isset($input['default']) ? $input['default'] : ''));

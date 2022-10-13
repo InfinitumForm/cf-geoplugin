@@ -2497,5 +2497,42 @@ class CFGP_U {
 		
 		return apply_filters('cfgp/allowed_html_tags_for_page', $wp_kses_allowed_html);
 	}
+	
+	/*
+	 * Insert object after defined object in array
+	 *
+	 * @return array
+	 */
+	function array_insert_after_key($current_array, $insert_after_index, $new_array) {
+		// Only if is array
+		if ( is_array($current_array) ) {
+			// New collections
+			$return_array = [];
+			// Let's search
+			$i = 0;
+			foreach ($current_array as $key => $obj) {
+				if(is_numeric($key)) {
+					$key = ($key+$i);
+				}
+				// Save current
+				$return_array[$key] = $obj;
+				// Append
+				if($key == $insert_after_index) {
+					foreach($new_array as $new_key => $new_obj) {						
+						if(is_numeric($key)) {
+							++$i;
+							$return_array[$key+$i] = $new_obj;
+						} else {
+							$return_array[$new_key] = $new_obj;
+						}
+					}
+				}
+			}
+			// Return new aray
+			return $return_array;
+		}
+		// Let's keep same data
+		return $current_array;
+	}
 }
 endif;
