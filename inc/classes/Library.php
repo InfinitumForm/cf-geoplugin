@@ -185,7 +185,8 @@ class CFGP_Library {
 		$response = wp_remote_get(
 			CFGP_Defaults::API[(CFGP_Options::get('enable_ssl', 0) ? 'ssl_' : '') . 'countries'],
 			array(
-				'Content-Type' => 'application/json; charset=utf-8'
+				'Content-Type' => 'application/json; charset=utf-8',
+				'timeout'     => 60
 			)
 		);
 		if ( is_array( $response ) && ! is_wp_error( $response ) ) {
@@ -273,7 +274,8 @@ class CFGP_Library {
 		$response = wp_remote_get(
 			CFGP_Defaults::API[(CFGP_Options::get('enable_ssl', 0) ? 'ssl_' : '') . 'regions'] . '/' . $countries,
 			array(
-				'Content-Type' => 'application/json; charset=utf-8'
+				'Content-Type' => 'application/json; charset=utf-8',
+				'timeout'     => 60
 			)
 		);
 		
@@ -372,7 +374,8 @@ class CFGP_Library {
 		$response = wp_remote_get(
 			CFGP_Defaults::API[(CFGP_Options::get('enable_ssl', 0) ? 'ssl_' : '') . 'cities'] . '/' . $countries,
 			array(
-				'Content-Type' => 'application/json; charset=utf-8'
+				'Content-Type' => 'application/json; charset=utf-8',
+				'timeout'     => 120
 			)
 		);
 		

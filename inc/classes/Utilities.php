@@ -2432,7 +2432,13 @@ class CFGP_U {
 				'formenctype' => true,
 				'formaction' => true,
 				'form' => true,
-				'autocomplete' => true
+				'autocomplete' => true,
+				'tabindex' => true,
+				'aria-hidden' => true,
+				'aria-help' => true,
+				'aria-label' => true,
+				'aria-expanded' => true,
+				'role' => true
 			),
 			'textarea' => array(
 				'name' => true,
@@ -2443,7 +2449,13 @@ class CFGP_U {
 				'disabled' => true,
 				'readonly' => true,
 				'placeholder' => true,
-				'autocomplete' => true
+				'autocomplete' => true,
+				'tabindex' => true,
+				'aria-hidden' => true,
+				'aria-help' => true,
+				'aria-label' => true,
+				'aria-expanded' => true,
+				'role' => true
 			),
 			'select' => array(
 				'name' => true,
@@ -2458,6 +2470,13 @@ class CFGP_U {
 				'data-type' => true,
 				'data-country_codes' => true,
 				'data-placeholder' => true,
+				'data-select2-id' => true,
+				'tabindex' => true,
+				'aria-hidden' => true,
+				'aria-help' => true,
+				'aria-label' => true,
+				'aria-expanded' => true,
+				'role' => true
 			),
 			'option' => array(
 				'name' => true,
@@ -2467,7 +2486,15 @@ class CFGP_U {
 				'selected' => true,
 				'disabled' => true,
 				'readonly' => true,
-				'autocomplete' => true
+				'autocomplete' => true,
+				'value' => true,
+				'data-select2-id' => true,
+				'tabindex' => true,
+				'aria-hidden' => true,
+				'aria-help' => true,
+				'aria-label' => true,
+				'aria-expanded' => true,
+				'role' => true
 			),
 			'optgroup' => array(
 				'name' => true,
@@ -2477,7 +2504,14 @@ class CFGP_U {
 				'placeholder' => true,
 				'disabled' => true,
 				'readonly' => true,
-				'autocomplete' => true
+				'autocomplete' => true,
+				'value' => true,
+				'tabindex' => true,
+				'aria-hidden' => true,
+				'aria-help' => true,
+				'aria-label' => true,
+				'aria-expanded' => true,
+				'role' => true
 			),
 			'form' => array(
 				'name' => true,
@@ -2491,7 +2525,13 @@ class CFGP_U {
 				'enctype' => true,
 				'novalidate' => true,
 				'rel' => true,
-				'target' => true
+				'target' => true,
+				'tabindex' => true,
+				'aria-hidden' => true,
+				'aria-help' => true,
+				'aria-label' => true,
+				'aria-expanded' => true,
+				'role' => true
 			)
 		));
 		

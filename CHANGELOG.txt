@@ -1,5 +1,9 @@
 == Changelog ==
 
+= 8.3.16 =
+* Fixed database cache
+* Improved and optimized location search system
+
 = 8.3.15 =
 * Adding new info box in the settings
 * Adding new support for the GPS extension

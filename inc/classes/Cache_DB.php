@@ -280,7 +280,7 @@ if(!class_exists('CFGP_DB_Cache')) : class CFGP_DB_Cache {
 			dbDelta("
 			CREATE TABLE IF NOT EXISTS {$wpdb->cfgp_cache} (
 				`key` varchar(255) NOT NULL,
-				`value` text NOT NULL,
+				`value` longtext NOT NULL,
 				`expire` int(11) NOT NULL DEFAULT 0,
 				UNIQUE KEY `cache_key` (`key`),
 				KEY `cache_expire` (`expire`)

@@ -413,6 +413,12 @@ final class CFGP_Init{
 				}
 			}
 			
+			## Let's update cache database
+			if( CFGP_DB_Cache::table_exists() && version_compare(CFGP_DATABASE_VERSION, '1.0.3', '>=')) {
+				$wpdb->query( "ALTER TABLE `{$wpdb->prefix}cfgp_cache` MODIFY `value` LONGTEXT" );
+				$wpdb->query( "DELETE FROM `{$wpdb->prefix}cfgp_cache` WHERE (`key` LIKE 'library_get_%' OR `key` = 'cfgp-rss' OR `key` = 'cfgp-dashboard-rss')" );
+			}
+			
 			// Update database version
 			update_option(CFGP_NAME . '-db-version', CFGP_DATABASE_VERSION, false);
 		}
