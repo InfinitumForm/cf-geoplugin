@@ -388,22 +388,24 @@ function CF_GeoPlugin_Google_Map_GeoTag() {
 	?>
 <div class="cfgp-container cfgp-repeater">
 	<?php foreach($seo_redirection as $i=>$data):
-		$country 	= sanitize_text_field(isset($data['country']) ? $data['country'] : '');
-		$region 	= sanitize_text_field(isset($data['region']) ? $data['region'] : '');
-		$city 		= sanitize_text_field(isset($data['city']) ? $data['city'] : '');
-		$postcode 	= sanitize_text_field(isset($data['postcode']) ? $data['postcode'] : '');
-		$url 		= sanitize_text_field(isset($data['url']) ? $data['url'] : '');
-		$http_code 	= sanitize_text_field(isset($data['http_code']) ? $data['http_code'] : 302);
-		$only_once 	= sanitize_text_field(isset($data['only_once']) ? $data['only_once'] : 0);
-		$active 	= sanitize_text_field(isset($data['active']) ? $data['active'] : 1);
-		$search_type = sanitize_text_field(isset($data['search_type']) ? $data['search_type'] : 'exact');
+	
+		$country 	= array_map('sanitize_text_field', $data['country'] ?? []);
+		$region 	= array_map('sanitize_text_field', $data['region'] ?? []);
+		$city 		= array_map('sanitize_text_field', $data['city'] ?? []);
+		$postcode 	= array_map('sanitize_text_field', $data['postcode'] ?? []);
 		
-		$exclude_country = sanitize_text_field(isset($data['exclude_country']) ? $data['exclude_country'] : NULL);
-		$exclude_region = sanitize_text_field(isset($data['exclude_region']) ? $data['exclude_region'] : NULL);
-		$exclude_city = sanitize_text_field(isset($data['exclude_city']) ? $data['exclude_city'] : NULL);
-		$exclude_postcode = sanitize_text_field(isset($data['exclude_postcode']) ? $data['exclude_postcode'] : NULL);
+		$url 		= sanitize_text_field($data['url'] ?? '');
+		$http_code 	= sanitize_text_field($data['http_code'] ?? 302);
+		$only_once 	= sanitize_text_field($data['only_once'] ?? 0);
+		$active 	= sanitize_text_field($data['active'] ?? 1);
+		$search_type = sanitize_text_field($data['search_type'] ?? 'exact');
+		
+		$exclude_country = sanitize_text_field($data['exclude_country'] ?? NULL);
+		$exclude_region = sanitize_text_field($data['exclude_region'] ?? NULL);
+		$exclude_city = sanitize_text_field($data['exclude_city'] ?? NULL);
+		$exclude_postcode = sanitize_text_field($data['exclude_postcode'] ?? NULL);
 	?>
-    <div class="cfgp-row cfgp-repeater-item cfgp-country-region-city-multiple-form">
+    <div class="cfgp-row cfgp-repeater-item cfgp-country-region-city-multiple-form" data-id="<?php echo absint($i); ?>">
         <div class="cfgp-col cfgp-col-4">
             <label for="country"><?php _e('Choose Countries', 'cf-geoplugin'); ?></label>
             <?php CFGP_Form::select_countries(array('name'=>"{$this->metabox}[{$i}][country]", 'id'=>"{$this->metabox}-{$i}-country"), $country, true);?>

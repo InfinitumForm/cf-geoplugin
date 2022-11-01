@@ -3,9 +3,9 @@ Contributors: ivijanstefan, creativform
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=creativform@gmail.com
 Tags: geolocation, locator, GeoIP, geo, geotargeting, seo, seo redirect, woocommerce, include exclude, content, remove content, show hide, covid
 Requires at least: 5.0
-Tested up to: 6.0
+Tested up to: 6.1
 Requires PHP: 7.0
-Stable tag: 8.3.16
+Stable tag: 8.3.17
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -376,6 +376,11 @@ Please inform us if any of these errors occur via contact form on our website [h
 
 == Changelog ==
 
+= 8.3.17 =
+* Added support for the WordPress 6.1
+* Fixed metaboxes in repeater
+* Optimized PHP code
+
 = 8.3.16 =
 * Fixed database cache
 * Improved and optimized location search system
@@ -460,32 +465,14 @@ Please inform us if any of these errors occur via contact form on our website [h
 
 == Upgrade Notice ==
 
+= 8.3.17 =
+* Added support for the WordPress 6.1
+* Fixed metaboxes in repeater
+* Optimized PHP code
+
 = 8.3.16 =
 * Fixed database cache
 * Improved and optimized location search system
-
-= 8.3.15 =
-* Adding new info box in the settings
-* Adding new support for the GPS extension
-* Adding new function `CFGP_U::array_insert_after_key`
-* Fixing WooCommerce default country address
-
-= 8.3.14 =
-* Fixing EU shortcodes
-* Preparing for the APCu caching
-
-= 8.3.13 =
-* Fixing admin form formatting
-
-= 8.3.12 =
-* Fixing Currency Converter
-
-= 8.3.11 =
-* Fixing problem with localhost detection
-
-= 8.3.10 =
-* Update trademark names and banners
-* Update plugin security
 
 == Other Notes ==
 

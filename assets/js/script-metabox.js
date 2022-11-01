@@ -176,10 +176,11 @@
 	.on('click', '.cfgp-add-seo-redirection', function(e){
 		e.preventDefault();
 		var $this = $(this),
-			$item = $this.closest('.cfgp-repeater-item'),
-			$repeater  = $item.closest('.cfgp-repeater'),
-			$template = $repeater.find('.cfgp-repeater-item:first-child').html(),
-			$index = $repeater.find('.cfgp-repeater-item').length;
+			$current_item = $this.closest('.cfgp-repeater-item'),
+			$repeater  = $current_item.closest('.cfgp-repeater'),
+			$items = $('.cfgp-repeater-item', $repeater)
+			$template = $($items[0]).html(),
+			$index = $items.length;
 		
 		// Set new indexes
 		$template = $template.replace(/(\[0\])/gi, '[' + $index + ']');
@@ -187,7 +188,7 @@
 		$template = $template.replace(/(_0_)/gi, '_' + $index + '_');
 		
 		// Generate new HTML
-		var $html = $('<div/>').addClass('cfgp-row cfgp-repeater-item cfgp-country-region-city-multiple-form').html($template);
+		var $html = $('<div/>').addClass('cfgp-row cfgp-repeater-item cfgp-country-region-city-multiple-form').attr('data-id', $index).html($template);
 		
 		// Clean data
 		$html.find('select').each(function(){
@@ -216,8 +217,33 @@
 	.on('click', '.cfgp-remove-seo-redirection', function(e){
 		e.preventDefault();
 		var $this = $(this),
-			$item = $this.closest('.cfgp-repeater-item');
-		$item.remove();
+			$items = $this.closest('.cfgp-repeater').find('.cfgp-repeater-item'),
+			$current_item = $this.closest('.cfgp-repeater-item'),
+			$index = $current_item.attr('data-id');
+		
+		if($items.length > 1) {
+			$current_item.remove();
+		} else {
+			// Clean data
+			$current_item.find('select').each(function(){
+				$(this).find('option:selected').removeAttr('selected').prop('selected', false);
+			});
+			$current_item.find('input[type="url"], input[type="text"]').val('');
+			$current_item.find('input[type="checkbox"]').prop('checked', false);
+			
+			// Remove select2
+			$current_item.find('.cfgp_select2').select2().select2('destroy');
+			$current_item.find('.select2').remove();
+			
+			// Assign new values
+			$current_item.find('select#cfgp-seo-redirection-' + $index + '-http_code').val(302);
+			$current_item.find('select#cfgp-seo-redirection-' + $index + '-country').removeClass('select2-hidden-accessible').attr('data-country_codes','');
+			$current_item.find('select#cfgp-seo-redirection-' + $index + '-region').removeClass('select2-hidden-accessible').attr('data-country_codes','').html('');
+			$current_item.find('select#cfgp-seo-redirection-' + $index + '-city').removeClass('select2-hidden-accessible').attr('data-country_codes','').html('');
+			
+			// Append and load select2
+			select2_init();
+		}
 	})
 	
 	// Enable GEO Tags

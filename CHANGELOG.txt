@@ -1,5 +1,10 @@
 == Changelog ==
 
+= 8.3.17 =
+* Added support for the WordPress 6.1
+* Fixed metaboxes in repeater
+* Optimized PHP code
+
 = 8.3.16 =
 * Fixed database cache
 * Improved and optimized location search system

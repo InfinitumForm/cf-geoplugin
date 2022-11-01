@@ -420,7 +420,7 @@ class CFGP_Form {
 				$attr['id'] = $id . '-' . $i;
 				$attr['value'] = $val;
 				$attributes = self::parse_attributes($attr);
-				$control = ($checked === $val ? ' checked' : '').(($disabled === true) || ($disabled === $val) ? ' disabled' : '');
+				$control = ($checked == $val ? ' checked' : '').(($disabled === true) || ($disabled === $val) ? ' disabled' : '');
 				$label_class = 'cfgp-form-radio' . $control;
 				$radio = "<label for=\"{$attr['id']}\" class=\"{$label_class}\"><input {$attributes}{$control}> <span>{$name}</span></label>";
 				$input_radio[] = apply_filters('cfgp/form/radio/input/raw', $radio, $val, $name, $control);
