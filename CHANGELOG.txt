@@ -1,5 +1,8 @@
 == Changelog ==
 
+= 8.3.18 =
+* Optimized plugin cache
+
 = 8.3.17 =
 * Added support for the WordPress 6.1
 * Fixed metaboxes in repeater

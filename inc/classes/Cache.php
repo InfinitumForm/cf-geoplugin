@@ -31,14 +31,14 @@ if(!class_exists('CFGP_Cache')) : class CFGP_Cache {
 	 * This function adds data to the cache if the cache key doesn’t already exist.
 	 * If it does exist, the data is not added and the function returns old value
 	 */
-    public static function add($key, $value) {
-		self::garbage_cleaner();
+     public static function add($key, $value) {
 		$key = self::key($key);
 		if(!isset(self::$cache[ $key ])) {
+			self::garbage_cleaner();
 			self::$cache[ $key ] = $value;
 		}
 		return self::$cache[ $key ];
-    }
+	}
 
 	/*
 	 * Save object to cache
@@ -47,11 +47,11 @@ if(!class_exists('CFGP_Cache')) : class CFGP_Cache {
 	 * if not then it will be created.
 	 */
     public static function set($key, $value, $expire=0) {
-		self::garbage_cleaner();
 		$key = self::key($key);
+		self::garbage_cleaner();
 		self::$cache[ $key ] = $value;
 		return self::$cache[ $key ];
-    }
+	}
 	
 	/*
 	 * Replace cached object
@@ -60,11 +60,11 @@ if(!class_exists('CFGP_Cache')) : class CFGP_Cache {
 	 */
     public static function replace($key, $value, $expire=0) {
 		$key = self::key($key);
-        if(isset(self::$cache[ $key ])) {
+		if(isset(self::$cache[ $key ])) {
 			self::$cache[ $key ] = $value;
 		}
 		return self::$cache[ $key ];
-    }
+	}
 	
 	/*
 	 * Delete cached object
