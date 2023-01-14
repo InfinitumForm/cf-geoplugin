@@ -69,7 +69,7 @@ if($NEW_API = CFGP_API::lookup(CFGP_U::request_string('cfgp_lookup'))){
                                 </thead>
                                 <tbody>
                                     <?php foreach(apply_filters('cfgp/table/debug', array_merge(
-										array('cfgeo_flag' => CFGP_U::admin_country_flag($API['country_code'])), 
+										array('cfgeo_flag' => CFGP_U::admin_country_flag($API['country_code'] ?? NULL)), 
 										$API
 									), $API) as $key => $value) : if(in_array($key, $remove_tags)) continue; ?>
                                     <tr>
@@ -131,15 +131,29 @@ if($NEW_API = CFGP_API::lookup(CFGP_U::request_string('cfgp_lookup'))){
                                         <td><?php echo esc_html( CFGP_U::get_host(true) ); ?></td>
                                         <td><?php _e( 'Server Host Name', 'cf-geoplugin'); ?></td>
                                     </tr>
-                                    <tr>
-                                        <td><strong><?php _e( 'Version', 'cf-geoplugin'); ?></strong></td>
-                                        <td><?php echo esc_html( CFGP_VERSION ); ?></td>
-                                        <td><?php _e( 'Geo Controller Version', 'cf-geoplugin'); ?></td>
-                                    </tr>
-                                    <tr>
+									<tr>
                                         <td><strong><?php _e( 'Email' ); ?></strong></td>
                                         <td><?php echo esc_html( get_bloginfo( 'admin_email' ) ); ?></td>
                                         <td><?php _e('Admin e-mail address.', 'cf-geoplugin'); ?> <?php _e('Only reason why we collect your email address is because plugin support and robot prevention. Your email address will NOT be spammed or shared with 3rd party in any case and you can any time request from us on email <a href="mailto:support@cfgeoplugin.com">support@cfgeoplugin.com</a> to remove your all personal data from our system by GDPR rules.', 'cf-geoplugin'); ?></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong><?php _e( 'Plugin Version', 'cf-geoplugin'); ?></strong></td>
+                                        <td><?php echo esc_html( CFGP_VERSION ); ?></td>
+                                        <td><?php _e( 'Geo Controller Version', 'cf-geoplugin'); ?></td>
+                                    </tr>
+									<tr>
+                                        <td><strong><?php _e( 'WordPress Version', 'cf-geoplugin'); ?></strong></td>
+                                        <td><?php echo esc_html( get_bloginfo( 'version' ) ); ?></td>
+                                        <td><?php _e( 'We use the WordPress version for statistics and debugging.', 'cf-geoplugin'); ?></td>
+                                    </tr>
+									<tr>
+                                        <td><strong><?php _e( 'Spam Check', 'cf-geoplugin'); ?></strong></td>
+                                        <td><?php echo esc_html( ( (
+											CFGP_Options::get('enable_spam_ip', 0) 
+											&& CFGP_Options::get('enable_defender', 0) 
+											&& CFGP_License::level( CFGP_Options::get('license_sku') ) > 0 
+										) ? 'true' : 'false' ) ); ?></td>
+                                        <td><?php _e( 'Sends a parameter that triggers a spam check on the site.', 'cf-geoplugin'); ?></td>
                                     </tr>
                                     <tr>
                                         <td><strong><?php _e( 'License', 'cf-geoplugin'); ?></strong></td>
@@ -155,7 +169,7 @@ if($NEW_API = CFGP_API::lookup(CFGP_U::request_string('cfgp_lookup'))){
 											if(CFGP_DEFENDER_ACTIVATED)
 												_e( 'Lifetime', 'cf-geoplugin');
 											else
-												echo ( !empty( $CF_GEOPLUGIN_OPTIONS['license_expire'] ) ? '<br><small>('.__( 'License Expire', 'cf-geoplugin') . ': <b>' . esc_html(date("r",$CF_GEOPLUGIN_OPTIONS['license_expire'])).'</b>)</small>' : '' )
+												echo ( !empty( CFGP_License::expire_date() ) ? '<br><small>('.__( 'License Expire', 'cf-geoplugin') . ': <b>' . esc_html(date("r", CFGP_License::expire_date())).'</b>)</small>' : '' )
 										?>
 										</td>
                                     </tr>
@@ -326,15 +340,15 @@ if($NEW_API = CFGP_API::lookup(CFGP_U::request_string('cfgp_lookup'))){
                         <?php if( CFGP_Options::get('enable_gmap', 0) ): ?>
                         <div class="cfgp-tab-panel" id="google-map">
                         <?php
-                        	echo do_shortcode( '[cfgeo_map width="100%" height="600px" longitude="'.esc_attr( $API['longitude'] ).'" latitude="'.esc_attr( $API['latitude'] ).'"]
+                        	echo do_shortcode( '[cfgeo_map width="100%" height="600px" longitude="'.esc_attr( $API['longitude']??NULL ).'" latitude="'.esc_attr( $API['latitude']??NULL ).'"]
 								<address>
-									<strong><big>'.CFGP_U::admin_country_flag($API['country_code']).' '.esc_html($API['ip']).'</big></strong><br /><br />
-									'.esc_html($API['city']).'<br />
-									'.esc_html($API['region']).(!empty($API['region_code'])?' ('.$API['region_code'].')':'').'<br />
-									'.esc_html($API['country']).'<br />
-									'.esc_html($API['continent']).(!empty($API['country_code'])?' ('.esc_html($API['country_code']).')':'').'<br /><br />
-									'.esc_html($API['longitude'].', '.$API['latitude']).'<br /><br />
-									'.esc_html($API['timezone']).'
+									<strong><big>'.CFGP_U::admin_country_flag($API['country_code']??NULL).' '.esc_html($API['ip']??NULL).'</big></strong><br /><br />
+									'.esc_html($API['city']??NULL).'<br />
+									'.esc_html($API['region']??NULL).(!empty($API['region_code']??NULL)?' ('.$API['region_code']??NULL.')':'').'<br />
+									'.esc_html($API['country']??NULL).'<br />
+									'.esc_html($API['continent']??NULL).(!empty($API['country_code']??NULL)?' ('.esc_html($API['country_code']??NULL).')':'').'<br /><br />
+									'.esc_html($API['longitude']??NULL.', '.$API['latitude']??NULL).'<br /><br />
+									'.esc_html($API['timezone']??NULL).'
 								</address>
 							[/cfgeo_map]' );
 						?>

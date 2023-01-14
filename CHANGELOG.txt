@@ -1,5 +1,8 @@
 == Changelog ==
 
+= 8.3.19 =
+* Fixed bugs inside debugger
+
 = 8.3.18 =
 * Optimized plugin cache
 
