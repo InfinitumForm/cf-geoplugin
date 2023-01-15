@@ -144,7 +144,7 @@ class CFGP_Admin extends CFGP_Global {
 	public function ajax__rss_feed () {
 		$RSS = CFGP_DB_Cache::get('cfgp-rss');
 		if( !empty($RSS) ) {
-			echo wp_kses_post($RSS);
+			echo wp_kses_post($RSS ?? '');
 			exit;
 		} else {
 			$RSS = $DASH_RSS = [];
@@ -208,7 +208,7 @@ class CFGP_Admin extends CFGP_Global {
 			{
 				$RSS = join("\r\n", $RSS);
 				CFGP_DB_Cache::set('cfgp-rss', $RSS, (MINUTE_IN_SECONDS * CFGP_SESSION));
-				echo wp_kses_post($RSS);
+				echo wp_kses_post($RSS ?? '');
 				exit;
 			}
 		}
@@ -220,7 +220,7 @@ class CFGP_Admin extends CFGP_Global {
 	public function ajax__dashboard_rss_feed () {
 		$DASH_RSS = CFGP_DB_Cache::get('cfgp-dashboard-rss');
 		if( !empty($DASH_RSS) ) {
-			echo wp_kses_post($DASH_RSS);
+			echo wp_kses_post($DASH_RSS ?? '');
 			exit;
 		} else {
 			$RSS = $DASH_RSS = [];
@@ -239,7 +239,7 @@ class CFGP_Admin extends CFGP_Global {
 						$post->post_title = sanitize_text_field($post->post_title ?? NULL);
 						$post->post_date_gmt = sanitize_text_field($post->post_date_gmt ?? NULL);
 						$post->post_image_medium = sanitize_url($post->post_image_medium ?? NULL);
-						$post->post_excerpt = wp_kses_post(sanitize_textarea_field($post->post_excerpt ?? NULL));
+						$post->post_excerpt = wp_kses_post(sanitize_textarea_field($post->post_excerpt ?? ''));
 						
 						$DASH_RSS[]=sprintf('<li><a href="%1$s" target="_blank">%2$s</a></li>', esc_url($post->post_url), esc_html($post->post_title));
 						
@@ -291,7 +291,7 @@ class CFGP_Admin extends CFGP_Global {
 			{
 				$DASH_RSS = '<ul class="rss-widget">' . join("\r\n", $DASH_RSS) . '</ul>';
 				CFGP_DB_Cache::set('cfgp-dashboard-rss', $DASH_RSS, (MINUTE_IN_SECONDS * CFGP_SESSION));
-				echo wp_kses_post($DASH_RSS);
+				echo wp_kses_post($DASH_RSS ?? '');
 				exit;
 			}
 		}

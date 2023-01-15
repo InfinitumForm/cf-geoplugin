@@ -70,7 +70,7 @@ switch($input['type'])
 {
 	### INFOBOX
 	case 'info': if(isset($input['info'])) : ?>
-	<div class="cfgp-field-description cfgp-field-description-<?php echo esc_attr($input['type']); ?>"><?php echo wp_kses_post($input['info']); ?></div>
+	<div class="cfgp-field-description cfgp-field-description-<?php echo esc_attr($input['type']); ?>"><?php echo wp_kses_post($input['info'] ?? ''); ?></div>
 	<?php endif; break;
 	
 	
@@ -102,7 +102,7 @@ switch($input['type'])
         ?>><?php echo esc_html($name); ?>
     </span>
 	<?php endforeach; if(isset($input['info']) && !empty($input['info'])) : 
-		?><br><div class="cfgp-field-description cfgp-field-description-<?php echo esc_attr($input['type']); ?>"><?php echo wp_kses_post($input['info']); ?></div><?php 
+		?><br><div class="cfgp-field-description cfgp-field-description-<?php echo esc_attr($input['type']); ?>"><?php echo wp_kses_post($input['info'] ?? ''); ?></div><?php 
 	endif; endif; break;
 
 
@@ -140,7 +140,7 @@ switch($input['type'])
         ?>><?php echo esc_html($object['label']); ?>
     </span>
 	<?php endforeach; if(isset($input['info']) && !empty($input['info'])) : 
-		?><br><div class="cfgp-field-description cfgp-field-description-<?php echo esc_attr($input['type']); ?>"><?php echo wp_kses_post($input['info']); ?></div><?php 
+		?><br><div class="cfgp-field-description cfgp-field-description-<?php echo esc_attr($input['type']); ?>"><?php echo wp_kses_post($input['info'] ?? ''); ?></div><?php 
 	endif; endif; break;
 	
 	### INPUT
@@ -172,7 +172,7 @@ switch($input['type'])
 		echo (isset($input['disabled']) && $input['disabled'] ? ' disabled' : '');
 	?>>
 	<?php if(isset($input['info']) && !empty($input['info'])) : 
-		?><br><div class="cfgp-field-description cfgp-field-description-<?php echo esc_attr($input['type']); ?>"><?php echo wp_kses_post($input['info']); ?></div><?php 
+		?><br><div class="cfgp-field-description cfgp-field-description-<?php echo esc_attr($input['type']); ?>"><?php echo wp_kses_post($input['info'] ?? ''); ?></div><?php 
 	endif; ?>
 	<?php break;
 	
@@ -196,9 +196,9 @@ switch($input['type'])
 		
 		echo (isset($input['readonly']) && $input['readonly'] ? ' readonly' : '');
 		echo (isset($input['disabled']) && $input['disabled'] ? ' disabled' : '');
-	?>><?php echo wp_kses_post($default); ?></textarea>
+	?>><?php echo wp_kses_post($default ?? ''); ?></textarea>
 	<?php if(isset($input['info']) && !empty($input['info'])) : 
-		?><br><div class="cfgp-field-description cfgp-field-description-<?php echo esc_attr($input['type']); ?>"><?php echo wp_kses_post($input['info']); ?></div><?php 
+		?><br><div class="cfgp-field-description cfgp-field-description-<?php echo esc_attr($input['type']); ?>"><?php echo wp_kses_post($input['info'] ?? ''); ?></div><?php 
 	endif; ?>
 	<?php break;
 	
@@ -228,7 +228,7 @@ switch($input['type'])
     <?php endforeach; ?>
     </select>
 	<?php if(isset($input['info']) && !empty($input['info'])) : 
-		?><br><div class="cfgp-field-description cfgp-field-description-<?php echo esc_attr($input['type']); ?>"><?php echo wp_kses_post($input['info']); ?></div><?php 
+		?><br><div class="cfgp-field-description cfgp-field-description-<?php echo esc_attr($input['type']); ?>"><?php echo wp_kses_post($input['info'] ?? ''); ?></div><?php 
 	endif; ?>
 	<?php break;
 	
@@ -258,7 +258,7 @@ switch($input['type'])
     <?php endforeach; ?>
     </select>
 	<?php if(isset($input['info']) && !empty($input['info'])) : 
-		?><br><div class="cfgp-field-description cfgp-field-description-<?php echo esc_attr($input['type']); ?>"><?php echo wp_kses_post($input['info']); ?></div><?php 
+		?><br><div class="cfgp-field-description cfgp-field-description-<?php echo esc_attr($input['type']); ?>"><?php echo wp_kses_post($input['info'] ?? ''); ?></div><?php 
 	endif; ?>
 	<?php break;
 }

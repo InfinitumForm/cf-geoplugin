@@ -51,12 +51,12 @@ if( CFGP_U::api('available_lookup') != 'lifetime' ) :
 		$select_options[]=sprintf(
 			'<label for="%1$s"><input type="radio" name="license_sku" id="%1$s" value="%3$s" data-url="%4$s"%5$s><div class="cfgp-form-product-checkbox-item"><h3>%2$s</h3><h4>%7$s:</h4><span class="cfgp-form-product-checkbox-price">%6$s</span></div><small><a href="%4$s" target="_blank">%8$s</a></small></label>',
 			esc_attr($product['slug']),
-			wp_kses_post($name),
+			wp_kses_post($name ?? ''),
 			esc_attr($product['sku']),
 			(!empty($product['url']) ? esc_url($product['url']) : 'javascript:void();'),
 			(CFGP_License::get('sku', CFGP_U::request_string('license_sku')) == $product['sku'] ? ' checked' : '')
 			.(CFGP_License::activated() || CFGP_IP::is_localhost() ? ' disabled' : ''),
-			wp_kses_post($price),
+			wp_kses_post($price ?? ''),
 			__('Price', 'cf-geoplugin'),
 			(!empty($product['url']) ? (CFGP_DEV_MODE && $product['sku']=='CFGEODEV' ? __('You must become a developer for this license', 'cf-geoplugin') : __('Learn more about this product', 'cf-geoplugin')) : '')
 		);

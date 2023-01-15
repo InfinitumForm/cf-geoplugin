@@ -217,7 +217,7 @@ class CFGP_API extends CFGP_Global {
 				);
 
 				// If there is a error, display it
-				if(($response['error'] ?? NULL)===true) {
+				if(($response['error'] ?? '')===true) {
 					return $response;
 				}
 				
@@ -247,7 +247,7 @@ class CFGP_API extends CFGP_Global {
 				// Escaping strings
 				foreach($response as $key=>$value) {
 					if( in_array($key, array('credit','error_message')) ) {
-						$response[$key] = wp_kses_post($value);
+						$response[$key] = wp_kses_post($value ?? '');
 					} else if(absint($value) == $value || floatval($value) == $value) {
 						$response[$key] = esc_attr($value);
 					} else {

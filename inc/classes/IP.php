@@ -157,27 +157,21 @@ class CFGP_IP extends CFGP_Global {
 			'https://ip4.seeip.org'
 		));
 		
-		foreach($external_servers as $server) {
-			$request = wp_remote_get( $server, [
-				'timeout' => CFGP_Options::get('timeout', 5)
-			] );
-			if( !is_wp_error( $request ) ) {
-				$ip = wp_remote_retrieve_body( $request );
-				if(self::filter($ip)!==false) {
-					return CFGP_Cache::set('IP', $ip);
-				}
-			}
+		// We have already cached this IP?
+		if( $ip = CFGP_DB_Cache::get('localhost-ip') ) {
+			return CFGP_Cache::set('IP', $ip);
 		}
 		
 		// let's try the last thing, why not?
 		if( CFGP_U::is_connected() )
 		{
 			$result = NULL;
-			foreach($external_servers as $server) {					
+			foreach($external_servers as $server) {
 				$response = wp_remote_get($server);
 				if ( is_array( $response ) && !is_wp_error( $response ) ) {
 					$ip = $response['body'];
 					if(self::filter($ip)!==false) {
+						CFGP_DB_Cache::set('localhost-ip', $ip, DAY_IN_SECONDS);
 						return CFGP_Cache::set('IP', $ip);
 					}
 				}

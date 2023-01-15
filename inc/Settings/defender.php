@@ -101,7 +101,7 @@ if(!empty($block_city) && !is_array($block_city) && preg_match('/\]|\[/', $block
                                     <div class="cfgp-tab-panel cfgp-tab-panel-active" id="ip-restriction">
                                     	<div class="cfgp-form-group">
                                             <label for="block_ip"><?php _e('IP address separated by comma or by new line', 'cf-geoplugin'); ?>:</label>
-                                            <textarea class="form-control" id="block_ip" name="block_ip" rows="5" style="min-height:115px"><?php echo wp_kses_post(CFGP_Options::get('block_ip')); ?></textarea>
+                                            <textarea class="form-control" id="block_ip" name="block_ip" rows="5" style="min-height:115px"><?php echo wp_kses_post(CFGP_Options::get('block_ip', '')); ?></textarea>
                                         </div>
                                     </div>
                                     <div class="cfgp-tab-panel" id="location-restriction">
@@ -176,7 +176,7 @@ if(!empty($block_city) && !is_array($block_city) && preg_match('/\]|\[/', $block
 									<div class="cfgp-tab-panel" id="whitelist">
                                     	<div class="cfgp-form-group">
                                             <label for="ip_whitelist"><?php _e('Enter the IP addresses you want to whitelist and separate them with a comma or a new line', 'cf-geoplugin'); ?>:</label>
-                                            <textarea class="form-control" id="ip_whitelist" name="ip_whitelist" rows="5" style="min-height:115px"><?php echo wp_kses_post(CFGP_Options::get('ip_whitelist')); ?></textarea>
+                                            <textarea class="form-control" id="ip_whitelist" name="ip_whitelist" rows="5" style="min-height:115px"><?php echo wp_kses_post(CFGP_Options::get('ip_whitelist', '')); ?></textarea>
                                         </div>
                                     </div>
                                  </div>

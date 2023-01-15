@@ -193,7 +193,7 @@ class CFGP__Plugin__woocommerce extends CFGP_Global
 ?>
 <p><strong><?php esc_html_e( 'Order IP address:', 'cf-geoplugin'); ?></strong><br><?php
 if($flag = CFGP_U::admin_country_flag($GEO->country_code)) {
-	echo wp_kses_post($flag);
+	echo wp_kses_post($flag ?? '');
 } else {
 	echo '<span class="cfa cfa-globe"></span>';
 }
@@ -212,7 +212,7 @@ if($flag = CFGP_U::admin_country_flag($GEO->country_code)) {
 	?>
 <p><strong><?php esc_html_e( 'Order IP address:', 'cf-geoplugin'); ?></strong><br><?php
 if($flag = CFGP_U::admin_country_flag(get_post_meta($post->ID, '_billing_country', true))) {
-	echo wp_kses_post($flag);
+	echo wp_kses_post($flag ?? '');
 } else {
 	echo '<span class="cfa cfa-globe"></span>';
 }
@@ -528,7 +528,7 @@ if($flag = CFGP_U::admin_country_flag(get_post_meta($post->ID, '_billing_country
                         $rate_taxes += floatval($rate_tax);
                     // The cost including tax
                     $rate_cost_incl_tax = $rate_cost_excl_tax + $rate_taxes;
-                    echo wp_kses_post($rate_label) . ': ' . wc_price(
+                    echo wp_kses_post($rate_label ?? '') . ': ' . wc_price(
 						apply_filters(
 							'cf_geoplugin_woocommerce_show_shipping_price',
 							($rate_cost_incl_tax * $currency_args['currency_converter']),

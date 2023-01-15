@@ -109,7 +109,7 @@ class CFGP_Sidebar extends CFGP_Global {
 			<h3>
 			<?php
 				if($flag = CFGP_U::admin_country_flag(CFGP_U::api('country_code'))) {
-					echo wp_kses_post($flag);
+					echo wp_kses_post($flag ?? '');
 				} else {
 					echo '<span class="cfa cfa-globe"></span>';
 				}
@@ -186,7 +186,7 @@ class CFGP_Sidebar extends CFGP_Global {
 	public function dashboard_feed(){ $RSS = CFGP_DB_Cache::get('cfgp-dashboard-rss'); ?>
 	<div class="wordpress-news hide-if-no-js<?php echo (empty($RSS) ? ' cfgp-load-dashboard-rss-feed' : ''); ?>">
 	<?php if($RSS) : ?>
-		<?php echo wp_kses_post($RSS); ?>
+		<?php echo wp_kses_post($RSS ?? ''); ?>
 	<?php else : ?>
 		<ul class="rss-widget">
 			<li style="background-color:transparent;"><?php _e('Loading...', 'cf-geoplugin'); ?></li>

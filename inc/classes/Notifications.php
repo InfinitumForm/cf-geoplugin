@@ -592,7 +592,7 @@ class CFGP_Notifications extends CFGP_Global{
                   <table role="presentation" border="0" cellpadding="0" cellspacing="0">
                     <tr>
                       <td>
-						<?php echo wp_kses_post($content);?>
+						<?php echo wp_kses_post($content ?? '');?>
                       </td>
                     </tr>
                   </table>

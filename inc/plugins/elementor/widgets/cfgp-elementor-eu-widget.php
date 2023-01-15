@@ -311,7 +311,7 @@ class CFGP_Elementor_Eu_Widget extends \Elementor\Widget_Base {
 		
 		if( $show && !empty($settings['content'])) : ?>
 			<div class="elementor-text-editor elementor-clearfix elementor-inline-editing <?php echo esc_attr(self::$slug); ?> cf-geoplugin-<?php echo esc_attr(self::$slug); ?>">
-				<?php echo wp_kses_post(do_shortcode($settings['content'])); ?>
+				<?php echo wp_kses_post(do_shortcode($settings['content']) ?? ''); ?>
 			</div>
 		<?php endif;
 	}

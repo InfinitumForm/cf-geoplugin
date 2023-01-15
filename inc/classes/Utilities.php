@@ -32,7 +32,7 @@ class CFGP_U {
 		$ID = get_option(CFGP_NAME . '-ID');
 		
 		if( !$ID ) {
-			$ID = ('cfgp_'.self::generate_token(55).'_'.self::generate_token(4));
+			$ID = ('cfgp_' . self::generate_token(55) . '_' . self::generate_token(4));
 			add_option(CFGP_NAME . '-ID', $ID, false);
 		}
 
@@ -281,7 +281,15 @@ class CFGP_U {
 		$content = rawurldecode($content);
 		$content = htmlspecialchars_decode($content);
 		$content = html_entity_decode($content);
-		$content = strtr($content, array_flip(get_html_translation_table(HTML_ENTITIES, ENT_QUOTES)));
+		$content = strtr(
+			$content,
+			array_flip(
+				get_html_translation_table(
+					HTML_ENTITIES,
+					ENT_QUOTES
+				)
+			)
+		);
 		return $content;
 	}
 	
@@ -305,18 +313,46 @@ class CFGP_U {
 	 * Generate unique token
 	 * @author        Ivijan-Stefan Stipic
 	*/
-	public static function generate_token(int $length=16){
+	public static function generate_token( int $length=16 ){
 		if(function_exists('openssl_random_pseudo_bytes') || function_exists('random_bytes'))
 		{
-			if (version_compare(PHP_VERSION, '7.0.0', '>=')) {
-				return substr(str_rot13(bin2hex(random_bytes(ceil($length * 2)))), 0, $length);
+			if ( version_compare(PHP_VERSION, '7.0.0', '>=') ) {
+				return substr(
+					str_rot13(
+						bin2hex(
+							random_bytes(
+								ceil($length * 2)
+							)
+						)
+					),
+					0,
+					$length
+				);
 			} else {
-				return substr(str_rot13(bin2hex(openssl_random_pseudo_bytes(ceil($length * 2)))), 0, $length);
+				return substr(
+					str_rot13(
+						bin2hex(
+							openssl_random_pseudo_bytes(
+								ceil($length * 2)
+							)
+						)
+					),
+					0,
+					$length
+				);
 			}
 		}
 		else
 		{
-			return substr(str_replace(['.',' ','_'],mt_rand(1000,9999),uniqid('t'.microtime())), 0, $length);
+			return substr(
+				str_replace(
+					['.', ' ', '_'],
+					mt_rand(1000, 9999),
+					uniqid( 't' . microtime() )
+				),
+				0,
+				$length
+			);
 		}
 	}
 	
@@ -1207,15 +1243,7 @@ class CFGP_U {
 			}
 		}
 		
-		$return = sanitize_text_field(filter_input(INPUT_POST, $name, FILTER_SANITIZE_STRING, array(
-			'options'=>array(
-				'default'=>filter_input(INPUT_GET, $name, FILTER_SANITIZE_STRING, array(
-					'options'=>array(
-						'default'=>$default
-					)
-				))
-			)
-		)));
+		$return = sanitize_text_field($_REQUEST[$name] ?? $default);
 		
 		if( $session === true )
 		{

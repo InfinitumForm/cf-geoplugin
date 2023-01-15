@@ -247,7 +247,7 @@ class CFGP_Options
 			{
 				$str = html_entity_decode($str);
 				if(preg_match('/<\/?[a-z][\s\S]*>/i', $str)) {
-					$str = wp_kses_post( $str );
+					$str = wp_kses_post( $str ?? '' );
 				} else if( preg_match('/[\n]/', $str) ) {
 					$str = sanitize_textarea_field( $str );
 				} else {

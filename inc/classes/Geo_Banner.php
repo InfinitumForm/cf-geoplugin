@@ -156,7 +156,7 @@ LIMIT 1
 			$content = CFGP_U::the_content($cont);
 		}
 		
-		echo wp_kses_post($content); exit;
+		echo wp_kses_post($content ?? ''); exit;
 	}
 	
 	/**
@@ -247,7 +247,7 @@ LIMIT 1
 			return;
 		}
 		
-		update_post_meta( $post_id, 'cfgp-banner-default', wp_kses_post(CFGP_U::request('cfgp-banner-default-content', NULL)) );
+		update_post_meta( $post_id, 'cfgp-banner-default', wp_kses_post(CFGP_U::request('cfgp-banner-default-content', '')) );
 		delete_post_meta( $post_id, CFGP_METABOX . 'banner_default' );
 		
 		if( $country = CFGP_Options::sanitize( CFGP_U::request('cfgp-banner-location-country', []) ) ) {

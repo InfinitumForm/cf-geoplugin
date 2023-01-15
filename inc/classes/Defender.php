@@ -115,7 +115,7 @@ class CFGP_Defender extends CFGP_Global {
 		}
 
 		// Explode all IP's and block them... Yeah baby!
-        $ips = preg_split( '/[,;\n|]+/', CFGP_Options::get('block_ip') );
+        $ips = preg_split( '/[,;\n|]+/', CFGP_Options::get('block_ip', '') ?? '' );
 		$ips = array_map( 'trim', $ips );
 		$ips = array_filter( $ips );
         if( in_array( CFGP_U::api('ip'), $ips, true ) !== false ){

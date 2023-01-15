@@ -1,5 +1,14 @@
 == Changelog ==
 
+= 8.4.0 =
+* Optimized code for the PHP version > 8.1
+* Optimized code for the new WordPress versions
+* Removed deprecated codes
+* Fixed PHP errors from previous version
+
+= 8.3.20 =
+* Shortcode fixes
+
 = 8.3.19 =
 * Fixed bugs inside debugger
 
