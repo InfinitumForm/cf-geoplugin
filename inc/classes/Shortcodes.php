@@ -160,7 +160,7 @@ class CFGP_Shortcodes extends CFGP_Global {
 	 * @since      7.4.3
 	 * @version    7.4.3
 	*/
-	public function cfgeo_escape_shortcode($attr, $content='', $tag=NULL){
+	public function cfgeo_escape_shortcode($attr, $content='', $tag='escape_shortcode'){
 		$cache = CFGP_U::is_attribute_exists('cache', $attr);
 		if(CFGP_Options::get('enable_cache', 0)) $cache = true;
 		if(CFGP_U::is_attribute_exists('no_cache', $attr)) $cache = false;
@@ -342,7 +342,7 @@ class CFGP_Shortcodes extends CFGP_Global {
 	 *
 	 * @since    4.3.0
 	 */
-	public function generate_flag( $atts, $content='', $tag=NULL ){
+	public function generate_flag( $atts, $content='', $tag='cfgeo_flag' ){
 		
 		$cache = CFGP_U::is_attribute_exists('cache', $atts);
 		if(CFGP_Options::get('enable_cache', 0)) $cache = true;
@@ -505,7 +505,7 @@ class CFGP_Shortcodes extends CFGP_Global {
 	 * 
 	 * @since		7.0.0
 	 */
-	public function geo_banner( $setup, $cont='', $tag=NULL )
+	public function geo_banner( $setup, $cont='', $tag='cfgeo_banner' )
 	{
 		global $wpdb;
 		
@@ -693,7 +693,7 @@ LIMIT 1
 	 * 
 	 * @since		7.0.0
 	 */
-	public function google_map( $atts, $content = '', $tag=NULL )
+	public function google_map( $atts, $content = '', $tag='cfgeo_map' )
 	{
 		$cache = CFGP_U::is_attribute_exists('cache', $atts);
 		if(CFGP_Options::get('enable_cache', 0)) $cache = true;
@@ -929,7 +929,7 @@ LIMIT 1
 	 * 
 	 * @since 7.4.0
 	 */
-	public function cfgeo_converter( $atts, $content = '', $tag=NULL )
+	public function cfgeo_converter( $atts, $content = '', $tag='cfgeo_converter' )
 	{
 		if( empty( $content ) ) return '';
 		
@@ -1073,7 +1073,7 @@ LIMIT 1
 	 * 
 	 * @since 7.4.2
 	 */
-	public function cfgeo_full_converter( $atts, $content = '', $tag=NULL )
+	public function cfgeo_full_converter( $atts, $content = '', $tag='cfgeo_full_converter' )
 	{
 		wp_enqueue_style( CFGP_NAME . '-public-cc' );
 		wp_enqueue_script( CFGP_NAME . '-public-cc' );
@@ -1271,7 +1271,7 @@ LIMIT 1
 	}
 	
 	// IS PROXY
-	public function is_proxy($attr, $content='', $tag=NULL){
+	public function is_proxy($attr, $content='', $tag='cfgeo_is_proxy'){
 		
 		$cache = CFGP_U::is_attribute_exists('cache', $attr);
 		if(CFGP_U::is_attribute_exists('no_cache', $attr)) $cache = false;
@@ -1320,7 +1320,7 @@ LIMIT 1
 	}
 	
 	// IS NOT PROXY
-	public function is_not_proxy($attr, $content='', $tag=NULL){
+	public function is_not_proxy($attr, $content='', $tag='cfgeo_is_not_proxy'){
 
 		$cache = CFGP_U::is_attribute_exists('cache', $attr);
 		if(CFGP_U::is_attribute_exists('no_cache', $attr)) $cache = false;
@@ -1372,7 +1372,7 @@ LIMIT 1
 	}
 	
 	// IS MOBILE
-	public function is_mobile($attr, $content='', $tag=NULL){
+	public function is_mobile($attr, $content='', $tag='cfgeo_is_mobile'){
 		
 		$cache = CFGP_U::is_attribute_exists('cache', $attr);
 		if(CFGP_U::is_attribute_exists('no_cache', $attr)) $cache = false;
@@ -1421,7 +1421,7 @@ LIMIT 1
 	}
 	
 	// IS NOT MOBILE
-	public function is_desktop($attr, $content='', $tag=NULL){
+	public function is_desktop($attr, $content='', $tag='cfgeo_is_desktop'){
 
 		$cache = CFGP_U::is_attribute_exists('cache', $attr);
 		if(CFGP_U::is_attribute_exists('no_cache', $attr)) $cache = false;
@@ -1473,7 +1473,7 @@ LIMIT 1
 	}
 	
 	// GPS
-	public function cfgeo_gps($attr, $content='', $tag=NULL){
+	public function cfgeo_gps($attr, $content='', $tag='cfgeo_cfgeo_gps'){
 
 		$cache = CFGP_U::is_attribute_exists('cache', $attr);
 		if(CFGP_U::is_attribute_exists('no_cache', $attr)) $cache = false;
@@ -1522,7 +1522,7 @@ LIMIT 1
 	}
 	
 	// IN EU
-	public function in_eu($attr, $content='', $tag=NULL){
+	public function in_eu($attr, $content='', $tag='cfgeo_in_eu'){
 
 		$cache = CFGP_U::is_attribute_exists('cache', $attr);
 		if(CFGP_U::is_attribute_exists('no_cache', $attr)) $cache = false;
@@ -1571,7 +1571,7 @@ LIMIT 1
 	}
 	
 	// NOT IN EU
-	public function not_in_eu($attr, $content='', $tag=NULL){
+	public function not_in_eu($attr, $content='', $tag='cfgeo_not_in_eu'){
 
 		$cache = CFGP_U::is_attribute_exists('cache', $attr);
 		if(CFGP_U::is_attribute_exists('no_cache', $attr)) $cache = false;
@@ -1623,7 +1623,7 @@ LIMIT 1
 	}
 	
 	// IS VAT
-	public function is_vat($attr, $content='', $tag=NULL){
+	public function is_vat($attr, $content='', $tag='cfgeo_is_vat'){
 
 		$cache = CFGP_U::is_attribute_exists('cache', $attr);
 		if(CFGP_U::is_attribute_exists('no_cache', $attr)) $cache = false;
@@ -1673,7 +1673,7 @@ LIMIT 1
 	
 	
 	// IS NOT VAT
-	public function is_not_vat($attr, $content='', $tag=NULL){
+	public function is_not_vat($attr, $content='', $tag='cfgeo_is_not_vat'){
 
 		$cache = CFGP_U::is_attribute_exists('cache', $attr);
 		if(CFGP_U::is_attribute_exists('no_cache', $attr)) $cache = false;
