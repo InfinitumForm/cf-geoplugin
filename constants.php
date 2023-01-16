@@ -226,5 +226,4 @@ if (!defined('CFGP_NETWORK_ADMIN')) {
 // Check is defender activated
 if (!defined('CFGP_DEFENDER_ACTIVATED')) {
     define('CFGP_DEFENDER_ACTIVATED', false); //- DEBUG
-    
 }
