@@ -47,7 +47,7 @@ if (!defined('CFGP_STORE_CODE')) {
 
 // Plugin root
 if (!defined('CFGP_ROOT')) {
-    define('CFGP_ROOT', rtrim(plugin_dir_path(CFGP_FILE) , '/\\'));
+    define('CFGP_ROOT', rtrim(plugin_dir_path(CFGP_FILE) , DIRECTORY_SEPARATOR));
 }
 
 // Shell
@@ -118,7 +118,7 @@ if (!defined('CFGP_DISABLE_NOTIFICATION_LOOKUP_EXPIRE_SOON')) {
 
 // Plugin URL root
 if (!defined('CFGP_URL')) {
-    define('CFGP_URL', rtrim(plugin_dir_url(CFGP_FILE) , '/\\'));
+    define('CFGP_URL', rtrim(plugin_dir_url(CFGP_FILE) , '/'));
 }
 
 // Assets URL
