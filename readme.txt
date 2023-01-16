@@ -5,7 +5,7 @@ Tags: geolocation, seo redirect, locator, GeoIP, geo, geotargeting, seo, woocomm
 Requires at least: 5.0
 Tested up to: 6.1
 Requires PHP: 7.0
-Stable tag: 8.4.0
+Stable tag: 8.4.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -397,133 +397,25 @@ Please inform us if any of these errors occur via contact form on our website [h
 
 == Changelog ==
 
+= 8.4.1 =
+* Fixed deprecated code at the forms
+
 = 8.4.0 =
 * Optimized code for the PHP version > 8.1
 * Optimized code for the new WordPress versions
 * Removed deprecated codes
 * Fixed PHP errors from previous version
-
-= 8.3.20 =
-* Shortcode fixes
-
-= 8.3.19 =
-* Fixed bugs inside debugger
-
-= 8.3.18 =
-* Optimized plugin cache
-
-= 8.3.17 =
-* Added support for the WordPress 6.1
-* Fixed metaboxes in repeater
-* Optimized PHP code
-
-= 8.3.16 =
-* Fixed database cache
-* Improved and optimized location search system
-
-= 8.3.15 =
-* Adding new info box in the settings
-* Adding new support for the GPS extension
-* Adding new function `CFGP_U::array_insert_after_key`
-* Fixing WooCommerce default country address
-
-= 8.3.14 =
-* Fixing EU shortcodes
-* Preparing for the APCu caching
-
-= 8.3.13 =
-* Fixing admin form formatting
-
-= 8.3.12 =
-* Fixing Currency Converter
-
-= 8.3.11 =
-* Fixing problem with localhost detection
-
-= 8.3.10 =
-* Update trademark names and banners
-* Update plugin security
-
-= 8.3.9 =
-* Advanced geolocation for WooCommerce
-* Removed deprecated algorithms
-
-= 8.3.8 =
-* Fixed SEO redirection algorithm
-* Improved memory cleaning
-* Improved site protection algorithm
-* Fixed currency calculator
-* Fixed localhost detection
-* Removed obsolete PHP codes
-* Improved security
-* Improved user interface
-
-= 8.3.7 =
-* Improved hiding of the navigation menu by geolocation
-* Fixed PHP warnings
-* Fixed REST API subversion bugs
-
-= 8.3.6 =
-* Improved WP Rocket and SiteGround Cache
-* Improved REST API code
-* Removed unnecessary code
-* Fixed localhost problems
-
-= 8.3.5 =
-* Fixed WooCommerce widget
-* Fixed SEO redirection table
-
-= 8.3.4 =
-* **IMPORTANT UPDATE**
-* Fixed memory leaking on custom post types
-
-= 8.3.3 =
-* Fixed license deactivation
-* Removed deprecated code
-* Adding support for future PHP version
-
-= 8.3.2 =
-* Fixed menu geolocations
-* Fixed notifications
-* Fixed Contact Form 7 inputs
-* Fixed Yoast SEO tags
-
-= 8.3.1 =
-* Improved Contact Form 7 integration
-* Improved PHP code
-
-= 8.3.0 =
-* Switched to new API keys
-* Added new utilities, endpoints, actions & filters
-* Added redirection modes
-* Removed unnecessary functionality
-* Optimized PHP code
 
 == Upgrade Notice ==
 
+= 8.4.1 =
+* Fixed deprecated code at the forms
+
 = 8.4.0 =
 * Optimized code for the PHP version > 8.1
 * Optimized code for the new WordPress versions
 * Removed deprecated codes
 * Fixed PHP errors from previous version
-
-= 8.3.20 =
-* Shortcode fixes
-
-= 8.3.19 =
-* Fixed bugs inside debugger
-
-= 8.3.18 =
-* Optimized plugin cache
-
-= 8.3.17 =
-* Added support for the WordPress 6.1
-* Fixed metaboxes in repeater
-* Optimized PHP code
-
-= 8.3.16 =
-* Fixed database cache
-* Improved and optimized location search system
 
 == Other Notes ==
 

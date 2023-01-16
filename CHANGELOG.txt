@@ -1,5 +1,8 @@
 == Changelog ==
 
+= 8.4.1 =
+* Fixed deprecated code at the forms
+
 = 8.4.0 =
 * Optimized code for the PHP version > 8.1
 * Optimized code for the new WordPress versions
