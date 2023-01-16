@@ -5,7 +5,7 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
 
 if( CFGP_U::request_bool('preview'))
 {
-	die( wpautop( html_entity_decode( stripslashes( CFGP_Options::get('block_country_messages') ) ) ) );
+	die( wpautop( html_entity_decode( stripslashes( CFGP_Options::get('block_country_messages', '') ?? '' ) ) ) );
 	exit;
 }
 
@@ -207,7 +207,7 @@ if(!empty($block_city) && !is_array($block_city) && preg_match('/\]|\[/', $block
                                 <div class="cfgp-form-group">
                                     <?php
                                         $settings = array( 'textarea_name'  => 'block_country_messages', 'editor_height' => 450, 'textarea_rows' => 30 );
-                                        $block_country_messages = html_entity_decode( trim( CFGP_Options::get('block_country_messages') ) );
+                                        $block_country_messages = html_entity_decode( trim( CFGP_Options::get('block_country_messages', '') ?? '' ) );
                                         if( empty( $block_country_messages ) )
                                         {
                                             $messages="<h1>Error</h1>
