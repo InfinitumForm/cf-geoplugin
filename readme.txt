@@ -9,21 +9,27 @@ Stable tag: 8.4.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-All in one geolocation plugin that provides all geo functionality for the WordPress.
+Unlock the power of location-based functionality of WordPress - The ultimate all-in-one geolocation plugin for WordPress.
 
 == Description ==
 
-**[WP Geo Controller](https://cfgeoplugin.com/)** (formerly known as CF Geo Plugin) is a GeoMarketing tool that allows you to have full geo control of your WordPress. **WP Geo Controller** gives you ability to attach content, geographic information, geo tags, Google Maps to posts, pages, widgets and custom templates by using simple options, shortcodes, PHP code or JavaScript. It also lets you specify a default geographic location for your entire WordPress blog, do SEO redirection, spam protection, WooCommerce control and many more. **WP Geo Controller** help you to increase conversion, do better SEO, capture leads on your blog or landing pages.
+Are you ready to level up your WordPress game? Meet **[WP Geo Controller](https://cfgeoplugin.com/)** (formerly known as CF Geo Plugin), the ultimate geo-marketing tool that will give you full control of your website's geographic information.
+
+With WP Geo Controller, you can automatically detect the location of your website's visitors and display it on your website, giving you the ability to greet your visitors with a personalized message like "Welcome to our website, [visitor's city]!" How cool is that? It also allows you to easily attach content, geo tags, Google Maps, and more to posts, pages, widgets, and custom templates with just a few simple options, shortcodes, or even PHP code. Say goodbye to manual location lookups and hello to personalized greetings for your visitors. Plus, it's fully compatible with popular plugins like WooCommerce, Contact Form 7, Yoast SEO, and WP Super Cache.
+
+But that's not all, WP Geo Controller also lets you specify a default location for your entire website, do SEO redirection, spam protection, and even control your WooCommerce store. Want to increase conversions and capture leads on your blog or landing pages? WP Geo Controller can help you with that too. With its advanced SEO capabilities and lead generation tools, it's the perfect tool to help you boost your website's performance and reach new heights.
+
+But wait, there's more! WP Geo Controller also utilizes a Content Delivery Network (CDN) to distribute the data, which means lightning-fast loading times for your website. And let's not forget about saving space on your servers. By using an API, WP Geo Controller allows you to store less data locally, which means more room for all of your other important website data.
+
+Lastly, WP Geo Controller can help you to comply with legal requirements by filtering legal notices, text, forms, etc. from countries for whom that content may not be relevant. This can help you to avoid legal issues and provide a better user experience for your visitors.
 
 = FREE AND PAID SERVICES =
 
-WP Geo Controller is a free plugin which works with the **[free and paid services](https://cfgeoplugin.com/information/new-plugin-new-features-new-success/)** that return information about the locations.
+WP Geo Controller is completely free! But, just like a superhero needs their trusty sidekick, WP Geo Controller also works with [paid services](https://cfgeoplugin.com/information/new-plugin-new-features-new-success/) that give you unlimited information about your website's visitors. However, for the free users, the API services are [limited to 1000 lookups](https://cfgeoplugin.com/documentation/quick-start/frequently-asked-questions/how-does-lookup-work) per day. But don't worry, if you want to take your location detection game to the next level, you can upgrade to UNLIMITED lookups by visiting our [official website](https://cfgeoplugin.com/pricing/).
 
-WP Geo Controller is free by itself but API services are limited to **1000 lookups per day** for the free users. If you like to have **UNLIMITED** lookup, **please visit [official website](https://cfgeoplugin.com/pricing/) for more informations**.
+And the best part? We often have monthly promotions and discounts, so don't forget to check out our [pricing page](https://cfgeoplugin.com/pricing/) on the official website for more information.
 
-**NOTE:** We do not place prices on this page because we reserve the right to change these prices and often have monthly promotions and discounts. Please, for more information **[look at our prices](https://cfgeoplugin.com/pricing/)** on the [official website](https://cfgeoplugin.com/).
-
-This plugin works as a [service](https://en.wikipedia.org/wiki/Software_as_a_service).
+WP Geo Controller works as a [service](https://en.wikipedia.org/wiki/Software_as_a_service), so sit back, relax, and let the plugin do all the hard work for you.
 
 = BENEFITS =
 
@@ -134,19 +140,31 @@ To best understand how shortcodes work, it's best to [read the documentation](ht
 
 But here are some simple examples:
 
-**GEO PLUGIN:** Usage is simple. After installation and activation, in your post you just need to insert `[cfgeo]` shortcode and that's it. Enter a shortcode as this and it returns and displays the IP address to a visitor. If you like to display regions (for example California for users who are from California), you just need to use the `return` attribute in your shortcode like this: `[cfgeo return="region"]`. By changing the return settings, you can display any information from the list above. Each user who comes to the site will see information related to their area. 
+The WP Geo Controller allows you to add location-based functionality to your website. It is a simple plugin to use, after installation and activation, you just need to insert the shortcode **`[cfgeo]`** in your post or page. This shortcode returns and displays the IP address of the visitor.
 
-If you want to track some custom IP and return some information from that IP, you can do that by adding one optional attribute ip like on example `[cfgeo ip="127.0.0.1" return="area_code"]` what will return area code from that IP address.
+You can also display different location-based information by using the return attribute in the shortcode. For example, to display the region of the visitor, you can use the shortcode **`[cfgeo return="region"]`**. By changing the return attribute, you can display any information from the list provided by the plugin. Each user visiting the site will see information related to their area.
 
-If you like to add default values to your shortcode if data is empty you need to add extra attribute in your shortcode like this example `[cfgeo return="country_code" default="US"]` what will return US if geoplugin can't locate country code.
+Additionally, you can also track custom IP addresses and return information from that IP by adding an optional attribute called ip. For example, **`[cfgeo ip="127.0.0.1" return="area_code"]`** will return the area code from that IP address.
 
-If you need to exclude some content from your page based on user location, you can do that using the `exclude` attribute like this: 
+If the plugin is unable to locate the information, you can add a default value to the shortcode by using the default attribute. For example, **`[cfgeo return="country_code" default="US"]`** will return "US" if the plugin is unable to locate the country code.
+
+You can exclude or include content on your page based on the user's location by using the `exclude` or `include` attribute. For example,
 
 `[cfgeo exclude="Toronto, Québec"] This text is seeing by everyone except people from Toronto and Québec [/cfgeo]`
 
-If you need to display some content in your page based on user location, you can do that using the `include` attribute like this: 
+will hide the content "This text is seeing by everyone except people from Toronto and Québec" from the visitors that are located in Toronto or Québec.
+
+Similarly, if you want to display some content only to specific location you can use include attribute like this:
 
 `[cfgeo include="New York, Miami, Germany"] This text seeing only people from New York, Miami and Germany [/cfgeo]`
+
+this shortcode will only display the text "This text seeing only people from New York, Miami and Germany" to the visitors that are located in New York, Miami and Germany.
+
+You can also use the include and exclude attributes with country codes, region codes, or city codes. For example, you can use **`[cfgeo include="US, GB, DE"]`** to only display the content to visitors located in the United States, Great Britain, and Germany. Or you can use **`[cfgeo exclude="CA, ON, QUE"]`** to hide the content from visitors located in the provinces of California, Ontario, and Québec in Canada.
+
+By using these attributes you can control the content visibility based on user location and personalize the user experience.
+
+Please note that you need to use accurate location name to include or exclude content and case sensitive location name.
 
 **VAT CONTROL:** If you need to show *value-added tax (VAT)* information on your website, there are 2 shortcodes that can help you with it.
 
@@ -232,13 +250,16 @@ Thank you for your concern!
 
 == Installation ==
 
-You only need to install the  **WP Geo Controller** through the WordPress plugins screen directly or download ZIP file, unpack and upload plugin folder to the `/wp-content/plugins/` directory.
+Installing WP Geo Controller is a breeze. Just follow these simple steps:
 
-Afterwards, activate the plugin through the 'Plugins' screen in WordPress, go to your `http://siteexample.com/wp-admin/` area and use the `Settings->WP Geo Controller` to see all available shortcodes and settings.
+* Upload the plugin files to the **/wp-content/plugins/cf-geoplugin** directory, or install the plugin through the WordPress plugins screen directly.
+* Activate the plugin through the "Plugins" screen in WordPress
+* Go to the WP Geo Controller settings page and configure your settings
+* That's it! You're ready to start greeting your visitors with personalized messages.
 
 = On uninstall =
 
-You must know when you uninstall WP Geo Controller you will lose complete setup, license and any other changes you have inside your WordPress installation. On uninstall we clean everything from your database that our plugin generates and you can not return that information back.
+When you choose to uninstall the WP Geo Controller plugin, it's important to be aware that all data associated with the plugin will be permanently deleted from your WordPress installation. This includes the plugin's setup, license, and any other changes that you have made using the plugin. The plugin will clean everything from your database, and this process is irreversible, meaning that you will not be able to retrieve or restore any of the data that was generated by the plugin. So before you proceed with the uninstallation, it's important to make sure that you have a backup of any important data that you want to keep, or you have an alternative way to store the data.
 
 == Frequently Asked Questions ==
 

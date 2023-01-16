@@ -20,6 +20,11 @@ class CFGP_Form {
 	
 	// Select HTTP code
 	public static function select_http_code($attr = [], $selected = '', $echo = true){
+		
+		if( !$selected ) {
+			$selected = '';
+		}
+		
 		$http_forms = CFGP_U::get_http_codes();
 		$return = self::select($http_forms, $attr, $selected, false);
 		if($echo) {
@@ -31,6 +36,11 @@ class CFGP_Form {
 	
 	// Select countries
 	public static function select_countries($attr = [], $selected = '', $multiple=false, $echo = true){
+		
+		if( !$selected ) {
+			$selected = '';
+		}
+		
 		if($multiple) {
 			$options = [];
 		} else {
@@ -74,6 +84,11 @@ class CFGP_Form {
 	
 	// Select regions
 	public static function select_regions($attr = [], $selected = '', $multiple=false, $echo = true){
+		
+		if( !$selected ) {
+			$selected = '';
+		}
+		
 		if($multiple) {
 			$options = [];
 		} else {
@@ -123,6 +138,11 @@ class CFGP_Form {
 	
 	// Select cities
 	public static function select_cities($attr = [], $selected = '', $multiple=false, $echo = true){
+		
+		if( !$selected ) {
+			$selected = '';
+		}
+		
 		if($multiple) {
 			$options = [];
 		} else {
@@ -142,13 +162,13 @@ class CFGP_Form {
 		
 		if(is_array($selected)){
 			foreach($selected as $select){
-				$new_name = explode('-', $select);
+				$new_name = explode('-', $select ?? '');
 				$new_name = array_map('ucfirst', $new_name);
 				$new_name = join(' ', $new_name);
 				$options[sanitize_title( CFGP_U::transliterate($select) )] = $new_name;
 			}
 		} else if( !empty($selected) ) {
-			$new_name = explode('-', $selected);
+			$new_name = explode('-', $selected ?? '');
 			$new_name = array_map('ucfirst', $new_name);
 			$new_name = join(' ', $new_name);
 			$options[sanitize_title( CFGP_U::transliterate($selected) )] = $new_name;
@@ -185,6 +205,11 @@ class CFGP_Form {
 	
 	// Select postcodes
 	public static function select_postcodes($attr = [], $selected = '', $multiple=false, $echo = true){
+		
+		if( !$selected ) {
+			$selected = '';
+		}
+		
 		if($multiple) {
 			$options = [];
 		} else {
@@ -243,6 +268,11 @@ class CFGP_Form {
 	
 	// Multiple select
 	public static function select_multiple($options=[], $attr = [], $selected = '', $echo = true){
+				
+		if( !$selected ) {
+			$selected = '';
+		}
+		
 		$options_render = [];
 		
 		if(empty($options)){
@@ -279,9 +309,9 @@ class CFGP_Form {
 					$find = array_map( 'trim', $selected );
 				} else {
 					if(preg_match('/\]\|\[/', $selected)) {
-						$find = array_map( 'trim', explode( "]|[", $selected ) );
+						$find = array_map( 'trim', explode( "]|[", $selected ?? '' ) );
 					} else {
-						$find = array_map( 'trim', explode( ',', $selected ) );
+						$find = array_map( 'trim', explode( ',', $selected ?? '' ) );
 					}
 				}
 				$current = (in_array($val, $find) ? ' selected' : '');
@@ -312,6 +342,11 @@ class CFGP_Form {
 	
 	// Select option
 	public static function select($options=[], $attr = [], $selected = '', $echo = true){
+		
+		if( !$selected ) {
+			$selected = '';
+		}
+		
 		$options_render = [];
 		
 		if(!empty($options) && is_array($options))
