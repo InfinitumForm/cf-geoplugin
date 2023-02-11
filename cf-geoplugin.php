@@ -2,11 +2,11 @@
 /**
  * @wordpress-plugin
  *
- * WP Geo Controller
+ * Geo Controller
  *
- * Plugin Name:       WP Geo Controller
+ * Plugin Name:       Geo Controller
  * Plugin URI:        https://cfgeoplugin.com/
- * Description:       Create Dynamic Content, Banners and Images on Your Website Based On Visitor Geo Location By Using Shortcodes With WP Geo Controller.
+ * Description:       Unlock the power of location-based functionality of WordPress – The ultimate all-in-one geolocation plugin for WordPress.
  * Version:           8.4.1
  * Requires at least: 5.0
  * Requires PHP:      7.0

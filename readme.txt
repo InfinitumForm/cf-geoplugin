@@ -1,4 +1,4 @@
-﻿=== WP Geo Controller ===
+﻿=== Geo Controller ===
 Contributors: ivijanstefan, creativform
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=creativform@gmail.com
 Tags: geolocation, seo redirect, locator, GeoIP, geo, geotargeting, seo, woocommerce, include exclude, content, remove content, show hide, covid
@@ -13,23 +13,23 @@ Unlock the power of location-based functionality of WordPress - The ultimate all
 
 == Description ==
 
-Are you ready to level up your WordPress game? Meet **[WP Geo Controller](https://cfgeoplugin.com/)** (formerly known as CF Geo Plugin), the ultimate geo-marketing tool that will give you full control of your website's geographic information.
+Are you ready to level up your WordPress game? Meet **[Geo Controller](https://cfgeoplugin.com/)** (formerly known as CF Geo Plugin), the ultimate geo-marketing tool that will give you full control of your website's geographic information.
 
-With WP Geo Controller, you can automatically detect the location of your website's visitors and display it on your website, giving you the ability to greet your visitors with a personalized message like "Welcome to our website, [visitor's city]!" How cool is that? It also allows you to easily attach content, geo tags, Google Maps, and more to posts, pages, widgets, and custom templates with just a few simple options, shortcodes, or even PHP code. Say goodbye to manual location lookups and hello to personalized greetings for your visitors. Plus, it's fully compatible with popular plugins like WooCommerce, Contact Form 7, Yoast SEO, and WP Super Cache.
+With Geo Controller for WordPress, you can automatically detect the location of your website's visitors and display it on your website, giving you the ability to greet your visitors with a personalized message like "Welcome to our website, [visitor's city]!" How cool is that? It also allows you to easily attach content, geo tags, Google Maps, and more to posts, pages, widgets, and custom templates with just a few simple options, shortcodes, or even PHP code. Say goodbye to manual location lookups and hello to personalized greetings for your visitors. Plus, it's fully compatible with popular plugins like WooCommerce, Contact Form 7, Yoast SEO, and WP Super Cache.
 
-But that's not all, WP Geo Controller also lets you specify a default location for your entire website, do SEO redirection, spam protection, and even control your WooCommerce store. Want to increase conversions and capture leads on your blog or landing pages? WP Geo Controller can help you with that too. With its advanced SEO capabilities and lead generation tools, it's the perfect tool to help you boost your website's performance and reach new heights.
+But that's not all, Geo Controller for WordPress also lets you specify a default location for your entire website, do SEO redirection, spam protection, and even control your WooCommerce store. Want to increase conversions and capture leads on your blog or landing pages? Geo Controller can help you with that too. With its advanced SEO capabilities and lead generation tools, it's the perfect tool to help you boost your website's performance and reach new heights.
 
-But wait, there's more! WP Geo Controller also utilizes a Content Delivery Network (CDN) to distribute the data, which means lightning-fast loading times for your website. And let's not forget about saving space on your servers. By using an API, WP Geo Controller allows you to store less data locally, which means more room for all of your other important website data.
+But wait, there's more! Geo Controller also utilizes a Content Delivery Network (CDN) to distribute the data, which means lightning-fast loading times for your website. And let's not forget about saving space on your servers. By using an API, Geo Controller allows you to store less data locally, which means more room for all of your other important website data.
 
-Lastly, WP Geo Controller can help you to comply with legal requirements by filtering legal notices, text, forms, etc. from countries for whom that content may not be relevant. This can help you to avoid legal issues and provide a better user experience for your visitors.
+Lastly, Geo Controller can help you to comply with legal requirements by filtering legal notices, text, forms, etc. from countries for whom that content may not be relevant. This can help you to avoid legal issues and provide a better user experience for your visitors.
 
 = FREE AND PAID SERVICES =
 
-WP Geo Controller is completely free! But, just like a superhero needs their trusty sidekick, WP Geo Controller also works with [paid services](https://cfgeoplugin.com/information/new-plugin-new-features-new-success/) that give you unlimited information about your website's visitors. However, for the free users, the API services are [limited to 1000 lookups](https://cfgeoplugin.com/documentation/quick-start/frequently-asked-questions/how-does-lookup-work) per day. But don't worry, if you want to take your location detection game to the next level, you can upgrade to UNLIMITED lookups by visiting our [official website](https://cfgeoplugin.com/pricing/).
+Geo Controller for WordPress is completely free! But, just like a superhero needs their trusty sidekick, Geo Controller also works with [paid services](https://cfgeoplugin.com/information/new-plugin-new-features-new-success/) that give you unlimited information about your website's visitors. However, for the free users, the API services are [limited to 1000 lookups](https://cfgeoplugin.com/documentation/quick-start/frequently-asked-questions/how-does-lookup-work) per day. But don't worry, if you want to take your location detection game to the next level, you can upgrade to UNLIMITED lookups by visiting our [official website](https://cfgeoplugin.com/pricing/).
 
 And the best part? We often have monthly promotions and discounts, so don't forget to check out our [pricing page](https://cfgeoplugin.com/pricing/) on the official website for more information.
 
-WP Geo Controller works as a [service](https://en.wikipedia.org/wiki/Software_as_a_service), so sit back, relax, and let the plugin do all the hard work for you.
+Geo Controller works as a [service](https://en.wikipedia.org/wiki/Software_as_a_service), so sit back, relax, and let the plugin do all the hard work for you.
 
 = BENEFITS =
 
@@ -57,7 +57,7 @@ WP Geo Controller works as a [service](https://en.wikipedia.org/wiki/Software_as
 > 
 > <strong>E-COMMERCE | WooCommerce</strong><br>
 >
-> * **Geolocate** for your customer location with WP Geo Controller API
+> * **Geolocate** for your customer location with Geo Controller API
 > * **Payments Control** show or hide payment methods by country to prevent unwanted transactions
 > * **Geo Location logging** of your customers during orders
 > * **Country Payment Control** for your WooCommerce installation
@@ -85,7 +85,7 @@ WP Geo Controller works as a [service](https://en.wikipedia.org/wiki/Software_as
 
 This plugin is compatible with any Wordpress installation and many available plugins. We also do special compatible functions with:
 
-* [GPS for WP Geo Controller](https://wordpress.org/plugins/cf-geoplugin-gps/) (Enable GPS lookup for the WP Geo Controller and collect geodata from the mobile visitors.)
+* [GPS for Geo Controller](https://wordpress.org/plugins/cf-geoplugin-gps/) (Enable GPS lookup for the Geo Controller and collect geodata from the mobile visitors.)
 * [WooCommerce](https://woocommerce.com/) (geolocate, payment controls & currency converter)
 * [Wooplatnica](https://wordpress.org/plugins/wooplatnica/) (currency converter)
 * [Monarch](https://www.elegantthemes.com/plugins/monarch/) (Geo Banner support)
@@ -98,9 +98,9 @@ This plugin is compatible with any Wordpress installation and many available plu
 * [SEO framework](https://wordpress.org/plugins/autodescription/)
 * [WP Fastest Cache](https://wordpress.org/plugins/wp-fastest-cache/)
 
-**YOU NEED TO KNOW** that even if there is compatibility for most plugins, the combination of multiple plugins still has a slight chance of some conflict. There are over a couple thousand plugins and a couple of few million individual WordPress installations. We cannot 100% guarantee that everything will work properly in all possible cases. Sometimes it happens that other plugins are not compatible with WP Geo Controller, so it is important that you contact us or other plugin authors in case of any problem so that you can solve the problem. The most common fix for most issues is if you keep all the plugins and WordPress installation up to date.
+**YOU NEED TO KNOW** that even if there is compatibility for most plugins, the combination of multiple plugins still has a slight chance of some conflict. There are over a couple thousand plugins and a couple of few million individual WordPress installations. We cannot 100% guarantee that everything will work properly in all possible cases. Sometimes it happens that other plugins are not compatible with Geo Controller, so it is important that you contact us or other plugin authors in case of any problem so that you can solve the problem. The most common fix for most issues is if you keep all the plugins and WordPress installation up to date.
 
-> <strong>All WP Geo Controller 8.x.x Features</strong><br>
+> <strong>All Geo Controller for WordPress 8.x.x Features</strong><br>
 >
 > * **Geo Plugin** - Allows you to attach geographical information inside your content via Shortcodes, PHP and JavaScript objects
 > * **Geo Banner** - Allows you to place dynamic content, images, videos and pages using shortcodes for specific audience target by geolocation
@@ -140,7 +140,7 @@ To best understand how shortcodes work, it's best to [read the documentation](ht
 
 But here are some simple examples:
 
-The WP Geo Controller allows you to add location-based functionality to your website. It is a simple plugin to use, after installation and activation, you just need to insert the shortcode **`[cfgeo]`** in your post or page. This shortcode returns and displays the IP address of the visitor.
+The Geo Controller allows you to add location-based functionality to your website. It is a simple plugin to use, after installation and activation, you just need to insert the shortcode **`[cfgeo]`** in your post or page. This shortcode returns and displays the IP address of the visitor.
 
 You can also display different location-based information by using the return attribute in the shortcode. For example, to display the region of the visitor, you can use the shortcode **`[cfgeo return="region"]`**. By changing the return attribute, you can display any information from the list provided by the plugin. Each user visiting the site will see information related to their area.
 
@@ -204,7 +204,7 @@ Google Map also allow you to use HTML inside map and display info bar:
 
 With this plugin you can easily set up your Google Map.
 
-**GEO BANNER:** With this plugin you also have the ability to make dynamic content (text, images, banners, videos...) and target your messages to people from certain regions, track IP address, setup WordPress to work on user's timezone, etc. The possibilities are huge, you can increase conversions, use this plugin like support for your custom template, build your own plugin and use WP Geo Controller like additional options, etc.
+**GEO BANNER:** With this plugin you also have the ability to make dynamic content (text, images, banners, videos...) and target your messages to people from certain regions, track IP address, setup WordPress to work on user's timezone, etc. The possibilities are huge, you can increase conversions, use this plugin like support for your custom template, build your own plugin and use Geo Controller like additional options, etc.
 
 You just need to create a new banner, place your content, select rules (country, region, city) save your banner, after that in your page pickup banner shortcode and place inside content.
 
@@ -246,54 +246,54 @@ Also please inform us if any errors occur via contact form on our website [http:
 
 Thank you for your concern!
 
-~ Your WP Geo Controller Team
+~ Your Geo Controller Team
 
 == Installation ==
 
-Installing WP Geo Controller is a breeze. Just follow these simple steps:
+Installing Geo Controller for WordPress is a breeze. Just follow these simple steps:
 
 * Upload the plugin files to the **/wp-content/plugins/cf-geoplugin** directory, or install the plugin through the WordPress plugins screen directly.
 * Activate the plugin through the "Plugins" screen in WordPress
-* Go to the WP Geo Controller settings page and configure your settings
+* Go to the Geo Controller settings page and configure your settings
 * That's it! You're ready to start greeting your visitors with personalized messages.
 
 = On uninstall =
 
-When you choose to uninstall the WP Geo Controller plugin, it's important to be aware that all data associated with the plugin will be permanently deleted from your WordPress installation. This includes the plugin's setup, license, and any other changes that you have made using the plugin. The plugin will clean everything from your database, and this process is irreversible, meaning that you will not be able to retrieve or restore any of the data that was generated by the plugin. So before you proceed with the uninstallation, it's important to make sure that you have a backup of any important data that you want to keep, or you have an alternative way to store the data.
+When you choose to uninstall the Geo Controller plugin, it's important to be aware that all data associated with the plugin will be permanently deleted from your WordPress installation. This includes the plugin's setup, license, and any other changes that you have made using the plugin. The plugin will clean everything from your database, and this process is irreversible, meaning that you will not be able to retrieve or restore any of the data that was generated by the plugin. So before you proceed with the uninstallation, it's important to make sure that you have a backup of any important data that you want to keep, or you have an alternative way to store the data.
 
 == Frequently Asked Questions ==
 
-= Is WP Geo Controller free? Is there some license or restrictions? =
+= Is Geo Controller free? Is there some license or restrictions? =
 
-WP Geo Controller uses a combination of free and paid services that return information about the locations.
+Geo Controller uses a combination of free and paid services that return information about the locations.
 
-WP Geo Controller is free by itself but API lookup is limited to 1000 lookups per day for the free users. If you need to have UNLIMITED lookup with NO RESTRICTIONS, please visit [official website](https://cfgeoplugin.com/pricing/) for more information regarding prices.
+Geo Controller is free by itself but API lookup is limited to 1000 lookups per day for the free users. If you need to have UNLIMITED lookup with NO RESTRICTIONS, please visit [official website](https://cfgeoplugin.com/pricing/) for more information regarding prices.
 
 The reason for the payment of the license is obvious: -We have to pay the server we use to provide you information via API, development requires hours and hours of work at the daily level, the availability of the service must be 24/7 with no stop and for a lot of coffee.
 
 Also you must know that few options like REST API, WooCommerce Payment Options, Spam Protection, Currency Converter are locked for the unlicensed usage because those options rely on the unlimited lookups and can break the website or stop working when you reach limits.
 
-= Do WP Geo Controller use 3rd party services? =
+= Do Geo Controller use 3rd party services? =
 
-WP Geo Controller is a geo information provider and we provide our own geo information via API services builded on the WP Geo Controller servers. WP Geo Controller has its own databases of IP addresses and geo locations related to that IP addresses. WP Geo Controller may use inside own API service and 3rd party API services like [MaxMind](https://www.maxmind.com/en/home), [GeoIP](http://php.net/manual/en/intro.geoip.php) and [Geo Plugin](https://www.geoplugin.com/) like additional support for the certain informations for the more precise location or currency information.
+Geo Controller is a geo information provider and we provide our own geo information via API services builded on the Geo Controller servers. Geo Controller has its own databases of IP addresses and geo locations related to that IP addresses. Geo Controller may use inside own API service and 3rd party API services like [MaxMind](https://www.maxmind.com/en/home), [GeoIP](http://php.net/manual/en/intro.geoip.php) and [Geo Plugin](https://www.geoplugin.com/) like additional support for the certain informations for the more precise location or currency information.
 
-Note that WP Geo Controller DO NOT STORE any personal information without your knowledge and approval and not provide personal information to 3rd parties. WP Geo Controller not selling and not providing own databases to 3rd parties in any case. We handle only with world wide public information that is visible to anyone (client IP, server IP, hostname) and using simple processes we return geo information and following services.
+Note that Geo Controller DO NOT STORE any personal information without your knowledge and approval and not provide personal information to 3rd parties. Geo Controller not selling and not providing own databases to 3rd parties in any case. We handle only with world wide public information that is visible to anyone (client IP, server IP, hostname) and using simple processes we return geo information and following services.
 
 For more informations you visit [Terms and Conditions](https://cfgeoplugin.com/terms-and-conditions) and [Privacy Policy](https://cfgeoplugin.com/privacy-policy) pages on our [official website](https://cfgeoplugin.com).
 
-= How I can test WP Geo Controller is work on certain country, region or city? =
+= How I can test Geo Controller is work on certain country, region or city? =
 
 That part is a little bit hard but you can use great VPN service - [NordVPN](https://goo.gl/AEd82e)
-With this service you can change your current location and test WP Geo Controller and its functionality.
+With this service you can change your current location and test Geo Controller and its functionality.
 
 = Can I use CF Geop Plugin inside a custom template? =
 
-Yes! You can! You just need to follow instructions from your admin panel `http://siteexample.com/wp-admin/` area and use the `Settings->WP Geo Controller` to see all available shortcodes and settings.
-NOTE: Some templates do not support WordPress PHP function `[do_shortcode()](https://developer.wordpress.org/reference/functions/do_shortcode/)` and data from WP Geo Controller will not be visible.
+Yes! You can! You just need to follow instructions from your admin panel `http://siteexample.com/wp-admin/` area and use the `Settings->Geo Controller` to see all available shortcodes and settings.
+NOTE: Some templates do not support WordPress PHP function `[do_shortcode()](https://developer.wordpress.org/reference/functions/do_shortcode/)` and data from Geo Controller will not be visible.
 
 = Can GeoPlugin slow down my site? =
 
-NO, WP Geo Controller uses the asynchronous data reading from API services. After loading, all data is stored in a session. That session is stored until IP is changed. When the user's IP changes, the plugin reads new data and stores in the new session.
+NO, Geo Controller uses the asynchronous data reading from API services. After loading, all data is stored in a session. That session is stored until IP is changed. When the user's IP changes, the plugin reads new data and stores in the new session.
 
 = Can I set the different value if the shortcode shows no results? =
 
@@ -345,7 +345,7 @@ JavaScript is enabled from version 5.2.0. In JavaScript you have 2 ways to get g
 </script>
 `
 
-= How to use WP Geo Controller inside ContactForm7? =
+= How to use Geo Controller inside ContactForm7? =
 
 Sometimes you need to include other HTML, CSS and JavaScript, and jQuery codes inside ContactForm7. Sometimes you need to insert a geolocation in input fields. This is not easy but here is one example with jQuery:
 
@@ -365,26 +365,26 @@ This code will auto fill the value of CF7 city field when a visitor visits the c
 
 * All geo information you can find inside the global `window.cfgeo` object.
 
-= WP Geo Controller don't display information =
+= Geo Controller don't display information =
 
-* It might be an error with the provider's [geoPlugin](http://www.geoplugin.com/) network or API and WP Geo Controller can't display information on its own.
-* Look inside `WP Geo Controller` for all available shortcodes and settings,
-* Look inside `WP Geo Controller->Settings` and enable/disable and check all options (SSL, proxy, etc),
+* It might be an error with the provider's [geoPlugin](http://www.geoplugin.com/) network or API and Geo Controller can't display information on its own.
+* Look inside `Geo Controller` for all available shortcodes and settings,
+* Look inside `Geo Controller->Settings` and enable/disable and check all options (SSL, proxy, etc),
 * Maybe you have PHP error, you can see that if you enable plugin debug in `wp-config.php` inserting on first lines code: `define('WP_CF_GEO_DEBUG', true);`
 * Some people use a special software to hide IP address via proxy and geoplugin can't look deeper to get accurate location,
-* Look into error.log file to see if a problem is in WP Geo Controller
+* Look into error.log file to see if a problem is in Geo Controller
 * Some servers not allow access to geoplugin sites and maybe you need to use proxy settings inside plugin to enable tracking
 * You reach some API limitations
 
-Please inform us if any of these errors occur via contact form on our website [http://creativform.com](http://creativform.com/contact/) with message subject: **WP Geo Controller SUPPORT**
+Please inform us if any of these errors occur via contact form on our website [http://creativform.com](http://creativform.com/contact/) with message subject: **Geo Controller SUPPORT**
 
 == Screenshots ==
 
-1. WP Geo Controller Available shortcodes and values
+1. Geo Controller Available shortcodes and values
 2. CF Google Map shortcodes and setup
 3. Anti Spam Protection settings
-4. WP Geo Controller global settings
-5. Debug Mode for WP Geo Controller and IP Lookup
+4. Geo Controller global settings
+5. Debug Mode for Geo Controller and IP Lookup
 6. Adding shortcode in text editor
 7. Admin bar quick links
 8. Example 1
@@ -421,7 +421,7 @@ Please inform us if any of these errors occur via contact form on our website [h
 
 = Plugin Links =
 
-* [WP Geo Controller Website](https://cfgeoplugin.com/)
+* [Geo Controller Website](https://cfgeoplugin.com/)
 * [Documentation](https://cfgeoplugin.com/documentation/)
 * [F.A.Q](https://cfgeoplugin.com/faq/)
 * [Blog](https://cfgeoplugin.com/blog/)
@@ -431,18 +431,18 @@ Please inform us if any of these errors occur via contact form on our website [h
 
 = DONATION =
 
-Enjoy using *WP Geo Controller*? Please consider [making a small donation](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=creativform@gmail.com) to support the project's continued development.
+Enjoy using *Geo Controller*? Please consider [making a small donation](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=creativform@gmail.com) to support the project's continued development.
 
 = TERMS AND CONDITIONS =
 
 BY INSTALLING THIS PLUGIN WE CONSIDER THAT YOU ARE AUTOMATICALLY ACCEPT TERMS AND CONDITIONS OF OUR SERVICES AND AGREE WITH THE PRIVACY POLICY.
 
-Please read these Terms and Conditions ("Terms", "Terms and Conditions") carefully before using the [www.cfgeoplugin.com](https://cfgeoplugin.com) website and the WP Geo Controller WordPress application (the "Service") operated by WP Geo Controller.
+Please read these Terms and Conditions ("Terms", "Terms and Conditions") carefully before using the [www.cfgeoplugin.com](https://cfgeoplugin.com) website and the Geo Controller WordPress application (the "Service") operated by Geo Controller.
 
 [Read about Terms and Conditions](https://cfgeoplugin.com/terms-and-conditions)
 
 = PRIVACY POLICY =
-We respect your privacy and take protecting it seriously. This Privacy Policy covers our collection, use and disclosure of information we collect through our website and service, [www.cfgeoplugin.com](https://cfgeoplugin.com) owned and operated by WP Geo Controller. It also describes the choices available to you regarding our use of your personal information and how you can access and update this information. The use of information collected through our service shall be limited to the purpose of providing the service for which our Clients have engaged us. Also we respect and take care about Europe General Data Protection Regulation (GDPR) and your freedom and private choices.
+We respect your privacy and take protecting it seriously. This Privacy Policy covers our collection, use and disclosure of information we collect through our website and service, [www.cfgeoplugin.com](https://cfgeoplugin.com) owned and operated by Geo Controller. It also describes the choices available to you regarding our use of your personal information and how you can access and update this information. The use of information collected through our service shall be limited to the purpose of providing the service for which our Clients have engaged us. Also we respect and take care about Europe General Data Protection Regulation (GDPR) and your freedom and private choices.
 
 [Read about Privacy Policy](https://cfgeoplugin.com/privacy-policy)
 

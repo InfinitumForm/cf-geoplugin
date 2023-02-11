@@ -233,6 +233,10 @@ class CFGP_Library {
 			return '{}';
 		}
 		
+		if( !is_array($countries) ) {
+			$countries = explode(',', $countries);
+		}
+		
 		$countries = array_map('trim', $countries);
 		$countries = array_filter($countries);
 		$countries = array_map('strtolower', $countries);
@@ -331,6 +335,10 @@ class CFGP_Library {
 				return [];
 			}
 			return '{}';
+		}
+		
+		if( !is_array($countries) ) {
+			$countries = explode(',', $countries);
 		}
 		
 		$countries = array_map('trim', $countries);

@@ -17,11 +17,13 @@ if(!class_exists('CFGP_Plugins')) :
 	{
 		// plugin-directory => plugin-file.php
 		private $plugins = array(
-			'woocommerce' 		=> 'woocommerce',
-			'wooplatnica' 		=> 'wooplatnica',
-			'contact-form-7'	=> 'wp-contact-form-7',
-			'wordpress-seo' 	=> 'wp-seo',
-			'elementor' 		=> 'elementor'
+			'woocommerce' 			=> 'woocommerce',
+			'wooplatnica' 			=> 'wooplatnica',
+			'contact-form-7'		=> 'wp-contact-form-7',
+			'wordpress-seo' 		=> 'wp-seo',
+			'elementor' 			=> 'elementor',
+		//	'buddyboss-platform'	=> 'bp-loader',
+			'gravityforms'			=> 'gravityforms'
 		);
 		
 		function __construct( $options=[], $only_object = false ) {
