@@ -30,6 +30,93 @@ if(!class_exists('CFGP_Plugins')) :
 			$this->include_plugins($options, $only_object);
 			$this->add_filter( 'cfgp/settings', 'cfgp_settings' );
 			$this->add_filter( 'cfgp/settings/default', 'cfgp_settings_default' );
+			$this->add_action( 'wp_ajax_cfgp_dimiss_notice_plugin_support', 'ajax_dimiss_notice' );
+		}
+		
+		/* 
+		 * Dimiss notice
+		 * @verson    1.0.0
+		 */
+		public function ajax_dimiss_notice ( ) {
+			if( !wp_verify_nonce( $_POST['nonce'], 'cfgp-dimiss-notice-plugin-support' ) ) {
+				return;
+			}
+			
+			update_option(CFGP_NAME . '_dimiss_notice_plugin_support', true, true);
+			set_transient(CFGP_NAME . '_dimiss_notice_plugin_support', true, (MONTH_IN_SECONDS * time()));
+			
+			echo 1; exit;
+		}
+		
+		/* 
+		 * Add plugins settings
+		 * @verson    1.0.0
+		 */
+		private function notify_for_plugins ( $plugins ) {
+			// Dimissed notice
+			if( get_option(CFGP_NAME . '_dimiss_notice_plugin_support') ) {
+				return;
+			}
+			
+			// Add notice script to footer
+			add_action('admin_footer', function(){ ?>
+<script id="cfgp-dimiss-notice-plugin-support-js">
+/* <![CDATA[ */
+(function($){
+	$(document).on( 'click', '#cf-geoplugin-notice-plugin-support .notice-dismiss', function(){
+		$.post(
+			'<?php echo esc_url( admin_url('admin-ajax.php') ); ?>',
+			{
+				action : 'cfgp_dimiss_notice_plugin_support',
+				nonce : '<?php echo esc_attr(wp_create_nonce('cfgp-dimiss-notice-plugin-support')); ?>'
+			}
+		);
+	} );
+}(jQuery || window.jQuery));
+/* ]]> */
+</script>
+			<?php }, 9999);
+			
+			// Notice script
+			add_action( 'admin_notices', function () use ( $plugins ) {
+				// Collect slugs
+				$slugs = [];
+				foreach($plugins as $path => $plugin) {
+					$path = explode('/', $path);
+					$slugs[]= $path[0];
+				}
+				
+				// Collect plugin names
+				$names = [];
+				$last = NULL;
+				if( count($plugins) > 1 ) {
+					$last = '<strong>' . (end($plugins))->name . '</strong>';
+					unset($plugins[array_key_last($plugins)]);
+				}
+				foreach($plugins as $path => $plugin) {
+					$names[]= '<strong>' . $plugin->name . '</strong>';
+				}
+				if($last) {
+					$names = sprintf(
+						__('%s and %s', 'cf-geoplugin'),
+						join(', ', $names),
+						$last
+					);
+				} else {
+					$names = join(', ', $names);
+				}
+				
+				//Fire notice
+?><div class="notice notice-info is-dismissible" id="cf-geoplugin-notice-plugin-support">
+	<h3><?php echo wp_kses_post( sprintf( __('Attention %s enthusiasts!', 'cf-geoplugin'), $names ) ); ?></h3>
+	<p><?php echo wp_kses_post( sprintf( __('Get ready to unleash the full potential of your website with <b>Geo Controller</b> integration. The plugins are all installed, active, and waiting for you to activate the magic. You need to go to the %s and activate the integration for the mentioned plugins.', 'cf-geoplugin'), '<a href="' . esc_url(admin_url('admin.php?page=cf-geoplugin-settings').'#plugin_support') . '">' . __('Geo Controller settings', 'cf-geoplugin') . '</a>' ) ); ?></p>
+	<p><a href="<?php echo esc_url( add_query_arg([
+		'cfgp_activate_all_plugins_support' => true,
+		'plugins' => join(',', $slugs),
+		'cfgp_nonce' => wp_create_nonce('cfgp-activate-all-plugins-support')
+	]) ); ?>" class="button button-primary"><?php esc_html_e('Activate All Geo Power in One Click!', 'cf-geoplugin'); ?></a></p>
+	<p><strong><?php esc_html_e('Don\'t miss out on this opportunity to enhance your online presence!', 'cf-geoplugin'); ?></strong></p>
+</div><?php } );
 		}
 		
 		/* 
@@ -112,6 +199,8 @@ if(!class_exists('CFGP_Plugins')) :
 			{							
 				$this->plugins = apply_filters('cfgp/plugins', $this->plugins);
 				
+				$notify = [];
+				
 				foreach($this->plugins as $dir_name=>$file_name)
 				{
 					$addon = CFGP_PLUGINS . "/{$dir_name}/{$dir_name}.php";
@@ -130,8 +219,14 @@ if(!class_exists('CFGP_Plugins')) :
 									$plugin_class::instance();
 								}
 							}
+						} else if( $plugin_info = CFGP_U::plugin_info([], $dir_name) ) {
+							$notify["{$dir_name}/{$dir_name}.php"] = $plugin_info;
 						}
 					}
+				}
+				
+				if( !empty( $notify ) ) {
+					$this->notify_for_plugins($notify);
 				}
 			}
 		}

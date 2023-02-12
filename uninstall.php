@@ -56,6 +56,9 @@ if(get_option(CFGP_NAME . '-postcode_children')) {
 if(get_option(CFGP_NAME . '_is_localhost_127.0.1.1')) {
 	delete_option(CFGP_NAME . '_is_localhost_127.0.1.1');
 }
+if(get_option(CFGP_NAME . '_dimiss_notice_plugin_support')) {
+	delete_option(CFGP_NAME . '_dimiss_notice_plugin_support');
+}
 
 // Fix WooCommerce after our plugin
 if('cf_geoplugin' === get_option( 'woocommerce_default_customer_address' )) {
