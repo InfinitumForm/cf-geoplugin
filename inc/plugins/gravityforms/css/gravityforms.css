@@ -1,0 +1,23 @@
+.cfgp_gfield_group > table.gfield_list select.large,
+.cfgp_gfield_group > table.gfield_list select.medium,
+.cfgp_gfield_group > table.gfield_list select.small,
+.cfgp_gfield_group > table.gfield_list.large {
+	width:100% !important;
+}
+.cfgp_gfield_group > table.gfield_list.large th.large,
+.cfgp_gfield_group > table.gfield_list.large td.large{
+	width:calc(100%/3);
+}
+
+.cfgp_gfield_group > table.gfield_list.medium {
+	width:calc(50% - 16px / 2);
+}
+
+.cfgp_gfield_group > table.gfield_list.small {
+	width:calc(25% - 16px * 3 / 4);
+}
+
+.cfgp_gfield_group > table.gfield_list.large th.medium,
+.cfgp_gfield_group > table.gfield_list.large td.medium{
+	width:calc(100%/3);
+}

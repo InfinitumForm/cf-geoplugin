@@ -44,6 +44,14 @@ class CFGP__Plugin__gravityforms extends CFGP_Global{
 				'please_wait' => esc_attr__('Please Wait...', 'cf-geoplugin')
 			]
 		));
+		
+		
+		wp_enqueue_style(
+			CFGP_NAME . '-gform-cfgp',
+			CFGP_URL . '/inc/plugins/gravityforms/css/gravityforms.css',
+			array('gform_basic'),
+			(string)CFGP_VERSION
+		);
 	}
 	/* 
 	 * Replace gform_ip_address 

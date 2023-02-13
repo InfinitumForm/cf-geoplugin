@@ -31,6 +31,40 @@ if(!class_exists('CFGP_Plugins')) :
 			$this->add_filter( 'cfgp/settings', 'cfgp_settings' );
 			$this->add_filter( 'cfgp/settings/default', 'cfgp_settings_default' );
 			$this->add_action( 'wp_ajax_cfgp_dimiss_notice_plugin_support', 'ajax_dimiss_notice' );
+			$this->add_action( 'plugins_loaded', 'cfgp_activate_all_plugins_support' );
+		}
+		
+		/* 
+		 * Activate all plugins
+		 * @verson    1.0.0
+		 */
+		public function cfgp_activate_all_plugins_support(){
+			
+			$data = array_map('sanitize_text_field', $_GET);
+			
+			if( ( $data['cfgp_activate_all_plugins_support'] ?? 0 ) == '1' ){
+				if( !wp_verify_nonce( ( $data['cfgp_nonce'] ?? NULL ), 'cfgp-activate-all-plugins-support' ) ) {
+					return;
+				}
+				
+				if( $data['plugins'] ?? NULL ) {
+					$plugins = explode(',', $data['plugins']);
+					$plugins = array_map('trim', $plugins);
+					$plugins = array_filter($plugins);
+				//	var_dump($plugins); exit;
+					foreach($plugins as $plugin) {
+						CFGP_Options::set("enable-{$plugin}", 1);
+					}
+					
+					if( wp_safe_redirect( remove_query_arg([
+						'cfgp_activate_all_plugins_support',
+						'plugins',
+						'cfgp_nonce'
+					]) ) ) {
+						exit;
+					}
+				}
+			}
 		}
 		
 		/* 
@@ -183,7 +217,7 @@ if(!class_exists('CFGP_Plugins')) :
 				$addon = CFGP_PLUGINS . "/{$dir_name}/{$dir_name}.php";
 				if( file_exists($addon) && CFGP_U::is_plugin_active("{$dir_name}/{$file_name}.php") )
 				{
-					$plugin_options['enable-' . $dir_name]=0;
+					$plugin_options["enable-{$dir_name}"]=0;
 				}
 			}
 			
@@ -209,7 +243,7 @@ if(!class_exists('CFGP_Plugins')) :
 						$class_name = str_replace(['-','.'], '_', $dir_name);
 						$plugin_class = "CFGP__Plugin__{$class_name}";
 						
-						if(CFGP_Options::get('enable-' . $dir_name, 0))
+						if(CFGP_Options::get("enable-{$dir_name}", 0))
 						{
 							if(class_exists($plugin_class) && method_exists($plugin_class, 'instance')) {
 								$plugin_class::instance();
