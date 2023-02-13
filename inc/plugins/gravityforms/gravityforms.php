@@ -10,8 +10,8 @@ if( !class_exists( 'CFGP__Plugin__gravityforms' ) ):
 class CFGP__Plugin__gravityforms extends CFGP_Global{
 	
 	private function __construct() {
-		$this->add_action( 'wp_enqueue_scripts', 'enqueue_scripts', 100, 1 );
-		$this->add_action( 'admin_enqueue_scripts', 'enqueue_scripts', 100, 1 );
+		$this->add_action( 'gform_enqueue_scripts', 'enqueue_scripts', 100, 2 );
+		$this->add_action( 'gform_register_init_scripts', 'register_init_scripts', 10, 3 );
 		
 		$this->add_filter( 'gform_ip_address', 'gform_ip_address', 1, 10 );
 		$this->add_action( 'plugins_loaded', 'add_custom_fields', 0, 10 );
@@ -24,41 +24,48 @@ class CFGP__Plugin__gravityforms extends CFGP_Global{
 	 * Enqueue Scripts
 	 * @verson    1.0.0
 	 */
-	public function enqueue_scripts($page) {
-		wp_register_script(
-			CFGP_NAME . '-gform-cfgp',
-			CFGP_URL . '/inc/plugins/gravityforms/js/gravityforms.js',
-			array('jquery'),
-			(string)CFGP_VERSION
-		);
-		if(
-			(sanitize_text_field($_GET['gf_page'] ?? '') === 'preview') 
-			|| is_admin() 
-			|| ( $page && in_array($page, array(
-					'forms_page_gf_entries'
-				)) !== false )
-		) {
-			wp_enqueue_script(CFGP_NAME . '-gform-cfgp');
+	private $enqueue_scripts;
+	public function enqueue_scripts( $form, $is_ajax ) {
+		if( !$this->enqueue_scripts ) {
+			wp_register_script(
+				CFGP_NAME . '-gform-cfgp',
+				CFGP_URL . '/inc/plugins/gravityforms/js/gravityforms.js',
+				array('jquery'),
+				(string)CFGP_VERSION,
+				true
+			);
+		
+		
+			wp_localize_script(CFGP_NAME . '-gform-cfgp', 'CFGP_GFORM', array(
+				'ajaxurl' => admin_url('admin-ajax.php'),
+				'nonce' => [
+					'cfgp_gfield_autocomplete_location' => wp_create_nonce('cfgp-gfield-autocomplete-location')
+				],
+				'label' => [
+					'please_wait' => esc_attr__('Please Wait...', 'cf-geoplugin')
+				]
+			));
+			$this->enqueue_scripts = true;
+		
+		
+			wp_register_style(
+				CFGP_NAME . '-gform-cfgp',
+				CFGP_URL . '/inc/plugins/gravityforms/css/gravityforms.css',
+				array('gform_basic'),
+				(string)CFGP_VERSION
+			);
 		}
-		
-		wp_localize_script(CFGP_NAME . '-gform-cfgp', 'CFGP_GFORM', array(
-			'ajaxurl' => admin_url('admin-ajax.php'),
-			'nonce' => [
-				'cfgp_gfield_autocomplete_location' => wp_create_nonce('cfgp-gfield-autocomplete-location')
-			],
-			'label' => [
-				'please_wait' => esc_attr__('Please Wait...', 'cf-geoplugin')
-			]
-		));
-		
-		
-		wp_enqueue_style(
-			CFGP_NAME . '-gform-cfgp',
-			CFGP_URL . '/inc/plugins/gravityforms/css/gravityforms.css',
-			array('gform_basic'),
-			(string)CFGP_VERSION
-		);
 	}
+	
+	/*
+	 * Register Init Scripts
+	 * @verson    1.0.0
+	 */
+	public function register_init_scripts( $form, $is_ajax ) {
+		wp_enqueue_script(CFGP_NAME . '-gform-cfgp');
+		wp_enqueue_style(CFGP_NAME . '-gform-cfgp');
+	}
+	
 	/* 
 	 * Replace gform_ip_address 
 	 * @verson    1.0.0

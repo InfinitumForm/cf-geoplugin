@@ -162,6 +162,7 @@ class CFGP__Plugin__gravityforms__GF_Country_Region_City extends GF_Field {
     public function get_field_input( $form, $value = '', $entry = null ) {
 
 		wp_enqueue_script(CFGP_NAME . '-gform-cfgp');
+		wp_enqueue_style(CFGP_NAME . '-gform-cfgp');
 		
         $form_id = $form['id'];
 		$id = absint( $this->id );
