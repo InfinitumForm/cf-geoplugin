@@ -46,7 +46,7 @@ class CFGP__Plugin__gravityforms__GF_Country_Region_City extends GF_Field {
 	 * @return string
 	 */
 	public function get_form_editor_field_icon() {
-		return 'gform-icon--multi-select';
+		return 'gform-icon--place';
 	}
 	
 	public function is_value_submission_array() {
@@ -66,7 +66,7 @@ class CFGP__Plugin__gravityforms__GF_Country_Region_City extends GF_Field {
 		return [
 			'group' => 'advanced_fields',
 			'text'  => $this->get_form_editor_field_title(),
-			'icon' => 'gform-icon--multi-select'
+			'icon' => 'gform-icon--place'
 		];
 	}
 	
@@ -160,15 +160,13 @@ class CFGP__Plugin__gravityforms__GF_Country_Region_City extends GF_Field {
 	 * @return string
 	 */
     public function get_field_input( $form, $value = '', $entry = null ) {
-		/*if ($this->is_form_editor()) {
-			return '';
-		}*/
-		
+
 		wp_enqueue_script(CFGP_NAME . '-gform-cfgp');
 		
         $form_id = $form['id'];
 		$id = absint( $this->id );
 		$field_id = "input_{$id}";
+		$select_form_id = "input_{$form_id}_{$id}";
 
 		$is_entry_detail = $this->is_entry_detail();
 		$is_form_editor  = $this->is_form_editor();
@@ -230,7 +228,7 @@ class CFGP__Plugin__gravityforms__GF_Country_Region_City extends GF_Field {
 			<tr class="gfield_list_row gfield_list_row_odd">
 				<td class="gfield_list_cell gfield_list_{{form_id}}_cell1 {{class}}" data-label="country">
 					<div class="ginput_container ginput_container_select">
-						<select class="{{css_class}} gfield_select_country" id="{{field_id}}_1" name="{{field_id}}[]"<?php echo $placeholder_attribute; ?>{{tabindex}}{{invalid_attribute}}{{required_attribute}}{{disabled}}>
+						<select class="{{css_class}} gfield_select_country" id="{{select_form_id}}" name="{{field_id}}[]"<?php echo $placeholder_attribute; ?>{{tabindex}}{{invalid_attribute}}{{required_attribute}}{{disabled}}>
 							<?php
 							foreach ( $countries as $country_code => $country ) :
 							$country_code = strtoupper($country_code);
@@ -242,7 +240,7 @@ class CFGP__Plugin__gravityforms__GF_Country_Region_City extends GF_Field {
 				</td>
 				<td class="gfield_list_cell gfield_list_{{form_id}}_cell2 {{class}}" data-label="region">
 					<div class="ginput_container ginput_container_select">
-						<select class="{{css_class}} gfield_select_region" id="{{field_id}}_2" name="{{field_id}}[]"<?php echo $placeholder_attribute; ?>{{tabindex}}{{invalid_attribute}}{{required_attribute}}{{disabled}}>
+						<select class="{{css_class}} gfield_select_region" id="{{select_form_id}}_region" name="{{field_id}}[]"<?php echo $placeholder_attribute; ?>{{tabindex}}{{invalid_attribute}}{{required_attribute}}{{disabled}}>
 							<?php
 							if( $regions = CFGP_Library::get_regions(strtolower($value[0] ?? $default_country)) ) :
 							foreach ( $regions as $i => $region ) :
@@ -257,7 +255,7 @@ class CFGP__Plugin__gravityforms__GF_Country_Region_City extends GF_Field {
 				</td>
 				<td class="gfield_list_cell gfield_list_{{form_id}}_cell3 {{class}}" data-label="city">
 					<div class="ginput_container ginput_container_select">
-						<select class="{{css_class}} gfield_select_city" id="{{field_id}}_3" name="{{field_id}}[]"<?php echo $placeholder_attribute; ?>{{tabindex}}{{invalid_attribute}}{{required_attribute}}{{disabled}}>
+						<select class="{{css_class}} gfield_select_city" id="{{select_form_id}}_city" name="{{field_id}}[]"<?php echo $placeholder_attribute; ?>{{tabindex}}{{invalid_attribute}}{{required_attribute}}{{disabled}}>
 							<?php
 							if( $cities = CFGP_Library::get_cities(strtolower($value[0] ?? $default_country)) ) :
 							foreach ( $cities as $i => $city ) :
@@ -284,13 +282,13 @@ class CFGP__Plugin__gravityforms__GF_Country_Region_City extends GF_Field {
 				'{{disabled}}' => $disabled,
 				'{{invalid_attribute}}' => $invalid_attribute,
 				'{{required_attribute}}' => $required_attribute,
-				'{{tabindex}}' => $tabindex
+				'{{tabindex}}' => $tabindex,
+				'{{select_form_id}}' => $select_form_id
 			]
 		);
     }
 	
 	public function is_value_submission_empty($form_id) {
-		
 		return empty( $this->get_record($form_id) );
 	}
 	

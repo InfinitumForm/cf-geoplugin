@@ -10,8 +10,8 @@ if( !class_exists( 'CFGP__Plugin__gravityforms' ) ):
 class CFGP__Plugin__gravityforms extends CFGP_Global{
 	
 	private function __construct() {
-		$this->add_action( 'wp_enqueue_scripts', 'enqueue_scripts' );
-		$this->add_action( 'admin_enqueue_scripts', 'enqueue_scripts' );
+		$this->add_action( 'wp_enqueue_scripts', 'enqueue_scripts', 100, 1 );
+		$this->add_action( 'admin_enqueue_scripts', 'enqueue_scripts', 100, 1 );
 		
 		$this->add_filter( 'gform_ip_address', 'gform_ip_address', 1, 10 );
 		$this->add_action( 'plugins_loaded', 'add_custom_fields', 0, 10 );
@@ -31,7 +31,13 @@ class CFGP__Plugin__gravityforms extends CFGP_Global{
 			array('jquery'),
 			(string)CFGP_VERSION
 		);
-		if( (sanitize_text_field($_GET['gf_page'] ?? '') === 'preview') || is_admin() ) {
+		if(
+			(sanitize_text_field($_GET['gf_page'] ?? '') === 'preview') 
+			|| is_admin() 
+			|| ( $page && in_array($page, array(
+					'forms_page_gf_entries'
+				)) !== false )
+		) {
 			wp_enqueue_script(CFGP_NAME . '-gform-cfgp');
 		}
 		
