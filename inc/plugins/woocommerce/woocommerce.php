@@ -700,14 +700,31 @@ if($flag = CFGP_U::admin_country_flag(get_post_meta($post->ID, '_billing_country
     public function cfgp_woocommerce_payment_disable( $gateways )
     {
 		$original_gateways = $gateways;
-        
-		if( !CFGP_U::api('country_code', NULL) || !CFGP_U::api('country', NULL) ) return $gateways;
+		
+		// If plugin is not available return original
+		if( !CFGP_U::api('country_code', NULL) ) {
+			return $gateways;
+		}
 
 		// Very important check othervise will delete from settings and throw fatal error
-        if( is_admin() ) return $gateways;
+        if( is_admin() ) {
+			return $gateways;
+		}
 		
-		$current_country = strtolower( WC()->customer->get_billing_country() ?? CFGP_U::api('country_code') );
-
+		// $tax_based_on = get_option( 'woocommerce_tax_based_on' );
+		
+		if( !is_user_logged_in() ) {
+			$current_country = sanitize_text_field( $_POST['s_country'] ?? $_POST['billing_country'] ?? CFGP_U::api('country_code', NULL) ?? WC()->countries->get_base_country() );
+		} else if( isset(WC()->customer) ) {
+			if( !( $current_country = sanitize_text_field( $_POST['s_country'] ?? $_POST['billing_country'] ?? WC()->customer->get_billing_country() ) ) ) {
+				$current_country = CFGP_U::api('country_code', NULL) ?? WC()->countries->get_base_country();
+			}
+		} else {
+			$current_country = CFGP_U::api('country_code', NULL) ?? WC()->countries->get_base_country();
+		}
+		
+		$current_country = strtolower($current_country);
+		
         if( is_array( $gateways ) )
         {
             foreach( $gateways as $gateway )
