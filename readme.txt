@@ -1,11 +1,11 @@
 ﻿=== Geo Controller ===
 Contributors: ivijanstefan, creativform
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=creativform@gmail.com
-Tags: geolocation, seo redirect, locator, GeoIP, geo, geotargeting, seo, woocommerce, include exclude, content, remove content, show hide, covid
+Tags: geolocation, seo redirect, locator, GeoIP, geo, geotargeting, seo, woocommerce, include exclude, content, remove content, show hide, Gravity Forms
 Requires at least: 5.0
 Tested up to: 6.1
 Requires PHP: 7.0
-Stable tag: 8.4.1
+Stable tag: 8.4.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -87,6 +87,7 @@ This plugin is compatible with any Wordpress installation and many available plu
 
 * [GPS for Geo Controller](https://wordpress.org/plugins/cf-geoplugin-gps/) (Enable GPS lookup for the Geo Controller and collect geodata from the mobile visitors.)
 * [WooCommerce](https://woocommerce.com/) (geolocate, payment controls & currency converter)
+* [Gravity Forms](https://www.gravityforms.com/) (new fields for adding country, region, city)
 * [Wooplatnica](https://wordpress.org/plugins/wooplatnica/) (currency converter)
 * [Monarch](https://www.elegantthemes.com/plugins/monarch/) (Geo Banner support)
 * [Cloudflare](https://www.cloudflare.com/) (Cache and deep IP recognations)
@@ -397,6 +398,11 @@ Please inform us if any of these errors occur via contact form on our website [h
 
 == Changelog ==
 
+= 8.4.2 =
+* Fixed WooCommerce Integration
+* Added support for the Gravity Forms plugin
+* Fixed PHP bugs and removed depricated code
+
 = 8.4.1 =
 * Fixed deprecated code at the forms
 
@@ -407,6 +413,11 @@ Please inform us if any of these errors occur via contact form on our website [h
 * Fixed PHP errors from previous version
 
 == Upgrade Notice ==
+
+= 8.4.2 =
+* Fixed WooCommerce Integration
+* Added support for the Gravity Forms plugin
+* Fixed PHP bugs and removed depricated code
 
 = 8.4.1 =
 * Fixed deprecated code at the forms
