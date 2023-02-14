@@ -1,3 +1,34 @@
+/**
+ * Gravity Forms integrations
+ *
+ * @since      8.4.2
+ * @package    CF_Geoplugin
+ * @author     Ivijan-Stefan Stipic
+ */
+.cfgp_gfield_group > table.gfield_list,
+.cfgp_gfield_group > table.gfield_list > tbody,
+.cfgp_gfield_group > table.gfield_list > tbody > tr{
+	margin: 0;
+	padding: 0;
+	background: none;
+}
+
+.cfgp_gfield_group > table.gfield_list tr,
+.cfgp_gfield_group > table.gfield_list td,
+.cfgp_gfield_group > table.gfield_list th {
+	background: none;
+}
+
+.cfgp_gfield_group > table.gfield_list tr > td:first-child,
+.cfgp_gfield_group > table.gfield_list tr > th:first-child {
+	padding-left: 0;
+}
+
+.cfgp_gfield_group > table.gfield_list tr > td:last-child,
+.cfgp_gfield_group > table.gfield_list tr > th:last-child {
+	padding-right: 0;
+}
+
 .cfgp_gfield_group > table.gfield_list select.large,
 .cfgp_gfield_group > table.gfield_list select.medium,
 .cfgp_gfield_group > table.gfield_list select.small,
@@ -20,4 +51,30 @@
 .cfgp_gfield_group > table.gfield_list.large th.medium,
 .cfgp_gfield_group > table.gfield_list.large td.medium{
 	width:calc(100%/3);
+}
+
+/* Responsive Table */
+@media all and (max-width:768px) {
+	.cfgp_gfield_group > table.gfield_list{
+		width: 100% !important;
+	}
+	
+	.cfgp_gfield_group > table.gfield_list > thead {
+		display:none !important;
+	}
+	
+	.cfgp_gfield_group > table.gfield_list > tbody .gfield_list_row {
+		display:table !important;
+		width: 100% !important;
+	}
+	
+	.cfgp_gfield_group > table.gfield_list .gfield_list_col,
+	.cfgp_gfield_group > table.gfield_list > tbody .gfield_list_cell {
+		display:table !important;
+		width: 100% !important;
+	}
+	
+	.cfgp_gfield_group > table.gfield_list > tbody .gfield_list_cell + .gfield_list_cell {
+		margin-top:10px;
+	}
 }

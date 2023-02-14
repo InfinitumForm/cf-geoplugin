@@ -1,3 +1,10 @@
+/**
+ * Gravity Forms integrations
+ *
+ * @since      8.4.2
+ * @package    CF_Geoplugin
+ * @author     Ivijan-Stefan Stipic
+ */
 (function($){
 	
 	(function(cfgp_gfield){
