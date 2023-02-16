@@ -109,7 +109,11 @@ class CFGP_Shortcodes extends CFGP_Global {
 		if( CFGP_Options::get('enable_cache', 0) ) {
 			$this->add_action('wp', 'never_cache_shortcode', 1);
 		}
+		
+		
+		$this->add_shortcode( 'cfgeo_interactive_world_map',          'interactive_world_map' );
 	}
+	
 	
 	/**
 	 * If Geo Controller shortcode exists
@@ -752,6 +756,7 @@ LIMIT 1
 	**/
 	public function google_map_shortcode_script() { ?>
 	<script>
+	/* <![CDATA[ */
 	/**
 	* GOOGLE MAP SCRIPT
 	* @author Ivijan-Stefan Stipic
@@ -921,6 +926,7 @@ LIMIT 1
 			if(typeof CF_GeoPlugin_Google_Map_GeoTag != 'undefined') $this.maps.event.addDomListener(window, 'load', CF_GeoPlugin_Google_Map_GeoTag);
 		}
 	}));
+	/* ]]> */
 	</script>
 	<?php }
 	
@@ -1835,6 +1841,66 @@ LIMIT 1
 		}
 		
 		exit;
+	}
+	
+	/**
+	 * Geo Controller Interactive World Map
+	 *
+	 * @since      8.3.6
+	 * @version    1.0.0
+	 */
+	public function interactive_world_map($atts, $content='', $tag='cfgeo_interactive_world_map')
+	{
+		$country_code = strtolower( CFGP_U::api('country_code') );
+		
+		$array = shortcode_atts( array(
+			'id' 				=>  NULL,
+			'map' 				=>  NULL,
+			'border' 			=>  NULL,
+			'color' 			=>  NULL,
+			'width' 			=>  NULL,
+			'height' 			=>  NULL,
+			'backgroundColor' 	=>  NULL,
+			'antarctica' 		=>  NULL,
+			'labels' 			=>  NULL,
+			'littleRedBook' 	=>  NULL,
+			'countries' 		=> $country_code
+        ), $atts, $tag );
+		
+		if(empty($arg['id']))
+			$id = 'cfgeo-interactive-map-' . CFGP_U::generate_token(10);
+		else
+			$id = $arg['id'];
+		
+		wp_enqueue_script( CFGP_NAME . '-maps' );
+		
+		add_action('wp_footer', function() use ($country_code, $id){ ?>
+	<script>
+	/* <![CDATA[ */
+	;(function($){
+		$('#<?php echo esc_attr($id); ?>').cfgeoMap("create", {
+			map: "world",
+			border: "white",
+			color: "#999",
+			backgroundColor: "white",
+			antarctica: false,
+			labels: true,
+			littleRedBook: true,
+			width: '100%',
+			individualCountrySettings: [{
+				name: "<?php echo esc_attr( $country_code ); ?>",
+				label: "<?php echo esc_attr( CFGP_U::api('country') ); ?>",
+				color: "#cc0000"
+			}]
+		}, function() {
+			
+		});
+	}(jQuery || window.jQuery));
+	/* ]]> */
+	</script>
+<?php },999);
+		
+		ob_start(); ?><div id="<?php echo esc_attr($id); ?>"></div><?php return ob_get_clean();
 	}
 	
 	/* 

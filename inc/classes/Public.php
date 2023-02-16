@@ -51,9 +51,16 @@ class CFGP_Public extends CFGP_Global{
 		wp_register_style( CFGP_NAME . '-public', CFGP_ASSETS . '/css/style-public' . $min . '.css', 1, (string)CFGP_VERSION );
 		// Public currency converter shortcode
 		wp_register_style( CFGP_NAME . '-public-cc', CFGP_ASSETS . '/css/style-cc' . $min . '.css', 1, (string)CFGP_VERSION );
+		// Public Twism Script
+		wp_register_script( CFGP_NAME . '-maps', CFGP_ASSETS . '/js/jquery.maps' . $min . '.js', array('jquery'), (string)CFGP_VERSION );
+		wp_localize_script(CFGP_NAME . '-maps', 'CFGP_MAP', array(
+			'ajaxurl' => admin_url('admin-ajax.php'),
+			'cache' => (CFGP_Options::get('enable_cache', 0) ? '1' : '0'),
+			'maps' => CFGP_ASSETS . '/maps',
+			'key' => CFGP_U::KEY()
+		));
 		// Public JavaScript for the shortcodes
 		wp_register_script( CFGP_NAME . '-public', CFGP_ASSETS . '/js/script-public' . $min . '.js', array('jquery'), (string)CFGP_VERSION );
-		
 		wp_localize_script(CFGP_NAME . '-public', 'CFGP', array(
 			'ajaxurl' => admin_url('admin-ajax.php'),
 			'cache' => (CFGP_Options::get('enable_cache', 0) ? '1' : '0'),
