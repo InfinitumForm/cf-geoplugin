@@ -19,6 +19,7 @@
       options = null;
       callback = null;
     }
+	
     var destroy = function(options, callback) {
         var that = self;
         self.remove();

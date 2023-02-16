@@ -1941,7 +1941,9 @@ LIMIT 1
 				}";
 			}, $settings['countries'])); ?>]
 		}, function() {
-			
+			if( typeof window.cfgeo.interactive_map !== "undefined" && typeof window.cfgeo.interactive_map === "function") {
+				window.cfgeo.interactive_map( $('#<?php echo esc_attr($id); ?>') );
+			}
 		});
 	}(jQuery || window.jQuery));
 	/* ]]> */
