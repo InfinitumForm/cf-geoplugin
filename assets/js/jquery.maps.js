@@ -81,6 +81,7 @@
           territories: true,
           antarctica: false,
           color: "#999",
+		  colorSelected: "#cc0000",
           border: "white",
           align: "center",
           backgroundColor: "#white",
@@ -238,7 +239,7 @@
           var ics = settings.individualCountrySettings;
           for (i in ics) {
             $("svg path#" + ics[i].name+", svg rect#" + ics[i].name, that).css({
-              fill: ics[i].color || settings.color,
+              fill: ics[i].color || settings.colorSelected,
               stroke: ics[i].border || settings.border
             });
 			
@@ -328,7 +329,7 @@
             });
             for (i in ics) {
               $("svg rect#" + ics[i].name+", svg path#" + ics[i].name, that).css({
-                fill: ics[i].color || settings.color,
+                fill: ics[i].color || settings.colorSelected,
                 stroke: ics[i].border || settings.border
               });
             }

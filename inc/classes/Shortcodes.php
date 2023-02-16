@@ -1853,9 +1853,9 @@ LIMIT 1
 	{
 		$country_code = strtolower( CFGP_U::api('country_code') );
 		
-		$array = shortcode_atts( array(
+		$settings = shortcode_atts( array(
 			'id' 				=>  NULL,
-			'map' 				=>  NULL,
+			'map' 				=>  'world',
 			'border' 			=>  NULL,
 			'color' 			=>  NULL,
 			'width' 			=>  NULL,
@@ -1867,31 +1867,79 @@ LIMIT 1
 			'countries' 		=> $country_code
         ), $atts, $tag );
 		
-		if(empty($arg['id']))
+		if(empty($settings['id'])) {
 			$id = 'cfgeo-interactive-map-' . CFGP_U::generate_token(10);
-		else
-			$id = $arg['id'];
+		} else {
+			$id = $settings['id'];
+		}
+		
+		$settings['countries'] = explode(',', $settings['countries']);
+		$settings['countries'] = array_map('sanitize_text_field', $settings['countries']);
+		$settings['countries'] = array_filter($settings['countries']);
+		$settings['countries'] = array_map('strtolower', $settings['countries']);
 		
 		wp_enqueue_script( CFGP_NAME . '-maps' );
 		
-		add_action('wp_footer', function() use ($country_code, $id){ ?>
+		
+		$allowed_attr = array(
+			'map',
+			'customMap',
+			'territories',
+			'antarctica',
+			'color',
+			'border',
+			'align',
+			'backgroundColor',
+			'borderWidth',
+			'height',
+			'width',
+			'hoverColor',
+			'hoverBorder',
+			'littleRedBook',
+			'hideCountries',
+			'individualCountrySettings',
+			'labels',
+			'colorSelected'
+		);
+		
+		$countries = CFGP_Library::get_countries();
+		
+		add_action('wp_footer', function() use ($country_code, $id, $settings, $allowed_attr, $countries){ ?>
 	<script>
 	/* <![CDATA[ */
 	;(function($){
 		$('#<?php echo esc_attr($id); ?>').cfgeoMap("create", {
-			map: "world",
-			border: "white",
-			color: "#999",
-			backgroundColor: "white",
-			antarctica: false,
-			labels: true,
-			littleRedBook: true,
-			width: '100%',
-			individualCountrySettings: [{
-				name: "<?php echo esc_attr( $country_code ); ?>",
-				label: "<?php echo esc_attr( CFGP_U::api('country') ); ?>",
-				color: "#cc0000"
-			}]
+			<?php foreach($settings as $key => $value){
+				if( NULL !== $value && in_array($key, $allowed_attr) ) {
+					if( !is_numeric($value) ) {
+						if( in_array($value, array('true', 'false')) ) {
+							$value = ($value == 'true');
+						} else {
+							$value = '"' . esc_attr($value) . '"';
+						}
+					} else {
+						$value = esc_attr($value);
+					}
+					printf('%s:%s,'.PHP_EOL, $key, $value);
+				}
+			}; ?>
+			individualCountrySettings: [<?php echo join(',' . PHP_EOL, array_map(function($country_obj) use ($countries){
+				$color = NULL;
+				if(strpos($country_obj, ':') !== false) {
+					$country_obj = explode(':', $country_obj);
+					$country = esc_attr($country_obj[0]??'');
+					$color = esc_attr($country_obj[1]??'');
+				} else {
+					$country = esc_attr($country_obj);
+				}
+				
+				$country_name = esc_attr($countries[$country] ?? '');
+				return "{
+					name: '{$country}',
+					label: '{$country_name}'" . ($color ? ",
+					color: '{$color}'" : '') . "
+				}";
+			}, $settings['countries'])); ?>]
 		}, function() {
 			
 		});
