@@ -86,7 +86,7 @@
           border: "white",
           align: "center",
           backgroundColor: "#white",
-          borderWidth: "3",
+          borderWidth: "2",
           height: null,
           //default is actually 100%
           width: null,
@@ -117,22 +117,24 @@
         // add the SVG to the div
         var that = self;
         that.css({
-          width: (settings.width || "100%"),
-          height: (settings.height || "100%"),
+          width: (settings.width || ""),
+          height: (settings.height || ""),
         });
         if (settings.map == "world") {
           var file = (settings.antarctica) ? 'world-map-with-antarctica.svg' : 'world-map.svg';
+        } else if (settings.map == "usa-countries") {
+          var file = 'usa-counties.svg';
         } else if (settings.map == "usa") {
-          var file = 'Blank_US_territories.svg';
+          var file = 'blank-usa-territories.svg';
           if (!settings.territories) {
             if (!settings.hideCountries) {
               settings.hideCountries = [];
             }
-            settings.hideCountries.push("VI");
-            settings.hideCountries.push("GU");
-            settings.hideCountries.push("MP");
-            settings.hideCountries.push("AS");
-            settings.hideCountries.push("PR");
+            settings.hideCountries.push("vi");
+            settings.hideCountries.push("gu");
+            settings.hideCountries.push("mp");
+            settings.hideCountries.push("as");
+            settings.hideCountries.push("pr");
 
           }
         } else if (settings.map == "custom") {
@@ -141,11 +143,11 @@
             if (!settings.hideCountries) {
               settings.hideCountries = [];
             }
-            settings.hideCountries.push("VI");
-            settings.hideCountries.push("GU");
-            settings.hideCountries.push("MP");
-            settings.hideCountries.push("AS");
-            settings.hideCountries.push("PR");
+            settings.hideCountries.push("vi");
+            settings.hideCountries.push("gu");
+            settings.hideCountries.push("mp");
+            settings.hideCountries.push("as");
+            settings.hideCountries.push("pr");
           }
         }
         //hack for RequireJS/Bower
@@ -157,7 +159,7 @@
         } else {
           url = settings.customMap;
         }
-		
+
         that.load(url, null, function(e) {
           $("svg", that).attr({
             height: '100%',
@@ -169,60 +171,59 @@
           });
           var hiddens = settings.hideCountries;
           for (i in hiddens) {
-            $("path#" + hiddens[i]+", rect#" + hiddens[i], that).remove();
+            $("path#" + hiddens[i]+", rect#" + hiddens[i]+", svg path#" + hiddens[i].toUpperCase(), that).remove();
           };
-          
           if (settings.labels && (settings.map == "usa" || settings.map == "custom")) {
             var paths = document.querySelectorAll("path");
            
             //Define the states too small to hold a label
-            var toosmall = ['NH', 'VT', 'MA', 'RI', 'CT', 'NJ', 'DE', 'MD', 'DC'];
+            var toosmall = ['nh', 'vt', 'ma', 'ri', 'ct', 'nj', 'de', 'md', 'dc'];
             
             //Hawaii uses the primary color
-            addText(document.getElementById("HI"), "HI", 300, 575, settings.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
+            addText(document.getElementById("hi"), "HI", 300, 575, settings.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
             
             //The rest are the same
-            addText(document.getElementById("AK"), "AK", 110, 500, settings.labelAttributes.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
-            addText(document.getElementById("FL"), "FL", 755, 511, settings.labelAttributes.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
-            addText(document.getElementById("SC"), "SC", 752, 380, settings.labelAttributes.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
-            addText(document.getElementById("GA"), "GA", 700, 405, settings.labelAttributes.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
-            addText(document.getElementById("AL"), "AL", 645, 415, settings.labelAttributes.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
-            addText(document.getElementById("NC"), "NC", 767, 332, settings.labelAttributes.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
-            addText(document.getElementById("TN"), "TN", 647, 345, settings.labelAttributes.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
-            addText(document.getElementById("ME"), "ME", 885, 86, settings.labelAttributes.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
-            addText(document.getElementById("NY"), "NY", 807, 155, settings.labelAttributes.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
-            addText(document.getElementById("PA"), "PA", 770, 211, settings.labelAttributes.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
-            addText(document.getElementById("WV"), "WV", 735, 275, settings.labelAttributes.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
-            addText(document.getElementById("KY"), "KY", 665, 305, settings.labelAttributes.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
-            addText(document.getElementById("OH"), "OH", 694, 236, settings.labelAttributes.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
-            addText(document.getElementById("MI"), "MI", 650, 175, settings.labelAttributes.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
-            addText(document.getElementById("WY"), "WY", 293, 181, settings.labelAttributes.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
-            addText(document.getElementById("MT"), "MT", 273, 86, settings.labelAttributes.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
-            addText(document.getElementById("ID"), "ID", 183, 151, settings.labelAttributes.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
-            addText(document.getElementById("WA"), "WA", 116, 48, settings.labelAttributes.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
-            addText(document.getElementById("TX"), "TX", 404, 452, settings.labelAttributes.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
-            addText(document.getElementById("CA"), "CA", 65, 280, settings.labelAttributes.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
-            addText(document.getElementById("AZ"), "AZ", 193, 364, settings.labelAttributes.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
-            addText(document.getElementById("NV"), "NV", 132, 251, settings.labelAttributes.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
-            addText(document.getElementById("UT"), "UT", 216, 248, settings.labelAttributes.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
-            addText(document.getElementById("CO"), "CO", 317, 272, settings.labelAttributes.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
-            addText(document.getElementById("NM"), "NM", 297, 373, settings.labelAttributes.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
-            addText(document.getElementById("OR"), "OR", 96, 118, settings.labelAttributes.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
-            addText(document.getElementById("ND"), "ND", 408, 92, settings.labelAttributes.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
-            addText(document.getElementById("SD"), "SD", 408, 163, settings.labelAttributes.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
-            addText(document.getElementById("NE"), "NE", 408, 223, settings.labelAttributes.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
-            addText(document.getElementById("IA"), "IA", 523, 214, settings.labelAttributes.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
-            addText(document.getElementById("MS"), "MS", 588, 418, settings.labelAttributes.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
-            addText(document.getElementById("IN"), "IN", 644, 255, settings.labelAttributes.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
-            addText(document.getElementById("IL"), "IL", 590, 260, settings.labelAttributes.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
-            addText(document.getElementById("MN"), "MN", 495, 116, settings.labelAttributes.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
-            addText(document.getElementById("WI"), "WI", 574, 151, settings.labelAttributes.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
-            addText(document.getElementById("MO"), "MO", 535, 294, settings.labelAttributes.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
-            addText(document.getElementById("AR"), "AR", 537, 375, settings.labelAttributes.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
-            addText(document.getElementById("OK"), "OK", 432, 361, settings.labelAttributes.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
-            addText(document.getElementById("KS"), "KS", 439, 291, settings.labelAttributes.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
-            addText(document.getElementById("LA"), "LA", 538, 456, settings.labelAttributes.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
-            addText(document.getElementById("VA"), "VA", 778, 282, settings.labelAttributes.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
+            addText(document.getElementById("ak"), "AK", 110, 500, settings.labelAttributes.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
+            addText(document.getElementById("fl"), "FL", 755, 511, settings.labelAttributes.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
+            addText(document.getElementById("sc"), "SC", 752, 380, settings.labelAttributes.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
+            addText(document.getElementById("ga"), "GA", 700, 405, settings.labelAttributes.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
+            addText(document.getElementById("al"), "AL", 645, 415, settings.labelAttributes.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
+            addText(document.getElementById("nc"), "NC", 767, 332, settings.labelAttributes.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
+            addText(document.getElementById("tn"), "TN", 647, 345, settings.labelAttributes.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
+            addText(document.getElementById("me"), "ME", 885, 86, settings.labelAttributes.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
+            addText(document.getElementById("ny"), "NY", 807, 155, settings.labelAttributes.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
+            addText(document.getElementById("pa"), "PA", 770, 211, settings.labelAttributes.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
+            addText(document.getElementById("wv"), "WV", 735, 275, settings.labelAttributes.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
+            addText(document.getElementById("ky"), "KY", 665, 305, settings.labelAttributes.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
+            addText(document.getElementById("oh"), "OH", 694, 236, settings.labelAttributes.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
+            addText(document.getElementById("mi"), "MI", 650, 175, settings.labelAttributes.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
+            addText(document.getElementById("wy"), "WY", 293, 181, settings.labelAttributes.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
+            addText(document.getElementById("mt"), "MT", 273, 86, settings.labelAttributes.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
+            addText(document.getElementById("id"), "ID", 183, 151, settings.labelAttributes.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
+            addText(document.getElementById("wa"), "WA", 116, 48, settings.labelAttributes.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
+            addText(document.getElementById("tx"), "TY", 404, 452, settings.labelAttributes.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
+            addText(document.getElementById("ca"), "CA", 65, 280, settings.labelAttributes.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
+            addText(document.getElementById("az"), "AZ", 193, 364, settings.labelAttributes.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
+            addText(document.getElementById("nv"), "NV", 132, 251, settings.labelAttributes.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
+            addText(document.getElementById("ut"), "UT", 216, 248, settings.labelAttributes.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
+            addText(document.getElementById("co"), "CO", 317, 272, settings.labelAttributes.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
+            addText(document.getElementById("nm"), "NM", 297, 373, settings.labelAttributes.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
+            addText(document.getElementById("or"), "OR", 96, 118, settings.labelAttributes.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
+            addText(document.getElementById("nd"), "ND", 408, 92, settings.labelAttributes.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
+            addText(document.getElementById("sd"), "SD", 408, 163, settings.labelAttributes.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
+            addText(document.getElementById("ne"), "NE", 408, 223, settings.labelAttributes.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
+            addText(document.getElementById("ia"), "IA", 523, 214, settings.labelAttributes.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
+            addText(document.getElementById("ms"), "MS", 588, 418, settings.labelAttributes.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
+            addText(document.getElementById("in"), "IN", 644, 255, settings.labelAttributes.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
+            addText(document.getElementById("il"), "IL", 590, 260, settings.labelAttributes.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
+            addText(document.getElementById("mn"), "MN", 495, 116, settings.labelAttributes.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
+            addText(document.getElementById("wi"), "WI", 574, 151, settings.labelAttributes.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
+            addText(document.getElementById("mo"), "MO", 535, 294, settings.labelAttributes.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
+            addText(document.getElementById("ar"), "AR", 537, 375, settings.labelAttributes.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
+            addText(document.getElementById("ok"), "OK", 432, 361, settings.labelAttributes.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
+            addText(document.getElementById("ks"), "KS", 439, 291, settings.labelAttributes.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
+            addText(document.getElementById("la"), "LA", 538, 456, settings.labelAttributes.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
+            addText(document.getElementById("ca"), "CA", 778, 282, settings.labelAttributes.color,settings.labelAttributes.font,settings.labelAttributes.fontSize);
   
             var init = 200;
             for (var i = 0; i < toosmall.length; i++) {
@@ -239,17 +240,14 @@
           });
           var ics = settings.individualCountrySettings;
           for (i in ics) {
-            $("svg path#" + ics[i].name+", svg rect#" + ics[i].name, that).css({
+            $("svg path#" + ics[i].name+", svg rect#" + ics[i].name+", svg path#" + ics[i].name.toUpperCase(), that).css({
               fill: ics[i].color || settings.colorSelected,
               stroke: ics[i].border || settings.border
             });
 			
 			if( typeof ics[i].label != "undefined" ) {
-				$("svg path#" + ics[i].name+", svg rect#" + ics[i].name, that).attr({
-					'title':ics[i].label,
-					'data-title':ics[i].label,
-					'data-country-name':ics[i].label,
-					'data-label':ics[i].label
+				$("svg path#" + ics[i].name+", svg rect#" + ics[i].name+", svg path#" + ics[i].name.toUpperCase(), that).attr({
+					'name':ics[i].label
 				});
 			}
           }
@@ -297,7 +295,7 @@
               if (ics && icss.indexOf(country) > -1) {
                 for (i in ics) {
                   if (ics[i].name == country) {
-                    $("svg path#" + ics[i].name+", svg rect#" + ics[i].name, that).css({
+                    $("svg path#" + ics[i].name+", svg rect#" + ics[i].name+", svg path#" + ics[i].name.toUpperCase(), that).css({
                       fill: ics[i].hoverColor || settings.hoverColor,
                       stroke: ics[i].hoverBorder || settings.hoverBorder
                     });
@@ -305,7 +303,7 @@
                   }
                 }
               } else {
-                $("path#" + country+", rect#" + country, that).css({
+                $("path#" + country+", rect#" + country+", path#" + country.toUpperCase(), that).css({
                   "fill": settings.hoverColor,
                   "stroke": settings.hoverBorder
                 });
@@ -313,7 +311,7 @@
 
               if (settings.littleRedBook) {
                 if (country == "cn" || country == "tw" || country == "hk" || country == "mc") {
-                  $("path#tw, path#cn, path#hk, path#mc").css({
+                  $("path#tw, path#cn, path#hk, path#mc, path#TW, path#CN, path#HK, path#MC").css({
                     "fill": settings.hoverColor,
                     "stroke": settings.hoverBorder
                   });
@@ -324,20 +322,20 @@
 
           $("svg path, svg text, svg rect", that).on("mouseout", function(e) {
             var country = $(e.target).attr("id");
-            $("path#" + country+", rect#" + country, that).css({
+            $("path#" + country+", rect#" + country+", path#" + country.toUpperCase(), that).css({
               "fill": settings.color,
               "stroke": settings.border
             });
             for (i in ics) {
-              $("svg rect#" + ics[i].name+", svg path#" + ics[i].name, that).css({
+              $("svg rect#" + ics[i].name+", svg path#" + ics[i].name+", path#" + ics[i].name.toUpperCase(), that).css({
                 fill: ics[i].color || settings.colorSelected,
                 stroke: ics[i].border || settings.border
               });
             }
 
             if (settings.littleRedBook) {
-              if (country == "cn" || country == "tw" || country == "hk" || country == "mc") {
-                $('path#tw, path#cn, path#hk, path#mc').css({
+              if ( ["cn", "tw", "hk", "mc", "CN", "TW", "HK", "MC"].indexOf(country) > -1 ) {
+                $('path#tw, path#cn, path#hk, path#mc, path#TW, path#CN, path#HK, path#MC', that).css({
                   "fill": settings.color,
                   "stroke": settings.border
                 });
@@ -355,61 +353,61 @@
 
     var setCountrySettings = function(options) {
         if (options.color) {
-          $("svg path#" + options.name+", svg rect#" + options.name).css({
+          $("svg path#" + options.name+", svg rect#" + options.name+", svg path#" + options.name.toUpperCase(), self).css({
             fill: options.color
           });
-          $("svg path#" + options.name+", svg rect#" + options.name).on("mouseout", function() {
+          $("svg path#" + options.name+", svg rect#" + options.name+", svg path#" + options.name.toUpperCase(), self).on("mouseout", function() {
             $(this).css({
               fill: options.color
             });
           });
         }
         if (options.border) {
-          $("svg path#" + options.name+", svg rect#" + options.name).css({
+          $("svg path#" + options.name+", svg rect#" + options.name+", svg path#" + options.name.toUpperCase(), self).css({
             stroke: options.border
           });
-          $("svg path#" + options.name+", svg rect#" + options.name).on("mouseout", function() {
+          $("svg path#" + options.name+", svg rect#" + options.name+", svg path#" + options.name.toUpperCase(), self).on("mouseout", function() {
             $(this).css({
               stroke: options.border
             });
           });
         }
         if (options.borderWidth) {
-          $("svg path#" + options.name+", svg rect#" + options.name).css({
+          $("svg path#" + options.name+", svg rect#" + options.name+", svg path#" + options.name.toUpperCase(), self).css({
             strokeWidth: options.borderWidth
           });
         }
         if (options.hoverColor) {
-          $("svg path#" + options.name + ", svg text#" + options.name+", svg rect#" + options.name).on("mouseover", function(e) {
-            $("svg path#" + options.name).css({
+          $("svg path#" + options.name + ", svg text#" + options.name+", svg rect#" + options.name+", svg path#" + options.name.toUpperCase(), self).on("mouseover", function(e) {
+            $("svg path#" + options.name+", svg path#" + options.name.toUpperCase(), self).css({
               fill: options.hoverColor
             });
             if (options.hoverBorder) {
-              $("svg path#" + options.name + ", svg text#" + options.name+", svg rect#" + options.name).css({
+              $("svg path#" + options.name + ", svg text#" + options.name+", svg rect#" + options.name+", svg path#" + options.name.toUpperCase()).css({
                 stroke: options.hoverBorder
               });
             }
           });
-          $("svg path#" + options.name + ", svg text#" + options.name+", svg rect#" + options.name).on("mouseout", function(e) {
-            $("svg path#" + options.name).css({
+          $("svg path#" + options.name + ", svg text#" + options.name+", svg rect#" + options.name+", svg path#" + options.name.toUpperCase(), self).on("mouseout", function(e) {
+            $("svg path#" + options.name+", svg path#" + options.name.toUpperCase(), self).css({
               fill: options.color
             });
             if (options.hoverBorder) {
-              $("svg path#" + options.name + ", svg text#" + options.name+", svg rect#" + options.name).css({
+              $("svg path#" + options.name + ", svg text#" + options.name+", svg rect#" + options.name+", svg path#" + options.name.toUpperCase(), self).css({
                 stroke: options.border
               });
             }
           });
         }
         if (options.click) {
-          $("svg path#" + options.name + ", svg text#" + options.name+", svg rect#" + options.name).on("click", function(e) {
+          $("svg path#" + options.name + ", svg text#" + options.name+", svg rect#" + options.name+", svg path#" + options.name.toUpperCase(), self).on("click", function(e) {
             e.stopPropagation()
             lastclicked = $(e.target).attr("id");
             options.click(lastclicked);
           });
         }
         if (options.hover) {
-          $("svg path#" + options.name + ", svg text#" + options.name+", svg rect#" + options.name).on("mouseover", function(e) {
+          $("svg path#" + options.name + ", svg text#" + options.name+", svg rect#" + options.name+", svg path#" + options.name.toUpperCase(), self).on("mouseover", function(e) {
             e.stopPropagation()
             lastclicked = $(e.target).attr("id");
             options.hover(lastclicked);
@@ -432,4 +430,4 @@
       return create(options, callback);
     }
   };
-}(jQuery));
+}(jQuery||window.jQuery||Zepto||window.Zepto));

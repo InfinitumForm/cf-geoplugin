@@ -1862,7 +1862,7 @@ LIMIT 1
 			'height' 			=>  NULL,
 			'backgroundColor' 	=>  NULL,
 			'antarctica' 		=>  NULL,
-			'labels' 			=>  NULL,
+			'labels' 			=>  'true',
 			'littleRedBook' 	=>  NULL,
 			'countries' 		=> $country_code
         ), $atts, $tag );
@@ -1913,7 +1913,7 @@ LIMIT 1
 				if( NULL !== $value && in_array($key, $allowed_attr) ) {
 					if( !is_numeric($value) ) {
 						if( in_array($value, array('true', 'false')) ) {
-							$value = ($value == 'true');
+							$value = ($value == 'true') ? 'true' : 'false';
 						} else {
 							$value = '"' . esc_attr($value) . '"';
 						}
