@@ -1,5 +1,10 @@
 == Changelog ==
 
+= 8.4.3 =
+* UX design fix
+* Added algorithms for GPS integration
+* Added experimental new features for developers
+
 = 8.4.2 =
 * Fixed WooCommerce Integration
 * Added support for the Gravity Forms plugin

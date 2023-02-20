@@ -2571,7 +2571,7 @@ class CFGP_U {
 	 *
 	 * @return array
 	 */
-	function array_insert_after_key($current_array, $insert_after_index, $new_array) {
+	public static function array_insert_after_key($current_array, $insert_after_index, $new_array) {
 		// Only if is array
 		if ( is_array($current_array) ) {
 			// New collections

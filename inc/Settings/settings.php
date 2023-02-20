@@ -29,18 +29,18 @@ $options = apply_filters('cfgp/settings', []);
                     <div class="cfgp-tab-panel<?php echo esc_attr($o===0 ? ' cfgp-tab-panel-active' : ''); ?>" id="<?php echo esc_attr($option['id']); ?>">
                     <?php if(isset($option['sections']) && is_array($option['sections'])) :
         foreach($option['sections'] as $s=>$section) : if(isset($section['enabled']) && $section['enabled'] === false) continue; ?>
-        			<section class="cfgp-tab-panel-section" id="<?php echo esc_attr(sanitize_title($section['title'])); ?>">
-                      <?php if(!empty($section['title'])) : ?><h2 class="title"><?php echo esc_html($section['title']); ?></h2><?php endif; ?>
+        			<section class="cfgp-tab-panel-section" id="cfgp-section-<?php echo esc_attr($section['id']); ?>">
+                      <?php if(!empty($section['title'])) : ?><h2 class="title" id="<?php echo esc_attr(sanitize_title($section['title'])); ?>"><?php echo esc_html($section['title']); ?></h2><?php endif; ?>
                         <?php if(!empty($section['desc'])) : ?>
                           <?php if(is_array($section['desc'])) : ?>
                             <?php foreach($section['desc'] as $desc_text) : ?>
-                              <p class="cfgp-section-description"><?php echo esc_html($desc_text); ?></p>
+                              <p class="cfgp-section-description"><?php echo wp_kses_post($desc_text); ?></p>
                             <?php endforeach; ?>
                           <?php else : ?>
-                            <p class="cfgp-section-description"><?php echo esc_html($section['desc']); ?></p>
+                            <p class="cfgp-section-description"><?php echo wp_kses_post($section['desc']); ?></p>
                           <?php endif; ?>
                         <?php endif; ?>
-                        <table class="form-table cfgp-form-table" role="presentation" id="<?php echo esc_attr($section['id']); ?>">
+                        <table class="form-table cfgp-form-table" role="presentation" id="cfgp-section-table-<?php echo esc_attr($section['id']); ?>">
                             <tbody>
                             <?php if(isset($section['inputs']) && is_array($section['inputs'])) :
 								foreach($section['inputs'] as $i=>$input) :
