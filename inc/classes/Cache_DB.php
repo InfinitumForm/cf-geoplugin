@@ -308,6 +308,10 @@ if(!class_exists('CFGP_DB_Cache')) : class CFGP_DB_Cache {
 	 * @verson    1.0.0
 	 */
 	private static function has_redis() {
+		if( !apply_filters('cfgp_enable_redis', false) ) {
+			return false;
+		}
+		
 		static $has_redis = NULL;
 		
 		if( NULL === $has_redis ) {
