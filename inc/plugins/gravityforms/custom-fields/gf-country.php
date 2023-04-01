@@ -1,6 +1,6 @@
 <?php if ( ! defined( 'WPINC' ) ) { die( "Don't mess with us." ); }
 
-if( !class_exists( 'CFGP__Plugin__gravityforms__GF_Country' ) ):
+if( !class_exists( 'CFGP__Plugin__gravityforms__GF_Country', false ) ):
 class CFGP__Plugin__gravityforms__GF_Country extends GF_Field {
 
     public $type = 'cfgp_gf_country';

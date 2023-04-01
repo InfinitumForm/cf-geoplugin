@@ -1,5 +1,10 @@
 == Changelog ==
 
+= 8.4.6 =
+* Fixed autoload functionality
+* Added new compatibility for PHP 8.1
+* Improved API algorithm
+
 = 8.4.5 =
 * Adding support for Redis Cache
 * Adding Cache fix for the dynamic CSS methods

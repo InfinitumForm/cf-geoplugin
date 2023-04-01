@@ -1,6 +1,6 @@
 <?php if ( ! defined( 'WPINC' ) ) { die( "Don't mess with us." ); }
 
-if( !class_exists('CFGP_Elementor_Vat_Widget') ) :
+if( !class_exists('CFGP_Elementor_Vat_Widget', false) ) :
 
 class CFGP_Elementor_Vat_Widget extends \Elementor\Widget_Base {
 

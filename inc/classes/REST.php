@@ -7,8 +7,7 @@
  * @package       cf-geoplugin
  * @author        Ivijan-Stefan Stipic
  */
-if(!class_exists('CFGP_REST')) :
-class CFGP_REST extends CFGP_Global {
+if(!class_exists('CFGP_REST', false)) : class CFGP_REST extends CFGP_Global {
 
 	private static $return = array(
 		'error' => true,

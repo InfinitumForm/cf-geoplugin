@@ -6,7 +6,7 @@
  * @package    CF_Geoplugin
  * @author     Ivijan-Stefan Stipic
  */
-if( !class_exists( 'CFGP__Plugin__elementor' ) ):
+if( !class_exists( 'CFGP__Plugin__elementor', false ) ):
 class CFGP__Plugin__elementor extends CFGP_Global
 {
 	// Current plugin version
@@ -95,7 +95,7 @@ class CFGP__Plugin__elementor extends CFGP_Global
 					$class_name = join('_', $class_name);
 					// Include class
 					
-					if(class_exists($class_name))
+					if(class_exists($class_name, false))
 					{
 						// Let Elementor know about our widget
 						\Elementor\Plugin::instance()->widgets_manager->register_widget_type( new $class_name() );
@@ -135,7 +135,7 @@ class CFGP__Plugin__elementor extends CFGP_Global
 					$class_name[0] = strtoupper($class_name[0]);
 					$class_name = join('_', $class_name);
 					// Include class
-					if(class_exists($class_name))
+					if(class_exists($class_name, false))
 					{
 						// Let Elementor know about our widget
 						\Elementor\Plugin::$instance->controls_manager->register_control( 'control-type-', new $class_name() );

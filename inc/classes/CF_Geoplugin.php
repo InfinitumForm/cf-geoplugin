@@ -13,7 +13,7 @@
 if ( ! defined( 'WPINC' ) ) { die( "Don't mess with us." ); }
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-if(!class_exists('CF_Geoplugin')) : class CF_Geoplugin{
+if(!class_exists('CF_Geoplugin', false)) : class CF_Geoplugin{
 	// Collect API data
 	private $data = NULL;
 	

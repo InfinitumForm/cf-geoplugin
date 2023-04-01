@@ -6,7 +6,7 @@
  * @package    CF_Geoplugin
  * @author     Ivijan-Stefan Stipic
  */
-if( !class_exists( 'CFGP__Plugin__buddyboss_platform' ) ):
+if( !class_exists( 'CFGP__Plugin__buddyboss_platform', false ) ): 
 class CFGP__Plugin__buddyboss_platform extends CFGP_Global{
 	
 	private function __construct(){

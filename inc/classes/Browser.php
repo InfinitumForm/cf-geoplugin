@@ -14,7 +14,7 @@
  *
  * This cool class improved and integrated inside Geo Controller by Ivijan-Stefan Stipić (http://infinitumform.com/)
 */
-if (!class_exists('CFGP_Browser')): class CFGP_Browser {
+if (!class_exists('CFGP_Browser', false)): class CFGP_Browser {
     private $_agent = '';
     private $_browser_name = '';
     private $_version = '';

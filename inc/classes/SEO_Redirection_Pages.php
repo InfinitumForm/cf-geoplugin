@@ -13,8 +13,7 @@
 if ( ! defined( 'WPINC' ) ) { die( "Don't mess with us." ); }
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-if (!class_exists('CFGP_SEO_Redirection_Pages')):
-class CFGP_SEO_Redirection_Pages extends CFGP_Global
+if (!class_exists('CFGP_SEO_Redirection_Pages', false)) : class CFGP_SEO_Redirection_Pages extends CFGP_Global
 {
 	private $metabox;
 	

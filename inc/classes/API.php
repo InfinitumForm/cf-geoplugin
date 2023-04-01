@@ -13,7 +13,7 @@
 if ( ! defined( 'WPINC' ) ) { die( "Don't mess with us." ); }
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-if(!class_exists('CFGP_API')) :
+if(!class_exists('CFGP_API', false)) :
 class CFGP_API extends CFGP_Global {
 	private $host;
 	public function __construct( $dry_run = false ) {
@@ -153,15 +153,15 @@ class CFGP_API extends CFGP_Global {
 				new DateTimeZone( date_default_timezone_get() )
 			);
 			
-			if( $return['timezone'] !== date_default_timezone_get()) {
+			if( ($return['timezone']??NULL) !== date_default_timezone_get()) {
 				$new_client_date=$client_date->setTimeZone( new DateTimeZone( $return['timezone'] ) );
 				$return['timestamp_readable'] = $new_client_date->format( 'c' );
-				$return['timestamp'] = strtotime($return['timestamp_readable']);
+				$return['timestamp'] = strtotime($return['timestamp_readable']??'');
 				$return['current_date'] = $new_client_date->format( 'F j, Y' );
 				$return['current_time'] = $new_client_date->format( 'H:i:s' );
 			} else {
 				$return['timestamp_readable'] = $client_date->format( 'c' );
-				$return['timestamp'] = strtotime($return['timestamp_readable']);
+				$return['timestamp'] = strtotime($return['timestamp_readable']??'');
 				$return['current_date'] = $client_date->format( 'F j, Y' );
 				$return['current_time'] = $client_date->format( 'H:i:s' );
 			}

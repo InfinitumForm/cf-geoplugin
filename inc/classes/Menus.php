@@ -13,8 +13,7 @@
 if ( ! defined( 'WPINC' ) ) { die( "Don't mess with us." ); }
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-if(!class_exists('CFGP_Menus')) :
-class CFGP_Menus extends CFGP_Global {
+if(!class_exists('CFGP_Menus', false)) : class CFGP_Menus extends CFGP_Global {
 	// Save cached object data
 	private $menu_options = [];
 	

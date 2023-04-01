@@ -6,7 +6,7 @@
  * @package    CF_Geoplugin
  * @author     Ivijan-Stefan Stipic
  */
-if( !class_exists( 'CFGP__Plugin__woocommerce' ) ):
+if( !class_exists( 'CFGP__Plugin__woocommerce', false ) ):
 class CFGP__Plugin__woocommerce extends CFGP_Global
 {	
     /**

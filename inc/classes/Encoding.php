@@ -12,8 +12,7 @@
 if ( ! defined( 'WPINC' ) ) { die( "Don't mess with us." ); }
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-if (!class_exists('CFGP_Encoding')):
-class CFGP_Encoding
+if (!class_exists('CFGP_Encoding', false)) : class CFGP_Encoding
 {
 	protected static $WIN1252_to_UTF8 = array(
 		128 => "\xe2\x82\xac",

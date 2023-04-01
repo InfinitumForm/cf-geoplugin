@@ -9,7 +9,7 @@
 if ( ! defined( 'WPINC' ) ) { die( "Don't mess with us." ); }
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-if(!class_exists('CFGP_Sidebar')) :
+if(!class_exists('CFGP_Sidebar', false)) :
 class CFGP_Sidebar extends CFGP_Global {
 	
 	function __construct(){

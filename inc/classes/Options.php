@@ -16,8 +16,7 @@
 if ( ! defined( 'WPINC' ) ) { die( "Don't mess with us." ); }
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-if(!class_exists('CFGP_API')) :
-class CFGP_Options
+if(!class_exists('CFGP_API', false)) : class CFGP_Options
 {
 	/*
 	 * Get plugin option

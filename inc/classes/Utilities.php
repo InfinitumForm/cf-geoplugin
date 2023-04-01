@@ -15,8 +15,7 @@
 if ( ! defined( 'WPINC' ) ) { die( "Don't mess with us." ); }
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-if(!class_exists('CFGP_U')) :
-class CFGP_U {
+if(!class_exists('CFGP_U', false)) : class CFGP_U {
 	private static $user;
 	
 	/*
@@ -580,7 +579,7 @@ class CFGP_U {
 		}
 
 		// Comet Cache
-		if(class_exists('comet_cache') && method_exists('comet_cache', 'clear')) {
+		if(class_exists('comet_cache', false) && method_exists('comet_cache', 'clear')) {
 			comet_cache::clear();
 		}
 

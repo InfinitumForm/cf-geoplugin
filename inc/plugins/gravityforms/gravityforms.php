@@ -6,7 +6,7 @@
  * @package    CF_Geoplugin
  * @author     Ivijan-Stefan Stipic
  */
-if( !class_exists( 'CFGP__Plugin__gravityforms' ) ):
+if( !class_exists( 'CFGP__Plugin__gravityforms', false ) ):
 class CFGP__Plugin__gravityforms extends CFGP_Global{
 	
 	private function __construct() {

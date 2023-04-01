@@ -13,8 +13,7 @@
 if ( ! defined( 'WPINC' ) ) { die( "Don't mess with us." ); }
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-if(!class_exists('CFGP_Geo_Banner')) :
-class CFGP_Geo_Banner extends CFGP_Global {
+if(!class_exists('CFGP_Geo_Banner', false)) : class CFGP_Geo_Banner extends CFGP_Global {
 	
 	function __construct(){
 		$this->add_action('init', 'register');

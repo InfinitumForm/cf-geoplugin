@@ -16,8 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
 /**
  * Shortcodes
  */
-if(!class_exists('CFGP_Shortcodes')) :
-class CFGP_Shortcodes extends CFGP_Global {
+if(!class_exists('CFGP_Shortcodes', false)) : class CFGP_Shortcodes extends CFGP_Global {
 	function __construct(){
 		// Standard shortcode
 		$this->add_shortcode('cfgeo', 'cf_geoplugin');

@@ -10,7 +10,7 @@
  *
  * @todo          https://www.php.net/manual/en/function.spl-object-hash.php
  */
-if(!class_exists('CFGP_Cache')) : class CFGP_Cache {
+if(!class_exists('CFGP_Cache', false)) : class CFGP_Cache {
 	/*
 	 * Save all cached objcts to this variable
 	 */

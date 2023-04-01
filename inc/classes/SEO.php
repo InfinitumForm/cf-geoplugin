@@ -13,8 +13,7 @@
 if ( ! defined( 'WPINC' ) ) { die( "Don't mess with us." ); }
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-if(!class_exists('CFGP_SEO')) :
-class CFGP_SEO extends CFGP_Global {
+if(!class_exists('CFGP_SEO', false)) : class CFGP_SEO extends CFGP_Global {
 	
 	public function __construct(){
 		$this->add_action('init', 'export_csv');
@@ -31,7 +30,7 @@ class CFGP_SEO extends CFGP_Global {
 			if($url = CFGP_U::request_string('attachment_url'))
 			{
 				// Parse CSV
-				if(!class_exists('CFGP_CSV')) {
+				if(!class_exists('CFGP_CSV', false)) {
 					CFGP_U::include_once(CFGP_CLASS . '/CSV.php');
 				}
 				

@@ -15,7 +15,7 @@
  *                https://www.php.net/manual/en/book.apcu.php
  *
  */
-if(!class_exists('CFGP_DB_Cache')) : class CFGP_DB_Cache {
+if(!class_exists('CFGP_DB_Cache', false)) : class CFGP_DB_Cache {
 	
 	/*
 	 * Save all cached objcts to this variable
@@ -307,18 +307,18 @@ if(!class_exists('CFGP_DB_Cache')) : class CFGP_DB_Cache {
 	 * Checks if Redis Cache is active
 	 * @verson    1.0.0
 	 */
+	protected static $has_redis = NULL;
 	private static function has_redis() {
-		if( !apply_filters('cfgp_enable_redis', false) ) {
-			return false;
+		
+		if( NULL === self::$has_redis ) {
+			if( apply_filters('cfgp_enable_redis', false) ) {
+				self::$has_redis = class_exists('Redis', false);
+			} else {
+				self::$has_redis = false;
+			}
 		}
 		
-		static $has_redis = NULL;
-		
-		if( NULL === $has_redis ) {
-			$has_redis = class_exists('Redis');
-		}
-		
-		return $has_redis;
+		return self::$has_redis;
 	}
 	
 	/*

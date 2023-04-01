@@ -13,7 +13,7 @@
 if ( ! defined( 'WPINC' ) ) { die( "Don't mess with us." ); }
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-if(!class_exists('CFGP_Admin')) :
+if(!class_exists('CFGP_Admin', false)) :
 class CFGP_Admin extends CFGP_Global {
 	function __construct(){
 		$this->add_action('admin_bar_menu', 'admin_bar_menu', 90, 1);

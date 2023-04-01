@@ -15,8 +15,7 @@
 if ( ! defined( 'WPINC' ) ) { die( "Don't mess with us." ); }
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-if(!class_exists('CFGP_Global')) :
-class CFGP_Global {
+if(!class_exists('CFGP_Global', false)) : class CFGP_Global {
 	
 	/*
 	 * Hook for register_uninstall_hook()

@@ -15,8 +15,7 @@
 if ( ! defined( 'WPINC' ) ) { die( "Don't mess with us." ); }
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-if(!class_exists('CFGP_Form')) :
-class CFGP_Form {
+if(!class_exists('CFGP_Form', false)) : class CFGP_Form {
 	
 	// Select HTTP code
 	public static function select_http_code($attr = [], $selected = '', $echo = true){

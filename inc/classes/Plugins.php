@@ -12,8 +12,7 @@
 if ( ! defined( 'WPINC' ) ) { die( "Don't mess with us." ); }
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-if(!class_exists('CFGP_Plugins')) :
-	class CFGP_Plugins extends CFGP_Global
+if(!class_exists('CFGP_Plugins', false)) : class CFGP_Plugins extends CFGP_Global
 	{
 		// plugin-directory => plugin-file.php
 		private $plugins = array(
@@ -245,11 +244,11 @@ if(!class_exists('CFGP_Plugins')) :
 						
 						if(CFGP_Options::get("enable-{$dir_name}", 0))
 						{
-							if(class_exists($plugin_class) && method_exists($plugin_class, 'instance')) {
+							if(class_exists($plugin_class, false) && method_exists($plugin_class, 'instance')) {
 								$plugin_class::instance();
 							} else {
 								CFGP_U::include_once($addon);
-								if(class_exists($plugin_class) && method_exists($plugin_class, 'instance')) {
+								if(class_exists($plugin_class, false) && method_exists($plugin_class, 'instance')) {
 									$plugin_class::instance();
 								}
 							}

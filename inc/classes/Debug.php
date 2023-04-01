@@ -13,8 +13,7 @@
 if ( ! defined( 'WPINC' ) ) { die( "Don't mess with us." ); }
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-if(!class_exists('CFGP_Debug')) :
-class CFGP_Debug extends CFGP_Global {
+if(!class_exists('CFGP_Debug', false)) : class CFGP_Debug extends CFGP_Global {
 	private static $data = [];
 	
 	/*

@@ -15,8 +15,7 @@
 if ( ! defined( 'WPINC' ) ) { die( "Don't mess with us." ); }
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-if(!class_exists('CFGP_Defaults')) :
-class CFGP_Defaults {
+if(!class_exists('CFGP_Defaults', false)) : class CFGP_Defaults {
 	
 	// Define license codes
 	const BASIC_LICENSE 		= 'CFGEO1M';

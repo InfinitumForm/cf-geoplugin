@@ -8,8 +8,7 @@
  * @author        Ivijan-Stefan Stipic
  * @url           https://github.com/CreativForm/PHP-Solutions/blob/master/class.os.php
  */
-if (!class_exists('CFGP_OS')):
-    class CFGP_OS
+if (!class_exists('CFGP_OS', false)) : class CFGP_OS
     {
         /*
          * Get user agent informations

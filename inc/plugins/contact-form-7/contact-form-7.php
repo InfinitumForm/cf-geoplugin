@@ -6,7 +6,7 @@
  * @package    CF_Geoplugin
  * @author     Ivijan-Stefan Stipic
  */
-if( !class_exists( 'CFGP__Plugin__contact_form_7' ) ):
+if( !class_exists( 'CFGP__Plugin__contact_form_7', false ) ):
 class CFGP__Plugin__contact_form_7 extends CFGP_Global{
 	
 	private $remove = 'state,continentCode,areaCode,dmaCode,timezoneName,currencySymbol,currencyConverter,is_proxy,is_mobile,in_eu,is_vat,gps,error,error_message,lookup,status,runtime,accuracy_radius,credit,official_url,available_lookup,limited,limit,license_hash,request_url';

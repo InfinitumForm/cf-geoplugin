@@ -13,8 +13,7 @@
 if ( ! defined( 'WPINC' ) ) { die( "Don't mess with us." ); }
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-if(!class_exists('CFGP_Help')) :
-class CFGP_Help extends CFGP_Global {
+if(!class_exists('CFGP_Help', false)) : class CFGP_Help extends CFGP_Global {
 	
 	function __construct(){
 		

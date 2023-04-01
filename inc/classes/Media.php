@@ -13,12 +13,11 @@
 if ( ! defined( 'WPINC' ) ) { die( "Don't mess with us." ); }
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-if(!class_exists('WP_List_Table')) {
+if(!class_exists('WP_List_Table', false)) {
 	require_once ABSPATH. '/wp-admin/includes/class-wp-list-table.php';
 }
 
-if(!class_exists('CFGP_Media')) :
-class CFGP_Media extends CFGP_Global {
+if(!class_exists('CFGP_Media', false)) : class CFGP_Media extends CFGP_Global {
 	
 	public function __construct(){
 		$this->add_filter( 'upload_mimes', 'upload_mimes', 99 );

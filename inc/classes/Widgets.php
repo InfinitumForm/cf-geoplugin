@@ -13,8 +13,7 @@
 if ( ! defined( 'WPINC' ) ) { die( "Don't mess with us." ); }
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-if(!class_exists('CFGP_Widgets')) :
-class CFGP_Widgets extends CFGP_Global {
+if(!class_exists('CFGP_Widgets', false)) : class CFGP_Widgets extends CFGP_Global {
 	private function __construct(){
 		$this->add_action('after_setup_theme', 'register', 10);
 	}
@@ -37,12 +36,12 @@ class CFGP_Widgets extends CFGP_Global {
 			foreach($classes as $i => $class){
 				
 				// Include
-				if( !class_exists($class) ) {
+				if( !class_exists($class, false) ) {
 					CFGP_U::include_once(CFGP_INC . '/widgets/' . str_replace('CFGP_Widget_', '', $class) . '.php');
 				}
 				
 				// Register widget
-				if( class_exists($class) ) {
+				if( class_exists($class, false) ) {
 					$load_widgets[] = $class;
 				}
 				
@@ -52,7 +51,7 @@ class CFGP_Widgets extends CFGP_Global {
 			if( !empty($load_widgets) ) {
 				add_action( 'widgets_init', function() use ($load_widgets){
 					foreach($load_widgets as $widget) {
-						if( class_exists($widget) ) {
+						if( class_exists($widget, false) ) {
 							register_widget( $widget );
 						}
 					}

@@ -13,15 +13,15 @@
 if ( ! defined( 'WPINC' ) ) { die( "Don't mess with us." ); }
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-if(!class_exists('CFGP_Settings')) :
+if(!class_exists('CFGP_Settings', false)) :
 class CFGP_Settings extends CFGP_Global {
 	
 	function __construct(){
-		if(!class_exists('CFGP_Sidebar')) {
+		if(!class_exists('CFGP_Sidebar', false)) {
 			CFGP_U::include_once(CFGP_INC . '/settings/sidebar.php');
 		}
 		
-		if(class_exists('CFGP_Sidebar')) {
+		if(class_exists('CFGP_Sidebar', false)) {
 			CFGP_Sidebar::instance();
 		}
 		

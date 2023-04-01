@@ -13,12 +13,11 @@
 if ( ! defined( 'WPINC' ) ) { die( "Don't mess with us." ); }
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-if(!class_exists('CFGP_Encoding')) {
+if(!class_exists('CFGP_Encoding', false)) {
 	CFGP_U::include_once(CFGP_CLASS . '/Encoding.php');
 }
  
-if(!class_exists('CFGP_CSV')) :
-class CFGP_CSV{
+if(!class_exists('CFGP_CSV', false)) : class CFGP_CSV{
 	
 	/* Private property */
 	private $_delimiter;

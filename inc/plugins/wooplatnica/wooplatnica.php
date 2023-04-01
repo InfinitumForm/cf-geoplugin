@@ -10,7 +10,7 @@
  * @author     Goran Zivkovic
  * @update     Ivijan-Stefan Stipic
  */
-if( !class_exists( 'CFGP__Plugin__wooplatnica' ) ):
+if( !class_exists( 'CFGP__Plugin__wooplatnica', false ) ):
 class CFGP__Plugin__wooplatnica extends CFGP_Global
 {
 	function __construct()

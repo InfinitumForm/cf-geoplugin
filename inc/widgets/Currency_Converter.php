@@ -13,7 +13,7 @@
 if ( ! defined( 'WPINC' ) ) { die( "Don't mess with us." ); }
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-if(!class_exists('CFGP_Widget_Currency_Converter')) :
+if(!class_exists('CFGP_Widget_Currency_Converter', false)) :
 class CFGP_Widget_Currency_Converter extends WP_Widget {
 	
 	// The construct part  

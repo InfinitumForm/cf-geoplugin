@@ -21,7 +21,7 @@
 if ( ! defined( 'WPINC' ) ) { die( "Don't mess with us." ); }
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-if(!class_exists('CFGP_Anonymous_Statistic')): class CFGP_Anonymous_Statistic {
+if(!class_exists('CFGP_Anonymous_Statistic', false)) : class CFGP_Anonymous_Statistic {
 	
 	// API call
 	protected static $url = 'http://159.203.47.151/plugin_stat/index.php';

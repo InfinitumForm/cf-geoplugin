@@ -13,8 +13,7 @@
 if ( ! defined( 'WPINC' ) ) { die( "Don't mess with us." ); }
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-if(!class_exists('CFGP_Defender')) :
-class CFGP_Defender extends CFGP_Global {
+if(!class_exists('CFGP_Defender', false)) : class CFGP_Defender extends CFGP_Global {
 	function __construct()
     {
         $this->add_action( 'init', 'protect', 1);

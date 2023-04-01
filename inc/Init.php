@@ -9,8 +9,7 @@
 if ( ! defined( 'WPINC' ) ) { die( "Don't mess with us." ); }
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-if(!class_exists('CFGP_Init')) :
-final class CFGP_Init{
+if(!class_exists('CFGP_Init', false)) : final class CFGP_Init{
 	
 	private function __construct(){
 		// Do translations
@@ -226,8 +225,6 @@ final class CFGP_Init{
 				load_plugin_textdomain( CFGP_NAME, false, $domain_path );
 			}
 		}
-		
-		
 	}
 	
 	/**

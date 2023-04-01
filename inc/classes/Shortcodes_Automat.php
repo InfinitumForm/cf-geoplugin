@@ -13,8 +13,7 @@
 if ( ! defined( 'WPINC' ) ) { die( "Don't mess with us." ); }
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-if(!class_exists('CFGP_Shortcodes_Automat')) :
-class CFGP_Shortcodes_Automat extends CFGP_Global
+if(!class_exists('CFGP_Shortcodes_Automat', false)) : class CFGP_Shortcodes_Automat extends CFGP_Global
 {
     protected $settings = [];
 
