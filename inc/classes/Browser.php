@@ -56,6 +56,8 @@ if (!class_exists('CFGP_Browser')): class CFGP_Browser {
     const BROWSER_NOKIA = 'Nokia Browser';
     const BROWSER_MSN = 'MSN Browser';
     const BROWSER_MSNBOT = 'MSN Bot';
+	const BROWSER_WEBOS = 'Web OS Browser';
+	const BROWSER_FB = 'Facebook Browser';
 
     const BROWSER_NETSCAPE_NAVIGATOR = 'Netscape Navigator';
     const BROWSER_GALEON = 'Galeon';
@@ -79,6 +81,7 @@ if (!class_exists('CFGP_Browser')): class CFGP_Browser {
     const PLATFORM_SUNOS = 'SunOS';
     const PLATFORM_OPENSOLARIS = 'OpenSolaris';
     const PLATFORM_ANDROID = 'Android';
+	const PLATFORM_WEBOS = 'webOS';
 
     private function __construct($useragent='') {
         $this->reset();
@@ -264,9 +267,27 @@ if (!class_exists('CFGP_Browser')): class CFGP_Browser {
             $this->checkBrowserShiretoko() ||
             $this->checkBrowserIceCat() ||
             $this->checkBrowserW3CValidator() ||
-            $this->checkBrowserMozilla() /* Mozilla is such an open standard that you must check it last */
+            $this->checkBrowserMozilla() || /* Mozilla is such an open standard that you must check it last */
+			$this->checkBrowserWebOS()
         );
     }
+	
+	
+
+	protected function checkBrowserWebOS() {
+        if( preg_match("/(webos|wos)/i", $this->_agent) ) {
+			if( preg_match("/FBAV\/([0-9A-Z\.]+)(\;|\s){1}/", $this->_agent, $aversion) ) {
+				$this->setVersion($aversion[1]);
+				$this->setBrowser(self::BROWSER_FB);
+				return true;
+			} else if( preg_match("(WEBOS23\s|webos\s)([0-9A-Z\.]+)(\;|\s){1}/", $this->_agent, $aversion) ){
+				$this->setVersion($aversion[2]);
+				$this->setBrowser(self::BROWSER_WEBOS);
+				return true;
+			}
+		}
+		return false;
+    }	
 	
 	protected function checkBrowserEdge() {
         if( stripos($this->_agent,'Edg') !== false ) {

@@ -87,7 +87,7 @@ if (!defined('CFGP_DEV_MODE')) {
 
 // Session expire in % minutes
 if (!defined('CFGP_SESSION')) {
-    define('CFGP_SESSION', 30); // 30 minutes
+    define('CFGP_SESSION', 60); // 30 minutes
     
 }
 

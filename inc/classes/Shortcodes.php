@@ -1880,7 +1880,6 @@ LIMIT 1
 		
 		wp_enqueue_script( CFGP_NAME . '-maps' );
 		
-		
 		$allowed_attr = array(
 			'map',
 			'customMap',

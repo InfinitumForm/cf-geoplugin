@@ -1,8 +1,18 @@
 == Changelog ==
 
+= 8.4.5 =
+* Adding support for Redis Cache
+* Adding Cache fix for the dynamic CSS methods
+* Adding support for the WebOS TV
+* Fixed bugs from the previous version
+
+= 8.4.4 =
+* Fixed API errors
+* Increased cache time
+
 = 8.4.3 =
 * UX design fix
-* Added algorithms for GPS integration
+* Updated algorithms for GPS integration
 * Added experimental new features for developers
 
 = 8.4.2 =

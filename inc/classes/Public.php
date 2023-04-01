@@ -20,6 +20,12 @@ class CFGP_Public extends CFGP_Global{
 		if(CFGP_Options::get('enable_css', 0)){
 			$this->add_action('wp_head', 'css_suppport', 1);
 			$this->add_action('admin_head', 'css_suppport', 1);
+			
+			$this->add_action('wp_footer', 'css_js_suppport', 900);
+			$this->add_action('admin_footer', 'css_js_suppport', 900);
+			
+			$this->add_action('wp_ajax_cfgp_display_control_css', array($this, 'get_generated_css'));
+			$this->add_action('wp_ajax_nopriv_cfgp_display_control_css', array($this, 'get_generated_css'));
 		}
 		
 		if(CFGP_Options::get('enable_js', 0)){
@@ -79,9 +85,21 @@ class CFGP_Public extends CFGP_Global{
 	
 	/*
 	 * CSS Plugin support
+	 * @verson    1.0.1
+	 */
+	public function css_suppport() {	
+		?>
+<!-- <?php _e('Geo Controller CSS Classes', 'cf-geoplugin'); ?> -->
+<style media="all" id="cfgp-display-control-css" data-nonce="<?php echo esc_attr( wp_create_nonce( 'cfgeo-process-css-cache-ajax' ) ); ?>"><?php $this->get_generated_css(); ?></style>
+	<?php }
+	
+	/*
+	 * Get generated CSS code in HTML and AJAX
 	 * @verson    1.0.0
 	 */
-	public function css_suppport() {
+	public function get_generated_css() {
+		$is_ajax = ( sanitize_text_field($_REQUEST['action'] ?? '') == 'cfgp_display_control_css' );
+		
 		$CFGEO = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
 		
 		if(empty($CFGEO)) return;
@@ -109,12 +127,71 @@ class CFGP_Public extends CFGP_Global{
 		$css_show = apply_filters('cfgp/public/css/show', $css_show);
 		$css_hide = apply_filters('cfgp/public/css/hide', $css_hide);
 
+		ob_start();
+
 		if( !empty($css_show) ) :		
-		?>
-<!-- <?php _e('Geo Controller CSS Classes', 'cf-geoplugin'); ?> -->
-<style media="all" id="cfgp-display-control-css" data-nonce="<?php echo esc_attr( wp_create_nonce( 'cfgeo-process-css-cache-ajax' ) ); ?>">*[class="cfgeo-show-in-"],*[class*="cfgeo-show-in-"],*[class^="cfgeo-show-in-"]{display: none;}<?php echo esc_attr( join(',', $css_hide) ); ?>{display:none !important;} <?php echo esc_attr( join(',', $css_show) ); ?>{display:block !important;}<?php do_action('cfgp/public/css'); ?></style>
-		<?php endif;
+		?>/*<![CDATA[*/ *[class="cfgeo-show-in-"],*[class*="cfgeo-show-in-"],*[class^="cfgeo-show-in-"]{display: none;}<?php echo esc_attr( join(',', $css_hide) ); ?>{display:none !important;} <?php echo esc_attr( join(',', $css_show) ); ?>{display:block !important;}<?php do_action('cfgp/public/css'); ?> /*]]>*/<?php
+		endif;
+		
+		echo ob_get_clean();
+		
+		if( $is_ajax ) {
+			exit;
+		}
 	}
+	
+	/*
+	 * Load CSS via AJAX for cache purposes
+	 * @verson    1.0.0
+	 */
+	public function css_js_suppport () { ?>
+<script>
+/* <![CDATA[ */
+(function(){
+	async function cfgp_display_control_css () {
+		var css = document.getElementById('cfgp-display-control-css'),
+			css_original = css.innerHTML;
+		if( css ) {
+			const response = await fetch('<?php echo esc_url( admin_url('/admin-ajax.php') ); ?>', {
+				method: 'POST',
+				headers: {
+					'Cache-Control': 'no-cache, no-store, must-revalidate', 
+					'Pragma': 'no-cache', 
+					'Expires': '0'
+				},
+				body: new URLSearchParams({
+					action: 'cfgp_display_control_css',
+					nonce: css.dataset.nonce
+				})
+			}).catch((error) => {
+				console.error('<?php
+					echo esc_attr( esc_html__('The geo controller could not update the CSS.', 'cf-geoplugin') );
+				?>');
+				
+				setTimeout(function(){
+					css.innerHTML = css_original;
+					css.ajaxError = true;
+				}, 10);
+				
+				return;
+			});
+			
+			css.innerHTML = await response.text();
+			css.ajaxError = false;
+		}
+		return css;
+	}
+	cfgp_display_control_css().then(function(data){
+		if( data.ajaxError ) {
+			data.dataset.ajax='error';
+		} else {
+			data.dataset.ajax='loaded';
+		}
+	});
+}());
+/* ]]> */
+</script>
+	<?php }
 	
 	/*
 	 * Hide HTTP referrer

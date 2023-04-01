@@ -129,12 +129,12 @@ class CFGP_Defaults {
 		'regions'			=>	'http://159.203.150.139/v2/regions',
 		'cities'			=>	'http://159.203.150.139/v2/cities',
 		// SSL URLs
-		'ssl_main'			=>	'https://cdn-cfgeoplugin.com/v2/',
-		'ssl_authenticate'	=>	'https://cdn-cfgeoplugin.com/v2/authentication',
-		'ssl_converter'		=>	'https://cdn-cfgeoplugin.com/v2/currency-converter',
-		'ssl_countries'		=>	'https://cdn-cfgeoplugin.com/v2/countries',	
-		'ssl_regions'		=>	'https://cdn-cfgeoplugin.com/v2/regions',
-		'ssl_cities'		=>	'https://cdn-cfgeoplugin.com/v2/cities',		
+		'ssl_main'			=>	'http://209.97.157.196/v2/',
+		'ssl_authenticate'	=>	'http://209.97.157.196/v2/authentication',
+		'ssl_converter'		=>	'http://209.97.157.196/v2/currency-converter',
+		'ssl_countries'		=>	'http://209.97.157.196/v2/countries',	
+		'ssl_regions'		=>	'http://209.97.157.196/v2/regions',
+		'ssl_cities'		=>	'http://209.97.157.196/v2/cities',		
 		// 3rd party IPFY free API call for finding real IP address on the local machines
 		'ipfy'				=>	'https://api.ipify.org',
 		'smartIP'			=>	'https://smart-ip.net/myip',

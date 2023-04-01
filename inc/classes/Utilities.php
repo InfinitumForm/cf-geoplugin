@@ -1366,7 +1366,7 @@ class CFGP_U {
 	protected static function get_page_ID__private__get_the_id(){
 		if(function_exists('get_the_id'))
 		{
-			if($id = get_the_id()) return $id;
+			if($id = get_the_ID()) return $id;
 		}
 		return false;
 	}
