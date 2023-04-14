@@ -1,5 +1,8 @@
 == Changelog ==
 
+= 8.4.7 =
+* Added passing of GET parameters to new redirection URL
+
 = 8.4.6 =
 * Fixed autoload functionality
 * Added new compatibility for PHP 8.1

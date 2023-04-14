@@ -597,8 +597,10 @@ if(!class_exists('CFGP_U', false)) : class CFGP_U {
 	 * Safe and SEO redirections to new location
 	 * @verson    1.0.0
 	*/
-	public static function redirect($location, int $status=302, bool $safe=NULL){
+	public static function redirect($location, int $status=302, bool $safe=NULL) {
 		$status = absint($status);
+		
+		$location_parts = apply_filters( 'cfgp/redirect/location', $location, $status, $safe );
 		
 		// Prevent AJAX
 		if(defined('DOING_AJAX') && DOING_AJAX){
@@ -621,6 +623,37 @@ if(!class_exists('CFGP_U', false)) : class CFGP_U {
 			return false;
 		}
 		
+		/*
+		 * We have a case where someone needs to pass some custom URL parameters 
+		 * to another URL and we need to support that. In that case we check the 
+		 * current location, take those parameters and pass them to the new URL.
+		 *
+		 * Like example: https://cfgeoplugin.com/?name=*&surname=*
+		 *
+		 * In this case, the "name" and "surname" parameters will be searched 
+		 * for and replaced if they appear in the original URL. If they do not 
+		 * appear, these parameters will be removed from the new URL.
+		 */
+		if( strpos($location, '=*') !== false ) {
+			parse_str(parse_url($location, PHP_URL_QUERY), $location_parts);
+			
+			$location_parts = apply_filters( 'cfgp/redirect/location_parts', $location_parts, $location, $status );
+			
+			foreach($location_parts as $key=>$match){
+				if( urldecode($match) == '*' ) {
+					if( ($_GET[$key]??NULL) ) {
+						$location_parts[$key]=$_GET[$key];
+					} else {
+						$location_parts[$key] = NULL;
+					}
+				}
+			}
+			
+			$location = add_query_arg($location_parts, $location);
+
+			unset($location_parts);
+		}
+		
 		// Cache control
 		if( CFGP_Options::get('cache-support', 'yes') == 'yes' ) {
 			self::cache_flush();
@@ -637,17 +670,25 @@ if(!class_exists('CFGP_U', false)) : class CFGP_U {
 			{
 				// Emulate wp_safe_redirect()
 				if($safe) {
-					$location = wp_validate_redirect( $location, apply_filters( 'cfgp/safe_redirect/fallback', site_url(), $status ) );
+					$location = wp_validate_redirect(
+						$location,
+						apply_filters( 'cfgp/safe_redirect/fallback', site_url(), $status )
+					);
 				}
 				// Do redirection
-				return wp_redirect( $location, $status, 'cf-geoplugin');
-			}
-			else
-			{
+				return wp_redirect( $location, $status, CFGP_NAME);
+			} else {
 				// Windows server need some nice touch
 				global $is_IIS;
-				if ( ! $is_IIS && function_exists('status_header') && defined('PHP_SAPI') && 'cgi-fcgi' !== PHP_SAPI ) {
-					status_header( $status ); // This causes problems on IIS and some FastCGI setups.
+				
+				if( !defined('PHP_SAPI') ) {
+					define('PHP_SAPI', php_sapi_name());
+				}
+				
+				if ( ! $is_IIS && 'cgi-fcgi' !== PHP_SAPI ) {
+					if( function_exists('status_header') ) {
+						status_header( $status ); // This causes problems on IIS and some FastCGI setups.
+					}
 				}
 				// Inform application who redirects
 				header('X-Redirect-By: ' . CFGP_NAME);
