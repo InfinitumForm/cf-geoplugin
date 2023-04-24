@@ -45,7 +45,10 @@ if(!class_exists('CFGP_DB_Cache', false)) : class CFGP_DB_Cache {
 		}
 		
 		if( self::has_redis() ) {
-			if( $transient = wp_cache_get( $key, 'CFGP_DB_Cache' ) ) {
+			if( false !== ( $transient = wp_cache_get( $key, 'CFGP_DB_Cache' ) ) ) {
+				if(is_serialized($transient) || self::is_serialized($transient)){
+					$transient = unserialize($transient);
+				}
 				self::$cache[$key] = $transient;
 			} else {
 				self::$cache[$key] = $default;
@@ -305,13 +308,13 @@ if(!class_exists('CFGP_DB_Cache', false)) : class CFGP_DB_Cache {
 	
 	/*
 	 * Checks if Redis Cache is active
-	 * @verson    1.0.0
+	 * @verson    1.0.1
 	 */
 	protected static $has_redis = NULL;
-	private static function has_redis() {
+	public static function has_redis() {
 		
 		if( NULL === self::$has_redis ) {
-			if( apply_filters('cfgp_enable_redis', false) ) {
+			if( apply_filters('cfgp_enable_redis', true) ) {
 				self::$has_redis = class_exists('Redis', false);
 			} else {
 				self::$has_redis = false;
@@ -319,6 +322,24 @@ if(!class_exists('CFGP_DB_Cache', false)) : class CFGP_DB_Cache {
 		}
 		
 		return self::$has_redis;
+	}
+	
+	/*
+	 * Checks if Memcache is active
+	 * @verson    1.0.0
+	 */
+	protected static $has_memcache = NULL;
+	public static function has_memcache() {
+		
+		if( NULL === self::$has_memcache ) {
+			if( apply_filters('cfgp_enable_memcache', true) ) {
+				self::$has_memcache = class_exists('Memcached', false);
+			} else {
+				self::$has_memcache = false;
+			}
+		}
+		
+		return self::$has_memcache;
 	}
 	
 	/*

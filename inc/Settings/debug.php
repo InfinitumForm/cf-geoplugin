@@ -310,6 +310,28 @@ if($NEW_API = CFGP_API::lookup(CFGP_U::request_string('cfgp_lookup'))){
                                         <td><strong><?php _e( 'PHP: Operting system', 'cf-geoplugin'); ?></strong></td>
                                         <td><?php echo esc_html( CFGP_OS::get() ); ?> <?php printf(__('%dbit', 'cf-geoplugin'), CFGP_OS::architecture()); ?></td>
                                     </tr>
+									<tr>
+                                        <td><strong><?php _e( 'PHP: Server Cache', 'cf-geoplugin'); ?></strong></td>
+                                        <td><strong><?php echo (
+											CFGP_DB_Cache::has_redis() 
+											? '<span class="text-success">' 
+												. __('Redis Cache', 'cf-geoplugin') 
+											. '</span>' 
+											: (
+												CFGP_DB_Cache::has_memcache()
+												? '<span class="text-success">' 
+													. __('Memcached', 'cf-geoplugin') 
+												. '</span>' 
+												: '<span class="text-danger">' 
+													. esc_html__('No', 'cf-geoplugin') 
+												. '</span><br>' . sprintf(
+													esc_html__('And if our plugin has an internal cache system, we strongly recommend using %1$s or %2$s to get the best performance.', 'cf-geoplugin'),
+													'<a href="https://www.php.net/manual/en/book.memcached.php" target="_blank">Memcache</a>',
+													'<a href="https://redis.io/" target="_blank">Redis Cache</a>'
+												)
+											) 
+										); ?></strong></td>
+                                    </tr>
                                     <tr>
                                         <td><strong><?php _e( 'Browser', 'cf-geoplugin'); ?></strong></td>
                                         <td><?php printf(_x('%1$s (%2$s)', 'Debug: User agent (Browser)', 'cf-geoplugin'), esc_html( CFGP_Browser::instance()->getBrowser() ), esc_html( CFGP_Browser::instance()->getVersion() )); ?></td>
