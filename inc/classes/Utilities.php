@@ -1010,7 +1010,10 @@ if(!class_exists('CFGP_U', false)) : class CFGP_U {
 			'216.52.21.0'		=>	'216.52.21.24',
 			'216.52.22.0'		=>	'216.52.22.24',
 			'65.156.227.0'		=>	'65.156.227.24',
-			'8.39.53.0'			=>	'8.39.53.24'
+			'8.39.53.0'			=>	'8.39.53.24',
+			// YOU.com
+			'172.66.40.57',
+			'172.66.43.199'
 		));
 		
 		$ip2long = sprintf('%u', ip2long($ip));
@@ -1044,7 +1047,7 @@ if(!class_exists('CFGP_U', false)) : class CFGP_U {
 		// Get by user agent (wide range)
 		if(isset($_SERVER['HTTP_USER_AGENT']) && !empty($_SERVER['HTTP_USER_AGENT']))
 		{
-			return (preg_match('/rambler|abacho|ac(oi|cona)|aspseek|al(tavista|exa)|estyle|scrubby|lycos|geona|ia_archiver|sogou|facebook|duckduck(bot|go)?|twitter|pinterest|linkedin|skype|naver|bing(bot)?|google|ya(hoo|ndex)|baidu(spider)?|teoma|xing|java\/1\.7\.0_45|crawl|slurp|spider|mediapartners|\sbot\s|\sask\s|\saol\s/i', $_SERVER['HTTP_USER_AGENT']) ? true : false);
+			return (preg_match('/rambler|abacho|ac(oi|cona)|aspseek|al(tavista|exa)|estyle|scrubby|lycos|geona|ia_archiver|sogou|facebook|duckduck(bot|go)?|twitter|pinterest|linkedin|skype|naver|bing(bot)?|google|ya(hoo|ndex)|baidu(spider)?|teoma|xing|java\/1\.7\.0_45|crawl|you|slurp|spider|mediapartners|\sbot\s|\sask\s|\saol\s/i', $_SERVER['HTTP_USER_AGENT']) ? true : false);
 		}
 		
 		return false;

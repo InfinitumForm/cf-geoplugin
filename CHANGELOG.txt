@@ -1,5 +1,11 @@
 == Changelog ==
 
+= 8.4.8 =
+* Fixed cache functionality
+* Redis and Memcache support approved
+* Added cache debugger
+* Added recognition for you.com bot
+
 = 8.4.7 =
 * Added passing of GET parameters to new redirection URL
 

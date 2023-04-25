@@ -5,7 +5,7 @@ Tags: geolocation, seo redirect, locator, GeoIP, geo, geotargeting, seo, woocomm
 Requires at least: 5.0
 Tested up to: 6.2
 Requires PHP: 7.0
-Stable tag: 8.4.7
+Stable tag: 8.4.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -398,6 +398,12 @@ Please inform us if any of these errors occur via contact form on our website [h
 
 == Changelog ==
 
+= 8.4.8 =
+* Fixed cache functionality
+* Redis and Memcache support approved
+* Added cache debugger
+* Added recognition for you.com bot
+
 = 8.4.7 =
 * Added passing of GET parameters to new redirection URL
 
@@ -437,6 +443,12 @@ Please inform us if any of these errors occur via contact form on our website [h
 
 == Upgrade Notice ==
 
+= 8.4.8 =
+* Fixed cache functionality
+* Redis and Memcache support approved
+* Added cache debugger
+* Added recognition for you.com bot
+
 = 8.4.7 =
 * Added passing of GET parameters to new redirection URL
 
@@ -444,35 +456,6 @@ Please inform us if any of these errors occur via contact form on our website [h
 * Fixed autoload functionality
 * Added new compatibility for PHP 8.1
 * Improved API algorithm
-
-= 8.4.5 =
-* Adding support for Redis Cache
-* Adding Cache fix for the dynamic CSS methods
-* Adding support for the WebOS TV
-* Fixed bugs from the previous version
-
-= 8.4.4 =
-* Fixed API errors
-* Increased cache time
-
-= 8.4.3 =
-* UX design fix
-* Updated algorithms for GPS integration
-* Added experimental new features for developers
-
-= 8.4.2 =
-* Fixed WooCommerce Integration
-* Added support for the Gravity Forms plugin
-* Fixed PHP bugs and removed depricated code
-
-= 8.4.1 =
-* Fixed deprecated code at the forms
-
-= 8.4.0 =
-* Optimized code for the PHP version > 8.1
-* Optimized code for the new WordPress versions
-* Removed deprecated codes
-* Fixed PHP errors from previous version
 
 == Other Notes ==
 
