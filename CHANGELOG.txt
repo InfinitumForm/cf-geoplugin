@@ -1,5 +1,9 @@
 == Changelog ==
 
+= 8.4.9 =
+* Fixed CSS property
+* Fixed cache purge
+
 = 8.4.8 =
 * Fixed cache functionality
 * Redis and Memcache support approved

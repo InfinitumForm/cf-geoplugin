@@ -262,7 +262,7 @@ if(!class_exists('CFGP_DB_Cache', false)) : class CFGP_DB_Cache {
 	public static function flush() {
 		
 		if( self::has_redis() ) {
-			wp_cache_flush();
+			wp_cache_flush_group('CFGP_DB_Cache');
 		}
 		
 		if( !self::table_exists() ) {

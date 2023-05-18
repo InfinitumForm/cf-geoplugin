@@ -126,10 +126,15 @@ if(!class_exists('CFGP_Public', false)) : class CFGP_Public extends CFGP_Global{
 		$css_show = apply_filters('cfgp/public/css/show', $css_show);
 		$css_hide = apply_filters('cfgp/public/css/hide', $css_hide);
 
-		ob_start();
+		ob_start('trim', 0, PHP_OUTPUT_HANDLER_REMOVABLE);
 
-		if( !empty($css_show) ) :		
-		?>/*<![CDATA[*/ *[class="cfgeo-show-in-"],*[class*="cfgeo-show-in-"],*[class^="cfgeo-show-in-"]{display: none;}<?php echo esc_attr( join(',', $css_hide) ); ?>{display:none !important;} <?php echo esc_attr( join(',', $css_show) ); ?>{display:block !important;}<?php do_action('cfgp/public/css'); ?> /*]]>*/<?php
+		if( !empty($css_show) ) :
+		if( $is_ajax ) {
+			header('Content-type: text/css', true);
+			header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
+			header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Date in the past
+		}
+?>*[class="cfgeo-show-in-"],*[class*="cfgeo-show-in-"],*[class^="cfgeo-show-in-"]{display: none;}<?php echo esc_attr( join(',', $css_hide) ); ?>{display:none !important;}<?php echo esc_attr( join(',', $css_show) ); ?>{display:block !important;}<?php do_action('cfgp/public/css'); ?><?php
 		endif;
 		
 		echo ob_get_clean();
@@ -146,9 +151,9 @@ if(!class_exists('CFGP_Public', false)) : class CFGP_Public extends CFGP_Global{
 	public function css_js_suppport () { ?>
 <script>
 /* <![CDATA[ */
-(function(){
+(function(doc){
 	async function cfgp_display_control_css () {
-		var css = document.getElementById('cfgp-display-control-css'),
+		var css = doc.getElementById('cfgp-display-control-css'),
 			css_original = css.innerHTML;
 		if( css ) {
 			const response = await fetch('<?php echo esc_url( admin_url('/admin-ajax.php') ); ?>', {
@@ -187,7 +192,7 @@ if(!class_exists('CFGP_Public', false)) : class CFGP_Public extends CFGP_Global{
 			data.dataset.ajax='loaded';
 		}
 	});
-}());
+}(document));
 /* ]]> */
 </script>
 	<?php }
