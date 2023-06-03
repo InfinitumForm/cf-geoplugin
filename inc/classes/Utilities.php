@@ -423,7 +423,7 @@ if(!class_exists('CFGP_U', false)) : class CFGP_U {
 			]);
 			
 			// Return if have error
-			if( is_wp_error($plugin_info) ) {				
+			if( is_wp_error($plugin_data) ) {				
 				return $plugin_data;
 			}
 		 	
