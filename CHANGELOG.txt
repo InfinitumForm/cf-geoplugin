@@ -1,5 +1,10 @@
 == Changelog ==
 
+= 8.4.10 =
+* Improved support for Gravity Forms
+* Added IP address field
+* Improved plugin detection algorithm
+
 = 8.4.9 =
 * Fixed CSS property
 * Fixed cache purge

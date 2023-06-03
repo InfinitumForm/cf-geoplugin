@@ -24,11 +24,12 @@ class CFGP__Plugin__gravityforms__GF_Country_Region_City extends GF_Field {
         //    'choices_setting',
             'description_setting',
             'label_setting',
-            'admin_label_setting',
+            'label_placement_setting',
+			'default_input_values_setting',
+			'admin_label_setting',
             'rules_setting',
             'error_message_setting',
             'visibility_setting',
-            'label_placement_setting',
             'description_placement_setting',
             'conditional_logic_field_setting',
             'css_class_setting',
@@ -53,6 +54,10 @@ class CFGP__Plugin__gravityforms__GF_Country_Region_City extends GF_Field {
 		return true;
 	}
 	
+	public function is_conditional_logic_supported() {
+		return true;
+	}
+	
 	/**
 	 * Returns the field button properties for the form editor. The array contains two elements:
 	 * 'group' => 'standard_fields' // or  'advanced_fields', 'post_fields', 'pricing_fields'
@@ -64,9 +69,9 @@ class CFGP__Plugin__gravityforms__GF_Country_Region_City extends GF_Field {
 	 */
 	public function get_form_editor_button() {
 		return [
-			'group' => 'advanced_fields',
+			'group' => 'geo_controller_fields',
 			'text'  => $this->get_form_editor_field_title(),
-			'icon' => 'gform-icon--place'
+			'icon' => $this->get_form_editor_field_icon()
 		];
 	}
 	
@@ -78,7 +83,18 @@ class CFGP__Plugin__gravityforms__GF_Country_Region_City extends GF_Field {
 	 * @return string
 	 */
 	public function get_form_editor_field_title() {
-		return esc_attr__('Select Country Region City', 'cf-geoplugin');
+		return esc_attr__('Select Country Region City to their forms', 'cf-geoplugin');
+	}
+	
+	/**
+	 * Returns the field's form editor description.
+	 *
+	 * @since 2.5
+	 *
+	 * @return string
+	 */
+	public function get_form_editor_field_description() {
+		return esc_attr__( 'Allows users to add country, region and city.', 'cf-geoplugin' );
 	}
 	
 	/**
@@ -96,7 +112,7 @@ class CFGP__Plugin__gravityforms__GF_Country_Region_City extends GF_Field {
 	 * @return array|string The safe value.
 	 */
 	public function get_value_save_entry($value, $form, $input_name, $lead_id, $lead) {
-		return empty($value) ? '' : serialize($value);
+		return ( empty($value) ? '' : serialize($value) );
 	}
 	
 	/**
@@ -164,14 +180,14 @@ class CFGP__Plugin__gravityforms__GF_Country_Region_City extends GF_Field {
 		wp_enqueue_script(CFGP_NAME . '-gform-cfgp');
 		wp_enqueue_style(CFGP_NAME . '-gform-cfgp');
 		
-        $form_id = $form['id'];
-		$id = absint( $this->id );
-		$field_id = "input_{$id}";
-		$select_form_id = "input_{$form_id}_{$id}";
+        $form_id 				= $form['id'];
+		$id 					= absint( $this->id );
+		$field_id 				= "input_{$id}";
+		$select_form_id 		= "input_{$form_id}_{$id}";
 
-		$is_entry_detail = $this->is_entry_detail();
-		$is_form_editor  = $this->is_form_editor();
-		$disabled = ($is_form_editor ? ' disabled="disabled"' : '');
+		$is_entry_detail 		= $this->is_entry_detail();
+		$is_form_editor  		= $this->is_form_editor();
+		$disabled 				= ($is_form_editor ? ' disabled="disabled"' : '');
 		$size                   = $this->size;
 		$class_suffix           = $is_entry_detail ? '_admin' : '';
 		$class                  = $size . $class_suffix;
@@ -181,8 +197,8 @@ class CFGP__Plugin__gravityforms__GF_Country_Region_City extends GF_Field {
 		$required_attribute     = $this->isRequired ? ' aria-required="true"' : '';
 		$invalid_attribute      = $this->failed_validation ? ' aria-invalid="true"' : ' aria-invalid="false"';
 
-        $countries = CFGP_Library::get_countries();		
-		$value = maybe_unserialize($value);
+        $countries 				= CFGP_Library::get_countries();		
+		$value 					= maybe_unserialize($value);
 
 		if(empty($value)) {
 			$value = [];
@@ -197,8 +213,13 @@ class CFGP__Plugin__gravityforms__GF_Country_Region_City extends GF_Field {
 		$placeholder_attribute = $this->get_field_placeholder_attribute();
 
 		ob_start();
-		if( (sanitize_text_field($_GET['gf_page'] ?? '') === 'preview') || is_admin() || $is_form_editor ) : ?>
-<style>
+		if( (sanitize_text_field($_GET['gf_page'] ?? '') === 'preview') || is_admin() || $is_form_editor ) : 
+?><style>
+	.cfgp_gfield_group > table.gfield_list.gfield_list_container,
+	.cfgp_gfield_group > table.gfield_list > thead th,
+	.cfgp_gfield_group > table.gfield_list > tbody td	{
+		border: none;
+	}
 	.cfgp_gfield_group > table.gfield_list,
 	.cfgp_gfield_group > table.gfield_list > tbody td > select{
 		width:100%;
@@ -209,9 +230,11 @@ class CFGP__Plugin__gravityforms__GF_Country_Region_City extends GF_Field {
 	.cfgp_gfield_group > table.gfield_list > colgroup > .gfield_list_col{
 		width: calc(100%/3);
 	}
-</style>
-<?php endif; ?>
-<div class="ginput_container ginput_container_list ginput_list cfgp_gfield_group cfgp_gfield_group__autocomplete_location" id="cfgp_gfield_group_{{form_id}} {{class}}">
+</style><?php 
+
+endif;
+
+?><div class="ginput_container ginput_container_list ginput_list cfgp_gfield_group cfgp_gfield_group__autocomplete_location" id="cfgp_gfield_group_{{form_id}} {{class}}">
 	<table class="gfield_list gfield_list_container {{class}}">
 		<colgroup>
 			<col id="gfield_list_{{form_id}}_col_1" class="gfield_list_col gfield_list_col_odd">
@@ -220,9 +243,9 @@ class CFGP__Plugin__gravityforms__GF_Country_Region_City extends GF_Field {
 		</colgroup>
 		<thead>
 			<tr>
-				<th scope="col" class="{{class}}"><?php esc_html_e('Country', 'cf-geoplugin'); ?></th>
-				<th scope="col" class="{{class}}"><?php esc_html_e('Region', 'cf-geoplugin'); ?></th>
-				<th scope="col" class="{{class}}"><?php esc_html_e('City', 'cf-geoplugin'); ?></th>
+				<th scope="col" class="{{class}}"><label class="gfield_label gform-field-label" for="{{select_form_id}}"><?php esc_html_e('Country', 'cf-geoplugin'); ?></span></th>
+				<th scope="col" class="{{class}}"><label class="gfield_label gform-field-label" for="{{select_form_id}}_region"><?php esc_html_e('Region', 'cf-geoplugin'); ?></span></th>
+				<th scope="col" class="{{class}}"><label class="gfield_label gform-field-label" for="{{select_form_id}}_city"><?php esc_html_e('City', 'cf-geoplugin'); ?></span></th>
 			</tr>
 		</thead>
 		<tbody> 
@@ -272,8 +295,8 @@ class CFGP__Plugin__gravityforms__GF_Country_Region_City extends GF_Field {
 			</tr>
 		</tbody>
 	</table>
-</div>
-		<?php return strtr(
+</div><?php 
+		return strtr(
 			ob_get_clean(),
 			[
 				'{{form_id}}' => esc_attr($form_id),

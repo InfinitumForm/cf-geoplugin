@@ -5,7 +5,7 @@ Tags: geolocation, seo redirect, locator, GeoIP, geo, geotargeting, seo, woocomm
 Requires at least: 5.0
 Tested up to: 6.2
 Requires PHP: 7.0
-Stable tag: 8.4.9
+Stable tag: 8.4.10
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -398,6 +398,11 @@ Please inform us if any of these errors occur via contact form on our website [h
 
 == Changelog ==
 
+= 8.4.10 =
+* Improved support for Gravity Forms
+* Added IP address field
+* Improved plugin detection algorithm
+
 = 8.4.9 =
 * Fixed CSS property
 * Fixed cache purge
@@ -447,23 +452,14 @@ Please inform us if any of these errors occur via contact form on our website [h
 
 == Upgrade Notice ==
 
+= 8.4.10 =
+* Improved support for Gravity Forms
+* Added IP address field
+* Improved plugin detection algorithm
+
 = 8.4.9 =
 * Fixed CSS property
 * Fixed cache purge
-
-= 8.4.8 =
-* Fixed cache functionality
-* Redis and Memcache support approved
-* Added cache debugger
-* Added recognition for you.com bot
-
-= 8.4.7 =
-* Added passing of GET parameters to new redirection URL
-
-= 8.4.6 =
-* Fixed autoload functionality
-* Added new compatibility for PHP 8.1
-* Improved API algorithm
 
 == Other Notes ==
 

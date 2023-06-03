@@ -378,48 +378,54 @@ if(!class_exists('CFGP_U', false)) : class CFGP_U {
 			if ( ! function_exists( 'plugins_api' ) ) {
 				self::include_once( WP_ADMIN_DIR . '/includes/plugin-install.php' );
 			}
+			
+			$fields = array_merge([
+				'active_installs' => false,           // rounded int
+				'added' => false,                     // date
+				'author' => false,                    // a href html
+				'author_block_count' => false,        // int
+				'author_block_rating' => false,       // int
+				'author_profile' => false,            // url
+				'banners' => false,                   // array( [low], [high] )
+				'compatibility' => false,             // empty array?
+				'contributors' => false,              // array( array( [profile], [avatar], [display_name] )
+				'description' => false,               // string
+				'donate_link' => false,               // url
+				'download_link' => false,             // url
+				'downloaded' => false,                // int
+				// 'group' => false,                  // n/a 
+				'homepage' => false,                  // url
+				'icons' => false,                     // array( [1x] url, [2x] url )
+				'last_updated' => false,              // datetime
+				'name' => false,                      // string
+				'num_ratings' => false,               // int
+				'rating' => false,                    // int
+				'ratings' => false,                   // array( [5..0] )
+				'requires' => false,                  // version string
+				'requires_php' => false,              // version string
+				// 'reviews' => false,                // n/a, part of 'sections'
+				'screenshots' => false,               // array( array( [src],  ) )
+				'sections' => false,                  // array( [description], [installation], [changelog], [reviews], ...)
+				'short_description' => false,         // string
+				'slug' => false,                      // string
+				'support_threads' => false,           // int
+				'support_threads_resolved' => false,  // int
+				'tags' => false,                      // []
+				'tested' => false,                    // version string
+				'version' => false,                   // version string
+				'versions' => false                   // array( [version] url )
+			], $fields);
+			
 			/** Prepare our query */
-			//donate_link
-			//versions
 			$plugin_data = plugins_api( 'plugin_information', [
 				'slug' => ($slug!==false ? $slug : CFGP_NAME),
-				'fields' => array_merge([
-					'active_installs' => false,           // rounded int
-					'added' => false,                     // date
-					'author' => false,                    // a href html
-					'author_block_count' => false,        // int
-					'author_block_rating' => false,       // int
-					'author_profile' => false,            // url
-					'banners' => false,                   // array( [low], [high] )
-					'compatibility' => false,             // empty array?
-					'contributors' => false,              // array( array( [profile], [avatar], [display_name] )
-					'description' => false,               // string
-					'donate_link' => false,               // url
-					'download_link' => false,             // url
-					'downloaded' => false,                // int
-					// 'group' => false,                  // n/a 
-					'homepage' => false,                  // url
-					'icons' => false,                     // array( [1x] url, [2x] url )
-					'last_updated' => false,              // datetime
-					'name' => false,                      // string
-					'num_ratings' => false,               // int
-					'rating' => false,                    // int
-					'ratings' => false,                   // array( [5..0] )
-					'requires' => false,                  // version string
-					'requires_php' => false,              // version string
-					// 'reviews' => false,                // n/a, part of 'sections'
-					'screenshots' => false,               // array( array( [src],  ) )
-					'sections' => false,                  // array( [description], [installation], [changelog], [reviews], ...)
-					'short_description' => false,         // string
-					'slug' => false,                      // string
-					'support_threads' => false,           // int
-					'support_threads_resolved' => false,  // int
-					'tags' => false,                      // []
-					'tested' => false,                    // version string
-					'version' => false,                   // version string
-					'versions' => false,                  // array( [version] url )
-				], $fields)
+				'fields' => $fields
 			]);
+			
+			// Return if have error
+			if( is_wp_error($plugin_info) ) {				
+				return $plugin_data;
+			}
 		 	
 			// Save into current cache
 			CFGP_Cache::set($cache_name, $plugin_data);

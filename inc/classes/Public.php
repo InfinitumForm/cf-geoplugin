@@ -137,7 +137,7 @@ if(!class_exists('CFGP_Public', false)) : class CFGP_Public extends CFGP_Global{
 ?>*[class="cfgeo-show-in-"],*[class*="cfgeo-show-in-"],*[class^="cfgeo-show-in-"]{display: none;}<?php echo esc_attr( join(',', $css_hide) ); ?>{display:none !important;}<?php echo esc_attr( join(',', $css_show) ); ?>{display:block !important;}<?php do_action('cfgp/public/css'); ?><?php
 		endif;
 		
-		echo ob_get_clean();
+		echo apply_filters( 'cfgp/public/css', ob_get_clean(), $css_show, $css_hide, $allowed_css);
 		
 		if( $is_ajax ) {
 			exit;
@@ -284,24 +284,49 @@ if(!class_exists('CFGP_Public', false)) : class CFGP_Public extends CFGP_Global{
 				'geo.longitude'	=> get_post_meta( $post->ID, 'cfgp-longitude',		true )
 			), $post);
 
-			if( $geo_data['geo.enable'] )
+			$enable = $geo_data['geo.enable'];
+			
+			unset($geo_data['geo.enable']);
+			
+			$geo_data = array_map('sanitize_text_field', $geo_data);
+
+			if( $enable )
 			{
 				if( !empty( $geo_data['geo.region'] ) && !empty( $geo_data['geo.placename'] ) )
 				{
-					printf( '<meta name="geo.region" content="%s-%s" />' . PHP_EOL, $geo_data['geo.region'], $geo_data['geo.placename'] );
+					printf(
+						'<meta name="geo.region" content="%s-%s" />' . PHP_EOL,
+						esc_attr($geo_data['geo.region']),
+						esc_attr($geo_data['geo.placename'])
+					);
 				}
 				if( !empty( $geo_data['geo.address'] ) )
 				{
-					printf( '<meta name="DC.title" content="%s" />' . PHP_EOL, $geo_data['geo.address'] );
+					printf(
+						'<meta name="DC.title" content="%s" />' . PHP_EOL,
+						esc_attr($geo_data['geo.address'])
+					);
 				}
 				if( !empty( $geo_data['geo.placename'] ) )
 				{
-					printf( '<meta name="geo.placename" content="%s" />' . PHP_EOL, $geo_data['geo.placename'] );
+					printf(
+						'<meta name="geo.placename" content="%s" />' . PHP_EOL,
+						esc_attr($geo_data['geo.placename'])
+					);
 				}
 				if( !empty( $geo_data['geo.longitude'] ) && !empty( $geo_data['geo.latitude'] ) )
 				{
-					printf( '<meta name="geo.position" content="%s;%s" />' . PHP_EOL, $geo_data['geo.latitude'], $geo_data['geo.longitude'] );
-					printf( '<meta name="ICBM" content="%s;%s" />' . PHP_EOL, $geo_data['geo.latitude'], $geo_data['geo.longitude'] );
+					printf(
+						'<meta name="geo.position" content="%s;%s" />' . PHP_EOL,
+						esc_attr($geo_data['geo.latitude']),
+						esc_attr($geo_data['geo.longitude'])
+					);
+					
+					printf(
+						'<meta name="ICBM" content="%s;%s" />' . PHP_EOL,
+						esc_attr($geo_data['geo.latitude']),
+						esc_attr($geo_data['geo.longitude'])
+					);
 				}
 			}
 		}

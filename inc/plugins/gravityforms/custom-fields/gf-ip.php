@@ -1,9 +1,9 @@
 <?php if ( ! defined( 'WPINC' ) ) { die( "Don't mess with us." ); }
 
-if( !class_exists( 'CFGP__Plugin__gravityforms__GF_Country', false ) ):
-class CFGP__Plugin__gravityforms__GF_Country extends GF_Field {
+if( !class_exists( 'CFGP__Plugin__gravityforms__GF_IP', false ) ):
+class CFGP__Plugin__gravityforms__GF_IP extends GF_Field {
 
-    public $type = 'cfgp_gf_country';
+    public $type = 'cfgp_gf_ip';
 
 	/**
 	 * Returns the class names of the settings which should be available on the field in the form editor.
@@ -56,7 +56,7 @@ class CFGP__Plugin__gravityforms__GF_Country extends GF_Field {
 	 * @return string
 	 */
 	public function get_form_editor_field_icon() {
-		return 'gform-icon--dropdown';
+		return 'gform-icon--numbers-alt';
 	}
 	
 	
@@ -68,7 +68,7 @@ class CFGP__Plugin__gravityforms__GF_Country extends GF_Field {
 	 * @return string
 	 */
 	public function get_form_editor_field_title() {
-		return esc_attr__('Select Country', 'cf-geoplugin');
+		return esc_attr__('IP Address', 'cf-geoplugin');
 	}
 	
 	/**
@@ -79,7 +79,7 @@ class CFGP__Plugin__gravityforms__GF_Country extends GF_Field {
 	 * @return string
 	 */
 	public function get_form_editor_field_description() {
-		return esc_attr__( 'Allows users to add Country to their forms.', 'cf-geoplugin' );
+		return esc_attr__( 'Allows users to add IP address to their forms.', 'cf-geoplugin' );
 	}
 	
 	public function is_conditional_logic_supported() {
@@ -153,27 +153,17 @@ class CFGP__Plugin__gravityforms__GF_Country extends GF_Field {
 		$size                   = $this->size;
 		$class_suffix           = $is_entry_detail ? '_admin' : '';
 		$class                  = $size . $class_suffix;
-		$css_class              = trim( esc_attr( $class ) . ' gfield_select' );
+		$css_class              = trim( esc_attr( $class ) );
 		
 		$tabindex               = $this->get_tabindex();
 		$required_attribute     = $this->isRequired ? ' aria-required="true"' : '';
 		$invalid_attribute      = $this->failed_validation ? ' aria-invalid="true"' : ' aria-invalid="false"';
-
-        $countries 				= CFGP_Library::get_countries();		
-		$value 					= maybe_unserialize($value);
 		
-		$select = array();
+		$value 					= CFGP_U::api('ip');
 		
-        if ( ! empty( $countries ) ) {
-			$select = ['<div class="ginput_container ginput_container_select">'];
-            $select[]= '<select name="' . esc_attr( $field_id ) . '" id="' . esc_attr( $select_form_id ) . '" class="' . esc_attr( $css_class ) . ' cfgp-gf-select cfgp-gf-input-' . esc_attr( $field_id ) . '"' . $tabindex . $required_attribute . $invalid_attribute . $disabled . '>';
-            foreach ( $countries as $country_code => $country ) {
-				$country_code = strtoupper( $country_code );
-                $select[]= '<option value="' . esc_attr( $country_code ) . '"' . selected( $value, $country_code, false ) . '>' . esc_html( $country ) . '</option>';
-            }
-            $select[]= '</select>';
-			$select[]= '</div>';
-        }
+		$select = ['<div class="ginput_container ginput_container_text">'];
+		$select[]= '<input type="text" name="' . esc_attr( $field_id ) . '" id="' . esc_attr( $select_form_id ) . '" class="' . esc_attr( $css_class ) . ' cfgp-gf-input-' . esc_attr( $field_id ) . '" value="' . esc_attr($value) . '"' . $tabindex . $required_attribute . $invalid_attribute . $disabled . ' readonly />';
+		$select[]= '</div>';
 
         return join("\n\r", $select);
     }

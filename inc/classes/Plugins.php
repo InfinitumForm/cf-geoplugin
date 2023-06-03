@@ -166,6 +166,10 @@ if(!class_exists('CFGP_Plugins', false)) : class CFGP_Plugins extends CFGP_Globa
 				{
 					if($plugin_info = CFGP_U::plugin_info([], $dir_name))
 					{
+						if( is_wp_error($plugin_info) ) {
+							continue;
+						}
+						
 						$plugin_options[]= array(
 							'name' => 'enable-' . $dir_name,
 							'label' => $plugin_info->name,
