@@ -58,6 +58,10 @@ $options = apply_filters('cfgp/settings', []);
 								if($is_plugin===true && $is_plugin_active === false) {
 								  continue;
 								}
+								
+								if(isset($input['display']) && !$input['display']) {
+									continue;
+								}
 					
 							?>
 								<tr>

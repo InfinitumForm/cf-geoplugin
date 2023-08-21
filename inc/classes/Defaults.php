@@ -54,6 +54,7 @@ if(!class_exists('CFGP_Defaults', false)) : class CFGP_Defaults {
 		'enable_defender'				=>	1,
 		'enable_gmap'					=>	0,
 		'enable_cache'					=>	0,
+		'enable_redis_cache'			=>	0,
 		'enable_menus_control'			=>	1,
 		'enable_banner'					=>	1,
 		'enable_cloudflare'				=>	0,

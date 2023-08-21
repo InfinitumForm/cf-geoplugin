@@ -126,7 +126,19 @@ add_filter('cfgp/settings', function($options=[]){
 								0 => __('No', 'cf-geoplugin')
 							),
 							'default' => 0
-						)					
+						),
+						array(
+							'name' => 'enable_redis_cache',
+							'label' => __('Stick to Redis Cache only (experimental)', 'cf-geoplugin'),
+							'desc' => __('Redis cache can sometimes cause unexpected and unwanted problems. Use this option wisely.', 'cf-geoplugin'),
+							'type' => 'radio',
+							'display' => CFGP_U::redis_cache_exists(),
+							'options' => array(
+								1 => __('Yes', 'cf-geoplugin'),
+								0 => __('No', 'cf-geoplugin')
+							),
+							'default' => 0
+						)
 					)
 				),
 				array(

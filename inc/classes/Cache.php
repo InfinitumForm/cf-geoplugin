@@ -33,7 +33,7 @@ if(!class_exists('CFGP_Cache', false)) : class CFGP_Cache {
 	 */
      public static function add($key, $value) {
 		$key = self::key($key);
-		if(!isset(self::$cache[ $key ])) {
+		if (array_key_exists($key, self::$cache)) {
 			self::garbage_cleaner();
 			self::$cache[ $key ] = $value;
 		}
@@ -60,7 +60,7 @@ if(!class_exists('CFGP_Cache', false)) : class CFGP_Cache {
 	 */
     public static function replace($key, $value, $expire=0) {
 		$key = self::key($key);
-		if(isset(self::$cache[ $key ])) {
+		if (array_key_exists($key, self::$cache)) {
 			self::$cache[ $key ] = $value;
 		}
 		return self::$cache[ $key ];
@@ -73,7 +73,7 @@ if(!class_exists('CFGP_Cache', false)) : class CFGP_Cache {
 	 */
 	public static function delete($key) {
 		$key = self::key($key);
-		if(isset(self::$cache[ $key ])) {
+		if (array_key_exists($key, self::$cache)) {
 			unset(self::$cache[ $key ]);
 		}
     }

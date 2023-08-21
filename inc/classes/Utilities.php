@@ -47,7 +47,7 @@ if(!class_exists('CFGP_U', false)) : class CFGP_U {
 		if( $KEY = CFGP_Cache::get('REST_KEY') ) {
 			return $KEY;
 		}
-		return CFGP_Cache::set('REST_KEY', hash('sha256',str_rot13(substr(CFGP_U::ID(), 6, 21))));
+		return CFGP_Cache::set('REST_KEY', self::hash(str_rot13(substr(CFGP_U::ID(), 6, 21)), 'sha256'));
 	}
 	
 	/*
@@ -74,7 +74,7 @@ if(!class_exists('CFGP_U', false)) : class CFGP_U {
 	public static function get_http_code_name($code){
 		$code = (int)$code;
 		$http_codes = self::get_http_codes();
-		return (isset($http_codes[$code]) ? $http_codes[$code] : NULL);
+		return ($http_codes[$code] ?? NULL);
 	}
 	
 	/*
@@ -141,7 +141,7 @@ if(!class_exists('CFGP_U', false)) : class CFGP_U {
 	public static function curl_get( $url, $headers = '', $new_params = [], $json = false )
 	{
 		
-		$cache_name = 'cfgp-curl_get-'.md5(serialize(array($url, $headers, $new_params, $json)));
+		$cache_name = 'cfgp-curl_get-'.self::hash(serialize(array($url, $headers, $new_params, $json)));
 		if(NULL !== ($cache = CFGP_Cache::get($cache_name))){
 			return $cache;
 		}
@@ -208,7 +208,7 @@ if(!class_exists('CFGP_U', false)) : class CFGP_U {
 	 */
 	public static function curl_post( $url, $post_data = [], $headers = [], $new_params = [], $json = false )
 	{
-		$cache_name = 'cfgp-curl_post-'.md5(serialize(array($url, $headers, $new_params, $json)));
+		$cache_name = 'cfgp-curl_post-'.self::hash(serialize(array($url, $headers, $new_params, $json)));
 		if(NULL !== ($cache = CFGP_Cache::get($cache_name))){
 			return $cache;
 		}
@@ -362,7 +362,7 @@ if(!class_exists('CFGP_U', false)) : class CFGP_U {
 	*/
 	public static function plugin_info(array $fields = [], $slug = false, $force_cache = true) {
 		
-		$cache_name = CFGP_NAME . '-plugin_info-' . md5(serialize($fields) . ($slug!==false ? $slug : CFGP_NAME));
+		$cache_name = CFGP_NAME . '-plugin_info-' . self::hash(serialize($fields) . ($slug!==false ? $slug : CFGP_NAME));
 		
 		if($cache = CFGP_Cache::get($cache_name)) {
 			return $cache;
@@ -754,7 +754,7 @@ if(!class_exists('CFGP_U', false)) : class CFGP_U {
 			$domain = preg_replace(
 				'%:/{3,}%i',
 				'://',
-				rtrim($http,'/') . '://' . sanitize_text_field(isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '')
+				rtrim($http,'/') . '://' . sanitize_text_field($_SERVER['HTTP_HOST'] ?? '')
 			);
 			$domain = rtrim($domain,'/');
 			$url = preg_replace(
@@ -806,12 +806,12 @@ if(!class_exists('CFGP_U', false)) : class CFGP_U {
 		} else if(empty($ssl)) {
 			if(
 				( is_admin() && defined('FORCE_SSL_ADMIN') && FORCE_SSL_ADMIN ===true )
-				|| (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on')
-				|| (!empty($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https')
-				|| (!empty($_SERVER['HTTP_X_FORWARDED_SSL']) && $_SERVER['HTTP_X_FORWARDED_SSL'] == 'on')
-				|| (isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == 443)
-				|| (isset($_SERVER['HTTP_X_FORWARDED_PORT']) && $_SERVER['HTTP_X_FORWARDED_PORT'] == 443)
-				|| (isset($_SERVER['REQUEST_SCHEME']) && $_SERVER['REQUEST_SCHEME'] == 'https')
+				|| ($_SERVER['HTTPS'] ?? NULL == 'on')
+				|| ($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? NULL == 'https')
+				|| ($_SERVER['HTTP_X_FORWARDED_SSL'] ?? NULL == 'on')
+				|| ($_SERVER['SERVER_PORT'] ?? NULL == 443)
+				|| ($_SERVER['HTTP_X_FORWARDED_PORT'] ?? NULL == 443)
+				|| ($_SERVER['REQUEST_SCHEME'] ?? NULL == 'https')
 			) {
 				$ssl = CFGP_Cache::set('is_ssl', true);
 			}
@@ -838,7 +838,7 @@ if(!class_exists('CFGP_U', false)) : class CFGP_U {
 					$is_editor = CFGP_Cache::set('is_editor', $get_current_screen->is_block_editor());
 				}
 			} else {
-				$is_editor = CFGP_Cache::set('is_editor', ( isset($_GET['action']) && isset($_GET['post']) && $_GET['action'] == 'edit' && is_numeric($_GET['post']) ) );
+				$is_editor = CFGP_Cache::set('is_editor', ( ($_GET['action'] ?? NULL) == 'edit' && is_numeric($_GET['post'] ?? NULL) ) );
 			}
 		}
 
@@ -1345,7 +1345,7 @@ if(!class_exists('CFGP_U', false)) : class CFGP_U {
 		if(empty($name)) {
 			return apply_filters('cfgp/api/return', ( $API ? $API : $default ), $API, $default);
 		} else {
-			return apply_filters('cfgp/api/return/' . $name, ( isset($API[$name]) ? $API[$name] : $default ), $API, $default);
+			return apply_filters('cfgp/api/return/' . $name, ( $API[$name] ?? $default ), $API, $default);
 		}
 	}
 	
@@ -2613,6 +2613,24 @@ if(!class_exists('CFGP_U', false)) : class CFGP_U {
 		));
 		
 		return apply_filters('cfgp/allowed_html_tags_for_page', $wp_kses_allowed_html);
+	}
+	
+	/*
+	 * Checks if Redis Cache exists
+	 * @verson    1.0.1
+	 */
+	public static function redis_cache_exists() {
+		static $has_redis;
+		
+		if( NULL === $has_redis ) {
+			if( apply_filters('cfgp_enable_redis', true) ) {
+				$has_redis = class_exists('Redis', false);
+			} else {
+				$has_redis = false;
+			}
+		}
+		
+		return $has_redis;
 	}
 	
 	/*

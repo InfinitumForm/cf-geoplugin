@@ -7,8 +7,8 @@
  * Plugin Name:       Geo Controller
  * Plugin URI:        https://cfgeoplugin.com/
  * Description:       Unlock the power of location-based functionality of WordPress – The ultimate all-in-one geolocation plugin for WordPress.
- * Version:           8.4.11
- * Requires at least: 5.0
+ * Version:           8.5.1
+ * Requires at least: 6.0
  * Requires PHP:      7.0
  * Author:            INFINITUM FORM
  * Author URI:        https://infinitumform.com/

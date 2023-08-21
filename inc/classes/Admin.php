@@ -148,7 +148,7 @@ class CFGP_Admin extends CFGP_Global {
 			exit;
 		} else {
 			$RSS = $DASH_RSS = [];
-			$data = CFGP_U::curl_get( CFGP_STORE . '/wp-ajax.php?action=cfgp_get_posts_data&numberposts=10&posts_per_page=10', '', [], false);
+			$data = CFGP_U::curl_get( CFGP_STORE . '/wp-json/cfgp/v1/news?posts_per_page=4', '', [], false);
 			if($data)
 			{
 				$data = (object)$data;
@@ -219,12 +219,13 @@ class CFGP_Admin extends CFGP_Global {
 	
 	public function ajax__dashboard_rss_feed () {
 		$DASH_RSS = CFGP_DB_Cache::get('cfgp-dashboard-rss');
+		CFGP_U::dump($DASH_RSS);
 		if( !empty($DASH_RSS) ) {
 			echo wp_kses_post($DASH_RSS ?? '');
 			exit;
 		} else {
 			$RSS = $DASH_RSS = [];
-			$data = CFGP_U::curl_get( CFGP_STORE . '/wp-ajax.php?action=cfgp_get_posts_data&numberposts=10&posts_per_page=10', '', [], false);
+			$data = CFGP_U::curl_get( CFGP_STORE . '/wp-json/cfgp/v1/news?posts_per_page=10', '', [], false);
 			if($data)
 			{
 				$data = (object)$data;

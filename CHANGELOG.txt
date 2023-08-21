@@ -1,5 +1,9 @@
 == Changelog ==
 
+= 8.5.0 =
+* Improved caching
+* Support for WP version 6.3.x
+
 = 8.4.11 =
 * Fixed plugin info
 

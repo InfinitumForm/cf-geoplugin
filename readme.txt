@@ -1,27 +1,33 @@
 ﻿=== Geo Controller ===
 Contributors: ivijanstefan, creativform
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=creativform@gmail.com
-Tags: geolocation, seo redirect, locator, GeoIP, geo, geotargeting, seo, woocommerce, include exclude, content, remove content, show hide, Gravity Forms
-Requires at least: 5.0
-Tested up to: 6.2
+Tags: Geo Location, WordPress Geolocation Plugin, Location-Based Personalization, User Location Detection, SEO Optimization, Spam Protection
+Requires at least: 6.0
+Tested up to: 6.3
 Requires PHP: 7.0
-Stable tag: 8.4.11
+Stable tag: 8.5.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Unlock the power of location-based functionality of WordPress - The ultimate all-in-one geolocation plugin for WordPress.
+Enhance your WordPress site with Geo Controller - an all-in-one plugin providing powerful location-based features and personalization.
 
 == Description ==
 
-Are you ready to level up your WordPress game? Meet **[Geo Controller](https://cfgeoplugin.com/)** (formerly known as CF Geo Plugin), the ultimate geo-marketing tool that will give you full control of your website's geographic information.
+Geo Controller is a transformative WordPress plugin that enables comprehensive management and manipulation of geographic data on your website. This tool was previously known as **[CF Geo Plugin](https://cfgeoplugin.com/)**.
 
-With Geo Controller for WordPress, you can automatically detect the location of your website's visitors and display it on your website, giving you the ability to greet your visitors with a personalized message like "Welcome to our website, [visitor's city]!" How cool is that? It also allows you to easily attach content, geo tags, Google Maps, and more to posts, pages, widgets, and custom templates with just a few simple options, shortcodes, or even PHP code. Say goodbye to manual location lookups and hello to personalized greetings for your visitors. Plus, it's fully compatible with popular plugins like WooCommerce, Contact Form 7, Yoast SEO, and WP Super Cache.
+Essentially, it helps to personalize and enhance your website's usability based on the geographical location of the users. By doing so, it adds an element of personalization to your website that can significantly increase user engagement and site interaction.
 
-But that's not all, Geo Controller for WordPress also lets you specify a default location for your entire website, do SEO redirection, spam protection, and even control your WooCommerce store. Want to increase conversions and capture leads on your blog or landing pages? Geo Controller can help you with that too. With its advanced SEO capabilities and lead generation tools, it's the perfect tool to help you boost your website's performance and reach new heights.
+The central function of Geo Controller is its ability to automatically determine the geographical location of your website visitors. Using this information, the plugin allows for the creation of custom, location-based greetings like "Welcome to our website, [visitor’s city]!". This feature not only creates a welcoming environment but also establishes an immediate connection with the user.
 
-But wait, there's more! Geo Controller also utilizes a Content Delivery Network (CDN) to distribute the data, which means lightning-fast loading times for your website. And let's not forget about saving space on your servers. By using an API, Geo Controller allows you to store less data locally, which means more room for all of your other important website data.
+Geo Controller's features extend beyond just recognizing and displaying user location data. It enables easy integration of geo tags, Google Maps, and various forms of content to your website's posts, pages, widgets, and custom templates. You can implement these changes with minimal coding knowledge, thanks to the available options, shortcodes, and even PHP code.
 
-Lastly, Geo Controller can help you to comply with legal requirements by filtering legal notices, text, forms, etc. from countries for whom that content may not be relevant. This can help you to avoid legal issues and provide a better user experience for your visitors.
+To make it even more practical, Geo Controller is fully compatible with well-known WordPress plugins such as WooCommerce, Contact Form 7, Yoast SEO, and WP Super Cache. This ensures a seamless user experience and full utilization of all these beneficial tools.
+
+Other useful features include the ability to set a default location for your site, to optimize your SEO and user redirection capabilities. Geo Controller also equips you with spam protection and allows you to manage your WooCommerce store more effectively.
+
+On the technical side, Geo Controller utilizes a Content Delivery Network (CDN) to distribute data. This ensures optimal website loading speed, leading to improved user experience. In addition, by leveraging API use, it enables less local data storage, providing more room for other crucial website data.
+
+Geo Controller's capabilities also stretch to legal compliance. It can filter certain types of content like legal notices, forms, or specific text from being displayed to users from regions where such content may not be relevant or lawful. This protects your website from any potential legal conflicts and ensures a smooth, uninterrupted user experience.
 
 = FREE AND PAID SERVICES =
 
@@ -99,7 +105,7 @@ This plugin is compatible with any Wordpress installation and many available plu
 * [SEO framework](https://wordpress.org/plugins/autodescription/)
 * [WP Fastest Cache](https://wordpress.org/plugins/wp-fastest-cache/)
 
-**YOU NEED TO KNOW** that even if there is compatibility for most plugins, the combination of multiple plugins still has a slight chance of some conflict. There are over a couple thousand plugins and a couple of few million individual WordPress installations. We cannot 100% guarantee that everything will work properly in all possible cases. Sometimes it happens that other plugins are not compatible with Geo Controller, so it is important that you contact us or other plugin authors in case of any problem so that you can solve the problem. The most common fix for most issues is if you keep all the plugins and WordPress installation up to date.
+**YOU NEED TO KNOW** that Geo Controller is designed for compatibility with most plugins, but the vast array of WordPress plugins and installations means that occasional conflicts might occur. Although rare, it's not possible to guarantee 100% compatibility in every case. If you encounter any problems, reach out to the support teams for assistance. Often, keeping your plugins and WordPress installation up to date is the simplest way to resolve any issues.
 
 > <strong>All Geo Controller for WordPress 8.x.x Features</strong><br>
 >
@@ -264,6 +270,20 @@ When you choose to uninstall the Geo Controller plugin, it's important to be awa
 
 == Frequently Asked Questions ==
 
+= What should I do if the plugin doesn't work? =
+
+Geo Controller is designed to be compatible with most plugins, the WordPress ecosystem is vast and complex. With thousands of different plugins available and millions of unique WordPress installations, each with their potential combinations of themes, plugins, and settings, the landscape is incredibly diverse.
+
+What this means is that although efforts have been made to ensure Geo Controller works smoothly with other plugins, there might be instances where conflicts occur. A "conflict" in this context refers to two or more plugins interfering with each other's functionality. This could cause one or both plugins to not work as intended, or even cause issues with the overall function of the website.
+
+It's almost impossible to test Geo Controller against every possible combination of plugins and WordPress configurations. Therefore, a 100% guarantee of compatibility cannot be given. It's a rare occurrence, but sometimes, specific plugins might not work well with Geo Controller.
+
+If such a problem arises, it's crucial to reach out to the support teams of Geo Controller or the other plugin involved. This collaborative approach often leads to a quick resolution of the issue. Both sets of developers understand their products intimately and will be able to assist in finding a solution.
+
+Furthermore, many compatibility issues stem from outdated software. Plugins, themes, and even WordPress itself are continually being updated. These updates often include fixes for known conflicts and compatibility issues. Therefore, keeping all aspects of a WordPress site up to date - including Geo Controller, other plugins, and the WordPress installation itself - is usually the most straightforward way to prevent or resolve these conflicts.
+
+In summary, while Geo Controller aims to be compatible with most plugins, the sheer variety of the WordPress environment means that occasional conflicts may arise. Open communication with support teams and keeping software up to date are the best strategies to ensure a smooth experience.
+
 = Is Geo Controller free? Is there some license or restrictions? =
 
 Geo Controller uses a combination of free and paid services that return information about the locations.
@@ -398,6 +418,10 @@ Please inform us if any of these errors occur via contact form on our website [h
 
 == Changelog ==
 
+= 8.5.0 =
+* Improved caching
+* Support for WP version 6.3.x
+
 = 8.4.11 =
 * Fixed plugin info
 
@@ -454,6 +478,10 @@ Please inform us if any of these errors occur via contact form on our website [h
 * Fixed PHP errors from previous version
 
 == Upgrade Notice ==
+
+= 8.5.0 =
+* Improved caching
+* Support for WP version 6.3.x
 
 = 8.4.11 =
 * Fixed plugin info

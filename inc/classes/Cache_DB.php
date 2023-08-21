@@ -40,7 +40,7 @@ if(!class_exists('CFGP_DB_Cache', false)) : class CFGP_DB_Cache {
 	public static function get( string $key, $default=NULL ) {
 		$key = self::key($key);
 		
-		if( self::$cache[$key] ?? NULL ) {
+		if (array_key_exists($key, self::$cache)) {
 			return self::$cache[$key];
 		}
 		
@@ -249,7 +249,7 @@ if(!class_exists('CFGP_DB_Cache', false)) : class CFGP_DB_Cache {
 		global $wpdb;
 		
 		
-		if(isset(self::$cache[$key])) {
+		if (array_key_exists($key, self::$cache)) {
 			unset(self::$cache[$key]);
 		}
 		
@@ -310,18 +310,8 @@ if(!class_exists('CFGP_DB_Cache', false)) : class CFGP_DB_Cache {
 	 * Checks if Redis Cache is active
 	 * @verson    1.0.1
 	 */
-	protected static $has_redis = NULL;
 	public static function has_redis() {
-		
-		if( NULL === self::$has_redis ) {
-			if( apply_filters('cfgp_enable_redis', true) ) {
-				self::$has_redis = class_exists('Redis', false);
-			} else {
-				self::$has_redis = false;
-			}
-		}
-		
-		return self::$has_redis;
+		return CFGP_Options::get('enable_redis_cache', 0) !== 0;
 	}
 	
 	/*
