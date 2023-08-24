@@ -1,5 +1,8 @@
 == Changelog ==
 
+= 8.5.2 =
+* Removed obsolate codes
+
 = 8.5.1 =
 * Fixed Redis cache problem
 * Improved code for PHP8

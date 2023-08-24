@@ -523,7 +523,7 @@ if(!class_exists('CFGP_Menus', false)) : class CFGP_Menus extends CFGP_Global {
 					update_term_meta($nav_menu['term_id'], 'country', $country);
 					update_term_meta($nav_menu['term_id'], 'location', $location);
 				} else {
-					CFGP_U::dump($nav_menu);
+				//	CFGP_U::dump($nav_menu);
 				}
 			}
 		}

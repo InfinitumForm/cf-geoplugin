@@ -219,7 +219,7 @@ class CFGP_Admin extends CFGP_Global {
 	
 	public function ajax__dashboard_rss_feed () {
 		$DASH_RSS = CFGP_DB_Cache::get('cfgp-dashboard-rss');
-		CFGP_U::dump($DASH_RSS);
+
 		if( !empty($DASH_RSS) ) {
 			echo wp_kses_post($DASH_RSS ?? '');
 			exit;
