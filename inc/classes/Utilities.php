@@ -2416,7 +2416,7 @@ if(!class_exists('CFGP_U', false)) : class CFGP_U {
 	}
 	
 	/*
-	 * Geo plugin using a bit different way to format content
+	 * Geo Controller using a bit different way to format content
 	 *
 	 * @param  $string
 	 *
@@ -2429,7 +2429,7 @@ if(!class_exists('CFGP_U', false)) : class CFGP_U {
 	}
 	
 	/*
-	 * Geo plugin using a bit different way to format string to lowercase
+	 * Geo Controller using a bit different way to format string to lowercase
 	 *
 	 * @param  $string
 	 *

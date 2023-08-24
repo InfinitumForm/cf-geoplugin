@@ -106,7 +106,7 @@ if(!class_exists('CFGP_Notifications', false)) : class CFGP_Notifications extend
 		{		
 			$message = [];
 			$message[]= '<p>' . __('Hi there,', 'cf-geoplugin') . '</p>';
-			$message[]= '<p>' . __('Your lookup will expire soon and geo plugin services will be unavailable until the next day.', 'cf-geoplugin') . '</p>';
+			$message[]= '<p>' . __('Your lookup will expire soon and geo controller services will be unavailable until the next day.', 'cf-geoplugin') . '</p>';
 			$message[]= '<p>' . sprintf(
 				__('If your site has a large traffic and you need the full functionality of the plugin, you need to get the appropriate license and activate the %1$s.', 'cf-geoplugin'),
 				'<a href="' . CFGP_STORE . '/pricing/" target="_blank">' . __('UNLIMITED LOOKUP.', 'cf-geoplugin') . '</a>'

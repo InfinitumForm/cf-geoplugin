@@ -1,5 +1,5 @@
 /*
- * CF Geo Plugin
+ * Geo Controller
  * @package           cf-geoplugin
  * @link              https://wordpress.org/plugins/cf-geoplugin/
  * @author            Ivijan-Stefan Stipic <ivijan.stefan@gmail.com>

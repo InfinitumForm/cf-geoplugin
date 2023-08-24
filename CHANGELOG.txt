@@ -1,5 +1,10 @@
 == Changelog ==
 
+= 8.5.1 =
+* Fixed Redis cache problem
+* Improved code for PHP8
+* FIxed problems with missing data
+
 = 8.5.0 =
 * Improved caching
 * Support for WP version 6.3.x

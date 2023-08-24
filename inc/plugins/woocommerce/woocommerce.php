@@ -85,7 +85,7 @@ class CFGP__Plugin__woocommerce extends CFGP_Global
 		$this->add_filter('cf_geoplugin_raw_woocommerce_converted_price', 'calculate_and_modify_price', 1);
 		$this->add_filter('cf_geoplugin_raw_woocommerce_price', 'calculate_and_modify_price', 1);
 		
-		// Add Geo plugin to settings
+		// Add Geo Controller to settings
 		$this->add_filter( 'woocommerce_general_settings', 'woocommerce_general_settings', 10, 2 );
 		// Apply geolocation to woocommerce
 		

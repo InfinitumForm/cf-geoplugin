@@ -112,7 +112,7 @@ class CFGP_Admin extends CFGP_Global {
 		
 		wp_add_dashboard_widget(
 			CFGP_NAME . '-dashboard-statistic', 
-			__( 'CF Geo Plugin', 'cf-geoplugin'),
+			__( 'Geo Controller', 'cf-geoplugin'),
 			function (){
 				do_action('cfgp/dashboard/widget/statistic');
 			},
@@ -124,7 +124,7 @@ class CFGP_Admin extends CFGP_Global {
 		
 		wp_add_dashboard_widget(
 			CFGP_NAME . '-dashboard-feed', 
-			__( 'CF Geo Plugin Live News & Info', 'cf-geoplugin'),
+			__( 'Geo Controller Live News & Info', 'cf-geoplugin'),
 			function (){
 				add_action('admin_footer', function(){ ?>
 <script id="cfgp-rss-feed-js" type="text/javascript">
@@ -179,7 +179,7 @@ class CFGP_Admin extends CFGP_Global {
 									esc_url($post->post_image_medium),
 									esc_html($post->post_excerpt),
 									esc_url($post->post_url),
-									__('Read more at CF Geo Plugin site', 'cf-geoplugin'),
+									__('Read more at Geo Controller site', 'cf-geoplugin'),
 									date(CFGP_DATE_FORMAT, strtotime($post->post_date_gmt))
 								);
 							} else {
@@ -189,7 +189,7 @@ class CFGP_Admin extends CFGP_Global {
 									esc_url($post->post_image_medium),
 									esc_html($post->post_excerpt),
 									esc_url($post->post_url),
-									__('Read more at CF Geo Plugin site', 'cf-geoplugin'),
+									__('Read more at Geo Controller site', 'cf-geoplugin'),
 									date(CFGP_DATE_FORMAT, strtotime($post->post_date_gmt))
 								);
 							}
@@ -262,7 +262,7 @@ class CFGP_Admin extends CFGP_Global {
 									esc_url($post->post_image_medium),
 									esc_html($post->post_excerpt),
 									esc_url($post->post_url),
-									__('Read more at CF Geo Plugin site', 'cf-geoplugin'),
+									__('Read more at Geo Controller site', 'cf-geoplugin'),
 									date(CFGP_DATE_FORMAT, strtotime($post->post_date_gmt))
 								);
 							} else {
@@ -272,7 +272,7 @@ class CFGP_Admin extends CFGP_Global {
 									esc_url($post->post_image_medium),
 									esc_html($post->post_excerpt),
 									esc_url($post->post_url),
-									__('Read more at CF Geo Plugin site', 'cf-geoplugin'),
+									__('Read more at Geo Controller site', 'cf-geoplugin'),
 									date(CFGP_DATE_FORMAT, strtotime($post->post_date_gmt))
 								);
 							}
@@ -342,7 +342,7 @@ class CFGP_Admin extends CFGP_Global {
 		}
 		
 		$privacy_policy = array(
-			__( 'This site uses the Geo Controller (known as CF Geo Plugin) to display public visitor information based on IP addresses that can then be collected or used for various purposes depending on the settings of the plugin.', 'cf-geoplugin'),
+			__( 'This site uses the Geo Controller (known as Geo Controller) to display public visitor information based on IP addresses that can then be collected or used for various purposes depending on the settings of the plugin.', 'cf-geoplugin'),
 			
 			__( 'Geo Controller is a Geomarketing tool that allows you to have full geo control of your WordPress. Geo Controller gives you the ability to attach content, geographic information, geo tags, Google Maps to posts, pages, widgets and custom templates by using simple options, shortcodes, PHP code or JavaScript. It also lets you specify a default geographic location for your entire WordPress blog, do SEO redirection, spam protection, WooCommerce control and many more. Geo Controller help you to increase conversion, do better SEO, capture leads on your blog or landing pages.', 'cf-geoplugin'),
 			
@@ -367,7 +367,7 @@ class CFGP_Admin extends CFGP_Global {
 		{
 			foreach( $menu as $key => $value )
 			{
-				if( $value[0] == 'Geo Plugin' )
+				if( $value[0] == 'Geo Controller' )
 				{
 					$menu[$key][4] = 'wp-has-submenu wp-has-current-submenu wp-menu-open menu-top toplevel_page_cf-geoplugin menu-top-first wp-menu-open';
 				}
@@ -421,11 +421,11 @@ class CFGP_Admin extends CFGP_Global {
 		
 		$wp_admin_bar->add_node(array(
 			'id' => CFGP_NAME . '-admin-bar-link',
-			'title' => '<span class="cfgp-ab-icon"></span>' . __('Geo Plugin', 'cf-geoplugin'), 
+			'title' => '<span class="cfgp-ab-icon"></span>' . __('Geo Controller', 'cf-geoplugin'), 
 			'href' => esc_url(CFGP_U::admin_url('admin.php?page=cf-geoplugin')), 
 			'meta' => array(
 				'class' => CFGP_NAME . ' ' . CFGP_NAME . '-admin-bar-link',
-				'title' => __('Geo Plugin', 'cf-geoplugin'),
+				'title' => __('Geo Controller', 'cf-geoplugin'),
 			)
 		));
 		

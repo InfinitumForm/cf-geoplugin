@@ -29,7 +29,7 @@ if(!class_exists('CFGP_Help', false)) : class CFGP_Help extends CFGP_Global {
 	}
 	
 	/*
-	 * Geo Plugin help
+	 * Geo Controller help
 	 */
 	public function help__cf_geoplugin() {
 		ob_start(); ?>
