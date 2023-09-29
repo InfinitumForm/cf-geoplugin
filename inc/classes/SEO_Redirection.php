@@ -158,7 +158,7 @@ if (!class_exists('CFGP_SEO_Redirection', false)) : class CFGP_SEO_Redirection e
 				}
 				
 				if($postcode) {
-					$where[]=$wpdb->prepare("TRIM(LOWER(`{$wpdb->cfgp_seo_redirection}`.`postcode`)) = %s", strtolower($postcode));
+					$where[]=$wpdb->prepare("TRIM(LOWER(`{$wpdb->cfgp_seo_redirection}`.`postcode`)) = %s", CFGP_U::strtolower($postcode));
 				}
 				
 				if(!empty($where)) {

@@ -36,11 +36,11 @@ if (!class_exists('CFGP_SEO_Table', false)) : class CFGP_SEO_Table extends WP_Li
 		public function get_bulk_actions() {
 
 			return array(
-				'enable' => __( 'Enable Redirection', 'cf-geoplugin'),
-				'disable' => __( 'Disable Redirection', 'cf-geoplugin'),
-				'only_once' => __( 'Redirect Only Once', 'cf-geoplugin'),
-				'always' => __( 'Always Redirect', 'cf-geoplugin'),
-				'delete' => __( 'Delete', 'cf-geoplugin')
+				'enable' => esc_html__( 'Enable Redirection', 'cf-geoplugin'),
+				'disable' => esc_html__( 'Disable Redirection', 'cf-geoplugin'),
+				'only_once' => esc_html__( 'Redirect Only Once', 'cf-geoplugin'),
+				'always' => esc_html__( 'Always Redirect', 'cf-geoplugin'),
+				'delete' => esc_html__( 'Delete', 'cf-geoplugin')
 			);
 	
 		}
@@ -121,7 +121,7 @@ if (!class_exists('CFGP_SEO_Table', false)) : class CFGP_SEO_Table extends WP_Li
 				$action = 'bulk-' . $this->_args['plural'];
 	
 				if ( ! wp_verify_nonce( $nonce, $action ) )
-					wp_die( __( 'Nope! Security check failed!', 'cf-geoplugin') );
+					wp_die( esc_html__( 'Nope! Security check failed!', 'cf-geoplugin') );
 	
 			}
 	
@@ -196,7 +196,7 @@ if (!class_exists('CFGP_SEO_Table', false)) : class CFGP_SEO_Table extends WP_Li
 						'nonce' => wp_create_nonce(CFGP_NAME.'-seo-import-csv')
 					));
 				
-					printf('<a aria="button" href="%s" class="button"><i class="cfa cfa-upload"></i> %s</a> ', $seo_import_csv, __('Import From CSV', 'cf-geoplugin'));
+					printf('<a aria="button" href="%s" class="button"><i class="cfa cfa-upload"></i> %s</a> ', esc_url($seo_import_csv), __('Import From CSV', 'cf-geoplugin'));
 					
 					if($exists){
 						
@@ -205,7 +205,7 @@ if (!class_exists('CFGP_SEO_Table', false)) : class CFGP_SEO_Table extends WP_Li
 							'nonce' => wp_create_nonce(CFGP_NAME.'-seo-export-csv')
 						));
 						
-						printf('<a aria="button" href="%s" class="button"><i class="cfa cfa-table"></i> %s</a> ', $seo_export_csv, __('Export CSV', 'cf-geoplugin'));
+						printf('<a aria="button" href="%s" class="button"><i class="cfa cfa-table"></i> %s</a> ', esc_url($seo_export_csv), __('Export CSV', 'cf-geoplugin'));
 					}
 					
 				echo '</div>';
@@ -220,13 +220,13 @@ if (!class_exists('CFGP_SEO_Table', false)) : class CFGP_SEO_Table extends WP_Li
         {
             return array(
 				'cb'    => '<input type="checkbox">',
-                'cfgp_seo_url' => __('URL', 'cf-geoplugin'),
-                'cfgp_seo_country' => __('Country', 'cf-geoplugin'),
-                'cfgp_seo_region' => __('Region', 'cf-geoplugin'),
-                'cfgp_seo_city' => __('City', 'cf-geoplugin'),
-                'cfgp_seo_postcode' => __('Postcode', 'cf-geoplugin'),
-				'cfgp_seo_http_code' => __('Status Code', 'cf-geoplugin'),
-				'cfgp_seo_only_once' => __('Redirect', 'cf-geoplugin')
+                'cfgp_seo_url' => esc_html__('URL', 'cf-geoplugin'),
+                'cfgp_seo_country' => esc_html__('Country', 'cf-geoplugin'),
+                'cfgp_seo_region' => esc_html__('Region', 'cf-geoplugin'),
+                'cfgp_seo_city' => esc_html__('City', 'cf-geoplugin'),
+                'cfgp_seo_postcode' => esc_html__('Postcode', 'cf-geoplugin'),
+				'cfgp_seo_http_code' => esc_html__('Status Code', 'cf-geoplugin'),
+				'cfgp_seo_only_once' => esc_html__('Redirect', 'cf-geoplugin')
             );
         }
 
@@ -444,10 +444,10 @@ if (!class_exists('CFGP_SEO_Table', false)) : class CFGP_SEO_Table extends WP_Li
 							break;
                             case "cfgp_seo_url":
                                 echo '<td ' . esc_html($attributes) . '>';
-									echo ($rec->active ? '' : '<sup>' . __('DISABLED', 'cf-geoplugin') . '</sup> ') . '<strong>' . esc_url($rec->url) . '</strong>';
+									echo ($rec->active ? '' : '<sup>' . esc_html__('DISABLED', 'cf-geoplugin') . '</sup> ') . '<strong>' . esc_url($rec->url) . '</strong>';
 									echo '<div class="row-actions">
 										<span class="edit"><a href="' . esc_url($edit_link).'">' 
-											. __('Edit', 'cf-geoplugin') 
+											. esc_html__('Edit', 'cf-geoplugin') 
 										. '</a> | </span>
 										<span class="trash"><a href="' . esc_url($delete_link) . '" class="submitdelete"  onclick="if (confirm(\'' 
 											. esc_attr__('Are you sure you want to delete this redirection?', 'cf-geoplugin') 
@@ -499,7 +499,7 @@ if (!class_exists('CFGP_SEO_Table', false)) : class CFGP_SEO_Table extends WP_Li
                                 echo '<td ' . esc_html($attributes) . '>HTTP ' . esc_html($rec->http_code) . '</td>';
                             break;
 							case "cfgp_seo_only_once":
-                                echo '<td ' . esc_html($attributes) . '>' . esc_html($rec->only_once ? __('Only once', 'cf-geoplugin') : __('Always', 'cf-geoplugin') ). '</td>';
+                                echo '<td ' . esc_html($attributes) . '>' . esc_html($rec->only_once ? esc_html__('Only once', 'cf-geoplugin') : esc_html__('Always', 'cf-geoplugin') ). '</td>';
                             break;
                         }
                     }

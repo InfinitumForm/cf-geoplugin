@@ -469,15 +469,27 @@ if(!class_exists('CFGP_Shortcodes', false)) : class CFGP_Shortcodes extends CFGP
 			if(file_exists(CFGP_ROOT.'/assets/flags/4x3/'.$flag.'.svg')) {
 				return self::__cache(
 					$tag,
-					sprintf(
-						'<img src="%s" alt="%s" title="%s" style="max-width:%s !important;%s" class="flag-icon-img%s" id="%s">',
-						CFGP_ASSETS.'/flags/4x3/' . $flag . '.svg',
-						$address,
-						$address,
-						$size,
-						$css,
-						$class,
-						$id
+					wp_kses(
+						sprintf(
+							'<img src="%s" alt="%s" title="%s" style="max-width:%s !important;%s" class="flag-icon-img%s" id="%s">',
+							esc_url(esc_attr(CFGP_ASSETS.'/flags/4x3/' . $flag . '.svg')),
+							esc_attr($address),
+							esc_attr($address),
+							esc_attr($size),
+							esc_attr($css),
+							esc_attr($class),
+							esc_attr($id)
+						),
+						[
+							'img' => [
+								'src' 	=> true,
+								'alt' 	=> true,
+								'title' => true,
+								'style' => true,
+								'class' => true,
+								'id' 	=> true
+							]
+						]
 					),
 					(array)$arg,
 					'',
@@ -489,12 +501,21 @@ if(!class_exists('CFGP_Shortcodes', false)) : class CFGP_Shortcodes extends CFGP
 		} else {
 			return self::__cache(
 				$tag,
-				sprintf(
-					'<span class="flag-icon flag-icon-%s%s" id="%s"%s></span>',
-					$flag.$type,
-					$class,
-					$id,
-					(!empty($css) ? ' style="'.$css.'"' : '')
+				wp_kses(
+					sprintf(
+						'<span class="flag-icon flag-icon-%s%s" id="%s"%s></span>',
+						esc_attr($flag.$type),
+						esc_attr($class),
+						esc_attr($id),
+						(!empty($css) ? ' style="'.esc_attr($css).'"' : '')
+					),
+					[
+						'span' => [
+							'class' => true,
+							'id' 	=> true,
+							'style' => true
+						]
+					]
 				),
 				(array)$arg,
 				'',
@@ -653,15 +674,15 @@ LIMIT 1
 			$post->post_content = do_shortcode($post->post_content);
 			$post->post_content = CFGP_U::the_content( $post->post_content );
 			
-			$save='<div id="cf-geoplugin-banner-'.$post->ID.'" class="'.join(' ',get_post_class($classes, $post->ID)).' cf-geoplugin-banner-'.$post->ID.'"'
+			$save='<div id="cf-geoplugin-banner-'.esc_attr($post->ID).'" class="'.esc_attr(join(' ',get_post_class($classes, $post->ID)).' cf-geoplugin-banner-'.$post->ID).'"'
 			
-				. ($cache ? ' data-id="' . $post->ID . '"' : '')
+				. ($cache ? ' data-id="' . esc_attr($post->ID) . '"' : '')
 				. ($cache ? ' data-posts_per_page="' . esc_attr($posts_per_page) . '"' : '')
 				. ($cache ? ' data-class="' . esc_attr($class) . '"' : '')
-				. ($cache ? ' data-exact="' . ($exact ? 1 : 0) . '"' : '')
+				. ($cache ? ' data-exact="' . esc_attr($exact ? 1 : 0) . '"' : '')
 				. ($cache ? ' data-default="' . esc_attr(base64_encode(urlencode($cont))) . '"' : '')
 			
-			. '>' . $post->post_content . '</div>';
+			. '>' . wp_kses_post($post->post_content) . '</div>';
 		}
 		
 		// Return banner
@@ -677,15 +698,15 @@ LIMIT 1
 		
 		// Return defaults
 		return CFGP_U::fragment_caching(
-			'<div id="cf-geoplugin-banner-'.$setup['id'].'" class="'.join(' ',get_post_class($classes, $setup['id'])).' cf-geoplugin-banner-'.$setup['id'].'"'
+			'<div id="cf-geoplugin-banner-'.esc_attr($setup['id']).'" class="'.esc_attr(join(' ',get_post_class($classes, $setup['id'])).' cf-geoplugin-banner-'.$setup['id']).'"'
 			
-				. ($cache ? ' data-id="' . $setup['id'] . '"' : '')
+				. ($cache ? ' data-id="' . esc_attr($setup['id']) . '"' : '')
 				. ($cache ? ' data-posts_per_page="' . esc_attr($posts_per_page) . '"' : '')
 				. ($cache ? ' data-class="' . esc_attr($class) . '"' : '')
-				. ($cache ? ' data-exact="' . ($exact ? 1 : 0) . '"' : '')
+				. ($cache ? ' data-exact="' . esc_attr($exact ? 1 : 0) . '"' : '')
 				. ($cache ? ' data-default="' . esc_attr(base64_encode(urlencode($cont))) . '"' : '')
 			
-			. '>' . $cont . '</div>',
+			. '>' . wp_kses_post($cont) . '</div>',
 			$cache
 		);
 	}
@@ -746,7 +767,7 @@ LIMIT 1
 		$this->add_action( 'wp_footer', 'google_map_shortcode_script' );
 		$this->add_action( 'admin_footer', 'google_map_shortcode_script' );
 
-		return CFGP_U::fragment_caching('<div class="CF_GeoPlugin_Google_Map_Shortcode" style="width:'.esc_attr($att->width).'; height:'.esc_attr($att->height).'"'.join(' ', $attributes).'>'.do_shortcode($content).'</div>', $cache);
+		return CFGP_U::fragment_caching('<div class="CF_GeoPlugin_Google_Map_Shortcode" style="width:'.esc_attr($att->width).'; height:'.esc_attr($att->height).'"'.join(' ', $attributes).'>'.wp_kses_post(do_shortcode($content)).'</div>', $cache);
 	}
 	
 	/*
@@ -1112,7 +1133,7 @@ LIMIT 1
 					?>
 					<div class="cfgp-row">
 						<div class="cfgp-col-12">
-						<form action="<?php admin_url( 'admin-ajax.php?action=cfgeo_full_currency_converter' ); ?>" class="cfgp-currency-form" method="post" autocomplete="off">
+						<form action="<?php esc_html(admin_url( 'admin-ajax.php?action=cfgeo_full_currency_converter' )); ?>" class="cfgp-currency-form" method="post" autocomplete="off">
 							<div class="form-group cfgp-form-group cfgp-form-group-amount">
 								<?php 
 									$label_amount = sprintf( '%s-%s', 'cfgp-currency-amount', CFGP_U::generate_token(5) );
@@ -1134,7 +1155,13 @@ LIMIT 1
 
 											$symbol = '';
 											if( isset( $currency_symbols[ $key ] ) && !empty( $currency_symbols[ $key ] ) ) $symbol = sprintf( '- %s', $currency_symbols[ $key ] );
-											printf( '<option value="%s" %s>%s %s</option>', $key, $selected, $key, $symbol );
+											printf(
+												'<option value="%s" %s>%s %s</option>',
+												esc_attr($key),
+												esc_attr($selected),
+												esc_html($key),
+												esc_html($symbol)
+											);
 										}
 									?>
 								</select>
@@ -1152,7 +1179,13 @@ LIMIT 1
 
 											$symbol = '';
 											if( isset( $currency_symbols[ $key ] ) && !empty( $currency_symbols[ $key ] ) ) $symbol = sprintf( '- %s', $currency_symbols[ $key ] );
-											printf( '<option value="%s" %s>%s %s</option>', $key, $selected, $key, $symbol );
+											printf(
+												'<option value="%s" %s>%s %s</option>',
+												esc_attr($key),
+												esc_attr($selected),
+												esc_html($key),
+												esc_html($symbol)
+											);
 										}
 									?>
 								</select>
@@ -1199,7 +1232,10 @@ LIMIT 1
 		);
 		$from = strtoupper( sanitize_text_field($_REQUEST['cfgp_currency_from']) );
 		$to = strtoupper( sanitize_text_field($_REQUEST['cfgp_currency_to']) );
-		$api_url = add_query_arg( $api_params, CFGP_Defaults::API[(CFGP_Options::get('enable_ssl', 0) ? 'ssl_' : '') . 'converter']."/{$from}/{$to}/{$amount}" );
+		$api_url = add_query_arg(
+			$api_params,
+			CFGP_Defaults::API[(CFGP_Options::get('enable_ssl', 0) ? 'ssl_' : '') . 'converter'].'/'.$from.'/'.$to.'/'.$amount
+		);
 
 		$result = CFGP_U::curl_get( $api_url );
 
@@ -1764,7 +1800,7 @@ LIMIT 1
 				empty($options) ? '' : esc_attr(base64_encode(urlencode(serialize($options)))),
 				esc_attr(base64_encode(urlencode($default))),
 				wp_create_nonce( 'cfgeo-process-cache-ajax' ),
-				$content
+				wp_kses_post($content)
 			);
 		} else {
 			return $content;
@@ -1932,11 +1968,11 @@ LIMIT 1
 				}
 				
 				$country_name = esc_attr($countries[$country] ?? '');
-				return "{
-					name: '{$country}',
-					label: '{$country_name}'" . ($color ? ",
-					color: '{$color}'" : '') . "
-				}";
+				return '{
+					name: "'.esc_attr($country).'",
+					label: "'.esc_attr($country_name).'"' . ($color ? ',
+					color: "'.esc_attr($color).'"' : '') . '
+				}';
 			}, $settings['countries'])); ?>]
 		}, function() {
 			if( typeof window.cfgeo.interactive_map !== "undefined" && typeof window.cfgeo.interactive_map === "function") {
