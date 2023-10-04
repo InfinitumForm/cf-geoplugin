@@ -38,6 +38,10 @@ if(!class_exists('CFGP_Menus', false)) : class CFGP_Menus extends CFGP_Global {
 	 */
 	public function field__enble( $item_id, $item ) {
 		
+		if( !apply_filters('cfgp/current_theme_supports/menus', true) ) {
+			return;
+		}
+		
 		if( !in_array($item->type, array('post_type', 'taxonomy', 'custom')) ){
 			return;
 		}
@@ -83,6 +87,7 @@ if(!class_exists('CFGP_Menus', false)) : class CFGP_Menus extends CFGP_Global {
 	 * Update menu items settings
 	 */
 	public function update__nav_menu_item( $menu_id, $menu_item_db_id, $item ) {
+		
 		// Clear cache
 		$this->menu_options = [];
 		// Set controls
@@ -138,6 +143,10 @@ if(!class_exists('CFGP_Menus', false)) : class CFGP_Menus extends CFGP_Global {
 	 * New select field for the City
 	 */
 	public function restrict_menu_items( $items, $menu, $args ) {
+		if( !apply_filters('cfgp/current_theme_supports/menus', true) ) {
+			return $items;
+		}
+		
 		// In admin menu we need this visible
 		if( is_admin() ) {
 			return $items;
@@ -217,6 +226,10 @@ if(!class_exists('CFGP_Menus', false)) : class CFGP_Menus extends CFGP_Global {
 	 * Prevent pages to be seen
 	 */
 	public function restrict_page_access(){
+		if( !apply_filters('cfgp/current_theme_supports/menus', true) ) {
+			return;
+		}
+		
 		global $wp_query;
 		$page_id = get_the_ID();
 		if( $control = $this->get_values( $page_id, NULL, array(
@@ -290,6 +303,10 @@ if(!class_exists('CFGP_Menus', false)) : class CFGP_Menus extends CFGP_Global {
 	 * Include Geolocate Menus setting
 	 */
 	public function after_menu_locations_table(){
+		if( !apply_filters('cfgp/current_theme_supports/menus', true) ) {
+			return;
+		}
+		
 		global $locations, $menu_locations, $num_locations, $wpdb;
 		
 		if( $num_locations === 0 ) {
@@ -447,6 +464,10 @@ if(!class_exists('CFGP_Menus', false)) : class CFGP_Menus extends CFGP_Global {
 	 * Geolocate Menus
 	 */
 	public function wp_nav_menu_args ($args = []) {
+		if( !apply_filters('cfgp/current_theme_supports/menus', true) ) {
+			return $args;
+		}
+		
 		global $wpdb;
 		
 		if( $geolocate_menus = $wpdb->get_results("
@@ -583,6 +604,7 @@ if(!class_exists('CFGP_Menus', false)) : class CFGP_Menus extends CFGP_Global {
 	 * Geolocate Menus remove menu
 	 */
 	public function ajax__geolocate_remove_menu () {
+		
 		if( $term_id = absint(sanitize_text_field($_POST['term_id'] ?? 0)) ) {
 			if( $nav_menu_items = get_posts( array(
 				'post_type' => 'nav_menu_item',

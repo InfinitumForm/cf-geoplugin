@@ -23,6 +23,10 @@ if(!class_exists('CFGP_Widgets', false)) : class CFGP_Widgets extends CFGP_Globa
 	 * @verson    1.0.2
 	 */
 	public function register(){
+		if( !apply_filters('cfgp/current_theme_supports/widgets', true) ) {
+			return;
+		}
+		
 		// Call main classes
 		$classes = apply_filters('cfgp/widget/classes', array(
 			'CFGP_Widget_Currency_Converter',

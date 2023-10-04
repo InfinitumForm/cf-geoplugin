@@ -47,13 +47,9 @@
 							} else {
 								$this.html(data);
 							}
+							
 							$this.removeClass('cache').addClass('cached')
-								.removeAttr('data-default')
-									.removeAttr('data-posts_per_page')
-										.removeAttr('data-class')
-											.removeAttr('data-exact')
-												.removeAttr('data-nonce')
-													.removeAttr('data-id');
+								.removeAttr('data-default data-posts_per_page data-class data-exact data-nonce data-id');
 						});
 					};
 				
@@ -109,10 +105,7 @@
 								$this.html(data);
 							}
 							$this.removeClass('cache').addClass('cached')
-								.removeAttr('data-default')
-									.removeAttr('data-type')
-										.removeAttr('data-nonce')
-											.removeAttr('data-options');
+								.removeAttr('data-default data-type data-nonce data-options');
 						});
 						
 					};

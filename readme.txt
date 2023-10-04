@@ -5,7 +5,7 @@ Tags: Geo Location, WordPress Geolocation Plugin, Location-Based Personalization
 Requires at least: 6.0
 Tested up to: 6.3
 Requires PHP: 7.0
-Stable tag: 8.5.3
+Stable tag: 8.5.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -418,6 +418,11 @@ Please inform us if any of these errors occur via contact form on our website [h
 
 == Changelog ==
 
+= 8.5.4 =
+* Added fix for menus and widgets
+* Optimized CSS code
+* Optimized JS code
+
 = 8.5.3 =
 * IMPORTANT UPDATE: Fixed XSS vulnerability suggested by Patchstack
 
@@ -490,32 +495,13 @@ Please inform us if any of these errors occur via contact form on our website [h
 
 == Upgrade Notice ==
 
+= 8.5.4 =
+* Added fix for menus and widgets
+* Optimized CSS code
+* Optimized JS code
+
 = 8.5.3 =
 * IMPORTANT UPDATE: Fixed XSS vulnerability suggested by Patchstack
-
-= 8.5.2 =
-* Removed obsolate codes
-
-= 8.5.1 =
-* Fixed Redis cache problem
-* Improved code for PHP8
-* FIxed problems with missing data
-
-= 8.5.0 =
-* Improved caching
-* Support for WP version 6.3.x
-
-= 8.4.11 =
-* Fixed plugin info
-
-= 8.4.10 =
-* Improved support for Gravity Forms
-* Added IP address field
-* Improved plugin detection algorithm
-
-= 8.4.9 =
-* Fixed CSS property
-* Fixed cache purge
 
 == Other Notes ==
 

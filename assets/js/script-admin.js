@@ -7,23 +7,18 @@
 		 * Menus control
 		 * @since 8.0.6
 		*/
-		menus_checkbox_control = function menus_checkbox_control(){
-			var checkbox = $('.cfgp-menu-item-enable-restriction input[type^="checkbox"]');
-			if(checkbox.length) {
-				checkbox.on('change', function(){
-					if(this.checked) {
-						$( '.cfgp-menu-item-restriction-locations', $(this).closest('.cfgp-menu-item-restriction') ).show();
-					} else {
-						$( '.cfgp-menu-item-restriction-locations', $(this).closest('.cfgp-menu-item-restriction') ).hide();
-					}
-				}).each(function(){
-					if(this.checked) {
-						$( '.cfgp-menu-item-restriction-locations', $(this).closest('.cfgp-menu-item-restriction') ).show();
-					} else {
-						$( '.cfgp-menu-item-restriction-locations', $(this).closest('.cfgp-menu-item-restriction') ).hide();
-					}
-				});
-			}
+		menus_checkbox_control = function menus_checkbox_control() {
+			var checkboxes = $('.cfgp-menu-item-enable-restriction input[type^="checkbox"]');
+
+			checkboxes.each(function() {
+				var relatedLocation = $(this).closest('.cfgp-menu-item-restriction').find('.cfgp-menu-item-restriction-locations');
+				relatedLocation.toggle(this.checked);
+			});
+
+			checkboxes.on('change', function() {
+				var relatedLocation = $(this).closest('.cfgp-menu-item-restriction').find('.cfgp-menu-item-restriction-locations');
+				relatedLocation.toggle(this.checked);
+			});
 		},
 		/*
 		 * Select2 Initialization
@@ -203,23 +198,12 @@
 			var formChangeFlag = false;
 			
 			$(document).ready(function(){
-				if( $( '.enable-disable-proxy:checked' ).val() == 1 ) {
-					$('.proxy-disable').prop('disabled',false).removeClass('disabled');
-				} else {
-					$('.proxy-disable').prop('disabled',true).addClass('disabled');
-				}
+				let disable_proxy = $('.enable-disable-proxy:checked').val() == 1;
+				$('.proxy-disable').prop('disabled', !disable_proxy).toggleClass('disabled', !disable_proxy);
 
-				if( $( '.enable-disable-gmap:checked' ).val() == 1 ) {
-					$('.nav-tab-wrapper > a[data-id="#google-map"]').show();
-				} else {
-					$('.nav-tab-wrapper > a[data-id="#google-map"]').hide();
-				}
+				$('.nav-tab-wrapper > a[data-id="#google-map"]').toggle( $( '.enable-disable-gmap:checked' ).val() == 1 );
 				
-				if( $( '.enable-disable-rest:checked' ).val() == 1 ) {
-					$('.nav-tab-wrapper > a[data-id="#rest-api"]').show();
-				} else {
-					$('.nav-tab-wrapper > a[data-id="#rest-api"]').hide();
-				}
+				$('.nav-tab-wrapper > a[data-id="#rest-api"]').toggle( $( '.enable-disable-rest:checked' ).val() == 1 );
 			});
 			
 			f.on('input change keyup', 'input, select, textarea', function(e){
@@ -227,23 +211,12 @@
 			});
 			
 			f.on( 'change', function( e ) {
-				if( $( '.enable-disable-proxy:checked' ).val() == 1 ) {
-					$('.proxy-disable').prop('disabled',false).removeClass('disabled');
-				} else {
-					$('.proxy-disable').prop('disabled',true).addClass('disabled');
-				}
+				let disable_proxy = $('.enable-disable-proxy:checked').val() == 1;
+				$('.proxy-disable').prop('disabled', !disable_proxy).toggleClass('disabled', !disable_proxy);
 
-				if( $( '.enable-disable-gmap:checked' ).val() == 1 ) {
-					$('.nav-tab-wrapper > a[data-id="#google-map"]').show();
-				} else {
-					$('.nav-tab-wrapper > a[data-id="#google-map"]').hide();
-				}
+				$('.nav-tab-wrapper > a[data-id="#google-map"]').toggle( $( '.enable-disable-gmap:checked' ).val() == 1 );
 				
-				if( $( '.enable-disable-rest:checked' ).val() == 1 ) {
-					$('.nav-tab-wrapper > a[data-id="#rest-api"]').show();
-				} else {
-					$('.nav-tab-wrapper > a[data-id="#rest-api"]').hide();
-				}
+				$('.nav-tab-wrapper > a[data-id="#rest-api"]').toggle( $( '.enable-disable-rest:checked' ).val() == 1 );
 			});
 			
 			f.on( 'click', '[name="submit"]', function( e ) {
@@ -364,11 +337,7 @@
 			
 		$target.find('option').each(function(){
 			var $option = $(this);
-			if($option.is(':selected')) {
-				$(this).prop('selected',false);
-			} else {
-				$(this).prop('selected',true);
-			}
+			$(this).prop('selected',!$option.is(':selected'));
 		}).promise().done(function(){
 			$target.trigger('change');
 			

@@ -512,6 +512,15 @@ dd {
 	color: #007820;
 }
 
+#cfgp-statistic .cfgp-statistic-address > h3{
+	word-wrap: break-word;
+}
+
+#cfgp-statistic .cfgp-statistic-address > h3 > img{
+	float: left;
+    margin: 5px 8px 0 0;
+}
+
 #dashboard-widgets #cf-geoplugin-dashboard-statistic .inside,
 #dashboard-widgets #cf-geoplugin-dashboard-feed .inside{
 	padding:0;

@@ -142,11 +142,7 @@
 			
 		$target.find('option').each(function(){
 			var $option = $(this);
-			if($option.is(':selected')) {
-				$(this).prop('selected',false);
-			} else {
-				$(this).prop('selected',true);
-			}
+			$(this).prop('selected',!$option.is(':selected'));
 		}).promise().done(function(){
 			$target.trigger('change');
 			
@@ -248,15 +244,11 @@
 	
 	// Enable GEO Tags
 	.on('change', '#cfgp-geo-tag-container input[name^="cfgp-geotag-enable"]', function(e){
-		if( $(this).is(':checked') ) {
-			$('#cfgp-geo-tag-map-container').show(1, function(){
-				$(this).find('input').prop('disabled', false);
-			});
-		} else  {
-			$('#cfgp-geo-tag-map-container').hide(1, function(){
-				$(this).find('input').prop('disabled', true);
-			});
-		}
+		var isChecked = $(this).is(':checked');
+		var container = $('#cfgp-geo-tag-map-container');
+
+		container.toggle(isChecked);
+		container.find('input').prop('disabled', !isChecked);
 	});
 		
 })(jQuery || window.jQuery || Zepto || window.Zepto);

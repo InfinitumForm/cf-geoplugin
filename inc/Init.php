@@ -47,7 +47,7 @@ if(!class_exists('CFGP_Init', false)) : final class CFGP_Init{
 		}
 		
 		// Menus class
-		if(CFGP_Options::get('enable_menus_control',1)){
+		if( CFGP_Options::get('enable_menus_control',1) ){
 			$classes = array_merge($classes, array('CFGP_Menus'));
 		}
 		
@@ -172,8 +172,31 @@ if(!class_exists('CFGP_Init', false)) : final class CFGP_Init{
 	public static function run() {
 		// Include plugin
 		$instance = self::instance();
+		// After current theme is setup
+		add_action('after_setup_theme', [$instance, 'check_theme_supports']);
 		// Dynamic run
 		do_action('cfgp/init/run');
+	}
+	
+	/**
+	 * Check theme supports and do filters
+	 * @since     8.5.3
+	 */
+	public function check_theme_supports () {
+		// Check if theme supports menus 
+		add_filter('cfgp/current_theme_supports/menus', function($enabled) {
+			if($enabled) {
+				$enabled = current_theme_supports( 'menus' );
+			}
+			return $enabled;
+		});
+		// Check if theme supports widgets
+		add_filter('cfgp/current_theme_supports/widgets', function($enabled) {
+			if($enabled) {
+				$enabled = current_theme_supports( 'widgets' );
+			}
+			return $enabled;
+		});
 	}
 	
 	/**
@@ -282,6 +305,7 @@ if(!class_exists('CFGP_Init', false)) : final class CFGP_Init{
 			// Add activation date
 			if($activation = get_option(CFGP_NAME . '-activation')) {
 				$activation[] = date('Y-m-d H:i:s');
+				$activation = array_slice($activation, -30);
 				update_option(CFGP_NAME . '-activation', $activation, false);
 			} else {
 				add_option(CFGP_NAME . '-activation', array(date('Y-m-d H:i:s')), false);
@@ -355,6 +379,7 @@ if(!class_exists('CFGP_Init', false)) : final class CFGP_Init{
 			// Add deactivation date
 			if($deactivation = get_option(CFGP_NAME . '-deactivation')) {
 				$deactivation[] = date('Y-m-d H:i:s');
+				$deactivation = array_slice($deactivation, -30);
 				update_option(CFGP_NAME . '-deactivation', $deactivation, false);
 			} else {
 				add_option(CFGP_NAME . '-deactivation', array(date('Y-m-d H:i:s')), false);

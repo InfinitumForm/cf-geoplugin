@@ -1,5 +1,10 @@
 == Changelog ==
 
+= 8.5.4 =
+* Added fix for menus and widgets
+* Optimized CSS code
+* Optimized JS code
+
 = 8.5.3 =
 * IMPORTANT UPDATE: Fixed XSS vulnerability suggested by Patchstack
 
