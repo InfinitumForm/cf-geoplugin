@@ -20,24 +20,62 @@ if(!class_exists('CFGP_Defender', false)) : class CFGP_Defender extends CFGP_Glo
         $this->add_action( 'init', 'protect', 2);
     }
 	
-	// TOR protection
+	/*
+	 * TOR Network Control
+	 *
+	 * Control the access of TOR network visitors.
+	 */
     public function tor_protection()
     {
-		if( CFGP_Options::get('block_tor_network', 0) == 0 ) {
-			return;
-		}
-		
-		if( (int)CFGP_U::api('is_tor') === 1 ) {
-			if( function_exists('http_response_code') ) {
-				http_response_code(403);
-			} else {
-				header( 'HTTP/1.0 403 Forbidden', true, 403 );
-			}
+		switch ( (int)CFGP_Options::get('block_tor_network', 0) ) {
 			
-            die( wpautop( html_entity_decode( stripslashes( apply_filters(
-				'cfgp/defender/tor/error/message',
-				__('Access via the TOR network is prohibited on this site.', 'cf-geoplugin')
-			) ) ) ) );
+			
+			// TOR Access: Unrestricted 
+			default:
+			case 0:
+				return; break;
+			
+			
+			// TOR Access: Denied
+			case 1:
+				if( (int)CFGP_U::api('is_tor') === 1 ) {
+					if( function_exists('http_response_code') ) {
+						http_response_code(403);
+					} else {
+						header( 'HTTP/1.0 403 Forbidden', true, 403 );
+					}
+					
+					die( wpautop( html_entity_decode( stripslashes( apply_filters(
+						'cfgp/defender/tor/denied/message',
+						sprintf(
+							'<h1>%s</h1><p>%s</p>',
+							__('403 Forbidden', 'cf-geoplugin'),
+							__('Sorry, users accessing via the TOR network are not allowed on this site.', 'cf-geoplugin')
+						)
+					) ) ) ) );
+				}
+				break;
+			
+			
+			// TOR Access: Exclusive
+			case 2:
+				if( (int)CFGP_U::api('is_tor') === 0 ) {
+					if( function_exists('http_response_code') ) {
+						http_response_code(403);
+					} else {
+						header( 'HTTP/1.0 403 Forbidden', true, 403 );
+					}
+					
+					die( wpautop( html_entity_decode( stripslashes( apply_filters(
+						'cfgp/defender/tor/exclusive/message',
+						sprintf(
+							'<h1>%s</h1><p>%s</p>',
+							__('403 Forbidden', 'cf-geoplugin'),
+							__('This site is accessible exclusively to TOR network users. Please access via the TOR network.', 'cf-geoplugin')
+						)
+					) ) ) ) );
+				}
+				break;
 		}
 	}
 	

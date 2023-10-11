@@ -103,7 +103,9 @@ switch($input['type'])
 			echo ($default === $value ? ' checked' : '');
 			echo (isset($input['readonly']) && $input['readonly'] ? ' readonly' : '');
 			echo (isset($input['disabled']) && $input['disabled'] ? ' disabled' : '');
-        ?>><?php echo esc_html($name); ?>
+        ?>><label for="cfgp-<?php
+          echo esc_attr($input['name']);
+        ?>-<?php echo esc_attr($value); ?>"><?php echo esc_html($name); ?></label>
     </span>
 	<?php endforeach; if(isset($input['info']) && !empty($input['info'])) : 
 		?><br><div class="cfgp-field-description cfgp-field-description-<?php echo esc_attr($input['type']); ?>"><?php echo wp_kses_post($input['info'] ?? ''); ?></div><?php 
@@ -129,7 +131,7 @@ switch($input['type'])
           echo esc_attr($input['name']);
         ?>][<?php echo esc_attr($i); ?>]" value="<?php
           echo esc_attr($object['value']);
-        ?>" id="<?php
+        ?>" id="cfgp-<?php
           echo esc_attr($object['id']);
         ?>"<?php
 			if(isset($input['attr']) && !empty($input['attr']) && is_array($input['attr']))
@@ -141,7 +143,9 @@ switch($input['type'])
 			echo (in_array($object['value'], $default) ? ' checked' : '');
 			echo (isset($input['readonly']) && $input['readonly'] ? ' readonly' : '');
 			echo (isset($input['disabled']) && $input['disabled'] ? ' disabled' : '');
-        ?>><?php echo esc_html($object['label']); ?>
+        ?>><label for="cfgp-<?php
+          echo esc_attr($object['id']);
+        ?>"><?php echo esc_html($object['label']); ?></label>
     </span>
 	<?php endforeach; if(isset($input['info']) && !empty($input['info'])) : 
 		?><br><div class="cfgp-field-description cfgp-field-description-<?php echo esc_attr($input['type']); ?>"><?php echo wp_kses_post($input['info'] ?? ''); ?></div><?php 

@@ -1,7 +1,7 @@
 ﻿=== Geo Controller ===
 Contributors: ivijanstefan, creativform
 Donate link: https://www.buymeacoffee.com/ivijanstefan
-Tags: Geo Location, WordPress Geolocation Plugin, Location-Based Personalization, User Location Detection, SEO Optimization, Spam Protection
+Tags: Geo Location, WordPress Geolocation Plugin, Location-Based Personalization, User Location Detection, SEO Optimization, Spam Protection, TOR, tor network, tor detection
 Requires at least: 6.0
 Tested up to: 6.3
 Requires PHP: 7.0
@@ -16,6 +16,8 @@ Enhance your WordPress site with Geo Controller - an all-in-one plugin providing
 Geo Controller is a transformative WordPress plugin that enables comprehensive management and manipulation of geographic data on your website. This tool was previously known as **[CF Geo Plugin](https://cfgeoplugin.com/)**.
 
 Essentially, it helps to personalize and enhance your website's usability based on the geographical location of the users. By doing so, it adds an element of personalization to your website that can significantly increase user engagement and site interaction.
+
+In addition to geographic-based features, Geo Controller has now integrated an **advanced TOR network detection** system. This addition allows website owners to identify visitors accessing the site through the TOR network, offering them the option to block, hide, or display specific content based on this criteria, thus ensuring a more secure and tailored browsing experience.
 
 The central function of Geo Controller is its ability to automatically determine the geographical location of your website visitors. Using this information, the plugin allows for the creation of custom, location-based greetings like "Welcome to our website, [visitor’s city]!". This feature not only creates a welcoming environment but also establishes an immediate connection with the user.
 
@@ -44,6 +46,7 @@ Geo Controller works as a [service](https://en.wikipedia.org/wiki/Software_as_a_
 > * **There is no need to buy expensive and heavy databases**
 > * **No effect on the site performances**
 > * **Full support** for the WooCommerce, Contact Form 7, Yoast SEO, WP Super Cache and other most popular plugins
+> * **TOR network** detection system
 >
 > <strong>SEO INTEGRATIONS</strong><br>
 >

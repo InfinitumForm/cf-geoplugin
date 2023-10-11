@@ -285,7 +285,7 @@ add_filter('cfgp/settings', function($options=[]){
 							'name' => 'redirect_mode',
 							'label' => __('Redirection mode', 'cf-geoplugin'),
 							'desc' => __('SEO redirection works differently for each server. We suggest you try one of the options as the best for your server.', 'cf-geoplugin'),
-							'type' => 'select',
+							'type' => 'radio',
 							'options' => array(
 								1 => __('Mode 1 (basic)', 'cf-geoplugin'),
 								2 => __('Mode 2 (standard)', 'cf-geoplugin'),
@@ -357,12 +357,13 @@ add_filter('cfgp/settings', function($options=[]){
 						),
 						array(
 							'name' => 'block_tor_network',
-							'label' => __('Block TOR visitors (experimental)', 'cf-geoplugin'),
-							'desc' => __('Block visits to the entire site for visitors from the TOR network. The TOR list is updated every 6 hours, so it may happen that certain IP addresses do not pass the protection.'."\r\n\r\n".'WARNING: Be careful not to block yourself if you use the TOR network.', 'cf-geoplugin'),
+							'label' => __('TOR network control', 'cf-geoplugin'),
+							'desc' => __('Control the access of TOR network visitors. The TOR IP list is updated every 6 hours, which means occasional IPs might bypass the protection. Note: Ensure you don’t block yourself.', 'cf-geoplugin'),
 							'type' => 'radio',
 							'options' => array(
-								1 => __('Yes', 'cf-geoplugin'),
-								0 => __('No', 'cf-geoplugin')
+								0 => __('TOR Access: Unrestricted', 'cf-geoplugin'),
+								1 => __('TOR Access: Denied', 'cf-geoplugin'),
+								2 => __('TOR Access: Exclusive', 'cf-geoplugin')
 							),
 							'default' => 0
 						),
