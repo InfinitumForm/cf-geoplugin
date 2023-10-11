@@ -356,6 +356,17 @@ add_filter('cfgp/settings', function($options=[]){
 							'default' => 1
 						),
 						array(
+							'name' => 'block_tor_network',
+							'label' => __('Block TOR visitors (experimental)', 'cf-geoplugin'),
+							'desc' => __('Block visits to the entire site for visitors from the TOR network. The TOR list is updated every 6 hours, so it may happen that certain IP addresses do not pass the protection.'."\r\n\r\n".'WARNING: Be careful not to block yourself if you use the TOR network.', 'cf-geoplugin'),
+							'type' => 'radio',
+							'options' => array(
+								1 => __('Yes', 'cf-geoplugin'),
+								0 => __('No', 'cf-geoplugin')
+							),
+							'default' => 0
+						),
+						array(
 							'name' => 'enable_spam_ip',
 							'label' => __('Enable Automatic IP Address Blacklist Check', 'cf-geoplugin'),
 							'desc' => __('Protect your website from bots, crawlers and other unwanted visitors that are found in our blacklist.', 'cf-geoplugin'),

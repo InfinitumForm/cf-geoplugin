@@ -123,6 +123,14 @@ if(!class_exists('CFGP_Public', false)) : class CFGP_Public extends CFGP_Global{
 			$css_hide[$geo]= '.cfgeo-hide-from-' . $geo;
 		}
 		
+		if( $CFGEO['is_tor'] ) {
+			$css_show['is_tor']= '.cfgeo-show-in-tor';
+			$css_hide['is_tor']= '.cfgeo-hide-from-tor';
+		} else {
+			$css_show['is_tor']= '.cfgeo-hide-from-tor';
+			$css_hide['is_tor']= '.cfgeo-show-in-tor';
+		}
+		
 		$css_show = apply_filters('cfgp/public/css/show', $css_show);
 		$css_hide = apply_filters('cfgp/public/css/hide', $css_hide);
 

@@ -80,6 +80,7 @@ if(!class_exists('CFGP_Defaults', false)) : class CFGP_Defaults {
 		'map_infoMaxWidth'				=>	200,
 		'map_latitude'					=>	'',
 		'map_longitude'					=>	'',
+		'block_tor_network'				=>	0,
 		'block_country'					=>	'',
 		'block_region'					=>	'',
 		'block_ip'						=>	'',
@@ -195,6 +196,7 @@ if(!class_exists('CFGP_Defaults', false)) : class CFGP_Defaults {
 		
 		'is_proxy' 				=> 0,
 		'is_spam' 				=> 0,
+		'is_tor' 				=> 0,
 		'limited' 				=> 0,
 		'available_lookup' 		=> NULL,
 		'limit' 				=> NULL,

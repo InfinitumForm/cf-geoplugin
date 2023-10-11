@@ -16,8 +16,30 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
 if(!class_exists('CFGP_Defender', false)) : class CFGP_Defender extends CFGP_Global {
 	function __construct()
     {
-        $this->add_action( 'init', 'protect', 1);
+		$this->add_action( 'init', 'tor_protection', 1);
+        $this->add_action( 'init', 'protect', 2);
     }
+	
+	// TOR protection
+    public function tor_protection()
+    {
+		if( CFGP_Options::get('block_tor_network', 0) == 0 ) {
+			return;
+		}
+		
+		if( (int)CFGP_U::api('is_tor') === 1 ) {
+			if( function_exists('http_response_code') ) {
+				http_response_code(403);
+			} else {
+				header( 'HTTP/1.0 403 Forbidden', true, 403 );
+			}
+			
+            die( wpautop( html_entity_decode( stripslashes( apply_filters(
+				'cfgp/defender/tor/error/message',
+				__('Access via the TOR network is prohibited on this site.', 'cf-geoplugin')
+			) ) ) ) );
+		}
+	}
 	
 	// Protect site from visiting
     public function protect()

@@ -40,6 +40,14 @@ add_action('cfgp/table/after/shortcodes', function($API){ ?>
     <td><?php echo esc_html( do_shortcode('[cfgeo_not_in_eu default="-"]' .__('You are NOT from the EU', 'cf-geoplugin'). '[/cfgeo_not_in_eu]') ); ?></td>
 </tr>
 <tr>
+    <td><code>[cfgeo_is_tor]<?php _e('This is TOR network!', 'cf-geoplugin'); ?>[/cfgeo_is_tor]</code></td>
+    <td><?php echo esc_html( do_shortcode('[cfgeo_is_tor default="-"]' .__('This is TOR network!', 'cf-geoplugin'). '[/cfgeo_is_tor]') ); ?></td>
+</tr>
+<tr>
+    <td><code>[cfgeo_is_not_tor]<?php _e('This is World-Wide-Web network!', 'cf-geoplugin'); ?>[/cfgeo_is_not_tor]</code></td>
+    <td><?php echo esc_html( do_shortcode('[cfgeo_is_not_tor default="-"]' .__('This is World-Wide-Web network', 'cf-geoplugin'). '[/cfgeo_is_not_tor]') ); ?></td>
+</tr>
+<tr>
     <td><code>[cfgeo_gps]<?php _e('GPS is enabled', 'cf-geoplugin'); ?>[/cfgeo_gps]</code></td>
     <td>
         <?php echo esc_html( do_shortcode('[cfgeo_gps]' .__('GPS is enabled.', 'cf-geoplugin'). '[/cfgeo_gps]') ); ?> 
@@ -111,6 +119,14 @@ add_action('cfgp/table/after/simple_shortcodes', function($API){ ?>
 <tr>
     <td><code>[not_in_eu]<?php _e('You are NOT from the EU', 'cf-geoplugin'); ?>[/not_in_eu]</code></td>
     <td><?php echo esc_html( do_shortcode('[not_in_eu default="-"]' .__('You are NOT from the EU', 'cf-geoplugin'). '[/not_in_eu]') ); ?></td>
+</tr>
+<tr>
+    <td><code>[is_tor]<?php _e('This is TOR network!', 'cf-geoplugin'); ?>[/is_tor]</code></td>
+    <td><?php echo esc_html( do_shortcode('[is_tor default="-"]' .__('This is TOR network!', 'cf-geoplugin'). '[/is_tor]') ); ?></td>
+</tr>
+<tr>
+    <td><code>[is_not_tor]<?php _e('This is World-Wide-Web network!', 'cf-geoplugin'); ?>[/is_not_tor]</code></td>
+    <td><?php echo esc_html( do_shortcode('[is_not_tor default="-"]' .__('This is World-Wide-Web network', 'cf-geoplugin'). '[/is_not_tor]') ); ?></td>
 </tr>
 <tr>
     <td><code>[gps]<?php _e('GPS is enabled', 'cf-geoplugin'); ?>[/gps]</code></td>

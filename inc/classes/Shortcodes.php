@@ -67,6 +67,12 @@ if(!class_exists('CFGP_Shortcodes', false)) : class CFGP_Shortcodes extends CFGP
 		// NOT IN EU
 		$this->add_shortcode( 'cfgeo_not_in_eu', 'not_in_eu' );
 		
+		// IN EU
+		$this->add_shortcode( 'cfgeo_is_tor', 'is_tor' );
+		
+		// NOT IN EU
+		$this->add_shortcode( 'cfgeo_is_not_tor', 'is_not_tor' );
+		
 		// IS PROXY
 		$this->add_shortcode( 'cfgeo_is_proxy', 'is_proxy' );
 		
@@ -92,6 +98,8 @@ if(!class_exists('CFGP_Shortcodes', false)) : class CFGP_Shortcodes extends CFGP
 			$this->add_shortcode( 'is_not_vat',   'is_not_vat' );
 			$this->add_shortcode( 'in_eu',        'in_eu' );
 			$this->add_shortcode( 'not_in_eu',    'not_in_eu' );
+			$this->add_shortcode( 'is_tor',        'is_tor' );
+			$this->add_shortcode( 'is_not_tor',    'is_not_tor' );
 			$this->add_shortcode( 'is_proxy',     'is_proxy' );
 			$this->add_shortcode( 'is_not_proxy', 'is_not_proxy' );
 			$this->add_shortcode( 'is_mobile',    'is_mobile' );
@@ -325,7 +333,7 @@ if(!class_exists('CFGP_Shortcodes', false)) : class CFGP_Shortcodes extends CFGP
 			wp_enqueue_script( CFGP_NAME . '-public' );
 		}
 		
-		$exclude = array_map('trim', explode(',','gps,is_vat,is_proxy,is_mobile,is_eu,state,continentCode,areaCode,dmaCode,timezoneName,currencySymbol,currencyConverter'));
+		$exclude = array_map('trim', explode(',','gps,is_vat,is_proxy,is_mobile,is_eu,is_tor,state,continentCode,areaCode,dmaCode,timezoneName,currencySymbol,currencyConverter'));
 		
 		$generate=[];
 		foreach($CFGEO as $key => $value )
@@ -1663,6 +1671,107 @@ LIMIT 1
 		return self::__cache($tag, $default, (array)$array, $content, $cache);
 	}
 	
+	// IS TOR
+	public function is_tor($attr, $content='', $tag='cfgeo_is_tor'){
+
+		$cache = CFGP_U::is_attribute_exists('cache', $attr);
+		if(CFGP_U::is_attribute_exists('no_cache', $attr)) $cache = false;
+		$relative_match = (CFGP_U::is_attribute_exists('relative_match', $attr) ? true : false);
+		
+		$array = shortcode_atts( array(
+			'ip'		=>	false,
+			'default'	=>	NULL,
+			'exclude'	=>	false,
+			'include'	=>	false
+        ), $attr, $tag );
+
+		$ip 		= $array['ip'];
+		$default 	= $array['default'];
+		$exclude 	= $array['exclude'];
+		$include 	= $array['include'];
+		
+		if( !empty($ip) ) {
+			$CFGEO = CFGP_API::instance(true)->get('geo', $ip);
+		} else {
+			$CFGEO = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
+		}
+		
+		if(!empty($exclude) || !empty($include)) {
+			if(!empty($include))
+			{
+				if(!CFGP_U::recursive_array_search($include, $CFGEO, $relative_match)){
+					return self::__cache($tag, $default, (array)$array, $content, $cache);
+				}
+			}
+			
+			if(!empty($exclude))
+			{
+				if(CFGP_U::recursive_array_search($exclude, $CFGEO, $relative_match)){
+					return self::__cache($tag, $default, (array)$array, $content, $cache);
+				}
+			}
+		}
+		
+		if(isset($CFGEO['is_tor']) && $CFGEO['is_tor'])
+		{
+			return self::__cache($tag, $content, (array)$array, $default, $cache);
+		}
+		
+		return self::__cache($tag, $default, (array)$array, $content, $cache);
+	}
+	
+	// IS NOT TOR
+	public function is_not_tor($attr, $content='', $tag='cfgeo_is_not_tor'){
+
+		$cache = CFGP_U::is_attribute_exists('cache', $attr);
+		if(CFGP_U::is_attribute_exists('no_cache', $attr)) $cache = false;
+		$relative_match = (CFGP_U::is_attribute_exists('relative_match', $attr) ? true : false);
+		
+		$array = shortcode_atts( array(
+			'ip'		=>	false,
+			'default'	=>	NULL,
+			'exclude'	=>	false,
+			'include'	=>	false
+        ), $attr, $tag );
+
+		$ip 		= $array['ip'];
+		$default 	= $array['default'];
+		$exclude 	= $array['exclude'];
+		$include 	= $array['include'];
+		
+		if( !empty($ip) ) {
+			$CFGEO = CFGP_API::instance(true)->get('geo', $ip);
+		} else {
+			$CFGEO = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
+		}
+		
+		if(!empty($exclude) || !empty($include)) {
+			if(!empty($include))
+			{
+				if(!CFGP_U::recursive_array_search($include, $CFGEO, $relative_match)){
+					return self::__cache($tag, $content, (array)$array, $default, $cache);
+				}
+			}
+			
+			if(!empty($exclude))
+			{
+				if(CFGP_U::recursive_array_search($exclude, $CFGEO, $relative_match)){
+					return self::__cache($tag, $content, (array)$array, $default, $cache);
+				}
+			}
+		}
+		
+		if(isset($CFGEO['is_tor']))
+		{
+			if(!$CFGEO['is_tor'])
+			{
+				return self::__cache($tag, $content, (array)$array, $default, $cache);
+			}
+		}
+		
+		return self::__cache($tag, $default, (array)$array, $content, $cache);
+	}
+	
 	// IS VAT
 	public function is_vat($attr, $content='', $tag='cfgeo_is_vat'){
 
@@ -1852,6 +1961,8 @@ LIMIT 1
 			'cfgeo_is_not_vat',
 			'cfgeo_in_eu',
 			'cfgeo_not_in_eu',
+			'cfgeo_is_tor',
+			'cfgeo_is_not_tor',
 			'cfgeo_is_proxy',
 			'cfgeo_is_not_proxy',
 			'cfgeo_gps',

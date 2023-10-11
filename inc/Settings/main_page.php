@@ -14,6 +14,7 @@ if( CFGP_U::dev_mode() ) {
 		'is_mobile',
 		'is_proxy',
 		'is_spam',
+		'is_tor',
 		'limited',
 		'gps',
 		'license_hash',
@@ -240,6 +241,10 @@ $API = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
                                         <td><code>cfgeo-hide-from-<?php echo esc_html($geo); ?></code></td>
                                     </tr>
                                     <?php endforeach; do_action('cfgp/table/after/css_property', $API); ?>
+									<tr>
+                                        <td><code>cfgeo-show-in-tor</code></td>
+                                        <td><code>cfgeo-hide-from-tor</code></td>
+                                    </tr>
                                 </tbody>
                                 <tfoot>
                                     <tr>

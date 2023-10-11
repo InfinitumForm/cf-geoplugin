@@ -232,6 +232,9 @@ class CFGP_API extends CFGP_Global {
 				// Is is spam
 				$response['is_spam'] = ($response['is_spam'] ? 1 : 0);
 				
+				// Is is tor
+				$response['is_tor'] = ($response['is_tor'] ? 1 : 0);
+				
 				// Is is mobile
 				$response['is_mobile'] = ($response['is_mobile'] ? 1 : 0);
 				
