@@ -169,7 +169,7 @@ if($NEW_API = CFGP_API::lookup(CFGP_U::request_string('cfgp_lookup'))){
 											if(CFGP_DEFENDER_ACTIVATED)
 												_e( 'Lifetime', 'cf-geoplugin');
 											else
-												echo ( !empty( CFGP_License::expire_date() ) ? '<br><small>('.__( 'License Expire', 'cf-geoplugin') . ': <b>' . esc_html(date("r", CFGP_License::expire_date())).'</b>)</small>' : '' )
+												echo ( !empty( CFGP_License::expire_date() ) ? '<br><small>('.__( 'License Expire', 'cf-geoplugin') . ': <b>' . esc_html(date("r", strtotime(CFGP_License::expire_date()))).'</b>)</small>' : '' )
 										?>
 										</td>
                                     </tr>

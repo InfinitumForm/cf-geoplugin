@@ -1,5 +1,9 @@
 == Changelog ==
 
+= 8.6.1 =
+* Fixed WP_ADMIN_DIR
+* Fixed debugger
+
 = 8.6.0 =
 * Added new functionalityfor TOR networks
 * Blocking visitors from the TOR network
