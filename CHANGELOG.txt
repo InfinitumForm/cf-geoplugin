@@ -1,5 +1,13 @@
 == Changelog ==
 
+= 8.6.2 =
+* Fixed internal buffer
+* Optimized options
+* Optimized cache
+* Optimized API calls
+* Optimized plugin detection
+* Removed support for plugins below version 7.x.x
+
 = 8.6.1 =
 * Fixed WP_ADMIN_DIR
 * Fixed debugger

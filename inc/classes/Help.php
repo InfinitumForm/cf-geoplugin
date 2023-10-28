@@ -43,7 +43,15 @@ if(!class_exists('CFGP_Help', false)) : class CFGP_Help extends CFGP_Global {
 	<li><a href="https://cfgeoplugin.com/documentation/quick-start/frequently-asked-questions" target="_blank"><?php _e('Frequently Asked Questions', 'cf-geoplugin'); ?></a></li>
 </ul>
 		<?php
-		$links = ob_get_clean();
+		
+	//	$links = ob_get_clean();
+		
+		$links = '';
+		if (ob_get_level()) {
+			$links = ob_get_contents();
+			ob_end_clean();
+		}
+		
 		get_current_screen()->add_help_tab( array(
 			'id'       => 'cfgp-plugin-usage',
 			'title'    => __( 'Documentation', 'cf-geoplugin'),

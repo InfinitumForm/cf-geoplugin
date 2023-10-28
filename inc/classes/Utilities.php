@@ -138,66 +138,48 @@ if(!class_exists('CFGP_U', false)) : class CFGP_U {
 	 *
 	 * @since    4.0.4
 	 */
-	public static function curl_get( $url, $headers = '', $new_params = [], $json = false )
+	public static function curl_get($url, $headers = [], $new_params = [], $json = false)
 	{
-		
-		$cache_name = 'cfgp-curl_get-'.self::hash(serialize(array($url, $headers, $new_params, $json)));
-		if(NULL !== ($cache = CFGP_Cache::get($cache_name))){
+		$cache_name = 'cfgp-curl_get-' . self::hash(serialize([$url, $headers, $new_params, $json]));
+		if (NULL !== ($cache = CFGP_Cache::get($cache_name))) {
 			return $cache;
 		}
-		
-		if( empty( $headers ) ) {
-			$headers = array( 'Accept: application/json' );
-		}
 
-		// Define proxy if set
-		if( !defined( 'WP_PROXY_HOST' ) && $proxy_ip = CFGP_Options::get('proxy_ip', false))
-		{
-			define( 'WP_PROXY_HOST', $proxy_ip );
-		}
-		if( !defined( 'WP_PROXY_PORT' ) && $proxy_port = CFGP_Options::get('proxy_port', false))
-		{
-			define( 'WP_PROXY_PORT', $proxy_port );
-		}
-		if( !defined( 'WP_PROXY_USERNAME' ) && $proxy_username = CFGP_Options::get('proxy_username', false) )
-		{
-			define( 'WP_PROXY_USERNAME', $proxy_username );
-		}
-		if( !defined( 'WP_PROXY_PASSWORD' ) && $proxy_password = CFGP_Options::get('proxy_password', false) )
-		{
-			define( 'WP_PROXY_PASSWORD', $proxy_password );
-		}
+		$headers = empty($headers) ? ['Accept: application/json'] : $headers;
 
-
-		$output = false;
-
-		$default_params = array(
-			'timeout'	=> CFGP_Options::get('timeout', 5),
-			'headers'	=> $headers,
-		);
-
-		$default_params = wp_parse_args( $new_params, $default_params );
-
-		$request = wp_remote_get( esc_url_raw( $url ), $default_params );
-
-		if( !is_wp_error( $request ) )
-		{
-			$output = wp_remote_retrieve_body( $request );
-			if( is_wp_error( $output ) || empty( $output ) ) {
-				$output = false;
+		$proxy_settings = [
+			'WP_PROXY_HOST' => 'proxy_ip',
+			'WP_PROXY_PORT' => 'proxy_port',
+			'WP_PROXY_USERNAME' => 'proxy_username',
+			'WP_PROXY_PASSWORD' => 'proxy_password',
+		];
+		foreach ($proxy_settings as $constant => $option_name) {
+			if (!defined($constant) && $value = CFGP_Options::get($option_name, false)) {
+				define($constant, $value);
 			}
 		}
-		
-		if( empty( $output ) ) {
+
+		$default_params = [
+			'timeout' => CFGP_Options::get('timeout', 5),
+			'headers' => $headers,
+		];
+		$params = wp_parse_args($new_params, $default_params);
+
+		$request = wp_remote_get(esc_url_raw($url), $params);
+		if (is_wp_error($request)) {
 			return CFGP_Cache::set($cache_name, false);
 		}
 
-		if($json === false) {
+		$output = wp_remote_retrieve_body($request);
+		if (is_wp_error($output) || empty($output)) {
+			return CFGP_Cache::set($cache_name, false);
+		}
+
+		if (!$json) {
 			$output = json_decode($output, true);
 		}
-		
+
 		CFGP_Cache::set($cache_name, $output);
-		
 		return $output;
 	}
 	
@@ -206,68 +188,48 @@ if(!class_exists('CFGP_U', false)) : class CFGP_U {
 	 *
 	 * @since    4.0.4
 	 */
-	public static function curl_post( $url, $post_data = [], $headers = [], $new_params = [], $json = false )
+	public static function curl_post($url, $post_data = [], $headers = ['Accept: application/json'], $new_params = [], $json = false)
 	{
-		$cache_name = 'cfgp-curl_post-'.self::hash(serialize(array($url, $headers, $new_params, $json)));
-		if(NULL !== ($cache = CFGP_Cache::get($cache_name))){
+		$cache_name = 'cfgp-curl_post-' . self::hash(serialize([$url, $headers, $new_params, $json]));
+		if (NULL !== ($cache = CFGP_Cache::get($cache_name))) {
 			return $cache;
 		}
-		
-		if( empty( $headers ) ) {
-			$headers = array( 'Accept: application/json' );
-		}
 
-		// Define proxy if set
-		if( !defined( 'WP_PROXY_HOST' ) && $proxy_ip = CFGP_Options::get('proxy_ip', false))
-		{
-			define( 'WP_PROXY_HOST', $proxy_ip );
-		}
-		if( !defined( 'WP_PROXY_PORT' ) && $proxy_port = CFGP_Options::get('proxy_port', false))
-		{
-			define( 'WP_PROXY_PORT', $proxy_port );
-		}
-		if( !defined( 'WP_PROXY_USERNAME' ) && $proxy_username = CFGP_Options::get('proxy_username', false) )
-		{
-			define( 'WP_PROXY_USERNAME', $proxy_username );
-		}
-		if( !defined( 'WP_PROXY_PASSWORD' ) && $proxy_password = CFGP_Options::get('proxy_password', false) )
-		{
-			define( 'WP_PROXY_PASSWORD', $proxy_password );
-		}
-
-
-		$output = false;
-
-		$default_params = array(
-			'method'	=> 'POST',
-			'timeout'	=> CFGP_Options::get('timeout', 5),
-			'headers'	=> $headers,
-			'body'		=> $post_data
-		);
-
-		$default_params = wp_parse_args( $new_params, $default_params );
-
-		$request = wp_remote_post( esc_url_raw( $url ), $default_params );
-
-		if( !is_wp_error( $request ) )
-		{
-			$output = wp_remote_retrieve_body( $request );
-			
-			if( is_wp_error( $output ) || empty( $output ) ) {
-				$output = false;
+		$proxy_settings = [
+			'WP_PROXY_HOST' => 'proxy_ip',
+			'WP_PROXY_PORT' => 'proxy_port',
+			'WP_PROXY_USERNAME' => 'proxy_username',
+			'WP_PROXY_PASSWORD' => 'proxy_password',
+		];
+		foreach ($proxy_settings as $constant => $option_name) {
+			if (!defined($constant) && $value = CFGP_Options::get($option_name, false)) {
+				define($constant, $value);
 			}
 		}
-		
-		if( empty( $output ) ) {
+
+		$default_params = [
+			'method' => 'POST',
+			'timeout' => CFGP_Options::get('timeout', 5),
+			'headers' => $headers,
+			'body' => $post_data
+		];
+		$params = wp_parse_args($new_params, $default_params);
+
+		$request = wp_remote_post(esc_url_raw($url), $params);
+		if (is_wp_error($request)) {
 			return CFGP_Cache::set($cache_name, false);
 		}
 
-		if($json === false) {
+		$output = wp_remote_retrieve_body($request);
+		if (is_wp_error($output) || empty($output)) {
+			return CFGP_Cache::set($cache_name, false);
+		}
+
+		if (!$json) {
 			$output = json_decode($output, true);
 		}
-		
+
 		CFGP_Cache::set($cache_name, $output);
-		
 		return $output;
 	}
 	
@@ -311,7 +273,7 @@ if(!class_exists('CFGP_U', false)) : class CFGP_U {
 	/* 
 	 * Generate unique token
 	 * @author        Ivijan-Stefan Stipic
-	*/
+	 */
 	public static function generate_token( int $length=16 ){
 		if(function_exists('openssl_random_pseudo_bytes') || function_exists('random_bytes'))
 		{
@@ -359,85 +321,62 @@ if(!class_exists('CFGP_U', false)) : class CFGP_U {
 	 * Return plugin informations
 	 * @return        array/object
 	 * @author        Ivijan-Stefan Stipic
-	*/
+	 */
 	public static function plugin_info(array $fields = [], $slug = false, $force_cache = true) {
 		
-		$cache_name = CFGP_NAME . '-plugin_info-' . self::hash(serialize($fields) . ($slug!==false ? $slug : CFGP_NAME));
+		$slug = $slug ?: CFGP_NAME;
+		$cache_name = CFGP_NAME . '-plugin_info-' . self::hash(serialize($fields) . $slug);
 		
-		if($cache = CFGP_Cache::get($cache_name)) {
+		$cache = CFGP_Cache::get($cache_name);
+		if($cache) {
 			return $cache;
 		}
 		
-		if($force_cache === true) {
-			if($cache = CFGP_DB_Cache::get("cfgp-{$cache_name}")) {
-				return $cache;
+		if($force_cache) {
+			$db_cache = CFGP_DB_Cache::get("cfgp-{$cache_name}");
+			if($db_cache) {
+				return $db_cache;
 			}
 		}
 		
-        if ( is_admin() ) {
-			if ( ! function_exists( 'plugins_api' ) ) {
-				self::include_once( WP_ADMIN_DIR . '/includes/plugin-install.php' );
-			}
-			
-			$fields = array_merge([
-				'active_installs' => false,           // rounded int
-				'added' => false,                     // date
-				'author' => false,                    // a href html
-				'author_block_count' => false,        // int
-				'author_block_rating' => false,       // int
-				'author_profile' => false,            // url
-				'banners' => false,                   // array( [low], [high] )
-				'compatibility' => false,             // empty array?
-				'contributors' => false,              // array( array( [profile], [avatar], [display_name] )
-				'description' => false,               // string
-				'donate_link' => false,               // url
-				'download_link' => false,             // url
-				'downloaded' => false,                // int
-				// 'group' => false,                  // n/a 
-				'homepage' => false,                  // url
-				'icons' => false,                     // array( [1x] url, [2x] url )
-				'last_updated' => false,              // datetime
-				'name' => false,                      // string
-				'num_ratings' => false,               // int
-				'rating' => false,                    // int
-				'ratings' => false,                   // array( [5..0] )
-				'requires' => false,                  // version string
-				'requires_php' => false,              // version string
-				// 'reviews' => false,                // n/a, part of 'sections'
-				'screenshots' => false,               // array( array( [src],  ) )
-				'sections' => false,                  // array( [description], [installation], [changelog], [reviews], ...)
-				'short_description' => false,         // string
-				'slug' => false,                      // string
-				'support_threads' => false,           // int
-				'support_threads_resolved' => false,  // int
-				'tags' => false,                      // []
-				'tested' => false,                    // version string
-				'version' => false,                   // version string
-				'versions' => false                   // array( [version] url )
-			], $fields);
-			
-			/** Prepare our query */
-			$plugin_data = plugins_api( 'plugin_information', [
-				'slug' => ($slug!==false ? $slug : CFGP_NAME),
-				'fields' => $fields
-			]);
-			
-			// Return if have error
-			if( is_wp_error($plugin_data) ) {				
-				return $plugin_data;
-			}
-		 	
-			// Save into current cache
-			CFGP_Cache::set($cache_name, $plugin_data);
-			
-			// Because is expencive function, we need to store data to transients
-			if($force_cache === true) {
-				CFGP_DB_Cache::set("cfgp-{$cache_name}", $plugin_data, DAY_IN_SECONDS);
-			}
-			
+		if ( ! is_admin() ) {
+			return null;
+		}
+		
+		if ( ! function_exists( 'plugins_api' ) ) {
+			self::include_once( WP_ADMIN_DIR . '/includes/plugin-install.php' );
+		}
+		
+		// Here are the default fields based on WordPress defaults, but only keep those that are necessary:
+		$fields = array_merge([
+			'name' => false,
+			'slug' => false,
+			'version' => false,
+			'author' => false,
+			'short_description' => false,
+			'homepage' => false,
+			'icons' => false,
+			'last_updated' => false
+		], $fields);
+		
+		/** Prepare our query */
+		$plugin_data = plugins_api( 'plugin_information', [
+			'slug' => $slug,
+			'fields' => $fields
+		]);
+		
+		if(is_wp_error($plugin_data)) {
 			return $plugin_data;
 		}
-    }
+		
+		CFGP_Cache::set($cache_name, $plugin_data);
+		
+		if($force_cache) {
+			CFGP_DB_Cache::set("cfgp-{$cache_name}", $plugin_data, DAY_IN_SECONDS);
+		}
+		
+		return $plugin_data;
+	}
 	
 	/*
 	 * Set cookie
@@ -502,28 +441,19 @@ if(!class_exists('CFGP_U', false)) : class CFGP_U {
 	*/
 	public static function flush_plugin_cache() {
 		global $wpdb;
-		// Remove all transients
-		if ( is_multisite() && is_main_site() && is_main_network() ) {
-			$wpdb->query("DELETE FROM
-				`{$wpdb->sitemeta}`
-			WHERE (
-					`{$wpdb->sitemeta}`.`option_name` LIKE '_site_transient_cfgp-%'
-				OR
-					`{$wpdb->sitemeta}`.`option_name` LIKE '_site_transient_timeout_cfgp-%'
-			)");
-		} else {
-			$wpdb->query("DELETE FROM
-				`{$wpdb->options}`
-			WHERE (
-					`{$wpdb->sitemeta}`.`option_name` LIKE '_transient_cfgp-%'
-				OR
-					`{$wpdb->sitemeta}`.`option_name` LIKE '_transient_timeout_cfgp-%'
-				OR
-					`{$wpdb->sitemeta}`.`option_name` LIKE '_site_transient_cfgp-%'
-				OR
-					`{$wpdb->sitemeta}`.`option_name` LIKE '_site_transient_timeout_cfgp-%'
-			)");
-		}
+		// Determine the table and column name based on the site type.
+		$table_name = (is_multisite() && is_main_site() && is_main_network()) ? $wpdb->sitemeta : $wpdb->options;
+		$column_name = (is_multisite() && is_main_site() && is_main_network()) ? 'meta_key' : 'option_name';
+
+		// Create the SQL statement.
+		$sql = "DELETE FROM `{$table_name}`
+				WHERE `{$column_name}` LIKE '_transient_cfgp-api-%'
+				   OR `{$column_name}` LIKE '_transient_timeout_cfgp-api-%'
+				   OR `{$column_name}` LIKE '_site_transient_cfgp-api-%'
+				   OR `{$column_name}` LIKE '_site_transient_timeout_cfgp-api-%'";
+
+		// Execute the SQL statement.
+		$wpdb->query($sql);
 		// Remove current cache
 		CFGP_Cache::flush();
 	}

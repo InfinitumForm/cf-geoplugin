@@ -21,283 +21,200 @@ if(!class_exists('CFGP_API', false)) : class CFGP_Options
 	/*
 	 * Get plugin option
 	 *
-	 * @pharam   (string)   $name                        If exists, return value for single option, if empty return all options
-	 * @pharam   (string)   $default                     Default values
+	 * @param   string   $name        If exists, return value for single option, if empty return all options
+	 * @param   mixed    $default     Default values
 	 *
-	 * @return   (array|string|int|bloat|bool)           plugin option/s
+	 * @return  mixed                 Plugin option/s
 	 */
 	public static function get($name = false, $default = NULL)
 	{
-		// Get cache
-		$get_option = CFGP_Cache::get('options');
-		
-		// If cache is empty, get from the database
-		if( !$get_option ){
-			$get_option = CFGP_Cache::set(
-				'options',
-				wp_parse_args(
-					( CFGP_NETWORK_ADMIN ? get_site_option( CFGP_NAME ) : get_option( CFGP_NAME ) ),
-					apply_filters( 'cfgp/settings/default', CFGP_Defaults::OPTIONS)
-				)
-			);
+		// Attempt to retrieve options from cache
+		$options = CFGP_Cache::get('options');
+
+		// If cache is empty, fetch from the database and update the cache
+		if (!$options) {
+			$rawOptions = CFGP_NETWORK_ADMIN ? get_site_option(CFGP_NAME) : get_option(CFGP_NAME);
+			$options = wp_parse_args($rawOptions, apply_filters('cfgp/settings/default', CFGP_Defaults::OPTIONS));
+			CFGP_Cache::set('options', $options);
 		}
-		
-		// Search and return
-		if($get_option) {
-			if( $name === false ){
-				return apply_filters( 'cfgp/options/get', $get_option, $default);
-			} else {
-				if(isset($get_option[$name])) {
-					// Enable beta options
-					if (in_array($name, CFGP_Defaults::BETA_OPTIONS)) {
-						if(!isset($get_option['enable_beta'])) {
-							return apply_filters( 'cfgp/options/get', $get_option, $default);
-						}
-						if($get_option['enable_beta'] == 0) {
-							return apply_filters( 'cfgp/options/get', $get_option, $default);
-						}
-					}
-					// Return values
-					return apply_filters( 'cfgp/option/get', ((!empty($get_option[$name]) || $get_option[$name] === 0) ? $get_option[$name] : $default), $default);
-				}
+
+		// If name is not provided, return all options
+		if ($name === false) {
+			return apply_filters('cfgp/options/get', $options, $default, $name);
+		}
+
+		// If the requested option exists
+		if (isset($options[$name])) {
+			// Check for beta options and if they're enabled
+			if (in_array($name, CFGP_Defaults::BETA_OPTIONS) && (!isset($options['enable_beta']) || $options['enable_beta'] == 0)) {
+				return apply_filters('cfgp/options/get', $options, $default, $name);
 			}
+
+			return apply_filters('cfgp/option/get', $options[$name] ?? $default, $default, $name);
 		}
-		
-		// Show default
-		return apply_filters( 'cfgp/options/get', $default, $default);
+
+		return apply_filters('cfgp/options/get', $default, $default);
 	}
 	
 	/*
 	 * Get plugin BETA options
 	 *
-	 * @pharam   (string)   $name                        If exists, return value for single option, if empty return all options
-	 * @pharam   (string)   $default                     Default values
+	 * @param   string  $name      If exists, return value for single option, if empty return all options
+	 * @param   mixed   $default   Default values
 	 *
-	 * @return   (array|string|int|bloat|bool)           plugin option/s
+	 * @return  mixed              Plugin option/s
 	 */
-	public static function get_beta($name = false, $default = NULL){
-		$return = $default;
+	public static function get_beta($name = false, $default = NULL) {
 		if (in_array($name, CFGP_Defaults::BETA_OPTIONS)) {
-			$return = self::get($name, $default);
-		}		
-		return apply_filters( 'cfgp/option/get_beta', $return, $name, $default, CFGP_Defaults::BETA_OPTIONS, CFGP_Defaults::OPTIONS );
-	}	
+			return apply_filters('cfgp/option/get_beta', self::get($name, $default), $name, $default, CFGP_Defaults::BETA_OPTIONS, CFGP_Defaults::OPTIONS);
+		}
+		return apply_filters('cfgp/option/get_beta', $default, $name, $default, CFGP_Defaults::BETA_OPTIONS, CFGP_Defaults::OPTIONS);
+	}
 	
 	
 	/*
 	 * Set plugin option
 	 *
-	 * @pharam   (string|array)   $name_or_array       array of option name and values or just single option name
-	 * @pharam   (string)         $value               if single option name is set, this is the value
+	 * @param   mixed   $name_or_array   Either an array of option names and values or just a single option name
+	 * @param   mixed   $value           If a single option name is provided, this is the value
 	 *
-	 * @return   (array)                               plugin options
+	 * @return  array                    Plugin options
 	 */
-	public static function set($name_or_array=[], $value=NULL)
+	public static function set($name_or_array = [], $value = NULL)
 	{
-		// Clear cache;
-		$clear_cache = false;
-		// Get plugin options
 		$options = self::get();
-		// Get default options
-		$default_options = apply_filters( 'cfgp/settings/default', CFGP_Defaults::OPTIONS);
-		// Get default keys
+		$default_options = apply_filters('cfgp/settings/default', CFGP_Defaults::OPTIONS);
 		$filter = apply_filters('cfgp/options/set/filter', array_keys($default_options));
-		// Collect and set new values
-		if(!empty($name_or_array))
-		{
-			if(is_array($name_or_array)) {
+		$clear_cache = false;
+
+		if (!empty($name_or_array)) {
+			if (is_array($name_or_array)) {
 				$clear_cache = true;
-				$name_or_array = array_merge(
-					(!empty($options) ? $options : $default_options),
-					$name_or_array
-				);
+				$name_or_array = array_merge($options ?: $default_options, $name_or_array);
 				$name_or_array = apply_filters('cfgp/options/set/fields', $name_or_array, $options, $default_options);
-				foreach($name_or_array as $key => $val) {
-					if(in_array($key, $filter) !== false) {
+
+				foreach ($name_or_array as $key => $val) {
+					if (in_array($key, $filter)) {
 						$options[$key] = self::sanitize($val);
 					} else {
 						unset($name_or_array[$key]);
 					}
 				}
-			} else if(!is_numeric($name_or_array) && is_string($name_or_array)) {
-				$name = $name_or_array;
-				$name = apply_filters("cfgp/options/set/field/{$name}", $name, $default_options);
-				if(in_array($name, $filter) !== false) {
+			} elseif (is_string($name_or_array) && !is_numeric($name_or_array)) {
+				$name = apply_filters("cfgp/options/set/field/{$name_or_array}", $name_or_array, $default_options);
+
+				if (in_array($name, $filter)) {
 					$options[$name] = self::sanitize($value);
 				}
 			}
 		}
-		// Apply action
+
 		do_action('cfgp/options/action/set', $options, $default_options, $name_or_array, $value, $clear_cache);
-		// Return on the bad data
-		if(empty($options)) return false;
-		// Save new options
-		if(CFGP_NETWORK_ADMIN){
-			update_site_option(CFGP_NAME, $options, true);
-		}else{
-			update_option(CFGP_NAME, $options, true);
-		}
-		// Save to cache
+
+		if (!$options) return false;
+
+		CFGP_NETWORK_ADMIN ? update_site_option(CFGP_NAME, $options, true) : update_option(CFGP_NAME, $options, true);
+
 		CFGP_Cache::set('options', $options);
-		
-		// Clear special API cache
-		if( $clear_cache ) {
+
+		if ($clear_cache) {
 			CFGP_API::remove_cache();
 		}
-		
-		// Return
-		return apply_filters( 'cfgp/options/set', $options, $default_options, $name_or_array, $value);
+
+		return apply_filters('cfgp/options/set', $options, $default_options, $name_or_array, $value);
 	}
 	
-	/*
-	 * Set plugin option
+	/**
+	 * Delete plugin option
 	 *
-	 * @pharam   (string|array)   $name_or_array       array of option name and values or just single option name
+	 * @param   string|array  $name_or_array  Option name(s) to delete.
 	 *
-	 * @return   (array)                               plugin options
+	 * @return  array                        Updated plugin options.
 	 */
-	public static function delete($name_or_array)
-	{
-		// Get plugin options
+	public static function delete($name_or_array) {
+		// Get current and default plugin options.
 		$options = self::get();
-		// Get default options
-		$default_options = apply_filters( 'cfgp/settings/default', CFGP_Defaults::OPTIONS);
-		// Get default keys
-		$filter = apply_filters('cfgp/options/delete/filter', array_keys($default_options));
-		// Remove options
-		if(is_array($name_or_array)) {
-			$name_or_array = array_map('trim', $name_or_array);
-			
-			foreach($name_or_array as $key) {
-				if(isset($options[$key]) && in_array($key, $filter) !== false) {
-					unset($options[$key]);
-				}
+		$default_options = apply_filters('cfgp/settings/default', CFGP_Defaults::OPTIONS);
+
+		// Determine which options are allowed to be deleted.
+		$allowed_keys = apply_filters('cfgp/options/delete/filter', array_keys($default_options));
+
+		// Convert single key into an array for uniform handling.
+		$keys_to_delete = (is_array($name_or_array)) ? $name_or_array : [$name_or_array];
+
+		// Remove the specified options if they're allowed to be deleted.
+		foreach ($keys_to_delete as $key) {
+			if (isset($options[$key]) && in_array($key, $allowed_keys)) {
+				unset($options[$key]);
 			}
-		} else if(isset($options[$name_or_array]) && in_array($name_or_array, $filter) !== false) {
-			unset($options[$name_or_array]);
 		}
-		// Set defaults
+
+		// Merge with defaults to ensure all required keys are present.
 		$options = array_merge($default_options, $options);
-		// Apply action
+
+		// Notify of option deletion.
 		do_action('cfgp/options/action/delete', $options, $default_options, $name_or_array);
-		// Update options
-		if(CFGP_NETWORK_ADMIN){
+
+		// Update the options in the database.
+		if (CFGP_NETWORK_ADMIN) {
 			update_site_option(CFGP_NAME, $options, true);
-		}else{
+		} else {
 			update_option(CFGP_NAME, $options, true);
 		}
-		// Save to cache
+
+		// Update the cache.
 		CFGP_Cache::set('options', $options);
-		// Return
-		return apply_filters( 'cfgp/options/delete', $options, $default_options, $name_or_array);
+
+		// Return the updated options.
+		return apply_filters('cfgp/options/delete', $options, $default_options, $name_or_array);
 	}
 	
 	/**
 	 * Sanitize string or array
-	 * This functionality do automatization for the certain type of data expected in this plugin
+	 * This functionality automates sanitization for the data types expected in this plugin.
 	 *
-	 * @pharam   (string|array)   $str
+	 * @param   mixed $input  The input string or array to sanitize.
 	 *
-	 * @return   (string|array)   sanitized options
+	 * @return  mixed        Sanitized options.
 	 */
-	public static function sanitize( $str ){
-		if( is_array($str) )
-		{
-			$data = [];
-			if(!empty($str)) {
-				foreach($str as $key => $obj) {
-					$data[$key]=self::sanitize( $obj ); 
-				}
-			}
-			return $data;
+	public static function sanitize($input) {
+		// If the input is an array, sanitize each element recursively.
+		if (is_array($input)) {
+			return array_map([self::class, 'sanitize'], $input);
 		}
-		else
-		{			
-			if(is_numeric($str))
-			{
-				$str = sanitize_text_field( $str );
-				
-				if(intval( $str ) == $str) {
-					$str = intval( $str );
-				} else if(floatval($str) == $str) {
-					$str = floatval( $str );
-				}
-			}
-			else if(filter_var($str, FILTER_VALIDATE_URL) !== false)
-			{
-				return esc_url($str);
-			}
-			else if(preg_match('/^([0-9a-z-_.]+@[0-9a-z-_.]+.[a-z]{2,8})$/i', $str))
-			{
-				$str = trim($str, "&$%#?!.;:,");
-				$str = sanitize_email($str);
 
-				return CFGP_U::strtolower($str);
-			}
-			else if(is_bool($str))
-			{
-				$str = ($str ? true : false);
-			}
-			else if(!is_bool($str) && in_array(strtolower($str), array('true','false'), true))
-			{
-				$str = ( strtolower($str) == 'true' );
-			}
-			else
-			{
-				$str = html_entity_decode($str);
-				if(preg_match('/<\/?[a-z][\s\S]*>/i', $str)) {
-					$str = wp_kses_post( $str ?? '' );
-				} else if( preg_match('/[\n]/', $str) ) {
-					$str = sanitize_textarea_field( $str );
-				} else {
-					$str = sanitize_text_field( $str );
-				}
+		// Sanitize numeric values.
+		if (is_numeric($input)) {
+			if (intval($input) == $input) {
+				return intval($input);
+			} elseif (floatval($input) == $input) {
+				return floatval($input);
 			}
 		}
-		
-		return $str;
-	}
-	
-	/**
-	 * Sync with the old version of the plugin
-	 * This functionality do automatization for the certain type of data expected in this plugin
-	 */
-	public static function sync_with_the_old_version_of_the_plugin(){
-		global $wpdb;
-		// Get old options before version 8.0.0
-		if( CFGP_U::is_network_admin() ) {
-			$old_options = get_site_option('cf_geoplugin');
+
+		// Sanitize URLs.
+		if (filter_var($input, FILTER_VALIDATE_URL) !== false) {
+			return esc_url($input);
+		}
+
+		// Sanitize email addresses.
+		if (preg_match('/^([0-9a-z-_.]+@[0-9a-z-_.]+\.[a-z]{2,8})$/i', $input)) {
+			return CFGP_U::strtolower(sanitize_email(trim($input, "&$%#?!.;:,")));
+		}
+
+		// Convert boolean-like strings to actual booleans.
+		$lowerInput = strtolower($input);
+		if (in_array($lowerInput, ['true', 'false'], true)) {
+			return $lowerInput === 'true';
+		}
+
+		// If the string contains HTML tags, sanitize as post content. Otherwise, sanitize as plain text.
+		if (preg_match('/<\/?[a-z][\s\S]*>/i', $input)) {
+			return wp_kses_post($input);
+		} elseif (strpos($input, "\n") !== false) {
+			return sanitize_textarea_field($input);
 		} else {
-			$old_options = get_option( 'cf_geoplugin' );
-		}
-		// IF options exists, we must append it to new one
-		if( $old_options )
-		{
-			// First collect license data and try to activate it			
-			if(
-				isset($old_options['license'])
-				&& $old_options['license'] === 1
-				&& isset($old_options['license_key'])
-				&& !empty($old_options['license_key'])
-				&& isset($old_options['license_sku']) 
-				&& !empty($old_options['license_sku'])
-			) {
-				CFGP_License::activate($old_options['license_key'], $old_options['license_sku']);
-			}
-			// Set the other options properly
-			$new_options = [];
-			foreach($old_options as $option => $value){
-				if( in_array($option, CFGP_Defaults::OPTIONS) ) {
-					$new_options[$option] = $value;
-				}
-			}
-			// Be sure all fields are in the place
-			$new_options = array_merge(CFGP_Defaults::OPTIONS, $new_options);
-			// Save
-			self::set($new_options);
-			// Remove old one
-			delete_site_option('cf_geoplugin');
-			delete_option( 'cf_geoplugin' );
+			return sanitize_text_field($input);
 		}
 	}
 }

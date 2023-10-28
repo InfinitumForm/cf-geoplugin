@@ -145,7 +145,13 @@ if(!class_exists('CFGP_Public', false)) : class CFGP_Public extends CFGP_Global{
 ?>*[class="cfgeo-show-in-"],*[class*="cfgeo-show-in-"],*[class^="cfgeo-show-in-"]{display: none;}<?php echo esc_attr( join(',', $css_hide) ); ?>{display:none !important;}<?php echo esc_attr( join(',', $css_show) ); ?>{display:block !important;}<?php do_action('cfgp/public/css'); ?><?php
 		endif;
 		
-		echo apply_filters( 'cfgp/public/css', ob_get_clean(), $css_show, $css_hide, $allowed_css);
+		$css = '';
+		if (ob_get_level()) {
+			$css = ob_get_contents();
+			ob_end_clean();
+		}
+		
+		echo apply_filters( 'cfgp/public/css', $css, $css_show, $css_hide, $allowed_css);
 		
 		if( $is_ajax ) {
 			exit;

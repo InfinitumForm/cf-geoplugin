@@ -2095,7 +2095,15 @@ LIMIT 1
 	</script>
 <?php },999);
 		
-		ob_start(); ?><div id="<?php echo esc_attr($id); ?>"></div><?php return ob_get_clean();
+		ob_start(); ?><div id="<?php echo esc_attr($id); ?>"></div><?php
+		
+		$js = '';
+		if (ob_get_level()) {
+			$js = ob_get_contents();
+			ob_end_clean();
+		}
+		
+		return $js;
 	}
 	
 	/* 

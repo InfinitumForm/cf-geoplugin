@@ -295,9 +295,16 @@ endif;
 			</tr>
 		</tbody>
 	</table>
-</div><?php 
+</div><?php
+
+		$html = '';
+		if (ob_get_level()) {
+			$html = ob_get_contents();
+			ob_end_clean();
+		}
+
 		return strtr(
-			ob_get_clean(),
+			$html,
 			[
 				'{{form_id}}' => esc_attr($form_id),
 				'{{field_id}}' => esc_attr($field_id),

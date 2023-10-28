@@ -92,7 +92,15 @@ if(!class_exists('CFGP_Cache', false)) : class CFGP_Cache {
 	public static function debug() {
 		ob_start();
 			var_dump(self::$cache);
-		$debug = ob_get_clean();
+		
+		// $debug = ob_get_clean();
+		
+		$debug = '';
+		if (ob_get_level()) {
+			$debug = ob_get_contents();
+			ob_end_clean();
+		}
+		
 		echo wp_kses_post('<pre class="cfgp-cache-debug">' . htmlspecialchars(preg_replace(
 			array('/(\=\>\n\s{2,4})/'),
 			array(' => '),

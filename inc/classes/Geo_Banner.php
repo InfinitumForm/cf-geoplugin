@@ -231,52 +231,38 @@ LIMIT 1
 	
 	/**
 	 * Hook for the post save/update
-	 */
+	 */	
 	public function save_post($post_id){
-		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+		if (
+			(defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) 
+			|| !current_user_can('edit_post', $post_id) 
+			|| (get_post_type($post_id) !== 'cf-geoplugin-banner')
+		){
 			return;
 		}
-		if ( ! current_user_can( 'edit_post', $post_id ) ) {
-			return;
+
+		$fields = [
+			'cfgp-banner-default-content' => 'cfgp-banner-default',
+			'cfgp-banner-location-country' => 'cfgp-banner-location-country',
+			'cfgp-banner-location-region' => 'cfgp-banner-location-region',
+			'cfgp-banner-location-city' => 'cfgp-banner-location-city',
+			'cfgp-banner-location-postcode' => 'cfgp-banner-location-postcode'
+		];
+
+		foreach ($fields as $requestKey => $metaKey) {
+			$value = CFGP_U::request($requestKey, '');
+			if ($value && isset($fields[$requestKey])) {
+				$sanitizedValue = ($requestKey === 'cfgp-banner-default-content') ? wp_kses_post($value) : CFGP_Options::sanitize($value);
+				update_post_meta($post_id, $metaKey, $sanitizedValue);
+			} else {
+				delete_post_meta($post_id, $metaKey);
+			}
 		}
-		
-		$post_type = get_post_type($post_id);
-		
-		if( $post_type !== 'cf-geoplugin-banner' ) {
-			return;
+
+		$taxonomies = ['cf-geoplugin-country', 'cf-geoplugin-region', 'cf-geoplugin-city', 'cf-geoplugin-postcode'];
+		foreach ($taxonomies as $taxonomy) {
+			wp_set_post_terms($post_id, '', $taxonomy);
 		}
-		
-		update_post_meta( $post_id, 'cfgp-banner-default', wp_kses_post(CFGP_U::request('cfgp-banner-default-content', '')) );
-		delete_post_meta( $post_id, CFGP_METABOX . 'banner_default' );
-		
-		if( $country = CFGP_Options::sanitize( CFGP_U::request('cfgp-banner-location-country', []) ) ) {
-			update_post_meta( $post_id, 'cfgp-banner-location-country', $country);
-		} else {
-			delete_post_meta( $post_id, 'cfgp-banner-location-country' );
-		}
-		
-		if( $region = CFGP_Options::sanitize( CFGP_U::request('cfgp-banner-location-region', []) ) ) {
-			update_post_meta( $post_id, 'cfgp-banner-location-region', $region);
-		} else {
-			delete_post_meta( $post_id, 'cfgp-banner-location-region' );
-		}
-		
-		if( $city = CFGP_Options::sanitize( CFGP_U::request('cfgp-banner-location-city', []) ) ) {
-			update_post_meta( $post_id, 'cfgp-banner-location-city', $city);
-		} else {
-			delete_post_meta( $post_id, 'cfgp-banner-location-city' );
-		}
-		
-		if( $postcode = CFGP_Options::sanitize( CFGP_U::request('cfgp-banner-location-postcode', []) ) ) {
-			update_post_meta( $post_id, 'cfgp-banner-location-postcode', $postcode);
-		} else {
-			delete_post_meta( $post_id, 'cfgp-banner-location-postcode' );
-		}
-		
-		wp_set_post_terms( $post_id, '', 'cf-geoplugin-country' );
-		wp_set_post_terms( $post_id, '', 'cf-geoplugin-region' );
-		wp_set_post_terms( $post_id, '', 'cf-geoplugin-city' );
-		wp_set_post_terms( $post_id, '', 'cf-geoplugin-postcode' );
 	}
 	
 	/**
@@ -300,86 +286,92 @@ LIMIT 1
 	 * @since    4.0.0
 	 */
 	public function columns_banner_content($column_name, $post_ID) {
-		$url=CFGP_U::parse_url();
-		if(strpos($url['url'],'post_type=cf-geoplugin-banner')!==false)
-		{
+		$url = CFGP_U::parse_url();
+		if (strpos($url['url'], 'post_type=cf-geoplugin-banner') === false) {
+			return;
+		}
 
-			if ($column_name == 'cf_geo_banner_shortcode')
-			{
+		switch ($column_name) {
+			case 'cf_geo_banner_shortcode':
 				echo '<ul>';
 				echo '<li><strong>' . __('Standard', 'cf-geoplugin') . ':</strong><br><code>[cfgeo_banner id="' . esc_attr($post_ID) . '"]</code></li>';
 				echo '<li><strong>' . __('Advanced', 'cf-geoplugin') . ':</strong><br><code>[cfgeo_banner id="' . esc_attr($post_ID) . '"]' . __('Default content', 'cf-geoplugin') . '[/cfgeo_banner]</code></li>';
 				echo '</ul>';
+				break;
+
+			case 'cf_geo_banner_locations':
+				$fields = [
+					__('Countries', 'cf-geoplugin') => 'country',
+					__('Regions', 'cf-geoplugin') => 'region',
+					__('Cities', 'cf-geoplugin') => 'city',
+					__('Postcodes', 'cf-geoplugin') => 'postcode'
+				];
+				$print = [];
+
+				foreach ($fields as $name => $field) {
+					$data = get_post_meta($post_ID, "cfgp-banner-location-{$field}", true);
+
+					if ($data) {
+						$formatted = $this->formatData($field, $data);
+						$print[] = '<li><strong>' . esc_html($name) . ':</strong><br>' . join(', ', $formatted) . '</li>';
+					}
+				}
+
+				if (empty($print)) {
+					$print = $this->fetchTaxonomyData($post_ID);
+				}
+
+				echo empty($print) ? '( ' . __('undefined', 'cf-geoplugin') . ' )' : '<ul>' . join("\r\n", $print) . '</ul>';
+				break;
+		}
+	}
+
+	/**
+     * Format data
+     */
+	private function formatData($field, $data) {
+		switch ($field) {
+			case 'country':
+				return array_map('strtoupper', $data);
+
+			case 'region':
+			case 'city':
+				return array_map(function ($match) {
+					return ucwords(str_replace('-', ' ', $match));
+				}, $data);
+
+			default:
+				return $data;
+		}
+	}
+
+	/**
+     * Fetch taxonomy data
+     */
+	private function fetchTaxonomyData($post_ID) {
+		$taxonomies = [
+			__('Countries', 'cf-geoplugin') => 'cf-geoplugin-country',
+			__('Regions', 'cf-geoplugin') => 'cf-geoplugin-region',
+			__('Cities', 'cf-geoplugin') => 'cf-geoplugin-city',
+			__('Postcode', 'cf-geoplugin') => 'cf-geoplugin-postcode'
+		];
+		$print = [];
+
+		foreach ($taxonomies as $name => $taxonomy) {
+			$terms = wp_get_post_terms($post_ID, $taxonomy, ['fields' => 'all']);
+			$links = [];
+
+			foreach ($terms as $term) {
+				$editLink = get_edit_term_link($term->term_id, $taxonomy, 'cf-geoplugin-banner');
+				$links[] = '<a href="' . esc_url($editLink) . '">' . esc_html($term->name . (empty($term->description) ? '' : " ({$term->description})")) . '</a>';
 			}
-			else if ($column_name == 'cf_geo_banner_locations')
-			{				
-				$print=[];
-				
-				foreach(array(
-					__('Countries', 'cf-geoplugin')	=>	'country',
-					__('Regions', 'cf-geoplugin')	=>	'region',
-					__('Cities', 'cf-geoplugin')	=>	'city',
-					__('Postcodes', 'cf-geoplugin')	=>	'postcode'
-				) as $name=>$field)
-				{
-					$get_post_meta = get_post_meta($post_ID, "cfgp-banner-location-{$field}", true);
-					
-					if(!empty($get_post_meta))
-					{
-						if($field == 'country') {
-							$get_post_meta = array_map('strtoupper', $get_post_meta);
-						} else if(in_array($field, array('region','city'))) {
-							$get_post_meta = array_map(function($match){
-								$new_name = explode('-', $match);
-								$new_name = array_map('ucfirst', $new_name);
-								return join(' ', $new_name);
-							}, $get_post_meta);
-						}
-					
-						$print[]='<li><strong>' . esc_html($name) . ':</strong><br>';
-							$print[]=join(', ', $get_post_meta);
-						$print[]='<li>';
-					}
-				}
-				
-				if(empty($print))
-				{
-					// list taxonomies
-					foreach(array(
-						__('Countries', 'cf-geoplugin')	=>	'cf-geoplugin-country',
-						__('Regions', 'cf-geoplugin')		=>	'cf-geoplugin-region',
-						__('Cities', 'cf-geoplugin')		=>	'cf-geoplugin-city',
-						__('Postcode', 'cf-geoplugin')	=>	'cf-geoplugin-postcode'
-					) as $name=>$taxonomy)
-					{
-						// list all terms
-						$all_terms = wp_get_post_terms($post_ID, $taxonomy, array('fields' => 'all'));
-						$part=[];
-						foreach($all_terms as $i=>$fetch)
-						{
-							$edit_link = get_edit_term_link( $fetch->term_id, $taxonomy, 'cf-geoplugin-banner' );
-							$part[]='<a href="' . esc_url($edit_link) . '">' . esc_html($fetch->name . ( !empty($fetch->description) ? ' (' . $fetch->description . ')' : NULL )) . '</a>';
-						}
-						if(count($part)>0)
-						{
-							$print[]='<li><strong>' . esc_html($name) . ':</strong><br>';
-								$print[]=join(', ', $part);
-							$print[]='<li>';
-						}
-					}
-				}
-				
-				// print terms
-				if(count($print)>0)
-				{
-					echo wp_kses_post('<ul>'.join("\r\n", $print).'</ul>');
-				}
-				else
-				{
-					echo '( ' . __('undefined', 'cf-geoplugin') . ' )';
-				}
+
+			if ($links) {
+				$print[] = '<li><strong>' . esc_html($name) . ':</strong><br>' . join(', ', $links) . '</li>';
 			}
 		}
+
+		return $print;
 	}
 	
 	/**

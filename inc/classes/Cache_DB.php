@@ -37,55 +37,39 @@ if(!class_exists('CFGP_DB_Cache', false)) : class CFGP_DB_Cache {
 	 *
 	 * Returns the value of the cached object, or false if the cache key doesn’t exist
 	 */
-	public static function get( string $key, $default=NULL ) {
+	public static function get(string $key, $default=NULL) {
 		$key = self::key($key);
+
 		
-		if (array_key_exists($key, self::$cache)) {
-			return self::$cache[$key];
-		}
-		
-		if( self::has_redis() ) {
-			if( false !== ( $transient = wp_cache_get( $key, 'CFGP_DB_Cache' ) ) ) {
-				if(is_serialized($transient) || self::is_serialized($transient)){
-					$transient = unserialize($transient);
-				}
-				self::$cache[$key] = $transient;
-			} else {
-				self::$cache[$key] = $default;
-			}
-			
+		if (isset(self::$cache[$key])) {
 			return self::$cache[$key];
 		}
 
-		if( !self::table_exists() ) {
-			if( $transient = get_transient( $key ) ) {
-				self::$cache[$key] = $transient;
+		global $wpdb;
+
+		
+		if(self::has_redis()) {
+			$transient = wp_cache_get($key, 'CFGP_DB_Cache');
+			if ($transient === false) {
+				self::$cache[$key] = $default;
+			} else {
+				self::$cache[$key] = (is_serialized($transient) || self::is_serialized($transient)) ? unserialize($transient) : $transient;
+			}
+		} 
+		
+		else if(!self::table_exists()) {
+			$transient = get_transient($key);
+			self::$cache[$key] = $transient ?: $default;
+		}
+		
+		else {
+			$result = $wpdb->get_var($wpdb->prepare("SELECT `{$wpdb->cfgp_cache}`.`value` FROM `{$wpdb->cfgp_cache}` WHERE `{$wpdb->cfgp_cache}`.`key` = %s", $key));
+			if($result) {
+				self::$cache[$key] = (is_serialized($result) || self::is_serialized($result)) ? unserialize($result) : $result;
 			} else {
 				self::$cache[$key] = $default;
 			}
-			
-			return self::$cache[$key];
 		}
-		
-		global $wpdb;
-		
-		if( !empty($key) && ($result = $wpdb->get_var( $wpdb->prepare("
-			SELECT
-				`{$wpdb->cfgp_cache}`.`value`
-			FROM
-				`{$wpdb->cfgp_cache}`
-			WHERE
-				`{$wpdb->cfgp_cache}`.`key` = %s
-		", $key ))) ) {
-			if(is_serialized($result) || self::is_serialized($result)){
-				$result = unserialize($result);
-			}
-			self::$cache[$key] = $result;
-			
-			return self::$cache[$key];
-		}
-		
-		self::$cache[$key] = $default;
 		
 		return self::$cache[$key];
 	}
@@ -98,43 +82,39 @@ if(!class_exists('CFGP_DB_Cache', false)) : class CFGP_DB_Cache {
 	 */
     public static function add(string $key, $value, int $expire = 0) {
 		
-		$key = self::key($key);
-		
-		if(self::get($key, NULL) === NULL) {
-
-			if( self::has_redis() ) {
-				$save = wp_cache_set($key, $value, 'CFGP_DB_Cache', $expire);
-			} else {
-				if( !self::table_exists() ) {
-					$save = set_transient( $key, $value, $expire );
-				} else {
-					if($expire > 0) {
-						$expire = (time()+$expire);
-					}
-					
-					if(is_array($value) || is_object($value) || is_bool($value)){
-						$value = serialize($value);
-					}
-					
-					global $wpdb;
-					
-					$save = $wpdb->query( $wpdb->prepare("
-						INSERT IGNORE INTO `{$wpdb->cfgp_cache}` (`key`, `value`, `expire`)
-						VALUES (%s, %s, %d)
-					", $key, $value, $expire ));
-				}
-			}
-			
-			if($save && !is_wp_error($save)){
-				self::$cache[$key] = $value;
-				return self::$cache[$key];
-			}
-			
-			return NULL;
+		if(self::get($key, NULL) !== NULL) {
+			return false;
 		}
 		
-		return false;
-    }
+		$key = self::key($key);
+
+		global $wpdb;
+
+		if(self::has_redis()) {
+			$save = wp_cache_set($key, $value, 'CFGP_DB_Cache', $expire);
+		} 
+
+		else if(!self::table_exists()) {
+			$save = set_transient($key, $value, $expire);
+		} 
+
+		else {
+			$expire = ($expire > 0) ? (time()+$expire) : $expire;
+			
+			if(is_array($value) || is_object($value) || is_bool($value)) {
+				$value = serialize($value);
+			}
+			
+			$save = $wpdb->query($wpdb->prepare("INSERT IGNORE INTO `{$wpdb->cfgp_cache}` (`key`, `value`, `expire`) VALUES (%s, %s, %d)", $key, $value, $expire));
+		}
+		
+		if($save && !is_wp_error($save)){
+			self::$cache[$key] = $value;
+			return self::$cache[$key];
+		}
+		
+		return NULL;
+	}
 	
 	/*
 	 * Save object to cache
@@ -189,45 +169,45 @@ if(!class_exists('CFGP_DB_Cache', false)) : class CFGP_DB_Cache {
 	 * Replaces the given cache if it exists, returns NULL otherwise.
 	 */
     public static function replace(string $key, $value, int $expire=0) {
-		
-		if( empty($value) ) {
+
+		// If value is empty, delete the cache and return NULL
+		if(empty($value)) {
 			sef::delete($key);
 			return NULL;
 		}
 		
 		$key = self::key($key);
-		
-		if( self::has_redis() ) {
+
+		global $wpdb;
+
+		// If Redis is available
+		if(self::has_redis()) {
 			$save = wp_cache_set($key, $value, 'CFGP_DB_Cache', $expire);
-		} else {
-			if( !self::table_exists() ) {
-				$save = set_transient( $key, $value, $expire );
-			} else {
-				if($expire > 0) {
-					$expire = (time()+$expire);
-				}
-				
-				if(is_array($value) || is_object($value) || is_bool($value)){
-					$value = serialize($value);
-				}
-				
-				global $wpdb;
-				
-				$save = $wpdb->query( $wpdb->prepare("
-					UPDATE `{$wpdb->cfgp_cache}`
-					SET `value` = %s, `expire` = %d
-					WHERE `key` = %s
-				", $value, $expire, $key ));
-			}
-		}
+		} 
+		// If table doesn't exist
+		else if(!self::table_exists()) {
+			$save = set_transient($key, $value, $expire);
+		} 
+		// Save to DB
+		else {
+			$expire = ($expire > 0) ? (time() + $expire) : $expire;
 			
-		if($save && !is_wp_error($save)){
+			$value = (is_array($value) || is_object($value) || is_bool($value)) ? serialize($value) : $value;
+
+			$save = $wpdb->query($wpdb->prepare(
+				"UPDATE `{$wpdb->cfgp_cache}` SET `value` = %s, `expire` = %d WHERE `key` = %s",
+				$value, $expire, $key
+			));
+		}
+
+		// If saved successfully, update cache and return the value
+		if($save && !is_wp_error($save)) {
 			self::$cache[$key] = $value;
 			return self::$cache[$key];
 		}
-		
+
 		return NULL;
-    }
+	}
 	
 	/*
 	 * Delete cached object
@@ -311,7 +291,7 @@ if(!class_exists('CFGP_DB_Cache', false)) : class CFGP_DB_Cache {
 	 * @verson    1.0.1
 	 */
 	public static function has_redis() {
-		return CFGP_Options::get('enable_redis_cache', 0) !== 0;
+		return CFGP_Options::get('enable_redis_cache', 0) !== 0 && extension_loaded('redis');
 	}
 	
 	/*
@@ -320,15 +300,10 @@ if(!class_exists('CFGP_DB_Cache', false)) : class CFGP_DB_Cache {
 	 */
 	protected static $has_memcache = NULL;
 	public static function has_memcache() {
-		
-		if( NULL === self::$has_memcache ) {
-			if( apply_filters('cfgp_enable_memcache', true) ) {
-				self::$has_memcache = class_exists('Memcached', false);
-			} else {
-				self::$has_memcache = false;
-			}
+		if (self::$has_memcache === NULL) {
+			self::$has_memcache = apply_filters('cfgp_enable_memcache', true) && class_exists('Memcached', false);
 		}
-		
+
 		return self::$has_memcache;
 	}
 	

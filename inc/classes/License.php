@@ -328,7 +328,14 @@ class CFGP_License extends CFGP_Global{
 			<?php endforeach; ?>
 			<?php
 			CFGP_DB_Cache::delete('cfgp-license-response-errors');
-			printf('<div class="notice notice-error is-dismissible">%s</div>', ob_get_clean());
+			
+			$notice = '';
+			if (ob_get_level()) {
+				$notice = ob_get_contents();
+				ob_end_clean();
+			}
+			
+			printf('<div class="notice notice-error is-dismissible">%s</div>', $notice);
 		}
 		
 		return;
@@ -347,7 +354,14 @@ class CFGP_License extends CFGP_Global{
             <p><?php echo wp_kses_post( $response ?? '' ); ?></p>
 			<?php
 			CFGP_DB_Cache::delete('cfgp-license-response-success');
-			printf('<div class="notice notice-success is-dismissible">%s</div>', ob_get_clean());
+			
+			$notice = '';
+			if (ob_get_level()) {
+				$notice = ob_get_contents();
+				ob_end_clean();
+			}
+			
+			printf('<div class="notice notice-success is-dismissible">%s</div>', $notice);
 		}
 		
 		return;

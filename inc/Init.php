@@ -316,8 +316,6 @@ if(!class_exists('CFGP_Init', false)) : final class CFGP_Init{
 			}
 			// Install databases
 			self::install_update_database();
-			// Synchronize with old version of the plugin
-			CFGP_Options::sync_with_the_old_version_of_the_plugin();
 			// Update plugin version
 			update_option(CFGP_NAME . '-version', CFGP_VERSION, false);
 		});
@@ -349,8 +347,6 @@ if(!class_exists('CFGP_Init', false)) : final class CFGP_Init{
 				}
 				// Install databases
 				self::install_update_database();
-				// Synchronize with old version of the plugin
-				CFGP_Options::sync_with_the_old_version_of_the_plugin();
 				// Update plugin version
 				update_option(CFGP_NAME . '-version', CFGP_VERSION, false);
 				// WP Refresh

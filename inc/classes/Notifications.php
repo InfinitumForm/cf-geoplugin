@@ -631,7 +631,15 @@ if(!class_exists('CFGP_Notifications', false)) : class CFGP_Notifications extend
       </tr>
     </table>
   </body>
-</html><?php return ob_get_clean();
+</html><?php
+
+		$html = '';
+		if (ob_get_level()) {
+			$html = ob_get_contents();
+			ob_end_clean();
+		}
+		
+		return $html;
 	}
 	
 	/*

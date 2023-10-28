@@ -309,31 +309,23 @@ class CFGP_API extends CFGP_Global {
 	 */
 	public static function remove_cache(){
 		global $wpdb;
-		
-		// Remove plugins cache
-		if ( is_multisite() && is_main_site() && is_main_network() ) {
-			$wpdb->query("DELETE FROM
-				`{$wpdb->sitemeta}`
-			WHERE (
-					`{$wpdb->sitemeta}`.`option_name` LIKE '_site_transient_cfgp-api-%'
-				OR
-					`{$wpdb->sitemeta}`.`option_name` LIKE '_site_transient_timeout_cfgp-api-%'
-			)");
-			} else {
-			$wpdb->query("DELETE FROM
-				`{$wpdb->options}`
-			WHERE (
-					`{$wpdb->sitemeta}`.`option_name` LIKE '_transient_cfgp-api-%'
-				OR
-					`{$wpdb->sitemeta}`.`option_name` LIKE '_transient_timeout_cfgp-api-%'
-				OR
-					`{$wpdb->sitemeta}`.`option_name` LIKE '_site_transient_cfgp-api-%'
-				OR
-					`{$wpdb->sitemeta}`.`option_name` LIKE '_site_transient_timeout_cfgp-api-%'
-			)");
-		}
-		
-		CFGP_Cache::delete( 'API' );
+
+		// Determine the table and column name based on the site type.
+		$table_name = (is_multisite() && is_main_site() && is_main_network()) ? $wpdb->sitemeta : $wpdb->options;
+		$column_name = (is_multisite() && is_main_site() && is_main_network()) ? 'meta_key' : 'option_name';
+
+		// Create the SQL statement.
+		$sql = "DELETE FROM `{$table_name}`
+				WHERE `{$column_name}` LIKE '_transient_cfgp-api-%'
+				   OR `{$column_name}` LIKE '_transient_timeout_cfgp-api-%'
+				   OR `{$column_name}` LIKE '_site_transient_cfgp-api-%'
+				   OR `{$column_name}` LIKE '_site_transient_timeout_cfgp-api-%'";
+
+		// Execute the SQL statement.
+		$wpdb->query($sql);
+
+		// Clear the related cache.
+		CFGP_Cache::delete('API');
 	}
 	
 
