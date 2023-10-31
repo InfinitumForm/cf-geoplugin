@@ -1,5 +1,9 @@
 == Changelog ==
 
+= 8.6.3 =
+* Fixed metabox bugs
+* Fixed data serializations
+
 = 8.6.2 =
 * Fixed internal buffer
 * Optimized options

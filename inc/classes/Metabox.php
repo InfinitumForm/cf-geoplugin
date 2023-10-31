@@ -577,11 +577,22 @@ function CF_GeoPlugin_Google_Map_GeoTag() {
 	 */
 	public function register_style(){
 		$screen = get_current_screen();
+		
+		$enable_seo_posts = CFGP_Options::get('enable_seo_posts', []);
+		if( !is_array($enable_seo_posts) ) {
+			$enable_seo_posts = [];
+		}
+		
+		$enable_geo_tag = CFGP_Options::get('enable_geo_tag', []);
+		if( !is_array($enable_geo_tag) ) {
+			$enable_geo_tag = [];
+		}
+		
 		if(
 			isset( $screen->post_type )
 			&& (
-				in_array($screen->post_type, CFGP_Options::get('enable_seo_posts', []))
-				|| in_array($screen->post_type, CFGP_Options::get('enable_geo_tag', []))
+				in_array($screen->post_type, $enable_seo_posts)
+				|| in_array($screen->post_type, $enable_geo_tag)
 				|| $screen->post_type === 'cf-geoplugin-banner'
 			)
 		){

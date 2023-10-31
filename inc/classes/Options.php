@@ -40,17 +40,17 @@ if(!class_exists('CFGP_API', false)) : class CFGP_Options
 
 		// If name is not provided, return all options
 		if ($name === false) {
-			return apply_filters('cfgp/options/get', $options, $default, $name);
+			return apply_filters('cfgp/options/get', maybe_unserialize($options), $default, $name);
 		}
 
 		// If the requested option exists
 		if (isset($options[$name])) {
 			// Check for beta options and if they're enabled
 			if (in_array($name, CFGP_Defaults::BETA_OPTIONS) && (!isset($options['enable_beta']) || $options['enable_beta'] == 0)) {
-				return apply_filters('cfgp/options/get', $options, $default, $name);
+				return apply_filters('cfgp/options/get', maybe_unserialize($options), $default, $name);
 			}
 
-			return apply_filters('cfgp/option/get', $options[$name] ?? $default, $default, $name);
+			return apply_filters('cfgp/option/get', maybe_unserialize($options[$name] ?? $default), $default, $name);
 		}
 
 		return apply_filters('cfgp/options/get', $default, $default);
