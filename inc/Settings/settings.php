@@ -114,7 +114,7 @@ switch($input['type'])
 
 	### CHECKBOX
 	case 'checkbox': 
-	$default = CFGP_Options::get($input['name'], (isset($input['default']) ? $input['default'] : []));
+	$default = CFGP_Options::get($input['name'], (isset($input['default']) && is_array($input['default']) ? $input['default'] : []));
 	if(isset($input['options'])) : ?>
 	<input type="hidden" name="<?php
 	  echo esc_attr(CFGP_NAME);

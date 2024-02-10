@@ -54,7 +54,8 @@ if(!class_exists('CFGP_Geo_Banner', false)) : class CFGP_Geo_Banner extends CFGP
 			'class'				=>	sanitize_text_field(CFGP_U::request_string('class'))
 		);
 		
-		$cont = urldecode(base64_decode(sanitize_text_field(CFGP_U::request_string('default'))));
+		$cont = stripslashes(urldecode(sanitize_text_field(CFGP_U::request_string('default'))));
+		$cont = json_decode($cont, true);
 		
 		// Stop if ID is not good
 		if( ! (intval($setup['id']) > 0) ) {

@@ -688,7 +688,7 @@ LIMIT 1
 				. ($cache ? ' data-posts_per_page="' . esc_attr($posts_per_page) . '"' : '')
 				. ($cache ? ' data-class="' . esc_attr($class) . '"' : '')
 				. ($cache ? ' data-exact="' . esc_attr($exact ? 1 : 0) . '"' : '')
-				. ($cache ? ' data-default="' . esc_attr(base64_encode(urlencode($cont))) . '"' : '')
+				. ($cache ? ' data-default="' . esc_attr(json_encode(urlencode($cont))) . '"' : '')
 			
 			. '>' . wp_kses_post($post->post_content) . '</div>';
 		}
@@ -712,7 +712,7 @@ LIMIT 1
 				. ($cache ? ' data-posts_per_page="' . esc_attr($posts_per_page) . '"' : '')
 				. ($cache ? ' data-class="' . esc_attr($class) . '"' : '')
 				. ($cache ? ' data-exact="' . esc_attr($exact ? 1 : 0) . '"' : '')
-				. ($cache ? ' data-default="' . esc_attr(base64_encode(urlencode($cont))) . '"' : '')
+				. ($cache ? ' data-default="' . esc_attr(json_encode(urlencode($cont))) . '"' : '')
 			
 			. '>' . wp_kses_post($cont) . '</div>',
 			$cache
@@ -1135,9 +1135,9 @@ LIMIT 1
 				<div class="cfgp-currency-converter-card-body">
 					<?php 
 						$title = isset( $instance['title'] ) && !empty( $instance['title'] ) ? esc_html( $instance['title'] ) : '';
-						echo html_entity_decode($instance['before_title']);
+						echo wp_kses_post(html_entity_decode($instance['before_title']));
 						printf( '%s', apply_filters( 'widget_title', $title ) ); 
-						echo html_entity_decode ($instance['after_title']);
+						echo wp_kses_post(html_entity_decode ($instance['after_title']));
 					?>
 					<div class="cfgp-row">
 						<div class="cfgp-col-12">
@@ -1907,7 +1907,7 @@ LIMIT 1
 				'<span class="cf-geoplugin-shortcode cf-geoplugin-shortcode-%1$s cache" data-type="%1$s" data-options="%2$s" data-default="%3$s" data-nonce="%4$s">%5$s</span>',
 				esc_attr($shortcode),
 				empty($options) ? '' : esc_attr(base64_encode(urlencode(serialize($options)))),
-				esc_attr(base64_encode(urlencode($default))),
+				esc_attr(json_encode(urlencode($default))),
 				wp_create_nonce( 'cfgeo-process-cache-ajax' ),
 				wp_kses_post($content)
 			);
@@ -1927,7 +1927,10 @@ LIMIT 1
 
 	//	if( !(strpos($shortcode, 'cfgeo') !== false) ) echo 'false', exit;
 		
-		$options = unserialize(urldecode(base64_decode(sanitize_text_field(CFGP_U::request_string('options')))));
+		$options = unserialize(
+			urldecode(base64_decode(sanitize_text_field(CFGP_U::request_string('options')))),
+			['allowed_classes' => false]
+		);
 		
 		
 		$attr = [];
@@ -1945,8 +1948,9 @@ LIMIT 1
 		$attr = (!empty($attr) ? ' ' . join(' ', $attr) : '');
 		
 		if($default = CFGP_U::request_string('default')) {
-			$content = urldecode(base64_decode(sanitize_text_field($default)));
-			$content = trim($content);
+			$content = stripslashes(urldecode(sanitize_text_field($default)));
+			$content = json_decode($content, true);			
+			$content = wp_kses_post($content);			
 			$default = $content;
 		} else {
 			$default = $content = '';

@@ -495,7 +495,10 @@ if(!class_exists('CFGP_REST', false)) : class CFGP_REST extends CFGP_Global {
 						);
 					}
 					
-					$options = unserialize(urldecode(base64_decode(sanitize_text_field(CFGP_U::request_string('options')))));
+					$options = unserialize(
+						urldecode(base64_decode(sanitize_text_field(CFGP_U::request_string('options')))),
+						['allowed_classes' => false]
+					);
 					
 					$attr = [];
 					if(!empty($options) && is_array($options))
@@ -512,8 +515,9 @@ if(!class_exists('CFGP_REST', false)) : class CFGP_REST extends CFGP_Global {
 					$attr = (!empty($attr) ? ' ' . join(' ', $attr) : '');
 					
 					if($default = CFGP_U::request_string('default')) {
-						$content = urldecode(base64_decode(sanitize_text_field($default)));
-						$content = trim($content);
+						$content = stripslashes(urldecode(sanitize_text_field($default)));
+						$content = json_decode($content, true);			
+						$content = wp_kses_post($content);			
 						$default = $content;
 					} else {
 						$default = $content = '';
@@ -601,7 +605,8 @@ if(!class_exists('CFGP_REST', false)) : class CFGP_REST extends CFGP_Global {
 						'class'				=>	sanitize_text_field(CFGP_U::request_string('class'))
 					);
 					
-					$cont = urldecode(base64_decode(sanitize_text_field(CFGP_U::request_string('default'))));
+					$cont = stripslashes(urldecode(sanitize_text_field(CFGP_U::request_string('default'))));
+					$cont = json_decode($cont, true);
 					
 					// Stop if ID is not good
 					if( ! (intval($setup['id']) > 0) ) {
