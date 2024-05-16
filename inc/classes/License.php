@@ -198,7 +198,7 @@ class CFGP_License extends CFGP_Global{
 	 |                                                                                      |
 	 | Cheers!                                                                              |
 	 |                                                                                      |
-	 | Contact: https://cfgeoplugin.com/get-involved                                        |
+	 | Contact: https://wpgeocontroller.com/get-involved                                        |
 	 +======================================================================================+
 	 */
 	public static function activated(){
@@ -738,7 +738,7 @@ class CFGP_License extends CFGP_Global{
 				'title' => 'Geolocation Basic Services',
 				'slug' => 'cf-geo-plugin-basic-license',
 				'sku' => 'CFGEO1M',
-				'url' => 'https://cfgeoplugin.com/license/cf-geo-plugin-basic-license',
+				'url' => 'https://wpgeocontroller.com/license/cf-geo-plugin-basic-license',
 				'price' => array(
 					'amount' => 15,
 					'regular' => 20,
@@ -756,7 +756,7 @@ class CFGP_License extends CFGP_Global{
 				'title' => 'Geolocation Personal Services',
 				'slug' => 'cf-geo-plugin-unlimited-personal-license',
 				'sku' => 'CFGEOSWL',
-				'url' => 'https://cfgeoplugin.com/license/cf-geo-plugin-unlimited-personal-license',
+				'url' => 'https://wpgeocontroller.com/license/cf-geo-plugin-unlimited-personal-license',
 				'price' => array(
 					'amount' => 62,
 					'regular' => 89,
@@ -774,7 +774,7 @@ class CFGP_License extends CFGP_Global{
 				'title' => 'Geolocation Freelancer Services',
 				'slug' => 'cf-geo-plugin-unlimited-freelancer-license',
 				'sku' => 'CFGEO3WL',
-				'url' => 'https://cfgeoplugin.com/license/cf-geo-plugin-unlimited-freelancer-license',
+				'url' => 'https://wpgeocontroller.com/license/cf-geo-plugin-unlimited-freelancer-license',
 				'price' => array(
 					'amount' => 82,
 					'regular' => 132,
@@ -792,7 +792,7 @@ class CFGP_License extends CFGP_Global{
 				'title' => 'Geolocation Business Services',
 				'slug' => 'cf-geo-plugin-unlimited-business-license',
 				'sku' => 'CFGEODWL',
-				'url' => 'https://cfgeoplugin.com/license/cf-geo-plugin-unlimited-business-license',
+				'url' => 'https://wpgeocontroller.com/license/cf-geo-plugin-unlimited-business-license',
 				'price' => array(
 					'amount' => 349,
 					'regular' => 499,
@@ -810,7 +810,7 @@ class CFGP_License extends CFGP_Global{
 				'title' => 'Geolocation Lifetime Services',
 				'slug' => 'geolocation-lifetime-services',
 				'sku' => 'LIFETIME',
-				'url' => 'https://cfgeoplugin.com/license/geolocation-lifetime-services',
+				'url' => 'https://wpgeocontroller.com/license/geolocation-lifetime-services',
 				'price' => array(
 					'amount' => 1499,
 					'regular' => 1499,

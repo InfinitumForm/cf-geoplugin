@@ -113,8 +113,8 @@ add_action('cfgp/page/license/sidebar', function(){ if( CFGP_U::api('available_l
 ); ?></p>
 			<p><?php printf(
             __('Do not forget that by purchasing and using the license you have agreed to our %2$s in accordance with the %1$s.'),
-            '<strong><a href="https://cfgeoplugin.com/privacy-policy/" target="_blank">' . __('Privacy Policy', 'cf-geoplugin') . '</a></strong>',
-            '<strong><a href="https://cfgeoplugin.com/terms-and-conditions/" target="_blank">' . __('Terms & Conditions', 'cf-geoplugin') . '</a></strong>'
+            '<strong><a href="https://wpgeocontroller.com/privacy-policy/" target="_blank">' . __('Privacy Policy', 'cf-geoplugin') . '</a></strong>',
+            '<strong><a href="https://wpgeocontroller.com/terms-and-conditions/" target="_blank">' . __('Terms & Conditions', 'cf-geoplugin') . '</a></strong>'
         ); ?></p>
 		<?php elseif(CFGP_U::api('available_lookup') === 'unlimited') : ?>
 		<p style="font-weight:600;"><?php _e('An update error occurred and your license was not recorded on your server.'); ?></p>
@@ -126,12 +126,12 @@ add_action('cfgp/page/license/sidebar', function(){ if( CFGP_U::api('available_l
             
             '<strong>'.esc_html(CFGP_LIMIT).'</strong>',
             '<strong>'.esc_html(CFGP_U::api('available_lookup')).'</strong>',
-            '<strong><a href="https://cfgeoplugin.com/documentation/quick-start/what-do-i-get-from-unlimited-license" target="_blank">' . __('this article', 'cf-geoplugin') . '</a></strong>'
+            '<strong><a href="https://wpgeocontroller.com/documentation/quick-start/what-do-i-get-from-unlimited-license" target="_blank">' . __('this article', 'cf-geoplugin') . '</a></strong>'
         ); ?></p>
         <p><?php printf(
             __('Before any action don\'t forget to read and agree with %1$s and %2$s.'),
-            '<strong><a href="https://cfgeoplugin.com/privacy-policy/" target="_blank">' . __('Privacy Policy', 'cf-geoplugin') . '</a></strong>',
-            '<strong><a href="https://cfgeoplugin.com/terms-and-conditions/" target="_blank">' . __('Terms & Conditions', 'cf-geoplugin') . '</a></strong>'
+            '<strong><a href="https://wpgeocontroller.com/privacy-policy/" target="_blank">' . __('Privacy Policy', 'cf-geoplugin') . '</a></strong>',
+            '<strong><a href="https://wpgeocontroller.com/terms-and-conditions/" target="_blank">' . __('Terms & Conditions', 'cf-geoplugin') . '</a></strong>'
         ); ?></p>
         <?php endif; ?>
 	</div>

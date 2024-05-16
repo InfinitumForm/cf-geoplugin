@@ -27,7 +27,7 @@ if( function_exists('wp_admin') ) {
 
 // Main website
 if (!defined('CFGP_STORE')) {
-    define('CFGP_STORE', 'https://cfgeoplugin.com');
+    define('CFGP_STORE', 'https://wpgeocontroller.com');
 }
 
 // Main website code

@@ -1,5 +1,10 @@
 == Changelog ==
 
+= 8.6.6 =
+* Moved to new domain wpgeocontroller.com
+* Fixed timezone issue
+* Fixed licensing
+
 = 8.6.5 =
 * IMPORTANT UPDATE
 * Enhanced security measures

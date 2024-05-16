@@ -3,9 +3,9 @@ Contributors: ivijanstefan, creativform
 Donate link: https://www.buymeacoffee.com/ivijanstefan
 Tags: Geo Location, WordPress Geolocation Plugin, Location-Based Personalization, User Location Detection, SEO Optimization, Spam Protection, TOR, tor network, tor detection
 Requires at least: 6.0
-Tested up to: 6.4
+Tested up to: 6.5
 Requires PHP: 7.0
-Stable tag: 8.6.5
+Stable tag: 8.6.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -13,7 +13,7 @@ Enhance your WordPress site with Geo Controller - an all-in-one plugin providing
 
 == Description ==
 
-Geo Controller is a transformative WordPress plugin that enables comprehensive management and manipulation of geographic data on your website. This tool was previously known as **[CF Geo Plugin](https://cfgeoplugin.com/)**.
+Geo Controller is a transformative WordPress plugin that enables comprehensive management and manipulation of geographic data on your website. This tool was previously known as **[CF Geo Plugin](https://wpgeocontroller.com/)**.
 
 Essentially, it helps to personalize and enhance your website's usability based on the geographical location of the users. By doing so, it adds an element of personalization to your website that can significantly increase user engagement and site interaction.
 
@@ -33,9 +33,9 @@ Geo Controller's capabilities also stretch to legal compliance. It can filter ce
 
 = FREE AND PAID SERVICES =
 
-Geo Controller for WordPress is completely free! But, just like a superhero needs their trusty sidekick, Geo Controller also works with [paid services](https://cfgeoplugin.com/information/new-plugin-new-features-new-success/) that give you unlimited information about your website's visitors. However, for the free users, the API services are [limited to 1000 lookups](https://cfgeoplugin.com/documentation/quick-start/frequently-asked-questions/how-does-lookup-work) per day. But don't worry, if you want to take your location detection game to the next level, you can upgrade to UNLIMITED lookups by visiting our [official website](https://cfgeoplugin.com/pricing/).
+Geo Controller for WordPress is completely free! But, just like a superhero needs their trusty sidekick, Geo Controller also works with [paid services](https://wpgeocontroller.com/information/new-plugin-new-features-new-success/) that give you unlimited information about your website's visitors. However, for the free users, the API services are [limited to 1000 lookups](https://wpgeocontroller.com/documentation/quick-start/frequently-asked-questions/how-does-lookup-work) per day. But don't worry, if you want to take your location detection game to the next level, you can upgrade to UNLIMITED lookups by visiting our [official website](https://wpgeocontroller.com/pricing/).
 
-And the best part? We often have monthly promotions and discounts, so don't forget to check out our [pricing page](https://cfgeoplugin.com/pricing/) on the official website for more information.
+And the best part? We often have monthly promotions and discounts, so don't forget to check out our [pricing page](https://wpgeocontroller.com/pricing/) on the official website for more information.
 
 Geo Controller works as a [service](https://en.wikipedia.org/wiki/Software_as_a_service), so sit back, relax, and let the plugin do all the hard work for you.
 
@@ -146,7 +146,7 @@ We just found shoes in [cfgeo_city] that you can buy for 50% discount.
 
 = Usage & Example =
 
-To best understand how shortcodes work, it's best to [read the documentation](https://cfgeoplugin.com/documentation/quick-start/cf-geoplugin-shortcodes/).
+To best understand how shortcodes work, it's best to [read the documentation](https://wpgeocontroller.com/documentation/quick-start/cf-geoplugin-shortcodes/).
 
 But here are some simple examples:
 
@@ -250,9 +250,9 @@ or
 
 = Info & Contact =
 
-Please visit our website [www.cfgeoplugin.com](https://cfgeoplugin.com/) and feel free to contact us. We will provide for you all services that you need.
+Please visit our website [www.wpgeocontroller.com](https://wpgeocontroller.com/) and feel free to contact us. We will provide for you all services that you need.
 
-Also please inform us if any errors occur via contact form on our website [http://cfgeoplugin.com/](https://cfgeoplugin.com/contact).
+Also please inform us if any errors occur via contact form on our website [http://wpgeocontroller.com/](https://wpgeocontroller.com/contact).
 
 Thank you for your concern!
 
@@ -291,7 +291,7 @@ In summary, while Geo Controller aims to be compatible with most plugins, the sh
 
 Geo Controller uses a combination of free and paid services that return information about the locations.
 
-Geo Controller is free by itself but API lookup is limited to 1000 lookups per day for the free users. If you need to have UNLIMITED lookup with NO RESTRICTIONS, please visit [official website](https://cfgeoplugin.com/pricing/) for more information regarding prices.
+Geo Controller is free by itself but API lookup is limited to 1000 lookups per day for the free users. If you need to have UNLIMITED lookup with NO RESTRICTIONS, please visit [official website](https://wpgeocontroller.com/pricing/) for more information regarding prices.
 
 The reason for the payment of the license is obvious: -We have to pay the server we use to provide you information via API, development requires hours and hours of work at the daily level, the availability of the service must be 24/7 with no stop and for a lot of coffee.
 
@@ -303,7 +303,7 @@ Geo Controller is a geo information provider and we provide our own geo informat
 
 Note that Geo Controller DO NOT STORE any personal information without your knowledge and approval and not provide personal information to 3rd parties. Geo Controller not selling and not providing own databases to 3rd parties in any case. We handle only with world wide public information that is visible to anyone (client IP, server IP, hostname) and using simple processes we return geo information and following services.
 
-For more informations you visit [Terms and Conditions](https://cfgeoplugin.com/terms-and-conditions) and [Privacy Policy](https://cfgeoplugin.com/privacy-policy) pages on our [official website](https://cfgeoplugin.com).
+For more informations you visit [Terms and Conditions](https://wpgeocontroller.com/terms-and-conditions) and [Privacy Policy](https://wpgeocontroller.com/privacy-policy) pages on our [official website](https://wpgeocontroller.com).
 
 = How I can test Geo Controller is work on certain country, region or city? =
 
@@ -421,6 +421,11 @@ Please inform us if any of these errors occur via contact form on our website [h
 
 == Changelog ==
 
+= 8.6.6 =
+* Moved to new domain wpgeocontroller.com
+* Fixed timezone issue
+* Fixed licensing
+
 = 8.6.5 =
 * IMPORTANT UPDATE
 * Enhanced security measures
@@ -529,6 +534,11 @@ Please inform us if any of these errors occur via contact form on our website [h
 
 == Upgrade Notice ==
 
+= 8.6.6 =
+* Moved to new domain wpgeocontroller.com
+* Fixed timezone issue
+* Fixed licensing
+
 = 8.6.5 =
 * IMPORTANT UPDATE
 * Enhanced security measures
@@ -553,13 +563,13 @@ Please inform us if any of these errors occur via contact form on our website [h
 
 = Plugin Links =
 
-* [Geo Controller Website](https://cfgeoplugin.com/)
-* [Documentation](https://cfgeoplugin.com/documentation/)
-* [F.A.Q](https://cfgeoplugin.com/faq/)
-* [Blog](https://cfgeoplugin.com/blog/)
-* [Contact or Support](https://cfgeoplugin.com/contact/)
-* [Terms and Conditions](https://cfgeoplugin.com/terms-and-conditions)
-* [Privacy Policy](https://cfgeoplugin.com/privacy-policy)
+* [Geo Controller Website](https://wpgeocontroller.com/)
+* [Documentation](https://wpgeocontroller.com/documentation/)
+* [F.A.Q](https://wpgeocontroller.com/faq/)
+* [Blog](https://wpgeocontroller.com/blog/)
+* [Contact or Support](https://wpgeocontroller.com/contact/)
+* [Terms and Conditions](https://wpgeocontroller.com/terms-and-conditions)
+* [Privacy Policy](https://wpgeocontroller.com/privacy-policy)
 
 = DONATION =
 
@@ -569,13 +579,13 @@ Enjoy using *Geo Controller*? Please consider [making a small donation](https://
 
 BY INSTALLING THIS PLUGIN WE CONSIDER THAT YOU ARE AUTOMATICALLY ACCEPT TERMS AND CONDITIONS OF OUR SERVICES AND AGREE WITH THE PRIVACY POLICY.
 
-Please read these Terms and Conditions ("Terms", "Terms and Conditions") carefully before using the [www.cfgeoplugin.com](https://cfgeoplugin.com) website and the Geo Controller WordPress application (the "Service") operated by Geo Controller.
+Please read these Terms and Conditions ("Terms", "Terms and Conditions") carefully before using the [www.wpgeocontroller.com](https://wpgeocontroller.com) website and the Geo Controller WordPress application (the "Service") operated by Geo Controller.
 
-[Read about Terms and Conditions](https://cfgeoplugin.com/terms-and-conditions)
+[Read about Terms and Conditions](https://wpgeocontroller.com/terms-and-conditions)
 
 = PRIVACY POLICY =
-We respect your privacy and take protecting it seriously. This Privacy Policy covers our collection, use and disclosure of information we collect through our website and service, [www.cfgeoplugin.com](https://cfgeoplugin.com) owned and operated by Geo Controller. It also describes the choices available to you regarding our use of your personal information and how you can access and update this information. The use of information collected through our service shall be limited to the purpose of providing the service for which our Clients have engaged us. Also we respect and take care about Europe General Data Protection Regulation (GDPR) and your freedom and private choices.
+We respect your privacy and take protecting it seriously. This Privacy Policy covers our collection, use and disclosure of information we collect through our website and service, [www.wpgeocontroller.com](https://wpgeocontroller.com) owned and operated by Geo Controller. It also describes the choices available to you regarding our use of your personal information and how you can access and update this information. The use of information collected through our service shall be limited to the purpose of providing the service for which our Clients have engaged us. Also we respect and take care about Europe General Data Protection Regulation (GDPR) and your freedom and private choices.
 
-[Read about Privacy Policy](https://cfgeoplugin.com/privacy-policy)
+[Read about Privacy Policy](https://wpgeocontroller.com/privacy-policy)
 
 For further questions and clarifications, do not hesitate to contact us and we will reply back to you within 12-48 hours.

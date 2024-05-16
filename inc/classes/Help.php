@@ -34,13 +34,13 @@ if(!class_exists('CFGP_Help', false)) : class CFGP_Help extends CFGP_Global {
 	public function help__cf_geoplugin() {
 		ob_start(); ?>
 <ul>
-	<li><a href="https://cfgeoplugin.com/documentation/quick-start/how-to-use-cf-geoplugin" target="_blank"><?php _e('How to use Geo Controller', 'cf-geoplugin'); ?></a></li>
-	<li><a href="https://cfgeoplugin.com/documentation/quick-start/what-information-cf-geoplugin-returns" target="_blank"><?php _e('What Information Geo Controller returns?', 'cf-geoplugin'); ?></a></li>
-	<li><a href="https://cfgeoplugin.com/documentation/quick-start/cf-geoplugin-shortcodes" target="_blank"><?php _e('Geo Controller Shortcodes', 'cf-geoplugin'); ?></a></li>
-	<li><a href="https://cfgeoplugin.com/documentation/quick-start/cf-geo-plugin-tags" target="_blank"><?php _e('Geo Controller Tags', 'cf-geoplugin'); ?></a></li>
-	<li><a href="https://cfgeoplugin.com/documentation/quick-start/wordpress-geo-plugin-compatibility" target="_blank"><?php _e('Geo Controller Compatibility', 'cf-geoplugin'); ?></a></li>
-	<li><a href="https://cfgeoplugin.com/documentation/quick-start/what-do-i-get-from-unlimited-license" target="_blank"><?php _e('What do I get from Unlimited License', 'cf-geoplugin'); ?></a></li>
-	<li><a href="https://cfgeoplugin.com/documentation/quick-start/frequently-asked-questions" target="_blank"><?php _e('Frequently Asked Questions', 'cf-geoplugin'); ?></a></li>
+	<li><a href="https://wpgeocontroller.com/documentation/quick-start/how-to-use-cf-geoplugin" target="_blank"><?php _e('How to use Geo Controller', 'cf-geoplugin'); ?></a></li>
+	<li><a href="https://wpgeocontroller.com/documentation/quick-start/what-information-cf-geoplugin-returns" target="_blank"><?php _e('What Information Geo Controller returns?', 'cf-geoplugin'); ?></a></li>
+	<li><a href="https://wpgeocontroller.com/documentation/quick-start/cf-geoplugin-shortcodes" target="_blank"><?php _e('Geo Controller Shortcodes', 'cf-geoplugin'); ?></a></li>
+	<li><a href="https://wpgeocontroller.com/documentation/quick-start/cf-geo-plugin-tags" target="_blank"><?php _e('Geo Controller Tags', 'cf-geoplugin'); ?></a></li>
+	<li><a href="https://wpgeocontroller.com/documentation/quick-start/wordpress-geo-plugin-compatibility" target="_blank"><?php _e('Geo Controller Compatibility', 'cf-geoplugin'); ?></a></li>
+	<li><a href="https://wpgeocontroller.com/documentation/quick-start/what-do-i-get-from-unlimited-license" target="_blank"><?php _e('What do I get from Unlimited License', 'cf-geoplugin'); ?></a></li>
+	<li><a href="https://wpgeocontroller.com/documentation/quick-start/frequently-asked-questions" target="_blank"><?php _e('Frequently Asked Questions', 'cf-geoplugin'); ?></a></li>
 </ul>
 		<?php
 		
@@ -100,7 +100,7 @@ if(!class_exists('CFGP_Help', false)) : class CFGP_Help extends CFGP_Global {
 				<h3>' . __( 'SEO Redirection Setup', 'cf-geoplugin') . '</h3>
 				<p>' . __( 'In order to set the SEO redirection of your entire site you need to define the location from which you want to redirect your visitors to another location.', 'cf-geoplugin') . '</p>
 				<p>' . __( 'In the settings you can set the HTTP code that is sent to the browser and which is also understood by Google.', 'cf-geoplugin') . '</p>
-				<p>' . sprintf(__( 'This HTTP code is a key part of SEO settings because with it you can have complete control over your content. You can read more about HTTP codes in our article: %s', 'cf-geoplugin'), '<a href="https://cfgeoplugin.com/information/seo-redirection-in-wordpress" target="_blank">'.__('SEO Redirection in WordPress', 'cf-geoplugin').'</a>') . '</p>
+				<p>' . sprintf(__( 'This HTTP code is a key part of SEO settings because with it you can have complete control over your content. You can read more about HTTP codes in our article: %s', 'cf-geoplugin'), '<a href="https://wpgeocontroller.com/information/seo-redirection-in-wordpress" target="_blank">'.__('SEO Redirection in WordPress', 'cf-geoplugin').'</a>') . '</p>
 				<p>' . __( 'You also have the option to redirect only once in a visitor session. This allows you to allow later access to the site to your visitor after redirecting to another location.', 'cf-geoplugin') . '</p>
 			'
 		));

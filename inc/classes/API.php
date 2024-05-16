@@ -154,7 +154,13 @@ class CFGP_API extends CFGP_Global {
 			);
 			
 			if( ($return['timezone']??NULL) !== date_default_timezone_get()) {
-				$new_client_date=$client_date->setTimeZone( new DateTimeZone( $return['timezone'] ) );
+				if ( in_array( $return['timezone'], DateTimeZone::listIdentifiers() ) ) {
+					$new_client_date = $client_date->setTimeZone( new DateTimeZone( $return['timezone'] ) );
+				} else {
+					$new_client_date = $client_date->setTimeZone( new DateTimeZone( 'UTC' ) );
+					$return['timezone'] = 'UTC';
+				}
+				
 				$return['timestamp_readable'] = $new_client_date->format( 'c' );
 				$return['timestamp'] = strtotime($return['timestamp_readable']??'');
 				$return['current_date'] = $new_client_date->format( 'F j, Y' );

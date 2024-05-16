@@ -67,7 +67,7 @@ $API = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
                         </nav>
                         <?php do_action('cfgp/main_page/tab-panel/before', $API, $remove_tags, $gps_keys); ?>
                         <div class="cfgp-tab-panel cfgp-tab-panel-active" id="shortcodes">
-                        	<p><?php _e('These are short codes available for use in places where short codes can be executed.', 'cf-geoplugin'); ?> <?php printf(__('The use and functionality of these short codes are described in our %s.', 'cf-geoplugin'), '<a href="https://cfgeoplugin.com/documentation/quick-start/cf-geoplugin-shortcodes" target="_blank">' . __('documentation', 'cf-geoplugin') . '</a>'); ?></p>
+                        	<p><?php _e('These are short codes available for use in places where short codes can be executed.', 'cf-geoplugin'); ?> <?php printf(__('The use and functionality of these short codes are described in our %s.', 'cf-geoplugin'), '<a href="https://wpgeocontroller.com/documentation/quick-start/cf-geoplugin-shortcodes" target="_blank">' . __('documentation', 'cf-geoplugin') . '</a>'); ?></p>
                             <?php if($API) : ?>
                             <table class="wp-list-table widefat fixed striped table-view-list posts table-cf-geoplugin-shortcodes">
                                 <thead>
@@ -117,7 +117,7 @@ $API = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
                         </div>
                         <?php if(CFGP_Options::get_beta('enable_simple_shortcode')) : ?>
                             <div class="cfgp-tab-panel" id="simple-shortcodes">
-                                <p><?php _e('These are short codes available for use in places where short codes can be executed.', 'cf-geoplugin'); ?> <?php printf(__('The use and functionality of these short codes are described in our %s.', 'cf-geoplugin'), '<a href="https://cfgeoplugin.com/documentation/quick-start/cf-geoplugin-shortcodes" target="_blank">' . __('documentation', 'cf-geoplugin') . '</a>'); ?></p>
+                                <p><?php _e('These are short codes available for use in places where short codes can be executed.', 'cf-geoplugin'); ?> <?php printf(__('The use and functionality of these short codes are described in our %s.', 'cf-geoplugin'), '<a href="https://wpgeocontroller.com/documentation/quick-start/cf-geoplugin-shortcodes" target="_blank">' . __('documentation', 'cf-geoplugin') . '</a>'); ?></p>
                                 <p><?php _e('These shortcodes only have the purpose to return available geo-information. You can\'t include, exclude or add default values. Just display geodata following with appropriate shortcodes.', 'cf-geoplugin'); ?></p>
                                 <?php if($API) : ?>
                                 <table class="wp-list-table widefat fixed striped table-view-list posts table-cf-geoplugin-shortcodes">

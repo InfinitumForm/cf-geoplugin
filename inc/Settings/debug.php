@@ -100,7 +100,7 @@ if($NEW_API = CFGP_API::lookup(CFGP_U::request_string('cfgp_lookup'))){
                         
                         <div class="cfgp-tab-panel" id="sent-data">
                         	<p><?php _e( 'This information are sent to Geo Controller API. All of this informations (hostname, IP and timezone) are available for general public, world wide and we only use them for API purpose which helps plugin to determine the exact location of the visitors and prevent accidental collapse between the IP address. Your IP and email address is also a guarantee that you\'re not a robot or some spamming software.', 'cf-geoplugin'); ?></p>
-                            <p><?php printf( __( 'If you are concerned about your private informations, please read the %s', 'cf-geoplugin'), '<a href="http://cfgeoplugin.com/privacy-policy" target="_blank">'.__('Privacy Policy', 'cf-geoplugin').'</a>' ); ?></p>
+                            <p><?php printf( __( 'If you are concerned about your private informations, please read the %s', 'cf-geoplugin'), '<a href="http://wpgeocontroller.com/privacy-policy" target="_blank">'.__('Privacy Policy', 'cf-geoplugin').'</a>' ); ?></p>
                             
                             <table class="wp-list-table widefat fixed striped table-view-list posts table-cf-geoplugin-debug-server-statistics"> 
                                 <thead>
@@ -134,7 +134,7 @@ if($NEW_API = CFGP_API::lookup(CFGP_U::request_string('cfgp_lookup'))){
 									<tr>
                                         <td><strong><?php _e( 'Email' ); ?></strong></td>
                                         <td><?php echo esc_html( get_bloginfo( 'admin_email' ) ); ?></td>
-                                        <td><?php _e('Admin e-mail address.', 'cf-geoplugin'); ?> <?php _e('Only reason why we collect your email address is because plugin support and robot prevention. Your email address will NOT be spammed or shared with 3rd party in any case and you can any time request from us on email <a href="mailto:support@cfgeoplugin.com">support@cfgeoplugin.com</a> to remove your all personal data from our system by GDPR rules.', 'cf-geoplugin'); ?></td>
+                                        <td><?php _e('Admin e-mail address.', 'cf-geoplugin'); ?> <?php _e('Only reason why we collect your email address is because plugin support and robot prevention. Your email address will NOT be spammed or shared with 3rd party in any case and you can any time request from us on email <a href="mailto:support@wpgeocontroller.com">support@wpgeocontroller.com</a> to remove your all personal data from our system by GDPR rules.', 'cf-geoplugin'); ?></td>
                                     </tr>
                                     <tr>
                                         <td><strong><?php _e( 'Plugin Version', 'cf-geoplugin'); ?></strong></td>

@@ -564,7 +564,7 @@ if(!class_exists('CFGP_U', false)) : class CFGP_U {
 		 * to another URL and we need to support that. In that case we check the 
 		 * current location, take those parameters and pass them to the new URL.
 		 *
-		 * Like example: https://cfgeoplugin.com/?name=*&surname=*
+		 * Like example: https://wpgeocontroller.com/?name=*&surname=*
 		 *
 		 * In this case, the "name" and "surname" parameters will be searched 
 		 * for and replaced if they appear in the original URL. If they do not 

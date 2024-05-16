@@ -445,7 +445,7 @@ add_filter('cfgp/settings', function($options=[]){
 						__('Geo Controller sends notifications in 3 cases: 1) When you reach less than 50 lookups, 2) When the lookup expires, 3) When the license expires.', 'cf-geoplugin'),
 						sprintf(
 							__('This option is very important and cannot be turned off via these settings. But if you want to turn off this notifications, %s.', 'cf-geoplugin'),
-							'<a href="https://cfgeoplugin.com/documentation/advanced-usage/php-integration/constants/cfgp_disable_notification" target="_blank">' . __('read this documentation', 'cf-geoplugin') . '</a>'
+							'<a href="https://wpgeocontroller.com/documentation/advanced-usage/php-integration/constants/cfgp_disable_notification" target="_blank">' . __('read this documentation', 'cf-geoplugin') . '</a>'
 						)
 					),
 					'inputs' => array(
