@@ -211,6 +211,10 @@ class CFGP_API extends CFGP_Global {
 			);
 			// Fetch new informations
 			$response = CFGP_U::curl_get($request_url);
+			// Fallback to return by IP
+			if( !$response ) {
+				$response = CFGP_U::curl_get( CFGP_Defaults::falback_api_endpoints( $request_url ) );
+			}
 			// Fix data and save to cache
 			if (!empty($response))
 			{

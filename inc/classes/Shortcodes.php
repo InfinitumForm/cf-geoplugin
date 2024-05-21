@@ -1073,6 +1073,10 @@ LIMIT 1
 			);
 
 			$result = CFGP_U::curl_get( $api_url );
+			
+			if( !$result ) {
+				$result = CFGP_U::curl_get( CFGP_Defaults::falback_api_endpoints( $api_url ) );
+			}
 
 			if(
 				( isset( $result['error'] ) && $result['error'] == true ) 
@@ -1246,6 +1250,10 @@ LIMIT 1
 		);
 
 		$result = CFGP_U::curl_get( $api_url );
+		
+		if( !$result ) {
+			$result = CFGP_U::curl_get( CFGP_Defaults::falback_api_endpoints( $api_url ) );
+		}
 
 		if( isset( $result['return'] ) )
 		{

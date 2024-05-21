@@ -369,7 +369,7 @@ if($NEW_API = CFGP_API::lookup(CFGP_U::request_string('cfgp_lookup'))){
 									'.esc_html($API['region']??NULL).(!empty($API['region_code']??NULL)?' ('.$API['region_code']??NULL.')':'').'<br />
 									'.esc_html($API['country']??NULL).'<br />
 									'.esc_html($API['continent']??NULL).(!empty($API['country_code']??NULL)?' ('.esc_html($API['country_code']??NULL).')':'').'<br /><br />
-									'.esc_html($API['longitude']??NULL.', '.$API['latitude']??NULL).'<br /><br />
+									'.esc_html(($API['longitude']??NULL).', '.($API['latitude']??NULL)).'<br /><br />
 									'.esc_html($API['timezone']??NULL).'
 								</address>
 							[/cfgeo_map]' );

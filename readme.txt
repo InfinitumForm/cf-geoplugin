@@ -1,35 +1,27 @@
 ﻿=== Geo Controller ===
 Contributors: ivijanstefan, creativform
 Donate link: https://www.buymeacoffee.com/ivijanstefan
-Tags: Geo Location, WordPress Geolocation Plugin, Location-Based Personalization, User Location Detection, SEO Optimization, Spam Protection, TOR, tor network, tor detection
+Tags: Geo Location, WordPress Geolocation Plugin, Location-Based Personalization, User Location Detection, SEO Optimization
 Requires at least: 6.0
 Tested up to: 6.5
 Requires PHP: 7.0
-Stable tag: 8.6.6
+Stable tag: 8.6.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Enhance your WordPress site with Geo Controller - an all-in-one plugin providing powerful location-based features and personalization.
+Enhance your WordPress site with Geo Controller – a comprehensive plugin offering advanced location-based features and personalized content delivery.
 
 == Description ==
 
-Geo Controller is a transformative WordPress plugin that enables comprehensive management and manipulation of geographic data on your website. This tool was previously known as **[CF Geo Plugin](https://wpgeocontroller.com/)**.
+Geo Controller is a transformative WordPress plugin, previously known as **CF Geo Plugin**, that personalizes and enhances your website based on users' geographic locations. By automatically determining visitors' locations, it can display custom greetings and tailored content, significantly increasing user engagement and interaction.
 
-Essentially, it helps to personalize and enhance your website's usability based on the geographical location of the users. By doing so, it adds an element of personalization to your website that can significantly increase user engagement and site interaction.
+The plugin also includes an advanced TOR network detection system, allowing website owners to manage visitors using the TOR network by blocking, hiding, or displaying specific content. Geo Controller integrates easily with geo tags, Google Maps, and various forms of content across posts, pages, widgets, and custom templates, requiring minimal coding knowledge.
 
-In addition to geographic-based features, Geo Controller has now integrated an **advanced TOR network detection** system. This addition allows website owners to identify visitors accessing the site through the TOR network, offering them the option to block, hide, or display specific content based on this criteria, thus ensuring a more secure and tailored browsing experience.
+It is fully compatible with popular plugins like WooCommerce, Contact Form 7, Yoast SEO, and WP Super Cache, ensuring a seamless user experience. Additionally, Geo Controller enhances SEO through geo tags and redirects, offers spam protection, and optimizes WooCommerce stores with features like geolocation, payment method control, and local currency display.
 
-The central function of Geo Controller is its ability to automatically determine the geographical location of your website visitors. Using this information, the plugin allows for the creation of custom, location-based greetings like "Welcome to our website, [visitor’s city]!". This feature not only creates a welcoming environment but also establishes an immediate connection with the user.
+On the technical side, the plugin uses a Content Delivery Network (CDN) for optimal loading speed and leverages API use to reduce local data storage. Geo Controller also ensures legal compliance by filtering content based on regional laws, protecting your site from potential legal conflicts.
 
-Geo Controller's features extend beyond just recognizing and displaying user location data. It enables easy integration of geo tags, Google Maps, and various forms of content to your website's posts, pages, widgets, and custom templates. You can implement these changes with minimal coding knowledge, thanks to the available options, shortcodes, and even PHP code.
-
-To make it even more practical, Geo Controller is fully compatible with well-known WordPress plugins such as WooCommerce, Contact Form 7, Yoast SEO, and WP Super Cache. This ensures a seamless user experience and full utilization of all these beneficial tools.
-
-Other useful features include the ability to set a default location for your site, to optimize your SEO and user redirection capabilities. Geo Controller also equips you with spam protection and allows you to manage your WooCommerce store more effectively.
-
-On the technical side, Geo Controller utilizes a Content Delivery Network (CDN) to distribute data. This ensures optimal website loading speed, leading to improved user experience. In addition, by leveraging API use, it enables less local data storage, providing more room for other crucial website data.
-
-Geo Controller's capabilities also stretch to legal compliance. It can filter certain types of content like legal notices, forms, or specific text from being displayed to users from regions where such content may not be relevant or lawful. This protects your website from any potential legal conflicts and ensures a smooth, uninterrupted user experience.
+For more information, visit [Geo Controller Plugin](https://wpgeocontroller.com).
 
 = FREE AND PAID SERVICES =
 
@@ -45,24 +37,24 @@ Geo Controller works as a [service](https://en.wikipedia.org/wiki/Software_as_a_
 >
 > * **There is no need to buy expensive and heavy databases**
 > * **No effect on the site performances**
-> * **Full support** for the WooCommerce, Contact Form 7, Yoast SEO, WP Super Cache and other most popular plugins
+> * **Full support** for the WooCommerce, Contact Form 7, Yoast SEO, WP Super Cache, and other most popular plugins
 > * **TOR network** detection system
 >
 > <strong>SEO INTEGRATIONS</strong><br>
 >
-> * **Redirects visitors** to a blog page based on their geo informations by SEO rules
-> * **Redirects visitors** to a predefined URL based on their geo informations by SEO rules
+> * **Redirects visitors** to a blog page based on their geo information by SEO rules
+> * **Redirects visitors** to a predefined URL based on their geo information by SEO rules
 > * **Allows you to configure multiple redirection** rules as needed for the pages and entire website
 > * **Supports 301, 302, 303 & 304** HTTP redirection
 > * **Supports IPv4 and IPv6**
-> * **Geo Tag Generator** attach Geo Tags in the head of your website for the specific pages
+> * **Geo Tag Generator** attaches Geo Tags in the head of your website for specific pages
 > * **Cache support**
 >
 > <strong>GEOMARKETING</strong><br>
 >
 > * **Create marketing campaigns** targeted only at certain locations.
 > * **Create landing pages** targeted only at certain locations.
-> * **Create banners, videos and any other content** targeted only at certain locations.
+> * **Create banners, videos, and any other content** targeted only at certain locations.
 > 
 > <strong>E-COMMERCE | WooCommerce</strong><br>
 >
@@ -70,16 +62,16 @@ Geo Controller works as a [service](https://en.wikipedia.org/wiki/Software_as_a_
 > * **Payments Control** show or hide payment methods by country to prevent unwanted transactions
 > * **Geo Location logging** of your customers during orders
 > * **Country Payment Control** for your WooCommerce installation
-> * **Display local currency**, local symbol or converter
+> * **Display local currency**, local symbol, or converter
 > * **Use currency converter** to calculate price in local currency
-> * **Use VAT** to check is current country under tax rate
-> * **Use EU** to check is country from the European Union
+> * **Use VAT** to check if the current country is under the tax rate
+> * **Use EU** to check if the country is from the European Union
 > 
-> <strong>ANTI SPAM PROTECTION</strong><br>
+> <strong>ANTI-SPAM PROTECTION</strong><br>
 >
-> * **Spam protection** from the danger visitors or spammers
-> * **Blocking access** on the website from the specific user defined locations
-> * **Blocking IP Addresses** from accessing on the website
+> * **Spam protection** from dangerous visitors or spammers
+> * **Blocking access** to the website from specific user-defined locations
+> * **Blocking IP Addresses** from accessing the website
 > 
 > <strong>LOCALIZATION</strong><br>
 >
@@ -88,48 +80,48 @@ Geo Controller works as a [service](https://en.wikipedia.org/wiki/Software_as_a_
 > 
 > <strong>LEGAL REQUIREMENTS</strong></br>
 >
-> * **Filter required legal notices**, text, forms, etc. from countries for whom those content may not be relevant.
+> * **Filter required legal notices**, text, forms, etc., from countries for whom those contents may not be relevant.
 
 = Compatibility =
 
-This plugin is compatible with any Wordpress installation and many available plugins. We also do special compatible functions with:
+This plugin is compatible with any WordPress installation and many available plugins. We also do special compatible functions with:
 
 * [GPS for Geo Controller](https://wordpress.org/plugins/cf-geoplugin-gps/) (Enable GPS lookup for the Geo Controller and collect geodata from the mobile visitors.)
 * [WooCommerce](https://woocommerce.com/) (geolocate, payment controls & currency converter)
 * [Gravity Forms](https://www.gravityforms.com/) (new fields for adding country, region, city)
 * [Wooplatnica](https://wordpress.org/plugins/wooplatnica/) (currency converter)
 * [Monarch](https://www.elegantthemes.com/plugins/monarch/) (Geo Banner support)
-* [Cloudflare](https://www.cloudflare.com/) (Cache and deep IP recognations)
+* [Cloudflare](https://www.cloudflare.com/) (Cache and deep IP recognitions)
 * [Contact Form 7](https://wordpress.org/plugins/contact-form-7/) (JavaScript objects and shortcode support)
 * [Nord VPN proxy service](https://goo.gl/lWm3e6) (PROXY settings)
 * [Yoast SEO](https://wordpress.org/plugins/wordpress-seo/)
 * [All in one SEO pack](https://wordpress.org/plugins/all-in-one-seo-pack/)
-* [Wordpress SEO plugin](https://wordpress.org/plugins/seo-by-rank-math/)
+* [WordPress SEO plugin](https://wordpress.org/plugins/seo-by-rank-math/)
 * [SEO framework](https://wordpress.org/plugins/autodescription/)
 * [WP Fastest Cache](https://wordpress.org/plugins/wp-fastest-cache/)
 
-**YOU NEED TO KNOW** that Geo Controller is designed for compatibility with most plugins, but the vast array of WordPress plugins and installations means that occasional conflicts might occur. Although rare, it's not possible to guarantee 100% compatibility in every case. If you encounter any problems, reach out to the support teams for assistance. Often, keeping your plugins and WordPress installation up to date is the simplest way to resolve any issues.
+**IMPORTANT**: Geo Controller is compatible with most plugins, but occasional conflicts may occur due to the variety of WordPress setups. If you encounter issues, contact support. Keeping your plugins and WordPress updated often resolves problems.
 
 > <strong>All Geo Controller for WordPress 8.x.x Features</strong><br>
 >
 > * **Geo Plugin** - Allows you to attach geographical information inside your content via Shortcodes, PHP and JavaScript objects
-> * **Geo Banner** - Allows you to place dynamic content, images, videos and pages using shortcodes for specific audience target by geolocation
+> * **Geo Banner** - Allows you to place dynamic content, images, videos, and pages using shortcodes for specific audience targets by geolocation
 > * **Google Map** - Allows you to attach Google Map inside content
 > * **Geo Tag** - Allows you to generate precise Geo Tags for your pages and custom posts
-> * **Anti Spam Protection** - Allows you to block access on blog from spam IP addresses and specific geo locations
+> * **Anti-Spam Protection** - Allows you to block access to the blog from spam IP addresses and specific geo locations
 > * **Cloudflare Geolocation Support** - Cloudflare support for visitor geolocation
-> * **DNS Lookup** - Allows you to attach visitor DNS informations
-> * **SSL Support** - Keep you safe
-> * **Cache Support** - Allow other cache plugins to be integrated and supported
+> * **DNS Lookup** - Allows you to attach visitor DNS information
+> * **SSL Support** - Keeps you safe
+> * **Cache Support** - Allows other cache plugins to be integrated and supported
 > * **PROXY Settings** - Allows you to use PROXY for the lookup
-> * **SEO Redirection** - Allows you to redirect any page, post or article
+> * **SEO Redirection** - Allows you to redirect any page, post, or article
 > * **Country Flag Support** - Allows you to attach visitor or custom country flags inside content
 > * **Include Content by Geolocation** - Allows you to include content by geolocation
 > * **Exclude Content by Geolocation** - Allows you to exclude content by geolocation
 > * **Plugin Autoupdate** - Allows you to keep your plugin up to date automatically
 > * **REST API** - Allows you to become geo information provider
 
-= Basics usage and example =
+= Basic Usage and Examples =
 
 `[cfgeo_flag]
 [cfgeo]
@@ -137,8 +129,8 @@ This plugin is compatible with any Wordpress installation and many available plu
 [cfgeo return="region"]
 We just found shoes in [cfgeo_city] that you can buy for 50% discount.
 [cfgeo ip="127.0.0.1" return="area_code"]
-[cfgeo exclude="Toronto"] This text is seeing by everyone except Toronto people [/cfgeo]
-[cfgeo include="New York"] This text seeing only people from New York [/cfgeo]
+[cfgeo exclude="Toronto"] This text is seen by everyone except Toronto people [/cfgeo]
+[cfgeo include="New York"] This text is seen only by people from New York [/cfgeo]
 [in_eu]You are from the European Union[/in_eu]
 [not_in_eu]You are NOT from the European Union[/not_in_eu]
 [is_vat]You are under VAT[/is_vat]
@@ -160,21 +152,21 @@ If the plugin is unable to locate the information, you can add a default value t
 
 You can exclude or include content on your page based on the user's location by using the `exclude` or `include` attribute. For example,
 
-`[cfgeo exclude="Toronto, Québec"] This text is seeing by everyone except people from Toronto and Québec [/cfgeo]`
+`[cfgeo exclude="Toronto, Québec"] This text is seen by everyone except people from Toronto and Québec [/cfgeo]`
 
-will hide the content "This text is seeing by everyone except people from Toronto and Québec" from the visitors that are located in Toronto or Québec.
+will hide the content "This text is seen by everyone except people from Toronto and Québec" from the visitors that are located in Toronto or Québec.
 
-Similarly, if you want to display some content only to specific location you can use include attribute like this:
+Similarly, if you want to display some content only to specific locations you can use the include attribute like this:
 
-`[cfgeo include="New York, Miami, Germany"] This text seeing only people from New York, Miami and Germany [/cfgeo]`
+`[cfgeo include="New York, Miami, Germany"] This text is seen only by people from New York, Miami and Germany [/cfgeo]`
 
-this shortcode will only display the text "This text seeing only people from New York, Miami and Germany" to the visitors that are located in New York, Miami and Germany.
+this shortcode will only display the text "This text is seen only by people from New York, Miami and Germany" to the visitors that are located in New York, Miami, and Germany.
 
-You can also use the include and exclude attributes with country codes, region codes, or city codes. For example, you can use **`[cfgeo include="US, GB, DE"]`** to only display the content to visitors located in the United States, Great Britain, and Germany. Or you can use **`[cfgeo exclude="CA, ON, QUE"]`** to hide the content from visitors located in the provinces of California, Ontario, and Québec in Canada.
+You can use the include and exclude attributes with country, region, or city codes. For example, **`[cfgeo include="US, GB, DE"]`** displays content only to visitors from the US, Great Britain, and Germany, while **`[cfgeo exclude="CA, ON, QUE"]`** hides content from visitors in California, Ontario, and Québec.
 
 By using these attributes you can control the content visibility based on user location and personalize the user experience.
 
-Please note that you need to use accurate location name to include or exclude content and case sensitive location name.
+Please note that you need to use an accurate location name to include or exclude content and case-sensitive location name.
 
 **VAT CONTROL:** If you need to show *value-added tax (VAT)* information on your website, there are 2 shortcodes that can help you with it.
 
@@ -188,71 +180,71 @@ Both shortcodes have a default option that you can use as an alternative.
 
 Generally, these two shortcodes show or hide everything inside it, depending on your needs.
 
-**EU CONTROL:** If you need to display some content related to *European Union (EU)* countries, you can do it on the two easy way:
+**EU CONTROL:** If you need to display some content related to *European Union (EU)* countries, you can do it in two easy ways:
 
 `[in_eu]You are from the European Union[/in_eu]
 [not_in_eu]You are NOT from the European Union[/not_in_eu]`
 
-Like many of our shortcodes, there is default options what you can use as an alternative:
+Like many of our shortcodes, there are default options that you can use as an alternative:
 
 `[in_eu default="You are NOT from the European Union"]You are from the European Union[/in_eu]
-[not_in_eu defauilt="You are from the European Union"]You are NOT from the European Union[/not_in_eu]`
+[not_in_eu default="You are from the European Union"]You are NOT from the European Union[/not_in_eu]`
 
 These two shortcodes also show or hide everything inside it, depending on your needs.
 
 **GOOGLE MAP:** If you want to place a simple Google Map in your post or page, you just need to place a shortcode [cfgeo_map] and your visitor will see their own location on Google Map by default.
 
-Like example, you can display own company street address inside Google Map like this: `[cfgeo_map longitude="-74.0059" latitude="40.7128" zoom="15"]` and pointer will show your street and place where you work.
+For example, you can display your own company street address inside Google Map like this: `[cfgeo_map longitude="-74.0059" latitude="40.7128" zoom="15"]` and the pointer will show your street and place where you work.
 
-Google Map also allow you to use HTML inside map and display info bar: 
+Google Map also allows you to use HTML inside the map and display an info bar: 
 
 `[cfgeo_map longitude="-74.0059" latitude="40.7128" zoom="15" title="My Company Name"] 
-   <h3>My Company Name<h3> 
-   <p>No Name Street 35, New York, USA</p> 
-   <p>We have what you need</p> 
+   <h3>My Company Name<h3> 
+   <p>No Name Street 35, New York, USA</p> 
+   <p>We have what you need</p> 
 [/cfgeo_map]`
 
-With this plugin you can easily set up your Google Map.
+With this plugin, you can easily set up your Google Map.
 
-**GEO BANNER:** With this plugin you also have the ability to make dynamic content (text, images, banners, videos...) and target your messages to people from certain regions, track IP address, setup WordPress to work on user's timezone, etc. The possibilities are huge, you can increase conversions, use this plugin like support for your custom template, build your own plugin and use Geo Controller like additional options, etc.
+**GEO BANNER:** With this plugin, you can create dynamic content (text, images, banners, videos) and target messages to specific regions, track IP addresses, and set up WordPress to work in the user's timezone. This can increase conversions and support custom templates or plugins.
 
-You just need to create a new banner, place your content, select rules (country, region, city) save your banner, after that in your page pickup banner shortcode and place inside content.
+Simply create a new banner, add your content, select rules (country, region, city), save it, and place the banner shortcode in your page content.
 
 **COUNTRY FLAG** You can display country flags in text or like images.
 
-If you like to display country flag in your text like icon, you can do that simple like: 
+If you like to display the country flag in your text like an icon, you can do that simply like: 
 
 `[cfgeo_flag]` - and you will see a flag in your text.
 
-If you like to display country flag in your content like image, you can do that also simple using img or image attributes like: 
+If you like to display the country flag in your content like an image, you can do that also simply using img or image attributes like: 
 
-`[cfgeo_flag img]` - and you will see image flag in your content
+`[cfgeo_flag img]` - and you will see the image flag in your content.
 
-You also can give custom sizes of flags in %, px, in, pt or em using size attribute like this: 
+You also can give custom sizes of flags in %, px, in, pt, or em using size attribute like this: 
 
 `[cfgeo_flag size="32px"]` - and you will see your flag in that size. You can use this size in image and normal text mode also.
 
-You also can display custom flag using country attribute by placing country code simple like: 
+You also can display a custom flag using the country attribute by placing the country code simply like: 
 
-`[cfgeo_flag country="ca"]` - and you will see a flag in your text or like image.
+`[cfgeo_flag country="ca"]` - and you will see a flag in your text or like an image.
 
-We allow you also full control of this flags and you can place css, class or id attributes to be able use this in any kind of work like this: 
+We allow you also full control of these flags and you can place css, class, or id attributes to be able to use this in any kind of work like this: 
 
 `[cfgeo_flag size="50" css="padding:10px;" class="your-custom-class custom-class custom" id="top-flag"]`
 
-Flags also support include & exclude attributes where you can controls your flag view:
+Flags also support include & exclude attributes where you can control your flag view:
 
-`[cfgeo_flag exclude="ca,us"]` - and you will hide flag from the USA and Canada, for other is visible
+`[cfgeo_flag exclude="ca,us"]` - and you will hide the flag from the USA and Canada, for others it is visible
 
 or
 
-`[cfgeo_flag include="ca,us"]` - and you will show flag only inside USA and Canada, for others is hidden
+`[cfgeo_flag include="ca,us"]` - and you will show the flag only inside the USA and Canada, for others it is hidden
 
 = Info & Contact =
 
 Please visit our website [www.wpgeocontroller.com](https://wpgeocontroller.com/) and feel free to contact us. We will provide for you all services that you need.
 
-Also please inform us if any errors occur via contact form on our website [http://wpgeocontroller.com/](https://wpgeocontroller.com/contact).
+Also, please inform us if any errors occur via the contact form on our website [http://wpgeocontroller.com/](https://wpgeocontroller.com/contact).
 
 Thank you for your concern!
 
@@ -269,7 +261,7 @@ Installing Geo Controller for WordPress is a breeze. Just follow these simple st
 
 = On uninstall =
 
-When you choose to uninstall the Geo Controller plugin, it's important to be aware that all data associated with the plugin will be permanently deleted from your WordPress installation. This includes the plugin's setup, license, and any other changes that you have made using the plugin. The plugin will clean everything from your database, and this process is irreversible, meaning that you will not be able to retrieve or restore any of the data that was generated by the plugin. So before you proceed with the uninstallation, it's important to make sure that you have a backup of any important data that you want to keep, or you have an alternative way to store the data.
+When you uninstall the Geo Controller plugin, all associated data, including setup, license, and changes, will be permanently deleted from your WordPress installation. This process is irreversible, so ensure you have backups of any important data before proceeding.
 
 == Frequently Asked Questions ==
 
@@ -421,6 +413,11 @@ Please inform us if any of these errors occur via contact form on our website [h
 
 == Changelog ==
 
+= 8.6.7 =
+* Fixed WooCommerce Payments control
+* Fixed API calls and pointed to the new CDN servers
+* Improved cache
+
 = 8.6.6 =
 * Moved to new domain wpgeocontroller.com
 * Fixed timezone issue
@@ -533,6 +530,11 @@ Please inform us if any of these errors occur via contact form on our website [h
 * Fixed PHP errors from previous version
 
 == Upgrade Notice ==
+
+= 8.6.7 =
+* Fixed WooCommerce Payments control
+* Fixed API calls and pointed to the new CDN servers
+* Improved cache
 
 = 8.6.6 =
 * Moved to new domain wpgeocontroller.com

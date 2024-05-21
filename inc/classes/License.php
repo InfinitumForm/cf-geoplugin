@@ -33,7 +33,7 @@ class CFGP_License extends CFGP_Global{
 			CFGP_Defaults::LIFETIME_LICENSE			=> __('UNLIMITED Lifetime License', 'cf-geoplugin'),
 		);
 		
-		if( CFGP_DEV_MODE )
+		if( defined('CFGP_DEV_MODE') && CFGP_DEV_MODE )
 		{
 			$license_names[CFGP_Defaults::DEVELOPER_LICENSE] = __('UNLIMITED Developer License', 'cf-geoplugin');
 		}
@@ -99,7 +99,7 @@ class CFGP_License extends CFGP_Global{
 		}
 		
 		// Developer License
-		if( CFGP_DEV_MODE )
+		if( defined('CFGP_DEV_MODE') && CFGP_DEV_MODE )
 		{
 			$response = array_merge($response, array(
 			array(
@@ -198,7 +198,7 @@ class CFGP_License extends CFGP_Global{
 	 |                                                                                      |
 	 | Cheers!                                                                              |
 	 |                                                                                      |
-	 | Contact: https://wpgeocontroller.com/get-involved                                        |
+	 | Contact: https://wpgeocontroller.com/get-involved                                    |
 	 +======================================================================================+
 	 */
 	public static function activated(){
@@ -409,8 +409,8 @@ class CFGP_License extends CFGP_Global{
 			(ini_get('arg_separator.output') ?? '&amp;'),
 			PHP_QUERY_RFC3986
 		);
-
-		$response = CFGP_U::curl_get( $request_url );
+var_dump($request_url);
+		$response = CFGP_U::curl_get( CFGP_Defaults::falback_api_endpoints( $request_url ) );
 
 		if(empty($response)){
 			CFGP_DB_Cache::delete('cfgp-license-response-success');

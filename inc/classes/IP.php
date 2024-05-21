@@ -385,8 +385,7 @@ class CFGP_IP extends CFGP_Global {
 	 * @author   Ivijan-Stefan Stipic <creativform@gmail.com>
 	 * @return   (bool)   true/false
 	 */
-	public static function is_localhost(){
-		
+	public static function is_localhost() {
 		// Cloudflare
 		if( CFGP_Options::get('enable_cloudflare', false)
 			&& isset($_SERVER['HTTP_CF_CONNECTING_IP'])
@@ -394,10 +393,15 @@ class CFGP_IP extends CFGP_Global {
 		) {
 			return false;
 		}
-		
+
 		// Set cache name
 		$cache_name = '__is_localhost';
 		
+		// Return cached result
+		if (NULL !== ($is_localhost = CFGP_Cache::get($cache_name, NULL))) {
+			return $is_localhost;
+		}
+
 		// Get Remote address properly
 		if (filter_has_var(INPUT_SERVER, 'REMOTE_ADDR')) {
 			$ip = filter_input(INPUT_SERVER, 'REMOTE_ADDR', FILTER_VALIDATE_IP);
@@ -409,34 +413,33 @@ class CFGP_IP extends CFGP_Global {
 			$ip = null;
 		}
 
-		// Return cached proxy
-		if(NULL !== ($is_localhost = CFGP_Cache::get($cache_name, NULL))) {
-			return $is_localhost;
-		}
-		
 		$localhost = false;
 
-		if( in_array($ip, array(
-			'localhost',
-			'127.0.0.1',
-			'::1'
-		) ) ) {
+		// Check for localhost IP addresses
+		if (in_array($ip, array('127.0.0.1', '::1'))) {
 			$localhost = true;
 		}
-		
-		if( 
-			!$localhost 
-			&& (
-				strpos($ip, '192.168.0.') !== false
-				|| strpos($ip, '192.168.1.') !== false
-				|| strpos($ip, '192.168.2.') !== false
-				|| strpos($ip, '192.168.3.') !== false
-			)
-		) {
-			$localhost = true;
+
+		// Check for private network ranges
+		$private_ip_patterns = array(
+			'~^10\.\d{1,3}\.\d{1,3}\.\d{1,3}$~',
+			'~^172\.(1[6-9]|2[0-9]|3[0-1])\.\d{1,3}\.\d{1,3}$~',
+			'~^192\.168\.\d{1,3}\.\d{1,3}$~',
+			'~^fc00:~', // IPv6 private addresses
+			'~^fd00:~'  // IPv6 private addresses
+		);
+
+		foreach ($private_ip_patterns as $pattern) {
+			if (preg_match($pattern, $ip)) {
+				$localhost = true;
+				break;
+			}
 		}
-		
-		return CFGP_Cache::set($cache_name, $localhost);
+
+		// Cache the result
+		CFGP_Cache::set($cache_name, $localhost);
+
+		return $localhost;
 	}
 	
 	/**

@@ -564,7 +564,15 @@ if($flag = CFGP_U::admin_country_flag(get_post_meta($post->ID, '_billing_country
     // Show our settings tabs
     public function cfgp_woocommerce_tabs( $settings_tabs )
     {
-        $settings_tabs['cf_geoplugin_payment_restriction'] = __( 'Payments Control', 'cf-geoplugin');
+		$new_tab = array('cf_geoplugin_payment_restriction' => __('Payments Control', 'cf-geoplugin'));
+		
+		// Find "Payments" tab possition
+		$payments_position = array_search('checkout', array_keys($settings_tabs)) + 1;
+
+		// Add new tab after "Payments" tab
+		$settings_tabs = array_slice($settings_tabs, 0, $payments_position, true) +
+						 $new_tab +
+						 array_slice($settings_tabs, $payments_position, null, true);
        
         return $settings_tabs;
     }
@@ -613,20 +621,20 @@ if($flag = CFGP_U::admin_country_flag(get_post_meta($post->ID, '_billing_country
                     $countries_options[ $country_code ] = sprintf( '%s - %s', $country_code, $country_name );
                 }
 
-
                 $custom_attributes = [];
-                if( CFGP_License::level() < 2 && CFGP_License::activated() )
+
+                if( CFGP_License::level() < 2 && !CFGP_License::activated() )
                 {
                     $custom_attributes['disabled'] = true;
                 }
 				
-				if(CFGP_U::dev_mode() && isset($custom_attributes['disabled'])){
+				if( isset($custom_attributes['disabled']) && CFGP_U::dev_mode() ){
 					unset($custom_attributes['disabled']);
 				}
                 
-                $settings[] = array( 'name' => __( 'Geo Controller Payments Control', 'cf-geoplugin'), 'type' => 'title', 'desc' => __( 'Configure payment methods for each country. Show or hide payment methods by country to prevent unwanted transactions.', 'cf-geoplugin') . (
+                $settings[] = array( 'name' => __( 'Geo Controller Payments Control', 'cf-geoplugin'), 'type' => 'title', 'desc' => __( 'Configure payment methods for each country in a detailed and precise manner. You can show or hide specific payment methods based on the country, allowing you to prevent unwanted transactions and ensure that only appropriate payment options are available to your customers in each region.', 'cf-geoplugin') . (
 				(isset($custom_attributes['disabled']) && $custom_attributes['disabled']) || CFGP_U::dev_mode()
-				? ' <br><span style="color:#dc3545;">' . sprintf(__('This option is only enabled with the licensed version of the %s. You must use 1 year license or above.', 'cf-geoplugin'), '<a href="' . CFGP_U::admin_url('admin.php?page=cf-geoplugin-activate') . '">Geo Controller</a>') . '</span>'
+				? ' <br><span style="color:#dc3545;">' . sprintf(__('This option is only available with the licensed version of the %s. A license valid for at least one year is required to enable this feature.', 'cf-geoplugin'), '<a href="' . CFGP_U::admin_url('admin.php?page=cf-geoplugin-activate') . '">Geo Controller</a>') . '</span>'
 				: ''
 				) . '<hr>', 'id' => 'cf_geoplugin_payment_restriction' );
 				$count = count($enabled_gateways); $x = 0;
@@ -673,8 +681,19 @@ if($flag = CFGP_U::admin_country_flag(get_post_meta($post->ID, '_billing_country
                         'custom_attributes' => $custom_attributes,
                     );
 */				
-					$settings[ $hr_id ] = array( 'name' => sprintf( '%s', esc_html( $gateway->method_title ) ), 'type' => 'title', 'desc' => '', 'id' => 'cf_geoplugin_payment_restriction' );
-					if($count != $x) $settings[ $hr_id.'_end' ] = array( 'name' => '', 'type' => 'title', 'desc' => '<hr>', 'id' => 'cf_geoplugin_payment_restriction' );
+					$settings[ $hr_id ] = array(
+						'name' => sprintf( '%s', esc_html( $gateway->method_title ) ),
+						'type' => 'title',
+						'desc' => '',
+						'id' => 'cf_geoplugin_payment_restriction'
+					);
+					
+					if($count != $x) $settings[ $hr_id.'_end' ] = array(
+						'name' => '',
+						'type' => 'title',
+						'desc' => '<hr>',
+						'id' => 'cf_geoplugin_payment_restriction'
+					);
 
                 }
                 $settings[] = array( 'type' => 'sectionend', 'id' => 'cf_geoplugin_payment_restriction' );

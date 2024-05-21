@@ -123,25 +123,50 @@ if(!class_exists('CFGP_Defaults', false)) : class CFGP_Defaults {
 	 */
 	const API = array(
 		// Standard Geo Controller API URLs
-		'main'				=>	'http://159.203.150.139/v2/',
-		'authenticate'		=>	'http://159.203.150.139/v2/authentication',
-		'converter'			=>	'http://159.203.150.139/v2/currency-converter',
-		'countries'			=>	'http://159.203.150.139/v2/countries',
-		'regions'			=>	'http://159.203.150.139/v2/regions',
-		'cities'			=>	'http://159.203.150.139/v2/cities',
+		'main'				=>	'http://api.wpgeocontroller.com/v2/',
+		'authenticate'		=>	'http://api.wpgeocontroller.com/v2/authentication',
+		'converter'			=>	'http://api.wpgeocontroller.com/v2/currency-converter',
+		'countries'			=>	'http://api.wpgeocontroller.com/v2/countries',
+		'regions'			=>	'http://api.wpgeocontroller.com/v2/regions',
+		'cities'			=>	'http://api.wpgeocontroller.com/v2/cities',
 		// SSL URLs
-		'ssl_main'			=>	'http://209.97.157.196/v2/',
-		'ssl_authenticate'	=>	'http://209.97.157.196/v2/authentication',
-		'ssl_converter'		=>	'http://209.97.157.196/v2/currency-converter',
-		'ssl_countries'		=>	'http://209.97.157.196/v2/countries',	
-		'ssl_regions'		=>	'http://209.97.157.196/v2/regions',
-		'ssl_cities'		=>	'http://209.97.157.196/v2/cities',		
+		'ssl_main'			=>	'https://api.wpgeocontroller.com/v2/',
+		'ssl_authenticate'	=>	'https://api.wpgeocontroller.com/v2/authentication',
+		'ssl_converter'		=>	'https://api.wpgeocontroller.com/v2/currency-converter',
+		'ssl_countries'		=>	'https://api.wpgeocontroller.com/v2/countries',	
+		'ssl_regions'		=>	'https://api.wpgeocontroller.com/v2/regions',
+		'ssl_cities'		=>	'https://api.wpgeocontroller.com/v2/cities',		
 		// 3rd party IPFY free API call for finding real IP address on the local machines
 		'ipfy'				=>	'https://api.ipify.org',
 		'smartIP'			=>	'https://smart-ip.net/myip',
 		'indent'			=>	'https://ident.me',
 		'googleapis_map'	=>	'//maps.googleapis.com/maps'
 	);
+	
+	/*
+	 * Fallback to the endpoints
+	 */
+	public static function falback_api_endpoints ( $request_url ) {
+		return apply_filters(
+			'cfgp_defaults_fallback_api_endpoints', 
+			str_replace(
+				[
+					'http:',
+					'https:',
+					'//',
+					'api.wpgeocontroller.com/'
+				],
+				[
+					'',
+					'',
+					'http://',
+					'159.203.150.139/'
+				],
+				$request_url
+			),
+			$request_url
+		);
+	}
 	
 	/*
 	 * API Return values.

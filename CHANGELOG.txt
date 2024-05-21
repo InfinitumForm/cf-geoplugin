@@ -1,5 +1,10 @@
 == Changelog ==
 
+= 8.6.7 =
+* Fixed WooCommerce Payments control
+* Fixed API calls and pointed to the new CDN servers
+* Improved cache
+
 = 8.6.6 =
 * Moved to new domain wpgeocontroller.com
 * Fixed timezone issue
