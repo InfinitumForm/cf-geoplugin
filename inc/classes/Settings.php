@@ -16,6 +16,8 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
 if(!class_exists('CFGP_Settings', false)) :
 class CFGP_Settings extends CFGP_Global {
 	
+	private $seo_redirection_page;
+	
 	function __construct(){
 		if(!class_exists('CFGP_Sidebar', false)) {
 			CFGP_U::include_once(CFGP_INC . '/settings/sidebar.php');

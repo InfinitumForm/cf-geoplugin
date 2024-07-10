@@ -47,6 +47,8 @@ if(!class_exists('CFGP_Defaults', false)) : class CFGP_Defaults {
 	
 	// Plugin options
 	const OPTIONS = array(
+		'enable_top_bar_menu'			=>	1,
+		'enable_top_bar_currency'		=>	1,
 		'enable_beta'					=>	1,
 		'enable_simple_shortcode'		=>	1,
 		'enable_seo_csv'				=>	1,

@@ -376,9 +376,20 @@ class CFGP_Admin extends CFGP_Global {
 	}
 	
 	// Admin bar CSS
-	public function admin_bar_menu_css() { if ( is_admin_bar_showing() ) : ?>
+	public function admin_bar_menu_css() { if ( is_admin_bar_showing() ) :
+	
+	if( !( apply_filters('cfgp/topbar/menu/display', (CFGP_Options::get('enable_top_bar_menu', 1) == 1)) || (
+		apply_filters( 'cfgp/topbar/currency/display', (CFGP_Options::get('enable_top_bar_currency', 1) == 1) )
+		&& ($currency_converter = CFGP_U::api('currency_converter'))
+		&& (CFGP_Options::get('base_currency') != CFGP_U::api('currency'))
+	) ) ) {
+		return;
+	}
+	
+	?>	
 <style media="all" id="cfgp-admin-bar-css">
 /* <![CDATA[ */
+<?php if( apply_filters('cfgp/topbar/menu/display', (CFGP_Options::get('enable_top_bar_menu', 1) == 1)) ) : ?>
 #wpadminbar .ab-top-menu .menupop.<?php echo esc_attr( CFGP_NAME . '.' . CFGP_NAME . '-admin-bar-link' ); ?> .ab-item > .cfgp-ab-icon:before {
 	font: normal 20px/1 dashicons;
     content: '\f231';
@@ -400,6 +411,11 @@ class CFGP_Admin extends CFGP_Global {
 #wpadminbar .ab-top-menu .menupop.<?php echo esc_attr( CFGP_NAME . '.' . CFGP_NAME . '-admin-bar-link' ); ?>.hover .ab-item > .cfgp-ab-icon:before {
 	color: #72aee6;
 }
+<?php endif; if(
+	apply_filters( 'cfgp/topbar/currency/display', (CFGP_Options::get('enable_top_bar_currency', 1) == 1) )
+	&& ($currency_converter = CFGP_U::api('currency_converter'))
+	&& (CFGP_Options::get('base_currency') != CFGP_U::api('currency'))
+) : ?>
 #wpadminbar .ab-top-menu .cf-geoplugin-toolbar-course,
 #wpadminbar .ab-top-menu .cf-geoplugin-toolbar-course:focus,
 #wpadminbar .ab-top-menu .cf-geoplugin-toolbar-course:hover,
@@ -410,136 +426,140 @@ class CFGP_Admin extends CFGP_Global {
 	background: #443333;
 	color: rgba(240, 246, 252, 1);
 }
+<?php endif; ?>
 /* ]]> */
 </style><?php endif; }
 	
 	// Add admin top bar menu pages
 	public function admin_bar_menu($wp_admin_bar) {
+		
 		if ( ! (current_user_can( 'administrator' ) || current_user_can( 'editor' )) ){
 			return $wp_admin_bar;
 		}
 		
-		$wp_admin_bar->add_node(array(
-			'id' => CFGP_NAME . '-admin-bar-link',
-			'title' => '<span class="cfgp-ab-icon"></span>' . __('Geo Controller', 'cf-geoplugin'), 
-			'href' => esc_url(CFGP_U::admin_url('admin.php?page=cf-geoplugin')), 
-			'meta' => array(
-				'class' => CFGP_NAME . ' ' . CFGP_NAME . '-admin-bar-link',
-				'title' => __('Geo Controller', 'cf-geoplugin'),
-			)
-		));
-		
-		$wp_admin_bar->add_menu(array(
-			'parent' => CFGP_NAME . '-admin-bar-link',
-			'id' => CFGP_NAME . '-admin-bar-shortcodes-link',
-			'title' => __('Shortcodes', 'cf-geoplugin'), 
-			'href' => esc_url(CFGP_U::admin_url('admin.php?page=' . CFGP_NAME)), 
-			'meta' => array(
-				'class' => CFGP_NAME . ' ' . CFGP_NAME . '-admin-bar-shortcodes-link',
-				'title' => __('Shortcodes', 'cf-geoplugin'),
-			)
-		));
-		if(CFGP_Options::get('enable_gmap', false))
-		{
-			$wp_admin_bar->add_menu(array(
-				'parent' => CFGP_NAME . '-admin-bar-link',
-				'id' => CFGP_NAME . '-admin-bar-google-map-link',
-				'title' => __('Google Map', 'cf-geoplugin'), 
-				'href' => esc_url(CFGP_U::admin_url('admin.php?page=' . CFGP_NAME . '-google-map')), 
+		if( apply_filters('cfgp/topbar/menu/display', (CFGP_Options::get('enable_top_bar_menu', 1) == 1)) ) {
+			$wp_admin_bar->add_node(array(
+				'id' => CFGP_NAME . '-admin-bar-link',
+				'title' => '<span class="cfgp-ab-icon"></span>' . __('Geo Controller', 'cf-geoplugin'), 
+				'href' => esc_url(CFGP_U::admin_url('admin.php?page=cf-geoplugin')), 
 				'meta' => array(
-					'class' => CFGP_NAME . ' ' . CFGP_NAME . '-admin-bar-google-map-link',
-					'title' => __('Google Map', 'cf-geoplugin'),
+					'class' => CFGP_NAME . ' ' . CFGP_NAME . '-admin-bar-link',
+					'title' => __('Geo Controller', 'cf-geoplugin'),
 				)
 			));
-		}
-		if(CFGP_Options::get('enable_defender', 1))
-		{
+			
 			$wp_admin_bar->add_menu(array(
 				'parent' => CFGP_NAME . '-admin-bar-link',
-				'id' => CFGP_NAME . '-admin-bar-defender-link',
-				'title' => __('Site Protection', 'cf-geoplugin'), 
-				'href' => esc_url(CFGP_U::admin_url('admin.php?page=' . CFGP_NAME . '-defender')), 
+				'id' => CFGP_NAME . '-admin-bar-shortcodes-link',
+				'title' => __('Shortcodes', 'cf-geoplugin'), 
+				'href' => esc_url(CFGP_U::admin_url('admin.php?page=' . CFGP_NAME)), 
 				'meta' => array(
-					'class' => CFGP_NAME . ' ' . CFGP_NAME . '-admin-bar-defender-link',
-					'title' => __('Site Protection', 'cf-geoplugin'),
+					'class' => CFGP_NAME . ' ' . CFGP_NAME . '-admin-bar-shortcodes-link',
+					'title' => __('Shortcodes', 'cf-geoplugin'),
 				)
 			));
-		}
-		if(CFGP_Options::get('enable_banner', false)) {
+			if(CFGP_Options::get('enable_gmap', false))
+			{
+				$wp_admin_bar->add_menu(array(
+					'parent' => CFGP_NAME . '-admin-bar-link',
+					'id' => CFGP_NAME . '-admin-bar-google-map-link',
+					'title' => __('Google Map', 'cf-geoplugin'), 
+					'href' => esc_url(CFGP_U::admin_url('admin.php?page=' . CFGP_NAME . '-google-map')), 
+					'meta' => array(
+						'class' => CFGP_NAME . ' ' . CFGP_NAME . '-admin-bar-google-map-link',
+						'title' => __('Google Map', 'cf-geoplugin'),
+					)
+				));
+			}
+			if(CFGP_Options::get('enable_defender', 1))
+			{
+				$wp_admin_bar->add_menu(array(
+					'parent' => CFGP_NAME . '-admin-bar-link',
+					'id' => CFGP_NAME . '-admin-bar-defender-link',
+					'title' => __('Site Protection', 'cf-geoplugin'), 
+					'href' => esc_url(CFGP_U::admin_url('admin.php?page=' . CFGP_NAME . '-defender')), 
+					'meta' => array(
+						'class' => CFGP_NAME . ' ' . CFGP_NAME . '-admin-bar-defender-link',
+						'title' => __('Site Protection', 'cf-geoplugin'),
+					)
+				));
+			}
+			if(CFGP_Options::get('enable_banner', false)) {
+				$wp_admin_bar->add_menu(array(
+					'parent' => CFGP_NAME . '-admin-bar-link',
+					'id' => CFGP_NAME . '-admin-bar-banner-link',
+					'title' => __('Geo Banner', 'cf-geoplugin'), 
+					'href' => esc_url(CFGP_U::admin_url('admin.php?page=' . CFGP_NAME . '-banner')), 
+					'meta' => array(
+						'class' => CFGP_NAME . ' ' . CFGP_NAME . '-admin-bar-banner-link',
+						'title' => __('Geo Banner', 'cf-geoplugin'),
+					)
+				));
+			}
+			if(CFGP_Options::get('enable_seo_redirection', 1))
+			{
+				$wp_admin_bar->add_menu(array(
+					'parent' => CFGP_NAME . '-admin-bar-link',
+					'id' => CFGP_NAME . '-admin-bar-seo-redirection-link',
+					'title' => __('SEO Redirection', 'cf-geoplugin'), 
+					'href' => esc_url(CFGP_U::admin_url('admin.php?page=' . CFGP_NAME . '-seo-redirection')), 
+					'meta' => array(
+						'class' => CFGP_NAME . ' ' . CFGP_NAME . '-admin-bar-seo-redirection-link',
+						'title' => __('SEO Redirection', 'cf-geoplugin'),
+					)
+				));
+			}
+			
 			$wp_admin_bar->add_menu(array(
 				'parent' => CFGP_NAME . '-admin-bar-link',
-				'id' => CFGP_NAME . '-admin-bar-banner-link',
-				'title' => __('Geo Banner', 'cf-geoplugin'), 
-				'href' => esc_url(CFGP_U::admin_url('admin.php?page=' . CFGP_NAME . '-banner')), 
+				'id' => CFGP_NAME . '-admin-bar-settings-link',
+				'title' => __('Settings', 'cf-geoplugin'), 
+				'href' => esc_url(CFGP_U::admin_url('admin.php?page=' . CFGP_NAME . '-settings')), 
 				'meta' => array(
-					'class' => CFGP_NAME . ' ' . CFGP_NAME . '-admin-bar-banner-link',
-					'title' => __('Geo Banner', 'cf-geoplugin'),
+					'class' => CFGP_NAME . ' ' . CFGP_NAME . '-admin-bar-settings-link',
+					'title' => __('Settings', 'cf-geoplugin'),
 				)
 			));
-		}
-		if(CFGP_Options::get('enable_seo_redirection', 1))
-		{
+			
 			$wp_admin_bar->add_menu(array(
 				'parent' => CFGP_NAME . '-admin-bar-link',
-				'id' => CFGP_NAME . '-admin-bar-seo-redirection-link',
-				'title' => __('SEO Redirection', 'cf-geoplugin'), 
-				'href' => esc_url(CFGP_U::admin_url('admin.php?page=' . CFGP_NAME . '-seo-redirection')), 
+				'id' => CFGP_NAME . '-admin-bar-debug-link',
+				'title' => __('Debug Mode', 'cf-geoplugin'), 
+				'href' => esc_url(CFGP_U::admin_url('admin.php?page=' . CFGP_NAME . '-debug')), 
 				'meta' => array(
-					'class' => CFGP_NAME . ' ' . CFGP_NAME . '-admin-bar-seo-redirection-link',
-					'title' => __('SEO Redirection', 'cf-geoplugin'),
+					'class' => CFGP_NAME . ' ' . CFGP_NAME . '-admin-bar-debug-link',
+					'title' => __('Debug Mode', 'cf-geoplugin'),
 				)
 			));
-		}
-		
-		$wp_admin_bar->add_menu(array(
-			'parent' => CFGP_NAME . '-admin-bar-link',
-			'id' => CFGP_NAME . '-admin-bar-settings-link',
-			'title' => __('Settings', 'cf-geoplugin'), 
-			'href' => esc_url(CFGP_U::admin_url('admin.php?page=' . CFGP_NAME . '-settings')), 
-			'meta' => array(
-				'class' => CFGP_NAME . ' ' . CFGP_NAME . '-admin-bar-settings-link',
-				'title' => __('Settings', 'cf-geoplugin'),
-			)
-		));
-		
-		$wp_admin_bar->add_menu(array(
-			'parent' => CFGP_NAME . '-admin-bar-link',
-			'id' => CFGP_NAME . '-admin-bar-debug-link',
-			'title' => __('Debug Mode', 'cf-geoplugin'), 
-			'href' => esc_url(CFGP_U::admin_url('admin.php?page=' . CFGP_NAME . '-debug')), 
-			'meta' => array(
-				'class' => CFGP_NAME . ' ' . CFGP_NAME . '-admin-bar-debug-link',
-				'title' => __('Debug Mode', 'cf-geoplugin'),
-			)
-		));
-		
-		if(CFGP_License::activated()) {
-			$wp_admin_bar->add_menu(array(
-				'parent' => CFGP_NAME . '-admin-bar-link',
-				'id' => CFGP_NAME . '-admin-bar-activate-link',
-				'title' => __('License', 'cf-geoplugin'), 
-				'href' => esc_url(CFGP_U::admin_url('admin.php?page=' . CFGP_NAME . '-activate')), 
-				'meta' => array(
-					'class' => CFGP_NAME . ' ' . CFGP_NAME . '-admin-bar-activate-link',
-					'title' => __('License', 'cf-geoplugin'),
-				)
-			));
-		} else {
-			$wp_admin_bar->add_menu(array(
-				'parent' => CFGP_NAME . '-admin-bar-link',
-				'id' => CFGP_NAME . '-admin-bar-activate-link',
-				'title' => '<span class="cfgp-ab-icon"></span>' . __('Activate Unlimited', 'cf-geoplugin'), 
-				'href' => esc_url(CFGP_U::admin_url('admin.php?page=' . CFGP_NAME . '-activate')), 
-				'meta' => array(
-					'class' => CFGP_NAME . ' ' . CFGP_NAME . '-admin-bar-activate-link',
-					'title' => __('Activate Unlimited', 'cf-geoplugin'),
-				)
-			));
+			
+			if(CFGP_License::activated()) {
+				$wp_admin_bar->add_menu(array(
+					'parent' => CFGP_NAME . '-admin-bar-link',
+					'id' => CFGP_NAME . '-admin-bar-activate-link',
+					'title' => __('License', 'cf-geoplugin'), 
+					'href' => esc_url(CFGP_U::admin_url('admin.php?page=' . CFGP_NAME . '-activate')), 
+					'meta' => array(
+						'class' => CFGP_NAME . ' ' . CFGP_NAME . '-admin-bar-activate-link',
+						'title' => __('License', 'cf-geoplugin'),
+					)
+				));
+			} else {
+				$wp_admin_bar->add_menu(array(
+					'parent' => CFGP_NAME . '-admin-bar-link',
+					'id' => CFGP_NAME . '-admin-bar-activate-link',
+					'title' => '<span class="cfgp-ab-icon"></span>' . __('Activate Unlimited', 'cf-geoplugin'), 
+					'href' => esc_url(CFGP_U::admin_url('admin.php?page=' . CFGP_NAME . '-activate')), 
+					'meta' => array(
+						'class' => CFGP_NAME . ' ' . CFGP_NAME . '-admin-bar-activate-link',
+						'title' => __('Activate Unlimited', 'cf-geoplugin'),
+					)
+				));
+			}
 		}
 		
 		// Display Currency Converter in the topbar
 		if(
-			apply_filters('cfgp/topbar/currency/display', true)
+			apply_filters( 'cfgp/topbar/currency/display', (CFGP_Options::get('enable_top_bar_currency', 1) == 1) )
 			&& ($currency_converter = CFGP_U::api('currency_converter'))
 			&& (CFGP_Options::get('base_currency') != CFGP_U::api('currency'))
 		)

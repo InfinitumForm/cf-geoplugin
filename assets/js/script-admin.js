@@ -606,7 +606,7 @@
 					}
 				}
 			} else {			
-				$.getJSON('https://cfgeoplugin.com/affiliate.json', function(json){
+				$.getJSON('https://wpgeocontroller.com/affiliate.json', function(json){
 					cfgp_affilliates = json;
 					if(cfgp_affilliates) {
 						if(typeof cfgp_affilliates.nord_vpn != 'undefined' && cfgp_affilliates.nord_vpn.length > 0) {
@@ -621,6 +621,6 @@
 	/**
 	 * Display Thank You footer
 	**/
-	$('#footer-left').html('<div>'+CFGP.label.footer_menu.thank_you+' <a href="https://cfgeoplugin.com" target="_blank">Geo Controller</a></div><div class="alignleft"><a href="https://cfgeoplugin.com/documentation" target="_blank">'+CFGP.label.footer_menu.documentation+'</a> | <a href="https://cfgeoplugin.com/faq" target="_blank">'+CFGP.label.footer_menu.faq+'</a> | <a href="https://cfgeoplugin.com/contact" target="_blank">'+CFGP.label.footer_menu.contact+'</a> | <a href="https://cfgeoplugin.com/blog" target="_blank">'+CFGP.label.footer_menu.blog+'</a></div>');
+	$('#footer-left').html('<div>'+CFGP.label.footer_menu.thank_you+' <a href="https://wpgeocontroller.com" target="_blank">Geo Controller</a></div><div class="alignleft"><a href="https://wpgeocontroller.com/documentation" target="_blank">'+CFGP.label.footer_menu.documentation+'</a> | <a href="https://wpgeocontroller.com/faq" target="_blank">'+CFGP.label.footer_menu.faq+'</a> | <a href="https://wpgeocontroller.com/contact" target="_blank">'+CFGP.label.footer_menu.contact+'</a> | <a href="https://wpgeocontroller.com/blog" target="_blank">'+CFGP.label.footer_menu.blog+'</a></div>');
 	$('#footer-upgrade').remove();	
 })(jQuery || window.jQuery || Zepto || window.Zepto);

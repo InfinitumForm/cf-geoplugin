@@ -1,5 +1,14 @@
 == Changelog ==
 
+= 8.6.9 =
+* Adding curly brackets support for the geo tags
+* Adding options to remove top bar menu and currency converter
+* Bugfixes from previous version
+
+= 8.6.8 =
+* Bug fixes for PHP 8.3
+* Added support for WordPress 6.6
+
 = 8.6.7 =
 * Fixed WooCommerce Payments control
 * Fixed API calls and pointed to the new CDN servers

@@ -379,7 +379,7 @@ if(!class_exists('CFGP_Public', false)) : class CFGP_Public extends CFGP_Global{
 			foreach(apply_filters('cfgp/render/tags', $API) as $key => $value)
 			{
 				if(in_array($key, $remove_tags)) continue;
-				$content = str_replace('%%'.$key.'%%', $value, $content);
+				$content = str_replace('%%'.$key.'%%', $value??'', $content);
 			}
 		}
 		

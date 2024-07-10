@@ -123,12 +123,19 @@ if(!class_exists('CFGP_Plugins', false)) : class CFGP_Plugins extends CFGP_Globa
 				$names = [];
 				$last = NULL;
 				if( count($plugins) > 1 ) {
-					$last = '<strong>' . (end($plugins))->name . '</strong>';
+					$last = '<strong>' . esc_html((end($plugins))->name??'') . '</strong>';
 					unset($plugins[array_key_last($plugins)]);
 				}
 				foreach($plugins as $path => $plugin) {
-					$names[]= '<strong>' . $plugin->name . '</strong>';
+					if( isset($plugin->name) ) {
+						$names[]= '<strong>' . esc_html($plugin->name) . '</strong>';
+					}
 				}
+				
+				if( empty($names) ) {
+					return;
+				}
+				
 				if($last) {
 					$names = sprintf(
 						__('%s and %s', 'cf-geoplugin'),

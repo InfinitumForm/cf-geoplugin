@@ -3,9 +3,9 @@ Contributors: ivijanstefan, creativform
 Donate link: https://www.buymeacoffee.com/ivijanstefan
 Tags: Geo Location, WordPress Geolocation Plugin, Location-Based Personalization, User Location Detection, SEO Optimization
 Requires at least: 6.0
-Tested up to: 6.5
+Tested up to: 6.6
 Requires PHP: 7.0
-Stable tag: 8.6.7
+Stable tag: 8.6.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -413,6 +413,15 @@ Please inform us if any of these errors occur via contact form on our website [h
 
 == Changelog ==
 
+= 8.6.9 =
+* Adding curly brackets support for the geo tags
+* Adding options to remove top bar menu and currency converter
+* Bugfixes from previous version
+
+= 8.6.8 =
+* Bug fixes for PHP 8.3
+* Added support for WordPress 6.6
+
 = 8.6.7 =
 * Fixed WooCommerce Payments control
 * Fixed API calls and pointed to the new CDN servers
@@ -530,6 +539,15 @@ Please inform us if any of these errors occur via contact form on our website [h
 * Fixed PHP errors from previous version
 
 == Upgrade Notice ==
+
+= 8.6.9 =
+* Adding curly brackets support for the geo tags
+* Adding options to remove top bar menu and currency converter
+* Bugfixes from previous version
+
+= 8.6.8 =
+* Bug fixes for PHP 8.3
+* Added support for WordPress 6.6
 
 = 8.6.7 =
 * Fixed WooCommerce Payments control

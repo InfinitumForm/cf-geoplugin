@@ -118,7 +118,7 @@ if(!class_exists('CFGP_Shortcodes', false)) : class CFGP_Shortcodes extends CFGP
 		}
 		
 		
-		$this->add_shortcode( 'cfgeo_interactive_world_map',          'interactive_world_map' );
+		$this->add_shortcode( 'cfgeo_interactive_world_map', 'interactive_world_map' );
 	}
 	
 	

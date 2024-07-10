@@ -128,11 +128,21 @@ add_filter('cfgp/settings', function($options=[]){
 							'default' => 0
 						),
 						array(
-							'name' => 'enable_redis_cache',
-							'label' => __('Stick to Redis Cache only (experimental)', 'cf-geoplugin'),
-							'desc' => __('Redis cache can sometimes cause unexpected and unwanted problems. Use this option wisely.', 'cf-geoplugin'),
+							'name' => 'enable_top_bar_menu',
+							'label' => __('Menu in Admin Bar', 'cf-geoplugin'),
+							'desc' => __('Enable the WP Geo Controller menu in the admin bar.', 'cf-geoplugin'),
 							'type' => 'radio',
-							'display' => CFGP_U::redis_cache_exists(),
+							'options' => array(
+								1 => __('Yes', 'cf-geoplugin'),
+								0 => __('No', 'cf-geoplugin')
+							),
+							'default' => 0
+						),
+						array(
+							'name' => 'enable_top_bar_currency',
+							'label' => __('Currency in Admin Bar', 'cf-geoplugin'),
+							'desc' => __('Enable the display of currency in the admin bar using WP Geo Controller.', 'cf-geoplugin'),
+							'type' => 'radio',
 							'options' => array(
 								1 => __('Yes', 'cf-geoplugin'),
 								0 => __('No', 'cf-geoplugin')
@@ -501,6 +511,18 @@ add_filter('cfgp/settings', function($options=[]){
 								0 => __('No', 'cf-geoplugin')
 							),
 							'default' => 1
+						),
+						array(
+							'name' => 'enable_redis_cache',
+							'label' => __('Stick to Redis Cache only (experimental)', 'cf-geoplugin'),
+							'desc' => __('Redis cache can sometimes cause unexpected and unwanted problems. Use this option wisely.', 'cf-geoplugin'),
+							'type' => 'radio',
+							'display' => CFGP_U::redis_cache_exists(),
+							'options' => array(
+								1 => __('Yes', 'cf-geoplugin'),
+								0 => __('No', 'cf-geoplugin')
+							),
+							'default' => 0
 						),
 						/*
 						array(
