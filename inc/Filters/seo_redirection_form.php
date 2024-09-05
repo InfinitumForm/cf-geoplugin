@@ -48,13 +48,13 @@ add_action('cfgp/page/seo_redirection/form/content', function(){
 </div>
 <?php endif; ?>
 <div class="postbox">
-	<h3 class="hndle" style="margin-bottom:0;padding-bottom:0;"><span><?php _e('SEO Redirection Global Params', 'cf-geoplugin'); ?></span></h3><hr>
+	<h3 class="hndle" style="margin-bottom:0;padding-bottom:0;"><span><?php esc_html_e('SEO Redirection Global Params', 'cf-geoplugin'); ?></span></h3><hr>
 	<div class="inside">
     	<?php CFGP_Form::input('hidden', array('name'=>'id','value'=>$ID)); ?>
     	<table class="form-table cfgp-form-table cfgp-country-region-city-multiple-form" role="presentation" id="cfgp-new-seo-redirection">
         	<tbody>
                 <tr>
-                    <th scope="row" valign="top" class="cfgp-label"><label><?php _e('Enable this redirection', 'cf-geoplugin'); ?></label></th>
+                    <th scope="row" valign="top" class="cfgp-label"><label><?php esc_html_e('Enable this redirection', 'cf-geoplugin'); ?></label></th>
                     <td valign="top"><?php
 						CFGP_Form::radio(
 							array(
@@ -67,42 +67,42 @@ add_action('cfgp/page/seo_redirection/form/content', function(){
 					?></td>
                 </tr>
                 <tr>
-                    <th scope="row" valign="top" class="cfgp-label"><label for="country"><?php _e('Select Country', 'cf-geoplugin'); ?></label></th>
+                    <th scope="row" valign="top" class="cfgp-label"><label for="country"><?php esc_html_e('Select Country', 'cf-geoplugin'); ?></label></th>
                     <td valign="top"><?php 
 						CFGP_Form::select_countries(array('name'=>'country', 'class'=>'cfgp_select2'), $select_country);
 					?></td>
                 </tr>
                 <tr>
-                    <th scope="row" valign="top" class="cfgp-label"><label for="region"><?php _e('Select Region', 'cf-geoplugin'); ?></label></th>
+                    <th scope="row" valign="top" class="cfgp-label"><label for="region"><?php esc_html_e('Select Region', 'cf-geoplugin'); ?></label></th>
                     <td valign="top"><?php
 						CFGP_Form::select_regions(array('name'=>'region', 'country_code' => $select_country, 'class'=>'cfgp_select2'), $select_region);
 					?></td>
                 </tr>
                 <tr>
-                    <th scope="row" valign="top" class="cfgp-label"><label for="city"><?php _e('Select City', 'cf-geoplugin'); ?></label></th>
+                    <th scope="row" valign="top" class="cfgp-label"><label for="city"><?php esc_html_e('Select City', 'cf-geoplugin'); ?></label></th>
                     <td valign="top"><?php
 						CFGP_Form::select_cities(array('name'=>'city', 'country_code' => $select_country, 'class'=>'cfgp_select2'), $select_city);
 					?></td>
                 </tr>
                 <tr>
-                    <th scope="row" valign="top" class="cfgp-label"><label for="postcode"><?php _e('Select Postcode', 'cf-geoplugin'); ?></label></th>
+                    <th scope="row" valign="top" class="cfgp-label"><label for="postcode"><?php esc_html_e('Select Postcode', 'cf-geoplugin'); ?></label></th>
                     <td valign="top"><?php
 						CFGP_Form::select_postcodes(array('name'=>'postcode', 'class'=>'cfgp_select2'), $select_postcode);
 					?></td>
                 </tr>
                 <tr>
-                    <th scope="row" valign="top" class="cfgp-label"><label for="url"><?php _e('Redirect URL', 'cf-geoplugin'); ?></label></th>
+                    <th scope="row" valign="top" class="cfgp-label"><label for="url"><?php esc_html_e('Redirect URL', 'cf-geoplugin'); ?></label></th>
                     <td valign="top">
 					<?php CFGP_Form::input('url', array('name'=>'url','value'=>$redirection_url, 'style'=>'width:100%;max-width:50%;')); ?>
-					<p class="description"><?php _e('If you want to pass one of the URL parameters, you can do it like this:', 'cf-geoplugin'); ?> <code>https://example.com/?pharam_1=*&pharam_2=*</code>.<br><?php _e('If any of defined parameters exist in the URL, they will be passed to the new redirect URL.', 'cf-geoplugin'); ?></p>
+					<p class="description"><?php esc_html_e('If you want to pass one of the URL parameters, you can do it like this:', 'cf-geoplugin'); ?> <code>https://example.com/?pharam_1=*&pharam_2=*</code>.<br><?php esc_html_e('If any of defined parameters exist in the URL, they will be passed to the new redirect URL.', 'cf-geoplugin'); ?></p>
 					</td>
                 </tr>
                 <tr>
-                    <th scope="row" valign="top" class="cfgp-label"><label for="http_code"><?php _e('HTTP Code', 'cf-geoplugin'); ?></label></th>
+                    <th scope="row" valign="top" class="cfgp-label"><label for="http_code"><?php esc_html_e('HTTP Code', 'cf-geoplugin'); ?></label></th>
                     <td valign="top"><?php CFGP_Form::select_http_code(array('name'=>'http_code'), $http_code); ?></td>
                 </tr>
                 <tr>
-                    <th scope="row" valign="top" class="cfgp-label"><label><?php _e('Redirection', 'cf-geoplugin'); ?></label></th>
+                    <th scope="row" valign="top" class="cfgp-label"><label><?php esc_html_e('Redirection', 'cf-geoplugin'); ?></label></th>
                     <td valign="top"><?php
 						CFGP_Form::radio(
 							array(
@@ -116,7 +116,7 @@ add_action('cfgp/page/seo_redirection/form/content', function(){
                 </tr>
             </tbody>
         </table>
-        <p class="submit"><button type="submit" class="button button-primary"><?php _e('Save Redirection', 'cf-geoplugin'); ?></button><?php if($ID): ?> <a href="<?php echo esc_url(CFGP_U::admin_url('admin.php?page='.CFGP_NAME.'-seo-redirection')); ?>" class="button" style="float:right"><?php _e('Go back to list', 'cf-geoplugin'); ?></a><?php endif; ?></p>
+        <p class="submit"><button type="submit" class="button button-primary"><?php esc_html_e('Save Redirection', 'cf-geoplugin'); ?></button><?php if($ID): ?> <a href="<?php echo esc_url(CFGP_U::admin_url('admin.php?page='.CFGP_NAME.'-seo-redirection')); ?>" class="button" style="float:right"><?php esc_html_e('Go back to list', 'cf-geoplugin'); ?></a><?php endif; ?></p>
     </div>
 </div>
 <?php });

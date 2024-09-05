@@ -471,101 +471,135 @@ if(!class_exists('CFGP_REST', false)) : class CFGP_REST extends CFGP_Global {
 			register_rest_route( $namespace, '/cache/shortcode', array(
 				'methods' => array('GET', 'POST'),
 				'permission_callback' => '__return_true',
-				'callback' => function( WP_REST_Request $data )	{
+				'callback' => function( WP_REST_Request $data ) {
 					
-					if( CFGP_U::KEY() !== $data->get_param( 'key' ) ) {
-						return new WP_REST_Response(array(
-							'error' => true,
-							'code' => 'not_authorized',
-							'error_message' => __('You are not authorized to access this information.', 'cf-geoplugin'),
-							'status' => 404
-						));
-					}
+					header('Cache-Control: max-age=900, must-revalidate');
+
+					$transient_id = sanitize_text_field($data->get_param('nonce'));
+					$type = sanitize_text_field($data->get_param('type'));
 					
-					$shortcode = trim(CFGP_U::request_string('shortcode'));
-					
-					if( empty($shortcode) || CFGP_U::request_string('action') != 'cf_geoplugin_shortcode_cache') {
+					// Stop on the bad request
+					if( CFGP_U::request_string('action') != 'cf_geoplugin_shortcode_cache' ) {
+						header_remove('Cache-Control');
 						return new WP_REST_Response(
 							array(
 								'response' => NULL,
 								'error' => true,
-								'error_message' => __('Important parameters are missing!', 'cf-geoplugin'),
-								'status' => 404
+								'error_message' => __('You are not authorized to access this information!', 'cf-geoplugin'),
+								'status' => 403
 							)
 						);
 					}
-					
-					$options = unserialize(
-						urldecode(base64_decode(sanitize_text_field(CFGP_U::request_string('options')))),
-						['allowed_classes' => false]
-					);
-					
-					$attr = [];
-					if(!empty($options) && is_array($options))
-					{
-						foreach($options as $key => $value) {
-							if(!is_numeric($key)) {
-								$attr[] = $key . '="' . esc_attr($value) . '"';
-							} else {
-								$attr[] = $value;
+
+					// Check if the transient exists
+					if ($data = get_transient('cfgp-' . $transient_id)) {
+
+						$content   = wp_kses_post($data['content']);
+						$default   = wp_kses_post($data['default']);
+						$shortcode = sanitize_text_field($data['shortcode']);
+						$options   = $data['options']; // sanitization is below
+						$post_id   = sanitize_text_field($data['post_id']);
+						$hash      = sanitize_text_field($data['hash']);
+						$key       = sanitize_text_field($data['key']);
+			
+						// Secret Key do not match
+						if( CFGP_U::KEY() !== $key ) {
+							delete_transient('cfgp-' . $transient_id);
+							header_remove('Cache-Control');
+							return new WP_REST_Response(array(
+								'error' => true,
+								'code' => 'not_authorized',
+								'error_message' => __('You are not authorized to access this information.', 'cf-geoplugin'),
+								'status' => 403
+							));
+						}
+
+						// If shortcode and transient do not match
+						if ($hash !== $transient_id || $shortcode !== $type) {
+							delete_transient('cfgp-' . $transient_id);
+							header_remove('Cache-Control');
+							return new WP_REST_Response(array(
+								'response' => null,
+								'error' => true,
+								'error_message' => __('You are not authorized to access this information.', 'cf-geoplugin'),
+								'status' => 400
+							));
+						}
+
+						// Build shortcode attributes and sanitize them
+						$attr = [];
+						if (!empty($options) && is_array($options)) {
+							foreach ($options as $key => $value) {
+								$value = sanitize_text_field($value);
+								if (!is_numeric($key)) {
+									$attr[] = sanitize_key($key) . '="' . esc_attr($value) . '"';
+								} else {
+									$attr[] = esc_attr($value);
+								}
 							}
 						}
-					}
-					
-					$attr = (!empty($attr) ? ' ' . join(' ', $attr) : '');
-					
-					if($default = CFGP_U::request_string('default')) {
-						$content = stripslashes(urldecode(sanitize_text_field($default)));
-						$content = json_decode($content, true);			
-						$content = wp_kses_post($content);			
-						$default = $content;
-					} else {
-						$default = $content = '';
-					}
-					
-					$attr = str_replace(' cache', '', $attr) . ' no_cache';
-					
-					$return = [];
-					
-					if( !in_array($shortcode, array(
-						'cfgeo_flag',
-						'cfgeo_converter',
-						'cfgeo_is_vat',
-						'cfgeo_is_not_vat',
-						'cfgeo_in_eu',
-						'cfgeo_not_in_eu',
-						'cfgeo_is_proxy',
-						'cfgeo_is_not_proxy',
-						'cfgeo_gps',
-						'cfgeo_map'
-					)) && preg_match('/cfgeo_([a-z_]+)/i', $shortcode, $match) ) {
-						$return['response'] = do_shortcode('[cfgeo return="' . $match[1] . '"' . $attr . ']');
-					} else {
-						if(empty($default)) {
-							$return['response'] = do_shortcode('[' . $shortcode . $attr . ']');
+						$attr = (!empty($attr) ? ' ' . join(' ', $attr) : '');
+						$attr = str_replace(' cache', '', $attr) . ' no_cache';
+
+						// Build a new shortcode with geo data
+						$output = $content;
+						if (preg_match('/cfgeo_([a-z_]+)/i', $shortcode, $match)) {
+							$output = wp_kses(
+								do_shortcode('[cfgeo return="' . esc_attr($match[1]) . '"' . $attr . ']'),
+								CFGP_U::allowed_html_tags_for_page()
+							);
 						} else {
-							$return['response'] =  do_shortcode('[' . $shortcode . $attr . ']' . $content . '[/' . $shortcode . ']');
+							if (empty($default)) {
+								$output = wp_kses(
+									do_shortcode('[' . $shortcode . $attr . ']'),
+									CFGP_U::allowed_html_tags_for_page()
+								);
+							} else {
+								$output = wp_kses(
+									do_shortcode('[' . $shortcode . $attr . ']' . $content . '[/' . $shortcode . ']'),
+									CFGP_U::allowed_html_tags_for_page()
+								);
+							}
 						}
-					}
-					
-					return new WP_REST_Response( array_merge(
-						$return,
-						array(
+
+						return new WP_REST_Response(array(
+							'response' => $output,
 							'error' => false,
 							'error_message' => '',
 							'status' => 200
-						)
-					) );
+						));
+					}
+					// If the transient does not exist, return an error
+					header_remove('Cache-Control');
+					return new WP_REST_Response(array(
+						'response' => null,
+						'error' => true,
+						'error_message' => __('No cached content found.', 'cf-geoplugin'),
+						'status' => 400
+					));
 				},
 				'args' => array(
-					'key' => array(
+					'nonce' => array(
+						'validate_callback' => function($param, $request, $key) {
+							return !empty($param);
+						},
+						'required' => true
+					),
+					'type' => array(
+						'validate_callback' => function($param, $request, $key) {
+							return !empty($param);
+						},
+						'required' => true
+					),
+					'action' => array(
 						'validate_callback' => function($param, $request, $key) {
 							return !empty($param);
 						},
 						'required' => true
 					)
 				)
-			), [], true );
+			));
+
 			
 			
 			// Fix Banner cache
@@ -574,39 +608,70 @@ if(!class_exists('CFGP_REST', false)) : class CFGP_REST extends CFGP_Global {
 				'permission_callback' => '__return_true',
 				'callback' => function( WP_REST_Request $data )	{
 					
-					if( CFGP_U::KEY() !== $data->get_param( 'key' ) ) {
-						return new WP_REST_Response(array(
-							'error' => true,
-							'code' => 'not_authorized',
-							'error_message' => __('You are not authorized to access this information.', 'cf-geoplugin'),
-							'status' => 404
-						));
-					}
+					header('Cache-Control: max-age=900, must-revalidate');
 					
 					// Stop on the bad request
 					if( CFGP_U::request_string('action') != 'cf_geoplugin_banner_cache' ) {
+						header_remove('Cache-Control');
 						return new WP_REST_Response(
 							array(
 								'response' => NULL,
 								'error' => true,
-								'error_message' => __('Important parameters are missing!', 'cf-geoplugin'),
-								'status' => 404
+								'error_message' => __('You are not authorized to access this information!', 'cf-geoplugin'),
+								'status' => 403
 							)
 						);
 					}
+					
+					// Stop if transient not exists
+					$transient_id = CFGP_U::request_string('nonce');
+					$data = get_transient('cfgp-' . $transient_id);
+					if( !$data ) {
+						header_remove('Cache-Control');
+						return new WP_REST_Response(array(
+							'error' => true,
+							'code' => 'not_authorized',
+							'error_message' => __('You are not authorized to access this information.', 'cf-geoplugin'),
+							'status' => 403
+						));
+					}
+					
+					// Stop if hidden key not exists
+					if( sanitize_text_field($data['key']) !== CFGP_U::key() ) {
+						delete_transient('cfgp-' . $transient_id);
+						header_remove('Cache-Control');
+						return new WP_REST_Response(array(
+							'error' => true,
+							'code' => 'not_authorized',
+							'error_message' => __('You are not authorized to access this information.', 'cf-geoplugin'),
+							'status' => 400
+						));
+					}
+					
+					// Let's keep proper transient
+					if( sanitize_text_field($data['hash']) !== $transient_id ) {
+						delete_transient('cfgp-' . $transient_id);
+						header_remove('Cache-Control');
+						return new WP_REST_Response(array(
+							'error' => true,
+							'code' => 'not_authorized',
+							'error_message' => __('You are not authorized to access this information.', 'cf-geoplugin'),
+							'status' => 400
+						));
+					}
+					
 					
 					$return=array(
 						'response' => NULL
 					);
 					
 					$setup = array(
-						'id'				=>	CFGP_U::request_int('id'),
-						'posts_per_page'	=>	CFGP_U::request_int('posts_per_page'),
-						'class'				=>	sanitize_text_field(CFGP_U::request_string('class'))
+						'id'				=>	absint(sanitize_text_field($data['id'])),
+						'posts_per_page'	=>	absint(sanitize_text_field($data['posts_per_page'])),
+						'class'				=>	sanitize_text_field($data['class'])
 					);
 					
-					$cont = stripslashes(urldecode(sanitize_text_field(CFGP_U::request_string('default'))));
-					$cont = json_decode($cont, true);
+					$cont = sanitize_textarea_field($data['content']);
 					
 					// Stop if ID is not good
 					if( ! (intval($setup['id']) > 0) ) {
@@ -665,29 +730,30 @@ if(!class_exists('CFGP_REST', false)) : class CFGP_REST extends CFGP_Global {
 							`banner`.`post_content`
 						FROM
 							`{$wpdb->posts}` AS `banner`
+						LEFT JOIN
+							`{$wpdb->postmeta}` AS `c` 
+							ON `c`.`post_id` = `banner`.`ID` 
+							AND `c`.`meta_key` = 'cfgp-banner-location-country'
+						LEFT JOIN
+							`{$wpdb->postmeta}` AS `r` 
+							ON `r`.`post_id` = `banner`.`ID` 
+							AND `r`.`meta_key` = 'cfgp-banner-location-region'
+						LEFT JOIN
+							`{$wpdb->postmeta}` AS `s` 
+							ON `s`.`post_id` = `banner`.`ID` 
+							AND `s`.`meta_key` = 'cfgp-banner-location-city'
 						WHERE
 							`banner`.`ID` = %d
-						AND
-							`banner`.`post_type` = 'cf-geoplugin-banner'
-						AND
-							`post_status` = 'publish'
-						AND
-							IF(
-								EXISTS(SELECT 1 FROM `{$wpdb->postmeta}` `c` WHERE `c`.`post_id` = `banner`.`ID` AND `c`.`meta_key` = 'cfgp-banner-location-country'),
-								EXISTS(SELECT 1 FROM `{$wpdb->postmeta}` `c` WHERE `c`.`post_id` = `banner`.`ID` AND `c`.`meta_key` = 'cfgp-banner-location-country' AND `c`.`meta_value` LIKE %s),
-								1
+							AND `banner`.`post_type` = 'cf-geoplugin-banner'
+							AND `post_status` = 'publish'
+							AND (
+								`c`.`meta_value` LIKE %s OR `c`.`meta_value` IS NULL
 							)
-						AND
-							IF(
-								EXISTS(SELECT 1 FROM `{$wpdb->postmeta}` `r` WHERE `r`.`post_id` = `banner`.`ID` AND `r`.`meta_key` = 'cfgp-banner-location-region'),
-								EXISTS(SELECT 1 FROM `{$wpdb->postmeta}` `r` WHERE `r`.`post_id` = `banner`.`ID` AND `r`.`meta_key` = 'cfgp-banner-location-region' AND `r`.`meta_value` LIKE %s),
-								1
+							AND (
+								`r`.`meta_value` LIKE %s OR `r`.`meta_value` IS NULL
 							)
-						AND
-							IF(
-								EXISTS(SELECT 1 FROM `{$wpdb->postmeta}` `s` WHERE `s`.`post_id` = `banner`.`ID` AND `s`.`meta_key` = 'cfgp-banner-location-city'),
-								EXISTS(SELECT 1 FROM `{$wpdb->postmeta}` `s` WHERE `s`.`post_id` = `banner`.`ID` AND `s`.`meta_key` = 'cfgp-banner-location-city' AND `s`.`meta_value` LIKE %s),
-								1
+							AND (
+								`s`.`meta_value` LIKE %s OR `s`.`meta_value` IS NULL
 							)
 						LIMIT 1
 					",
@@ -729,7 +795,19 @@ if(!class_exists('CFGP_REST', false)) : class CFGP_REST extends CFGP_Global {
 					) );
 				},
 				'args' => array(
-					'key' => array(
+					'nonce' => array(
+						'validate_callback' => function($param, $request, $key) {
+							return !empty($param);
+						},
+						'required' => true
+					),
+					'id' => array(
+						'validate_callback' => function($param, $request, $key) {
+							return !empty($param);
+						},
+						'required' => true
+					),
+					'action' => array(
 						'validate_callback' => function($param, $request, $key) {
 							return !empty($param);
 						},

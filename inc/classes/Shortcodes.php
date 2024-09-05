@@ -176,6 +176,8 @@ if(!class_exists('CFGP_Shortcodes', false)) : class CFGP_Shortcodes extends CFGP
 		if(CFGP_Options::get('enable_cache', 0)) $cache = true;
 		if(CFGP_U::is_attribute_exists('no_cache', $attr)) $cache = false;
 		
+		if( is_admin() ) $cache = false;
+		
 		if(!empty($content)){
 			$content = preg_replace('%\[(.*?)\]%i','&lsqb;$1&rsqb;',$content);
 		}
@@ -195,6 +197,9 @@ if(!class_exists('CFGP_Shortcodes', false)) : class CFGP_Shortcodes extends CFGP
 		$cache = CFGP_U::is_attribute_exists('cache', $atts);
 		if(CFGP_Options::get('enable_cache', 0)) $cache = true;
 		if(CFGP_U::is_attribute_exists('no_cache', $atts)) $cache = false;
+		
+		if( is_admin() ) $cache = false;
+		
 		$relative_match = (CFGP_U::is_attribute_exists('relative_match', $atts) ? true : false);
 		
 		$array = shortcode_atts( array(
@@ -328,6 +333,8 @@ if(!class_exists('CFGP_Shortcodes', false)) : class CFGP_Shortcodes extends CFGP
 		if(CFGP_Options::get('enable_cache', 0)) $cache = true;
 		if(CFGP_U::is_attribute_exists('no_cache', $atts)) $cache = false;
 		
+		if( is_admin() ) $cache = false;
+		
 		if($cache){
 			wp_enqueue_style( CFGP_NAME . '-public' );
 			wp_enqueue_script( CFGP_NAME . '-public' );
@@ -358,6 +365,9 @@ if(!class_exists('CFGP_Shortcodes', false)) : class CFGP_Shortcodes extends CFGP
 		$cache = CFGP_U::is_attribute_exists('cache', $atts);
 		if(CFGP_Options::get('enable_cache', 0)) $cache = true;
 		if(CFGP_U::is_attribute_exists('no_cache', $atts)) $cache = false;
+		
+		if( is_admin() ) $cache = false;
+		
 		$relative_match = (CFGP_U::is_attribute_exists('relative_match', $atts) ? true : false);
 		
 		wp_enqueue_style( CFGP_NAME . '-flag' );
@@ -541,8 +551,6 @@ if(!class_exists('CFGP_Shortcodes', false)) : class CFGP_Shortcodes extends CFGP
 	{
 		global $wpdb;
 		
-		$CFGEO = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
-		
 		// Cache control
 		$cache = CFGP_U::is_attribute_exists('cache', $setup);
 		if(CFGP_Options::get('enable_cache', 0)){
@@ -551,6 +559,11 @@ if(!class_exists('CFGP_Shortcodes', false)) : class CFGP_Shortcodes extends CFGP
 		if(CFGP_U::is_attribute_exists('no_cache', $setup)) {
 			$cache = false;
 		}
+		
+		if( is_admin() ) {
+			$cache = false;
+		}
+		
 		if($cache) {
 			wp_enqueue_style( CFGP_NAME . '-public' );
 			wp_enqueue_script( CFGP_NAME . '-public' );
@@ -569,6 +582,14 @@ if(!class_exists('CFGP_Shortcodes', false)) : class CFGP_Shortcodes extends CFGP
 		}
 		
 		$ID = CFGP_U::generate_token(16); // Let's made this realy hard
+		
+		// Generate a unique transient ID
+		$transient_id = NULL;
+		if($cache) {
+			$transient_id = CFGP_U::hash(serialize([
+				'cfgeo_banner', $setup, $cont, get_the_ID()
+			]), 'sha256');
+		}
 	
 		$setup = shortcode_atts(array(
 			'id'				=>	-1,
@@ -581,6 +602,22 @@ if(!class_exists('CFGP_Shortcodes', false)) : class CFGP_Shortcodes extends CFGP
 			return $cont;
 		} else {
 			$setup['id'] = absint($setup['id']);
+		}
+		
+		// Set transient
+		if( !get_transient('cfgp-' . $transient_id) ) {
+			set_transient(
+				'cfgp-' . $transient_id,
+				array_merge(
+					$setup,
+					[
+						'content' => $cont,
+						'hash' => $transient_id,
+						'key' => CFGP_U::key()
+					]
+				),
+				YEAR_IN_SECONDS
+			);
 		}
 		
 		// Reassign taxonomy to post meta
@@ -639,34 +676,35 @@ if(!class_exists('CFGP_Shortcodes', false)) : class CFGP_Shortcodes extends CFGP
 
 		$post = $wpdb->get_row( $wpdb->prepare("
 SELECT
-	`banner`.`ID`,
-	`banner`.`post_title`,
-	`banner`.`post_content`
+    `banner`.`ID`,
+    `banner`.`post_title`,
+    `banner`.`post_content`
 FROM
-	`{$wpdb->posts}` AS `banner`
+    `{$wpdb->posts}` AS `banner`
+LEFT JOIN
+    `{$wpdb->postmeta}` AS `c` 
+    ON `c`.`post_id` = `banner`.`ID` 
+    AND `c`.`meta_key` = 'cfgp-banner-location-country'
+LEFT JOIN
+    `{$wpdb->postmeta}` AS `r` 
+    ON `r`.`post_id` = `banner`.`ID` 
+    AND `r`.`meta_key` = 'cfgp-banner-location-region'
+LEFT JOIN
+    `{$wpdb->postmeta}` AS `s` 
+    ON `s`.`post_id` = `banner`.`ID` 
+    AND `s`.`meta_key` = 'cfgp-banner-location-city'
 WHERE
-	`banner`.`ID` = %d
-AND
-	`banner`.`post_type` = 'cf-geoplugin-banner'
-AND
-	`post_status` = 'publish'
-AND
-	IF(
-		EXISTS(SELECT 1 FROM `{$wpdb->postmeta}` `c` WHERE `c`.`post_id` = `banner`.`ID` AND `c`.`meta_key` = 'cfgp-banner-location-country'),
-        EXISTS(SELECT 1 FROM `{$wpdb->postmeta}` `c` WHERE `c`.`post_id` = `banner`.`ID` AND `c`.`meta_key` = 'cfgp-banner-location-country' AND `c`.`meta_value` LIKE %s),
-        1
+    `banner`.`ID` = %d
+    AND `banner`.`post_type` = 'cf-geoplugin-banner'
+    AND `post_status` = 'publish'
+    AND (
+        `c`.`meta_value` LIKE %s OR `c`.`meta_value` IS NULL
     )
-AND
-	IF(
-        EXISTS(SELECT 1 FROM `{$wpdb->postmeta}` `r` WHERE `r`.`post_id` = `banner`.`ID` AND `r`.`meta_key` = 'cfgp-banner-location-region'),
-        EXISTS(SELECT 1 FROM `{$wpdb->postmeta}` `r` WHERE `r`.`post_id` = `banner`.`ID` AND `r`.`meta_key` = 'cfgp-banner-location-region' AND `r`.`meta_value` LIKE %s),
-        1
+    AND (
+        `r`.`meta_value` LIKE %s OR `r`.`meta_value` IS NULL
     )
-AND
-	IF(
-        EXISTS(SELECT 1 FROM `{$wpdb->postmeta}` `s` WHERE `s`.`post_id` = `banner`.`ID` AND `s`.`meta_key` = 'cfgp-banner-location-city'),
-        EXISTS(SELECT 1 FROM `{$wpdb->postmeta}` `s` WHERE `s`.`post_id` = `banner`.`ID` AND `s`.`meta_key` = 'cfgp-banner-location-city' AND `s`.`meta_value` LIKE %s),
-        1
+    AND (
+        `s`.`meta_value` LIKE %s OR `s`.`meta_value` IS NULL
     )
 LIMIT 1
 		",
@@ -682,13 +720,10 @@ LIMIT 1
 			$post->post_content = do_shortcode($post->post_content);
 			$post->post_content = CFGP_U::the_content( $post->post_content );
 			
-			$save='<div id="cf-geoplugin-banner-'.esc_attr($post->ID).'" class="'.esc_attr(join(' ',get_post_class($classes, $post->ID)).' cf-geoplugin-banner-'.$post->ID).'"'
+			$save='<div id="cf-geoplugin-banner-' . esc_attr($post->ID) . '" class="' . esc_attr(join(' ',get_post_class($classes, $post->ID)) . ' cf-geoplugin-banner-' . esc_attr($post->ID)) . '"'
 			
-				. ($cache ? ' data-id="' . esc_attr($post->ID) . '"' : '')
-				. ($cache ? ' data-posts_per_page="' . esc_attr($posts_per_page) . '"' : '')
-				. ($cache ? ' data-class="' . esc_attr($class) . '"' : '')
-				. ($cache ? ' data-exact="' . esc_attr($exact ? 1 : 0) . '"' : '')
-				. ($cache ? ' data-default="' . esc_attr(json_encode(urlencode($cont))) . '"' : '')
+				. ($cache ? ' data-id="' . esc_attr($setup['id']) . '"' : '')
+				. ($cache ? ' data-nonce="' . esc_attr($transient_id) . '"' : '')
 			
 			. '>' . wp_kses_post($post->post_content) . '</div>';
 		}
@@ -706,13 +741,10 @@ LIMIT 1
 		
 		// Return defaults
 		return CFGP_U::fragment_caching(
-			'<div id="cf-geoplugin-banner-'.esc_attr($setup['id']).'" class="'.esc_attr(join(' ',get_post_class($classes, $setup['id'])).' cf-geoplugin-banner-'.$setup['id']).'"'
+			'<div id="cf-geoplugin-banner-' . esc_attr($setup['id']) . '" class="' . esc_attr(join(' ', get_post_class($classes, $setup['id'])) . ' cf-geoplugin-banner-' . esc_attr($setup['id']) ).'"'
 			
 				. ($cache ? ' data-id="' . esc_attr($setup['id']) . '"' : '')
-				. ($cache ? ' data-posts_per_page="' . esc_attr($posts_per_page) . '"' : '')
-				. ($cache ? ' data-class="' . esc_attr($class) . '"' : '')
-				. ($cache ? ' data-exact="' . esc_attr($exact ? 1 : 0) . '"' : '')
-				. ($cache ? ' data-default="' . esc_attr(json_encode(urlencode($cont))) . '"' : '')
+				. ($cache ? ' data-nonce="' . esc_attr($transient_id) . '"' : '')
 			
 			. '>' . wp_kses_post($cont) . '</div>',
 			$cache
@@ -730,6 +762,8 @@ LIMIT 1
 		$cache = CFGP_U::is_attribute_exists('cache', $atts);
 		if(CFGP_Options::get('enable_cache', 0)) $cache = true;
 		if(CFGP_U::is_attribute_exists('no_cache', $atts)) $cache = false;
+		
+		if( is_admin() ) $cache = false;
 		
 		$att = (object)shortcode_atts( array( 
 			'latitude'				=>	CFGP_Options::get('map_latitude', CFGP_U::api('latitude')),
@@ -1902,26 +1936,44 @@ LIMIT 1
 	}
 	
 	/* Cache content wrapper */
-	private static function __cache($shortcode, $content, $options=[], $default = '', $cache = false) {
-		if( $cache ) {
-			$shortcode = esc_attr($shortcode);
-			$shortcode = trim($shortcode);
-			
-			if(is_array($options)) {
-				$options = array_filter($options);
-			}
-			
-			return sprintf(
-				'<span class="cf-geoplugin-shortcode cf-geoplugin-shortcode-%1$s cache" data-type="%1$s" data-options="%2$s" data-default="%3$s" data-nonce="%4$s">%5$s</span>',
-				esc_attr($shortcode),
-				empty($options) ? '' : esc_attr(base64_encode(urlencode(serialize($options)))),
-				esc_attr(json_encode(urlencode($default))),
-				wp_create_nonce( 'cfgeo-process-cache-ajax' ),
-				wp_kses_post($content)
-			);
-		} else {
+	private static function __cache($shortcode, $content, $options = [], $default = '', $cache = false) {
+		// If no caching is enabled, return the original content
+		if (!$cache) {
 			return $content;
 		}
+		
+		// Sanitize the shortcode to ensure it's safe for use
+		$shortcode = esc_attr($shortcode);
+		$shortcode = trim($shortcode);
+
+		// If options are an array, filter out any empty values
+		if (is_array($options)) {
+			$options = array_filter($options);
+		}
+
+		// Generate a unique transient ID based on the shortcode, options, and post ID
+		$transient_id = CFGP_U::hash(serialize(['cfgeo_' . $shortcode, $options, $content, $default, get_the_ID()]), 'sha256');
+
+		// Store transient with content, default values, and shortcode for 1 year
+		if( !get_transient('cfgp-' . $transient_id) ) {
+			set_transient('cfgp-' . $transient_id, [
+				'content'   => $content,
+				'default'   => $default,
+				'shortcode' => $shortcode,
+				'options'   => $options,
+				'post_id'   => get_the_ID(),
+				'hash' 	    => $transient_id, // for validation
+				'key'       => CFGP_U::KEY() // secret plugin key
+			], YEAR_IN_SECONDS);
+		}
+
+		// Return HTML that includes the shortcode and nonce
+		return sprintf(
+			'<span class="cf-geoplugin-shortcode cf-geoplugin-shortcode-%1$s cache" data-type="%1$s" data-nonce="%2$s">%3$s</span>',
+			esc_attr($shortcode),
+			esc_attr($transient_id),
+			wp_kses_post($content)
+		);
 	}
 
 	/**
@@ -1929,75 +1981,79 @@ LIMIT 1
 	 * 
 	 * @since 7.4.0
 	 */
-	public function ajax__shortcode_cache(){
-		
-		$shortcode = trim(CFGP_U::request_string('shortcode'));
+	public function ajax__shortcode_cache() {
+		header('Cache-Control: max-age=900, must-revalidate');
 
-	//	if( !(strpos($shortcode, 'cfgeo') !== false) ) echo 'false', exit;
-		
-		$options = unserialize(
-			urldecode(base64_decode(sanitize_text_field(CFGP_U::request_string('options')))),
-			['allowed_classes' => false]
-		);
-		
-		
-		$attr = [];
-		if(!empty($options) && is_array($options))
-		{
-			foreach($options as $key => $value) {
-				if(!is_numeric($key)) {
-					$attr[] = $key . '="' . esc_attr($value) . '"';
-				} else {
-					$attr[] = $value;
+		$transient_id = sanitize_text_field(CFGP_U::request_string('nonce'));
+		$type = sanitize_text_field(CFGP_U::request_string('type'));
+
+		// Check if the transient exists
+		if ($data = get_transient('cfgp-' . $transient_id)) {
+			
+			$content   = wp_kses_post($data['content']);
+			$default   = wp_kses_post($data['default']);
+			$shortcode = sanitize_text_field($data['shortcode']);
+			$options   = $data['options']; // sanitization is below
+			$post_id   = sanitize_text_field($data['post_id']);
+			$hash      = sanitize_text_field($data['hash']);
+			$key       = sanitize_text_field($data['key']);
+			
+			// Secret Key do not match
+			if( CFGP_U::KEY() !== $key ) {
+				header_remove('Cache-Control');
+				wp_send_json_error('false', 403);
+				exit;
+			}
+			
+			// If shortcode and transient do not match
+			if ($hash !== $transient_id || $shortcode !== $type) {
+				header_remove('Cache-Control');
+				wp_send_json_error('false', 400);
+				exit;
+			}
+
+			// Build shortcode attributes and sanitize them
+			$attr = [];
+			if (!empty($options) && is_array($options)) {
+				foreach ($options as $key => $value) {
+					$value = sanitize_text_field($value);
+					if (!is_numeric($key)) {
+						$attr[] = sanitize_key($key) . '="' . esc_attr($value) . '"';
+					} else {
+						$attr[] = esc_attr($value);
+					}
 				}
 			}
-		}
-		
-		$attr = (!empty($attr) ? ' ' . join(' ', $attr) : '');
-		
-		if($default = CFGP_U::request_string('default')) {
-			$content = stripslashes(urldecode(sanitize_text_field($default)));
-			$content = json_decode($content, true);			
-			$content = wp_kses_post($content);			
-			$default = $content;
-		} else {
-			$default = $content = '';
-		}
-		
-		$attr = str_replace(' cache', '', $attr) . ' no_cache';
-
-		if( !in_array($shortcode, array(
-			'cfgeo_flag',
-			'cfgeo_converter',
-			'cfgeo_is_vat',
-			'cfgeo_is_not_vat',
-			'cfgeo_in_eu',
-			'cfgeo_not_in_eu',
-			'cfgeo_is_tor',
-			'cfgeo_is_not_tor',
-			'cfgeo_is_proxy',
-			'cfgeo_is_not_proxy',
-			'cfgeo_gps',
-			'cfgeo_map'
-		)) && preg_match('/cfgeo_([a-z_]+)/i', $shortcode, $match) ) {
-			echo wp_kses(
-				do_shortcode('[cfgeo return="' . esc_attr($match[1]) . '"' . $attr . ']'),
-				CFGP_U::allowed_html_tags_for_page()
-			);
-		} else {
-			if(empty($default)) {
-				echo wp_kses(
-					do_shortcode('[' . $shortcode . $attr . ']'),
+			$attr = (!empty($attr) ? ' ' . join(' ', $attr) : '');
+			$attr = str_replace(' cache', '', $attr) . ' no_cache';
+			
+			// Build a new shortcode with geo data
+			$output = $content;
+			if (preg_match('/cfgeo_([a-z_]+)/i', $shortcode, $match)) {
+				$output = wp_kses(
+					do_shortcode('[cfgeo return="' . esc_attr($match[1]) . '"' . $attr . ']'),
 					CFGP_U::allowed_html_tags_for_page()
 				);
 			} else {
-				echo wp_kses(
-					do_shortcode('[' . $shortcode . $attr . ']' . $content . '[/' . $shortcode . ']'),
-					CFGP_U::allowed_html_tags_for_page()
-				);
+				if (empty($default)) {
+					$output = wp_kses(
+						do_shortcode('[' . $shortcode . $attr . ']'),
+						CFGP_U::allowed_html_tags_for_page()
+					);
+				} else {
+					$output = wp_kses(
+						do_shortcode('[' . $shortcode . $attr . ']' . $content . '[/' . $shortcode . ']'),
+						CFGP_U::allowed_html_tags_for_page()
+					);
+				}
 			}
+			
+			wp_send_json_success($output);
+			exit;
 		}
-		
+
+		header_remove('Cache-Control');
+		wp_send_json_error('false', 400);
 		exit;
 	}
 	

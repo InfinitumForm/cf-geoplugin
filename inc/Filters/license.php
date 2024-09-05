@@ -69,17 +69,17 @@ if( CFGP_U::api('available_lookup') != 'lifetime' ) :
     	<?php echo wp_kses( join(PHP_EOL, $select_options), CFGP_U::allowed_html_tags_for_page() ); ?>
         <div class="cfgp-form-product-license">
         	<div class="cfgp-form-product-license-item">
-            	<label for="license_key"><?php _e('License Key', 'cf-geoplugin'); ?></label>
+            	<label for="license_key"><?php esc_html_e('License Key', 'cf-geoplugin'); ?></label>
 				<?php if( CFGP_IP::is_localhost() ) : ?>
-					<p style="color:#cc0000;"><b><?php _e('You are using a plugin on a local server that is exempt from lookups. License activation is only possible on live servers.', 'cf-geoplugin'); ?></b></p>
+					<p style="color:#cc0000;"><b><?php esc_html_e('You are using a plugin on a local server that is exempt from lookups. License activation is only possible on live servers.', 'cf-geoplugin'); ?></b></p>
 				<?php endif; ?>
                 <input type="text" name="license_key" id="license_key" value="<?php echo esc_attr(CFGP_License::get('key', CFGP_U::request_string('license_key'))); ?>" placeholder="<?php esc_attr_e('Insert your license key here', 'cf-geoplugin'); ?>" autocomplete="off"<?php echo (CFGP_License::activated() || CFGP_IP::is_localhost() ? ' disabled' : ''); ?>>
                 <?php if(!CFGP_License::activated()) : ?>
-                	<p>(<?php _e('License type must match to your license key that you ordered.', 'cf-geoplugin'); ?>)</p>
-                    <button type="submit" class="button button-primary cfgp-activate-license"><?php _e('Activate your license', 'cf-geoplugin'); ?></button>
+                	<p>(<?php esc_html_e('License type must match to your license key that you ordered.', 'cf-geoplugin'); ?>)</p>
+                    <button type="submit" class="button button-primary cfgp-activate-license"><?php esc_html_e('Activate your license', 'cf-geoplugin'); ?></button>
                     <input type="hidden" name="nonce" value="<?php echo wp_create_nonce(CFGP_NAME.'-activate-license'); ?>">
 				<?php else: ?>
-                	<button type="submit" class="button button-primary cfgp-deactivate-license"><?php _e('Dectivate current license', 'cf-geoplugin'); ?></button>
+                	<button type="submit" class="button button-primary cfgp-deactivate-license"><?php esc_html_e('Dectivate current license', 'cf-geoplugin'); ?></button>
                     <input type="hidden" name="deactivate_license" value="1">
                     <input type="hidden" name="nonce" value="<?php echo wp_create_nonce(CFGP_NAME.'-deactivate-license'); ?>">
                 <?php endif; ?>
@@ -91,8 +91,8 @@ if( CFGP_U::api('available_lookup') != 'lifetime' ) :
 </form>
 <?php
 else : ?>
-<p><?php _e('As one of the first users of our plugin, you have the honor of using a unique lifetime license that allows you unlimited lookup.', 'cf-geoplugin'); ?></p>
-<p><?php _e('Therefore, you have no option to change or deactivate the license.', 'cf-geoplugin'); ?></p>
+<p><?php esc_html_e('As one of the first users of our plugin, you have the honor of using a unique lifetime license that allows you unlimited lookup.', 'cf-geoplugin'); ?></p>
+<p><?php esc_html_e('Therefore, you have no option to change or deactivate the license.', 'cf-geoplugin'); ?></p>
 <?php endif; }, 1);
 
 /**
@@ -103,7 +103,7 @@ else : ?>
 add_action('cfgp/page/license/sidebar', function(){ if( CFGP_U::api('available_lookup') == 'lifetime' ) return;
 ?>
 <div class="postbox">
-	<h3 class="hndle" style="margin-bottom:0;padding-bottom:0;"><span><?php _e('License Information', 'cf-geoplugin'); ?></span></h3><hr>
+	<h3 class="hndle" style="margin-bottom:0;padding-bottom:0;"><span><?php esc_html_e('License Information', 'cf-geoplugin'); ?></span></h3><hr>
 	<div class="inside">
     	<?php if(CFGP_License::activated()) : ?>
         	<p><?php printf(
@@ -117,9 +117,9 @@ add_action('cfgp/page/license/sidebar', function(){ if( CFGP_U::api('available_l
             '<strong><a href="https://wpgeocontroller.com/terms-and-conditions/" target="_blank">' . __('Terms & Conditions', 'cf-geoplugin') . '</a></strong>'
         ); ?></p>
 		<?php elseif(CFGP_U::api('available_lookup') === 'unlimited') : ?>
-		<p style="font-weight:600;"><?php _e('An update error occurred and your license was not recorded on your server.'); ?></p>
-		<p><?php _e('This should not scare you because our API has recognized the problem and still gives you all the necessary information without restrictions.'); ?></p>
-		<p><?php _e('But for the plugin to work properly, please re-enter your license and activate the plugin to unlock all internal features.'); ?></p>
+		<p style="font-weight:600;"><?php esc_html_e('An update error occurred and your license was not recorded on your server.'); ?></p>
+		<p><?php esc_html_e('This should not scare you because our API has recognized the problem and still gives you all the necessary information without restrictions.'); ?></p>
+		<p><?php esc_html_e('But for the plugin to work properly, please re-enter your license and activate the plugin to unlock all internal features.'); ?></p>
 		<?php else: ?>
         <p><?php printf(
             __('You currently use a free version of plugin with a limited number of lookups. Each free version of this plugin is limited to %1$s lookups per day and you have only %2$s lookups available for today. If you want to have unlimited lookup, please enter your license key. If you are unsure and do not understand what this is about, read %3$s.', 'cf-geoplugin'),

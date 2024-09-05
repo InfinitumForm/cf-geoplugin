@@ -309,20 +309,20 @@ class CFGP_License extends CFGP_Global{
 			
 			<?php foreach($response as $key => $obj): ?>
                 <?php if(is_numeric($key)) : $code = self::response_error_code($key); ?>
-                    <h3><?php _e('Licensing Error', 'cf-geoplugin'); ?>: <?php echo wp_kses_post($code['message'] ?? ''); ?></h3>
+                    <h3><?php esc_html_e('Licensing Error', 'cf-geoplugin'); ?>: <?php echo wp_kses_post($code['message'] ?? ''); ?></h3>
                     <p><?php echo esc_html( $code['info'] ); ?></p>
                 <?php else: ?>
-                	<h3><?php _e('Licensing Error', 'cf-geoplugin'); ?>: <?php echo wp_kses_post($error_label[$key] ?? ''); ?></h3>
+                	<h3><?php esc_html_e('Licensing Error', 'cf-geoplugin'); ?>: <?php echo wp_kses_post($error_label[$key] ?? ''); ?></h3>
                     <ol>
                     <?php foreach($obj as $message): ?>
                         <li><?php echo wp_kses_post( $message ?? '' ); ?></li>
                     <?php endforeach; ?>
                     </ol>
                     <?php if($key == 'license_key'): ?>
-                        <p><?php _e('You must enter a valid license key in order to continue with licensing your plugin installation.', 'cf-geoplugin');?></p>
-                        <p><?php _e('Second reason why this may happen can be that you must choose a valid "License Type". If you purchase a "Personal License" and get a license key, you must enter that license key and choose license type to validate your key. If the key does not match your type you are not able to finish activation.', 'cf-geoplugin');?></p>
+                        <p><?php esc_html_e('You must enter a valid license key in order to continue with licensing your plugin installation.', 'cf-geoplugin');?></p>
+                        <p><?php esc_html_e('Second reason why this may happen can be that you must choose a valid "License Type". If you purchase a "Personal License" and get a license key, you must enter that license key and choose license type to validate your key. If the key does not match your type you are not able to finish activation.', 'cf-geoplugin');?></p>
                     <?php elseif($key == 'sku'): ?>
-                        <p><?php _e('One of the reasons why this may happen can be that you must choose a valid "License Type". If you purchase a "Personal License" and get a license key, you must enter that license key and choose license type to validate your key. If the key does not match your type you are not able to finish activation.', 'cf-geoplugin');?></p>
+                        <p><?php esc_html_e('One of the reasons why this may happen can be that you must choose a valid "License Type". If you purchase a "Personal License" and get a license key, you must enter that license key and choose license type to validate your key. If the key does not match your type you are not able to finish activation.', 'cf-geoplugin');?></p>
                     <?php endif; ?>
                 <?php endif; ?>
 			<?php endforeach; ?>
@@ -350,7 +350,7 @@ class CFGP_License extends CFGP_Global{
 		if($response) 
 		{
 			ob_start(NULL, 0, PHP_OUTPUT_HANDLER_REMOVABLE); ?>
-            <h3><?php _e('Activation succeeded', 'cf-geoplugin'); ?></h3>
+            <h3><?php esc_html_e('Activation succeeded', 'cf-geoplugin'); ?></h3>
             <p><?php echo wp_kses_post( $response ?? '' ); ?></p>
 			<?php
 			CFGP_DB_Cache::delete('cfgp-license-response-success');

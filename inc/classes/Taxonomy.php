@@ -185,14 +185,14 @@ if(!class_exists('CFGP_Taxonomy', false)) : class CFGP_Taxonomy extends CFGP_Glo
 	// Add fields to taxonomy postcodes on the new page
 	function add_postcode_fields( $taxonomy ) { ?>
 <div class="form-field term-country-wrap">
-	<label for="country"><?php _e('Country', 'cf-geoplugin'); ?></label>
+	<label for="country"><?php esc_html_e('Country', 'cf-geoplugin'); ?></label>
 	<?php CFGP_Form::select_countries(array('name'=>'country', 'class'=>'cfgp_select2')); ?>
-	<p><?php _e('Select the country where this postcode is from.', 'cf-geoplugin'); ?></p>
+	<p><?php esc_html_e('Select the country where this postcode is from.', 'cf-geoplugin'); ?></p>
 </div>
 <div class="form-field term-city-wrap">
-	<label for="city"><?php _e('City name (optional)', 'cf-geoplugin'); ?></label>
+	<label for="city"><?php esc_html_e('City name (optional)', 'cf-geoplugin'); ?></label>
 	<?php CFGP_Form::input('text', array('name'=>'city')); ?>
-	<p><?php _e('Add city name for this postcode.', 'cf-geoplugin'); ?></p>
+	<p><?php esc_html_e('Add city name for this postcode.', 'cf-geoplugin'); ?></p>
 </div>
 	<?php }
 	
@@ -203,20 +203,20 @@ if(!class_exists('CFGP_Taxonomy', false)) : class CFGP_Taxonomy extends CFGP_Glo
 	?>
 <tr class="form-field term-country-wrap">
 	<th>
-		<label for="country"><?php _e('Country', 'cf-geoplugin'); ?></label>
+		<label for="country"><?php esc_html_e('Country', 'cf-geoplugin'); ?></label>
 	</th>
 	<td>
 		<?php CFGP_Form::select_countries(array('name'=>'country', 'class'=>'cfgp_select2'), $country); ?>
-		<p class="description"><?php _e('Select the country where this postcode is from.', 'cf-geoplugin'); ?></p>
+		<p class="description"><?php esc_html_e('Select the country where this postcode is from.', 'cf-geoplugin'); ?></p>
 	</td>
 </tr>
 <tr class="form-field term-city-wrap">
 	<th>
-		<label for="city"><?php _e('City name (optional)', 'cf-geoplugin'); ?></label>
+		<label for="city"><?php esc_html_e('City name (optional)', 'cf-geoplugin'); ?></label>
 	</th>
 	<td>
 		<?php CFGP_Form::input('text', array('name'=>'city', 'value'=>$city)); ?>
-		<p class="description"><?php _e('Add city name for this postcode.', 'cf-geoplugin'); ?></p>
+		<p class="description"><?php esc_html_e('Add city name for this postcode.', 'cf-geoplugin'); ?></p>
 	</td>
 </tr>
 	<?php }

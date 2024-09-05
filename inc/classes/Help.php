@@ -34,13 +34,13 @@ if(!class_exists('CFGP_Help', false)) : class CFGP_Help extends CFGP_Global {
 	public function help__cf_geoplugin() {
 		ob_start(); ?>
 <ul>
-	<li><a href="https://wpgeocontroller.com/documentation/quick-start/how-to-use-cf-geoplugin" target="_blank"><?php _e('How to use Geo Controller', 'cf-geoplugin'); ?></a></li>
-	<li><a href="https://wpgeocontroller.com/documentation/quick-start/what-information-cf-geoplugin-returns" target="_blank"><?php _e('What Information Geo Controller returns?', 'cf-geoplugin'); ?></a></li>
-	<li><a href="https://wpgeocontroller.com/documentation/quick-start/cf-geoplugin-shortcodes" target="_blank"><?php _e('Geo Controller Shortcodes', 'cf-geoplugin'); ?></a></li>
-	<li><a href="https://wpgeocontroller.com/documentation/quick-start/cf-geo-plugin-tags" target="_blank"><?php _e('Geo Controller Tags', 'cf-geoplugin'); ?></a></li>
-	<li><a href="https://wpgeocontroller.com/documentation/quick-start/wordpress-geo-plugin-compatibility" target="_blank"><?php _e('Geo Controller Compatibility', 'cf-geoplugin'); ?></a></li>
-	<li><a href="https://wpgeocontroller.com/documentation/quick-start/what-do-i-get-from-unlimited-license" target="_blank"><?php _e('What do I get from Unlimited License', 'cf-geoplugin'); ?></a></li>
-	<li><a href="https://wpgeocontroller.com/documentation/quick-start/frequently-asked-questions" target="_blank"><?php _e('Frequently Asked Questions', 'cf-geoplugin'); ?></a></li>
+	<li><a href="https://wpgeocontroller.com/documentation/quick-start/how-to-use-cf-geoplugin" target="_blank"><?php esc_html_e('How to use Geo Controller', 'cf-geoplugin'); ?></a></li>
+	<li><a href="https://wpgeocontroller.com/documentation/quick-start/what-information-cf-geoplugin-returns" target="_blank"><?php esc_html_e('What Information Geo Controller returns?', 'cf-geoplugin'); ?></a></li>
+	<li><a href="https://wpgeocontroller.com/documentation/quick-start/cf-geoplugin-shortcodes" target="_blank"><?php esc_html_e('Geo Controller Shortcodes', 'cf-geoplugin'); ?></a></li>
+	<li><a href="https://wpgeocontroller.com/documentation/quick-start/cf-geo-plugin-tags" target="_blank"><?php esc_html_e('Geo Controller Tags', 'cf-geoplugin'); ?></a></li>
+	<li><a href="https://wpgeocontroller.com/documentation/quick-start/wordpress-geo-plugin-compatibility" target="_blank"><?php esc_html_e('Geo Controller Compatibility', 'cf-geoplugin'); ?></a></li>
+	<li><a href="https://wpgeocontroller.com/documentation/quick-start/what-do-i-get-from-unlimited-license" target="_blank"><?php esc_html_e('What do I get from Unlimited License', 'cf-geoplugin'); ?></a></li>
+	<li><a href="https://wpgeocontroller.com/documentation/quick-start/frequently-asked-questions" target="_blank"><?php esc_html_e('Frequently Asked Questions', 'cf-geoplugin'); ?></a></li>
 </ul>
 		<?php
 		

@@ -196,7 +196,7 @@ font-weight:600;
 	); ?>
 </div>
 <div class="cf-geoplugin-upgrade-notice-info">
-	<?php _e('NOTE: Before doing the update, it would be a good idea to backup your WordPress installations and settings.', 'cf-geoplugin'); ?>
+	<?php esc_html_e('NOTE: Before doing the update, it would be a good idea to backup your WordPress installations and settings.', 'cf-geoplugin'); ?>
 </div>
 </div> 
 		<?php endif;

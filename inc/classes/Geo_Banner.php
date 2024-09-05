@@ -45,118 +45,151 @@ if(!class_exists('CFGP_Geo_Banner', false)) : class CFGP_Geo_Banner extends CFGP
 	/**
      * AJAX - Fix cache on cached websites
      */
-	public function ajax__geoplugin_banner_cache(){
+	public function ajax__geoplugin_banner_cache() {
+		header('Cache-Control: max-age=900, must-revalidate');
+		
 		global $wpdb;
-		
-		$setup = array(
-			'id'				=>	CFGP_U::request_int('id'),
-			'posts_per_page'	=>	CFGP_U::request_int('posts_per_page'),
-			'class'				=>	sanitize_text_field(CFGP_U::request_string('class'))
-		);
-		
-		$cont = stripslashes(urldecode(sanitize_text_field(CFGP_U::request_string('default'))));
-		$cont = json_decode($cont, true);
-		
-		// Stop if ID is not good
-		if( ! (intval($setup['id']) > 0) ) {
-			return $cont;
+
+		// Provera parametra akcije
+		if (CFGP_U::request_string('action') != 'cf_geoplugin_banner_cache') {
+			header_remove('Cache-Control');
+			wp_send_json_error(array(
+				'error' => true,
+				'error_message' => __('You are not authorized to access this information!', 'cf-geoplugin'),
+				'status' => 403
+			));
+			exit;
 		}
-		
-		// Reassign taxonomy to post meta
-		foreach(array(
+
+		// Preuzimanje transient ID-a
+		$transient_id = CFGP_U::request_string('nonce');
+		$data = get_transient('cfgp-' . $transient_id);
+
+		// Provera da li transient postoji
+		if (!$data) {
+			header_remove('Cache-Control');
+			wp_send_json_error(array(
+				'error' => true,
+				'error_message' => __('You are not authorized to access this information.', 'cf-geoplugin'),
+				'status' => 403
+			));
+			exit;
+		}
+
+		// Provera tajnog ključa
+		if (sanitize_text_field($data['key']) !== CFGP_U::key()) {
+			delete_transient('cfgp-' . $transient_id);
+			header_remove('Cache-Control');
+			wp_send_json_error(array(
+				'error' => true,
+				'error_message' => __('Invalid key. You are not authorized to access this information.', 'cf-geoplugin'),
+				'status' => 400
+			));
+			exit;
+		}
+
+		// Provera hash-a
+		if (sanitize_text_field($data['hash']) !== $transient_id) {
+			delete_transient('cfgp-' . $transient_id);
+			header_remove('Cache-Control');
+			wp_send_json_error(array(
+				'error' => true,
+				'error_message' => __('Hash mismatch. You are not authorized to access this information.', 'cf-geoplugin'),
+				'status' => 400
+			));
+			exit;
+		}
+
+		// Definisanje podataka za upit
+		$setup = array(
+			'id'             => absint(sanitize_text_field($data['id'])),
+			'posts_per_page' => absint(sanitize_text_field($data['posts_per_page'])),
+			'class'          => sanitize_text_field($data['class']),
+		);
+
+		$cont = sanitize_textarea_field($data['content']);
+
+		// Provera da li je ID validan
+		if (intval($setup['id']) <= 0) {
+			wp_send_json_success(array(
+				'response' => $cont,
+				'error' => false,
+				'status' => 200
+			));
+			exit;
+		}
+
+		// Ažuriranje taksonomija u post meta
+		foreach (array(
 			'cf-geoplugin-country' => 'cfgp-banner-location-country',
-			'cf-geoplugin-region' => 'cfgp-banner-location-region',
-			'cf-geoplugin-city' => 'cfgp-banner-location-city'
-		) as $get_post_terms=>$update_post_meta) {
-			if($all_terms = wp_get_post_terms($setup['id'], $get_post_terms, array('fields' => 'all'))) {
-				$tax_collection=[];
-				foreach($all_terms as $i=>$fetch)
-				{
-					$tax_collection[]=$fetch->slug;
+			'cf-geoplugin-region'  => 'cfgp-banner-location-region',
+			'cf-geoplugin-city'    => 'cfgp-banner-location-city'
+		) as $get_post_terms => $update_post_meta) {
+			if ($all_terms = wp_get_post_terms($setup['id'], $get_post_terms, array('fields' => 'all'))) {
+				$tax_collection = array();
+				foreach ($all_terms as $fetch) {
+					$tax_collection[] = $fetch->slug;
 				}
-				if( !empty($tax_collection) ) {
+				if (!empty($tax_collection)) {
 					update_post_meta($setup['id'], $update_post_meta, $tax_collection);
 				} else {
 					delete_post_meta($setup['id'], $update_post_meta);
 				}
-				wp_set_post_terms( $setup['id'], '', $get_post_terms );
-				$tax_collection = NULL;
+				wp_set_post_terms($setup['id'], '', $get_post_terms);
 			}
 		}
-		
-		$exact = CFGP_U::request_int('exact');
-		
-		$posts_per_page = absint($setup['posts_per_page']);
-		
-		$country = CFGP_U::api('country_code');
-		$country_sql = '%"' . $wpdb->esc_like(esc_sql($country)) . '"%';
-		
-		$region = CFGP_U::api('region');
-		$region_sql = '%"' . $wpdb->esc_like(esc_sql(sanitize_title( CFGP_U::transliterate($region) ))) . '"%';
-		
-		$city = CFGP_U::api('city');
-		$city_sql = '%"' . $wpdb->esc_like(esc_sql(sanitize_title( CFGP_U::transliterate($city) ))) . '"%';
 
-		$post = $wpdb->get_row( $wpdb->prepare("
-SELECT
-	`banner`.`ID`,
-	`banner`.`post_title`,
-	`banner`.`post_content`
-FROM
-	`{$wpdb->posts}` AS `banner`
-WHERE
-	`banner`.`ID` = %d
-AND
-	`banner`.`post_type` = 'cf-geoplugin-banner'
-AND
-	`post_status` = 'publish'
-AND
-	IF(
-		EXISTS(SELECT 1 FROM `{$wpdb->postmeta}` `c` WHERE `c`.`post_id` = `banner`.`ID` AND `c`.`meta_key` = 'cfgp-banner-location-country'),
-        EXISTS(SELECT 1 FROM `{$wpdb->postmeta}` `c` WHERE `c`.`post_id` = `banner`.`ID` AND `c`.`meta_key` = 'cfgp-banner-location-country' AND `c`.`meta_value` LIKE %s),
-        1
-    )
-AND
-	IF(
-        EXISTS(SELECT 1 FROM `{$wpdb->postmeta}` `r` WHERE `r`.`post_id` = `banner`.`ID` AND `r`.`meta_key` = 'cfgp-banner-location-region'),
-        EXISTS(SELECT 1 FROM `{$wpdb->postmeta}` `r` WHERE `r`.`post_id` = `banner`.`ID` AND `r`.`meta_key` = 'cfgp-banner-location-region' AND `r`.`meta_value` LIKE %s),
-        1
-    )
-AND
-	IF(
-        EXISTS(SELECT 1 FROM `{$wpdb->postmeta}` `s` WHERE `s`.`post_id` = `banner`.`ID` AND `s`.`meta_key` = 'cfgp-banner-location-city'),
-        EXISTS(SELECT 1 FROM `{$wpdb->postmeta}` `s` WHERE `s`.`post_id` = `banner`.`ID` AND `s`.`meta_key` = 'cfgp-banner-location-city' AND `s`.`meta_value` LIKE %s),
-        1
-    )
-LIMIT 1
-		",
-		absint($setup['id']),
-		$country_sql,
-		$region_sql,
-		$city_sql
-		) );
-		
+		// Priprema SQL upita za geolokaciju
+		$country_sql = '%"' . $wpdb->esc_like(CFGP_U::api('country_code')) . '"%';
+		$region_sql  = '%"' . $wpdb->esc_like(sanitize_title(CFGP_U::transliterate(CFGP_U::api('region')))) . '"%';
+		$city_sql    = '%"' . $wpdb->esc_like(sanitize_title(CFGP_U::transliterate(CFGP_U::api('city')))) . '"%';
+
+		// Izvršavanje upita za dohvat bannera
+		$post = $wpdb->get_row($wpdb->prepare("
+			SELECT
+				`banner`.`ID`,
+				`banner`.`post_title`,
+				`banner`.`post_content`
+			FROM
+				`{$wpdb->posts}` AS `banner`
+			LEFT JOIN
+				`{$wpdb->postmeta}` AS `c` ON `c`.`post_id` = `banner`.`ID` AND `c`.`meta_key` = 'cfgp-banner-location-country'
+			LEFT JOIN
+				`{$wpdb->postmeta}` AS `r` ON `r`.`post_id` = `banner`.`ID` AND `r`.`meta_key` = 'cfgp-banner-location-region'
+			LEFT JOIN
+				`{$wpdb->postmeta}` AS `s` ON `s`.`post_id` = `banner`.`ID` AND `s`.`meta_key` = 'cfgp-banner-location-city'
+			WHERE
+				`banner`.`ID` = %d
+				AND `banner`.`post_type` = 'cf-geoplugin-banner'
+				AND `post_status` = 'publish'
+				AND (`c`.`meta_value` LIKE %s OR `c`.`meta_value` IS NULL)
+				AND (`r`.`meta_value` LIKE %s OR `r`.`meta_value` IS NULL)
+				AND (`s`.`meta_value` LIKE %s OR `s`.`meta_value` IS NULL)
+			LIMIT 1
+		", absint($setup['id']), $country_sql, $region_sql, $city_sql));
+
 		$content = '';
-		$save = NULL;
-		
-		if($post) {
+
+		// Ako postoji banner, obrađujemo sadržaj
+		if ($post) {
 			$post->post_content = do_shortcode($post->post_content);
 			$post->post_content = CFGP_U::the_content($post->post_content);
-			$save=$post->post_content;
+			$content = CFGP_U::fragment_caching($post->post_content, false);
 		}
-		
-		// Return banner
-		if(!empty($save)){
-			$content = $save;
+
+		// Ako nema sadržaja, koristimo podrazumevani sadržaj
+		if (empty($content) && !empty($cont)) {
+			$content = do_shortcode($cont);
+			$content = CFGP_U::the_content($content);
 		}
-		
-		// Format defaults
-		if(!empty($cont) && empty($content)) {
-			$cont = do_shortcode($cont);
-			$content = CFGP_U::the_content($cont);
-		}
-		
-		echo wp_kses_post($content ?? ''); exit;
+
+		// Vraćanje odgovora
+		wp_send_json_success(array(
+			'response' => wp_kses_post($content),
+			'error' => false,
+			'status' => 200
+		));
+		exit;
 	}
 	
 	/**

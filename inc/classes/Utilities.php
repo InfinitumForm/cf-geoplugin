@@ -82,56 +82,49 @@ if(!class_exists('CFGP_U', false)) : class CFGP_U {
 	 * @return        object/null
 	 * @author        Ivijan-Stefan Stipic
 	*/
-	public static function get_user($user_id_or_email=NULL) {
-		
-		// If REQUEST is made
-		if(isset($_REQUEST['cfgp_user']) && empty($user_id_or_email))
-		{
-			if($user = get_user_by('ID', absint($_REQUEST['cfgp_user']))) {
+	public static function get_user($user_id_or_email = NULL) {
+    
+		// Check if user ID is passed via request and no parameter is passed to the function
+		if (isset($_REQUEST['cfgp_user']) && empty($user_id_or_email)) {
+			$user_id = absint($_REQUEST['cfgp_user']);
+			if ($user = get_user_by('ID', $user_id)) {
 				return $user;
-			} else {
-				return NULL;
 			}
+			return NULL;
 		}
-		
-		// If function is called
-		if($user_id_or_email)
-		{
-			if(is_numeric($user_id_or_email) && $user = get_user_by('ID', absint($user_id_or_email))) {
+
+		// If parameter is passed to the function
+		if ($user_id_or_email) {
+			if (is_numeric($user_id_or_email)) {
+				$user = get_user_by('ID', absint($user_id_or_email));
+			} elseif (filter_var($user_id_or_email, FILTER_VALIDATE_EMAIL)) {
+				$user = get_user_by('email', sanitize_email($user_id_or_email));
+			}
+			if ($user) {
 				self::$user = $user;
 			}
-			else if (!filter_var($user_id_or_email, FILTER_VALIDATE_EMAIL) && $user = get_user_by('email', $user_id_or_email)) {
-				self::$user = $user;
+		}
+
+		// Automatic find if self::$user is not set
+		if (empty(self::$user)) {
+			if (is_author()) {
+				$author_id = get_query_var('author');
+				if ($author_id) {
+					self::$user = get_user_by('ID', $author_id);
+				} else {
+					$author_name = get_query_var('author_name');
+					if ($author_name) {
+						self::$user = get_user_by('slug', $author_name);
+					}
+				}
+			} elseif (is_user_logged_in()) {
+				self::$user = wp_get_current_user();
 			}
 		}
-		
-		// Automatic find
-		if(empty(self::$user))
-		{
-			if(is_author())
-			{
-				global $current_user;
-				
-				if($current_user && $user = get_user_by('ID', $current_user->ID)) {
-					self::$user = $user;
-				}
-				else if($author_id = get_query_var( 'author' )) {
-					self::$user = get_user_by( 'id', $author_id );
-				}
-				else if($author_name = get_query_var( 'author_name' )) {
-					self::$user = get_user_by( 'slug', $author_name );
-				}
-			}
-			else if(is_user_logged_in())
-			{
-				if($user = wp_get_current_user()) {
-					self::$user = $user;
-				}
-			}
-		}
-		
+
 		return self::$user;
 	}
+
 	
 	/**
 	 * Get content via cURL
@@ -1826,7 +1819,8 @@ if(!class_exists('CFGP_U', false)) : class CFGP_U {
 		}
 		
 		return CFGP_Cache::set( 'is_rest_enabled', (
-			apply_filters('cfgp/rest/v1/enable', true)
+			(defined('CFGP_REST_ENABLED') && CFGP_REST_ENABLED)
+			&& apply_filters('cfgp/rest/v1/enable', true)
 			&& apply_filters('json_enabled', true)
 			&& apply_filters('rest_enabled', true)
 			&& apply_filters('rest_jsonp_enabled', true)
@@ -2380,24 +2374,49 @@ if(!class_exists('CFGP_U', false)) : class CFGP_U {
 	 * @return string
 	 */
 	public static function hash($data, $algo = 'sha512', $binary = false) {
-		if( function_exists('hash') ) {
+		// Check if the hash and hash_algos functions exist
+		if (function_exists('hash') && function_exists('hash_algos')) {
 			$algos = hash_algos();
-			
-			if( in_array($algo, $algos) ) {
+
+			// Check if the requested algorithm exists
+			if (in_array($algo, $algos)) {
 				return hash($algo, $data, $binary);
-			} else if($algo === 'sha512' && in_array('whirlpool', $algos)) {
-				return hash('whirlpool', $data, $binary);
-			} else if($algo === 'sha256' && in_array('ripemd256', $algos)) {
-				return hash('ripemd256', $data, $binary);
-			} else if($algo === 'sha256' && in_array('snefru', $algos)) {
-				return hash('snefru', $data, $binary);
-			} else if($algo === 'md5' && in_array('ripemd128', $algos)) {
-				return hash('ripemd128', $data, $binary);
-			} else if($algo === 'ripemd128' && in_array('md5', $algos)) {
-				return hash('md5', $data, $binary);
+			}
+
+			// Fallback for specific algorithms
+			switch ($algo) {
+				case 'sha512':
+					if (in_array('whirlpool', $algos)) {
+						return hash('whirlpool', $data, $binary);
+					}
+					break;
+
+				case 'sha256':
+					if (in_array('ripemd256', $algos)) {
+						return hash('ripemd256', $data, $binary);
+					} elseif (in_array('snefru', $algos)) {
+						return hash('snefru', $data, $binary);
+					}
+					break;
+
+				case 'md5':
+					if (in_array('ripemd128', $algos)) {
+						return hash('ripemd128', $data, $binary);
+					}
+					break;
+
+				case 'ripemd128':
+					if (in_array('md5', $algos)) {
+						return hash('md5', $data, $binary);
+					}
+					break;
+
+				default:
+					break;
 			}
 		}
-		
+
+		// Return md5 as the last option
 		return md5($data);
 	}
 	

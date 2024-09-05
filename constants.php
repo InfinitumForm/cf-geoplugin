@@ -25,6 +25,11 @@ if( function_exists('wp_admin') ) {
 	$WP_ADMIN_URL = wp_admin('/');
 }
 
+// Enable or disable REST
+if (!defined('CFGP_REST_ENABLED')) {
+    define('CFGP_REST_ENABLED', true);
+}
+
 // Main website
 if (!defined('CFGP_STORE')) {
     define('CFGP_STORE', 'https://wpgeocontroller.com');

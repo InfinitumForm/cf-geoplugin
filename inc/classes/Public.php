@@ -61,8 +61,7 @@ if(!class_exists('CFGP_Public', false)) : class CFGP_Public extends CFGP_Global{
 		wp_localize_script(CFGP_NAME . '-maps', 'CFGP_MAP', array(
 			'ajaxurl' => admin_url('admin-ajax.php'),
 			'cache' => (CFGP_Options::get('enable_cache', 0) ? '1' : '0'),
-			'maps' => CFGP_ASSETS . '/maps',
-			'key' => CFGP_U::KEY()
+			'maps' => CFGP_ASSETS . '/maps'
 		));
 		// Public JavaScript for the shortcodes
 		wp_register_script( CFGP_NAME . '-public', CFGP_ASSETS . '/js/script-public' . $min . '.js', array('jquery'), (string)CFGP_VERSION );
@@ -71,8 +70,7 @@ if(!class_exists('CFGP_Public', false)) : class CFGP_Public extends CFGP_Global{
 			'cache' => (CFGP_Options::get('enable_cache', 0) ? '1' : '0'),
 			'cache_shortcode_url' => (CFGP_U::is_rest_enabled() ? get_rest_url( null, 'cf-geoplugin/v1/cache/shortcode/') : null),
 			'cache_banner_url' => (CFGP_U::is_rest_enabled() ? get_rest_url( null, 'cf-geoplugin/v1/cache/banner/') : null),
-			'rest_enabled' => (CFGP_U::is_rest_enabled() ? '1' : '0'),
-			'key' => CFGP_U::KEY()
+			'rest_enabled' => (CFGP_U::is_rest_enabled() ? '1' : '0')
 		));
 		// Public Shortcode for the currency converter
 		wp_register_script( CFGP_NAME . '-public-cc', CFGP_ASSETS . '/js/script-cc' . $min . '.js', array('jquery'), (string)CFGP_VERSION );
@@ -88,7 +86,7 @@ if(!class_exists('CFGP_Public', false)) : class CFGP_Public extends CFGP_Global{
 	 */
 	public function css_suppport() {	
 		?>
-<!-- <?php _e('Geo Controller CSS Classes', 'cf-geoplugin'); ?> -->
+<!-- <?php esc_html_e('Geo Controller CSS Classes', 'cf-geoplugin'); ?> -->
 <style media="all" id="cfgp-display-control-css" data-nonce="<?php echo esc_attr( wp_create_nonce( 'cfgeo-process-css-cache-ajax' ) ); ?>"><?php $this->get_generated_css(); ?></style>
 	<?php }
 	
@@ -225,7 +223,7 @@ if(!class_exists('CFGP_Public', false)) : class CFGP_Public extends CFGP_Global{
 		$CFGEO = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
 		if(empty($CFGEO)) return;
 		?>
-<!-- <?php _e('CF Geoplugin JavaScript Objects', 'cf-geoplugin'); ?> -->
+<!-- <?php esc_html_e('CF Geoplugin JavaScript Objects', 'cf-geoplugin'); ?> -->
 <script id="cfgp-display-control-js" type="text/javascript">
 /* <![CDATA[ */
 	window.wp = window.wp || {};
