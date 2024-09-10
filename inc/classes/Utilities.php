@@ -668,32 +668,27 @@ if(!class_exists('CFGP_U', false)) : class CFGP_U {
 	 * Parse URL
 	 * @verson    1.0.0
 	 */
-	public static function parse_url(){
-		
-		$parse_url = CFGP_Cache::get('parse_url');
-		
-		if(!$parse_url) {
-			$http = 'http' . ( self::is_ssl() ? 's' : '');
-			$domain = preg_replace(
-				'%:/{3,}%i',
-				'://',
-				rtrim($http,'/') . '://' . sanitize_text_field($_SERVER['HTTP_HOST'] ?? '')
-			);
-			$domain = rtrim($domain,'/');
-			$url = preg_replace(
-				'%:/{3,}%i',
-				'://',
-				$domain . '/' . (isset($_SERVER['REQUEST_URI']) && !empty( $_SERVER['REQUEST_URI'] ) ? sanitize_text_field(ltrim($_SERVER['REQUEST_URI'], '/')) : '')
-			);
-				
-			$parse_url = CFGP_Cache::set('parse_url', array(
-				'method'	=>	$http,
-				'home_fold'	=>	str_replace($domain,'',home_url()),
-				'url'		=>	esc_url($url),
-				'domain'	=>	$domain,
-			));
+	public static function parse_url() {
+		static $parse_url = null;
+
+		if ($parse_url === null) {
+			$http = 'http' . (self::is_ssl() ? 's' : '');
+			if (isset($_SERVER['HTTP_HOST'])) {
+				$domain = rtrim(preg_replace('%:/{3,}%i', '://', $http . '://' . $_SERVER['HTTP_HOST']), '/');
+			} else {
+				$domain = 'localhost';
+			}
+
+			$url = preg_replace('%:/{3,}%i', '://', $domain . '/' . (isset($_SERVER['REQUEST_URI']) ? ltrim($_SERVER['REQUEST_URI'], '/') : ''));
+
+			$parse_url = [
+				'method' => $http,
+				'home_fold' => str_replace($domain, '', home_url()),
+				'url' => $url,
+				'domain' => $domain,
+			];
 		}
-		
+
 		return $parse_url;
 	}
 	
@@ -721,24 +716,26 @@ if(!class_exists('CFGP_U', false)) : class CFGP_U {
 	 */
 	public static function is_ssl($url = false)
 	{
-
-		$ssl = CFGP_Cache::get('is_ssl');
-
-		if($url !== false && is_string($url)) {
-			return (preg_match('/(https|ftps)/Ui', $url) !== false);
-		} else if(empty($ssl)) {
-			if(
-				( is_admin() && defined('FORCE_SSL_ADMIN') && FORCE_SSL_ADMIN ===true )
-				|| ($_SERVER['HTTPS'] ?? NULL == 'on')
-				|| ($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? NULL == 'https')
-				|| ($_SERVER['HTTP_X_FORWARDED_SSL'] ?? NULL == 'on')
-				|| ($_SERVER['SERVER_PORT'] ?? NULL == 443)
-				|| ($_SERVER['HTTP_X_FORWARDED_PORT'] ?? NULL == 443)
-				|| ($_SERVER['REQUEST_SCHEME'] ?? NULL == 'https')
-			) {
-				$ssl = CFGP_Cache::set('is_ssl', true);
-			}
+		if ($url !== false && preg_match('/^(https|ftps):/i', $url) === 1) {
+			return true;
 		}
+		
+		static $ssl = null;
+
+		if ($ssl === null) {
+			$conditions = [
+				is_admin() && defined('FORCE_SSL_ADMIN') && FORCE_SSL_ADMIN,
+				($_SERVER['HTTPS'] ?? '') === 'on',
+				($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '') === 'https',
+				($_SERVER['HTTP_X_FORWARDED_SSL'] ?? '') === 'on',
+				(int) ($_SERVER['SERVER_PORT'] ?? 0) === 443,
+				(int) ($_SERVER['HTTP_X_FORWARDED_PORT'] ?? 0) === 443,
+				($_SERVER['REQUEST_SCHEME'] ?? '') === 'https'
+			];
+
+			$ssl = in_array(true, $conditions, true);
+		}
+
 		return $ssl;
 	}
 	
