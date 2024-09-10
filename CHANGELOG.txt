@@ -1,5 +1,11 @@
 == Changelog ==
 
+= 8.7.0 =
+* Fixed plugin security
+* Protected AJAX calls from XXS attacks
+* Added better caching
+* Improved javascript algorithms
+
 = 8.6.9 =
 * Adding curly brackets support for the geo tags
 * Adding options to remove top bar menu and currency converter
