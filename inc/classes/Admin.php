@@ -213,7 +213,7 @@ class CFGP_Admin extends CFGP_Global {
 			}
 		}
 		
-		_e('No news for today.', 'cf-geoplugin');
+		esc_html_e('No news for today.', 'cf-geoplugin');
 		exit;
 	}
 	
@@ -297,7 +297,7 @@ class CFGP_Admin extends CFGP_Global {
 			}
 		}
 		
-		_e('No news for today.', 'cf-geoplugin');
+		esc_html_e('No news for today.', 'cf-geoplugin');
 		exit;
 	}
 	

@@ -5,7 +5,7 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
 
 if( CFGP_U::request_bool('preview'))
 {
-	die( wpautop( html_entity_decode( stripslashes( CFGP_Options::get('block_country_messages', '') ?? '' ) ) ) );
+	die( wp_kses_post( wpautop( html_entity_decode( stripslashes( CFGP_Options::get('block_country_messages', '') ?? '' ) ) ) ) );
 	exit;
 }
 
@@ -44,14 +44,14 @@ if(CFGP_U::request_bool('save_defender') && wp_verify_nonce(sanitize_text_field(
 	{
 		printf(
 			'<div class="notice notice-error"><p>%s</p></div>',
-			__('There is an error. Settings not saved.', 'cf-geoplugin')
+			esc_html__('There is an error. Settings not saved.', 'cf-geoplugin')
 		);
 	}
 	else
 	{
 		printf(
 			'<div class="notice notice-success is-dismissible"><p>%s</p></div>',
-			__('Settings saved.', 'cf-geoplugin')
+			esc_html__('Settings saved.', 'cf-geoplugin')
 		);
 	}
 }
@@ -183,19 +183,19 @@ if(!empty($block_city) && !is_array($block_city) && preg_match('/\]|\[/', $block
 								 
 								 <p><strong><?php esc_html_e( 'Warning: This option may also block your access to the site if your ISP uses a proxy to serve internet information. Therefore, you must place one cookie in your browser to avoid this problem for you.', 'cf-geoplugin'); ?></strong></p>
 								<p><?php esc_html_e( 'Copy this link and keep it in a secret and safe place:', 'cf-geoplugin'); ?></p>
-								<p><strong><code><?php echo home_url( '?cfgp_admin_access=' . str_rot13(substr(CFGP_U::KEY(), 3, 32) )); ?></code></strong></p>
+								<p><strong><code><?php echo esc_url( home_url( '?cfgp_admin_access=' . str_rot13(substr(CFGP_U::KEY(), 3, 32) )) ); ?></code></strong></p>
 								<p><?php esc_html_e( 'When you check this option, we will set a cookie for you automatically but you can use this link whenever the plugin blocks you from accessing your site.', 'cf-geoplugin'); ?></p>
                                  
                                  <?php if(CFGP_Options::get('enable_spam_ip')): ?>
-                                     <p><strong><?php printf(__( 'Automatic IP Address Blacklist Check is enabled. All of these IPs are from a safe source and most of them are bots and crawlers. Blacklisted IPs will be automatically recognized and blocked. If you don\'t want this kind of protection %s.', 'cf-geoplugin'),
-                                        '<a href="'.admin_url('admin.php?page=cf-geoplugin-settings').'#spam-protection">'
-                                            .__('disable it in plugin settings', 'cf-geoplugin')
-                                        .'</a>'); ?></strong></p>
+                                     <p><strong><?php echo wp_kses_post( sprintf(__( 'Automatic IP Address Blacklist Check is enabled. All of these IPs are from a safe source and most of them are bots and crawlers. Blacklisted IPs will be automatically recognized and blocked. If you don\'t want this kind of protection %s.', 'cf-geoplugin'),
+                                        '<a href="'.esc_url(admin_url('admin.php?page=cf-geoplugin-settings')).'#spam-protection">'
+                                            .esc_html__('disable it in plugin settings', 'cf-geoplugin')
+                                        .'</a>') ); ?></strong></p>
                                  <?php else: ?>
-                                     <p><strong><?php printf(__( 'Automatic IP address blacklist check is NOT ENABLED. If you want additional protection %s.', 'cf-geoplugin'),
-                                        '<a href="'.admin_url('admin.php?page=cf-geoplugin-settings').'#spam-protection">'
-                                            .__('enable it in settings', 'cf-geoplugin')
-                                        .'</a>'); ?></strong></p>
+                                     <p><strong><?php echo wp_kses_post( sprintf(__( 'Automatic IP address blacklist check is NOT ENABLED. If you want additional protection %s.', 'cf-geoplugin'),
+                                        '<a href="'.esc_url(admin_url('admin.php?page=cf-geoplugin-settings')).'#spam-protection">'
+                                            .esc_html__('enable it in settings', 'cf-geoplugin')
+                                        .'</a>') ); ?></strong></p>
                                  <?php endif; ?>
                                  
                                  <p style="color:#cc0000;"><?php esc_html_e( 'These options will remove all your content, template, design and display custom messages to your visitors.', 'cf-geoplugin'); ?></p>

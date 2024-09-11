@@ -39,7 +39,7 @@ if($NEW_API = CFGP_API::lookup(CFGP_U::request_string('cfgp_lookup'))){
                             <button type="submit" class="button button-primary"><?php esc_html_e('Lookup', 'cf-geoplugin'); ?></button>
                             <a href="<?php echo esc_url(CFGP_U::admin_url('admin.php?page=cf-geoplugin-debug')); ?>" target="_self" class="button" title=""><i class="cfa cfa-refresh"></i></a>
                             <input type="hidden" name="page" value="cf-geoplugin-debug">
-                            <input type="hidden" name="nonce" value="<?php echo wp_create_nonce(CFGP_NAME . '-lookup'); ?>">
+                            <input type="hidden" name="nonce" value="<?php echo esc_attr(wp_create_nonce(CFGP_NAME . '-lookup')); ?>">
                         </form>
                     </div>
                     
@@ -58,7 +58,7 @@ if($NEW_API = CFGP_API::lookup(CFGP_U::request_string('cfgp_lookup'))){
                         
 						<?php do_action('cfgp/debug/tab-panel/before'); ?>
                         <div class="cfgp-tab-panel cfgp-tab-panel-active" id="recived-data">
-                        <p><?php echo sprintf( __( 'Information that the Geo Controller API ver.%s receives', 'cf-geoplugin'), CFGP_VERSION ); ?></p>
+                        <p><?php echo wp_kses_post(sprintf( __( 'Information that the Geo Controller API ver.%s receives', 'cf-geoplugin'), esc_html(CFGP_VERSION) )); ?></p>
                         <?php if($API) : ?>
                             <table class="wp-list-table widefat fixed striped table-view-list posts table-cf-geoplugin-debug-recived-data">
                                 <thead>
@@ -100,7 +100,7 @@ if($NEW_API = CFGP_API::lookup(CFGP_U::request_string('cfgp_lookup'))){
                         
                         <div class="cfgp-tab-panel" id="sent-data">
                         	<p><?php esc_html_e( 'This information are sent to Geo Controller API. All of this informations (hostname, IP and timezone) are available for general public, world wide and we only use them for API purpose which helps plugin to determine the exact location of the visitors and prevent accidental collapse between the IP address. Your IP and email address is also a guarantee that you\'re not a robot or some spamming software.', 'cf-geoplugin'); ?></p>
-                            <p><?php printf( __( 'If you are concerned about your private informations, please read the %s', 'cf-geoplugin'), '<a href="http://wpgeocontroller.com/privacy-policy" target="_blank">'.__('Privacy Policy', 'cf-geoplugin').'</a>' ); ?></p>
+                            <p><?php echo wp_kses_post( sprintf( __( 'If you are concerned about your private informations, please read the %s', 'cf-geoplugin'), '<a href="http://wpgeocontroller.com/privacy-policy" target="_blank">'.esc_html__('Privacy Policy', 'cf-geoplugin').'</a>' ) ); ?></p>
                             
                             <table class="wp-list-table widefat fixed striped table-view-list posts table-cf-geoplugin-debug-server-statistics"> 
                                 <thead>
@@ -123,7 +123,7 @@ if($NEW_API = CFGP_API::lookup(CFGP_U::request_string('cfgp_lookup'))){
                                     </tr>
                                     <tr>
                                         <td><strong><?php esc_html_e( 'SIP', 'cf-geoplugin'); ?></strong></td>
-                                        <td><?php echo esc_html( CFGP_IP::server() ) . (CFGP_U::proxy() ?' <strong><a class="text-danger" href="'.admin_url('admin.php?page=cf-geoplugin-settings').'">('.esc_html__('Proxy Enabled', 'cf-geoplugin').')</a></strong> ' : ''); ?></td>
+                                        <td><?php echo esc_html( CFGP_IP::server() ) . (CFGP_U::proxy() ?' <strong><a class="text-danger" href="'.esc_url(admin_url('admin.php?page=cf-geoplugin-settings')).'">('.esc_html__('Proxy Enabled', 'cf-geoplugin').')</a></strong> ' : ''); ?></td>
                                         <td><?php esc_html_e( 'Server IP Address' ); ?></td>
                                     </tr>
                                     <tr>
@@ -167,9 +167,9 @@ if($NEW_API = CFGP_API::lookup(CFGP_U::request_string('cfgp_lookup'))){
 											<?php esc_html_e( 'Geo Controller License Key', 'cf-geoplugin'); ?>
 											<?php
 											if(CFGP_DEFENDER_ACTIVATED)
-												_e( 'Lifetime', 'cf-geoplugin');
+												esc_html_e( 'Lifetime', 'cf-geoplugin');
 											else
-												echo ( !empty( CFGP_License::expire_date() ) ? '<br><small>('.__( 'License Expire', 'cf-geoplugin') . ': <b>' . esc_html(date("r", strtotime(CFGP_License::expire_date()))).'</b>)</small>' : '' )
+												echo ( !empty( CFGP_License::expire_date() ) ? '<br><small>('.esc_html__( 'License Expire', 'cf-geoplugin') . ': <b>' . esc_html(date("r", strtotime(CFGP_License::expire_date()))).'</b>)</small>' : '' )
 										?>
 										</td>
                                     </tr>
@@ -179,7 +179,7 @@ if($NEW_API = CFGP_API::lookup(CFGP_U::request_string('cfgp_lookup'))){
                         </div>
                         
                         <div class="cfgp-tab-panel" id="server-statistics">
-                        	<p><?php printf( __( 'Information of your WordPress installation, server and browser', 'cf-geoplugin'), CFGP_VERSION ); ?></p>
+                        	<p><?php esc_html_e('Information of your WordPress installation, server and browser', 'cf-geoplugin'); ?></p>
                             <table class="wp-list-table widefat fixed striped table-view-list posts table-cf-geoplugin-debug-server-statistics">
                                 <thead>
                                     <tr>
@@ -256,11 +256,11 @@ if($NEW_API = CFGP_API::lookup(CFGP_U::request_string('cfgp_lookup'))){
                                     </tr>
 									<tr>
                                         <td><strong><?php esc_html_e( 'Server IP', 'cf-geoplugin'); ?></strong></td>
-                                        <td><?php echo esc_html( CFGP_IP::server() ) . (CFGP_U::proxy() ?' <strong><a class="text-danger" href="'.admin_url('admin.php?page=cf-geoplugin-settings').'">('.__('Proxy Enabled', 'cf-geoplugin').')</a></strong> ' : ''); ?></td>
+                                        <td><?php echo esc_html( CFGP_IP::server() ) . (CFGP_U::proxy() ?' <strong><a class="text-danger" href="'.esc_url(admin_url('admin.php?page=cf-geoplugin-settings')).'">('.esc_html__('Proxy Enabled', 'cf-geoplugin').')</a></strong> ' : ''); ?></td>
                                     </tr>
                                     <tr>
                                         <td><strong><?php esc_html_e( 'WordPress multisite', 'cf-geoplugin'); ?></strong></td>
-                                        <td><?php echo (CFGP_MULTISITE ? __('Enabled', 'cf-geoplugin') : __('Disabled', 'cf-geoplugin')); ?></td>
+                                        <td><?php echo (CFGP_MULTISITE ? esc_html__('Enabled', 'cf-geoplugin') : esc_html__('Disabled', 'cf-geoplugin')); ?></td>
                                     </tr>
                                     <tr>
                                         <td><strong><?php esc_html_e( 'Admin email', 'cf-geoplugin'); ?></strong></td>
@@ -300,7 +300,7 @@ if($NEW_API = CFGP_API::lookup(CFGP_U::request_string('cfgp_lookup'))){
                                     </tr>
                                     <tr>
                                         <td><strong><?php esc_html_e( 'PHP: Architecture', 'cf-geoplugin'); ?></strong></td>
-                                        <td><?php printf(__('%dbit', 'cf-geoplugin'), (CFGP_OS::is_php64() ? 64 : 32)); ?></td>
+                                        <td><?php printf(esc_html__('%dbit', 'cf-geoplugin'), (CFGP_OS::is_php64() ? 64 : 32)); ?></td>
                                     </tr>
 									<tr>
                                         <td><strong><?php esc_html_e( 'PHP: Memory usage of the plugin', 'cf-geoplugin'); ?></strong></td>
@@ -308,19 +308,19 @@ if($NEW_API = CFGP_API::lookup(CFGP_U::request_string('cfgp_lookup'))){
                                     </tr>
                                     <tr>
                                         <td><strong><?php esc_html_e( 'PHP: Operting system', 'cf-geoplugin'); ?></strong></td>
-                                        <td><?php echo esc_html( CFGP_OS::get() ); ?> <?php printf(__('%dbit', 'cf-geoplugin'), CFGP_OS::architecture()); ?></td>
+                                        <td><?php echo esc_html( CFGP_OS::get() ); ?> <?php printf(esc_html__('%dbit', 'cf-geoplugin'), esc_html( CFGP_OS::architecture())); ?></td>
                                     </tr>
 									<tr>
                                         <td><strong><?php esc_html_e( 'PHP: Server Cache', 'cf-geoplugin'); ?></strong></td>
                                         <td><strong><?php echo (
 											CFGP_DB_Cache::has_redis() 
 											? '<span class="text-success">' 
-												. __('Redis Cache', 'cf-geoplugin') 
+												. esc_html__('Redis Cache', 'cf-geoplugin') 
 											. '</span>' 
 											: (
 												CFGP_DB_Cache::has_memcache()
 												? '<span class="text-success">' 
-													. __('Memcached', 'cf-geoplugin') 
+													. esc_html__('Memcached', 'cf-geoplugin') 
 												. '</span>' 
 												: '<span class="text-danger">' 
 													. esc_html__('No', 'cf-geoplugin') 
@@ -334,19 +334,19 @@ if($NEW_API = CFGP_API::lookup(CFGP_U::request_string('cfgp_lookup'))){
                                     </tr>
                                     <tr>
                                         <td><strong><?php esc_html_e( 'Browser', 'cf-geoplugin'); ?></strong></td>
-                                        <td><?php printf(_x('%1$s (%2$s)', 'Debug: User agent (Browser)', 'cf-geoplugin'), esc_html( CFGP_Browser::instance()->getBrowser() ), esc_html( CFGP_Browser::instance()->getVersion() )); ?></td>
+                                        <td><?php echo wp_kses_post(sprintf(_x('%1$s (%2$s)', 'Debug: User agent (Browser)', 'cf-geoplugin'), esc_html( CFGP_Browser::instance()->getBrowser() ), esc_html( CFGP_Browser::instance()->getVersion() ))); ?></td>
                                     </tr>
 									<tr>
                                         <td><strong><?php esc_html_e( 'User platform', 'cf-geoplugin'); ?></strong></td>
                                         <td><?php echo esc_html( trim( sprintf(
 											'%1$s %2$s',
 											esc_html( CFGP_Browser::instance()->getPlatform() ),
-											(CFGP_Browser::instance()->isMobile() ? __( '(mobile device)', 'cf-geoplugin') : '')
+											(CFGP_Browser::instance()->isMobile() ? esc_html__( '(mobile device)', 'cf-geoplugin') : '')
 										) ) ); ?></td>
                                     </tr>
                                     <tr>
                                         <td><strong><?php esc_html_e( 'WordPress debug', 'cf-geoplugin'); ?></strong></td>
-                                        <td><?php echo ( WP_DEBUG ? '<strong><span class="text-danger">' . __( 'On', 'cf-geoplugin') . '</span></strong>' : __( 'Off', 'cf-geoplugin') ); ?></td>
+                                        <td><?php echo ( WP_DEBUG ? '<strong><span class="text-danger">' . esc_html__( 'On', 'cf-geoplugin') . '</span></strong>' : esc_html__( 'Off', 'cf-geoplugin') ); ?></td>
                                     </tr>
                                     <tr>
                                         <td><strong><?php esc_html_e( 'Plugin directory path', 'cf-geoplugin'); ?></strong></td>
@@ -354,7 +354,7 @@ if($NEW_API = CFGP_API::lookup(CFGP_U::request_string('cfgp_lookup'))){
                                     </tr>
                                     <tr>
                                         <td><strong><?php esc_html_e( 'Session API expire', 'cf-geoplugin'); ?></strong></td>
-                                        <td><?php printf(__('%d minutes', 'cf-geoplugin'), CFGP_SESSION); ?></td>
+                                        <td><?php printf(esc_html__('%d minutes', 'cf-geoplugin'), esc_html(CFGP_SESSION)); ?></td>
                                     </tr>
                                 </tbody>
                         	</table>

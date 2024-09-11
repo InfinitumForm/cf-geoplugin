@@ -1276,10 +1276,10 @@ if(!class_exists('CFGP_U', false)) : class CFGP_U {
 		if(func_num_args() === 1)
 		{
 			$a = func_get_args();
-			echo '<pre class="cfgp-dump">', var_dump( $a[0] ), '</pre>';
+			echo wp_kses_post( '<pre class="cfgp-dump">', var_export( $a[0], true ), '</pre>' );
 		}
 		else if(func_num_args() > 1)
-			echo '<pre class="cfgp-dump">', var_dump( func_get_args() ), '</pre>';
+			echo wp_kses_post( '<pre class="cfgp-dump">' . var_export( func_get_args(), true ) . '</pre>' );
 		else
 			throw new Exception('You must provide at least one argument to this function.');
 	}

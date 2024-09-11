@@ -149,7 +149,7 @@ if(!class_exists('CFGP_Public', false)) : class CFGP_Public extends CFGP_Global{
 			ob_end_clean();
 		}
 		
-		echo apply_filters( 'cfgp/public/css', $css, $css_show, $css_hide, $allowed_css);
+		echo wp_kses_post( apply_filters( 'cfgp/public/css', $css, $css_show, $css_hide, $allowed_css) );
 		
 		if( $is_ajax ) {
 			exit;

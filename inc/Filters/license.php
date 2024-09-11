@@ -77,11 +77,11 @@ if( CFGP_U::api('available_lookup') != 'lifetime' ) :
                 <?php if(!CFGP_License::activated()) : ?>
                 	<p>(<?php esc_html_e('License type must match to your license key that you ordered.', 'cf-geoplugin'); ?>)</p>
                     <button type="submit" class="button button-primary cfgp-activate-license"><?php esc_html_e('Activate your license', 'cf-geoplugin'); ?></button>
-                    <input type="hidden" name="nonce" value="<?php echo wp_create_nonce(CFGP_NAME.'-activate-license'); ?>">
+                    <input type="hidden" name="nonce" value="<?php echo esc_attr( wp_create_nonce(CFGP_NAME.'-activate-license') ); ?>">
 				<?php else: ?>
                 	<button type="submit" class="button button-primary cfgp-deactivate-license"><?php esc_html_e('Dectivate current license', 'cf-geoplugin'); ?></button>
                     <input type="hidden" name="deactivate_license" value="1">
-                    <input type="hidden" name="nonce" value="<?php echo wp_create_nonce(CFGP_NAME.'-deactivate-license'); ?>">
+                    <input type="hidden" name="nonce" value="<?php echo esc_attr( wp_create_nonce(CFGP_NAME.'-deactivate-license') ); ?>">
                 <?php endif; ?>
             </div>
         </div>
@@ -106,33 +106,33 @@ add_action('cfgp/page/license/sidebar', function(){ if( CFGP_U::api('available_l
 	<h3 class="hndle" style="margin-bottom:0;padding-bottom:0;"><span><?php esc_html_e('License Information', 'cf-geoplugin'); ?></span></h3><hr>
 	<div class="inside">
     	<?php if(CFGP_License::activated()) : ?>
-        	<p><?php printf(
+        	<p><?php echo wp_kses_post(sprintf(
     __('Thank you for using an unlimited license. Your license is active until %1$s. It would be great to expand your license by that date. After expiration date you will experience plugin limitations.<br><br>To review or deactivate your license, please go to your %2$s.', 'cf-geoplugin'),
-    '<strong>' . (CFGP_License::get('expire') == 0 ? __('never', 'cf-geoplugin') : CFGP_License::expire_date()) . '</strong>',
-	'<a href="' . esc_url(CFGP_License::get('url')) . '" target="_blank">' . __('Geo Controller account', 'cf-geoplugin') . '</a>'
-); ?></p>
-			<p><?php printf(
+    '<strong>' . (CFGP_License::get('expire') == 0 ? esc_html__('never', 'cf-geoplugin') : CFGP_License::expire_date()) . '</strong>',
+	'<a href="' . esc_url(CFGP_License::get('url')) . '" target="_blank">' . esc_html__('Geo Controller account', 'cf-geoplugin') . '</a>'
+)); ?></p>
+			<p><?php echo wp_kses_post(sprintf(
             __('Do not forget that by purchasing and using the license you have agreed to our %2$s in accordance with the %1$s.'),
-            '<strong><a href="https://wpgeocontroller.com/privacy-policy/" target="_blank">' . __('Privacy Policy', 'cf-geoplugin') . '</a></strong>',
-            '<strong><a href="https://wpgeocontroller.com/terms-and-conditions/" target="_blank">' . __('Terms & Conditions', 'cf-geoplugin') . '</a></strong>'
-        ); ?></p>
+            '<strong><a href="https://wpgeocontroller.com/privacy-policy/" target="_blank">' . esc_html__('Privacy Policy', 'cf-geoplugin') . '</a></strong>',
+            '<strong><a href="https://wpgeocontroller.com/terms-and-conditions/" target="_blank">' . esc_html__('Terms & Conditions', 'cf-geoplugin') . '</a></strong>'
+        )); ?></p>
 		<?php elseif(CFGP_U::api('available_lookup') === 'unlimited') : ?>
 		<p style="font-weight:600;"><?php esc_html_e('An update error occurred and your license was not recorded on your server.'); ?></p>
 		<p><?php esc_html_e('This should not scare you because our API has recognized the problem and still gives you all the necessary information without restrictions.'); ?></p>
 		<p><?php esc_html_e('But for the plugin to work properly, please re-enter your license and activate the plugin to unlock all internal features.'); ?></p>
 		<?php else: ?>
-        <p><?php printf(
+        <p><?php echo wp_kses_post(sprintf(
             __('You currently use a free version of plugin with a limited number of lookups. Each free version of this plugin is limited to %1$s lookups per day and you have only %2$s lookups available for today. If you want to have unlimited lookup, please enter your license key. If you are unsure and do not understand what this is about, read %3$s.', 'cf-geoplugin'),
             
             '<strong>'.esc_html(CFGP_LIMIT).'</strong>',
             '<strong>'.esc_html(CFGP_U::api('available_lookup')).'</strong>',
             '<strong><a href="https://wpgeocontroller.com/documentation/quick-start/what-do-i-get-from-unlimited-license" target="_blank">' . __('this article', 'cf-geoplugin') . '</a></strong>'
-        ); ?></p>
-        <p><?php printf(
+        )); ?></p>
+        <p><?php echo wp_kses_post(sprintf(
             __('Before any action don\'t forget to read and agree with %1$s and %2$s.'),
             '<strong><a href="https://wpgeocontroller.com/privacy-policy/" target="_blank">' . __('Privacy Policy', 'cf-geoplugin') . '</a></strong>',
             '<strong><a href="https://wpgeocontroller.com/terms-and-conditions/" target="_blank">' . __('Terms & Conditions', 'cf-geoplugin') . '</a></strong>'
-        ); ?></p>
+        )); ?></p>
         <?php endif; ?>
 	</div>
 </div>

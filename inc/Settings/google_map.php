@@ -24,20 +24,20 @@ $API = CFGP_Cache::get('API');
                         
                         <div class="cfgp-tab-panel cfgp-tab-panel-active" id="property">
                         	<p><?php 
-							printf(
+							echo wp_kses_post( sprintf(
 								'%s%s',
 								__('Google Maps is a desktop web mapping service developed by Google. It offers satellite imagery, street maps, 360° panoramic views of streets (Street View), real-time traffic conditions (Google Traffic), and route planning for traveling by foot, car, bicycle (in beta), or public transportation.', 'cf-geoplugin'),
 								sprintf(
 									__('CF GeoPlugin allows you to place google maps easily in your WordPress blog using simple shortcode %s.', 'cf-geoplugin'),
 									'<code>[cfgeo_map]</code>'
 								)
-							)
+							) );
 							?></p>
                             <p><?php
-                            	printf(
-									__('In the list below are all settings for the %s shortcode.', 'cf-geoplugin'),
-									'<code>[cfgeo_map]</code>'
-								)
+                            echo wp_kses_post( printf(
+								__('In the list below are all settings for the %s shortcode.', 'cf-geoplugin'),
+								'<code>[cfgeo_map]</code>'
+							) );
 							?></p>
                             <table class="wp-list-table widefat fixed striped table-view-list posts table-cf-geoplugin-google-map-property">
                                 <thead>
@@ -53,7 +53,7 @@ $API = CFGP_Cache::get('API');
                                     </tr>
                                     <tr>
                                         <td><strong>latitude</strong></td>
-                                        <td><strong><?php esc_html_e('Number', 'cf-geoplugin'); ?></strong> - <?php echo sprintf(__('Latitude is an angle (defined below) which ranges from 0° at the Equator to 90° (North or South) at the poles.%s', 'cf-geoplugin'),'<br><br><strong>-'.__('By default is pointed to visitors city or address automatically.', 'cf-geoplugin').'</strong>'); ?></td>
+                                        <td><strong><?php esc_html_e('Number', 'cf-geoplugin'); ?></strong> - <?php echo wp_kses_post( sprintf(__('Latitude is an angle (defined below) which ranges from 0° at the Equator to 90° (North or South) at the poles.%s', 'cf-geoplugin'),'<br><br><strong>-'.esc_html__('By default is pointed to visitors city or address automatically.', 'cf-geoplugin').'</strong>') ); ?></td>
                                     </tr>
                                     <tr>
                                         <td><strong>longitude</strong></td>
@@ -114,10 +114,10 @@ $API = CFGP_Cache::get('API');
                                 </thead>
                                 <tbody>
                                 	<tr>
-                                        <td><?php printf(__('If you want to place a simple google map in your post or page, you just need to place a shortcode like this: %s - what will show place on Google map by visitors location.', 'cf-geoplugin'),'<br><br><code>[cfgeo_map]</code>'); ?></td>
+                                        <td><?php echo wp_kses_post( sprintf(__('If you want to place a simple google map in your post or page, you just need to place a shortcode like this: %s - what will show place on Google map by visitors location.', 'cf-geoplugin'),'<br><br><code>[cfgeo_map]</code>') ); ?></td>
                                     </tr>
                                     <tr>
-                                        <td><?php printf(__('If you want to display your own company street address inside Google map, you can do that by adding optional attributes %s like on example: %s - what will show your company on Google map.', 'cf-geoplugin'), __('<code>longitude</code> and <code>latitude</code>', 'cf-geoplugin'), '<br><br><code>[cfgeo_map longitude="-74.0059" latitude="40.7128" zoom="15"]</code>' ); ?></td>
+                                        <td><?php echo wp_kses_post( sprintf(__('If you want to display your own company street address inside Google map, you can do that by adding optional attributes %s like on example: %s - what will show your company on Google map.', 'cf-geoplugin'), __('<code>longitude</code> and <code>latitude</code>', 'cf-geoplugin'), '<br><br><code>[cfgeo_map longitude="-74.0059" latitude="40.7128" zoom="15"]</code>' ) ); ?></td>
                                     </tr>
                                     <tr>
                                         <td><?php 
@@ -129,7 +129,7 @@ $API = CFGP_Cache::get('API');
 											&lt;/address&gt;<br>
 											[/cfgeo_map]
 											</code>';
-											printf(__("If you want to use HTML inside map and display info bar: <br><br>%s", 'cf-geoplugin'), $html_map  );
+											echo wp_kses_post( sprintf(__("If you want to use HTML inside map and display info bar: <br><br>%s", 'cf-geoplugin'), $html_map  ) );
 										?></td>
                                     </tr>
                                 </tbody>

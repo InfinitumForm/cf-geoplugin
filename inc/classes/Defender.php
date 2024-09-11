@@ -45,14 +45,14 @@ if(!class_exists('CFGP_Defender', false)) : class CFGP_Defender extends CFGP_Glo
 						header( 'HTTP/1.0 403 Forbidden', true, 403 );
 					}
 					
-					die( wpautop( html_entity_decode( stripslashes( apply_filters(
+					die( wp_kses_post( wpautop( html_entity_decode( stripslashes( apply_filters(
 						'cfgp/defender/tor/denied/message',
 						sprintf(
 							'<h1>%s</h1><p>%s</p>',
 							__('403 Forbidden', 'cf-geoplugin'),
 							__('Sorry, users accessing via the TOR network are not allowed on this site.', 'cf-geoplugin')
 						)
-					) ) ) ) );
+					) ) ) ) ) );
 				}
 				break;
 			
@@ -66,14 +66,14 @@ if(!class_exists('CFGP_Defender', false)) : class CFGP_Defender extends CFGP_Glo
 						header( 'HTTP/1.0 403 Forbidden', true, 403 );
 					}
 					
-					die( wpautop( html_entity_decode( stripslashes( apply_filters(
+					die( wp_kses_post( wpautop( html_entity_decode( stripslashes( apply_filters(
 						'cfgp/defender/tor/exclusive/message',
 						sprintf(
 							'<h1>%s</h1><p>%s</p>',
 							__('403 Forbidden', 'cf-geoplugin'),
 							__('This site is accessible exclusively to TOR network users. Please access via the TOR network.', 'cf-geoplugin')
 						)
-					) ) ) ) );
+					) ) ) ) ) );
 				}
 				break;
 		}
@@ -138,7 +138,7 @@ if(!class_exists('CFGP_Defender', false)) : class CFGP_Defender extends CFGP_Glo
 				header( 'HTTP/1.0 403 Forbidden', true, 403 );
 			}
 			
-            die( wpautop( html_entity_decode( stripslashes( CFGP_Options::get('block_country_messages') ) ) ) );
+            die( wp_kses_post( wpautop( html_entity_decode( stripslashes( CFGP_Options::get('block_country_messages') ) ) ) ) );
         }
 
 
@@ -155,7 +155,7 @@ if(!class_exists('CFGP_Defender', false)) : class CFGP_Defender extends CFGP_Glo
 					header( $this->header, true, 403 );
 				}
 				
-				die( wpautop( html_entity_decode( stripslashes( CFGP_Options::get('block_country_messages') ) ) ) );
+				die( wp_kses_post( wpautop( html_entity_decode( stripslashes( CFGP_Options::get('block_country_messages') ) ) ) ) );
 			}
         }
     }

@@ -335,7 +335,7 @@ class CFGP_License extends CFGP_Global{
 				ob_end_clean();
 			}
 			
-			printf('<div class="notice notice-error is-dismissible">%s</div>', $notice);
+			printf('<div class="notice notice-error is-dismissible">%s</div>', wp_kses_post($notice));
 		}
 		
 		return;
@@ -361,7 +361,7 @@ class CFGP_License extends CFGP_Global{
 				ob_end_clean();
 			}
 			
-			printf('<div class="notice notice-success is-dismissible">%s</div>', $notice);
+			printf('<div class="notice notice-success is-dismissible">%s</div>', wp_kses_post($notice));
 		}
 		
 		return;

@@ -957,7 +957,7 @@ LIMIT 1
 		}
 		else
 		{
-			var url = '<?php echo esc_url(CFGP_Defaults::API['googleapis_map']); ?>/api/js?key=<?php echo CFGP_Options::get('map_api_key'); ?>',
+			var url = '<?php echo esc_url(CFGP_Defaults::API['googleapis_map']); ?>/api/js?key=<?php echo esc_attr(CFGP_Options::get('map_api_key')); ?>',
 				head = document.getElementsByTagName('head')[0],
 				script = document.createElement("script");
 			
@@ -1174,7 +1174,7 @@ LIMIT 1
 					<?php 
 						$title = isset( $instance['title'] ) && !empty( $instance['title'] ) ? esc_html( $instance['title'] ) : '';
 						echo wp_kses_post(html_entity_decode($instance['before_title']));
-						printf( '%s', apply_filters( 'widget_title', $title ) ); 
+						echo wp_kses_post(sprintf( '%s', apply_filters( 'widget_title', $title ) )); 
 						echo wp_kses_post(html_entity_decode ($instance['after_title']));
 					?>
 					<div class="cfgp-row">
@@ -2133,10 +2133,10 @@ LIMIT 1
 					} else {
 						$value = esc_attr($value);
 					}
-					printf('%s:%s,'.PHP_EOL, $key, $value);
+					printf('%s:%s,'.PHP_EOL, esc_attr($key), esc_js($value));
 				}
 			}; ?>
-			individualCountrySettings: [<?php echo join(',' . PHP_EOL, array_map(function($country_obj) use ($countries){
+			individualCountrySettings: [<?php echo esc_js( join(',' . PHP_EOL, array_map(function($country_obj) use ($countries){
 				$color = NULL;
 				if(strpos($country_obj, ':') !== false) {
 					$country_obj = explode(':', $country_obj);
@@ -2152,7 +2152,7 @@ LIMIT 1
 					label: "'.esc_attr($country_name).'"' . ($color ? ',
 					color: "'.esc_attr($color).'"' : '') . '
 				}';
-			}, $settings['countries'])); ?>]
+			}, $settings['countries'])) ); ?>]
 		}, function() {
 			if( typeof window.cfgeo.interactive_map !== "undefined" && typeof window.cfgeo.interactive_map === "function") {
 				window.cfgeo.interactive_map( $('#<?php echo esc_attr($id); ?>') );

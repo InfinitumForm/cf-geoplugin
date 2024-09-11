@@ -44,7 +44,7 @@ add_action('cfgp/page/seo_redirection/form/content', function(){
 ?>
 <?php if( !CFGP_SEO_Table::table_exists() ) : ?>
 <div class="notice notice-error"> 
-	<p><?php printf(__('The database table "%s" not exists! You can try to reactivate the Geo Controller to correct this error.', 'cf-geoplugin'), "<strong>{$wpdb->cfgp_seo_redirection}</strong>"); ?></p>
+	<p><?php echo wp_kses_post(sprintf(__('The database table "%s" not exists! You can try to reactivate the Geo Controller to correct this error.', 'cf-geoplugin'), '<strong>' . esc_html($wpdb->cfgp_seo_redirection) . '</strong>')); ?></p>
 </div>
 <?php endif; ?>
 <div class="postbox">
@@ -127,18 +127,18 @@ add_action('cfgp/page/seo_redirection/form', function(){
 <div class="wrap wrap-cfgp" id="<?php echo esc_attr(sanitize_title($_GET['page'] ?? NULL)); ?>">
 	<h1 class="wp-heading-inline"><i class="cfa cfa-location-arrow"></i> <?php
 		if($action == 'edit') {
-			_e('Edit SEO redirection', 'cf-geoplugin');
+			esc_html_e('Edit SEO redirection', 'cf-geoplugin');
 		} else {
-			_e('Add new SEO redirection', 'cf-geoplugin');
+			esc_html_e('Add new SEO redirection', 'cf-geoplugin');
 		}
 	?></h1>
 	<?php 
 		if($action == 'edit') {
-			printf(
+			echo wp_kses_post( sprintf(
 				'<a href="%s" class="page-title-action button-cfgeo-seo-new"><i class="cfa cfa-plus"></i> %s</a> ',
-				CFGP_U::admin_url('admin.php?page=cf-geoplugin-seo-redirection&action=new&nonce='.wp_create_nonce(CFGP_NAME.'-seo-new')),
-				__('New SEO redirection', 'cf-geoplugin')
-			);
+				esc_url(CFGP_U::admin_url('admin.php?page=cf-geoplugin-seo-redirection&action=new&nonce='.wp_create_nonce(CFGP_NAME.'-seo-new'))),
+				esc_html__('New SEO redirection', 'cf-geoplugin')
+			) );
 		}
 	?>
     <hr class="wp-header-end">

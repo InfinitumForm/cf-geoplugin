@@ -9,11 +9,11 @@ do_action('cfgp/page/license/save');
 <div class="wrap cfgp-wrap" id="<?php echo esc_attr(sanitize_text_field($_GET['page'] ?? NULL)); ?>">
 	<h1 class="wp-heading-inline"><i class="cfa cfa-trophy"></i> <?php
 		if( CFGP_U::api('available_lookup') == 'lifetime' ){
-			_e('Congratulations, you have a lifetime lookup!', 'cf-geoplugin');
+			esc_html_e('Congratulations, you have a lifetime lookup!', 'cf-geoplugin');
 		} else if(CFGP_License::activated()) {
-			printf(__('Your license is successfully active until %s', 'cf-geoplugin'), CFGP_License::expire_date());
+			printf(esc_html__('Your license is successfully active until %s', 'cf-geoplugin'), esc_html(CFGP_License::expire_date()));
 		} else {
-			_e('Select the desired license and activate the plugin', 'cf-geoplugin');
+			esc_html_e('Select the desired license and activate the plugin', 'cf-geoplugin');
 		}
 	?></h1>
     <hr class="wp-header-end">

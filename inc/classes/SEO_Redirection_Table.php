@@ -196,7 +196,7 @@ if (!class_exists('CFGP_SEO_Table', false)) : class CFGP_SEO_Table extends WP_Li
 						'nonce' => wp_create_nonce(CFGP_NAME.'-seo-import-csv')
 					));
 				
-					printf('<a aria="button" href="%s" class="button"><i class="cfa cfa-upload"></i> %s</a> ', esc_url($seo_import_csv), __('Import From CSV', 'cf-geoplugin'));
+					printf('<a aria="button" href="%s" class="button"><i class="cfa cfa-upload"></i> %s</a> ', esc_url($seo_import_csv), esc_html__('Import From CSV', 'cf-geoplugin'));
 					
 					if($exists){
 						
@@ -205,7 +205,7 @@ if (!class_exists('CFGP_SEO_Table', false)) : class CFGP_SEO_Table extends WP_Li
 							'nonce' => wp_create_nonce(CFGP_NAME.'-seo-export-csv')
 						));
 						
-						printf('<a aria="button" href="%s" class="button"><i class="cfa cfa-table"></i> %s</a> ', esc_url($seo_export_csv), __('Export CSV', 'cf-geoplugin'));
+						printf('<a aria="button" href="%s" class="button"><i class="cfa cfa-table"></i> %s</a> ', esc_url($seo_export_csv), esc_html__('Export CSV', 'cf-geoplugin'));
 					}
 					
 				echo '</div>';

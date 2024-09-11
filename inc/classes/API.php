@@ -44,7 +44,7 @@ class CFGP_API extends CFGP_Global {
 				CFGP_Cache::set('API', $return);
 			}
 		} catch (Exception $e) {
-			throw new ErrorException('CFGP ERROR: ' . $e->getMessage());
+			throw new ErrorException(esc_html('CFGP ERROR: ' . $e->getMessage()));
 		}
 	}
 	

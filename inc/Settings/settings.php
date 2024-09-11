@@ -97,7 +97,7 @@ switch($input['type'])
 			if(isset($input['attr']) && !empty($input['attr']) && is_array($input['attr']))
 			{
 				foreach($input['attr'] as $attr=>$attr_value){
-					printf(' %s="%s"', $attr, esc_attr($attr_value));
+					printf(' %s="%s"', esc_attr($attr), esc_attr($attr_value));
 				}
 			}
 			echo ($default === $value ? ' checked' : '');
@@ -137,7 +137,7 @@ switch($input['type'])
 			if(isset($input['attr']) && !empty($input['attr']) && is_array($input['attr']))
 			{
 				foreach($input['attr'] as $attr=>$attr_value){
-					printf(' %s="%s"', $attr, esc_attr($attr_value));
+					printf(' %s="%s"', esc_attr($attr), esc_attr($attr_value));
 				}
 			}
 			echo (in_array($object['value'], $default) ? ' checked' : '');
@@ -172,7 +172,7 @@ switch($input['type'])
 		if(isset($input['attr']) && !empty($input['attr']) && is_array($input['attr']))
 		{
 			foreach($input['attr'] as $attr=>$attr_value){
-				printf(' %s="%s"', $attr, esc_attr($attr_value));
+				printf(' %s="%s"', esc_attr($attr), esc_attr($attr_value));
 			}
 		}
 		
@@ -198,7 +198,7 @@ switch($input['type'])
 		if(isset($input['attr']) && !empty($input['attr']) && is_array($input['attr']))
 		{
 			foreach($input['attr'] as $attr=>$attr_value){
-				printf(' %s="%s"', $attr, esc_attr($attr_value));
+				printf(' %s="%s"', esc_attr($attr), esc_attr($attr_value));
 			}
 		}
 		
@@ -224,7 +224,7 @@ switch($input['type'])
 		if(isset($input['attr']) && !empty($input['attr']) && is_array($input['attr']))
 		{
 			foreach($input['attr'] as $attr=>$attr_value){
-				printf(' %s="%s"', $attr, esc_attr($attr_value));
+				printf(' %s="%s"', esc_attr($attr), esc_attr($attr_value));
 			}
 		}
 		
@@ -254,7 +254,7 @@ switch($input['type'])
 		if(isset($input['attr']) && !empty($input['attr']) && is_array($input['attr']))
 		{
 			foreach($input['attr'] as $attr=>$attr_value){
-				printf(' %s="%s"', $attr, esc_attr($attr_value));
+				printf(' %s="%s"', esc_attr($attr), esc_attr($attr_value));
 			}
 		}
 		

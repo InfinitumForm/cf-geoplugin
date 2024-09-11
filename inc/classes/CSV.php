@@ -57,7 +57,7 @@ if(!class_exists('CFGP_CSV', false)) : class CFGP_CSV{
 	
 				if ($maxCount > 0 && $amount > 0) {
 					$msg = 'Identifier is not clear: "' . $amount . '" and "' . $delimiter . '" are possible';
-					throw new \Exception($msg);
+					throw new \Exception(esc_html($msg));
 				}
 	
 				if ($amount > $maxCount) {

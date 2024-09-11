@@ -328,17 +328,17 @@ if(!class_exists('CFGP_Geo_Banner', false)) : class CFGP_Geo_Banner extends CFGP
 		switch ($column_name) {
 			case 'cf_geo_banner_shortcode':
 				echo '<ul>';
-				echo '<li><strong>' . __('Standard', 'cf-geoplugin') . ':</strong><br><code>[cfgeo_banner id="' . esc_attr($post_ID) . '"]</code></li>';
-				echo '<li><strong>' . __('Advanced', 'cf-geoplugin') . ':</strong><br><code>[cfgeo_banner id="' . esc_attr($post_ID) . '"]' . __('Default content', 'cf-geoplugin') . '[/cfgeo_banner]</code></li>';
+				echo '<li><strong>' . esc_html__('Standard', 'cf-geoplugin') . ':</strong><br><code>[cfgeo_banner id="' . esc_attr($post_ID) . '"]</code></li>';
+				echo '<li><strong>' . esc_html__('Advanced', 'cf-geoplugin') . ':</strong><br><code>[cfgeo_banner id="' . esc_attr($post_ID) . '"]' . esc_html__('Default content', 'cf-geoplugin') . '[/cfgeo_banner]</code></li>';
 				echo '</ul>';
 				break;
 
 			case 'cf_geo_banner_locations':
 				$fields = [
-					__('Countries', 'cf-geoplugin') => 'country',
-					__('Regions', 'cf-geoplugin') => 'region',
-					__('Cities', 'cf-geoplugin') => 'city',
-					__('Postcodes', 'cf-geoplugin') => 'postcode'
+					esc_html__('Countries', 'cf-geoplugin') => 'country',
+					esc_html__('Regions', 'cf-geoplugin') => 'region',
+					esc_html__('Cities', 'cf-geoplugin') => 'city',
+					esc_html__('Postcodes', 'cf-geoplugin') => 'postcode'
 				];
 				$print = [];
 
@@ -347,7 +347,7 @@ if(!class_exists('CFGP_Geo_Banner', false)) : class CFGP_Geo_Banner extends CFGP
 
 					if ($data) {
 						$formatted = $this->formatData($field, $data);
-						$print[] = '<li><strong>' . esc_html($name) . ':</strong><br>' . join(', ', $formatted) . '</li>';
+						$print[] = '<li><strong>' . esc_html($name) . ':</strong><br>' . wp_kses_post( join(', ', $formatted) ) . '</li>';
 					}
 				}
 
@@ -355,7 +355,7 @@ if(!class_exists('CFGP_Geo_Banner', false)) : class CFGP_Geo_Banner extends CFGP
 					$print = $this->fetchTaxonomyData($post_ID);
 				}
 
-				echo empty($print) ? '( ' . __('undefined', 'cf-geoplugin') . ' )' : '<ul>' . join("\r\n", $print) . '</ul>';
+				echo empty($print) ? '( ' . esc_html__('undefined', 'cf-geoplugin') . ' )' : '<ul>' . wp_kses_post( join("\r\n", $print) ) . '</ul>';
 				break;
 		}
 	}
@@ -503,7 +503,7 @@ if(!class_exists('CFGP_Geo_Banner', false)) : class CFGP_Geo_Banner extends CFGP
 				$data[]=$fetch->slug;
 			}
 			
-			$get_post_meta = get_post_meta($post->ID, esc_attr("{$option['post_meta']}-{$option['field']}"), true);
+			$get_post_meta = get_post_meta($post->ID, esc_attr($option['post_meta'].'-'.$option['field']), true);
 			
 			if(!empty($get_post_meta)){
 				$data = array_merge($data, $get_post_meta);
@@ -513,19 +513,22 @@ if(!class_exists('CFGP_Geo_Banner', false)) : class CFGP_Geo_Banner extends CFGP
 				$country_code = $data;
 			}
 			
+			$fn = $option['function'];
+			
+			// CFGP_Form is already escaped inside a function
 			printf(
 				'<p class="post-attributes-label-wrapper cfgp-banner-label-wrapper-%s">%s%s</p>',
-				$option['field'],
+				esc_attr($option['field']),
 				sprintf(
 					'<label for="%s">%s</label>',
-					$option['taxonomy'],
-					$name
+					esc_attr($option['taxonomy']),
+					esc_html($name)
 				),
-				CFGP_Form::{$option['function']}(array(
-					'name'=>"{$option['post_meta']}-{$option['field']}",
-					'id' => $option['taxonomy'],
-					'country_code' => $country_code
-				), $data, true, false)
+				CFGP_Form::$fn(array(
+					'name' => esc_attr($option['post_meta'].'-'.$option['field']),
+					'id' => esc_attr($option['taxonomy']),
+					'country_code' => esc_attr($country_code)
+				), array_map('esc_html', $data), true, false)
 			);
 		}
 		echo '</div>';
@@ -537,9 +540,9 @@ if(!class_exists('CFGP_Geo_Banner', false)) : class CFGP_Geo_Banner extends CFGP
     public function add_meta_box__shortcode( $post )
     {
         echo '<ul>';
-        echo '<li><strong>' . __('Standard', 'cf-geoplugin') . ':</strong><br><code>[cfgeo_banner id="'.esc_attr($post->ID).'"]</code></li>';
-        echo '<li><strong>' . __('Advanced', 'cf-geoplugin') . ':</strong><br><code>[cfgeo_banner id="'.esc_attr($post->ID).'"]' . __('Default content', 'cf-geoplugin') . '[/cfgeo_banner]</code></li>';
-		echo '<li><strong>' . __('Enable Cache', 'cf-geoplugin') . ':</strong><br><code>[cfgeo_banner id="'.esc_attr($post->ID).'" cache]' . __('Default content', 'cf-geoplugin') . '[/cfgeo_banner]</code></li>';
+        echo '<li><strong>' . esc_html__('Standard', 'cf-geoplugin') . ':</strong><br><code>[cfgeo_banner id="'.esc_attr($post->ID).'"]</code></li>';
+        echo '<li><strong>' . esc_html__('Advanced', 'cf-geoplugin') . ':</strong><br><code>[cfgeo_banner id="'.esc_attr($post->ID).'"]' . esc_html__('Default content', 'cf-geoplugin') . '[/cfgeo_banner]</code></li>';
+		echo '<li><strong>' . esc_html__('Enable Cache', 'cf-geoplugin') . ':</strong><br><code>[cfgeo_banner id="'.esc_attr($post->ID).'" cache]' . esc_html__('Default content', 'cf-geoplugin') . '[/cfgeo_banner]</code></li>';
         echo '</ul>';
     }
 	
