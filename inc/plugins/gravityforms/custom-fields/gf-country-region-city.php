@@ -252,7 +252,7 @@ endif;
 			<tr class="gfield_list_row gfield_list_row_odd">
 				<td class="gfield_list_cell gfield_list_{{form_id}}_cell1 {{class}}" data-label="country">
 					<div class="ginput_container ginput_container_select">
-						<select class="{{css_class}} gfield_select_country" id="{{select_form_id}}" name="{{field_id}}[]"<?php echo $placeholder_attribute; ?>{{tabindex}}{{invalid_attribute}}{{required_attribute}}{{disabled}}>
+						<select class="{{css_class}} gfield_select_country" id="{{select_form_id}}" name="{{field_id}}[]"<?php echo esc_html($placeholder_attribute); ?>{{tabindex}}{{invalid_attribute}}{{required_attribute}}{{disabled}}>
 							<?php
 							foreach ( $countries as $country_code => $country ) :
 							$country_code = strtoupper($country_code);
@@ -264,7 +264,7 @@ endif;
 				</td>
 				<td class="gfield_list_cell gfield_list_{{form_id}}_cell2 {{class}}" data-label="region">
 					<div class="ginput_container ginput_container_select">
-						<select class="{{css_class}} gfield_select_region" id="{{select_form_id}}_region" name="{{field_id}}[]"<?php echo $placeholder_attribute; ?>{{tabindex}}{{invalid_attribute}}{{required_attribute}}{{disabled}}>
+						<select class="{{css_class}} gfield_select_region" id="{{select_form_id}}_region" name="{{field_id}}[]"<?php echo esc_html($placeholder_attribute); ?>{{tabindex}}{{invalid_attribute}}{{required_attribute}}{{disabled}}>
 							<?php
 							if( $regions = CFGP_Library::get_regions(strtolower($value[0] ?? $default_country)) ) :
 							foreach ( $regions as $i => $region ) :
@@ -279,7 +279,7 @@ endif;
 				</td>
 				<td class="gfield_list_cell gfield_list_{{form_id}}_cell3 {{class}}" data-label="city">
 					<div class="ginput_container ginput_container_select">
-						<select class="{{css_class}} gfield_select_city" id="{{select_form_id}}_city" name="{{field_id}}[]"<?php echo $placeholder_attribute; ?>{{tabindex}}{{invalid_attribute}}{{required_attribute}}{{disabled}}>
+						<select class="{{css_class}} gfield_select_city" id="{{select_form_id}}_city" name="{{field_id}}[]"<?php echo esc_html($placeholder_attribute); ?>{{tabindex}}{{invalid_attribute}}{{required_attribute}}{{disabled}}>
 							<?php
 							if( $cities = CFGP_Library::get_cities(strtolower($value[0] ?? $default_country)) ) :
 							foreach ( $cities as $i => $city ) :

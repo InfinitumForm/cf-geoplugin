@@ -189,7 +189,15 @@ add_filter('cfgp/settings', function($options=[]){
 							'disabled' => (CFGP_U::is_plugin_active('woocommerce/woocommerce.php') && CFGP_Options::get('enable-woocommerce', 0) ),
 							'info' => (
 								( CFGP_U::is_plugin_active('woocommerce/woocommerce.php') && CFGP_Options::get('enable-woocommerce', 0) )
-								? sprintf(__('WooCommerce has taken over this functionality and if you want to change the base currency, you have to do it in <strong><a href="%s">WooCommerce Settings</a></strong>.', 'cf-geoplugin'), CFGP_U::admin_url('/admin.php?page=wc-settings#pricing_options-description'))
+								? sprintf(
+									// translators: %s is a link to WooCommerce settings page
+									__('WooCommerce has taken over this functionality and if you want to change the base currency, you have to do it in %s.', 'cf-geoplugin'),
+									sprintf(
+										'<strong><a href="%s">%s</a></strong>',
+										esc_url(CFGP_U::admin_url('/admin.php?page=wc-settings#pricing_options-description')),
+										__('WooCommerce Settings', 'cf-geoplugin')
+									)
+								)
 								: ''
 							)
 						)

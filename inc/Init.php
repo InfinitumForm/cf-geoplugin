@@ -217,38 +217,39 @@ if(!class_exists('CFGP_Init', false)) : final class CFGP_Init{
 	 * Load translations
 	 * @since     8.0.0
 	 */
-	public function textdomain() {	
+	public function textdomain() {    
 		// Get locale
 		$locale = apply_filters( 'cfgp_plugin_locale', get_locale(), 'cf-geoplugin');
 		
-		// We need standard file
-		$mofile = sprintf( '%s-%s.mo', CFGP_NAME, $locale );
+		// We need standard file in the format 'cfgeoplugin-en_US.mo'
+		$mofile = sprintf( 'cf-geoplugin-%s.mo', $locale );
 		
 		// Check first inside `/wp-content/languages/plugins`
 		$domain_path = path_join( WP_LANG_DIR, 'plugins' );
-		$loaded = load_textdomain( CFGP_NAME, path_join( $domain_path, $mofile ) );
+		$loaded = load_textdomain( 'cf-geoplugin', path_join( $domain_path, $mofile ) );
 		
 		// Or inside `/wp-content/languages`
 		if ( ! $loaded ) {
-			$loaded = load_textdomain( CFGP_NAME, path_join( WP_LANG_DIR, $mofile ) );
+			$loaded = load_textdomain( 'cf-geoplugin', path_join( WP_LANG_DIR, $mofile ) );
 		}
 		
-		// Or inside `/wp-content/plugin/cf-geoplugin/languages`
+		// Or inside `/wp-content/plugins/cf-geoplugin/languages`
 		if ( ! $loaded ) {
 			$domain_path = CFGP_ROOT . DIRECTORY_SEPARATOR . 'languages';
-			$loaded = load_textdomain( CFGP_NAME, path_join( $domain_path, $mofile ) );
+			$loaded = load_textdomain( 'cf-geoplugin', path_join( $domain_path, $mofile ) );
 			
 			// Or load with only locale without prefix
 			if ( ! $loaded ) {
-				$loaded = load_textdomain( CFGP_NAME, path_join( $domain_path, "{$locale}.mo" ) );
+				$loaded = load_textdomain( 'cf-geoplugin', path_join( $domain_path, "{$locale}.mo" ) );
 			}
 
-			// Or old fashion way
+			// Or old fashioned way
 			if ( ! $loaded && function_exists('load_plugin_textdomain') ) {
-				load_plugin_textdomain( CFGP_NAME, false, $domain_path );
+				load_plugin_textdomain( 'cf-geoplugin', false, $domain_path );
 			}
 		}
 	}
+
 	
 	/**
 	 * Run debugging script
@@ -405,37 +406,8 @@ if(!class_exists('CFGP_Init', false)) : final class CFGP_Init{
 			## Create database table for the Cache
 			CFGP_DB_Cache::table_install();
 			
-			## Rename database table for the SEO redirection if old table exists
-			if(version_compare(CFGP_DATABASE_VERSION, '1.0.0', '>')) {
-				if( 
-					$wpdb->get_var("SHOW TABLES LIKE '{$wpdb->prefix}cf_geo_seo_redirection'") === "{$wpdb->prefix}cf_geo_seo_redirection" 
-					&& empty($wpdb->get_var("SHOW TABLES LIKE '{$wpdb->cfgp_rest_access_token}'"))
-				) {
-					$wpdb->query( "ALTER TABLE `{$wpdb->prefix}cf_geo_seo_redirection` RENAME TO `{$wpdb->cfgp_seo_redirection}`");
-				}
-			}
-			
 			## Create database table for the SEO redirection if plugin is new
 			CFGP_SEO_Table::table_install();
-			
-			## Rename database table for the SEO redirection if new and old table exists
-			if(version_compare(CFGP_DATABASE_VERSION, '1.0.0', '>')) {
-				if( 
-					$wpdb->get_var("SHOW TABLES LIKE '{$wpdb->prefix}cf_geo_seo_redirection'") === "{$wpdb->prefix}cf_geo_seo_redirection" 
-					&& $wpdb->get_var("SHOW TABLES LIKE '{$wpdb->cfgp_rest_access_token}'") === $wpdb->cfgp_rest_access_token
-				) {
-					// Reassign tables
-					$wpdb->query("INSERT INTO `{$wpdb->cfgp_seo_redirection}` (only_once, country, region, city, postcode, url, http_code, active, date) SELECT only_once, country, region, city, postcode, url, http_code, active, date FROM `{$wpdb->prefix}cf_geo_seo_redirection`");
-					// Delete old one
-					$wpdb->query( "DROP TABLE IF EXISTS `{$wpdb->prefix}cf_geo_seo_redirection`" );
-				}
-			}
-			
-			## Let's update cache database
-			if( CFGP_DB_Cache::table_exists() && version_compare(CFGP_DATABASE_VERSION, '1.0.3', '>=')) {
-				$wpdb->query( "ALTER TABLE `{$wpdb->prefix}cfgp_cache` MODIFY `value` LONGTEXT" );
-				$wpdb->query( "DELETE FROM `{$wpdb->prefix}cfgp_cache` WHERE (`key` LIKE 'library_get_%' OR `key` = 'cfgp-rss' OR `key` = 'cfgp-dashboard-rss')" );
-			}
 			
 			// Update database version
 			update_option(CFGP_NAME . '-db-version', CFGP_DATABASE_VERSION, false);
@@ -444,6 +416,9 @@ if(!class_exists('CFGP_Init', false)) : final class CFGP_Init{
 	
 	/**
 	 * Delete Expired Geo Controller Transients
+	 *
+	 * Direct database call is discouraged but WordPress not provide good solution for this case
+	 *
 	 * @since     8.0.0
 	 */
 	private static function delete_expired_transients( $force_db = false ) {
@@ -462,7 +437,7 @@ if(!class_exists('CFGP_Init', false)) : final class CFGP_Init{
 				AND b.option_value < %d",
 				$wpdb->esc_like( '_transient_cfgp-' ) . '%',
 				$wpdb->esc_like( '_transient_timeout_cfgp-' ) . '%',
-				CFGP_TIME
+				$wpdb->esc_like( CFGP_TIME )
 			)
 		);
 	 
@@ -477,7 +452,7 @@ if(!class_exists('CFGP_Init', false)) : final class CFGP_Init{
 					AND b.option_value < %d",
 					$wpdb->esc_like( '_site_transient_cfgp-' ) . '%',
 					$wpdb->esc_like( '_site_transient_timeout_cfgp-' ) . '%',
-					CFGP_TIME
+					$wpdb->esc_like( CFGP_TIME )
 				)
 			);
 		} elseif ( is_multisite() && is_main_site() && is_main_network() ) {
@@ -491,7 +466,7 @@ if(!class_exists('CFGP_Init', false)) : final class CFGP_Init{
 					AND b.meta_value < %d",
 					$wpdb->esc_like( '_site_transient_cfgp-' ) . '%',
 					$wpdb->esc_like( '_site_transient_timeout_cfgp-' ) . '%',
-					CFGP_TIME
+					$wpdb->esc_like( CFGP_TIME )
 				)
 			);
 		}

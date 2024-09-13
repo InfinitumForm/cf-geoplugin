@@ -50,7 +50,7 @@ if(!class_exists('CFGP_Geo_Banner', false)) : class CFGP_Geo_Banner extends CFGP
 		
 		global $wpdb;
 
-		// Provera parametra akcije
+		// Check action
 		if (CFGP_U::request_string('action') != 'cf_geoplugin_banner_cache') {
 			header_remove('Cache-Control');
 			wp_send_json_error(array(
@@ -61,11 +61,11 @@ if(!class_exists('CFGP_Geo_Banner', false)) : class CFGP_Geo_Banner extends CFGP
 			exit;
 		}
 
-		// Preuzimanje transient ID-a
+		// Get transient ID
 		$transient_id = CFGP_U::request_string('nonce');
 		$data = get_transient('cfgp-' . $transient_id);
 
-		// Provera da li transient postoji
+		// Check if transient exists
 		if (!$data) {
 			header_remove('Cache-Control');
 			wp_send_json_error(array(
@@ -76,8 +76,8 @@ if(!class_exists('CFGP_Geo_Banner', false)) : class CFGP_Geo_Banner extends CFGP
 			exit;
 		}
 
-		// Provera tajnog ključa
-		if (sanitize_text_field($data['key']) !== CFGP_U::key()) {
+		// Check secret key
+		if (sanitize_text_field($data['key']) !== CFGP_U::CACHE_KEY()) {
 			delete_transient('cfgp-' . $transient_id);
 			header_remove('Cache-Control');
 			wp_send_json_error(array(
@@ -88,7 +88,7 @@ if(!class_exists('CFGP_Geo_Banner', false)) : class CFGP_Geo_Banner extends CFGP
 			exit;
 		}
 
-		// Provera hash-a
+		// Check hash
 		if (sanitize_text_field($data['hash']) !== $transient_id) {
 			delete_transient('cfgp-' . $transient_id);
 			header_remove('Cache-Control');
@@ -100,7 +100,7 @@ if(!class_exists('CFGP_Geo_Banner', false)) : class CFGP_Geo_Banner extends CFGP
 			exit;
 		}
 
-		// Definisanje podataka za upit
+		// Define data
 		$setup = array(
 			'id'             => absint(sanitize_text_field($data['id'])),
 			'posts_per_page' => absint(sanitize_text_field($data['posts_per_page'])),
@@ -109,7 +109,7 @@ if(!class_exists('CFGP_Geo_Banner', false)) : class CFGP_Geo_Banner extends CFGP
 
 		$cont = sanitize_textarea_field($data['content']);
 
-		// Provera da li je ID validan
+		// ID is the valid
 		if (intval($setup['id']) <= 0) {
 			wp_send_json_success(array(
 				'response' => $cont,
@@ -119,7 +119,7 @@ if(!class_exists('CFGP_Geo_Banner', false)) : class CFGP_Geo_Banner extends CFGP
 			exit;
 		}
 
-		// Ažuriranje taksonomija u post meta
+		// Update
 		foreach (array(
 			'cf-geoplugin-country' => 'cfgp-banner-location-country',
 			'cf-geoplugin-region'  => 'cfgp-banner-location-region',
@@ -139,12 +139,12 @@ if(!class_exists('CFGP_Geo_Banner', false)) : class CFGP_Geo_Banner extends CFGP
 			}
 		}
 
-		// Priprema SQL upita za geolokaciju
+		// Build SQL search
 		$country_sql = '%"' . $wpdb->esc_like(CFGP_U::api('country_code')) . '"%';
 		$region_sql  = '%"' . $wpdb->esc_like(sanitize_title(CFGP_U::transliterate(CFGP_U::api('region')))) . '"%';
 		$city_sql    = '%"' . $wpdb->esc_like(sanitize_title(CFGP_U::transliterate(CFGP_U::api('city')))) . '"%';
 
-		// Izvršavanje upita za dohvat bannera
+		// Execute
 		$post = $wpdb->get_row($wpdb->prepare("
 			SELECT
 				`banner`.`ID`,
@@ -170,20 +170,17 @@ if(!class_exists('CFGP_Geo_Banner', false)) : class CFGP_Geo_Banner extends CFGP
 
 		$content = '';
 
-		// Ako postoji banner, obrađujemo sadržaj
 		if ($post) {
 			$post->post_content = do_shortcode($post->post_content);
 			$post->post_content = CFGP_U::the_content($post->post_content);
 			$content = CFGP_U::fragment_caching($post->post_content, false);
 		}
 
-		// Ako nema sadržaja, koristimo podrazumevani sadržaj
 		if (empty($content) && !empty($cont)) {
 			$content = do_shortcode($cont);
 			$content = CFGP_U::the_content($content);
 		}
 
-		// Vraćanje odgovora
 		wp_send_json_success(array(
 			'response' => wp_kses_post($content),
 			'error' => false,
@@ -513,6 +510,10 @@ if(!class_exists('CFGP_Geo_Banner', false)) : class CFGP_Geo_Banner extends CFGP
 				$country_code = $data;
 			}
 			
+			if(is_array($country_code)) {
+				$country_code = join(',', $country_code);
+			}
+			
 			$fn = $option['function'];
 			
 			// CFGP_Form is already escaped inside a function
@@ -524,11 +525,11 @@ if(!class_exists('CFGP_Geo_Banner', false)) : class CFGP_Geo_Banner extends CFGP
 					esc_attr($option['taxonomy']),
 					esc_html($name)
 				),
-				CFGP_Form::$fn(array(
+				wp_kses(CFGP_Form::$fn(array(
 					'name' => esc_attr($option['post_meta'].'-'.$option['field']),
 					'id' => esc_attr($option['taxonomy']),
 					'country_code' => esc_attr($country_code)
-				), array_map('esc_html', $data), true, false)
+				), array_map('esc_html', $data), true, false), CFGP_U::allowed_html_tags_for_page())
 			);
 		}
 		echo '</div>';

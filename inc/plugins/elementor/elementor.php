@@ -177,7 +177,7 @@ class CFGP__Plugin__elementor extends CFGP_Global
 			'<strong>' . self::MINIMUM_ELEMENTOR_VERSION . '</strong>'
 		);
 
-		printf( '<div class="notice notice-error is-dismissible"><p>%1$s</p></div>', $message );
+		echo wp_kses_post( sprintf( '<div class="notice notice-error is-dismissible"><p>%1$s</p></div>', $message ) );
 	}
 	
 	/* 
@@ -196,7 +196,7 @@ class CFGP__Plugin__elementor extends CFGP_Global
 			'<strong>' . self::MINIMUM_PHP_VERSION . '</strong>'
 		);
 
-		printf( '<div class="notice notice-error is-dismissible"><p>%1$s</p></div>', $message );
+		echo wp_kses_post( sprintf( '<div class="notice notice-error is-dismissible"><p>%1$s</p></div>', $message ) );
 	}
 	
 	/* 

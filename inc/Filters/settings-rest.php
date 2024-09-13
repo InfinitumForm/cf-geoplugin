@@ -220,7 +220,7 @@ endforeach;
                 </thead>
                 <tbody>
                 	<?php
-						$tokens = $wpdb->get_results("SELECT * FROM {$wpdb->cfgp_rest_access_token} WHERE 1");
+						$tokens = $wpdb->get_results("SELECT * FROM `{$wpdb->cfgp_rest_access_token}` WHERE 1"); // No caching
 						if(count($tokens) > 0):
 						foreach($tokens as $i => $token):
 					?>

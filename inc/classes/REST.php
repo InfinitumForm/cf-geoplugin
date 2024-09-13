@@ -503,7 +503,7 @@ if(!class_exists('CFGP_REST', false)) : class CFGP_REST extends CFGP_Global {
 						$key       = sanitize_text_field($data['key']);
 			
 						// Secret Key do not match
-						if( CFGP_U::KEY() !== $key ) {
+						if( CFGP_U::CACHE_KEY() !== $key ) {
 							delete_transient('cfgp-' . $transient_id);
 							header_remove('Cache-Control');
 							return new WP_REST_Response(array(
@@ -637,7 +637,7 @@ if(!class_exists('CFGP_REST', false)) : class CFGP_REST extends CFGP_Global {
 					}
 					
 					// Stop if hidden key not exists
-					if( sanitize_text_field($data['key']) !== CFGP_U::key() ) {
+					if( sanitize_text_field($data['key']) !== CFGP_U::CACHE_KEY() ) {
 						delete_transient('cfgp-' . $transient_id);
 						header_remove('Cache-Control');
 						return new WP_REST_Response(array(
@@ -731,30 +731,18 @@ if(!class_exists('CFGP_REST', false)) : class CFGP_REST extends CFGP_Global {
 						FROM
 							`{$wpdb->posts}` AS `banner`
 						LEFT JOIN
-							`{$wpdb->postmeta}` AS `c` 
-							ON `c`.`post_id` = `banner`.`ID` 
-							AND `c`.`meta_key` = 'cfgp-banner-location-country'
+							`{$wpdb->postmeta}` AS `c` ON `c`.`post_id` = `banner`.`ID` AND `c`.`meta_key` = 'cfgp-banner-location-country'
 						LEFT JOIN
-							`{$wpdb->postmeta}` AS `r` 
-							ON `r`.`post_id` = `banner`.`ID` 
-							AND `r`.`meta_key` = 'cfgp-banner-location-region'
+							`{$wpdb->postmeta}` AS `r` ON `r`.`post_id` = `banner`.`ID` AND `r`.`meta_key` = 'cfgp-banner-location-region'
 						LEFT JOIN
-							`{$wpdb->postmeta}` AS `s` 
-							ON `s`.`post_id` = `banner`.`ID` 
-							AND `s`.`meta_key` = 'cfgp-banner-location-city'
+							`{$wpdb->postmeta}` AS `s` ON `s`.`post_id` = `banner`.`ID` AND `s`.`meta_key` = 'cfgp-banner-location-city'
 						WHERE
 							`banner`.`ID` = %d
 							AND `banner`.`post_type` = 'cf-geoplugin-banner'
 							AND `post_status` = 'publish'
-							AND (
-								`c`.`meta_value` LIKE %s OR `c`.`meta_value` IS NULL
-							)
-							AND (
-								`r`.`meta_value` LIKE %s OR `r`.`meta_value` IS NULL
-							)
-							AND (
-								`s`.`meta_value` LIKE %s OR `s`.`meta_value` IS NULL
-							)
+							AND (`c`.`meta_value` LIKE %s OR `c`.`meta_value` IS NULL)
+							AND (`r`.`meta_value` LIKE %s OR `r`.`meta_value` IS NULL)
+							AND (`s`.`meta_value` LIKE %s OR `s`.`meta_value` IS NULL)
 						LIMIT 1
 					",
 					absint($setup['id']),

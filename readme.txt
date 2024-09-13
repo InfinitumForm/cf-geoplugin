@@ -5,7 +5,7 @@ Tags: Geo Location, WordPress Geolocation Plugin, Location-Based Personalization
 Requires at least: 6.0
 Tested up to: 6.6
 Requires PHP: 7.0
-Stable tag: 8.7.0
+Stable tag: 8.7.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -413,6 +413,12 @@ Please inform us if any of these errors occur via contact form on our website [h
 
 == Changelog ==
 
+= 8.7.1 =
+* Fixed security recommendations
+* Advanced security protocols
+* Improved performance for content rendering
+* Fixed bugs and PHP errors from the previous version
+
 = 8.7.0 =
 * Fixed plugin security
 * Protected AJAX calls from XXS attacks
@@ -546,50 +552,17 @@ Please inform us if any of these errors occur via contact form on our website [h
 
 == Upgrade Notice ==
 
+= 8.7.1 =
+* Fixed security recommendations
+* Advanced security protocols
+* Improved performance for content rendering
+* Fixed bugs and PHP errors from the previous version
+
 = 8.7.0 =
 * Fixed plugin security
 * Protected AJAX calls from XXS attacks
 * Added better caching
 * Improved javascript algorithms
-
-= 8.6.9 =
-* Adding curly brackets support for the geo tags
-* Adding options to remove top bar menu and currency converter
-* Bugfixes from previous version
-
-= 8.6.8 =
-* Bug fixes for PHP 8.3
-* Added support for WordPress 6.6
-
-= 8.6.7 =
-* Fixed WooCommerce Payments control
-* Fixed API calls and pointed to the new CDN servers
-* Improved cache
-
-= 8.6.6 =
-* Moved to new domain wpgeocontroller.com
-* Fixed timezone issue
-* Fixed licensing
-
-= 8.6.5 =
-* IMPORTANT UPDATE
-* Enhanced security measures
-* Improved input validation and sanitization
-
-= 8.6.4 =
-* Fixed settings
-
-= 8.6.3 =
-* Fixed metabox bugs
-* Fixed data serializations
-
-= 8.6.2 =
-* Fixed internal buffer
-* Optimized options
-* Optimized cache
-* Optimized API calls
-* Optimized plugin detection
-* Removed support for plugins below version 7.x.x
 
 == Other Notes ==
 

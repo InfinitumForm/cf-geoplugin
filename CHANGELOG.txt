@@ -1,5 +1,11 @@
 == Changelog ==
 
+= 8.7.1 =
+* Fixed security recommendations
+* Advanced security protocols
+* Improved performance for content rendering
+* Fixed bugs and PHP errors from the previous version
+
 = 8.7.0 =
 * Fixed plugin security
 * Protected AJAX calls from XXS attacks

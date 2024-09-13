@@ -54,8 +54,10 @@ class CFGP_Sidebar extends CFGP_Global {
 	//	CFGP_DB_Cache::delete('cfgp-rss');
 		$RSS = CFGP_DB_Cache::get('cfgp-rss');
 	?>
-<div class="postbox">
-	<h3 class="hndle" style="margin-bottom:0;padding-bottom:0;"><span><?php esc_html_e('Live News & info', 'cf-geoplugin'); ?></span></h3><hr>
+<div class="postbox" id="cfgp-postbox-rss">
+	<div class="postbox-header">
+		<h2 class="hndle"><span><?php esc_html_e('Live News & info', 'cf-geoplugin'); ?></span></h2>
+	</div>
 	<div class="inside<?php echo esc_attr(empty($RSS) ? ' cfgp-load-rss-feed' : ''); ?>">
 		<?php echo wp_kses_post($RSS ? $RSS : __('Loading...', 'cf-geoplugin')); ?>
 	</div>
@@ -70,8 +72,10 @@ class CFGP_Sidebar extends CFGP_Global {
 	 **/
 	public function statistic(){
 	?>
-<div class="postbox">
-	<h3 class="hndle" style="margin-bottom:0;padding-bottom:0;"><span><?php esc_html_e('Statistic', 'cf-geoplugin'); ?></span></h3><hr>
+<div class="postbox" id="cfgp-postbox-statistic">
+	<div class="postbox-header">
+		<h2 class="hndle"><span><?php esc_html_e('Statistic', 'cf-geoplugin'); ?></span></h2>
+	</div>
 	<div class="inside">
 		<?php $this->sidebar_statistic(); ?>
 	</div>

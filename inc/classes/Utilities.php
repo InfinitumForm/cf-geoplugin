@@ -42,7 +42,7 @@ if(!class_exists('CFGP_U', false)) : class CFGP_U {
 	 * Get plugin KEY for the REST API
 	 * @return        string
 	 * @author        Ivijan-Stefan Stipic
-	*/
+	 */
 	public static function KEY() {
 		if( $KEY = CFGP_Cache::get('REST_KEY') ) {
 			return $KEY;
@@ -51,10 +51,22 @@ if(!class_exists('CFGP_U', false)) : class CFGP_U {
 	}
 	
 	/*
+	 * Get plugin CACHE KEY for the internal REST API
+	 * @return        string
+	 * @author        Ivijan-Stefan Stipic
+	 */
+	public static function CACHE_KEY() {
+		if( $KEY = CFGP_Cache::get('CACHE_SERVER_KEY') ) {
+			return $KEY;
+		}
+		return CFGP_Cache::set('CACHE_SERVER_KEY', self::hash(substr(CFGP_U::ID(), 2, 20), 'sha512'));
+	}
+	
+	/*
 	 * Get HTTP codes
 	 * @return        object
 	 * @author        Ivijan-Stefan Stipic
-	*/
+	 */
 	public static function get_http_codes(){
 		return apply_filters( 'cfgp_http_codes', array(
 			301 => __( '301 - Moved Permanently', 'cf-geoplugin'),
@@ -82,41 +94,27 @@ if(!class_exists('CFGP_U', false)) : class CFGP_U {
 	 * @return        object/null
 	 * @author        Ivijan-Stefan Stipic
 	*/
-	public static function get_user($user_id_or_email = NULL) {
-    
-		// Check if user ID is passed via request and no parameter is passed to the function
-		if (isset($_REQUEST['cfgp_user']) && empty($user_id_or_email)) {
-			$user_id = absint($_REQUEST['cfgp_user']);
-			if ($user = get_user_by('ID', $user_id)) {
-				return $user;
-			}
-			return NULL;
+	public static function get_user($user_id_or_email = null) {
+
+		// Check if user is passed via request and no parameter is passed
+		if (empty($user_id_or_email) && isset($_REQUEST['cfgp_user'])) {
+			$user_id_or_email = absint($_REQUEST['cfgp_user']);
 		}
 
-		// If parameter is passed to the function
+		// If a parameter (user ID or email) is passed
 		if ($user_id_or_email) {
 			if (is_numeric($user_id_or_email)) {
-				$user = get_user_by('ID', absint($user_id_or_email));
+				self::$user = get_user_by('ID', absint($user_id_or_email));
 			} elseif (filter_var($user_id_or_email, FILTER_VALIDATE_EMAIL)) {
-				$user = get_user_by('email', sanitize_email($user_id_or_email));
-			}
-			if ($user) {
-				self::$user = $user;
+				self::$user = get_user_by('email', sanitize_email($user_id_or_email));
 			}
 		}
 
-		// Automatic find if self::$user is not set
+		// Automatic detection if user is not yet set
 		if (empty(self::$user)) {
 			if (is_author()) {
 				$author_id = get_query_var('author');
-				if ($author_id) {
-					self::$user = get_user_by('ID', $author_id);
-				} else {
-					$author_name = get_query_var('author_name');
-					if ($author_name) {
-						self::$user = get_user_by('slug', $author_name);
-					}
-				}
+				self::$user = $author_id ? get_user_by('ID', $author_id) : get_user_by('slug', get_query_var('author_name'));
 			} elseif (is_user_logged_in()) {
 				self::$user = wp_get_current_user();
 			}
@@ -133,48 +131,67 @@ if(!class_exists('CFGP_U', false)) : class CFGP_U {
 	 */
 	public static function curl_get($url, $headers = [], $new_params = [], $json = false)
 	{
+		// Use static variable to cache results within the function
+		static $cache = [];
+
+		// Generate cache key based on input parameters
 		$cache_name = 'cfgp-curl_get-' . self::hash(serialize([$url, $headers, $new_params, $json]));
-		if (NULL !== ($cache = CFGP_Cache::get($cache_name))) {
-			return $cache;
+
+		// Check if result is already cached in the static variable
+		if (isset($cache[$cache_name])) {
+			return $cache[$cache_name];
 		}
 
+		// Set default headers if not provided
 		$headers = empty($headers) ? ['Accept: application/json'] : $headers;
 
-		$proxy_settings = [
-			'WP_PROXY_HOST' => 'proxy_ip',
-			'WP_PROXY_PORT' => 'proxy_port',
-			'WP_PROXY_USERNAME' => 'proxy_username',
-			'WP_PROXY_PASSWORD' => 'proxy_password',
-		];
-		foreach ($proxy_settings as $constant => $option_name) {
-			if (!defined($constant) && $value = CFGP_Options::get($option_name, false)) {
-				define($constant, $value);
+		// Proxy settings
+		if( CFGP_Options::get('proxy', false) ) {
+			$proxy_settings = [
+				'WP_PROXY_HOST' => 'proxy_ip',
+				'WP_PROXY_PORT' => 'proxy_port',
+				'WP_PROXY_USERNAME' => 'proxy_username',
+				'WP_PROXY_PASSWORD' => 'proxy_password',
+			];
+			foreach ($proxy_settings as $constant => $option_name) {
+				if (!defined($constant) && ( $value = CFGP_Options::get($option_name, false) ) ) {
+					define($constant, $value);
+				}
 			}
 		}
 
+		// Default request parameters
 		$default_params = [
 			'timeout' => CFGP_Options::get('timeout', 5),
 			'headers' => $headers,
 		];
 		$params = wp_parse_args($new_params, $default_params);
 
+		// Perform the GET request
 		$request = wp_remote_get(esc_url_raw($url), $params);
 		if (is_wp_error($request)) {
-			return CFGP_Cache::set($cache_name, false);
+			$cache[$cache_name] = false;
+			return $cache[$cache_name];
 		}
 
+		// Retrieve the body of the response
 		$output = wp_remote_retrieve_body($request);
 		if (is_wp_error($output) || empty($output)) {
-			return CFGP_Cache::set($cache_name, false);
+			$cache[$cache_name] = false;
+			return $cache[$cache_name];
 		}
 
+		// If $json is false, decode the JSON response into an associative array
 		if (!$json) {
 			$output = json_decode($output, true);
 		}
 
-		CFGP_Cache::set($cache_name, $output);
+		// Cache the result in the static variable
+		$cache[$cache_name] = $output;
+		
 		return $output;
 	}
+
 	
 	/**
 	 * POST content via cURL
@@ -2434,19 +2451,32 @@ if(!class_exists('CFGP_U', false)) : class CFGP_U {
 	 */
 	public static function allowed_html_tags_for_page() {
 		$wp_kses_allowed_html = wp_kses_allowed_html('post');
+
+		// Common attributes for most tags
+		$common_attributes = array(
+			'name' => [],
+			'style' => [],
+			'class' => [],
+			'id' => [],
+			'disabled' => [],
+			'readonly' => [],
+			'tabindex' => [],
+			'aria-hidden' => [],
+			'aria-help' => [],
+			'aria-label' => [],
+			'aria-expanded' => [],
+			'role' => [],
+			'autocomplete' => [],
+			'placeholder' => []
+		);
+
+		// Extend the allowed tags with form-related tags and their attributes
 		$wp_kses_allowed_html = array_merge($wp_kses_allowed_html, array(
-			'input' => array(
-				'name' => [],
+			'input' => array_merge($common_attributes, array(
 				'type' => [],
-				'style' => [],
-				'class' => [],
-				'id' => [],
 				'value' => [],
 				'data-url' => [],
-				'disabled' => [],
-				'readonly' => [],
 				'checked' => [],
-				'placeholder' => [],
 				'min' => [],
 				'max' => [],
 				'formnovalidate' => [],
@@ -2454,111 +2484,32 @@ if(!class_exists('CFGP_U', false)) : class CFGP_U {
 				'formmethod' => [],
 				'formenctype' => [],
 				'formaction' => [],
-				'form' => [],
-				'autocomplete' => [],
-				'tabindex' => [],
-				'aria-hidden' => [],
-				'aria-help' => [],
-				'aria-label' => [],
-				'aria-expanded' => [],
-				'role' => []
-			),
-			'textarea' => array(
-				'name' => [],
-				'style' => [],
-				'class' => [],
-				'id' => [],
-				'data-url' => [],
-				'disabled' => [],
-				'readonly' => [],
-				'placeholder' => [],
-				'autocomplete' => [],
-				'tabindex' => [],
-				'aria-hidden' => [],
-				'aria-help' => [],
-				'aria-label' => [],
-				'aria-expanded' => [],
-				'role' => []
-			),
-			'select' => array(
-				'name' => [],
-				'style' => [],
-				'class' => [],
-				'id' => [],
-				'disabled' => [],
-				'readonly' => [],
-				'placeholder' => [],
-				'autocomplete' => [],
+				'form' => []
+			)),
+			'textarea' => $common_attributes,
+			'select' => array_merge($common_attributes, array(
 				'multiple' => [],
 				'data-type' => [],
 				'data-country_codes' => [],
 				'data-placeholder' => [],
-				'data-select2-id' => [],
-				'tabindex' => [],
-				'aria-hidden' => [],
-				'aria-help' => [],
-				'aria-label' => [],
-				'aria-expanded' => [],
-				'role' => []
-			),
-			'option' => array(
-				'name' => [],
-				'style' => [],
-				'class' => [],
-				'id' => [],
+				'data-select2-id' => []
+			)),
+			'option' => array_merge($common_attributes, array(
+				'value' => [],
 				'selected' => [],
-				'disabled' => [],
-				'readonly' => [],
-				'autocomplete' => [],
-				'value' => [],
-				'data-select2-id' => [],
-				'tabindex' => [],
-				'aria-hidden' => [],
-				'aria-help' => [],
-				'aria-label' => [],
-				'aria-expanded' => [],
-				'role' => []
-			),
-			'optgroup' => array(
-				'name' => [],
-				'style' => [],
-				'class' => [],
-				'id' => [],
-				'placeholder' => [],
-				'disabled' => [],
-				'readonly' => [],
-				'autocomplete' => [],
-				'value' => [],
-				'tabindex' => [],
-				'aria-hidden' => [],
-				'aria-help' => [],
-				'aria-label' => [],
-				'aria-expanded' => [],
-				'role' => []
-			),
-			'form' => array(
-				'name' => [],
-				'style' => [],
-				'class' => [],
-				'id' => [],
+				'data-select2-id' => []
+			)),
+			'optgroup' => $common_attributes,
+			'form' => array_merge($common_attributes, array(
 				'method' => [],
-				'autocomplete' => [],
-				'disabled' => [],
-				'readonly' => [],
 				'enctype' => [],
 				'novalidate' => [],
 				'rel' => [],
-				'target' => [],
-				'tabindex' => [],
-				'aria-hidden' => [],
-				'aria-help' => [],
-				'aria-label' => [],
-				'aria-expanded' => [],
-				'role' => []
-			)
+				'target' => []
+			))
 		));
-		
-		return apply_filters('cfgp/allowed_html_tags_for_page', $wp_kses_allowed_html);
+
+		return $wp_kses_allowed_html;
 	}
 	
 	/*

@@ -297,10 +297,10 @@ if(!class_exists('CFGP_SEO', false)) : class CFGP_SEO extends CFGP_Global {
 	public static function response_error(){
 		$response = CFGP_DB_Cache::get('cfgp-seo-form-error');
 		if($response) {
-			printf(
+			echo wp_kses_post( sprintf(
 				'<div class="notice notice-error"><p>%s</p></div>',
 				$response
-			);
+			) );
 			CFGP_DB_Cache::delete('cfgp-seo-form-error');
 		}
 	}
@@ -309,10 +309,10 @@ if(!class_exists('CFGP_SEO', false)) : class CFGP_SEO extends CFGP_Global {
 	public static function response_success(){
 		$response = CFGP_DB_Cache::get('cfgp-seo-form-success');
 		if($response) {
-			printf(
+			echo wp_kses_post( sprintf(
 				'<div class="notice notice-success is-dismissible"><p>%s</p></div>',
 				$response
-			);
+			) );
 			CFGP_DB_Cache::delete('cfgp-seo-form-success');
 		}
 	}

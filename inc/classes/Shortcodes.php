@@ -613,7 +613,7 @@ if(!class_exists('CFGP_Shortcodes', false)) : class CFGP_Shortcodes extends CFGP
 					[
 						'content' => $cont,
 						'hash' => $transient_id,
-						'key' => CFGP_U::key()
+						'key' => CFGP_U::CACHE_KEY()
 					]
 				),
 				YEAR_IN_SECONDS
@@ -1963,7 +1963,7 @@ LIMIT 1
 				'options'   => $options,
 				'post_id'   => get_the_ID(),
 				'hash' 	    => $transient_id, // for validation
-				'key'       => CFGP_U::KEY() // secret plugin key
+				'key'       => CFGP_U::CACHE_KEY() // secret plugin key
 			], YEAR_IN_SECONDS);
 		}
 
@@ -1999,7 +1999,7 @@ LIMIT 1
 			$key       = sanitize_text_field($data['key']);
 			
 			// Secret Key do not match
-			if( CFGP_U::KEY() !== $key ) {
+			if( CFGP_U::CACHE_KEY() !== $key ) {
 				header_remove('Cache-Control');
 				wp_send_json_error('false', 403);
 				exit;

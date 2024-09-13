@@ -102,8 +102,10 @@ else : ?>
  **/
 add_action('cfgp/page/license/sidebar', function(){ if( CFGP_U::api('available_lookup') == 'lifetime' ) return;
 ?>
-<div class="postbox">
-	<h3 class="hndle" style="margin-bottom:0;padding-bottom:0;"><span><?php esc_html_e('License Information', 'cf-geoplugin'); ?></span></h3><hr>
+<div class="postbox" id="cfgp-postbox-license">
+	<div class="postbox-header">
+		<h2 class="hndle"><span><?php esc_html_e('License Information', 'cf-geoplugin'); ?></span></h2>
+	</div>
 	<div class="inside">
     	<?php if(CFGP_License::activated()) : ?>
         	<p><?php echo wp_kses_post(sprintf(

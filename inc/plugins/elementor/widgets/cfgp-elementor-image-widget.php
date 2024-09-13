@@ -310,7 +310,7 @@ class CFGP_Elementor_Image_Widget extends \Elementor\Widget_Base {
 		if($settings['enable_default_image'] == 'yes')
 		{
 			if(empty($settings['default_image']['id'])){
-				echo '<strong>-- ' . __('You must define a default image for this option to work.', 'cf-geoplugin') . ' --</strong>';
+				echo '<strong>-- ' . esc_html__('You must define a default image for this option to work.', 'cf-geoplugin') . ' --</strong>';
 				return;
 			}
 			
@@ -325,7 +325,7 @@ class CFGP_Elementor_Image_Widget extends \Elementor\Widget_Base {
 		else
 		{
 			if(empty($settings['list'])){
-				echo '<strong>' . __('Please define one or more images.', 'cf-geoplugin') . '</strong>';
+				echo '<strong>' . esc_html__('Please define one or more images.', 'cf-geoplugin') . '</strong>';
 				return;
 			}
 		}

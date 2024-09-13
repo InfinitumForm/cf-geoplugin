@@ -91,7 +91,7 @@ class CFGP_Settings extends CFGP_Global {
 	public function notices__saved(){
 		printf(
 			'<div class="notice notice-success is-dismissible"><p>%s</p></div>',
-			__('Settings saved.', 'cf-geoplugin')
+			esc_html__('Settings saved.', 'cf-geoplugin')
 		);
 	}
 	
@@ -101,24 +101,24 @@ class CFGP_Settings extends CFGP_Global {
 			{
 				printf(
 					'<div class="notice notice-error"><h3 style="margin: 1em 0 0 0;">%s</h3><p>%s</p></div>',
-					__('NONCE ERROR!', 'cf-geoplugin'),
-					__('Nonce is incorrect or has expired. Please refresh the page and try again. Unable to save settings.', 'cf-geoplugin')
+					esc_html__('NONCE ERROR!', 'cf-geoplugin'),
+					esc_html__('Nonce is incorrect or has expired. Please refresh the page and try again. Unable to save settings.', 'cf-geoplugin')
 				);
 			}
 			else if($_GET['rstr_response'] == 'error_form')
 			{
 				printf(
 					'<div class="notice notice-error"><h3 style="margin: 1em 0 0 0;">%s</h3><p>%s</p></div>',
-					__('FORM ERROR!', 'cf-geoplugin'),
-					__('The form was not submitted regularly. Unable to save settings.', 'cf-geoplugin')
+					esc_html__('FORM ERROR!', 'cf-geoplugin'),
+					esc_html__('The form was not submitted regularly. Unable to save settings.', 'cf-geoplugin')
 				);
 			}
 			else if($_GET['rstr_response'] == 'error_options')
 			{
 				printf(
 					'<div class="notice notice-error"><h3 style="margin: 1em 0 0 0;">%s</h3><p>%s</p></div>',
-					__('FORM ERROR!', 'cf-geoplugin'),
-					__('The form was not submitted regularly. Unable to save settings.', 'cf-geoplugin')
+					esc_html__('FORM ERROR!', 'cf-geoplugin'),
+					esc_html__('The form was not submitted regularly. Unable to save settings.', 'cf-geoplugin')
 				);
 			}
 		else return; endif;

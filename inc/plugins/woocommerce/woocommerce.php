@@ -528,7 +528,7 @@ if($flag = CFGP_U::admin_country_flag(get_post_meta($post->ID, '_billing_country
                         $rate_taxes += floatval($rate_tax);
                     // The cost including tax
                     $rate_cost_incl_tax = $rate_cost_excl_tax + $rate_taxes;
-                    echo wp_kses_post($rate_label ?? '') . ': ' . wc_price(
+                    echo wp_kses_post( ($rate_label ?? '') . ': ' . wc_price(
 						apply_filters(
 							'cf_geoplugin_woocommerce_show_shipping_price',
 							($rate_cost_incl_tax * $currency_args['currency_converter']),
@@ -537,7 +537,7 @@ if($flag = CFGP_U::admin_country_flag(get_post_meta($post->ID, '_billing_country
 							$currency_args['currency_code']
 						),
 						array( 'currency' => $currency_args['currency_code'] )
-					);
+					) );
                     break;
                 }
             }
