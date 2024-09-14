@@ -2029,24 +2029,27 @@ LIMIT 1
 			
 			// Build a new shortcode with geo data
 			$output = $content;
-			if (preg_match('/cfgeo_([a-z_]+)/i', $shortcode, $match)) {
-				$output = wp_kses(
-					do_shortcode('[cfgeo return="' . esc_attr($match[1]) . '"' . $attr . ']'),
-					CFGP_U::allowed_html_tags_for_page()
-				);
-			} else {
-				if (empty($default)) {
-					$output = wp_kses(
-						do_shortcode('[' . $shortcode . $attr . ']'),
-						CFGP_U::allowed_html_tags_for_page()
-					);
-				} else {
-					$output = wp_kses(
-						do_shortcode('[' . $shortcode . $attr . ']' . $content . '[/' . $shortcode . ']'),
-						CFGP_U::allowed_html_tags_for_page()
-					);
-				}
+						
+			// For the flags
+			if ($shortcode === 'cfgeo_flag') {
+				$shortcode_str = '[cfgeo_flag' . $attr . ']';
 			}
+			// For the advanced shortcode
+			elseif (preg_match('/cfgeo_([a-z_]+)/i', $shortcode, $match)) {
+				$shortcode_str = '[cfgeo return="' . esc_attr($match[1]) . '"' . $attr . ']';
+			}
+			// For the standard shortcodes
+			else {
+				$shortcode_str = empty($default)
+					? '[' . $shortcode . $attr . ']'
+					: '[' . $shortcode . $attr . ']' . $content . '[/' . $shortcode . ']';
+			}
+
+			// Apply wp_kses to the processed shortcode string
+			$output = wp_kses(
+				do_shortcode($shortcode_str),
+				CFGP_U::allowed_html_tags_for_page()
+			);
 			
 			wp_send_json_success($output);
 			exit;
