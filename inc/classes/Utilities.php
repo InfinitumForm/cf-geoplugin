@@ -138,15 +138,17 @@ if(!class_exists('CFGP_U', false)) : class CFGP_U {
 
 		$headers = empty($headers) ? ['Accept: application/json'] : $headers;
 
-		$proxy_settings = [
-			'WP_PROXY_HOST' => 'proxy_ip',
-			'WP_PROXY_PORT' => 'proxy_port',
-			'WP_PROXY_USERNAME' => 'proxy_username',
-			'WP_PROXY_PASSWORD' => 'proxy_password',
-		];
-		foreach ($proxy_settings as $constant => $option_name) {
-			if (!defined($constant) && $value = CFGP_Options::get($option_name, false)) {
-				define($constant, $value);
+		if( CFGP_Options::get('proxy', 0) == 1 ) {
+			$proxy_settings = [
+				'WP_PROXY_HOST' => 'proxy_ip',
+				'WP_PROXY_PORT' => 'proxy_port',
+				'WP_PROXY_USERNAME' => 'proxy_username',
+				'WP_PROXY_PASSWORD' => 'proxy_password',
+			];
+			foreach ($proxy_settings as $constant => $option_name) {
+				if (!defined($constant) && $value = CFGP_Options::get($option_name, false)) {
+					define($constant, $value);
+				}
 			}
 		}
 
