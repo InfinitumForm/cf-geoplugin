@@ -131,64 +131,46 @@ if(!class_exists('CFGP_U', false)) : class CFGP_U {
 	 */
 	public static function curl_get($url, $headers = [], $new_params = [], $json = false)
 	{
-		// Use static variable to cache results within the function
-		static $cache = [];
-
-		// Generate cache key based on input parameters
 		$cache_name = 'cfgp-curl_get-' . self::hash(serialize([$url, $headers, $new_params, $json]));
-
-		// Check if result is already cached in the static variable
-		if (isset($cache[$cache_name])) {
-			return $cache[$cache_name];
+		if (NULL !== ($cache = CFGP_Cache::get($cache_name))) {
+			return $cache;
 		}
 
-		// Set default headers if not provided
 		$headers = empty($headers) ? ['Accept: application/json'] : $headers;
 
-		// Proxy settings
-		if( CFGP_Options::get('proxy', false) ) {
-			$proxy_settings = [
-				'WP_PROXY_HOST' => 'proxy_ip',
-				'WP_PROXY_PORT' => 'proxy_port',
-				'WP_PROXY_USERNAME' => 'proxy_username',
-				'WP_PROXY_PASSWORD' => 'proxy_password',
-			];
-			foreach ($proxy_settings as $constant => $option_name) {
-				if (!defined($constant) && ( $value = CFGP_Options::get($option_name, false) ) ) {
-					define($constant, $value);
-				}
+		$proxy_settings = [
+			'WP_PROXY_HOST' => 'proxy_ip',
+			'WP_PROXY_PORT' => 'proxy_port',
+			'WP_PROXY_USERNAME' => 'proxy_username',
+			'WP_PROXY_PASSWORD' => 'proxy_password',
+		];
+		foreach ($proxy_settings as $constant => $option_name) {
+			if (!defined($constant) && $value = CFGP_Options::get($option_name, false)) {
+				define($constant, $value);
 			}
 		}
 
-		// Default request parameters
 		$default_params = [
 			'timeout' => CFGP_Options::get('timeout', 5),
 			'headers' => $headers,
 		];
 		$params = wp_parse_args($new_params, $default_params);
 
-		// Perform the GET request
 		$request = wp_remote_get(esc_url_raw($url), $params);
 		if (is_wp_error($request)) {
-			$cache[$cache_name] = false;
-			return $cache[$cache_name];
+			return CFGP_Cache::set($cache_name, false);
 		}
 
-		// Retrieve the body of the response
 		$output = wp_remote_retrieve_body($request);
 		if (is_wp_error($output) || empty($output)) {
-			$cache[$cache_name] = false;
-			return $cache[$cache_name];
+			return CFGP_Cache::set($cache_name, false);
 		}
 
-		// If $json is false, decode the JSON response into an associative array
 		if (!$json) {
 			$output = json_decode($output, true);
 		}
 
-		// Cache the result in the static variable
-		$cache[$cache_name] = $output;
-		
+		CFGP_Cache::set($cache_name, $output);
 		return $output;
 	}
 
@@ -685,27 +667,32 @@ if(!class_exists('CFGP_U', false)) : class CFGP_U {
 	 * Parse URL
 	 * @verson    1.0.0
 	 */
-	public static function parse_url() {
-		static $parse_url = null;
-
-		if ($parse_url === null) {
-			$http = 'http' . (self::is_ssl() ? 's' : '');
-			if (isset($_SERVER['HTTP_HOST'])) {
-				$domain = rtrim(preg_replace('%:/{3,}%i', '://', $http . '://' . $_SERVER['HTTP_HOST']), '/');
-			} else {
-				$domain = 'localhost';
-			}
-
-			$url = preg_replace('%:/{3,}%i', '://', $domain . '/' . (isset($_SERVER['REQUEST_URI']) ? ltrim($_SERVER['REQUEST_URI'], '/') : ''));
-
-			$parse_url = [
-				'method' => $http,
-				'home_fold' => str_replace($domain, '', home_url()),
-				'url' => $url,
-				'domain' => $domain,
-			];
+	public static function parse_url(){
+		
+		$parse_url = CFGP_Cache::get('parse_url');
+		
+		if(!$parse_url) {
+			$http = 'http' . ( self::is_ssl() ? 's' : '');
+			$domain = preg_replace(
+				'%:/{3,}%i',
+				'://',
+				rtrim($http,'/') . '://' . sanitize_text_field($_SERVER['HTTP_HOST'] ?? '')
+			);
+			$domain = rtrim($domain,'/');
+			$url = preg_replace(
+				'%:/{3,}%i',
+				'://',
+				$domain . '/' . (isset($_SERVER['REQUEST_URI']) && !empty( $_SERVER['REQUEST_URI'] ) ? sanitize_text_field(ltrim($_SERVER['REQUEST_URI'], '/')) : '')
+			);
+				
+			$parse_url = CFGP_Cache::set('parse_url', array(
+				'method'	=>	$http,
+				'home_fold'	=>	str_replace($domain,'',home_url()),
+				'url'		=>	esc_url($url),
+				'domain'	=>	$domain,
+			));
 		}
-
+		
 		return $parse_url;
 	}
 	
@@ -733,26 +720,24 @@ if(!class_exists('CFGP_U', false)) : class CFGP_U {
 	 */
 	public static function is_ssl($url = false)
 	{
-		if ($url !== false && preg_match('/^(https|ftps):/i', $url) === 1) {
-			return true;
+
+		$ssl = CFGP_Cache::get('is_ssl');
+
+		if($url !== false && is_string($url)) {
+			return (preg_match('/(https|ftps)/Ui', $url) !== false);
+		} else if(empty($ssl)) {
+			if(
+				( is_admin() && defined('FORCE_SSL_ADMIN') && FORCE_SSL_ADMIN ===true )
+				|| ($_SERVER['HTTPS'] ?? NULL == 'on')
+				|| ($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? NULL == 'https')
+				|| ($_SERVER['HTTP_X_FORWARDED_SSL'] ?? NULL == 'on')
+				|| ($_SERVER['SERVER_PORT'] ?? NULL == 443)
+				|| ($_SERVER['HTTP_X_FORWARDED_PORT'] ?? NULL == 443)
+				|| ($_SERVER['REQUEST_SCHEME'] ?? NULL == 'https')
+			) {
+				$ssl = CFGP_Cache::set('is_ssl', true);
+			}
 		}
-		
-		static $ssl = null;
-
-		if ($ssl === null) {
-			$conditions = [
-				is_admin() && defined('FORCE_SSL_ADMIN') && FORCE_SSL_ADMIN,
-				($_SERVER['HTTPS'] ?? '') === 'on',
-				($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '') === 'https',
-				($_SERVER['HTTP_X_FORWARDED_SSL'] ?? '') === 'on',
-				(int) ($_SERVER['SERVER_PORT'] ?? 0) === 443,
-				(int) ($_SERVER['HTTP_X_FORWARDED_PORT'] ?? 0) === 443,
-				($_SERVER['REQUEST_SCHEME'] ?? '') === 'https'
-			];
-
-			$ssl = in_array(true, $conditions, true);
-		}
-
 		return $ssl;
 	}
 	

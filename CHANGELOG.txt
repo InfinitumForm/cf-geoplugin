@@ -1,5 +1,8 @@
 == Changelog ==
 
+= 8.7.3 =
+* Fixing slow loading of the plugin
+
 = 8.7.2 =
 * Fixed problems with country flags cache
 * Optimized shortcode cache

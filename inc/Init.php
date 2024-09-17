@@ -427,48 +427,56 @@ if(!class_exists('CFGP_Init', false)) : final class CFGP_Init{
 		if ( ! $force_db && wp_using_ext_object_cache() ) {
 			return;
 		}
+
+		$last_execution = get_transient('delete_expired_transients_last_run');
 	 
-		$wpdb->query(
-			$wpdb->prepare(
-				"DELETE a, b FROM {$wpdb->options} a, {$wpdb->options} b
-				WHERE a.option_name LIKE %s
-				AND a.option_name NOT LIKE %s
-				AND b.option_name = CONCAT( '_transient_timeout_cfgp-', SUBSTRING( a.option_name, 12 ) )
-				AND b.option_value < %d",
-				$wpdb->esc_like( '_transient_cfgp-' ) . '%',
-				$wpdb->esc_like( '_transient_timeout_cfgp-' ) . '%',
-				$wpdb->esc_like( CFGP_TIME )
-			)
-		);
-	 
-		if ( ! is_multisite() ) {
-			// Single site stores site transients in the options table.
+		 if (false === $last_execution || (time() - $last_execution) > 300) {
+			set_transient('delete_expired_transients_last_run', time(), 300);
+			 
 			$wpdb->query(
 				$wpdb->prepare(
 					"DELETE a, b FROM {$wpdb->options} a, {$wpdb->options} b
 					WHERE a.option_name LIKE %s
 					AND a.option_name NOT LIKE %s
-					AND b.option_name = CONCAT( '_site_transient_timeout_cfgp-', SUBSTRING( a.option_name, 17 ) )
+					AND b.option_name = CONCAT( '_transient_timeout_cfgp-', SUBSTRING( a.option_name, 12 ) )
 					AND b.option_value < %d",
-					$wpdb->esc_like( '_site_transient_cfgp-' ) . '%',
-					$wpdb->esc_like( '_site_transient_timeout_cfgp-' ) . '%',
+					$wpdb->esc_like( '_transient_cfgp-' ) . '%',
+					$wpdb->esc_like( '_transient_timeout_cfgp-' ) . '%',
 					$wpdb->esc_like( CFGP_TIME )
 				)
 			);
-		} elseif ( is_multisite() && is_main_site() && is_main_network() ) {
-			// Multisite stores site transients in the sitemeta table.
-			$wpdb->query(
-				$wpdb->prepare(
-					"DELETE a, b FROM {$wpdb->sitemeta} a, {$wpdb->sitemeta} b
-					WHERE a.meta_key LIKE %s
-					AND a.meta_key NOT LIKE %s
-					AND b.meta_key = CONCAT( '_site_transient_timeout_cfgp-', SUBSTRING( a.meta_key, 17 ) )
-					AND b.meta_value < %d",
-					$wpdb->esc_like( '_site_transient_cfgp-' ) . '%',
-					$wpdb->esc_like( '_site_transient_timeout_cfgp-' ) . '%',
-					$wpdb->esc_like( CFGP_TIME )
-				)
-			);
+		 
+			if ( ! is_multisite() ) {
+				// Single site stores site transients in the options table.
+				$wpdb->query(
+					$wpdb->prepare(
+						"DELETE a, b FROM {$wpdb->options} a, {$wpdb->options} b
+						WHERE a.option_name LIKE %s
+						AND a.option_name NOT LIKE %s
+						AND b.option_name = CONCAT( '_site_transient_timeout_cfgp-', SUBSTRING( a.option_name, 17 ) )
+						AND b.option_value < %d",
+						$wpdb->esc_like( '_site_transient_cfgp-' ) . '%',
+						$wpdb->esc_like( '_site_transient_timeout_cfgp-' ) . '%',
+						$wpdb->esc_like( CFGP_TIME )
+					)
+				);
+			} elseif ( is_multisite() && is_main_site() && is_main_network() ) {
+				// Multisite stores site transients in the sitemeta table.
+				$wpdb->query(
+					$wpdb->prepare(
+						"DELETE a, b FROM {$wpdb->sitemeta} a, {$wpdb->sitemeta} b
+						WHERE a.meta_key LIKE %s
+						AND a.meta_key NOT LIKE %s
+						AND b.meta_key = CONCAT( '_site_transient_timeout_cfgp-', SUBSTRING( a.meta_key, 17 ) )
+						AND b.meta_value < %d",
+						$wpdb->esc_like( '_site_transient_cfgp-' ) . '%',
+						$wpdb->esc_like( '_site_transient_timeout_cfgp-' ) . '%',
+						$wpdb->esc_like( CFGP_TIME )
+					)
+				);
+			}
+		} else {
+			return;
 		}
 	}
 	
