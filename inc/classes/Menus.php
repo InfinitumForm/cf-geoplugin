@@ -307,6 +307,10 @@ if(!class_exists('CFGP_Menus', false)) : class CFGP_Menus extends CFGP_Global {
 			return;
 		}
 		
+		if ( !current_user_can('edit_theme_options') ) {
+			return;
+		}
+		
 		global $locations, $menu_locations, $num_locations, $wpdb;
 		
 		if( $num_locations === 0 ) {
@@ -353,35 +357,32 @@ if(!class_exists('CFGP_Menus', false)) : class CFGP_Menus extends CFGP_Global {
 	<p><?php esc_html_e('Create a navigation menu based on the geolocation of your users.', 'cf-geoplugin'); ?></p>
 	<p><?php esc_html_e('The principle is simple. Make the default menu first in the standard way. Then come back here and create the navigations for the geo locations you want. After that, fill those locations with Menu items and your users will always see a navigation menu based on the geo location.', 'cf-geoplugin'); ?></p>
 	<table class="widefat fixed" id="menu-geo-locations-table">
-		<thead>
+		<thead></thead>
+		<tbody>
 			<tr>
-				<th scope="col" class="manage-column cfgp-menu-column-locations">
-					<label for="cfgp-menu-locations-select"><?php esc_html_e('Select Theme Location', 'cf-geoplugin'); ?></label>
-				</th>
-				<th scope="col" class="manage-column cfgp-menu-column-country" colspan="3">
-					<label for="cfgp-menu-country-select"><?php esc_html_e('Select Country', 'cf-geoplugin'); ?></label>
-				</th>
-			</tr>
-		</thead>
-		<tbody id="cfgp-add-new-menu-locations">
-			<tr>
-				<td class="cfgp-menu-locations-select">
-					<select name="cfgp-menu-locations-select" id="cfgp-menu-locations-select">
-						<option value="">—<?php esc_html_e('Select Location', 'cf-geoplugin'); ?>—</option>
-					<?php foreach ( $locations as $location => $description ) : ?>
-						<option value="<?php echo esc_attr($location); ?>"><?php echo esc_html($description); ?></option>
-					<?php endforeach; ?>
-					</select>
-				</td>
-				<td class="cfgp-menu-country-select"><?php 
-					CFGP_Form::select_countries(array(
-						'name'=>'cfgp-menu-country-select',
-						'id'=>'cfgp-menu-country-select',
-						'class'=>'cfgp_select2'
-					), '');
-				?></td>
-				<td  class="cfgp-menu-options" colspan="2" style="text-align:right;">
-					<input type="button" name="nav-menu-locations" class="button button-primary right" id="cfgp-menu-add-location" data-nonce="<?php echo esc_attr(wp_create_nonce('cf-geoplugin-create-menus')); ?>" value="<?php esc_attr_e('+ Add New', 'cf-geoplugin'); ?>">
+				<td colspan="4">
+					<table id="cfgp-add-new-menu-locations">
+						<tr>
+							<td class="cfgp-menu-locations-select">
+								<select name="cfgp-menu-locations-select" id="cfgp-menu-locations-select">
+									<option value="">—<?php esc_html_e('Select Location', 'cf-geoplugin'); ?>—</option>
+								<?php foreach ( $locations as $location => $description ) : ?>
+									<option value="<?php echo esc_attr($location); ?>"><?php echo esc_html($description); ?></option>
+								<?php endforeach; ?>
+								</select>
+							</td>
+							<td class="cfgp-menu-country-select"><?php 
+								CFGP_Form::select_countries(array(
+									'name'=>'cfgp-menu-country-select',
+									'id'=>'cfgp-menu-country-select',
+									'class'=>'cfgp_select2'
+								), '');
+							?></td>
+							<td  class="cfgp-menu-options" colspan="2" style="text-align:right;">
+								<input type="button" name="nav-menu-locations" class="button button-primary right" id="cfgp-menu-add-location" data-nonce="<?php echo esc_attr(wp_create_nonce('cf-geoplugin-create-menus')); ?>" data-uid="<?php echo esc_attr(get_current_user_id()); ?>" value="<?php esc_attr_e('+ Add New', 'cf-geoplugin'); ?>">
+							</td>
+						</tr>
+					</table>
 				</td>
 			</tr>
 		</tbody>
@@ -419,7 +420,8 @@ if(!class_exists('CFGP_Menus', false)) : class CFGP_Menus extends CFGP_Global {
 						class="submitdelete deletion right cfgp-menu-remove-location" 
 						data-confirm="<?php esc_attr_e('Are you sure you want to delete the entire menu for this location?', 'cf-geoplugin'); ?>" 
 						data-id="<?php echo esc_attr(absint($geo_menu->term_id)); ?>"
-						data-nonce="<?php echo esc_attr(wp_create_nonce( 'cf-geoplugin-delete-menus-' . absint($geo_menu->term_id) )); ?>"><?php esc_html_e('Delete', 'cf-geoplugin'); ?></a>
+						data-nonce="<?php echo esc_attr(wp_create_nonce( 'cf-geoplugin-delete-menus-' . absint($geo_menu->term_id) )); ?>"
+						data-uid="<?php echo esc_attr(get_current_user_id()); ?>"><?php esc_html_e('Delete', 'cf-geoplugin'); ?></a>
 				</td>
 			</tr>
 			<?php endforeach; else : ?>
@@ -446,7 +448,45 @@ if(!class_exists('CFGP_Menus', false)) : class CFGP_Menus extends CFGP_Global {
 		</tfoot>
 	</table>
 </div>
-<?php
+<?php add_action('admin_footer', function(){ ?>
+<style>
+/* <![CDATA[ */
+#cfgp-add-new-menu-locations {
+	width:100%;
+}
+
+#cfgp-add-new-menu-locations select {
+	width:100%;
+}
+
+#cfgp-add-new-menu-locations tr > td:nth-child(1){
+	width:25%;
+}
+
+#cfgp-add-new-menu-locations tr > td:nth-child(2){
+	width:25%;
+}
+ 
+#cfgp-add-new-menu-locations tr > td:nth-child(3){
+	width:50%;
+}
+
+@media all and (max-width: 1320px) {
+	#cfgp-add-new-menu-locations tr > td:nth-child(1){
+		width:33.33%;
+	}
+
+	#cfgp-add-new-menu-locations tr > td:nth-child(2){
+		width:33.33%;
+	}
+	 
+	#cfgp-add-new-menu-locations tr > td:nth-child(3){
+		width:33.33%;
+	}
+}
+/* ]]> */
+</style>
+<?php });
 	}
 	
 	/*
@@ -496,6 +536,12 @@ if(!class_exists('CFGP_Menus', false)) : class CFGP_Menus extends CFGP_Global {
 	public function ajax__geolocate_menu ( $call_direct_via_function = false ) {
 		
 		if ( ! wp_verify_nonce( sanitize_text_field($_POST['cf_nonce'] ?? 'nope'), 'cf-geoplugin-create-menus' ) && !$call_direct_via_function) {
+			exit;
+		}
+		
+		$uid = absint(sanitize_text_field($_POST['uid'] ?? 0));
+		
+		if ( !user_can( $uid, 'edit_theme_options' ) ) {
 			exit;
 		}
 		
@@ -559,8 +605,9 @@ if(!class_exists('CFGP_Menus', false)) : class CFGP_Menus extends CFGP_Global {
 				<a href="javascript:void(0);" 
 					class="submitdelete deletion right cfgp-menu-remove-location" 
 					data-confirm="<?php esc_attr_e('Are you sure you want to delete the entire menu for this location?', 'cf-geoplugin'); ?>" 
-					data-id="<?php echo esc_attr(absint($geo_menu->term_id)); ?>"
-					data-nonce="<?php echo esc_attr(wp_create_nonce( 'cf-geoplugin-delete-menus-' . absint($geo_menu->term_id) )); ?>"><?php esc_html_e('Delete', 'cf-geoplugin'); ?></a>
+					data-id="<?php echo esc_attr(absint($geo_menu->term_id)); ?>" 
+					data-nonce="<?php echo esc_attr(wp_create_nonce( 'cf-geoplugin-delete-menus-' . absint($geo_menu->term_id) )); ?>" 
+					data-uid="<?php echo esc_attr($uid); ?>"><?php esc_html_e('Delete', 'cf-geoplugin'); ?></a>
 			</td>
 		</tr>
 		<?php endforeach; else : ?>
@@ -578,6 +625,12 @@ if(!class_exists('CFGP_Menus', false)) : class CFGP_Menus extends CFGP_Global {
 		$term_id = absint(sanitize_text_field($_POST['term_id'] ?? 0));
 		
 		if ( ! wp_verify_nonce( sanitize_text_field($_POST['cf_nonce'] ?? 'nope'), 'cf-geoplugin-delete-menus-' . $term_id ) ) {
+			exit;
+		}
+		
+		$uid = absint(sanitize_text_field($_POST['uid'] ?? 0));
+		
+		if ( !user_can( $uid, 'edit_theme_options' ) ) {
 			exit;
 		}
 		

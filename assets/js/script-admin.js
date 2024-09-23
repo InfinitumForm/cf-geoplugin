@@ -485,20 +485,23 @@
 	/*
 	 * Add Geolocate Menus 
 	 */
-	$(document).on('click', '#cfgp-menu-add-location', function(e){
+	$('#menu-geo-locations-table').on('click', '#cfgp-menu-add-location', function(e){
 		e.preventDefault();
 		var $this = $(this),
-			$table = $this.closest('table'),
+			$table = $this.closest('#menu-geo-locations-table'),
 			$location = $table.find('#cfgp-menu-locations-select'),
 			$location_val = $location.val(),
 			$country = $table.find('#cfgp-menu-country-select'),
 			$country_val = $country.val(),
 			$continue = true,
-			$nonce = $this.data('nonce');
+			$nonce = $this.attr('data-nonce'),
+			$uid = $this.attr('data-uid');
 
 		$location.css({
 			border : ''
 		});
+		
+		$this.prop('disabled', true);
 
 		$country.next('.select2.select2-container').css({
 			border : ''
@@ -524,7 +527,7 @@
 			});
 			$continue = false;
 		}
-
+console.log($continue);
 		if($continue) {
 			$.ajax({
 				url: (typeof ajaxurl !== 'undefined' ? ajaxurl : CFGP.ajaxurl),
@@ -534,27 +537,36 @@
 					country : $country_val,
 					location : $location_val,
 					cf_nonce : $nonce,
+					uid : $uid,
 					action : 'cfgp_geolocate_menu'
 				}
 			}).done( function( data ) {
 				$table.find('#cfgp-menu-locations').html(data);
 				$location.val('').trigger('change');
 				$country.val('').trigger('change');
+				$this.prop('disabled', false);
+			}).fail(function(){
+				$this.prop('disabled', false);
 			});
+		} else {
+			$this.prop('disabled', false);
 		}
 	});
 	
 	/*
 	 * Remove Geolocate Menus 
 	 */
-	$(document).on('click', '.cfgp-menu-remove-location', function(e){
+	$('#menu-geo-locations-table').on('click', '.cfgp-menu-remove-location', function(e){
 		e.preventDefault();
 		var $this = $(this),
-			$table = $this.closest('table'),
+			$table = $this.closest('#menu-geo-locations-table'),
 			$id = $this.attr('data-id'),
 			$continue = confirm($this.attr('data-confirm')),
-			$nonce = $this.attr('data-nonce');
+			$nonce = $this.attr('data-nonce'),
+			$uid = $this.attr('data-uid');
 		if( $continue ) {
+			$this.prop('disabled', true);
+			
 			$.ajax({
 				url: (typeof ajaxurl !== 'undefined' ? ajaxurl : CFGP.ajaxurl),
 				method: 'post',
@@ -562,10 +574,14 @@
 				data: {
 					term_id : $id,
 					cf_nonce : $nonce,
+					uid : $uid,
 					action : 'cfgp_geolocate_remove_menu'
 				}
 			}).done( function( data ) {
 				$table.find('#cfgp-menu-locations').html(data);
+				$this.prop('disabled', false);
+			}).fail(function(){
+				$this.prop('disabled', false);
 			});
 		}
 	});

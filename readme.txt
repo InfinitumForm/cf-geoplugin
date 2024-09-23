@@ -5,7 +5,7 @@ Tags: Geo Location, WordPress Geolocation Plugin, Location-Based Personalization
 Requires at least: 6.0
 Tested up to: 6.6
 Requires PHP: 7.0
-Stable tag: 8.7.4
+Stable tag: 8.7.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -413,6 +413,9 @@ Please inform us if any of these errors occur via contact form on our website [h
 
 == Changelog ==
 
+= 8.7.5 =
+* Adding user permission to the GEO menus
+
 = 8.7.4 =
 * Fixing Missing Authorization to Authenticated (Subscriber+) Menu Creation/Deletion
 * Imorived WooCommerce geo pricing
@@ -436,155 +439,14 @@ Please inform us if any of these errors occur via contact form on our website [h
 * Added better caching
 * Improved javascript algorithms
 
-= 8.6.9 =
-* Adding curly brackets support for the geo tags
-* Adding options to remove top bar menu and currency converter
-* Bugfixes from previous version
-
-= 8.6.8 =
-* Bug fixes for PHP 8.3
-* Added support for WordPress 6.6
-
-= 8.6.7 =
-* Fixed WooCommerce Payments control
-* Fixed API calls and pointed to the new CDN servers
-* Improved cache
-
-= 8.6.6 =
-* Moved to new domain wpgeocontroller.com
-* Fixed timezone issue
-* Fixed licensing
-
-= 8.6.5 =
-* IMPORTANT UPDATE
-* Enhanced security measures
-* Improved input validation and sanitization
-
-= 8.6.4 =
-* Fixed settings
-
-= 8.6.3 =
-* Fixed metabox bugs
-* Fixed data serializations
-
-= 8.6.2 =
-* Fixed internal buffer
-* Optimized options
-* Optimized cache
-* Optimized API calls
-* Optimized plugin detection
-* Removed support for plugins below version 7.x.x
-
-= 8.6.1 =
-* Fixed WP_ADMIN_DIR
-* Fixed debugger
-
-= 8.6.0 =
-* Added new functionalityfor TOR networks
-* Blocking visitors from the TOR network
-* Added new shortcodes for the TOR network
-* Added new JavaScript objects for the TOR network
-* Added new CSS classes for the TOR network
-
-= 8.5.4 =
-* Added fix for menus and widgets
-* Optimized CSS code
-* Optimized JS code
-
-= 8.5.3 =
-* IMPORTANT UPDATE: Fixed XSS vulnerability suggested by Patchstack
-
-= 8.5.2 =
-* Removed obsolate codes
-
-= 8.5.1 =
-* Fixed Redis cache problem
-* Improved code for PHP8
-* FIxed problems with missing data
-
-= 8.5.0 =
-* Improved caching
-* Support for WP version 6.3.x
-
-= 8.4.11 =
-* Fixed plugin info
-
-= 8.4.10 =
-* Improved support for Gravity Forms
-* Added IP address field
-* Improved plugin detection algorithm
-
-= 8.4.9 =
-* Fixed CSS property
-* Fixed cache purge
-
-= 8.4.8 =
-* Fixed cache functionality
-* Redis and Memcache support approved
-* Added cache debugger
-* Added recognition for you.com bot
-
-= 8.4.7 =
-* Added passing of GET parameters to new redirection URL
-
-= 8.4.6 =
-* Fixed autoload functionality
-* Added new compatibility for PHP 8.1
-* Improved API algorithm
-
-= 8.4.5 =
-* Adding support for Redis Cache
-* Adding Cache fix for the dynamic CSS methods
-* Adding support for the WebOS TV
-* Fixed bugs from the previous version
-
-= 8.4.4 =
-* Fixed API errors
-* Increased cache time
-
-= 8.4.3 =
-* UX design fix
-* Updated algorithms for GPS integration
-* Added experimental new features for developers
-
-= 8.4.2 =
-* Fixed WooCommerce Integration
-* Added support for the Gravity Forms plugin
-* Fixed PHP bugs and removed depricated code
-
-= 8.4.1 =
-* Fixed deprecated code at the forms
-
-= 8.4.0 =
-* Optimized code for the PHP version > 8.1
-* Optimized code for the new WordPress versions
-* Removed deprecated codes
-* Fixed PHP errors from previous version
-
 == Upgrade Notice ==
+
+= 8.7.5 =
+* Adding user permission to the GEO menus
 
 = 8.7.4 =
 * Fixing Missing Authorization to Authenticated (Subscriber+) Menu Creation/Deletion
 * Imorived WooCommerce geo pricing
-
-= 8.7.3 =
-* IMPORTANT UPDATE: Fixing slow loading of the plugin
-
-= 8.7.2 =
-* Fixed problems with country flags cache
-* Optimized shortcode cache
-
-= 8.7.1 =
-* Fixed security recommendations
-* Advanced security protocols
-* Improved performance for content rendering
-* Fixed bugs and PHP errors from the previous version
-
-= 8.7.0 =
-* Fixed plugin security
-* Protected AJAX calls from XXS attacks
-* Added better caching
-* Improved javascript algorithms
 
 == Other Notes ==
 
