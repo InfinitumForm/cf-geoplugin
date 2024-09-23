@@ -335,27 +335,15 @@ if(!class_exists('CFGP_Menus', false)) : class CFGP_Menus extends CFGP_Global {
 		*/
 		
 		$geolocate_menus = $wpdb->get_results("
-			SELECT
-				`{$wpdb->terms}`.*,
-				(
-					SELECT `{$wpdb->termmeta}`.`meta_value` FROM `{$wpdb->termmeta}` 
-					WHERE `{$wpdb->termmeta}`.`term_id` = `{$wpdb->terms}`.`term_id` AND `meta_key` = 'country'
-				) AS `country`,
-				(
-					SELECT `{$wpdb->termmeta}`.`meta_value` FROM `{$wpdb->termmeta}` 
-					WHERE `{$wpdb->termmeta}`.`term_id` = `{$wpdb->terms}`.`term_id` AND `meta_key` = 'location'
-				) AS `location`
-			FROM `{$wpdb->terms}` WHERE `{$wpdb->terms}`.`term_id` IN (
-				SELECT `{$wpdb->term_taxonomy}`.`term_id` FROM `{$wpdb->term_taxonomy}`
-				WHERE `{$wpdb->term_taxonomy}`.`taxonomy` LIKE 'nav_menu'
-			) AND EXISTS(
-				SELECT `{$wpdb->termmeta}`.`meta_value` FROM `{$wpdb->termmeta}` 
-				WHERE `{$wpdb->termmeta}`.`term_id` = `{$wpdb->terms}`.`term_id` AND `meta_key` = 'country'
-			) AND EXISTS(
-				SELECT `{$wpdb->termmeta}`.`meta_value` FROM `{$wpdb->termmeta}` 
-				WHERE `{$wpdb->termmeta}`.`term_id` = `{$wpdb->terms}`.`term_id` AND `meta_key` = 'location'
-			)
-			ORDER BY `{$wpdb->terms}`.`term_id` DESC
+			SELECT DISTINCT
+				`menu`.*,
+				`country`.`meta_value` AS `country`,
+				`location`.`meta_value` AS `location`
+			FROM
+				`{$wpdb->terms}` `menu`
+				INNER JOIN `{$wpdb->termmeta}` `country` ON `country`.`term_id` = `menu`.`term_id` AND `country`.`meta_key` = 'country'
+				INNER JOIN `{$wpdb->termmeta}` `location` ON `location`.`term_id` = `menu`.`term_id` AND `location`.`meta_key` = 'location'
+			ORDER BY `menu`.`term_id` DESC
 		");
 		
 		$countries = CFGP_Library::get_countries();
@@ -393,7 +381,7 @@ if(!class_exists('CFGP_Menus', false)) : class CFGP_Menus extends CFGP_Global {
 					), '');
 				?></td>
 				<td  class="cfgp-menu-options" colspan="2" style="text-align:right;">
-					<input type="button" name="nav-menu-locations" class="button button-primary right" id="cfgp-menu-add-location" value="<?php esc_attr_e('+ Add New', 'cf-geoplugin'); ?>">
+					<input type="button" name="nav-menu-locations" class="button button-primary right" id="cfgp-menu-add-location" data-nonce="<?php echo esc_attr(wp_create_nonce('cf-geoplugin-create-menus')); ?>" value="<?php esc_attr_e('+ Add New', 'cf-geoplugin'); ?>">
 				</td>
 			</tr>
 		</tbody>
@@ -430,7 +418,8 @@ if(!class_exists('CFGP_Menus', false)) : class CFGP_Menus extends CFGP_Global {
 					<a href="javascript:void(0);" 
 						class="submitdelete deletion right cfgp-menu-remove-location" 
 						data-confirm="<?php esc_attr_e('Are you sure you want to delete the entire menu for this location?', 'cf-geoplugin'); ?>" 
-						data-id="<?php echo esc_attr(absint($geo_menu->term_id)); ?>"><?php esc_html_e('Delete', 'cf-geoplugin'); ?></a>
+						data-id="<?php echo esc_attr(absint($geo_menu->term_id)); ?>"
+						data-nonce="<?php echo esc_attr(wp_create_nonce( 'cf-geoplugin-delete-menus-' . absint($geo_menu->term_id) )); ?>"><?php esc_html_e('Delete', 'cf-geoplugin'); ?></a>
 				</td>
 			</tr>
 			<?php endforeach; else : ?>
@@ -471,27 +460,15 @@ if(!class_exists('CFGP_Menus', false)) : class CFGP_Menus extends CFGP_Global {
 		global $wpdb;
 		
 		if( $geolocate_menus = $wpdb->get_results("
-			SELECT
-				`{$wpdb->terms}`.*,
-				(
-					SELECT `{$wpdb->termmeta}`.`meta_value` FROM `{$wpdb->termmeta}` 
-					WHERE `{$wpdb->termmeta}`.`term_id` = `{$wpdb->terms}`.`term_id` AND `meta_key` = 'country'
-				) AS `country`,
-				(
-					SELECT `{$wpdb->termmeta}`.`meta_value` FROM `{$wpdb->termmeta}` 
-					WHERE `{$wpdb->termmeta}`.`term_id` = `{$wpdb->terms}`.`term_id` AND `meta_key` = 'location'
-				) AS `location`
-			FROM `{$wpdb->terms}` WHERE `{$wpdb->terms}`.`term_id` IN (
-				SELECT `{$wpdb->term_taxonomy}`.`term_id` FROM `{$wpdb->term_taxonomy}`
-				WHERE `{$wpdb->term_taxonomy}`.`taxonomy` LIKE 'nav_menu'
-			) AND EXISTS(
-				SELECT `{$wpdb->termmeta}`.`meta_value` FROM `{$wpdb->termmeta}` 
-				WHERE `{$wpdb->termmeta}`.`term_id` = `{$wpdb->terms}`.`term_id` AND `meta_key` = 'country'
-			) AND EXISTS(
-				SELECT `{$wpdb->termmeta}`.`meta_value` FROM `{$wpdb->termmeta}` 
-				WHERE `{$wpdb->termmeta}`.`term_id` = `{$wpdb->terms}`.`term_id` AND `meta_key` = 'location'
-			) 
-			ORDER BY `{$wpdb->terms}`.`term_id` DESC
+			SELECT DISTINCT
+				`menu`.*,
+				`country`.`meta_value` AS `country`,
+				`location`.`meta_value` AS `location`
+			FROM
+				`{$wpdb->terms}` `menu`
+				INNER JOIN `{$wpdb->termmeta}` `country` ON `country`.`term_id` = `menu`.`term_id` AND `country`.`meta_key` = 'country'
+				INNER JOIN `{$wpdb->termmeta}` `location` ON `location`.`term_id` = `menu`.`term_id` AND `location`.`meta_key` = 'location'
+			ORDER BY `menu`.`term_id` DESC
 		") ) :
 		
 			// This retun 2 letter country code from Geo Controller
@@ -516,7 +493,11 @@ if(!class_exists('CFGP_Menus', false)) : class CFGP_Menus extends CFGP_Global {
 	/*
 	 * Geolocate Menus add/show menus
 	 */
-	public function ajax__geolocate_menu () {
+	public function ajax__geolocate_menu ( $call_direct_via_function = false ) {
+		
+		if ( ! wp_verify_nonce( sanitize_text_field($_POST['cf_nonce'] ?? 'nope'), 'cf-geoplugin-create-menus' ) && !$call_direct_via_function) {
+			exit;
+		}
 		
 		$locations = get_registered_nav_menus();
 		$countries = CFGP_Library::get_countries();
@@ -552,27 +533,15 @@ if(!class_exists('CFGP_Menus', false)) : class CFGP_Menus extends CFGP_Global {
 		global $wpdb;
 		
 		if( $geolocate_menus = $wpdb->get_results("
-			SELECT
-				`{$wpdb->terms}`.*,
-				(
-					SELECT `{$wpdb->termmeta}`.`meta_value` FROM `{$wpdb->termmeta}` 
-					WHERE `{$wpdb->termmeta}`.`term_id` = `{$wpdb->terms}`.`term_id` AND `meta_key` = 'country'
-				) AS `country`,
-				(
-					SELECT `{$wpdb->termmeta}`.`meta_value` FROM `{$wpdb->termmeta}` 
-					WHERE `{$wpdb->termmeta}`.`term_id` = `{$wpdb->terms}`.`term_id` AND `meta_key` = 'location'
-				) AS `location`
-			FROM `{$wpdb->terms}` WHERE `{$wpdb->terms}`.`term_id` IN (
-				SELECT `{$wpdb->term_taxonomy}`.`term_id` FROM `{$wpdb->term_taxonomy}`
-				WHERE `{$wpdb->term_taxonomy}`.`taxonomy` LIKE 'nav_menu'
-			) AND EXISTS(
-				SELECT `{$wpdb->termmeta}`.`meta_value` FROM `{$wpdb->termmeta}` 
-				WHERE `{$wpdb->termmeta}`.`term_id` = `{$wpdb->terms}`.`term_id` AND `meta_key` = 'country'
-			) AND EXISTS(
-				SELECT `{$wpdb->termmeta}`.`meta_value` FROM `{$wpdb->termmeta}` 
-				WHERE `{$wpdb->termmeta}`.`term_id` = `{$wpdb->terms}`.`term_id` AND `meta_key` = 'location'
-			) 
-			ORDER BY `{$wpdb->terms}`.`term_id` DESC
+			SELECT DISTINCT
+				`menu`.*,
+				`country`.`meta_value` AS `country`,
+				`location`.`meta_value` AS `location`
+			FROM
+				`{$wpdb->terms}` `menu`
+				INNER JOIN `{$wpdb->termmeta}` `country` ON `country`.`term_id` = `menu`.`term_id` AND `country`.`meta_key` = 'country'
+				INNER JOIN `{$wpdb->termmeta}` `location` ON `location`.`term_id` = `menu`.`term_id` AND `location`.`meta_key` = 'location'
+			ORDER BY `menu`.`term_id` DESC
 		") ) :
 		
 		foreach($geolocate_menus as $i => $geo_menu) :
@@ -590,7 +559,8 @@ if(!class_exists('CFGP_Menus', false)) : class CFGP_Menus extends CFGP_Global {
 				<a href="javascript:void(0);" 
 					class="submitdelete deletion right cfgp-menu-remove-location" 
 					data-confirm="<?php esc_attr_e('Are you sure you want to delete the entire menu for this location?', 'cf-geoplugin'); ?>" 
-					data-id="<?php echo esc_attr(absint($geo_menu->term_id)); ?>"><?php esc_html_e('Delete', 'cf-geoplugin'); ?></a>
+					data-id="<?php echo esc_attr(absint($geo_menu->term_id)); ?>"
+					data-nonce="<?php echo esc_attr(wp_create_nonce( 'cf-geoplugin-delete-menus-' . absint($geo_menu->term_id) )); ?>"><?php esc_html_e('Delete', 'cf-geoplugin'); ?></a>
 			</td>
 		</tr>
 		<?php endforeach; else : ?>
@@ -605,7 +575,13 @@ if(!class_exists('CFGP_Menus', false)) : class CFGP_Menus extends CFGP_Global {
 	 */
 	public function ajax__geolocate_remove_menu () {
 		
-		if( $term_id = absint(sanitize_text_field($_POST['term_id'] ?? 0)) ) {
+		$term_id = absint(sanitize_text_field($_POST['term_id'] ?? 0));
+		
+		if ( ! wp_verify_nonce( sanitize_text_field($_POST['cf_nonce'] ?? 'nope'), 'cf-geoplugin-delete-menus-' . $term_id ) ) {
+			exit;
+		}
+		
+		if( $term_id ) {
 			if( $nav_menu_items = get_posts( array(
 				'post_type' => 'nav_menu_item',
 				'numberposts' => -1,
@@ -628,7 +604,7 @@ if(!class_exists('CFGP_Menus', false)) : class CFGP_Menus extends CFGP_Global {
 			);
 		}
 		
-		$this->ajax__geolocate_menu();
+		$this->ajax__geolocate_menu( true );
 	}
 	
 	/*

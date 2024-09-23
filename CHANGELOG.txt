@@ -1,5 +1,9 @@
 == Changelog ==
 
+= 8.7.4 =
+* Fixing Missing Authorization to Authenticated (Subscriber+) Menu Creation/Deletion
+* Imorived WooCommerce geo pricing
+
 = 8.7.3 =
 * Fixing slow loading of the plugin
 

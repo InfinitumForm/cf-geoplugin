@@ -493,7 +493,8 @@
 			$location_val = $location.val(),
 			$country = $table.find('#cfgp-menu-country-select'),
 			$country_val = $country.val(),
-			$continue = true;
+			$continue = true,
+			$nonce = $this.data('nonce');
 
 		$location.css({
 			border : ''
@@ -532,6 +533,7 @@
 				data: {
 					country : $country_val,
 					location : $location_val,
+					cf_nonce : $nonce,
 					action : 'cfgp_geolocate_menu'
 				}
 			}).done( function( data ) {
@@ -550,7 +552,8 @@
 		var $this = $(this),
 			$table = $this.closest('table'),
 			$id = $this.attr('data-id'),
-			$continue = confirm($this.attr('data-confirm'));
+			$continue = confirm($this.attr('data-confirm')),
+			$nonce = $this.attr('data-nonce');
 		if( $continue ) {
 			$.ajax({
 				url: (typeof ajaxurl !== 'undefined' ? ajaxurl : CFGP.ajaxurl),
@@ -558,6 +561,7 @@
 				accept: 'text/html',
 				data: {
 					term_id : $id,
+					cf_nonce : $nonce,
 					action : 'cfgp_geolocate_remove_menu'
 				}
 			}).done( function( data ) {

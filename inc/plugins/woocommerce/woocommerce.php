@@ -38,7 +38,7 @@ class CFGP__Plugin__woocommerce extends CFGP_Global
 		
 		$this->add_action( 'wp_footer', 'wp_footer', 50 );
 	
-		if('yes' === get_option( 'woocommerce_cf_geoplugin_save_checkout_location', 'no' )) {
+		if('yes' === get_option('woocommerce_cf_geoplugin_save_checkout_location', 'no')) {
 			$this->add_action('woocommerce_checkout_create_order', 'woocommerce_geolocation_log', 20, 1);
 			$this->add_action('add_meta_boxes', 'customer_order_info', 1);
 		}
@@ -268,18 +268,16 @@ if($flag = CFGP_U::admin_country_flag(get_post_meta($post->ID, '_billing_country
 	function wc_price( $original_formatted_price, $price, $args  ) {
 		global $product;
 		
-		$return = '';
-		$SKU = NULL;
-		$PID = NULL;
+		$return = $SKU = $PID = '';
 
-		// We must have float number for all cases
-		$price_split = explode($args['decimal_separator'], $price);	
-		$price = floatval(preg_replace('/[^0-9]+/','',$price_split[0]) . '.' . (isset($price_split[1]) && !empty($price_split[1]) ? $price_split[1] : '00'));
-		
-		if(is_object($product))
-		{
-			if(property_exists($product, 'get_id')) $PID = $product->get_id();
-			if(property_exists($product, 'get_sku')) $SKU = $product->get_sku();
+		// Ensure price is a float number
+		$price_split = explode($args['decimal_separator'], $price);
+		$price = floatval(preg_replace('/[^0-9]+/', '', $price_split[0]) . '.' . (!empty($price_split[1]) ? $price_split[1] : '00'));
+
+		// Extract product ID and SKU if available
+		if (is_object($product)) {
+			$PID = method_exists($product, 'get_id') ? $product->get_id() : '';
+			$SKU = method_exists($product, 'get_sku') ? $product->get_sku() : '';
 		}
 		
 		$currency_args = $this->get_currency_and_symbol();
@@ -293,69 +291,141 @@ if($flag = CFGP_U::admin_country_flag(get_post_meta($post->ID, '_billing_country
 			$args['currency'] = $currency_args['currency_code'];
 		}
 		
-		// We show it in the both conversions
-		if( $currency_args !== false && $this->cf_conversion == 'inversion' )
-		{
-			$converted_price = ($unformatted_price * $currency_args['currency_converter']);
-			
+		// Show in both conversions
+		if ($currency_args !== false && $this->cf_conversion == 'inversion') {
+			// Calculate converted price
+			$converted_price = $unformatted_price * $currency_args['currency_converter'];
 			$converted_negative = $converted_price < 0;
-			$converted_price = apply_filters( 'cf_geoplugin_raw_woocommerce_converted_price', floatval( $converted_negative ? $converted_price * -1 : $converted_price ) );
-			$converted_price = apply_filters( 'cf_geoplugin_formatted_woocommerce_converted_price', number_format( $converted_price, $args['decimals'], $args['decimal_separator'], $args['thousand_separator'] ), $converted_price, $args['decimals'], $args['decimal_separator'], $args['thousand_separator'] );
-			
-			if ( apply_filters( 'cf_geoplugin_woocommerce_converted_price_trim_zeros', false ) && $args['decimals'] > 0 ) {
-				$converted_price = wc_trim_zeros( $converted_price );
+
+			// Apply filters for raw and formatted converted price
+			$converted_price = apply_filters('cf_geoplugin_raw_woocommerce_converted_price', floatval($converted_negative ? $converted_price * -1 : $converted_price));
+			$converted_price = apply_filters(
+				'cf_geoplugin_formatted_woocommerce_converted_price',
+				number_format($converted_price, $args['decimals'], $args['decimal_separator'], $args['thousand_separator']),
+				$converted_price,
+				$args['decimals'],
+				$args['decimal_separator'],
+				$args['thousand_separator']
+			);
+
+			// Optionally trim zeros
+			if (apply_filters('cf_geoplugin_woocommerce_converted_price_trim_zeros', false) && $args['decimals'] > 0) {
+				$converted_price = wc_trim_zeros($converted_price);
 			}
+
+			// Build converted price output
+			$return .= '<span class="woocommerce-original-price"' . 
+				($PID ? ' data-id="' . esc_attr($PID) . '"' : '') .
+				($SKU ? ' data-sku="' . esc_attr($SKU) . '"' : '') . '>';
 			
-			$return .= '<span class="woocommerce-original-price" data-id="' . $PID . '"' . ($SKU ?  ' data-sku="' . $SKU . '"':NULL) . '>';
-			$converted_formatted_price = ( $converted_negative ? '-' : '' ) . sprintf( $args['price_format'], '<span class="woocommerce-Price-currencySymbol" data-id="' . $PID . '"' . ($SKU ?  ' data-sku="' . $SKU . '"':NULL) . '>' . get_woocommerce_currency_symbol( $currency_args['currency_code'] ) . '</span>', $converted_price );
+			$converted_formatted_price = ($converted_negative ? '-' : '') . 
+				sprintf($args['price_format'], 
+					'<span class="woocommerce-Price-currencySymbol"' .
+					($PID ? ' data-id="' . esc_attr($PID) . '"' : '') .
+					($SKU ? ' data-sku="' . esc_attr($SKU) . '"' : '') . '>' .
+					get_woocommerce_currency_symbol($currency_args['currency_code']) . '</span>',
+					$converted_price
+				);
+			
 			$return .= '<span class="woocommerce-Price-amount amount">' . $converted_formatted_price . '</span>';
-			
-			if ( $args['ex_tax_label'] && wc_tax_enabled() ) {
+
+			// Add tax label if applicable
+			if ($args['ex_tax_label'] && wc_tax_enabled()) {
 				$return .= ' <small class="woocommerce-Price-taxLabel tax_label">' . WC()->countries->ex_tax_or_vat() . '</small>';
 			}
 			$return .= '</span>';
 		}
-		
-		// Original price
+
+		// Original price processing
 		$negative = $price < 0;
-		$price = apply_filters( 'cf_geoplugin_raw_woocommerce_price', floatval( $negative ? $price * -1 : $price ) );
-		$price = apply_filters( 'cf_geoplugin_formatted_woocommerce_price', number_format( $price, $args['decimals'], $args['decimal_separator'], $args['thousand_separator'] ), $price, $args['decimals'], $args['decimal_separator'], $args['thousand_separator'] );
-		
-		if ( apply_filters( 'cf_geoplugin_woocommerce_price_trim_zeros', false ) && $args['decimals'] > 0 ) {
-			$price = wc_trim_zeros( $price );
+		$price = apply_filters('cf_geoplugin_raw_woocommerce_price', floatval($negative ? $price * -1 : $price));
+		$price = apply_filters(
+			'cf_geoplugin_formatted_woocommerce_price',
+			number_format($price, $args['decimals'], $args['decimal_separator'], $args['thousand_separator']),
+			$price,
+			$args['decimals'],
+			$args['decimal_separator'],
+			$args['thousand_separator']
+		);
+
+		// Optionally trim zeros from original price
+		if (apply_filters('cf_geoplugin_woocommerce_price_trim_zeros', false) && $args['decimals'] > 0) {
+			$price = wc_trim_zeros($price);
 		}
-		
-		$return .= '<span class="woocommerce-' . (( $currency_args !== false && $this->cf_conversion == 'inversion' ) ? 'converted' : 'original') . '-price" data-id="' . $PID . '"' . ($SKU ?  ' data-sku="' . $SKU . '"':NULL) . '>';
-		$formatted_price = ( $negative ? '-' : '' ) . sprintf( $args['price_format'], '<span class="woocommerce-Price-currencySymbol">' . get_woocommerce_currency_symbol( $args['currency'] ) . '</span>', $price );
+
+		// Build original price output
+		$return .= '<span class="woocommerce-' . 
+			($currency_args !== false && $this->cf_conversion == 'inversion' ? 'converted' : 'original') . '-price"' . 
+			($PID ? ' data-id="' . esc_attr($PID) . '"' : '') . 
+			($SKU ? ' data-sku="' . esc_attr($SKU) . '"' : '') . '>';
+			
+		$formatted_price = ($negative ? '-' : '') . 
+			sprintf($args['price_format'], 
+				'<span class="woocommerce-Price-currencySymbol">' . 
+				get_woocommerce_currency_symbol($args['currency']) . 
+				'</span>', $price
+			);
+			
 		$return .= '<span class="woocommerce-Price-amount amount">' . $formatted_price . '</span>';
-		
-		if ( $args['ex_tax_label'] && wc_tax_enabled() ) {
+
+		// Add tax label if applicable
+		if ($args['ex_tax_label'] && wc_tax_enabled()) {
 			$return .= ' <small class="woocommerce-Price-taxLabel tax_label">' . WC()->countries->ex_tax_or_vat() . '</small>';
 		}
+
 		$return .= '</span>';
+
 		
 		// We show it in the both conversions
-		if( $currency_args !== false && $this->cf_conversion == 'both' )
-		{
-			$converted_price = ($unformatted_price * $currency_args['currency_converter']);
-			
+		if ($currency_args !== false && $this->cf_conversion == 'both') {
+			// Calculate converted price
+			$converted_price = $unformatted_price * $currency_args['currency_converter'];
 			$converted_negative = $converted_price < 0;
-			$converted_price = apply_filters( 'cf_geoplugin_raw_woocommerce_converted_price', floatval( $converted_negative ? $converted_price * -1 : $converted_price ) );
-			$converted_price = apply_filters( 'cf_geoplugin_formatted_woocommerce_converted_price', number_format( $converted_price, $args['decimals'], $args['decimal_separator'], $args['thousand_separator'] ), $converted_price, $args['decimals'], $args['decimal_separator'], $args['thousand_separator'] );
-			
-			if ( apply_filters( 'cf_geoplugin_woocommerce_converted_price_trim_zeros', false ) && $args['decimals'] > 0 ) {
-				$converted_price = wc_trim_zeros( $converted_price );
+
+			// Apply filters for raw and formatted price
+			$converted_price = apply_filters('cf_geoplugin_raw_woocommerce_converted_price', floatval($converted_negative ? $converted_price * -1 : $converted_price));
+			$converted_price = apply_filters(
+				'cf_geoplugin_formatted_woocommerce_converted_price',
+				number_format($converted_price, $args['decimals'], $args['decimal_separator'], $args['thousand_separator']),
+				$converted_price,
+				$args['decimals'],
+				$args['decimal_separator'],
+				$args['thousand_separator']
+			);
+
+			// Optionally trim zeros
+			if (apply_filters('cf_geoplugin_woocommerce_converted_price_trim_zeros', false) && $args['decimals'] > 0) {
+				$converted_price = wc_trim_zeros($converted_price);
 			}
-			
-			$return .= '<span class="woocommerce-converted-price" data-id="' . $PID . '"' . ($SKU ?  ' data-sku="' . $SKU . '"' : NULL) . '>';
-			$converted_formatted_price = ( $converted_negative ? '-' : '' ) . sprintf( $args['price_format'], '<span class="woocommerce-Price-currencySymbol" data-id="' . $PID . '"' . ($SKU ?  ' data-sku="' . $SKU . '"':NULL) . '>' . get_woocommerce_currency_symbol( $currency_args['currency_code'] ) . '</span>', $converted_price );
+
+			// Build return string with data attributes
+			$return .= '<span class="woocommerce-converted-price"' .
+				($PID ? ' data-id="' . esc_attr($PID) . '"' : '') .
+				($SKU ? ' data-sku="' . esc_attr($SKU) . '"' : '') .
+				' data-currency_code="' . esc_attr($currency_args['currency_code']) . '"' .
+				' data-currency_symbol="' . esc_attr(get_woocommerce_currency_symbol($currency_args['currency_code'])) . '"' .
+				' data-converted_price="' . esc_attr($converted_price) . '">';
+
+			// Format and append price
+			$converted_formatted_price = ($converted_negative ? '-' : '') .
+				sprintf($args['price_format'],
+					'<span class="woocommerce-Price-currencySymbol"' .
+					($PID ? ' data-id="' . esc_attr($PID) . '"' : '') .
+					($SKU ? ' data-sku="' . esc_attr($SKU) . '"' : '') . '>' .
+					esc_html(get_woocommerce_currency_symbol($currency_args['currency_code'])) . '</span>',
+					$converted_price
+				);
 			$return .= '<span class="woocommerce-Price-amount amount">' . $converted_formatted_price . '</span>';
-			
-			if ( $args['ex_tax_label'] && wc_tax_enabled() ) {
+
+			// Optionally add tax label
+			if ($args['ex_tax_label'] && wc_tax_enabled()) {
 				$return .= ' <small class="woocommerce-Price-taxLabel tax_label">' . WC()->countries->ex_tax_or_vat() . '</small>';
 			}
+
+			// Close span
 			$return .= '</span>';
 		}
+
 		
 		/**
 		 * Filters the string of price markup.
