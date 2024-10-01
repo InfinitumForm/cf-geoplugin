@@ -182,28 +182,13 @@ if(!class_exists('CFGP_Defender', false)) : class CFGP_Defender extends CFGP_Glo
 		} 
 		
 		// Get countries
-		$block_country = CFGP_Options::get('block_country');
-		if(!empty($block_country) && !is_array($block_country) && preg_match('/\]|\[/', $block_country)){
-			$block_country = explode(']|[', $block_country);
-			$block_country = array_map('trim', $block_country);
-			$block_country = array_filter($block_country);
-		}
+		$block_country = self::process_block_data('block_country');
 		
 		// Get regions
-		$block_region = CFGP_Options::get('block_region');
-		if(!empty($block_region) && !is_array($block_region) && preg_match('/\]|\[/', $block_region)){
-			$block_region = explode(']|[', $block_region);
-			$block_region = array_map('trim', $block_region);
-			$block_region = array_filter($block_region);
-		}
+		$block_region = self::process_block_data('block_region');
 		
 		// Get cities
-		$block_city = CFGP_Options::get('block_city');
-		if(!empty($block_city) && !is_array($block_city) && preg_match('/\]|\[/', $block_city)){
-			$block_city = explode(']|[', $block_city);
-			$block_city = array_map('trim', $block_city);
-			$block_city = array_filter($block_city);
-		}
+		$block_city = self::process_block_data('block_city');
 		
 		// Generate redirection mode
 		$mode = array( NULL, 'country', 'region', 'city' );
@@ -258,6 +243,24 @@ if(!class_exists('CFGP_Defender', false)) : class CFGP_Defender extends CFGP_Glo
 		// Hey, we are all good. Right?
         return false;
     }
+	
+	private static function process_block_data($option_key) {
+		$block_data = CFGP_Options::get($option_key, []);
+		
+		if (!empty($block_data) && !is_array($block_data) && preg_match('/\]|\[/', $block_data)) {
+			$block_data = explode(']|[', $block_data);
+			$block_data = array_map(function($match) {
+				return trim($match, ' [],');
+			}, $block_data);
+		}
+
+		if (!empty($block_data) && is_array($block_data)) {
+			$block_data = array_filter($block_data);
+			$block_data = array_unique($block_data);
+		}
+		
+		return $block_data;
+	}
 	
 	/* 
 	 * Instance

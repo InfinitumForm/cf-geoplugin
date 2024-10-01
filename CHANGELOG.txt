@@ -1,5 +1,11 @@
 == Changelog ==
 
+= 8.7.6 =
+* Fixing Geo Defender algo
+* Improved PHP algos and code optimization
+* Improved cookie control
+* Improved WooCommerce module
+
 = 8.7.5 =
 * Adding user permission to the GEO menus
 

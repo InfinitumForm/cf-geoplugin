@@ -378,34 +378,46 @@ if(!class_exists('CFGP_U', false)) : class CFGP_U {
 	*/
 	public static function setcookie ($name, $val, $time = 0){
 		if( !headers_sent() ) {
-			
-			setcookie( $name, $val, (CFGP_TIME+absint($time)), COOKIEPATH, COOKIE_DOMAIN );
-			
+			$cookie_time = $time > 0 ? (CFGP_TIME + absint($time)) : 0;
+
+			setcookie( $name, $val, $cookie_time, COOKIEPATH, COOKIE_DOMAIN );
+
 			if(CFGP_Options::get('cache-support', 'yes') == 'yes') {
 				self::cache_flush();
 			}
-			
+
 			return true;
 		}
-		
+
 		return false;
 	}
 	
 	/*
 	 * Set defender cookie
 	 * @verson    1.0.0
-	*/
+	 */
 	public static function set_defender_cookie (){
 		$token = self::KEY();
 		$cookie_name = 'cfgp__' . str_rot13(substr( $token, 6, 8 ));
-		$time = (YEAR_IN_SECONDS*2);
+		$time = (int)apply_filters('cfgp_set_defender_cookie_timeout', HOUR_IN_SECONDS);
+		return self::setcookie($cookie_name, $token, $time);
+	}
+	
+	/*
+	 * Delete defender cookie
+	 * @verson    1.0.0
+	 */
+	public static function delete_defender_cookie () {
+		$token = self::KEY();
+		$cookie_name = 'cfgp__' . str_rot13(substr( $token, 6, 8 ));
+		$time = ceil( CFGP_TIME - ( (int)apply_filters('cfgp_set_defender_cookie_timeout', HOUR_IN_SECONDS) * 2 ) );
 		return self::setcookie($cookie_name, $token, $time);
 	}
 	
 	/*
 	 * Check defender cookie
 	 * @verson    1.0.0
-	*/
+	 */
 	public static function check_defender_cookie (){		
 		if($check_defender_cookie = CFGP_Cache::get('check_defender_cookie')){
 			return $check_defender_cookie;
@@ -414,27 +426,20 @@ if(!class_exists('CFGP_U', false)) : class CFGP_U {
 		$token = self::KEY();
 		$cookie_name = 'cfgp__' . str_rot13(substr( $token, 6, 8 ));
 		
-		return CFGP_Cache::set( 'check_defender_cookie', ( isset($_COOKIE[$cookie_name]) && sanitize_text_field($_COOKIE[$cookie_name]) === $token ) );
-	}
-
-	/*
-	 * Delete defender cookie
-	 * @verson    1.0.0
-	*/
-	public static function delete_defender_cookie (){
-		$token = self::KEY();
-		$cookie_name = 'cfgp__' . str_rot13(substr( $token, 6, 8 ));
-		$time = absint((YEAR_IN_SECONDS*2)-CFGP_TIME);
-		return self::setcookie($cookie_name, $token, $time);
+		return CFGP_Cache::set(
+			'check_defender_cookie',
+			( isset($_COOKIE[$cookie_name]) && sanitize_text_field($_COOKIE[$cookie_name]) === $token )
+		);
 	}
 	
 	
 	/*
 	 * Flush Plugin cache
 	 * @verson    1.0.0
-	*/
+	 */
 	public static function flush_plugin_cache() {
 		global $wpdb;
+		
 		// Determine the table and column name based on the site type.
 		$table_name = (is_multisite() && is_main_site() && is_main_network()) ? $wpdb->sitemeta : $wpdb->options;
 		$column_name = (is_multisite() && is_main_site() && is_main_network()) ? 'meta_key' : 'option_name';
@@ -448,6 +453,7 @@ if(!class_exists('CFGP_U', false)) : class CFGP_U {
 
 		// Execute the SQL statement.
 		$wpdb->query($sql);
+		
 		// Remove current cache
 		CFGP_Cache::flush();
 	}
@@ -1423,12 +1429,12 @@ if(!class_exists('CFGP_U', false)) : class CFGP_U {
 		
 		// Get post by ID
 		if(!$current_page) {
-			$current_page = get_post(isset($wp->query_vars['p']) ? absint($wp->query_vars['p']) : NULL);
+			$current_page = ( isset($wp->query_vars['p']) ? get_post(absint($wp->query_vars['p'])) : NULL );
 		}
 		
 		// Get page by ID
 		if(!$current_page) {
-			$current_page = get_post(isset($wp->query_vars['page_id']) ? absint($wp->query_vars['page_id']) : NULL);
+			$current_page = ( isset($wp->query_vars['page_id']) ? get_post(absint($wp->query_vars['page_id'])) : NULL );
 		}
 		
 		// Get post by date/time
@@ -1493,12 +1499,12 @@ if(!class_exists('CFGP_U', false)) : class CFGP_U {
 		
 		// Get page by GET pharam
 		if(!$current_page) {
-			$current_page = get_post(isset($_GET['page_id']) ? absint($_GET['page_id']) : NULL);
+			$current_page = ( isset($_GET['page_id']) ? get_post(absint($_GET['page_id'])) : NULL );
 		}
 		
 		// Get post by GET pharam
 		if(!$current_page) {
-			$current_page = get_post(isset($_GET['p']) ? absint($_GET['p']) : NULL);
+			$current_page = ( isset($_GET['p']) ? get_post(absint($_GET['p'])) : NULL );
 		}
 		
 		// Get page by path
@@ -1512,101 +1518,70 @@ if(!class_exists('CFGP_U', false)) : class CFGP_U {
 	/**
 	 * Check user's city for defender or seo redirection
 	 */
-	public static function check_user_by_city( $city )
-	{
-		if( is_array( $city ) )
-		{
-			$city = array_map( array(__CLASS__, 'transliterate'), $city );
-			$city = array_map( 'sanitize_title', $city );
-			if( isset( $city[0] ) && !empty( $city[0] ) && in_array(sanitize_title(self::api('city')), $city, true ) ) {
-				return true;
-			}
-		}
-		elseif( is_string( $city ) )
-		{
-			$city = self::transliterate($city);
-			if( !empty( $city ) && sanitize_title( $city ) === sanitize_title(self::api('city')) ) {
-				return true;
-			}
+	public static function check_user_by_city( $city ) {
+		if (empty($city)) {
+			return false;
 		}
 
-		return false;
+		// Ensure city is always processed as an array
+		$city = is_array($city) ? $city : [$city];
+
+		// Transliterate and sanitize each city in the list
+		$city = array_map([__CLASS__, 'transliterate'], $city);
+		$city = array_map('sanitize_title', $city);
+
+		// Get the current user's city from API and sanitize it
+		$user_city = sanitize_title(self::api('city'));
+
+		// Check if the user's city matches any of the cities in the list
+		return in_array($user_city, $city, true);
 	}
+
 
 	/**
 	 * Check user's region for defender or seo redirection
 	 */
-	public static function check_user_by_region( $region )
-	{
-		if( is_array( $region ) )
-		{
-			if( isset( $region[0] ) && !empty( $region[0] ) )
-			{
-				$region = array_map( array(__CLASS__, 'transliterate'), $region );
-				$region = array_map( 'sanitize_title', $region );
-				// Supports region code and region name
-				if(in_array( sanitize_title( self::api('region_code') ), $region, true ) ) {
-					return true;
-				}
-				if(in_array( sanitize_title(self::api('region')), $region, true ) ) {
-					return true;
-				}
-			}
-		}
-		elseif( is_string( $region ) )
-		{
-			if( !empty( $region ) )
-			{
-				$region = self::transliterate($region);
-				// Supports region code and region name
-				if( sanitize_title( $region ) === sanitize_title(self::api('region_code')) ) {
-					return true;
-				}
-				if( sanitize_title( $region ) === sanitize_title(self::api('region')) ) {
-					return true;
-				}
-			}
+	public static function check_user_by_region( $region ) {
+		if (empty($region)) {
+			return false;
 		}
 
-		return false;
+		// Ensure region is always processed as an array
+		$region = is_array($region) ? $region : [$region];
+
+		// Transliterate and sanitize each region in the list
+		$region = array_map([__CLASS__, 'transliterate'], $region);
+		$region = array_map('sanitize_title', $region);
+
+		// Get current user's region code and name from API
+		$user_region_code = sanitize_title(self::api('region_code'));
+		$user_region_name = sanitize_title(self::api('region'));
+
+		// Check if either the region code or region name matches
+		return ( in_array($user_region_code, $region, true) || in_array($user_region_name, $region, true) );
 	}
 
 	/**
 	 * Check user's country for defender or seo redirection
 	 */
-	public static function check_user_by_country( $country )
-	{
-		if( is_array( $country ) )
-		{
-			if( isset( $country[0] ) && !empty( $country[0] ) )
-			{
-				$country = array_map( array(__CLASS__, 'transliterate'), $country );
-				$country = array_map( 'sanitize_title', $country );
-				// Supports country code and name
-				if( in_array( sanitize_title(self::api('country_code')), $country, true ) ) {
-					return true;
-				}
-				if( in_array( sanitize_title(self::api('country')), $country, true ) ) {
-					return true;
-				}
-			}
+	public static function check_user_by_country( $country ) {
+		if (empty($country)) {
+			return false;
 		}
-		elseif( is_string( $country ) )
-		{
-			if( !empty( $country ) )
-			{
-				$country = self::transliterate($country);
-				// Supports country code and name
-				if( sanitize_title( $country ) === sanitize_title(self::api('country_code')) ) {
-					return true;
-				}
-				if( sanitize_title( $country ) === sanitize_title(self::api('country')) ) {
-					return true;
-				}
-			}
-		}
-
-		return false;
+		
+		// Ensure country is always processed as an array
+		$country = is_array($country) ? $country : [$country];
+		
+		// Transliterate and sanitize each country in the list
+		$country = array_map([__CLASS__, 'transliterate'], $country);
+		$country = array_map('sanitize_title', $country);
+		
+		// Get current user's country code and name from API
+		$user_country_code = sanitize_title(self::api('country_code'));
+		$user_country_name = sanitize_title(self::api('country'));
+		
+		// Check if either the country code or country name matches
+		return ( in_array($user_country_code, $country, true) || in_array($user_country_name, $country, true) );
 	}
 	
 	/**
@@ -1614,21 +1589,16 @@ if(!class_exists('CFGP_U', false)) : class CFGP_U {
 	 */
 	public static function check_user_by_postcode( $postcode )
 	{
-		if( is_array( $postcode ) )
-		{
-			$postcode = array_map( 'sanitize_title', $postcode );
-			if( isset( $postcode[0] ) && !empty( $postcode[0] ) && in_array(sanitize_title(self::api('postcode')), $postcode, true) ) {
-				return true;
-			}
+		if (empty($postcode)) {
+			return false;
 		}
-		elseif( is_string( $postcode ) )
-		{
-			if( !empty( $postcode ) && sanitize_title( $postcode ) === sanitize_title(self::api('postcode')) ) {
-				return true;
-			}
-		}
-
-		return false;
+		
+		$postcode = is_array($postcode) ? $postcode : [$postcode];
+		$postcode = array_map( 'sanitize_title', $postcode );
+		
+		$user_postcode = sanitize_title(self::api('postcode'));
+		
+		return in_array($user_postcode, $postcode, true);
 	}
 	
 	/**

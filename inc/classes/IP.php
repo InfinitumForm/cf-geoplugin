@@ -152,9 +152,8 @@ class CFGP_IP extends CFGP_Global {
 		// Let's ask server?
 		$external_servers = apply_filters('cfgp/ip/external_servers', array(
 			'https://ident.me',
-			'https://api.ipify.org',
-			'https://api.my-ip.io/ip',
-			'https://ip4.seeip.org'
+			'https://api.my-ip.io/v1/ip',
+			'https://api.ipify.org'
 		));
 		
 		// We have already cached this IP?

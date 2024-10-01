@@ -814,14 +814,20 @@ if($flag = CFGP_U::admin_country_flag(get_post_meta($post->ID, '_billing_country
 		
 		$current_country = strtolower($current_country);
 		
-        if( is_array( $gateways ) )
-        {
-            foreach( $gateways as $gateway )
+        if( !empty($gateways) && is_array( $gateways ) )
+        {	
+            foreach( $gateways as $gateway_id => $gateway )
             {
+				if(!isset($gateway->id)) {
+					$gateway->id = $gateway_id;
+				}
+				
                 $type = get_option( sprintf( 'woocommerce_cfgp_method_%s', $gateway->id ) );
                 $countries = get_option( sprintf( 'woocommerce_cfgp_method_%s_select', $gateway->id ) );
 
-                if( empty( $countries ) || $type == 'cfgp_payment_woo' ) continue;
+                if( empty( $countries ) || $type == 'cfgp_payment_woo' ) {
+					continue;
+				}
 
                 if( 
 					$type === 'cfgp_payment_disable' 
@@ -831,8 +837,8 @@ if($flag = CFGP_U::admin_country_flag(get_post_meta($post->ID, '_billing_country
 					)
 				)
                 {
-                    if( isset( $gateways[ $gateway->id ] ) ) {
-						unset( $gateways[ $gateway->id ] );
+                    if( isset( $gateways[ $gateway_id ] ) ) {
+						unset( $gateways[ $gateway_id ] );
 					}
                 }
                 elseif(
@@ -843,8 +849,8 @@ if($flag = CFGP_U::admin_country_flag(get_post_meta($post->ID, '_billing_country
 					) 
 				) 
                 {
-                    if( isset( $gateways[ $gateway->id ] ) ) {
-						unset( $gateways[ $gateway->id ] );
+                    if( isset( $gateways[ $gateway_id ] ) ) {
+						unset( $gateways[ $gateway_id ] );
 					}
                 }
             }
