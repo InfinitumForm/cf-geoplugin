@@ -19,7 +19,7 @@ class CFGP__Plugin__woocommerce extends CFGP_Global
 
     private function __construct()
     {
-        $this->add_action( 'plugins_loaded', 'check_woocommerce_instalation', 99 );
+        $this->add_action( 'woocommerce_init', 'check_woocommerce_instalation', 99 );
 		
 		$this->cf_conversion 				= get_option( 'woocommerce_cf_geoplugin_conversion', 'original');
 		$this->cf_conversion_adjust 		= get_option( 'woocommerce_cf_geoplugin_conversion_adjust', 0);
@@ -39,7 +39,6 @@ class CFGP__Plugin__woocommerce extends CFGP_Global
 		$this->add_action( 'wp_footer', 'wp_footer', 50 );
 	
 		if('yes' === get_option('woocommerce_cf_geoplugin_save_checkout_location', 'no')) {
-			$this->add_action('woocommerce_checkout_create_order', 'woocommerce_geolocation_log', 20, 1);
 			$this->add_action('add_meta_boxes', 'customer_order_info', 1);
 		}
     }
@@ -95,6 +94,10 @@ class CFGP__Plugin__woocommerce extends CFGP_Global
 			$this->add_filter( 'woocommerce_get_tax_location', 'woocommerce_get_tax_location', 10, 3 );
 			$this->add_filter( 'woocommerce_customer_default_location', 'woocommerce_customer_default_location', 10, 1 );
 			$this->add_action('woocommerce_checkout_create_order', 'woocommerce_change_ip', 100, 1);
+		}
+		
+		if('yes' === get_option('woocommerce_cf_geoplugin_save_checkout_location', 'no')) {
+			$this->add_action('woocommerce_checkout_create_order', 'woocommerce_geolocation_log', 20, 1);
 		}
     }
 	
@@ -156,8 +159,10 @@ class CFGP__Plugin__woocommerce extends CFGP_Global
 				CFGP_U::api('city')
 			);
 			
-			WC()->customer->set_billing_country(CFGP_U::api('country_code'));
-			WC()->customer->set_shipping_country(CFGP_U::api('country_code'));
+			if ( WC()->customer ?? NULL ) {
+				WC()->customer->set_billing_country(CFGP_U::api('country_code'));
+				WC()->customer->set_shipping_country(CFGP_U::api('country_code'));
+			}
 		}
 		
 		return $location;
@@ -181,6 +186,14 @@ class CFGP__Plugin__woocommerce extends CFGP_Global
 				'side',
 				'high'
 			);
+			
+			add_action('admin_footer', function(){ ?><style>/*<![CDATA[*/
+			#cf-geoplugin-log #cf-geoplugin-log-ip > big{
+				word-wrap: break-word;
+				display: inline-block;
+				max-width: 88%;
+			}
+			/*]]>*/</style><?php });
 		}
 		
 		return;
@@ -191,7 +204,7 @@ class CFGP__Plugin__woocommerce extends CFGP_Global
 		if($GEO = get_post_meta($post->ID, '_cfgp_location_log', true)):
 		$GEO = (object)$GEO;
 ?>
-<p><strong><?php esc_html_e( 'Order IP address:', 'cf-geoplugin'); ?></strong><br><?php
+<p id="cf-geoplugin-log-ip"><strong><?php esc_html_e( 'Order IP address:', 'cf-geoplugin'); ?></strong><br><?php
 if($flag = CFGP_U::admin_country_flag($GEO->country_code)) {
 	echo wp_kses_post($flag ?? '');
 } else {
@@ -210,7 +223,7 @@ if($flag = CFGP_U::admin_country_flag($GEO->country_code)) {
 		else :
 		$_customer_user_agent = get_post_meta($post->ID, '_customer_user_agent', true);
 	?>
-<p><strong><?php esc_html_e( 'Order IP address:', 'cf-geoplugin'); ?></strong><br><?php
+<p id="cf-geoplugin-log-ip"><strong><?php esc_html_e( 'Order IP address:', 'cf-geoplugin'); ?></strong><br><?php
 if($flag = CFGP_U::admin_country_flag(get_post_meta($post->ID, '_billing_country', true))) {
 	echo wp_kses_post($flag ?? '');
 } else {
