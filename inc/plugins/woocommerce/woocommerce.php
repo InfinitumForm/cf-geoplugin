@@ -6,6 +6,8 @@
  * @package    CF_Geoplugin
  * @author     Ivijan-Stefan Stipic
  */
+use Automattic\WooCommerce\Internal\DataStores\Orders\CustomOrdersTableController;
+
 if( !class_exists( 'CFGP__Plugin__woocommerce', false ) ):
 class CFGP__Plugin__woocommerce extends CFGP_Global
 {	
@@ -176,25 +178,27 @@ class CFGP__Plugin__woocommerce extends CFGP_Global
      * Customer Order information
      */
 	public function customer_order_info(){
-		$screen = get_current_screen();
-		if( isset( $screen->post_type ) && in_array($screen->post_type, ['shop_order']) ){
-			$this->add_meta_box(
-				CFGP_NAME . '-log',								// Unique ID
-				__( 'GEO Location Info', 'cf-geoplugin'),			// Box title
-				'geo_location_info__callback',					// Content callback, must be of type callable
-				$screen->post_type,								// Post type
-				'side',
-				'high'
-			);
-			
-			add_action('admin_footer', function(){ ?><style>/*<![CDATA[*/
-			#cf-geoplugin-log #cf-geoplugin-log-ip > big{
-				word-wrap: break-word;
-				display: inline-block;
-				max-width: 88%;
-			}
-			/*]]>*/</style><?php });
-		}
+
+		$screen = class_exists( '\Automattic\WooCommerce\Internal\DataStores\Orders\CustomOrdersTableController' ) && wc_get_container()->get( CustomOrdersTableController::class )->custom_orders_table_usage_is_enabled()
+			? wc_get_page_screen_id( 'shop-order' )
+				: 'shop_order';
+		
+		$this->add_meta_box(
+			CFGP_NAME . '-log',							// Unique ID
+			__( 'GEO Location Info', 'cf-geoplugin'),	// Box title
+			'geo_location_info__callback',				// Content callback, must be of type callable
+			$screen,									// Post type
+			'side',
+			'high'
+		);
+		
+		add_action('admin_footer', function(){ ?><style>/*<![CDATA[*/
+#cf-geoplugin-log #cf-geoplugin-log-ip > big{
+	word-wrap: break-word;
+	display: inline-block;
+	max-width: 88%;
+}
+/*]]>*/</style><?php });
 		
 		return;
 	}

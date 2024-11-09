@@ -1,5 +1,8 @@
 == Changelog ==
 
+= 8.7.9 =
+* Fixed issue with Woocommerce HPOS metabox
+
 = 8.7.8 =
 * Fixed WooCommerce bugs and improved performances
 
