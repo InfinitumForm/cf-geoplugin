@@ -1,5 +1,11 @@
 == Changelog ==
 
+= 8.7.11 =
+* Improved cache headers
+
+= 8.7.10 =
+* Fixed issue with Woocommerce checkout info
+
 = 8.7.9 =
 * Fixed issue with Woocommerce HPOS metabox
 

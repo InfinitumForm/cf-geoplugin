@@ -463,6 +463,11 @@ if(!class_exists('CFGP_U', false)) : class CFGP_U {
 	 * @verson    2.0.0
 	*/
 	public static function cache_flush ( $force = false ) {
+		// Prevent headers bug
+		if ( headers_sent() ) {
+			return;
+		}
+		
 		global $post, $user, $w3_plugin_totalcache;
 
 		// Standard cache

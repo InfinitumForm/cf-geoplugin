@@ -144,31 +144,39 @@ class CFGP__Plugin__woocommerce extends CFGP_Global
 			'postcode' => CFGP_U::api('postcode')
 		) ) ), 0, 12 );
 	}
+	
 	// Change tax location
-	public function woocommerce_get_tax_location( $location, $tax_class = '', $customer = null ){
-		
+	public function woocommerce_get_tax_location( $location, $tax_class = '', $customer = null )
+	{
+		// Assign customer object if not provided and WC()->customer exists
 		if ( is_null( $customer ) && WC()->customer ) {
 			$customer = WC()->customer;
 		}
 
+		// Check if customer object is valid and has an ID
 		if ( !empty( $customer ) && $customer->get_id() ) {
-			// Void
+			// Customer is valid, proceed with the original location
 		} else {
-			$location = array(
-				CFGP_U::api('country_code'),
-				CFGP_U::api('region'),
-				CFGP_U::api('postcode'),
-				CFGP_U::api('city')
-			);
-			
-			if ( WC()->customer ?? NULL ) {
-				WC()->customer->set_billing_country(CFGP_U::api('country_code'));
-				WC()->customer->set_shipping_country(CFGP_U::api('country_code'));
+			// Retrieve location data from CFGP_U::api with fallback to empty strings
+			$country_code = CFGP_U::api('country_code') ?? '';
+			$region = CFGP_U::api('region') ?? '';
+			$postcode = CFGP_U::api('postcode') ?? '';
+			$city = CFGP_U::api('city') ?? '';
+
+			// Update location array with fallback values if CFGP_U::api values are unavailable
+			$location = array( $country_code, $region, $postcode, $city );
+
+			// Set billing and shipping country in WooCommerce customer if available
+			if ( WC()->customer ) {
+				WC()->customer->set_billing_country( $country_code );
+				WC()->customer->set_shipping_country( $country_code );
 			}
 		}
-		
+
 		return $location;
 	}
+
+	
 	// Change default customer location
 	public function woocommerce_customer_default_location ($default_location) {
 		return CFGP_U::api('continent_code') . ':' . CFGP_U::api('country_code');
@@ -675,212 +683,230 @@ if($flag = CFGP_U::admin_country_flag(get_post_meta($post->ID, '_billing_country
     }
 
     // Generate option fields for payment
-    public function get_payment_settings()
-    {
-        global $wp_version;
-        $WC = WC();
+	public function get_payment_settings()
+	{
+		global $wp_version;
+		$WC = WC();
 
-        $settings = [];
+		$settings = [];
 
-        $gateways = WC()->payment_gateways->get_available_payment_gateways();
-        $enabled_gateways = [];
+		// Retrieve available payment gateways
+		$gateways = WC()->payment_gateways->get_available_payment_gateways();
+		$enabled_gateways = [];
 
-        if( !empty( $gateways ) && is_array( $gateways ) ) 
-        {
-            foreach( $gateways as $i => $gateway ) 
-            {
-                if( $gateway->enabled == 'yes' ) 
-                {
-                    $enabled_gateways[] = $gateway;
-                }
-            }
-        }
+		// Filter only enabled gateways
+		if( !empty( $gateways ) && is_array( $gateways ) ) 
+		{
+			foreach( $gateways as $i => $gateway ) 
+			{
+				if( $gateway->enabled == 'yes' ) 
+				{
+					$enabled_gateways[] = $gateway;
+				}
+			}
+		}
 
-        if( !empty( $enabled_gateways ) && is_array( $enabled_gateways ) )
-        {
+		if( !empty( $enabled_gateways ) && is_array( $enabled_gateways ) )
+		{
+			// Fetch all countries for country selection options
 			$all_countries = CFGP_Library::get_countries();
-            
-            if( !empty( $all_countries ) && is_array( $all_countries ) )
-            {
-                $countries_options = [];
-                foreach( $all_countries as $country_code => $country_name )
-                {
-                    $countries_options[ $country_code ] = sprintf( '%s - %s', $country_code, $country_name );
-                }
+			
+			if( !empty( $all_countries ) && is_array( $all_countries ) )
+			{
+				$countries_options = [];
+				foreach( $all_countries as $country_code => $country_name )
+				{
+					$countries_options[ $country_code ] = sprintf( '%s - %s', $country_code, $country_name );
+				}
 
-                $custom_attributes = [];
+				$custom_attributes = [];
 
-                if( CFGP_License::level() < 2 && !CFGP_License::activated() )
-                {
-                    $custom_attributes['disabled'] = true;
-                }
-				
+				// Check license level and activation status
+				if( CFGP_License::level() < 2 && !CFGP_License::activated() )
+				{
+					$custom_attributes['disabled'] = true;
+				}
+
+				// Enable options in dev mode even if disabled by license
 				if( isset($custom_attributes['disabled']) && CFGP_U::dev_mode() ){
 					unset($custom_attributes['disabled']);
 				}
-                
-                $settings[] = array( 'name' => __( 'Geo Controller Payments Control', 'cf-geoplugin'), 'type' => 'title', 'desc' => __( 'Configure payment methods for each country in a detailed and precise manner. You can show or hide specific payment methods based on the country, allowing you to prevent unwanted transactions and ensure that only appropriate payment options are available to your customers in each region.', 'cf-geoplugin') . (
-				(isset($custom_attributes['disabled']) && $custom_attributes['disabled']) || CFGP_U::dev_mode()
-				? ' <br><span style="color:#dc3545;">' . sprintf(__('This option is only available with the licensed version of the %s. A license valid for at least one year is required to enable this feature.', 'cf-geoplugin'), '<a href="' . CFGP_U::admin_url('admin.php?page=cf-geoplugin-activate') . '">Geo Controller</a>') . '</span>'
-				: ''
-				) . '<hr>', 'id' => 'cf_geoplugin_payment_restriction' );
-				$count = count($enabled_gateways); $x = 0;
-                foreach( $enabled_gateways as $i => $gateway )
-                {
+
+				// Set up the settings array with description and country-specific controls
+				$settings[] = array( 
+					'name' => __( 'Geo Controller Payments Control', 'cf-geoplugin'), 
+					'type' => 'title', 
+					'desc' => __( 'Configure payment methods for each country in a detailed and precise manner.', 'cf-geoplugin') . (
+					(isset($custom_attributes['disabled']) && $custom_attributes['disabled']) || CFGP_U::dev_mode()
+					? ' <br><span style="color:#dc3545;">' . sprintf(__('This option is only available with the licensed version of the %s.', 'cf-geoplugin'), '<a href="' . CFGP_U::admin_url('admin.php?page=cf-geoplugin-activate') . '">Geo Controller</a>') . '</span>'
+					: ''
+					) . '<hr>', 
+					'id' => 'cf_geoplugin_payment_restriction' 
+				);
+
+				// Loop through each enabled gateway and set up corresponding settings
+				$count = count($enabled_gateways); 
+				$x = 0;
+				foreach( $enabled_gateways as $i => $gateway )
+				{
 					++$x;
 					$hr_id = sprintf( '%s_hr', $gateway->id );
-                    $select_setting_id = sprintf( '%s_select', $gateway->id );
+					$select_setting_id = sprintf( '%s_select', $gateway->id );
 					$checkbox_setting_id = sprintf( '%s_checkbox', $gateway->id );
-                    $method_setting_id = sprintf( '%s', $gateway->id );
-					
-                    $settings[ $method_setting_id ] = array(
-                        'name'     => __( 'Choose desired method', 'cf-geoplugin'),
-                        'id'       => sprintf( 'woocommerce_cfgp_method_%s', $method_setting_id ),
-                        'type'     => 'select',
-                        'class'    => 'wc-enhanced-select',
-                        'default'  => 'cfgp_payment_woo',
-                        'css'      => 'min-width:400px;',
-                        'options'  => array(
-                            'cfgp_payment_woo'      => __( 'Woocommerce Default', 'cf-geoplugin'),
-                            'cfgp_payment_enable'   => __( 'Enable only in selected countries', 'cf-geoplugin'),
-                            'cfgp_payment_disable'  => __( 'Disable only for selected countries', 'cf-geoplugin'),
-                        ),
-                        'custom_attributes' => $custom_attributes,
-                    );
+					$method_setting_id = sprintf( '%s', $gateway->id );
 
-                    $settings[ $select_setting_id ] = array(
-                        'name'     => __( 'Select countries', 'cf-geoplugin'),
-                        'class'    => 'wc-enhanced-select',
-                        'id'       => sprintf( 'woocommerce_cfgp_method_%s', $select_setting_id ),
-                        'default'  => '',
-                        'css'      => 'min-width:400px;',
-                        'type'     => 'multiselect',
-                        'options'  => $countries_options,
-                        'custom_attributes' => $custom_attributes,
-                    );
-/*
-					$settings[ $checkbox_setting_id ] = array(
-                        'name'     => __( 'Disable currency conversion for this method', 'cf-geoplugin'),
-                        'id'       => sprintf( 'woocommerce_cfgp_method_%s_disable_currency', $method_setting_id ),
-                        'type'     => 'checkbox',
-                        'class'    => 'wc-enhanced-checkbox',
-                        'default'  => '',
-                        'custom_attributes' => $custom_attributes,
-                    );
-*/				
+					$settings[ $method_setting_id ] = array(
+						'name'     => __( 'Choose desired method', 'cf-geoplugin'),
+						'id'       => sprintf( 'woocommerce_cfgp_method_%s', $method_setting_id ),
+						'type'     => 'select',
+						'class'    => 'wc-enhanced-select',
+						'default'  => 'cfgp_payment_woo',
+						'css'      => 'min-width:400px;',
+						'options'  => array(
+							'cfgp_payment_woo'      => __( 'Woocommerce Default', 'cf-geoplugin'),
+							'cfgp_payment_enable'   => __( 'Enable only in selected countries', 'cf-geoplugin'),
+							'cfgp_payment_disable'  => __( 'Disable only for selected countries', 'cf-geoplugin'),
+						),
+						'custom_attributes' => $custom_attributes,
+					);
+
+					$settings[ $select_setting_id ] = array(
+						'name'     => __( 'Select countries', 'cf-geoplugin'),
+						'class'    => 'wc-enhanced-select',
+						'id'       => sprintf( 'woocommerce_cfgp_method_%s', $select_setting_id ),
+						'default'  => '',
+						'css'      => 'min-width:400px;',
+						'type'     => 'multiselect',
+						'options'  => $countries_options,
+						'custom_attributes' => $custom_attributes,
+					);
+
 					$settings[ $hr_id ] = array(
 						'name' => sprintf( '%s', esc_html( $gateway->method_title ) ),
 						'type' => 'title',
 						'desc' => '',
 						'id' => 'cf_geoplugin_payment_restriction'
 					);
-					
-					if($count != $x) $settings[ $hr_id.'_end' ] = array(
-						'name' => '',
-						'type' => 'title',
-						'desc' => '<hr>',
-						'id' => 'cf_geoplugin_payment_restriction'
-					);
 
-                }
-                $settings[] = array( 'type' => 'sectionend', 'id' => 'cf_geoplugin_payment_restriction' );
+					// Add a horizontal rule between gateways if not the last one
+					if($count != $x) {
+						$settings[ $hr_id.'_end' ] = array(
+							'name' => '',
+							'type' => 'title',
+							'desc' => '<hr>',
+							'id' => 'cf_geoplugin_payment_restriction'
+						);
+					}
+				}
 
-                return apply_filters( 'cf_geoplugin_payment_restriction_settings', $settings );
-            }
-            else 
-            {
-                $settings[] = array( 'name' => __( 'Geo Controller Payments Control', 'cf-geoplugin'), 'type' => 'title', 'desc' => '<b>' . __( 'Currently we are not able to show desired options. Please try again later.', 'cf-geoplugin') . '</b>', 'id' => 'cf_geoplugin_payment_restriction' );
-                $settings[] = array( 'type' => 'sectionend', 'id' => 'cf_geoplugin_payment_restriction' );
-                return apply_filters( 'cf_geoplugin_payment_restriction_settings', $settings );
-            }
-        }
-        else 
-        {
-            $settings[] = array( 'name' => __( 'Geo Controller Payments Control', 'cf-geoplugin'), 'type' => 'title', 'desc' => '<b>' . __( 'No enabled woocommerce payments yet.', 'cf-geoplugin'), 'id' => 'cf_geoplugin_payment_restriction' . '</b>' );
-            $settings[] = array( 'type' => 'sectionend', 'id' => 'cf_geoplugin_payment_restriction' );
-            return apply_filters( 'cf_geoplugin_payment_restriction_settings', $settings );
-        }
-    }
+				$settings[] = array( 'type' => 'sectionend', 'id' => 'cf_geoplugin_payment_restriction' );
+
+				return apply_filters( 'cf_geoplugin_payment_restriction_settings', $settings );
+			}
+			else 
+			{
+				// Display error if countries cannot be fetched
+				$settings[] = array( 
+					'name' => __( 'Geo Controller Payments Control', 'cf-geoplugin'), 
+					'type' => 'title', 
+					'desc' => '<b>' . __( 'Currently we are not able to show desired options. Please try again later.', 'cf-geoplugin') . '</b>', 
+					'id' => 'cf_geoplugin_payment_restriction' 
+				);
+				$settings[] = array( 'type' => 'sectionend', 'id' => 'cf_geoplugin_payment_restriction' );
+				return apply_filters( 'cf_geoplugin_payment_restriction_settings', $settings );
+			}
+		}
+		else 
+		{
+			// Display message if no payment gateways are enabled
+			$settings[] = array( 
+				'name' => __( 'Geo Controller Payments Control', 'cf-geoplugin'), 
+				'type' => 'title', 
+				'desc' => '<b>' . __( 'No enabled woocommerce payments yet.', 'cf-geoplugin'), 
+				'id' => 'cf_geoplugin_payment_restriction' . '</b>' 
+			);
+			$settings[] = array( 'type' => 'sectionend', 'id' => 'cf_geoplugin_payment_restriction' );
+			return apply_filters( 'cf_geoplugin_payment_restriction_settings', $settings );
+		}
+	}
+
 
     // Disable payments for specific users
     public function cfgp_woocommerce_payment_disable( $gateways )
-    {
+	{
 		$original_gateways = $gateways;
-		
-		// If plugin is not available return original
+
+		// If plugin is not available, return the original gateways
 		if( !CFGP_U::api('country_code', NULL) ) {
 			return $gateways;
 		}
 
-		// Very important check othervise will delete from settings and throw fatal error
-        if( is_admin() ) {
+		// Check if we're in the admin area to prevent unintended changes
+		if( is_admin() ) {
 			return $gateways;
 		}
-		
-		// $tax_based_on = get_option( 'woocommerce_tax_based_on' );
-		
+
+		// Determine the user's country
 		if( !is_user_logged_in() ) {
-			$current_country = sanitize_text_field( $_POST['s_country'] ?? $_POST['billing_country'] ?? CFGP_U::api('country_code', NULL) ?? WC()->countries->get_base_country() );
-		} else if( isset(WC()->customer) ) {
-			if( !( $current_country = sanitize_text_field( $_POST['s_country'] ?? $_POST['billing_country'] ?? WC()->customer->get_billing_country() ) ) ) {
-				$current_country = CFGP_U::api('country_code', NULL) ?? WC()->countries->get_base_country();
-			}
+			$current_country = sanitize_text_field(
+				$_POST['s_country'] ?? 
+				$_POST['billing_country'] ?? 
+				CFGP_U::api('country_code', NULL) ?? 
+				WC()->countries->get_base_country()
+			);
+		} elseif( WC()->customer instanceof WC_Customer ) {
+			$current_country = sanitize_text_field(
+				$_POST['s_country'] ?? 
+				$_POST['billing_country'] ?? 
+				WC()->customer->get_billing_country() ?? 
+				CFGP_U::api('country_code', NULL) ?? 
+				WC()->countries->get_base_country()
+			);
 		} else {
 			$current_country = CFGP_U::api('country_code', NULL) ?? WC()->countries->get_base_country();
 		}
-		
-		$current_country = strtolower($current_country);
-		
-        if( !empty($gateways) && is_array( $gateways ) )
-        {	
-            foreach( $gateways as $gateway_id => $gateway )
-            {
-				if(!isset($gateway->id)) {
-					$gateway->id = $gateway_id;
-				}
-				
-                $type = get_option( sprintf( 'woocommerce_cfgp_method_%s', $gateway->id ) );
-                $countries = get_option( sprintf( 'woocommerce_cfgp_method_%s_select', $gateway->id ) );
 
-                if( empty( $countries ) || $type == 'cfgp_payment_woo' ) {
+		$current_country = strtolower($current_country);
+
+		// Main loop to disable or enable payment methods
+		if( !empty($gateways) && is_array( $gateways ) )
+		{   
+			foreach( $gateways as $gateway_id => $gateway )
+			{
+				if( is_null($gateway) ) {
+					continue;
+				}
+	
+				$gateway->id = $gateway->id ?? $gateway_id;
+
+				$type = get_option( sprintf( 'woocommerce_cfgp_method_%s', $gateway->id ) );
+				$countries = get_option( sprintf( 'woocommerce_cfgp_method_%s_select', $gateway->id ) );
+
+				if( empty( $countries ) || $type == 'cfgp_payment_woo' ) {
 					continue;
 				}
 
-                if( 
-					$type === 'cfgp_payment_disable' 
-					&& in_array(
-						$current_country,
-						$countries
-					)
-				)
-                {
-                    if( isset( $gateways[ $gateway_id ] ) ) {
-						unset( $gateways[ $gateway_id ] );
-					}
-                }
-                elseif(
-					$type === 'cfgp_payment_enable'
-					&& !in_array(
-						$current_country,
-						$countries
-					) 
-				) 
-                {
-                    if( isset( $gateways[ $gateway_id ] ) ) {
-						unset( $gateways[ $gateway_id ] );
-					}
-                }
-            }
-        }
-		
-        return apply_filters(
+				// Logic for disabling or enabling payment methods based on country and type
+				if( $type === 'cfgp_payment_disable' && in_array($current_country, $countries) )
+				{
+					unset( $gateways[ $gateway_id ] );
+				}
+				elseif( $type === 'cfgp_payment_enable' && !in_array($current_country, $countries) )
+				{
+					unset( $gateways[ $gateway_id ] );
+				}
+			}
+		}
+
+		return apply_filters(
 			'cf_geoplugin_woocommerce_payment_disable',
 			$gateways,
 			$current_country,
 			$original_gateways,
 			CFGP_U::api(false, CFGP_Defaults::API_RETURN)
 		); 
-    }
+	}
+
 	
 	// Control of the some additional Woocommerce addons
 	public function wp_footer () {

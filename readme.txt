@@ -5,7 +5,7 @@ Tags: Geo Location, WordPress Geolocation Plugin, Location-Based Personalization
 Requires at least: 6.0
 Tested up to: 6.7
 Requires PHP: 7.0
-Stable tag: 8.7.9
+Stable tag: 8.7.11
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -413,6 +413,12 @@ Please inform us if any of these errors occur via contact form on our website [h
 
 == Changelog ==
 
+= 8.7.11 =
+* Improved cache headers
+
+= 8.7.10 =
+* Fixed issue with Woocommerce checkout info
+
 = 8.7.9 =
 * Fixed issue with Woocommerce HPOS metabox
 
@@ -455,6 +461,12 @@ Please inform us if any of these errors occur via contact form on our website [h
 * Improved javascript algorithms
 
 == Upgrade Notice ==
+
+= 8.7.11 =
+* Improved cache headers
+
+= 8.7.10 =
+* Fixed issue with Woocommerce checkout info
 
 = 8.7.9 =
 * Fixed issue with Woocommerce HPOS metabox
