@@ -13,16 +13,19 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-global $WP_ADMIN_DIR, $WP_ADMIN_URL;
-
 // Find wp-admin file path
 if (!defined('WP_ADMIN_DIR')) {
-	define('WP_ADMIN_DIR', ABSPATH . 'wp-admin');
-}
+    // Default wp-admin directory
+    $wp_admin_dir = ABSPATH . 'wp-admin';
 
-$WP_ADMIN_DIR = WP_ADMIN_DIR;
-if( function_exists('wp_admin') ) {
-	$WP_ADMIN_URL = wp_admin('/');
+    // Verify if wp-admin exists
+    if (!is_dir($wp_admin_dir)) {
+        // Fallback if wp-admin is not found in the default location
+        $wp_admin_dir = dirname(WP_CONTENT_DIR) . '/wp-admin';
+    }
+
+    // Define the constant WP_ADMIN_DIR
+    define('WP_ADMIN_DIR', rtrim($wp_admin_dir, '/\\'));
 }
 
 // Enable or disable REST

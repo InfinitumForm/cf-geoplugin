@@ -1,5 +1,11 @@
 == Changelog ==
 
+= 8.8.0 =
+* Fixed an issue with the Elementor builder
+* Fixed bugs with SEO module
+* Fixed bugs with IP address detection
+* Optimized PHP code
+
 = 8.7.11 =
 * Improved cache headers
 

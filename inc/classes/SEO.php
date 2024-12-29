@@ -152,7 +152,7 @@ if(!class_exists('CFGP_SEO', false)) : class CFGP_SEO extends CFGP_Global {
 	 * Edit/Save form
 	 */
 	public function save_form(){
-		if($_SERVER['REQUEST_METHOD'] === 'POST')
+		if(isset($_SERVER['REQUEST_METHOD']) && strtolower($_SERVER['REQUEST_METHOD']) === 'post')
 		{
 			if (CFGP_U::request_string('action') == 'new' && wp_verify_nonce(CFGP_U::request_string('nonce'), CFGP_NAME.'-seo-new') !== false) {
 				$action = CFGP_U::request_string('action');

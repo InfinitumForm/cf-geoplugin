@@ -179,7 +179,9 @@ class CFGP_Elementor_Content_Widget extends \Elementor\Widget_Base {
 				array(
 					'name' => 'typography',
 					'label' => __( 'Typography', 'cf-geoplugin'),
-					'scheme' => \Elementor\Core\Schemes\Typography::TYPOGRAPHY_3,
+					'global' => [
+						'default' => \Elementor\Core\Kits\Documents\Tabs\Global_Typography::TYPOGRAPHY_TEXT,
+					],
 					'selector' => "{$class}, {$class} p"
 				)
 			);
@@ -189,7 +191,9 @@ class CFGP_Elementor_Content_Widget extends \Elementor\Widget_Base {
 				array(
 					'name' => 'typography_link',
 					'label' => __( 'Link typography', 'cf-geoplugin'),
-					'scheme' => \Elementor\Core\Schemes\Typography::TYPOGRAPHY_3,
+					'global' => [
+						'default' => \Elementor\Core\Kits\Documents\Tabs\Global_Typography::TYPOGRAPHY_TEXT,
+					],
 					'selector' => "{$class} a, {$class} a:active"
 				)
 			);
@@ -199,7 +203,9 @@ class CFGP_Elementor_Content_Widget extends \Elementor\Widget_Base {
 				array(
 					'name' => 'typography_link_hover',
 					'label' => __( 'Link hover typography', 'cf-geoplugin'),
-					'scheme' => \Elementor\Core\Schemes\Typography::TYPOGRAPHY_3,
+					'global' => [
+						'default' => \Elementor\Core\Kits\Documents\Tabs\Global_Typography::TYPOGRAPHY_TEXT,
+					],
 					'selector' => "{$class} a:hover, {$class} a:focus"
 				)
 			);
@@ -230,7 +236,9 @@ class CFGP_Elementor_Content_Widget extends \Elementor\Widget_Base {
 				array(
 					'name' => 'typography_header_' . $h,
 					'label' => 'H' . $h,
-					'scheme' => \Elementor\Core\Schemes\Typography::TYPOGRAPHY_3,
+					'global' => [
+						'default' => \Elementor\Core\Kits\Documents\Tabs\Global_Typography::TYPOGRAPHY_TEXT,
+					],
 					'selector' => "{$class} h{$h}"
 				)
 			);

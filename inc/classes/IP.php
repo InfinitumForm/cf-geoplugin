@@ -414,24 +414,26 @@ class CFGP_IP extends CFGP_Global {
 
 		$localhost = false;
 
-		// Check for localhost IP addresses
-		if (in_array($ip, array('127.0.0.1', '::1'))) {
-			$localhost = true;
-		}
-
-		// Check for private network ranges
-		$private_ip_patterns = array(
-			'~^10\.\d{1,3}\.\d{1,3}\.\d{1,3}$~',
-			'~^172\.(1[6-9]|2[0-9]|3[0-1])\.\d{1,3}\.\d{1,3}$~',
-			'~^192\.168\.\d{1,3}\.\d{1,3}$~',
-			'~^fc00:~', // IPv6 private addresses
-			'~^fd00:~'  // IPv6 private addresses
-		);
-
-		foreach ($private_ip_patterns as $pattern) {
-			if (preg_match($pattern, $ip)) {
+		if(!empty($ip)) {
+			// Check for localhost IP addresses
+			if (in_array($ip, array('127.0.0.1', '::1'))) {
 				$localhost = true;
-				break;
+			}
+
+			// Check for private network ranges
+			$private_ip_patterns = array(
+				'~^10\.\d{1,3}\.\d{1,3}\.\d{1,3}$~',
+				'~^172\.(1[6-9]|2[0-9]|3[0-1])\.\d{1,3}\.\d{1,3}$~',
+				'~^192\.168\.\d{1,3}\.\d{1,3}$~',
+				'~^fc00:~',
+				'~^fd00:~'
+			);
+
+			foreach ($private_ip_patterns as $pattern) {
+				if (preg_match($pattern, $ip)) {
+					$localhost = true;
+					break;
+				}
 			}
 		}
 

@@ -131,7 +131,9 @@ class CFGP_Elementor_Eu_Widget extends \Elementor\Widget_Base {
 				array(
 					'name' => 'content_typography',
 					'label' => __( 'Typography', 'cf-geoplugin'),
-					'scheme' => \Elementor\Core\Schemes\Typography::TYPOGRAPHY_3,
+					'global' => [
+						'default' => \Elementor\Core\Kits\Documents\Tabs\Global_Typography::TYPOGRAPHY_TEXT,
+					],
 					'selector' => "{$class}, {$class} p"
 				)
 			);
@@ -141,7 +143,9 @@ class CFGP_Elementor_Eu_Widget extends \Elementor\Widget_Base {
 				array(
 					'name' => 'content_typography_link',
 					'label' => __( 'Link typography', 'cf-geoplugin'),
-					'scheme' => \Elementor\Core\Schemes\Typography::TYPOGRAPHY_3,
+					'global' => [
+						'default' => \Elementor\Core\Kits\Documents\Tabs\Global_Typography::TYPOGRAPHY_TEXT,
+					],
 					'selector' => "{$class} a, {$class} a:active"
 				)
 			);
@@ -151,7 +155,9 @@ class CFGP_Elementor_Eu_Widget extends \Elementor\Widget_Base {
 				array(
 					'name' => 'content_typography_link_hover',
 					'label' => __( 'Link hover typography', 'cf-geoplugin'),
-					'scheme' => \Elementor\Core\Schemes\Typography::TYPOGRAPHY_3,
+					'global' => [
+						'default' => \Elementor\Core\Kits\Documents\Tabs\Global_Typography::TYPOGRAPHY_TEXT,
+					],
 					'selector' => "{$class} a:hover, {$class} a:focus"
 				)
 			);
@@ -201,7 +207,9 @@ class CFGP_Elementor_Eu_Widget extends \Elementor\Widget_Base {
 					array(
 						'name' => "heading_typography_{$i}",
 						'label' => __( 'Typography', 'cf-geoplugin'),
-						'scheme' => \Elementor\Core\Schemes\Typography::TYPOGRAPHY_1,
+						'global' => [
+							'default' => \Elementor\Core\Kits\Documents\Tabs\Global_Typography::TYPOGRAPHY_TEXT,
+						],
 						'selector' => "{$class} h{$i}"
 					)
 				);
@@ -250,7 +258,9 @@ class CFGP_Elementor_Eu_Widget extends \Elementor\Widget_Base {
 				array(
 					'name' => 'content_typography_blockquote',
 					'label' => __( 'Typography', 'cf-geoplugin'),
-					'scheme' => \Elementor\Core\Schemes\Typography::TYPOGRAPHY_3,
+					'global' => [
+						'default' => \Elementor\Core\Kits\Documents\Tabs\Global_Typography::TYPOGRAPHY_TEXT,
+					],
 					'selector' => "{$class} blockquote"
 				)
 			);
