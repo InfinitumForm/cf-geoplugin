@@ -1,5 +1,9 @@
 == Changelog ==
 
+= 8.8.1 =
+* Fixed Woocommerce HPOS metabox order info
+* Improved IP filtering
+
 = 8.8.0 =
 * Fixed an issue with the Elementor builder
 * Fixed bugs with SEO module

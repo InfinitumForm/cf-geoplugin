@@ -164,7 +164,6 @@ class CFGP_IP extends CFGP_Global {
 		// let's try the last thing, why not?
 		if( CFGP_U::is_connected() )
 		{
-			$result = NULL;
 			foreach($external_servers as $server) {
 				$response = wp_remote_get($server);
 				if ( is_array( $response ) && !is_wp_error( $response ) ) {
@@ -189,77 +188,69 @@ class CFGP_IP extends CFGP_Global {
 	 * @pharam  $list - array of bad IP's  IP => RANGE or IP
 	 * @return  $array of blacklisted IP's
 	 */
-	public static function blocked($list=[])
-	{
-		
-		if($ip_blocked = CFGP_Cache::get('IP-blocked')){
-			return $ip_blocked;
+	public static function blocked($list = [])
+{
+		// Static cache to avoid redundant computations
+		static $cachedBlockedIPs = null;
+
+		if ($cachedBlockedIPs !== null) {
+			return $cachedBlockedIPs;
 		}
-		
-		$blacklist=apply_filters('cfgp/ip/blacklist', array(
-			// Localhost IP must be the first one
-			'0.0.0.0'		=>	8,
-			'127.0.0.0'		=>	8,
-			// Server IP address must be blacklisted
-			self::server()	=> 	0,
-			// Universal IP addresses
-			'10.0.0.0'		=>	8,
-			'100.64.0.0'	=>	10,
-			'169.254.0.0'	=>	16,
-			'172.16.0.0'	=>	12,
-			'192.0.0.0'		=>	24,
-			'192.0.2.0'		=>	24,
-			'192.88.99.0'	=>	24,
-			'192.168.0.0'	=>	8,
-			'192.168.1.0'	=>	255,
-			'198.18.0.0'	=>	15,
-			'198.51.100.0'	=>	24,
-			'203.0.113.0'	=>	24,
-			'224.0.0.0'		=>	4,
-			'240.0.0.0'		=>	4,
-			'255.255.255.0'	=>	255
+
+		$blacklist = apply_filters('cfgp/ip/blacklist', array(
+			'0.0.0.0'       => 8, // RFC1122 "This IP address is reserved for the network loopback interface"
+			'127.0.0.0'     => 8, // RFC1122 "This IP address is reserved for the network loopback interface"
+			self::server()	=> 0, // Current server
+			'10.0.0.0'      => 8, // RFC1918 "Private-Use"
+			'100.64.0.0'    => 10, // RFC6598 "Shared Address Space"
+			'169.254.0.0'   => 16, // RFC3927 "Link Local"
+			'172.16.0.0'    => 12, // RFC1918 "Private-Use"
+			'192.0.0.0'     => 24, // RFC6890 "IPv4 Special-Use"
+			'192.0.2.0'     => 24, // RFC5737 "Documentation"
+			'192.88.99.0'   => 24, // RFC3068 "6to4"
+			'192.168.0.0'   => 8, // RFC1918 "Private-Use"
+			'192.168.1.0'   => 255, // RFC3330 "TEST-NET-1"
+			'198.18.0.0'    => 15, // RFC2544 "Benchmarking"
+			'198.51.100.0'  => 24, // RFC3330 "Benchmarking"
+			'203.0.113.0'   => 24, // RFC3330 "Benchmarking"
+			'224.0.0.0'     => 4, // RFC3171 "Multicast"
+			'240.0.0.0'     => 4, // RFC1112 "Reserved"
+			'255.255.255.0' => 255, // RFC919 "Reserved"
 		));
-		
-		if(!empty($list) && is_array($list)){
-			$blacklist = array_merge($blacklist);
+
+		if (!empty($list) && is_array($list)) {
+			$blacklist = array_merge($blacklist, $list);
 		}
-		
-		$blacklistIP=[];
-		foreach($blacklist as $key=>$num)
-		{
-			// if address is not in range
-			if(is_int($key))
-			{
-				$blacklistIP[]=$num;
-			}
-			// addresses in range
-			else
-			{
-				// Parse IP and extract last number for mathing
+
+		$blacklistIP = [];
+		foreach ($blacklist as $key => $num) {
+			if (is_int($key)) {
+				$blacklistIP[] = $num;
+			} else {
 				$breakIP = explode('.', $key);
-				$lastNum = ((int)end($breakIP));
+				$lastNum = (int)end($breakIP);
 				array_pop($breakIP);
-				$connectIP=join('.', $breakIP).'.';
-				
-				if($lastNum>=$num)
-				{
-					$blacklistIP[]=$key;
-				}
-				else
-				{
-					for($i=$lastNum; $i<=$num; $i++)
-					{
-						$blacklistIP[]=$connectIP.$i;
+				$connectIP = implode('.', $breakIP) . '.';
+
+				if ($lastNum >= $num) {
+					$blacklistIP[] = $key;
+				} else {
+					for ($i = $lastNum; $i <= $num; $i++) {
+						$blacklistIP[] = $connectIP . $i;
 					}
 				}
-				$breakIP = $lastNum = $connectIP = NULL;
 			}
 		}
-		$blacklistIP=array_map('trim', $blacklistIP);
-		$blacklistIP=array_filter($blacklistIP);
-		
-		return CFGP_Cache::set('IP-blocked', $blacklistIP);
+
+		$blacklistIP = array_map('trim', $blacklistIP);
+		$blacklistIP = array_filter($blacklistIP);
+
+		// Store result in both static and persistent cache
+		$cachedBlockedIPs = $blacklistIP;
+
+		return $cachedBlockedIPs;
 	}
+
 	
 	/**
 	 * Detect server IP address

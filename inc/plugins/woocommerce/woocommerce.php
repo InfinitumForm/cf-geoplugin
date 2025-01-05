@@ -213,7 +213,16 @@ class CFGP__Plugin__woocommerce extends CFGP_Global
 	
 	// Customer Order information callback
 	public function geo_location_info__callback($post) {
-		if($GEO = get_post_meta($post->ID, '_cfgp_location_log', true)):
+		
+		if ($post instanceof WC_Order) {
+			$order_id = $post->get_id();
+			$order_date = $post->get_date_created();
+		} else {
+			$order_id = $post->ID;
+			$order_date = $post->post_date_gmt;
+		}
+		
+		if($GEO = get_post_meta($order_id, '_cfgp_location_log', true)):
 		$GEO = (object)$GEO;
 ?>
 <p id="cf-geoplugin-log-ip"><strong><?php esc_html_e( 'Order IP address:', 'cf-geoplugin'); ?></strong><br><?php
@@ -233,21 +242,21 @@ if($flag = CFGP_U::admin_country_flag($GEO->country_code)) {
 </p>
 	<?php
 		else :
-		$_customer_user_agent = get_post_meta($post->ID, '_customer_user_agent', true);
+		$_customer_user_agent = get_post_meta($order_id, '_customer_user_agent', true);
 	?>
 <p id="cf-geoplugin-log-ip"><strong><?php esc_html_e( 'Order IP address:', 'cf-geoplugin'); ?></strong><br><?php
-if($flag = CFGP_U::admin_country_flag(get_post_meta($post->ID, '_billing_country', true))) {
+if($flag = CFGP_U::admin_country_flag(get_post_meta($order_id, '_billing_country', true))) {
 	echo wp_kses_post($flag ?? '');
 } else {
 	echo '<span class="cfa cfa-globe"></span>';
 }
-?>&nbsp;&nbsp;<big><?php echo esc_html(get_post_meta($post->ID, '_customer_ip_address', true)); ?></big></p>
-<p><strong><?php esc_html_e( 'Order Timestamp:', 'cf-geoplugin'); ?></strong><br><?php echo esc_attr(date('D, j M Y, H:i:s O', strtotime($post->post_date_gmt))); ?></p>
+?>&nbsp;&nbsp;<big><?php echo esc_html(get_post_meta($order_id, '_customer_ip_address', true)); ?></big></p>
+<p><strong><?php esc_html_e( 'Order Timestamp:', 'cf-geoplugin'); ?></strong><br><?php echo esc_attr(date('D, j M Y, H:i:s O', strtotime($$order_date))); ?></p>
 <p><strong><?php esc_html_e( 'Order Location:', 'cf-geoplugin'); ?></strong><br><?php
-	$country = get_post_meta($post->ID, '_billing_country', true);
+	$country = get_post_meta($order_id, '_billing_country', true);
 	$location = array(
-		get_post_meta($post->ID, '_billing_city', true),
-		(WC()->countries->get_states( $country )[get_post_meta($post->ID, '_billing_state', true)] ?? NULL),
+		get_post_meta($order_id, '_billing_city', true),
+		(WC()->countries->get_states( $country )[get_post_meta($order_id, '_billing_state', true)] ?? NULL),
 		(WC()->countries->countries[$country] ?? NULL) . ' (' . $country . ')'
 	);
 	$location = array_map('trim', $location);
