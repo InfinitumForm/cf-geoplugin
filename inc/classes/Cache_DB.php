@@ -30,6 +30,8 @@ if(!class_exists('CFGP_DB_Cache', false)) : class CFGP_DB_Cache {
 			global $wpdb;
 			$wpdb->query( $wpdb->prepare("DELETE FROM `{$wpdb->cfgp_cache}` WHERE `expire` != 0 AND `expire` <= %d", time() ));
 		}
+		
+		add_action('wp_cache_flush', [__CLASS__, 'flush']);
 	}
 	
 	/*
@@ -53,7 +55,7 @@ if(!class_exists('CFGP_DB_Cache', false)) : class CFGP_DB_Cache {
 			if ($transient === false) {
 				self::$cache[$key] = $default;
 			} else {
-				self::$cache[$key] = (is_serialized($transient) || self::is_serialized($transient)) ? unserialize($transient) : $transient;
+				self::$cache[$key] = maybe_unserialize($transient);
 			}
 		} 
 		
@@ -65,7 +67,7 @@ if(!class_exists('CFGP_DB_Cache', false)) : class CFGP_DB_Cache {
 		else {
 			$result = $wpdb->get_var($wpdb->prepare("SELECT `{$wpdb->cfgp_cache}`.`value` FROM `{$wpdb->cfgp_cache}` WHERE `{$wpdb->cfgp_cache}`.`key` = %s", $key));
 			if($result) {
-				self::$cache[$key] = (is_serialized($result) || self::is_serialized($result)) ? unserialize($result) : $result;
+				self::$cache[$key] = maybe_unserialize($result);
 			} else {
 				self::$cache[$key] = $default;
 			}
@@ -101,9 +103,7 @@ if(!class_exists('CFGP_DB_Cache', false)) : class CFGP_DB_Cache {
 		else {
 			$expire = ($expire > 0) ? (time()+$expire) : $expire;
 			
-			if(is_array($value) || is_object($value) || is_bool($value)) {
-				$value = serialize($value);
-			}
+			$value = maybe_serialize($value);
 			
 			$save = $wpdb->query($wpdb->prepare("INSERT IGNORE INTO `{$wpdb->cfgp_cache}` (`key`, `value`, `expire`) VALUES (%s, %s, %d)", $key, $value, $expire));
 		}
@@ -192,7 +192,7 @@ if(!class_exists('CFGP_DB_Cache', false)) : class CFGP_DB_Cache {
 		else {
 			$expire = ($expire > 0) ? (time() + $expire) : $expire;
 			
-			$value = (is_array($value) || is_object($value) || is_bool($value)) ? serialize($value) : $value;
+			$value = maybe_serialize($value);
 
 			$save = $wpdb->query($wpdb->prepare(
 				"UPDATE `{$wpdb->cfgp_cache}` SET `value` = %s, `expire` = %d WHERE `key` = %s",
@@ -344,7 +344,7 @@ if(!class_exists('CFGP_DB_Cache', false)) : class CFGP_DB_Cache {
 			
 			// Include important library
 			if(!function_exists('dbDelta')){
-				require_once ABSPATH . DIRECTORY_SEPARATOR . 'wp-admin' . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'upgrade.php';
+				require_once ABSPATH . '/wp-admin/includes/upgrade.php';
 			}
 			
 			// Install table

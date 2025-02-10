@@ -15,6 +15,9 @@ if(!class_exists('CFGP_Init', false)) : final class CFGP_Init{
 		// Do translations
 		add_action('plugins_loaded', array(&$this, 'textdomain'));
 		
+		// Include Traits
+		include_once CFGP_INC . '/traits/cache.php';
+		
 		// Call main classes
 		$classes = apply_filters('cfgp/init/classes', array(
 			'CFGP_Cache',					// Register cache

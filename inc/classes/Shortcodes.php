@@ -605,8 +605,8 @@ if(!class_exists('CFGP_Shortcodes', false)) : class CFGP_Shortcodes extends CFGP
 		}
 		
 		// Set transient
-		if( !get_transient('cfgp-' . $transient_id) ) {
-			set_transient(
+		if( !CFGP_DB_Cache::get('cfgp-' . $transient_id) ) {
+			CFGP_DB_Cache::set(
 				'cfgp-' . $transient_id,
 				array_merge(
 					$setup,
@@ -616,7 +616,7 @@ if(!class_exists('CFGP_Shortcodes', false)) : class CFGP_Shortcodes extends CFGP
 						'key' => CFGP_U::CACHE_KEY()
 					]
 				),
-				YEAR_IN_SECONDS
+				DAY_IN_SECONDS*7
 			);
 		}
 		
@@ -1942,6 +1942,33 @@ LIMIT 1
 			return $content;
 		}
 		
+		// Prevent shortcodes to be cached
+		if( in_array(str_replace([
+			'cfgeo_',
+			'cfgp_',
+			'geo_'
+		], '', $shortcode), apply_filters('cfgp/shortcodes/cache/exclude', [
+			'request_url',
+			'timestamp_readable',
+			'timestamp',
+			'current_time',
+			'current_date',
+			'currency_converter',
+			'runtime',
+			'status',
+			'timezone_offset',
+			'timezone',
+			'available_lookup',
+			'limit',
+			'official_url',
+			'credit',
+			'version',
+			'error_message',
+			'error'
+		], $shortcode, $content, $options)) !== false ) {
+			return $content;
+		}
+		
 		// Sanitize the shortcode to ensure it's safe for use
 		$shortcode = esc_attr($shortcode);
 		$shortcode = trim($shortcode);
@@ -1950,13 +1977,15 @@ LIMIT 1
 		if (is_array($options)) {
 			$options = array_filter($options);
 		}
+		
+		
 
 		// Generate a unique transient ID based on the shortcode, options, and post ID
-		$transient_id = CFGP_U::hash(serialize(['cfgeo_' . $shortcode, $options, $content, $default, get_the_ID()]), 'sha256');
+		$transient_id = CFGP_U::hash(serialize(['cfgeo_' . $shortcode, $options, strip_tags($content, '<svg><img><form><input><select><textarea>'), $default, get_the_ID()]), 'whirlpool');
 
 		// Store transient with content, default values, and shortcode for 1 year
-		if( !get_transient('cfgp-' . $transient_id) ) {
-			set_transient('cfgp-' . $transient_id, [
+		if( !CFGP_DB_Cache::get('cfgp-' . $transient_id) ) {
+			CFGP_DB_Cache::set('cfgp-' . $transient_id, [
 				'content'   => $content,
 				'default'   => $default,
 				'shortcode' => $shortcode,
@@ -1964,7 +1993,7 @@ LIMIT 1
 				'post_id'   => get_the_ID(),
 				'hash' 	    => $transient_id, // for validation
 				'key'       => CFGP_U::CACHE_KEY() // secret plugin key
-			], YEAR_IN_SECONDS);
+			], DAY_IN_SECONDS);
 		}
 
 		// Return HTML that includes the shortcode and nonce

@@ -76,7 +76,6 @@ if(!class_exists('CFGP_Plugins', false)) : class CFGP_Plugins extends CFGP_Globa
 			}
 			
 			update_option(CFGP_NAME . '_dimiss_notice_plugin_support', true, true);
-			set_transient(CFGP_NAME . '_dimiss_notice_plugin_support', true, (MONTH_IN_SECONDS * time()));
 			
 			echo 1; exit;
 		}

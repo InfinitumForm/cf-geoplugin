@@ -758,9 +758,9 @@ var_dump($request_url);
 				'sku' => 'CFGEOSWL',
 				'url' => 'https://wpgeocontroller.com/license/cf-geo-plugin-unlimited-personal-license',
 				'price' => array(
-					'amount' => 62,
+					'amount' => 89,
 					'regular' => 89,
-					'sale' => 62,
+					'sale' => 89,
 					'date' => array(
 						'sale_from' => NULL,
 						'sale_to' => NULL
@@ -776,9 +776,9 @@ var_dump($request_url);
 				'sku' => 'CFGEO3WL',
 				'url' => 'https://wpgeocontroller.com/license/cf-geo-plugin-unlimited-freelancer-license',
 				'price' => array(
-					'amount' => 82,
+					'amount' => 132,
 					'regular' => 132,
-					'sale' => 82,
+					'sale' => 132,
 					'date' => array(
 						'sale_from' => NULL,
 						'sale_to' => NULL

@@ -1,5 +1,13 @@
 == Changelog ==
 
+= 8.8.3 =
+* Fixed problem with transients (must delete them after update)
+* Improved cache algorithms
+* Optimized PHP code
+
+= 8.8.2 =
+* License updates
+
 = 8.8.1 =
 * Fixed Woocommerce HPOS metabox order info
 * Improved IP filtering
