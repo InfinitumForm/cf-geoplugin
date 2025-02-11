@@ -504,6 +504,16 @@ if(!class_exists('CFGP_U', false)) : class CFGP_U {
 			rocket_clean_domain();
 		}
 */
+
+		// Flush LS Cache
+		if ( class_exists('\LiteSpeed\Purge', false) ) {
+			\LiteSpeed\Purge::purge_all();
+		} else if (has_action('litespeed_purge_all')) {
+			do_action( 'litespeed_purge_all' );
+		} else if (function_exists('liteSpeed_purge_all')) {
+			litespeed_purge_all();
+		}
+
 		// WP Super Cache
 		if(function_exists( 'prune_super_cache' ) && function_exists( 'get_supercache_dir' )) {
 			prune_super_cache( get_supercache_dir(), true );
@@ -513,20 +523,37 @@ if(!class_exists('CFGP_U', false)) : class CFGP_U {
 		if (function_exists( 'clear_site_cache' )) {
 			clear_site_cache();
 		}
-
-		// Clean stanrad WP cache
-		if($post && function_exists('clean_post_cache')) {
-			clean_post_cache( $post );
+		
+		// Clean Pagely cache
+		if ( class_exists( 'PagelyCachePurge', false ) ) {
+			(new PagelyCachePurge())->purgeAll();
+			return true;
+		}
+		
+		// Clean Hyper Cache
+		if (function_exists('hyper_cache_clear')) {
+			hyper_cache_clear();
+			return true;
 		}
 
 		// Comet Cache
 		if(class_exists('comet_cache', false) && method_exists('comet_cache', 'clear')) {
 			comet_cache::clear();
 		}
+		
+		// Clean Simple Cache
+		if (function_exists('simple_cache_flush')) {
+			simple_cache_flush();
+		}
 
-		// Clean user cache
-		if($user && function_exists('clean_user_cache')) {
-			clean_user_cache( $user );
+		// Clean Autoptimize
+		if (class_exists('autoptimizeCache') && method_exists('autoptimizeCache', 'clearall')) {
+			autoptimizeCache::clearall();
+		}
+		
+		// Clean WP-Optimize
+		if (class_exists('WP_Optimize_Cache_Commands', false)) {
+			( new WP_Optimize_Cache_Commands() )->purge_page_cache();
 		}
 		
 		if( $force ) {

@@ -1964,7 +1964,13 @@ LIMIT 1
 			'credit',
 			'version',
 			'error_message',
-			'error'
+			'error',
+			'gps',
+			'latitude',
+			'longitude',
+			'browser',
+			'browser_version',
+			'platform'
 		], $shortcode, $content, $options)) !== false ) {
 			return $content;
 		}

@@ -1,5 +1,10 @@
 == Changelog ==
 
+= 8.8.4 =
+* Removed PHP errors in regular versions
+* Removed obsolete code
+* Fixed cache problems
+
 = 8.8.3 =
 * Fixed problem with transients (must delete them after update)
 * Improved cache algorithms

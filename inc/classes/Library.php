@@ -196,7 +196,7 @@ class CFGP_Library {
 			
 			$country_data = $data;
 			if( !empty($data) ) {
-				CFGP_DB_Cache::set('library/get_countries', $data, DAY_IN_SECONDS);
+				CFGP_DB_Cache::set('library/get_countries', $data, YEAR_IN_SECONDS);
 			}
 			
 			if($json === false){
@@ -301,7 +301,7 @@ class CFGP_Library {
 			
 			$regions_data[$countries] = $data;
 			if( !empty($data) ) {
-				CFGP_DB_Cache::set('library/get_regions/' . $countries, $data, HOUR_IN_SECONDS);
+				CFGP_DB_Cache::set('library/get_regions/' . $countries, $data, YEAR_IN_SECONDS);
 			}
 			
 			if($json === false){
@@ -405,7 +405,7 @@ class CFGP_Library {
 			
 			$cities_data[$countries] = $data;
 			if( !empty($data) ) {
-				CFGP_DB_Cache::set('library/get_cities/' . $countries, $data, HOUR_IN_SECONDS);
+				CFGP_DB_Cache::set('library/get_cities/' . $countries, $data, YEAR_IN_SECONDS);
 			}
 			
 			if($json === false){

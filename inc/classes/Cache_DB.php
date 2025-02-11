@@ -266,6 +266,8 @@ if(!class_exists('CFGP_DB_Cache', false)) : class CFGP_DB_Cache {
 		return str_replace(
 			array(
 				'.',
+				',',
+				';',
 				"\s",
 				"\t",
 				"\n",
@@ -275,11 +277,13 @@ if(!class_exists('CFGP_DB_Cache', false)) : class CFGP_DB_Cache {
 			),
 			array(
 				'_',
-				'-',
-				'-',
-				'-',
-				'-',
 				'_',
+				'_',
+				'-',
+				'-',
+				'-',
+				'-',
+				'-',
 				'_'
 			),
 			$key
