@@ -1,17 +1,22 @@
 <?php
+
 /**
  * Trait that provides caching functionality for an object.
  *
  * @link          http://infinitumform.com/
  * @since         9.0.0
+ *
  * @package       cf-geoplugin
+ *
  * @author        Ivijan-Stefan Stipic
+ *
  * @version       1.0.0
  */
-if(!class_exists('CFGP__Cache', false)) : trait CFGP__Cache {
+if (!class_exists('CFGP__Cache', false)) : trait CFGP__Cache
+{
     // Static cache for use in static functions
     protected static array $static_data = [];
-    
+
     // Instance cache for use in non-static functions
     protected array $data = [];
 
@@ -21,9 +26,11 @@ if(!class_exists('CFGP__Cache', false)) : trait CFGP__Cache {
      * @param string $key
      * @param callable $function
      * @param string|null $index
+     *
      * @return mixed
      */
-    protected static function cached_static(string $key, callable $function, $index = null) {
+    protected static function cached_static(string $key, callable $function, $index = null)
+    {
         // Add prefix to key
         $key = self::cache_key($key, $index);
 
@@ -37,24 +44,26 @@ if(!class_exists('CFGP__Cache', false)) : trait CFGP__Cache {
 
         return self::$static_data[$key];
     }
-	
-	/**
-	 * Update data in the instance cache
-	 *
-	 * @param string $key
-	 * @param mixed $value
-	 * @param string|null $index
-	 * @return void
-	 */
-	protected static function update_cached_static(string $key, $value, $index = null) {
-	
-		// Add prefix to key
-		$key = self::cache_key($key, $index);
-		
-		self::$static_data[$key] = $value;
-		
-		return self::$static_data[$key];
-	}
+
+    /**
+     * Update data in the instance cache
+     *
+     * @param string $key
+     * @param mixed $value
+     * @param string|null $index
+     *
+     * @return void
+     */
+    protected static function update_cached_static(string $key, $value, $index = null)
+    {
+
+        // Add prefix to key
+        $key = self::cache_key($key, $index);
+
+        self::$static_data[$key] = $value;
+
+        return self::$static_data[$key];
+    }
 
     /**
      * Get data from cached data within this Object
@@ -63,7 +72,8 @@ if(!class_exists('CFGP__Cache', false)) : trait CFGP__Cache {
      * @param callable $function
      * @param string|null $index
      */
-    protected function cached(string $key, callable $function, $index = null) {
+    protected function cached(string $key, callable $function, $index = null)
+    {
 
         // Add prefix to key
         $key = self::cache_key($key, $index);
@@ -78,32 +88,36 @@ if(!class_exists('CFGP__Cache', false)) : trait CFGP__Cache {
 
         return $this->data[$key];
     }
-	
-	/**
-	 * Update data in the instance cache
-	 *
-	 * @param string $key
-	 * @param mixed $value
-	 * @param string|null $index
-	 * @return void
-	 */
-	protected function update_cached(string $key, $value, $index = null) {
-		// Add prefix to key
-		$key = self::cache_key($key, $index);
-		
-		$this->data[$key] = $value;
-		
-		return $this->data[$key];
-	}
+
+    /**
+     * Update data in the instance cache
+     *
+     * @param string $key
+     * @param mixed $value
+     * @param string|null $index
+     *
+     * @return void
+     */
+    protected function update_cached(string $key, $value, $index = null)
+    {
+        // Add prefix to key
+        $key = self::cache_key($key, $index);
+
+        $this->data[$key] = $value;
+
+        return $this->data[$key];
+    }
 
     /**
      * Clear cached value for a specific key
      *
      * @param string $key
      * @param string|null $prefix
+     *
      * @return void
      */
-    protected static function clear_static_cache(string $key, $index = null): void {
+    protected static function clear_static_cache(string $key, $index = null): void
+    {
         // Add prefix to key
         $key = self::cache_key($key, $index);
 
@@ -117,9 +131,11 @@ if(!class_exists('CFGP__Cache', false)) : trait CFGP__Cache {
      *
      * @param string $key
      * @param string|null $prefix
+     *
      * @return void
      */
-    protected function clear_cache(string $key, $index = null): void {
+    protected function clear_cache(string $key, $index = null): void
+    {
         // Add prefix to key
         $key = self::cache_key($key, $index);
 
@@ -132,9 +148,11 @@ if(!class_exists('CFGP__Cache', false)) : trait CFGP__Cache {
      * Clear all static cached values
      *
      * @param bool $is_static
+     *
      * @return void
      */
-    protected static function clear_static_cache_all(): void {
+    protected static function clear_static_cache_all(): void
+    {
         self::$static_data = [];
     }
 
@@ -143,7 +161,7 @@ if(!class_exists('CFGP__Cache', false)) : trait CFGP__Cache {
      *
      * @return void
      */
-    public function clear_cache_all() : void
+    public function clear_cache_all(): void
     {
         $this->data = [];
     }
@@ -153,7 +171,8 @@ if(!class_exists('CFGP__Cache', false)) : trait CFGP__Cache {
      *
      * @return array The cached data.
      */
-    protected static function get_all_static_cached(): array {
+    protected static function get_all_static_cached(): array
+    {
         return self::$static_data;
     }
 
@@ -162,80 +181,85 @@ if(!class_exists('CFGP__Cache', false)) : trait CFGP__Cache {
      *
      * @return array The cached data.
      */
-    protected function get_all_cached() : array {
+    protected function get_all_cached(): array
+    {
         return $this->data;
     }
 
     /**
-	 * Generates a cache key based on the class name and the provided key.
-	 *
-	 * @param string $key The key to use for the cache.
-	 * @param string|int|array|null $index An optional index to include in the cache key.
-	 * @return string The generated cache key.
-	 */
-	private static array $key_cache = [];
-	private static function cache_key(string $key, $index = null): string
-	{
-		// Generate a unique identifier for the cache
-		$cacheKey = $key . '|' . (is_array($index) ? implode('.', self::cache_array_key($index)) : (string)($index ?? ''));
+     * Generates a cache key based on the class name and the provided key.
+     *
+     * @param string $key The key to use for the cache.
+     * @param string|int|array|null $index An optional index to include in the cache key.
+     *
+     * @return string The generated cache key.
+     */
+    private static array $key_cache = [];
+    private static function cache_key(string $key, $index = null): string
+    {
+        // Generate a unique identifier for the cache
+        $cacheKey = $key . '|' . (is_array($index) ? implode('.', self::cache_array_key($index)) : (string)($index ?? ''));
 
-		// Return cached result if it exists
-		if (isset(self::$key_cache[$cacheKey])) {
-			return self::$key_cache[$cacheKey];
-		}
+        // Return cached result if it exists
+        if (isset(self::$key_cache[$cacheKey])) {
+            return self::$key_cache[$cacheKey];
+        }
 
-		// Determine the root context (class or calling function)
-		$root = class_exists(static::class) 
-			? static::class 
-			: (debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 3)[2]['function'] ?? 'global');
+        // Determine the root context (class or calling function)
+        $root = class_exists(static::class)
+            ? static::class
+            : (debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 3)[2]['function'] ?? 'global');
 
-		// Generate the base key with sanitized key value
-		$generatedKey = $root . '::' . preg_replace('/[^a-zA-Z0-9_\-:]/', '_', $key);
+        // Generate the base key with sanitized key value
+        $generatedKey = $root . '::' . preg_replace('/[^a-zA-Z0-9_\-:]/', '_', $key);
 
-		// Process the index if provided
-		if ($index !== null) {
-			if (is_array($index)) {
-				// Properly flatten and sanitize array values
-				$index = implode('.', array_map(
-					fn($v) => preg_replace('/[^a-zA-Z0-9_\-]/', '_', (string)$v),
-					self::cache_array_key($index)
-				));
-			} else {
-				// Sanitize single value
-				$index = preg_replace('/[^a-zA-Z0-9_\-]/', '_', (string)$index);
-			}
-			$generatedKey .= '->' . $index;
-		}
+        // Process the index if provided
+        if ($index !== null) {
+            if (is_array($index)) {
+                // Properly flatten and sanitize array values
+                $index = implode('.', array_map(
+                    fn ($v) => preg_replace('/[^a-zA-Z0-9_\-]/', '_', (string)$v),
+                    self::cache_array_key($index)
+                ));
+            } else {
+                // Sanitize single value
+                $index = preg_replace('/[^a-zA-Z0-9_\-]/', '_', (string)$index);
+            }
+            $generatedKey .= '->' . $index;
+        }
 
-		// Cache the result for future use
-		self::$key_cache[$cacheKey] = $generatedKey;
+        // Cache the result for future use
+        self::$key_cache[$cacheKey] = $generatedKey;
 
-		return $generatedKey;
-	}
+        return $generatedKey;
+    }
 
     /**
-	 * Recursively extract all values from a nested array.
-	 *
-	 * @param array $array
-	 * @return array
-	 */
-	private static function cache_array_key(array $array): array
-	{
-		$flatValues = [];
-		foreach ($array as $key => $value) {
-			if (is_array($value)) {
-				// If value is an array, recursively extract its values
-				$flatValues = array_merge($flatValues, self::cache_array_key($value));
-			} else {
-				if (empty($value)) {
-					$value = is_numeric($key) ? 'null' : $key;
-				}
+     * Recursively extract all values from a nested array.
+     *
+     * @param array $array
+     *
+     * @return array
+     */
+    private static function cache_array_key(array $array): array
+    {
+        $flatValues = [];
 
-				// Append sanitized value
-				$flatValues[] = (string)$value;
-			}
-		}
-		return $flatValues;
-	}
+        foreach ($array as $key => $value) {
+            if (is_array($value)) {
+                // If value is an array, recursively extract its values
+                $flatValues = array_merge($flatValues, self::cache_array_key($value));
+            } else {
+                if (empty($value)) {
+                    $value = is_numeric($key) ? 'null' : $key;
+                }
+
+                // Append sanitized value
+                $flatValues[] = (string)$value;
+            }
+        }
+
+        return $flatValues;
+    }
 
 } endif;

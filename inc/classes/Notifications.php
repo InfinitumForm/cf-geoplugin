@@ -4,239 +4,262 @@
  *
  * @link          http://infinitumform.com/
  * @since         8.0.0
- * @package       cf-geoplugin
- * @author        Ivijan-Stefan Stipic
- * @version       2.0.0
  *
+ * @package       cf-geoplugin
+ *
+ * @author        Ivijan-Stefan Stipic
+ *
+ * @version       2.0.0
  */
- // If someone try to called this file directly via URL, abort.
-if ( ! defined( 'WPINC' ) ) { die( "Don't mess with us." ); }
-if ( ! defined( 'ABSPATH' ) ) { exit; }
+// If someone try to called this file directly via URL, abort.
+if (!defined('WPINC')) {
+    die("Don't mess with us.");
+}
 
-if(!class_exists('CFGP_Notifications', false)) : class CFGP_Notifications extends CFGP_Global{
+if (!defined('ABSPATH')) {
+    exit;
+}
 
-	function __construct(){
-		
-		$this->add_action( 'admin_init', 'check_installation_time' );
-		$this->add_action( 'admin_init', 'cfgp_dimiss_review', 5 );
-		
-		if( defined( 'CFGP_DISABLE_NOTIFICATION' ) && CFGP_DISABLE_NOTIFICATION ) {
-			return;
-		} else {
-			if( !CFGP_License::activated() ){
-				$this->add_filter('cfgp/notification/emails', 'remove_spams', 1);
-				$this->add_filter('init', 'lookup_expire_soon', 99);
-			}
-		}
-	}
-	
-	// remove the notice for the user if review already done or if the user does not want to
-	public function cfgp_dimiss_review(){    
-		if( isset( $_GET['cfgp_dimiss_review'] ) && !empty( $_GET['cfgp_dimiss_review'] ) ){
-			$cfgp_dimiss_review = absint($_GET['cfgp_dimiss_review']);
-			if( $cfgp_dimiss_review == 1 ){
-				add_option( CFGP_NAME . '-reviewed' , true );
-				
-				$parse_url = CFGP_U::parse_url();
-				if(wp_safe_redirect(remove_query_arg('cfgp_dimiss_review', $parse_url['url']))) {
-					exit;
-				}
-			}
-		}
-	}
-	
-	// check if review notice should be shown or not
-	public function check_installation_time() {
-		
-		if(get_option(CFGP_NAME . '-reviewed')){
-			return;
-		}
-		
-		$get_dates = get_option(CFGP_NAME . '-activation');
-		if(is_array($get_dates)){
-			$install_date = strtotime(end($get_dates));
-		} else {
-			$install_date = strtotime($get_dates);
-		}
-		
-		$past_date = strtotime( '-7 days' );
-	 
-		if ( $past_date >= $install_date) {
-			$this->add_action( 'admin_notices', 'display_admin_notice' );
-		}
-	}
-	
-	/**
-	 * Display Admin Notice, asking for a review
-	**/
-	public function display_admin_notice() {
-		$parse_url = CFGP_U::parse_url();
-		$dont_disturb = esc_url( add_query_arg('cfgp_dimiss_review', '1', $parse_url['url']) );
-		$plugin_info = get_plugin_data( CFGP_FILE , true, true );       
-		$reviewurl = esc_url( 'https://wordpress.org/support/plugin/cf-geoplugin/reviews/?filter=5#new-post' );
-	 
-		echo wp_kses_post( sprintf(
-			'<div class="notice notice-info"><h3>'.__('You have been using <b> %1$s </b> plugin for a while. We hope you liked it!', 'cf-geoplugin').'</h3><p>'.__('Please give us a quick rating, it works as a boost for us to keep working on the plugin!', 'cf-geoplugin').'</p><p class="void-review-btn"><a href="%2$s" class="button button-primary" target="_blank">'.__('Rate Now!', 'cf-geoplugin').'</a> &nbsp;&nbsp;<a href="%3$s" class="void-grid-review-done">'.__('I\'ve already done that!', 'cf-geoplugin').'</a></p></div>',
-			$plugin_info['Name'],
-			$reviewurl,
-			$dont_disturb
-		) );
-	}
-	
-	/*
-	 * Lookup Expire Soon Message
-	 */
-	public function lookup_expire_soon() {
-		if( defined( 'CFGP_DISABLE_NOTIFICATION_LOOKUP_EXPIRE_SOON' ) && CFGP_DISABLE_NOTIFICATION_LOOKUP_EXPIRE_SOON ) return;
-		
-		$transient = 'cfgp-notification-lookup-expire-soon';
-		
-		// Stop when email is send
-		if( CFGP_DB_Cache::get($transient) ) return;
-		
-		// Stop if lookup is unlimited or lifetime
-		if( CFGP_U::api('available_lookup') == 'unlimited' || CFGP_U::api('available_lookup') == 'lifetime' ) return;
-		
-		// Get emails
-		$emails = $this->get_admins();
-		
-		// Send email below 100
-		$lookup = CFGP_U::api('available_lookup');
-		if( is_numeric($lookup) && $lookup <= 100 && $lookup > 1 && $emails )
-		{		
-			$message = [];
-			$message[]= '<p>' . esc_html__('Hi there,', 'cf-geoplugin') . '</p>';
-			$message[]= '<p>' . esc_html__('Your lookup will expire soon and geo controller services will be unavailable until the next day.', 'cf-geoplugin') . '</p>';
-			$message[]= '<p>' . wp_kses_post( sprintf(
-				__('If your site has a large traffic and you need the full functionality of the plugin, you need to get the appropriate license and activate the %1$s.', 'cf-geoplugin'),
-				'<a href="' . CFGP_STORE . '/pricing/" target="_blank">' . esc_html__('UNLIMITED LOOKUP.', 'cf-geoplugin') . '</a>'
-			) ) . '</p>';
-			$message[]= '<p>' . wp_kses_post( sprintf(
-				__('You currently have %1$d lookups left for today and if you want to have an unlimited lookup, you need to %s.', 'cf-geoplugin'),
-				$lookup,
-				'<a href="' . CFGP_STORE . '/pricing/" target="_blank">' . esc_html__('extend your license', 'cf-geoplugin') . '</a>'
-			) ) . '</p>';
-			
-			$message = apply_filters('cfgp/notification/message/body/expire_soon', $message);
+if (!class_exists('CFGP_Notifications', false)) : class CFGP_Notifications extends CFGP_Global
+{
+    public function __construct()
+    {
 
-			$this->send(
-				$emails,
-				esc_html__('Geo Controller NOTIFICATION - Today\'s lookup expires soon', 'cf-geoplugin'),
-				$message
-			);
-			CFGP_DB_Cache::set($transient, CFGP_TIME, DAY_IN_SECONDS); // 24 hours
-		}
-	}
-	
-	/*
-	 * Send message
-	 */
-	public function send($email, $subject, $message, $headers = [], $attachments = []){
-		$this->add_filter( 'wp_mail_content_type', '_content_type');
-		
-		if(is_array($message)) $message = join(PHP_EOL,$message);
-		
-		$headers = apply_filters(
-			'cfgp/notification/mail_headers',
-			array_merge(
-				$headers,
-				array('Content-Type: text/html; charset=UTF-8')
-			),
-			$headers
-		);
-		
-		$return = wp_mail(
-			$email, $subject,
-			$this->template(
-				$subject,
-				$message
-			),
-			$headers,
-			$attachments
-		);
-		$this->remove_filter( 'wp_mail_content_type', '_content_type' );
-		return $return;
-	}
-	
-	/*
-	 * Set Content Type
-	 */
-	public function _content_type(){
-		return 'text/html';
-	}
-	
-	/*
-	 * Let's filter spammers.
-	 * Everyone is responsible for their own license.
-	 */
-	public function remove_spams( $emails ) {
-		$remove = array_map('str_rot13', array('pstrbcyhtva', 'vasvavghzsbez', 'perngvisbez'));
-		foreach($remove as $i=>$term) {
-			if(strpos($_SERVER['HTTP_HOST'], $term) === false)
-			{
-				foreach($emails as $e=>$email)
-				{
-					if(strpos($email, $term) !== false){
-						unset($emails[$e]);
-					}
-				}
-			}
-		}
-		return $emails;
-	}
-	
-	/*
-	 * Get admins email
-	 */
-	private function get_admins(){		
-		$emails = [];
-		
-		if(CFGP_Options::get('notification_recipient_type') == 'manual')
-		{
-			$explode_emails = explode(',', CFGP_Options::get('notification_recipient_emails'));
-			$explode_emails = array_map('trim', $explode_emails);
-			$explode_emails = array_map('sanitize_email', $explode_emails);
-			$emails = array_filter($explode_emails);
-		}
-		else if(CFGP_Options::get('notification_recipient_type') == 'all')
-		{
-			$admins = get_users(
-				apply_filters(
-					'cfgp/notification/users_setup',
-					array(
-						'role__in' => apply_filters(
-							'cfgp/notification/user_roles',
-							array( 'administrator' )
-						) 
-					)
-				)
-			);
+        $this->add_action('admin_init', 'check_installation_time');
+        $this->add_action('admin_init', 'cfgp_dimiss_review', 5);
 
-			if($admins && is_array($admins))
-			{
-				foreach ( $admins as $admin ) {
-					$emails[$admin->ID]= $admin->user_email;
-				}
-			}
-		}
-		
-		
-		$emails = apply_filters('cfgp/notification/emails', $emails);
-		
-		if(!empty($emails))
-		{
-			return $emails;
-		}
-		
-		return false;
-	}
-	
-	
-	/*
-	 * Email Template
-	 */
-	private function template($subject, $content){
-		ob_start( 'trim', 0, PHP_OUTPUT_HANDLER_REMOVABLE ); ?>
+        if (defined('CFGP_DISABLE_NOTIFICATION') && CFGP_DISABLE_NOTIFICATION) {
+            return;
+        } else {
+            if (!CFGP_License::activated()) {
+                $this->add_filter('cfgp/notification/emails', 'remove_spams', 1);
+                $this->add_filter('init', 'lookup_expire_soon', 99);
+            }
+        }
+    }
+
+    // remove the notice for the user if review already done or if the user does not want to
+    public function cfgp_dimiss_review()
+    {
+        if (isset($_GET['cfgp_dimiss_review']) && !empty($_GET['cfgp_dimiss_review'])) {
+            $cfgp_dimiss_review = absint($_GET['cfgp_dimiss_review']);
+
+            if ($cfgp_dimiss_review == 1) {
+                add_option(CFGP_NAME . '-reviewed', true);
+
+                $parse_url = CFGP_U::parse_url();
+
+                if (wp_safe_redirect(remove_query_arg('cfgp_dimiss_review', $parse_url['url']))) {
+                    exit;
+                }
+            }
+        }
+    }
+
+    // check if review notice should be shown or not
+    public function check_installation_time()
+    {
+
+        if (get_option(CFGP_NAME . '-reviewed')) {
+            return;
+        }
+
+        $get_dates = get_option(CFGP_NAME . '-activation');
+
+        if (is_array($get_dates)) {
+            $install_date = strtotime(end($get_dates));
+        } else {
+            $install_date = strtotime($get_dates);
+        }
+
+        $past_date = strtotime('-7 days');
+
+        if ($past_date >= $install_date) {
+            $this->add_action('admin_notices', 'display_admin_notice');
+        }
+    }
+
+    /**
+     * Display Admin Notice, asking for a review
+    **/
+    public function display_admin_notice()
+    {
+        $parse_url    = CFGP_U::parse_url();
+        $dont_disturb = esc_url(add_query_arg('cfgp_dimiss_review', '1', $parse_url['url']));
+        $plugin_info  = get_plugin_data(CFGP_FILE, true, true);
+        $reviewurl    = esc_url('https://wordpress.org/support/plugin/cf-geoplugin/reviews/?filter=5#new-post');
+
+        echo wp_kses_post(sprintf(
+            '<div class="notice notice-info"><h3>'.__('You have been using <b> %1$s </b> plugin for a while. We hope you liked it!', 'cf-geoplugin').'</h3><p>'.__('Please give us a quick rating, it works as a boost for us to keep working on the plugin!', 'cf-geoplugin').'</p><p class="void-review-btn"><a href="%2$s" class="button button-primary" target="_blank">'.__('Rate Now!', 'cf-geoplugin').'</a> &nbsp;&nbsp;<a href="%3$s" class="void-grid-review-done">'.__('I\'ve already done that!', 'cf-geoplugin').'</a></p></div>',
+            $plugin_info['Name'],
+            $reviewurl,
+            $dont_disturb
+        ));
+    }
+
+    /*
+     * Lookup Expire Soon Message
+     */
+    public function lookup_expire_soon()
+    {
+        if (defined('CFGP_DISABLE_NOTIFICATION_LOOKUP_EXPIRE_SOON') && CFGP_DISABLE_NOTIFICATION_LOOKUP_EXPIRE_SOON) {
+            return;
+        }
+
+        $transient = 'cfgp-notification-lookup-expire-soon';
+
+        // Stop when email is send
+        if (CFGP_DB_Cache::get($transient)) {
+            return;
+        }
+
+        // Stop if lookup is unlimited or lifetime
+        if (CFGP_U::api('available_lookup') == 'unlimited' || CFGP_U::api('available_lookup') == 'lifetime') {
+            return;
+        }
+
+        // Get emails
+        $emails = $this->get_admins();
+
+        // Send email below 100
+        $lookup = CFGP_U::api('available_lookup');
+
+        if (is_numeric($lookup) && $lookup <= 100 && $lookup > 1 && $emails) {
+            $message   = [];
+            $message[] = '<p>' . esc_html__('Hi there,', 'cf-geoplugin') . '</p>';
+            $message[] = '<p>' . esc_html__('Your lookup will expire soon and geo controller services will be unavailable until the next day.', 'cf-geoplugin') . '</p>';
+            $message[] = '<p>' . wp_kses_post(sprintf(
+                __('If your site has a large traffic and you need the full functionality of the plugin, you need to get the appropriate license and activate the %1$s.', 'cf-geoplugin'),
+                '<a href="' . CFGP_STORE . '/pricing/" target="_blank">' . esc_html__('UNLIMITED LOOKUP.', 'cf-geoplugin') . '</a>'
+            )) . '</p>';
+            $message[] = '<p>' . wp_kses_post(sprintf(
+                __('You currently have %1$d lookups left for today and if you want to have an unlimited lookup, you need to %s.', 'cf-geoplugin'),
+                $lookup,
+                '<a href="' . CFGP_STORE . '/pricing/" target="_blank">' . esc_html__('extend your license', 'cf-geoplugin') . '</a>'
+            )) . '</p>';
+
+            $message = apply_filters('cfgp/notification/message/body/expire_soon', $message);
+
+            $this->send(
+                $emails,
+                esc_html__('Geo Controller NOTIFICATION - Today\'s lookup expires soon', 'cf-geoplugin'),
+                $message
+            );
+            CFGP_DB_Cache::set($transient, CFGP_TIME, DAY_IN_SECONDS); // 24 hours
+        }
+    }
+
+    /*
+     * Send message
+     */
+    public function send($email, $subject, $message, $headers = [], $attachments = [])
+    {
+        $this->add_filter('wp_mail_content_type', '_content_type');
+
+        if (is_array($message)) {
+            $message = join(PHP_EOL, $message);
+        }
+
+        $headers = apply_filters(
+            'cfgp/notification/mail_headers',
+            array_merge(
+                $headers,
+                ['Content-Type: text/html; charset=UTF-8']
+            ),
+            $headers
+        );
+
+        $return = wp_mail(
+            $email,
+            $subject,
+            $this->template(
+                $subject,
+                $message
+            ),
+            $headers,
+            $attachments
+        );
+        $this->remove_filter('wp_mail_content_type', '_content_type');
+
+        return $return;
+    }
+
+    /*
+     * Set Content Type
+     */
+    public function _content_type()
+    {
+        return 'text/html';
+    }
+
+    /*
+     * Let's filter spammers.
+     * Everyone is responsible for their own license.
+     */
+    public function remove_spams($emails)
+    {
+        $remove = array_map('str_rot13', ['pstrbcyhtva', 'vasvavghzsbez', 'perngvisbez']);
+
+        foreach ($remove as $i => $term) {
+            if (strpos($_SERVER['HTTP_HOST'], $term) === false) {
+                foreach ($emails as $e => $email) {
+                    if (strpos($email, $term) !== false) {
+                        unset($emails[$e]);
+                    }
+                }
+            }
+        }
+
+        return $emails;
+    }
+
+    /*
+     * Get admins email
+     */
+    private function get_admins()
+    {
+        $emails = [];
+
+        if (CFGP_Options::get('notification_recipient_type') == 'manual') {
+            $explode_emails = explode(',', CFGP_Options::get('notification_recipient_emails'));
+            $explode_emails = array_map('trim', $explode_emails);
+            $explode_emails = array_map('sanitize_email', $explode_emails);
+            $emails         = array_filter($explode_emails);
+        } elseif (CFGP_Options::get('notification_recipient_type') == 'all') {
+            $admins = get_users(
+                apply_filters(
+                    'cfgp/notification/users_setup',
+                    [
+                        'role__in' => apply_filters(
+                            'cfgp/notification/user_roles',
+                            [ 'administrator' ]
+                        ),
+                    ]
+                )
+            );
+
+            if ($admins && is_array($admins)) {
+                foreach ($admins as $admin) {
+                    $emails[$admin->ID] = $admin->user_email;
+                }
+            }
+        }
+
+        $emails = apply_filters('cfgp/notification/emails', $emails);
+
+        if (!empty($emails)) {
+            return $emails;
+        }
+
+        return false;
+    }
+
+    /*
+     * Email Template
+     */
+    private function template($subject, $content)
+    {
+        ob_start('trim', 0, PHP_OUTPUT_HANDLER_REMOVABLE); ?>
 <!doctype html>
 <html>
   <head>
@@ -575,7 +598,7 @@ if(!class_exists('CFGP_Notifications', false)) : class CFGP_Notifications extend
     </style>
   </head>
   <body class="">
-	<span class="preheader"><?php echo wp_kses_post( sprintf(__('If you no longer wish to receive these notifications, please read how to %1$s.', 'cf-geoplugin'), '<a href="' . esc_url(CFGP_STORE) . '/documentation/advanced-usage/php-integration/constants/cfgp_disable_notification/" target="_blank">' . __('disable this notifications', 'cf-geoplugin') . '</a>') ); ?></span>
+	<span class="preheader"><?php echo wp_kses_post(sprintf(__('If you no longer wish to receive these notifications, please read how to %1$s.', 'cf-geoplugin'), '<a href="' . esc_url(CFGP_STORE) . '/documentation/advanced-usage/php-integration/constants/cfgp_disable_notification/" target="_blank">' . __('disable this notifications', 'cf-geoplugin') . '</a>')); ?></span>
     <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="body">
       <tr>
         <td>&nbsp;</td>
@@ -607,18 +630,18 @@ if(!class_exists('CFGP_Notifications', false)) : class CFGP_Notifications extend
               <table role="presentation" border="0" cellpadding="0" cellspacing="0">
                 <tr>
                   <td class="content-block">
-                    <span class="apple-link"><?php echo wp_kses_post( sprintf(__('This email is automatically sent by Geo Controller via site %1$s.', 'cf-geoplugin'), '<a href="' . esc_url( get_bloginfo('url') ) . '" target="_blank">' . esc_html( get_bloginfo('name') ) . '</a>') ); ?><br>
-					<a href="<?php echo esc_url( CFGP_STORE ) ?>/privacy-policy/" target="_blank"><?php esc_html_e('Privacy Policy', 'cf-geoplugin'); ?></a> | <a href="<?php echo esc_url( CFGP_STORE ) ?>/terms-and-conditions/" target="_blank"><?php esc_html_e('Terms And Conditions', 'cf-geoplugin'); ?></a> | <a href="<?php echo esc_url( CFGP_STORE ) ?>/documentation/" target="_blank"><?php esc_html_e('Documentation', 'cf-geoplugin'); ?></a> | <a href="<?php echo esc_url( CFGP_STORE ) ?>/contact-and-support/" target="_blank"><?php esc_html_e('Contact & Support', 'cf-geoplugin'); ?></a></span>
+                    <span class="apple-link"><?php echo wp_kses_post(sprintf(__('This email is automatically sent by Geo Controller via site %1$s.', 'cf-geoplugin'), '<a href="' . esc_url(get_bloginfo('url')) . '" target="_blank">' . esc_html(get_bloginfo('name')) . '</a>')); ?><br>
+					<a href="<?php echo esc_url(CFGP_STORE) ?>/privacy-policy/" target="_blank"><?php esc_html_e('Privacy Policy', 'cf-geoplugin'); ?></a> | <a href="<?php echo esc_url(CFGP_STORE) ?>/terms-and-conditions/" target="_blank"><?php esc_html_e('Terms And Conditions', 'cf-geoplugin'); ?></a> | <a href="<?php echo esc_url(CFGP_STORE) ?>/documentation/" target="_blank"><?php esc_html_e('Documentation', 'cf-geoplugin'); ?></a> | <a href="<?php echo esc_url(CFGP_STORE) ?>/contact-and-support/" target="_blank"><?php esc_html_e('Contact & Support', 'cf-geoplugin'); ?></a></span>
                   </td>
                 </tr>
                 <tr>
                   <td class="content-block powered-by">
-                    <?php echo wp_kses_post( sprintf(__('Powered by  %1$s.', 'cf-geoplugin'), '<a href="' . esc_url(CFGP_STORE) . '" target="_blank">Geo Controller</a>') ); ?>
+                    <?php echo wp_kses_post(sprintf(__('Powered by  %1$s.', 'cf-geoplugin'), '<a href="' . esc_url(CFGP_STORE) . '" target="_blank">Geo Controller</a>')); ?>
                   </td>
                 </tr>
 				<tr>
                   <td class="content-block powered-by"><br><br>
-                    <?php echo wp_kses_post( sprintf(__('If you no longer wish to receive these notifications, please read how to %1$s.', 'cf-geoplugin'), '<a href="' . CFGP_STORE . '/documentation/advanced-usage/php-integration/constants/cfgp_disable_notification/" target="_blank">' . __('disable this notifications', 'cf-geoplugin') . '</a>') ); ?>
+                    <?php echo wp_kses_post(sprintf(__('If you no longer wish to receive these notifications, please read how to %1$s.', 'cf-geoplugin'), '<a href="' . CFGP_STORE . '/documentation/advanced-usage/php-integration/constants/cfgp_disable_notification/" target="_blank">' . __('disable this notifications', 'cf-geoplugin') . '</a>')); ?>
                   </td>
                 </tr>
               </table>
@@ -633,26 +656,30 @@ if(!class_exists('CFGP_Notifications', false)) : class CFGP_Notifications extend
   </body>
 </html><?php
 
-		$html = '';
-		if (ob_get_level()) {
-			$html = ob_get_contents();
-			ob_end_clean();
-		}
-		
-		return $html;
-	}
-	
-	/*
-	 * Instance
-	 * @verson    1.0.0
-	 */
-	public static function instance() {
-		$class = self::class;
-		$instance = CFGP_Cache::get($class);
-		if ( !$instance ) {
-			$instance = CFGP_Cache::set($class, new self());
-		}
-		return $instance;
-	}
+        $html = '';
+
+        if (ob_get_level()) {
+            $html = ob_get_contents();
+            ob_end_clean();
+        }
+
+        return $html;
+    }
+
+    /*
+     * Instance
+     * @verson    1.0.0
+     */
+    public static function instance()
+    {
+        $class    = self::class;
+        $instance = CFGP_Cache::get($class);
+
+        if (!$instance) {
+            $instance = CFGP_Cache::set($class, new self());
+        }
+
+        return $instance;
+    }
 }
 endif;

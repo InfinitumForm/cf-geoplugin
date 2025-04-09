@@ -1,22 +1,27 @@
 <?php
 
-if ( ! defined( 'WPINC' ) ) { die( "Don't mess with us." ); }
-if ( ! defined( 'ABSPATH' ) ) { exit; }
+if (!defined('WPINC')) {
+    die("Don't mess with us.");
+}
 
-add_action('cfgp/settings/nav-tab/after', function(){ ?>
-	<a href="javascript:void(0);" class="nav-tab" data-id="#rest-api"<?php echo (CFGP_Options::get('enable_rest',0) ? '' : ' style="display: none;"'); ?>><span class="cfa cfa-code"></span><span class="label"> <?php esc_html_e('REST API', 'cf-geoplugin'); ?></span></a>
+if (!defined('ABSPATH')) {
+    exit;
+}
+
+add_action('cfgp/settings/nav-tab/after', function () { ?>
+	<a href="javascript:void(0);" class="nav-tab" data-id="#rest-api"<?php echo(CFGP_Options::get('enable_rest', 0) ? '' : ' style="display: none;"'); ?>><span class="cfa cfa-code"></span><span class="label"> <?php esc_html_e('REST API', 'cf-geoplugin'); ?></span></a>
 <?php  });
 
-
-add_action('cfgp/settings/tab-panel/after', function(){ if(CFGP_Options::get('enable_rest',0)) :
-	global $wpdb;
-	$api_key = get_option(CFGP_NAME . '-ID');
-	$secret_key = CFGP_REST::get('secret_key');	
-?>
+add_action('cfgp/settings/tab-panel/after', function () {
+    if (CFGP_Options::get('enable_rest', 0)) :
+        global $wpdb;
+        $api_key    = get_option(CFGP_NAME . '-ID');
+        $secret_key = CFGP_REST::get('secret_key');
+        ?>
 <div class="cfgp-tab-panel" id="rest-api">
 	<section class="cfgp-tab-panel-section" id="rest-api-intro">
         <h2 class="title"><?php esc_html_e('REST API Setup', 'cf-geoplugin') ?></h2>
-        <?php if(CFGP_License::level() <= 4): ?>
+        <?php if (CFGP_License::level() <= 4): ?>
         <p class="text-danger"><?php esc_html_e('NOTE: The REST API is only functional for the Business License', 'cf-geoplugin') ?></p>
         <?php endif; ?>
         <p><?php esc_html_e('The Geo Controller REST API allows external apps to use geo information and make your WordPress like a geo information provider.', 'cf-geoplugin') ?></p>
@@ -176,30 +181,31 @@ add_action('cfgp/settings/tab-panel/after', function(){ if(CFGP_Options::get('en
             <br><br>
             <pre>{
 <?php
-$remove = array(
-	'status',
-	'available_lookup',
-	'version',
-	'credit',
-	'dmaCode',
-	'areaCode',
-	'continentCode',
-	'currencySymbol',
-	'currencyConverter'
-);
+        $remove = [
+            'status',
+            'available_lookup',
+            'version',
+            'credit',
+            'dmaCode',
+            'areaCode',
+            'continentCode',
+            'currencySymbol',
+            'currencyConverter',
+        ];
 
-foreach(CFGP_U::api(false, CFGP_Defaults::API_RETURN) as $key => $value) :
-if(!(in_array($key, $remove, true) !== false))
-{
-if($key == 'error') $value = 'false';
-echo '    "' . esc_js(sanitize_key($key)) . '": ' . 
-    ($value === 0 ? 0 : 
-    ($value === '' ? '""' : 
-    (is_int($value) || in_array($value, array('true','false')) || is_float($value) ? 
-    esc_attr($value) : '"' . esc_js(str_replace('/', '\\/', esc_attr($value))) . '"'))) . ",\n";
-}
-endforeach;
-?>
+        foreach (CFGP_U::api(false, CFGP_Defaults::API_RETURN) as $key => $value) :
+            if (!(in_array($key, $remove, true) !== false)) {
+                if ($key == 'error') {
+                    $value = 'false';
+                }
+                echo '    "' . esc_js(sanitize_key($key)) . '": ' .
+                    ($value === 0 ? 0 :
+                    ($value === '' ? '""' :
+                    (is_int($value) || in_array($value, ['true','false'], true) || is_float($value) ?
+                    esc_attr($value) : '"' . esc_js(str_replace('/', '\\/', esc_attr($value))) . '"'))) . ",\n";
+            }
+        endforeach;
+        ?>
     "code": <?php echo esc_attr(CFGP_U::api('status')) . "\n"; ?>
 }</pre>
 			<p><?php esc_html_e('You can use these JSON information in your external app anywhere. TIP: In order for your external app to be fast, it would be good to make this call once and record in a temporary session that will expire after a few minutes.', 'cf-geoplugin') ?></p>
@@ -220,17 +226,19 @@ endforeach;
                 </thead>
                 <tbody>
                 	<?php
-						$tokens = $wpdb->get_results("SELECT * FROM `{$wpdb->cfgp_rest_access_token}` WHERE 1"); // No caching
-						if(count($tokens) > 0):
-						foreach($tokens as $i => $token):
-					?>
+                                $tokens = $wpdb->get_results("SELECT * FROM `{$wpdb->cfgp_rest_access_token}` WHERE 1"); // No caching
+
+        if (count($tokens) > 0):
+            foreach ($tokens as $i => $token):
+                ?>
                     <tr id="<?php echo esc_attr($token->app_name.'-'.$i); ?>">
                         <th><?php echo esc_html($token->token); ?></th>
                         <td><?php echo esc_html($token->app_name_original); ?></td>
                         <td><?php echo esc_html(date(CFGP_DATE_TIME_FORMAT, strtotime($token->date_created))); ?></td>
                         <td style="text-align:right;"><button type="button" data-remove="#<?php echo esc_attr($token->app_name.'-'.$i); ?>" data-id="<?php echo esc_attr($token->ID); ?>" data-confirm="<?php esc_attr_e('Are you sure you want to remove this access token?', 'cf-geoplugin'); ?>" data-nonce="<?php echo esc_attr(wp_create_nonce(CFGP_NAME.'-token-remove')); ?>" class="button cfgp-button-delete cfgp-button-token-remove"><?php esc_html_e('Remove', 'cf-geoplugin') ?></button></td>
                     </tr>
-                    <?php endforeach; else: ?>
+                    <?php endforeach;
+        else: ?>
                 	<tr>
                         <td colspan="4"><?php esc_html_e('There are no registered applications yet.', 'cf-geoplugin') ?></td>
                     </tr>
@@ -241,4 +249,5 @@ endforeach;
 	</div>
 
 </div>
-<?php endif; });
+<?php endif;
+});

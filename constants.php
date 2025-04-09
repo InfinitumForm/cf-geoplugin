@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Plugin setup
  *
@@ -9,6 +10,7 @@
 if (!defined('WPINC')) {
     die("Don't mess with us.");
 }
+
 if (!defined('ABSPATH')) {
     exit;
 }
@@ -45,7 +47,7 @@ if (!defined('CFGP_STORE_CODE')) {
 
 // Plugin root
 if (!defined('CFGP_ROOT')) {
-    define('CFGP_ROOT', rtrim(plugin_dir_path(CFGP_FILE) , DIRECTORY_SEPARATOR));
+    define('CFGP_ROOT', rtrim(plugin_dir_path(CFGP_FILE), DIRECTORY_SEPARATOR));
 }
 
 // Shell
@@ -86,7 +88,7 @@ if (!defined('CFGP_DEV_MODE')) {
 // Session expire in % minutes
 if (!defined('CFGP_SESSION')) {
     define('CFGP_SESSION', 60); // 30 minutes
-    
+
 }
 
 // W3 total cache setup
@@ -116,7 +118,7 @@ if (!defined('CFGP_DISABLE_NOTIFICATION_LOOKUP_EXPIRE_SOON')) {
 
 // Plugin URL root
 if (!defined('CFGP_URL')) {
-    define('CFGP_URL', rtrim(plugin_dir_url(CFGP_FILE) , '/'));
+    define('CFGP_URL', rtrim(plugin_dir_url(CFGP_FILE), '/'));
 }
 
 // Assets URL
@@ -137,13 +139,13 @@ if (!defined('CFGP_ALLOW_DEPRECATED_METHODS')) {
 // Current plugin version ( if change, clear also session cache )
 global $cfgp_version;
 
-if (function_exists('get_file_data') && $plugin_data = get_file_data(CFGP_FILE, array(
-    'Version' => 'Version'
-) , false)) {
+if (function_exists('get_file_data') && $plugin_data = get_file_data(CFGP_FILE, [
+    'Version' => 'Version',
+], false)) {
     $cfgp_version = (string)$plugin_data['Version'];
 }
 
-if (!$cfgp_version && preg_match('/\*[\s\t]+?version:[\s\t]+?([0-9.]+)/i', file_get_contents(CFGP_FILE) , $v)) {
+if (!$cfgp_version && preg_match('/\*[\s\t]+?version:[\s\t]+?([0-9.]+)/i', file_get_contents(CFGP_FILE), $v)) {
     $cfgp_version = (string)$v[1];
 }
 
@@ -158,7 +160,7 @@ if (!defined('CFGP_METABOX')) {
 
 // Plugin session prefix (controlled by version)
 if (!defined('CFGP_PREFIX')) {
-    define('CFGP_PREFIX', 'cf_geo_' . preg_replace("/[^0-9]/Ui", '', CFGP_VERSION) . '_');
+    define('CFGP_PREFIX', 'cf_geo_' . preg_replace('/[^0-9]/Ui', '', CFGP_VERSION) . '_');
 }
 
 // Timestamp
@@ -190,7 +192,7 @@ if (!defined('PHP_VERSION') && function_exists('phpversion')) {
 if (!defined('PHP_VERSION_ID')) {
     $php_version = explode('.', PHP_VERSION);
     define('PHP_VERSION_ID', ($php_version[0] * 10000 + $php_version[1] * 100 + $php_version[2]));
-    $php_version = NULL;
+    $php_version = null;
 }
 
 // Fix missing PHP SESSION constant PHP_SESSION_NONE (this is bug on the some Nginx servers)
@@ -202,6 +204,7 @@ if (!defined('PHP_SESSION_NONE')) {
 if (!defined('CFGP_MULTISITE') && defined('WP_ALLOW_MULTISITE') && WP_ALLOW_MULTISITE && defined('MULTISITE') && MULTISITE) {
     define('CFGP_MULTISITE', WP_ALLOW_MULTISITE);
 }
+
 if (!defined('CFGP_MULTISITE')) {
     // New safer approach
     if (!function_exists('is_plugin_active_for_network')) {
@@ -212,6 +215,7 @@ if (!defined('CFGP_MULTISITE')) {
         define('CFGP_MULTISITE', (function_exists('is_plugin_active_for_network') ? is_plugin_active_for_network(CFGP_ROOT . DIRECTORY_SEPARATOR . 'cf-geoplugin.php') : false));
     }
 }
+
 if (!defined('CFGP_MULTISITE')) {
     define('CFGP_MULTISITE', false);
 }
