@@ -334,7 +334,7 @@ if (!class_exists('CFGP_Form', false)) : class CFGP_Form
                         $find = array_map('trim', explode(',', $selected ?? ''));
                     }
                 }
-                $current = (in_array($val, $find, true) ? ' selected' : '');
+                $current = (in_array($val, $find) ? ' selected' : '');
 
                 $options_render[] = apply_filters(
                     'cfgp/form/select_multiple/option/raw',

@@ -1,5 +1,18 @@
 == Changelog ==
 
+= 8.8.6 =
+* Bugfix on the lookup sidebar
+* Bugfix on the cache
+
+= 8.8.5 =
+* Removed all PHP 5.6 specific syntax to support minimum PHP 7.4
+* Prepared and tested plugin compatibility for WordPress version 6.8
+* Brought codebase to PSR-12 coding standard
+* Refactored features and functionalities for faster execution and better maintainability
+* Modularized core logic for better structure and scalability
+* Optimized loading time by reducing unnecessary function calls
+* Improved type declarations and error handling for critical functions
+
 = 8.8.4 =
 * Removed PHP errors in regular versions
 * Removed obsolete code

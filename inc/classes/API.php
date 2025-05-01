@@ -163,7 +163,7 @@ if (!class_exists('CFGP_API', false)) :
                 );
 
                 if (isset($return['timezone']) && $return['timezone'] !== date_default_timezone_get()) {
-                    if (in_array($return['timezone'], DateTimeZone::listIdentifiers(), true)) {
+                    if (in_array($return['timezone'], DateTimeZone::listIdentifiers())) {
                         $new_client_date = $client_date->setTimeZone(new DateTimeZone($return['timezone']));
                     } else {
                         $new_client_date    = $client_date->setTimeZone(new DateTimeZone('UTC'));

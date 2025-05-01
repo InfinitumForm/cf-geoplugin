@@ -220,7 +220,7 @@ if (!class_exists('CFGP_Cache', false)) : class CFGP_Cache
                 reset(self::$cache);
                 $key = key(self::$cache);
 
-                if (!in_array($key, $exclude, true)) {
+                if (!in_array($key, $exclude)) {
                     self::delete($key);
                 }
             }

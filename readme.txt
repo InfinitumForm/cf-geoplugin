@@ -3,9 +3,9 @@ Contributors: ivijanstefan, creativform
 Donate link: https://www.buymeacoffee.com/ivijanstefan
 Tags: Geo Location, WordPress Geolocation Plugin, Location-Based Personalization, User Location Detection, SEO Optimization
 Requires at least: 6.0
-Tested up to: 6.7
+Tested up to: 6.8
 Requires PHP: 7.0
-Stable tag: 8.8.4
+Stable tag: 8.8.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -413,6 +413,19 @@ Please inform us if any of these errors occur via contact form on our website [h
 
 == Changelog ==
 
+= 8.8.6 =
+* Bugfix on the lookup sidebar
+* Bugfix on the cache
+
+= 8.8.5 =
+* Removed all PHP 5.6 specific syntax to support minimum PHP 7.4
+* Prepared and tested plugin compatibility for WordPress version 6.8
+* Brought codebase to PSR-12 coding standard
+* Refactored features and functionalities for faster execution and better maintainability
+* Modularized core logic for better structure and scalability
+* Optimized loading time by reducing unnecessary function calls
+* Improved type declarations and error handling for critical functions
+
 = 8.8.4 =
 * Removed PHP errors in regular versions
 * Removed obsolete code
@@ -484,6 +497,19 @@ Please inform us if any of these errors occur via contact form on our website [h
 * Improved javascript algorithms
 
 == Upgrade Notice ==
+
+= 8.8.6 =
+* Bugfix on the lookup sidebar
+* Bugfix on the cache
+
+= 8.8.5 =
+* Removed all PHP 5.6 specific syntax to support minimum PHP 7.4
+* Prepared and tested plugin compatibility for WordPress version 6.8
+* Brought codebase to PSR-12 coding standard
+* Refactored features and functionalities for faster execution and better maintainability
+* Modularized core logic for better structure and scalability
+* Optimized loading time by reducing unnecessary function calls
+* Improved type declarations and error handling for critical functions
 
 = 8.8.4 =
 * Removed PHP errors in regular versions

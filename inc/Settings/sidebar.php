@@ -132,7 +132,7 @@ if (!class_exists('CFGP_Sidebar', false)) :
 		<?php endif; ?>
 	</li>
 	<li class="cfgp-statistic-limit">
-		<?php if (in_array(CFGP_U::api('status'), [200,402], true)) : ?>
+		<?php if (in_array(CFGP_U::api('status'), [200,402])) : ?>
 			<h3><?php $this->cfgp_lookup_status_icon(CFGP_U::api('available_lookup')); ?> <?php esc_html_e('Lookup', 'cf-geoplugin'); ?></h3>
 			<?php if (CFGP_U::api('available_lookup') === 'lifetime') : ?>
 				<p><?php esc_html_e('Congratulations, your license has provided you with a lifetime lookup.', 'cf-geoplugin'); ?></p>
