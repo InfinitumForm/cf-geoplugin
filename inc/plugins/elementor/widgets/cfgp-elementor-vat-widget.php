@@ -144,37 +144,40 @@ if (!class_exists('CFGP_Elementor_Vat_Widget', false)) :
                     'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
                 ]
             );
+			
+			$typography_get_type = \Elementor\Group_Control_Typography::get_type();
+			
             $this->add_group_control(
-                \Elementor\Core\Schemes\Typography::get_type(),
+                $typography_get_type,
                 [
                     'name'   => 'content_typography',
                     'label'  => __('Typography', 'cf-geoplugin'),
                     'global' => [
-                        'default' => \Elementor\Core\Kits\Documents\Tabs\Global_Typography::TYPOGRAPHY_TEXT,
+                        'default' => class_exists('\Elementor\Core\Kits\Documents\Tabs\Global_Typography') ? \Elementor\Core\Kits\Documents\Tabs\Global_Typography::TYPOGRAPHY_TEXT : 'default',
                     ],
                     'selector' => "{$class}, {$class} p",
                 ]
             );
 
             $this->add_group_control(
-                \Elementor\Core\Schemes\Typography::get_type(),
+                $typography_get_type,
                 [
                     'name'   => 'content_typography_link',
                     'label'  => __('Link typography', 'cf-geoplugin'),
                     'global' => [
-                        'default' => \Elementor\Core\Kits\Documents\Tabs\Global_Typography::TYPOGRAPHY_TEXT,
+                        'default' => class_exists('\Elementor\Core\Kits\Documents\Tabs\Global_Typography') ? \Elementor\Core\Kits\Documents\Tabs\Global_Typography::TYPOGRAPHY_TEXT : 'default',
                     ],
                     'selector' => "{$class} a, {$class} a:active",
                 ]
             );
 
             $this->add_group_control(
-                \Elementor\Core\Schemes\Typography::get_type(),
+                $typography_get_type,
                 [
                     'name'   => 'content_typography_link_hover',
                     'label'  => __('Link hover typography', 'cf-geoplugin'),
                     'global' => [
-                        'default' => \Elementor\Core\Kits\Documents\Tabs\Global_Typography::TYPOGRAPHY_TEXT,
+                        'default' => class_exists('\Elementor\Core\Kits\Documents\Tabs\Global_Typography') ? \Elementor\Core\Kits\Documents\Tabs\Global_Typography::TYPOGRAPHY_TEXT : 'default',
                     ],
                     'selector' => "{$class} a:hover, {$class} a:focus",
                 ]
@@ -220,12 +223,12 @@ if (!class_exists('CFGP_Elementor_Vat_Widget', false)) :
                 );
 
                 $this->add_group_control(
-                    \Elementor\Core\Schemes\Typography::get_type(),
+                    $typography_get_type,
                     [
                         'name'   => "heading_typography_{$i}",
                         'label'  => __('Typography', 'cf-geoplugin'),
                         'global' => [
-                        'default' => \Elementor\Core\Kits\Documents\Tabs\Global_Typography::TYPOGRAPHY_TEXT,
+                        'default' => class_exists('\Elementor\Core\Kits\Documents\Tabs\Global_Typography') ? \Elementor\Core\Kits\Documents\Tabs\Global_Typography::TYPOGRAPHY_TEXT : 'default',
                     ],
                         'selector' => "{$class} h{$i}",
                     ]
@@ -271,12 +274,12 @@ if (!class_exists('CFGP_Elementor_Vat_Widget', false)) :
             );
 
             $this->add_group_control(
-                \Elementor\Core\Schemes\Typography::get_type(),
+                $typography_get_type,
                 [
                     'name'   => 'content_typography_blockquote',
                     'label'  => __('Typography', 'cf-geoplugin'),
                     'global' => [
-                        'default' => \Elementor\Core\Kits\Documents\Tabs\Global_Typography::TYPOGRAPHY_TEXT,
+                        'default' => class_exists('\Elementor\Core\Kits\Documents\Tabs\Global_Typography') ? \Elementor\Core\Kits\Documents\Tabs\Global_Typography::TYPOGRAPHY_TEXT : 'default',
                     ],
                     'selector' => "{$class} blockquote",
                 ]

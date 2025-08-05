@@ -27,7 +27,7 @@ if (!class_exists('CFGP__Plugin__elementor', false)):
          * Construct
          * @verson    1.0.0
          */
-        private function __construct()
+        public function __construct()
         {
             $this->add_action('plugins_loaded', 'init', 10, 0);
         }
@@ -110,9 +110,16 @@ if (!class_exists('CFGP__Plugin__elementor', false)):
                         // Include class
 
                         if (class_exists($class_name, false)) {
-                            // Let Elementor know about our widget
-                            \Elementor\Plugin::instance()->widgets_manager->register_widget_type(new $class_name());
-                        }
+							$widgets_manager = \Elementor\Plugin::instance()->widgets_manager;
+
+							if (method_exists($widgets_manager, 'register')) {
+								// Elementor 3.5+ uses register()
+								$widgets_manager->register(new $class_name());
+							} elseif (method_exists($widgets_manager, 'register_widget_type')) {
+								// Elementor < 3.5 uses register_widget_type()
+								$widgets_manager->register_widget_type(new $class_name());
+							}
+						}
                     }
                 }
             }
@@ -126,9 +133,9 @@ if (!class_exists('CFGP__Plugin__elementor', false)):
         {
             $controls = __DIR__ . '/controls';
 
-            if (!file_exists($widgets)) {
-                return;
-            }
+            if (!file_exists($controls)) {
+				return;
+			}
 
             $fileSystemIterator = new FilesystemIterator($controls);
 
@@ -154,7 +161,10 @@ if (!class_exists('CFGP__Plugin__elementor', false)):
                         // Include class
                         if (class_exists($class_name, false)) {
                             // Let Elementor know about our widget
-                            \Elementor\Plugin::$instance->controls_manager->register_control('control-type-', new $class_name());
+                            $instance = new $class_name();
+							$id = method_exists($instance, 'get_type') ? $instance->get_type() : sanitize_title($class_name);
+
+							\Elementor\Plugin::$instance->controls_manager->register_control($id, $instance);
                         }
                     }
                 }

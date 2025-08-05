@@ -1348,19 +1348,29 @@ if (!class_exists('CFGP_U', false)) : class CFGP_U
      * Returns API fields
      */
     public static function api($name = false, $default = '')
-    {
-        $API = null;
+	{
+		static $API = null;
 
-        if (CFGP_Cache::get('API')) {
-            $API = CFGP_Cache::get('API');
-        }
+		// Cache the API result once per request
+		if ($API === null) {
+			$API = CFGP_Cache::get('API');
+		}
 
-        if (empty($name)) {
-            return apply_filters('cfgp/api/return', ($API ? $API : $default), $API, $default);
-        } else {
-            return apply_filters('cfgp/api/return/' . $name, ($API[$name] ?? $default), $API, $default);
-        }
-    }
+		if ($name === false) {
+			// Return the full API array or default if null
+			return apply_filters('cfgp/api/return', $API ?? $default, $API, $default);
+		}
+		
+		$name = sanitize_key($name);
+
+		// Return specific value from API or default
+		return apply_filters(
+			"cfgp/api/return/{$name}",
+			$API[$name] ?? $default,
+			$API,
+			$default
+		);
+	}
 
     /*
      * Next level of var_dump()

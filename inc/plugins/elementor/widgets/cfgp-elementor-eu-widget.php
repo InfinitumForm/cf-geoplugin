@@ -23,6 +23,16 @@ if (!class_exists('CFGP_Elementor_Eu_Widget', false)) :
         {
             return self::$slug;
         }
+		
+		public function get_keywords()
+		{
+			return ['eu', 'europe', 'geo', 'cf-geoplugin'];
+		}
+
+		public function get_style_depends()
+		{
+			return ['cf-geoplugin-eu-widget'];
+		}
 
         /**
          * Get widget title.
@@ -144,8 +154,11 @@ if (!class_exists('CFGP_Elementor_Eu_Widget', false)) :
                     'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
                 ]
             );
+			
+			$typography_get_type = \Elementor\Group_Control_Typography::get_type();
+			
             $this->add_group_control(
-                \Elementor\Core\Schemes\Typography::get_type(),
+                $typography_get_type,
                 [
                     'name'   => 'content_typography',
                     'label'  => __('Typography', 'cf-geoplugin'),
@@ -157,7 +170,7 @@ if (!class_exists('CFGP_Elementor_Eu_Widget', false)) :
             );
 
             $this->add_group_control(
-                \Elementor\Core\Schemes\Typography::get_type(),
+                $typography_get_type,
                 [
                     'name'   => 'content_typography_link',
                     'label'  => __('Link typography', 'cf-geoplugin'),
@@ -169,7 +182,7 @@ if (!class_exists('CFGP_Elementor_Eu_Widget', false)) :
             );
 
             $this->add_group_control(
-                \Elementor\Core\Schemes\Typography::get_type(),
+                $typography_get_type,
                 [
                     'name'   => 'content_typography_link_hover',
                     'label'  => __('Link hover typography', 'cf-geoplugin'),
@@ -220,7 +233,7 @@ if (!class_exists('CFGP_Elementor_Eu_Widget', false)) :
                 );
 
                 $this->add_group_control(
-                    \Elementor\Core\Schemes\Typography::get_type(),
+                    $typography_get_type,
                     [
                         'name'   => "heading_typography_{$i}",
                         'label'  => __('Typography', 'cf-geoplugin'),
@@ -271,7 +284,7 @@ if (!class_exists('CFGP_Elementor_Eu_Widget', false)) :
             );
 
             $this->add_group_control(
-                \Elementor\Core\Schemes\Typography::get_type(),
+                $typography_get_type,
                 [
                     'name'   => 'content_typography_blockquote',
                     'label'  => __('Typography', 'cf-geoplugin'),
@@ -328,12 +341,14 @@ if (!class_exists('CFGP_Elementor_Eu_Widget', false)) :
             $settings = $this->get_settings_for_display();
 
             $show = false;
+			
+			$eu_control = !empty($settings['eu_control']);
 
-            if ($settings['eu_control'] && CFGP_U::api('in_eu') == 1) {
+            if ($eu_control && CFGP_U::api('in_eu') == 1) {
                 $show = true;
             }
 
-            if (!$settings['eu_control'] && CFGP_U::api('in_eu') == 0) {
+            if (!$eu_control && CFGP_U::api('in_eu') == 0) {
                 $show = true;
             }
 
@@ -357,7 +372,7 @@ if (!class_exists('CFGP_Elementor_Eu_Widget', false)) :
          *
          * @access private
          */
-        private function is_edit()
+        private static function is_edit()
         {
             return \Elementor\Plugin::$instance->editor->is_edit_mode();
         }

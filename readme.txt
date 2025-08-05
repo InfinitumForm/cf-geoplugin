@@ -5,7 +5,7 @@ Tags: Geo Location, WordPress Geolocation Plugin, Location-Based Personalization
 Requires at least: 6.0
 Tested up to: 6.8
 Requires PHP: 7.0
-Stable tag: 8.8.6
+Stable tag: 8.8.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -413,9 +413,14 @@ Please inform us if any of these errors occur via contact form on our website [h
 
 == Changelog ==
 
+= 8.8.7 =
+* Fixed fatal error caused by Elementor update (removed deprecated Typography class)
+
 = 8.8.6 =
-* Bugfix on the lookup sidebar
-* Bugfix on the cache
+* Fixed sidebar statistics in the WP Admin
+* Fixed typos in the WP Admin
+* Improved conditional logic of plugin
+* Improved performances
 
 = 8.8.5 =
 * Removed all PHP 5.6 specific syntax to support minimum PHP 7.4
@@ -498,69 +503,14 @@ Please inform us if any of these errors occur via contact form on our website [h
 
 == Upgrade Notice ==
 
+= 8.8.7 =
+* Fixed fatal error caused by Elementor update (removed deprecated Typography class)
+
 = 8.8.6 =
-* Bugfix on the lookup sidebar
-* Bugfix on the cache
-
-= 8.8.5 =
-* Removed all PHP 5.6 specific syntax to support minimum PHP 7.4
-* Prepared and tested plugin compatibility for WordPress version 6.8
-* Brought codebase to PSR-12 coding standard
-* Refactored features and functionalities for faster execution and better maintainability
-* Modularized core logic for better structure and scalability
-* Optimized loading time by reducing unnecessary function calls
-* Improved type declarations and error handling for critical functions
-
-= 8.8.4 =
-* Removed PHP errors in regular versions
-* Removed obsolete code
-* Fixed cache problems
-
-= 8.8.3 =
-* Fixed problem with transients (must delete them after update)
-* Improved cache algorithms
-* Optimized PHP code
-
-= 8.8.2 =
-* License updates
-
-= 8.8.1 =
-* Fixed Woocommerce HPOS metabox order info
-* Improved IP filtering
-
-= 8.8.0 =
-* Fixed an issue with the Elementor builder
-* Fixed bugs with SEO module
-* Fixed bugs with IP address detection
-* Optimized PHP code
-
-= 8.7.11 =
-* Improved cache headers
-
-= 8.7.10 =
-* Fixed issue with Woocommerce checkout info
-
-= 8.7.9 =
-* Fixed issue with Woocommerce HPOS metabox
-
-= 8.7.8 =
-* Fixed WooCommerce bugs and improved performances
-
-= 8.7.7 =
-* Support for the WordPress version 6.7
-
-= 8.7.6 =
-* Fixing Geo Defender algo
-* Improved PHP algos and code optimization
-* Improved cookie control
-* Improved WooCommerce module
-
-= 8.7.5 =
-* Adding user permission to the GEO menus
-
-= 8.7.4 =
-* Fixing Missing Authorization to Authenticated (Subscriber+) Menu Creation/Deletion
-* Imorived WooCommerce geo pricing
+* Fixed sidebar statistics in the WP Admin
+* Fixed typos in the WP Admin
+* Improved conditional logic of plugin
+* Improved performances
 
 == Other Notes ==
 

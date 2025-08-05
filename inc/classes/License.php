@@ -611,12 +611,12 @@ if (!class_exists('CFGP_License')) :
             if (!empty($name_or_array)) {
                 if (is_array($name_or_array)) {
                     foreach ($name_or_array as $key => $val) {
-                        if (in_array($key, $filter) !== false) {
+                        if (in_array($key, $filter, true) !== false) {
                             $options[$key] = CFGP_Options::sanitize($val);
                         }
                     }
                 } elseif (!is_numeric($name_or_array) && is_string($name_or_array)) {
-                    if (in_array($name_or_array, $filter) !== false) {
+                    if (in_array($name_or_array, $filter, true) !== false) {
                         $options[$name_or_array] = CFGP_Options::sanitize($value);
                     }
                 }

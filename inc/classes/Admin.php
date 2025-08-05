@@ -55,6 +55,16 @@ if (!class_exists('CFGP_Admin', false)) :
             if (is_admin()) {
                 $this->add_action('plugins_loaded', 'update_database', 20, 0);
             }
+			
+			add_filter('cfgp/api/return/status', 'absint', 10, 1);
+			add_filter('cfgp/api/return/ip_version', 'absint', 10, 1);
+			add_filter('cfgp/api/return/gps', 'absint', 10, 1);
+			add_filter('cfgp/api/return/limited', 'absint', 10, 1);
+			add_filter('cfgp/api/return/is_tor', 'absint', 10, 1);
+			add_filter('cfgp/api/return/is_local_server', 'absint', 10, 1);
+			add_filter('cfgp/api/return/vat_rate', 'floatval', 10, 1);
+			add_filter('cfgp/api/return/runtime', 'floatval', 10, 1);
+			add_filter('cfgp/api/return/currency_converter', 'floatval', 10, 1);
         }
 
         // Update database

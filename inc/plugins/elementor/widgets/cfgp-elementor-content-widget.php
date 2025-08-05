@@ -25,6 +25,21 @@ if (!class_exists('CFGP_Elementor_Content_Widget', false)) :
         {
             return self::$slug;
         }
+		
+		public function get_keywords()
+		{
+			return ['geo', 'location', 'content', 'cf-geoplugin'];
+		}
+		
+		public function get_style_depends()
+		{
+			return ['cf-geoplugin-widget-style'];
+		}
+
+		public function get_script_depends()
+		{
+			return ['cf-geoplugin-widget-script'];
+		}
 
         /**
          * Get widget title.
@@ -181,12 +196,12 @@ if (!class_exists('CFGP_Elementor_Content_Widget', false)) :
             $this->end_controls_section();
 
             $slug = self::$slug;
-
-            $class = '{{WRAPPER}}';
-
+			
             /*
              * STYLE
              */
+			$typography_get_type = \Elementor\Group_Control_Typography::get_type();
+			 
             $class = '{{WRAPPER}} ' . ".{$slug}";
             $this->start_controls_section(
                 'style_section_0',
@@ -196,7 +211,7 @@ if (!class_exists('CFGP_Elementor_Content_Widget', false)) :
                 ]
             );
             $this->add_group_control(
-                \Elementor\Group_Control_Typography::get_type(),
+                $typography_get_type,
                 [
                     'name'   => 'typography',
                     'label'  => __('Typography', 'cf-geoplugin'),
@@ -208,7 +223,7 @@ if (!class_exists('CFGP_Elementor_Content_Widget', false)) :
             );
 
             $this->add_group_control(
-                \Elementor\Group_Control_Typography::get_type(),
+                $typography_get_type,
                 [
                     'name'   => 'typography_link',
                     'label'  => __('Link typography', 'cf-geoplugin'),
@@ -220,7 +235,7 @@ if (!class_exists('CFGP_Elementor_Content_Widget', false)) :
             );
 
             $this->add_group_control(
-                \Elementor\Group_Control_Typography::get_type(),
+                $typography_get_type,
                 [
                     'name'   => 'typography_link_hover',
                     'label'  => __('Link hover typography', 'cf-geoplugin'),
@@ -252,7 +267,7 @@ if (!class_exists('CFGP_Elementor_Content_Widget', false)) :
 
             for ($h = 1; $h < 6; $h++) {
                 $this->add_group_control(
-                    \Elementor\Group_Control_Typography::get_type(),
+                    $typography_get_type,
                     [
                         'name'   => 'typography_header_' . $h,
                         'label'  => 'H' . $h,
@@ -282,17 +297,18 @@ if (!class_exists('CFGP_Elementor_Content_Widget', false)) :
 
             $content = null;
 
-            if ($settings['enable_default_content'] == 'yes') {
+            if (!empty($settings['enable_default_content']) && $settings['enable_default_content'] === 'yes') {
                 $content = $settings['default_content'];
             }
 
-            foreach ($settings['list'] as $i => $fetch) {
-                if (CFGP_U::recursive_array_search($fetch['location'], CFGP_U::api(false, CFGP_Defaults::API_RETURN))) {
-                    $content = $fetch['content'];
-                    break;
-                }
-            }
-
+			if (!empty($settings['list']) && is_array($settings['list'])) {
+				foreach ($settings['list'] as $i => $fetch) {
+					if (!empty($fetch['location']) && !empty($fetch['content']) && CFGP_U::recursive_array_search($fetch['location'], CFGP_U::api(false, CFGP_Defaults::API_RETURN))) {
+						$content = $fetch['content'];
+						break;
+					}
+				}
+			}
             if (!$content) {
                 return;
             }
