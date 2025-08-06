@@ -187,27 +187,28 @@ if (!class_exists('CFGP_Shortcodes', false)) : class CFGP_Shortcodes extends CFG
      * @version    7.4.3
     */
     public function cfgeo_escape_shortcode($attr, $content = '', $tag = 'escape_shortcode')
-    {
-        $cache = CFGP_U::is_attribute_exists('cache', $attr);
+	{
+		$cache = CFGP_U::is_attribute_exists('cache', $attr);
 
-        if (CFGP_Options::get('enable_cache', 0)) {
-            $cache = true;
-        }
+		if (CFGP_Options::get('enable_cache', 0)) {
+			$cache = true;
+		}
 
-        if (CFGP_U::is_attribute_exists('no_cache', $attr)) {
-            $cache = false;
-        }
+		if (CFGP_U::is_attribute_exists('no_cache', $attr)) {
+			$cache = false;
+		}
 
-        if (is_admin()) {
-            $cache = false;
-        }
+		if (is_admin()) {
+			$cache = false;
+		}
 
-        if (!empty($content)) {
-            $content = preg_replace('%\[(.*?)\]%i', '&lsqb;$1&rsqb;', $content);
-        }
+		if (!empty($content)) {
+			// Simple and safe replacement of square brackets
+			$content = str_replace(['[', ']'], ['&#91;', '&#93;'], $content);
+		}
 
-        return self::__cache($tag, $content, (array)$attr, $content, $cache);
-    }
+		return self::__cache($tag, $content, (array)$attr, $content, $cache);
+	}
 
     /**
      * Main CF GeoPlugin Shortcode
