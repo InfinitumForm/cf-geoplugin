@@ -57,7 +57,7 @@ if (!class_exists('CFGP_Sidebar', false)) :
          **/
         public function rss_feed()
         {
-            //	CFGP_DB_Cache::delete('cfgp-rss');
+			// CFGP_DB_Cache::delete('cfgp-rss');
             $RSS = CFGP_DB_Cache::get('cfgp-rss');
             ?>
 <div class="postbox" id="cfgp-postbox-rss">
@@ -224,9 +224,9 @@ if (!class_exists('CFGP_Sidebar', false)) :
 
 <?php /* ?>
 <a href="https://portal.draxhost.com/?affid=1" title="<?php esc_attr_e('The Geo Controller official site is hosted on Drax Host servers. Interested in affordable and secure hosting?', 'cf-geoplugin'); ?>" target="_blank"><img src="<?php echo esc_url(CFGP_ASSETS); ?>/images/Logo-Drax-Host.jpg" alt="<?php esc_attr_e('The Geo Controller official site is hosted on Drax Host servers. Interested in affordable and secure hosting?', 'cf-geoplugin'); ?>" style="margin:15px auto 0 auto; display:block !important; width:100%; max-width:100%; height:auto; border: 1px solid #c3c4c7; box-shadow: 0 1px 1px rgb(0 0 0 / 4%);" /></a>
-<?php */ ?>
 
 <a href="https://ref.nordvpn.com/laEhKqJEHDa" title="<?php esc_attr_e('The CF Gep plugin recommends using Nord VPN for testing.', 'cf-geoplugin'); ?>" class="affiliate-nordvpn" target="_blank"><img src="<?php echo esc_url(CFGP_ASSETS); ?>/images/Logo-NordVPN.jpg" alt="<?php esc_attr_e('The Geo Controller recommends using Nord VPN for testing.', 'cf-geoplugin'); ?>" style="margin:15px auto 0 auto; display:block !important; width:100%; max-width:100%; height:auto; border: 1px solid #c3c4c7; box-shadow: 0 1px 1px rgb(0 0 0 / 4%);" /></a>
+<?php */ ?>
 <hr style="margin:32px auto 32px auto;">
 <a href="https://infinitumform.com/" title="<?php esc_attr_e('We have created many good projects, do you want to we create something for you?', 'cf-geoplugin'); ?>" target="_blank"><img src="<?php echo esc_url(CFGP_ASSETS); ?>/images/developed-by.png" alt="<?php esc_attr_e('We have created many good projects, do you want to we create something for you?', 'cf-geoplugin'); ?>" style="margin:0 auto; display:block !important; width:100%; max-width:200px; height:auto;" /></a>
 <hr style="margin:32px auto 32px auto;">
@@ -238,7 +238,7 @@ if (!class_exists('CFGP_Sidebar', false)) :
          * @since    8.0.0
          **/
         public function dashboard_feed()
-        {
+        {	// CFGP_DB_Cache::delete('cfgp-dashboard-rss');
             $RSS = CFGP_DB_Cache::get('cfgp-dashboard-rss'); ?>
 	<div class="wordpress-news hide-if-no-js<?php echo(empty($RSS) ? ' cfgp-load-dashboard-rss-feed' : ''); ?>">
 	<?php if ($RSS) : ?>

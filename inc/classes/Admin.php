@@ -187,17 +187,18 @@ if (!class_exists('CFGP_Admin', false)) :
                             $DASH_RSS[] = sprintf('<li><a href="%1$s" target="_blank">%2$s</a></li>', esc_url($post->post_url), esc_html($post->post_title));
 
                             if ($i <= $x) {
-                                if ($i === 0) {
-                                    $RSS[] = sprintf(
+                                if ($i < 5) {
+									// Old way
+                                    /*$RSS[] = sprintf(
                                         '<div class="cfgp-rss-container">
-										<a href="%1$s" target="_blank" class="cfgp-rss-img">
+										<a href="%1$s" target="_blank" class="cfgp-rss-img" rel="noopener noreferrer">
 											<img src="%3$s" class="img-fluid">
 										</a>
 										<h3>%2$s</h3>
 										<div class="cfgp-rss-excerpt">
 											%4$s
 										</div>
-										<a href="%1$s" target="_blank" class="cfgp-rss-link">%6$s</a><br>
+										<a href="%1$s" target="_blank" class="cfgp-rss-link" rel="noopener noreferrer">%6$s</a><br>
 										<small class="cfgp-rss-date">~ %7$s</small>
 									</div>',
                                         esc_url($post->post_url),
@@ -207,10 +208,23 @@ if (!class_exists('CFGP_Admin', false)) :
                                         esc_url($post->post_url),
                                         __('Read more at Geo Controller site', 'cf-geoplugin'),
                                         date(CFGP_DATE_FORMAT, strtotime($post->post_date_gmt))
+                                    );*/
+									
+									// New way									
+									$RSS[] = sprintf(
+                                        '<div class="cfgp-rss-container">
+										<a href="%1$s" target="_blank" class="cfgp-rss-img" rel="noopener noreferrer">
+											<img src="%3$s" class="img-fluid">
+										</a>
+										<h3><a href="%1$s" target="_blank" class="cfgp-rss-title">%2$s</a></h3>
+									</div>',
+                                        esc_url($post->post_url),
+                                        esc_html($post->post_title),
+                                        esc_url($post->post_image_medium)
                                     );
                                 } else {
                                     $RSS[] = sprintf(
-                                        '<p class="cfgp-rss-container"><a href="%1$s" target="_blank" class="cfgp-rss-link">%2$s</a><br><small class="cfgp-rss-date">~ %7$s</small></p>',
+                                        '<p class="cfgp-rss-container"><a href="%1$s" target="_blank" class="cfgp-rss-link" rel="noopener noreferrer">%2$s</a><br><small class="cfgp-rss-date">~ %7$s</small></p>',
                                         esc_url($post->post_url),
                                         esc_html($post->post_title),
                                         esc_url($post->post_image_medium),
@@ -268,20 +282,21 @@ if (!class_exists('CFGP_Admin', false)) :
                             $post->post_image_medium = sanitize_url($post->post_image_medium ?? null);
                             $post->post_excerpt      = wp_kses_post(sanitize_textarea_field($post->post_excerpt ?? ''));
 
-                            $DASH_RSS[] = sprintf('<li><a href="%1$s" target="_blank">%2$s</a></li>', esc_url($post->post_url), esc_html($post->post_title));
+                            $DASH_RSS[] = sprintf('<li><a href="%1$s" target="_blank" rel="noopener noreferrer">%2$s</a></li>', esc_url($post->post_url), esc_html($post->post_title));
 
                             if ($i <= $x) {
-                                if ($i === 0) {
-                                    $RSS[] = sprintf(
+                                if ($i < 5) {
+									// Old way
+                                    /*$RSS[] = sprintf(
                                         '<div class="cfgp-rss-container">
-										<a href="%1$s" target="_blank" class="cfgp-rss-img">
+										<a href="%1$s" target="_blank" class="cfgp-rss-img" rel="noopener noreferrer">
 											<img src="%3$s" class="img-fluid">
 										</a>
 										<h3>%2$s</h3>
 										<div class="cfgp-rss-excerpt">
 											%4$s
 										</div>
-										<a href="%1$s" target="_blank" class="cfgp-rss-link">%6$s</a><br>
+										<a href="%1$s" target="_blank" class="cfgp-rss-link" rel="noopener noreferrer">%6$s</a><br>
 										<small class="cfgp-rss-date">~ %7$s</small>
 									</div>',
                                         esc_url($post->post_url),
@@ -291,10 +306,23 @@ if (!class_exists('CFGP_Admin', false)) :
                                         esc_url($post->post_url),
                                         __('Read more at Geo Controller site', 'cf-geoplugin'),
                                         date(CFGP_DATE_FORMAT, strtotime($post->post_date_gmt))
+                                    );*/
+									
+									// New way									
+									$RSS[] = sprintf(
+                                        '<div class="cfgp-rss-container">
+										<a href="%1$s" target="_blank" class="cfgp-rss-img" rel="noopener noreferrer">
+											<img src="%3$s" class="img-fluid">
+										</a>
+										<h3><a href="%1$s" target="_blank" class="cfgp-rss-title">%2$s</a></h3>
+									</div>',
+                                        esc_url($post->post_url),
+                                        esc_html($post->post_title),
+                                        esc_url($post->post_image_medium)
                                     );
                                 } else {
                                     $RSS[] = sprintf(
-                                        '<p class="cfgp-rss-container"><a href="%1$s" target="_blank" class="cfgp-rss-link">%2$s</a><br><small class="cfgp-rss-date">~ %7$s</small></p>',
+                                        '<p class="cfgp-rss-container"><a href="%1$s" target="_blank" class="cfgp-rss-link" rel="noopener noreferrer">%2$s</a><br><small class="cfgp-rss-date">~ %7$s</small></p>',
                                         esc_url($post->post_url),
                                         esc_html($post->post_title),
                                         esc_url($post->post_image_medium),
@@ -634,7 +662,12 @@ if (!class_exists('CFGP_Admin', false)) :
             }
 
             wp_enqueue_style(CFGP_NAME . '-fonts', CFGP_ASSETS . '/css/fonts.min.css', [], CFGP_VERSION);
-            wp_enqueue_style(CFGP_NAME . '-admin', CFGP_ASSETS . '/css/style-admin.css', [CFGP_NAME . '-fonts'], CFGP_VERSION);
+            wp_enqueue_style(
+				CFGP_NAME . '-admin',
+				CFGP_ASSETS . '/css/style-admin.css',
+				[CFGP_NAME . '-fonts'],
+				(CFGP_U::dev_mode() ? filesize(CFGP_ROOT . '/assets/css/style-admin.css') : CFGP_VERSION)
+			);
         }
 
         // Register CPT and taxonomies scripts

@@ -1,5 +1,8 @@
 == Changelog ==
 
+= 8.8.8 =
+* Improved GUI, fixed documentation.
+
 = 8.8.7 =
 * Fixed fatal error caused by Elementor update (removed deprecated Typography class)
 

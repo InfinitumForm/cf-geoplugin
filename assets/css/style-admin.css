@@ -668,7 +668,22 @@ dd {
 .cfgp-rss-container h3{
 	padding:10px 0;
 	margin:0;
-	
+	line-height: 14px;
+}
+
+.cfgp-rss-container .cfgp-rss-img,
+.cfgp-rss-container .cfgp-rss-img:hover,
+.cfgp-rss-container .cfgp-rss-img > img,
+.cfgp-rss-container .cfgp-rss-img:hover > img{
+	border: none !important;
+    clear: both !important;
+	outline: none !important;
+	padding:0 !important;
+}
+
+.cfgp-rss-container h3 .cfgp-rss-title{
+	text-decoration: none;
+    font-size: 14px;
 }
 
 @media only screen and (max-width: 850px) {
