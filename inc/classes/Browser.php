@@ -107,14 +107,14 @@ if (!class_exists('CFGP_Browser', false)): class CFGP_Browser
     public function reset()
     {
         $this->_agent        = sanitize_text_field(isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '');
-        $this->_browser_name = esc_html__('unknown', 'cf-geoplugin');
-        $this->_version      = esc_html__('unknown', 'cf-geoplugin');
-        $this->_platform     = esc_html__('unknown', 'cf-geoplugin');
-        $this->_os           = esc_html__('unknown', 'cf-geoplugin');
+        $this->_browser_name = 'unknown';
+        $this->_version      = 'unknown';
+        $this->_platform     = 'unknown';
+        $this->_os           = 'unknown';
         $this->_is_aol       = false;
         $this->_is_mobile    = false;
         $this->_is_robot     = false;
-        $this->_aol_version  = esc_html__('unknown', 'cf-geoplugin');
+        $this->_aol_version  = 'unknown';
     }
 
     /**
@@ -372,7 +372,7 @@ if (!class_exists('CFGP_Browser', false)): class CFGP_Browser
     protected function checkForAol()
     {
         $this->setAol(false);
-        $this->setAolVersion(esc_html__('unknown', 'cf-geoplugin'));
+        $this->setAolVersion('unknown');
 
         if (stripos($this->_agent, 'aol') !== false) {
             $aversion = explode(' ', stristr($this->_agent, 'AOL'));
@@ -820,7 +820,7 @@ if (!class_exists('CFGP_Browser', false)): class CFGP_Browser
                 $aversion = explode(' ', $aresult[1]);
                 $this->setVersion($aversion[0]);
             } else {
-                $this->setVersion(esc_html__('unknown', 'cf-geoplugin'));
+                $this->setVersion('unknown');
             }
             $this->setBrowser(self::BROWSER_SAFARI);
 
@@ -839,7 +839,7 @@ if (!class_exists('CFGP_Browser', false)): class CFGP_Browser
                 $aversion = explode(' ', $aresult[1]);
                 $this->setVersion($aversion[0]);
             } else {
-                $this->setVersion(esc_html__('unknown', 'cf-geoplugin'));
+                $this->setVersion('unknown');
             }
             $this->setMobile(true);
             $this->setBrowser(self::BROWSER_IPHONE);
@@ -859,7 +859,7 @@ if (!class_exists('CFGP_Browser', false)): class CFGP_Browser
                 $aversion = explode(' ', $aresult[1]);
                 $this->setVersion($aversion[0]);
             } else {
-                $this->setVersion(esc_html__('unknown', 'cf-geoplugin'));
+                $this->setVersion('unknown');
             }
             $this->setMobile(true);
             $this->setBrowser(self::BROWSER_IPAD);
@@ -879,7 +879,7 @@ if (!class_exists('CFGP_Browser', false)): class CFGP_Browser
                 $aversion = explode(' ', $aresult[1]);
                 $this->setVersion($aversion[0]);
             } else {
-                $this->setVersion(esc_html__('unknown', 'cf-geoplugin'));
+                $this->setVersion('unknown');
             }
             $this->setMobile(true);
             $this->setBrowser(self::BROWSER_IPOD);
@@ -899,7 +899,7 @@ if (!class_exists('CFGP_Browser', false)): class CFGP_Browser
                 $aversion = explode(' ', $aresult[1]);
                 $this->setVersion($aversion[0]);
             } else {
-                $this->setVersion(esc_html__('unknown', 'cf-geoplugin'));
+                $this->setVersion('unknown');
             }
             $this->setMobile(true);
             $this->setBrowser(self::BROWSER_ANDROID);

@@ -641,6 +641,6 @@ console.log($continue);
 	/**
 	 * Display Thank You footer
 	**/
-	$('#footer-left').html('<div>'+CFGP.label.footer_menu.thank_you+' <a href="https://wpgeocontroller.com" target="_blank">Geo Controller</a></div><div class="alignleft"><a href="https://wpgeocontroller.com/documentation" target="_blank">'+CFGP.label.footer_menu.documentation+'</a> | <a href="https://wpgeocontroller.com/faq" target="_blank">'+CFGP.label.footer_menu.faq+'</a> | <a href="https://wpgeocontroller.com/contact" target="_blank">'+CFGP.label.footer_menu.contact+'</a> | <a href="https://wpgeocontroller.com/blog" target="_blank">'+CFGP.label.footer_menu.blog+'</a></div>');
+	$('#footer-left').html('<div>'+CFGP.label.footer_menu.thank_you+' <a href="https://wpgeocontroller.com" target="_blank">Geo Controller</a></div><div class="alignleft"><a href="https://wpgeocontroller.com/documentation" target="_blank">'+CFGP.label.footer_menu.documentation+'</a> | <a href="https://wpgeocontroller.com/documentation/quick-start/frequently-asked-questions" target="_blank">'+CFGP.label.footer_menu.faq+'</a> | <a href="https://wpgeocontroller.com/contact-and-support" target="_blank">'+CFGP.label.footer_menu.contact+'</a> | <a href="https://wpgeocontroller.com/blog" target="_blank">'+CFGP.label.footer_menu.blog+'</a></div>');
 	$('#footer-upgrade').remove();	
 })(jQuery || window.jQuery || Zepto || window.Zepto);

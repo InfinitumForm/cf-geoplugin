@@ -5,7 +5,7 @@ Tags: Geo Location, WordPress Geolocation Plugin, Location-Based Personalization
 Requires at least: 6.0
 Tested up to: 6.8
 Requires PHP: 7.0
-Stable tag: 8.8.8
+Stable tag: 8.9.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -413,6 +413,15 @@ Please inform us if any of these errors occur via contact form on our website [h
 
 == Changelog ==
 
+= 8.9.0 =
+* Complete rewrite of plugin documentation with clearer structure and new usage examples.
+* Added Disclaimer / Legal Notice and Accessibility Statement.
+* Updated Privacy Policy and Terms & Conditions references.
+* Improved explanations for shortcodes, CSS, and Google Maps integration.
+* Enhanced CSV import/export instructions for SEO redirection.
+* Fixed minor typos and grammar issues across admin settings.
+* Small UI text refinements for better user experience.
+
 = 8.8.8 =
 * Improved GUI, fixed documentation.
 
@@ -506,17 +515,14 @@ Please inform us if any of these errors occur via contact form on our website [h
 
 == Upgrade Notice ==
 
-= 8.8.8 =
-* Improved GUI, fixed documentation.
-
-= 8.8.7 =
-* Fixed fatal error caused by Elementor update (removed deprecated Typography class)
-
-= 8.8.6 =
-* Fixed sidebar statistics in the WP Admin
-* Fixed typos in the WP Admin
-* Improved conditional logic of plugin
-* Improved performances
+= 8.9.0 =
+* Complete rewrite of plugin documentation with clearer structure and new usage examples.
+* Added Disclaimer / Legal Notice and Accessibility Statement.
+* Updated Privacy Policy and Terms & Conditions references.
+* Improved explanations for shortcodes, CSS, and Google Maps integration.
+* Enhanced CSV import/export instructions for SEO redirection.
+* Fixed minor typos and grammar issues across admin settings.
+* Small UI text refinements for better user experience.
 
 == Other Notes ==
 

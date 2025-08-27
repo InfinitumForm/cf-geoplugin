@@ -151,7 +151,7 @@ if (!class_exists('CFGP_Init', false)) : final class CFGP_Init
 
         // Allow deprecated class
         if (defined('CFGP_ALLOW_DEPRECATED_METHODS') && CFGP_ALLOW_DEPRECATED_METHODS) {
-            array_push($includes, CFGP_CLASS . '/CF_Geoplugin.php');
+			array_push($includes, CFGP_CLASS . '/CF_Geoplugin.php');
         }
 
         // Fix path on the Windows

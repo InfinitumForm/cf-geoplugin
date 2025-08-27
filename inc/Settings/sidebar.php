@@ -114,19 +114,19 @@ if (!class_exists('CFGP_Sidebar', false)) :
 					<?php
 					switch ($api_status) {
 						case 505:
-							$this->render_error('ERROR!', 'API no longer supports this version of Geo Controller');
+							$this->render_error('ERROR!', 'This version of Geo Controller is no longer supported by the API.');
 							break;
 						case 417:
-							$this->render_error('NOT VALID!', 'Your IP address is not valid or is in the private range.');
+							$this->render_error('NOT VALID!', 'Your IP address is invalid or falls within a private range.');
 							break;
 						case 403:
-							$this->render_error('BANNED!', 'Your domain is banned!');
+							$this->render_error('BANNED!', 'Your domain has been banned.');
 							break;
 						case 402:
-							$this->render_error('API is limited', 'No Information');
+							$this->render_error('API LIMITED', 'No information available.');
 							break;
 						case 401:
-							$this->render_error('DISABLED!', 'The API key is disabled because of unauthorized use!');
+							$this->render_error('DISABLED!', 'The API key has been disabled due to unauthorized use.');
 							break;
 						case 200:
 							?>
@@ -138,7 +138,8 @@ if (!class_exists('CFGP_Sidebar', false)) :
 							<?php
 							break;
 						default:
-							$this->render_error('ERROR!', 'There was an error communicating with the server.');
+							$this->render_error('ERROR!', 'An error occurred while communicating with the server.');
+
 							break;
 					}
 					?>
@@ -149,40 +150,41 @@ if (!class_exists('CFGP_Sidebar', false)) :
 						<h3><?php $this->cfgp_lookup_status_icon($available_lookup); ?> <?php esc_html_e('Lookup', 'cf-geoplugin'); ?></h3>
 						<?php
 						if ($available_lookup === 'lifetime') :
-							echo '<p>' . esc_html__('Congratulations, your license has provided you with a lifetime lookup.', 'cf-geoplugin') . '</p>';
+							echo '<p>' . esc_html__('Congratulations, your license includes lifetime lookup access.', 'cf-geoplugin') . '</p>';
 						elseif ($available_lookup === 'unlimited') :
 							if ($license_expire) {
 								printf('<p>%s <strong>%s</strong></p>',
-									esc_html__('You have an unlimited lookup that you can use until:', 'cf-geoplugin'),
+									esc_html__('You have unlimited lookups available until:', 'cf-geoplugin'),
 									esc_html($license_expire)
 								);
 							} else {
-								echo '<p>' . esc_html__('You have an unlimited lookup.', 'cf-geoplugin') . '</p>';
+								echo '<p>' . esc_html__('You have unlimited lookups.', 'cf-geoplugin') . '</p>';
 							}
 						elseif (is_numeric($available_lookup)) :
 							$used = CFGP_LIMIT - $available_lookup;
 							$left = $available_lookup;
 							printf(
-								'<p>' . esc_html__('You currently spent %1$d lookups of the %3$d lookups available. This means you have %2$d lookups left today.', 'cf-geoplugin') . '</p>',
+								'<p>' . esc_html__('You have used %1$d of the %3$d available lookups. This means you have %2$d lookups remaining today.', 'cf-geoplugin') . '</p>',
 								esc_html($used), esc_html($left), esc_html(CFGP_LIMIT)
 							);
 
 							if ($available_lookup <= (CFGP_LIMIT / 3)) {
-								echo '<p style="color:#900">' . esc_html__('Your lookup expires soon, the site may be left without important functionality.', 'cf-geoplugin') . '</p>';
+								echo '<p style="color:#900">' . esc_html__('Your lookups are running low, and the site may soon lose important functionality.', 'cf-geoplugin') . '</p>';
 							}
 
 							echo '<p>' . wp_kses_post(sprintf(
-								__('If you want to have an %1$s, you need to %2$s.', 'cf-geoplugin'),
-								'<a href="' . esc_url(CFGP_STORE) . '/documentation/quick-start/what-do-i-get-from-unlimited-license" target="_blank">' . esc_html__('unlimited lookup', 'cf-geoplugin') . '</a>',
-								'<a href="' . esc_url(CFGP_U::admin_url('admin.php?page=cf-geoplugin-activate')) . '" target="_blank"><strong>' . esc_html__('activate the license', 'cf-geoplugin') . '</strong></a>'
+								__('If you want to get %1$s, you need to %2$s.', 'cf-geoplugin'),
+								'<a href="' . esc_url(CFGP_STORE) . '/documentation/quick-start/what-do-i-get-from-unlimited-license" target="_blank">' . esc_html__('unlimited lookups', 'cf-geoplugin') . '</a>',
+								'<a href="' . esc_url(CFGP_U::admin_url('admin.php?page=cf-geoplugin-activate')) . '" target="_blank"><strong>' . esc_html__('activate your license', 'cf-geoplugin') . '</strong></a>'
 							)) . '</p>';
 						elseif ($available_lookup == 0) :
-							echo '<p style="color:#900">' . esc_html__('You spent the entire lookup. It will be available again the next day.', 'cf-geoplugin') . '</p>';
+							echo '<p style="color:#900">' . esc_html__('You have used all your lookups. They will be available again tomorrow.', 'cf-geoplugin') . '</p>';
 						endif;
+
 						?>
 					<?php else : ?>
 						<h3><?php $this->cfgp_lookup_status_icon(0); ?> <?php esc_html_e('Lookup', 'cf-geoplugin'); ?></h3>
-						<p style="color:#900"><?php esc_html_e('Lookup not available.', 'cf-geoplugin'); ?></p>
+						<p style="color:#900"><?php esc_html_e('Lookup is not available.', 'cf-geoplugin'); ?></p>
 					<?php endif; ?>
 				</li>
 
@@ -250,9 +252,10 @@ if (!class_exists('CFGP_Sidebar', false)) :
 	<?php endif; ?>
 	</div>
 	<div class="community-events-footer">
-		<a href="<?php echo esc_url(CFGP_STORE); ?>/category/announcements" target="_blank"><?php esc_html_e('Announcements', 'cf-geoplugin'); ?> <span class="screen-reader-text"><?php esc_html_e('(opens in a new tab)', 'cf-geoplugin'); ?></span><span aria-hidden="true" class="dashicons dashicons-external"></span></a>
-		| <a href="<?php echo esc_url(CFGP_STORE); ?>/category/information" target="_blank"><?php esc_html_e('Information', 'cf-geoplugin'); ?> <span class="screen-reader-text">(opens in a new tab)</span><span aria-hidden="true" class="dashicons dashicons-external"></span></a>
-		| <a href="<?php echo esc_url(CFGP_STORE); ?>/category/tutorial" target="_blank"><?php esc_html_e('Tutorial', 'cf-geoplugin'); ?> <span class="screen-reader-text"><?php esc_html_e('(opens in a new tab)', 'cf-geoplugin'); ?></span><span aria-hidden="true" class="dashicons dashicons-external"></span></a>
+		<a href="<?php echo esc_url(CFGP_STORE); ?>/category/announcements" target="_blank"><?php esc_html_e('Announcements', 'cf-geoplugin'); ?> <span class="screen-reader-text"><?php esc_html_e('(opens in a new tab)', 'cf-geoplugin'); ?></span></a>
+		| <a href="<?php echo esc_url(CFGP_STORE); ?>/category/information" target="_blank"><?php esc_html_e('Information', 'cf-geoplugin'); ?> <span class="screen-reader-text">(opens in a new tab)</span></a>
+		| <a href="<?php echo esc_url(CFGP_STORE); ?>/category/tutorial" target="_blank"><?php esc_html_e('Tutorial', 'cf-geoplugin'); ?> <span class="screen-reader-text"><?php esc_html_e('(opens in a new tab)', 'cf-geoplugin'); ?></span></a> 
+		| <a href="<?php echo esc_url(CFGP_STORE); ?>/category/case-study" target="_blank"><?php esc_html_e('Case Study', 'cf-geoplugin'); ?> <span class="screen-reader-text"><?php esc_html_e('(opens in a new tab)', 'cf-geoplugin'); ?></span></a>
 	</div>
 	<?php }
 
@@ -264,7 +267,7 @@ if (!class_exists('CFGP_Sidebar', false)) :
         public function dashboard_footer()
 		{
 			$base_url = esc_url(CFGP_STORE);
-			$links_top = [
+			$Links_1 = [
 				[
 					'url'  => "{$base_url}/documentation/",
 					'text' => __('Documentation', 'cf-geoplugin'),
@@ -276,10 +279,10 @@ if (!class_exists('CFGP_Sidebar', false)) :
 				[
 					'url'  => "{$base_url}/blog/",
 					'text' => __('Blog', 'cf-geoplugin'),
-				],
+				]
 			];
 
-			$links_bottom = [
+			$Links_2 = [
 				[
 					'url'  => "{$base_url}/terms-and-conditions/",
 					'text' => __('Terms & Conditions', 'cf-geoplugin'),
@@ -291,11 +294,23 @@ if (!class_exists('CFGP_Sidebar', false)) :
 				[
 					'url'  => "{$base_url}/cookie-policy/",
 					'text' => __('Cookie Policy', 'cf-geoplugin'),
+				]
+			];
+			
+			$Links_3 = [
+				[
+					'url'  => "{$base_url}/disclaimer-legal-notice/",
+					'text' => __('Disclaimer / Legal Notice', 'cf-geoplugin'),
 				],
+				[
+					'url'  => "{$base_url}/accessibility-statement/",
+					'text' => __('Accessibility Statement', 'cf-geoplugin'),
+				]
 			];
 
-			$this->render_footer_links($links_top);
-			$this->render_footer_links($links_bottom);
+			$this->render_footer_links($Links_1);
+			$this->render_footer_links($Links_2);
+			$this->render_footer_links($Links_3);
 			?>
 			<p class="community-events-footer" id="cf-geoplugin-copyright" style="font-size:0.85em; text-align:center;">
 				<?php
@@ -339,49 +354,51 @@ if (!class_exists('CFGP_Sidebar', false)) :
          * @since    8.0.0
          **/
         public function sidebar_statistic_plugin_info()
-        {
-            $plugin = CFGP_U::plugin_info([
-                'version'      => true,
-                'tested'       => true,
-                'sections'     => true,
-                'donate_link'  => true,
-                'downloadlink' => true,
-                'downloaded'   => true,
-                'requires_php' => true,
-                'requires'     => true,
-                'last_updated' => true,
-                'homepage'     => true,
-            ], false, false);
+		{
+			$plugin = CFGP_U::plugin_info([
+				'version'      => true,
+				'tested'       => true,
+				'sections'     => true,
+				'donate_link'  => true,
+				'downloadlink' => true,
+				'downloaded'   => true,
+				'requires_php' => true,
+				'requires'     => true,
+				'last_updated' => true,
+				'homepage'     => true,
+			], false, false);
 
-            if (!$plugin || is_wp_error($plugin)) {
-                return;
-            }
-            ?>
-<li class="cfgp-statistic-separator"></li>
-<li class="cfgp-statistic-plugin-details">
-	<h3><i class="cfa cfa-plug" aria-hidden="true"></i> <?php esc_html_e('Geo Controller details', 'cf-geoplugin'); ?></h3>
-	<ul>
-		<li><strong><?php esc_html_e('Last Update', 'cf-geoplugin'); ?>:</strong> <span><?php echo esc_html(date(CFGP_DATE_TIME_FORMAT, strtotime($plugin->last_updated))); ?></span></li>
-		<li><strong><?php esc_html_e('Homepage', 'cf-geoplugin'); ?>:</strong> <span><a href="<?php echo esc_url($plugin->homepage); ?>" target="_blank"><?php echo esc_url($plugin->homepage) ?></a></span></li>
-		<li><strong><?php esc_html_e('WP Support', 'cf-geoplugin'); ?>:</strong> <span><?php
-                    if (version_compare(get_bloginfo('version'), $plugin->requires, '>=')) {
-                        printf('<span class="text-success">' . esc_html__('Supported on WP version %s', 'cf-geoplugin') . '</span>', esc_html(get_bloginfo('version')));
-                    } else {
-                        printf('<span class="text-danger">' . esc_html__('Plugin require WordPress version %s or above!', 'cf-geoplugin') . '</span>', esc_html($plugin->requires));
-                    }
-            ?></span></li>
-		<li><strong><?php esc_html_e('PHP Support', 'cf-geoplugin'); ?>:</strong> <?php
-                preg_match("#^\d+(\.\d+)*#", PHP_VERSION, $match);
+			if (!$plugin || is_wp_error($plugin)) {
+				return;
+			}
+			?>
+		<li class="cfgp-statistic-separator"></li>
+		<li class="cfgp-statistic-plugin-details">
+			<h3><i class="cfa cfa-plug" aria-hidden="true"></i> <?php esc_html_e('Geo Controller Details', 'cf-geoplugin'); ?></h3>
+			<ul>
+				<li><strong><?php esc_html_e('Last Updated', 'cf-geoplugin'); ?>:</strong> <span><?php echo esc_html(date(CFGP_DATE_TIME_FORMAT, strtotime($plugin->last_updated))); ?></span></li>
+				<li><strong><?php esc_html_e('Homepage', 'cf-geoplugin'); ?>:</strong> <span><a href="<?php echo esc_url($plugin->homepage); ?>" target="_blank"><?php echo esc_url($plugin->homepage); ?></a></span></li>
+				<li><strong><?php esc_html_e('WordPress Support', 'cf-geoplugin'); ?>:</strong> <span><?php
+					if (version_compare(get_bloginfo('version'), $plugin->requires, '>=')) {
+						printf('<span class="text-success">' . esc_html__('Supported on WordPress version %s', 'cf-geoplugin') . '</span>', esc_html(get_bloginfo('version')));
+					} else {
+						printf('<span class="text-danger">' . esc_html__('This plugin requires WordPress version %s or higher.', 'cf-geoplugin') . '</span>', esc_html($plugin->requires));
+					}
+				?></span></li>
+				<li><strong><?php esc_html_e('PHP Support', 'cf-geoplugin'); ?>:</strong> <?php
+					preg_match("#^\d+(\.\d+)*#", PHP_VERSION, $match);
 
-            if (version_compare(PHP_VERSION, $plugin->requires_php, '>=')) {
-                printf('<span class="text-success">' . esc_html__('Supported on PHP version %s', 'cf-geoplugin') . '</span>', esc_html($match[0]));
-            } else {
-                printf('<span class="text-danger">' . esc_html__('Plugin not support PHP version %1$s. Please use PHP vesion %2$s or above.', 'cf-geoplugin') . '</span>', esc_html(PHP_VERSION), esc_html($plugin->requires_php));
-            }
-            ?></li>
-	</ul>
-</li>
-	<?php }
+					if (version_compare(PHP_VERSION, $plugin->requires_php, '>=')) {
+						printf('<span class="text-success">' . esc_html__('Supported on PHP version %s', 'cf-geoplugin') . '</span>', esc_html($match[0]));
+					} else {
+						printf('<span class="text-danger">' . esc_html__('This plugin does not support PHP version %1$s. Please use PHP version %2$s or higher.', 'cf-geoplugin') . '</span>', esc_html(PHP_VERSION), esc_html($plugin->requires_php));
+					}
+				?></li>
+			</ul>
+		</li>
+			<?php
+		}
+
 
         /**
          * Show status icon for the runtime
@@ -395,17 +412,18 @@ if (!class_exists('CFGP_Sidebar', false)) :
 
 			// Define thresholds and their corresponding labels and icons
 			$levels = [
-				['limit' => 0.1,  'label' => 'Incomparable',  'icon' => 'battery-full',        'slug' => 'incomparable'],
-				['limit' => 0.5,  'label' => 'Exellent',      'icon' => 'battery-full',        'slug' => 'exellent'],
-				['limit' => 0.8,  'label' => 'Perfect',       'icon' => 'battery-three-quarters', 'slug' => 'perfect'],
-				['limit' => 1.2,  'label' => 'Good',          'icon' => 'battery-half',        'slug' => 'good'],
-				['limit' => 1.5,  'label' => 'Weak',          'icon' => 'battery-quarter',     'slug' => 'weak'],
-				['limit' => INF,  'label' => 'Bad',           'icon' => 'battery-empty',       'slug' => 'bad'],
+				['limit' => 0.1,  'label' => __('Incomparable', 'cf-geoplugin'), 'icon' => 'battery-full',        'slug' => 'incomparable'],
+				['limit' => 0.5,  'label' => __('Excellent', 'cf-geoplugin'),    'icon' => 'battery-full',        'slug' => 'excellent'],
+				['limit' => 0.8,  'label' => __('Perfect', 'cf-geoplugin'),      'icon' => 'battery-three-quarters', 'slug' => 'perfect'],
+				['limit' => 1.2,  'label' => __('Good', 'cf-geoplugin'),         'icon' => 'battery-half',        'slug' => 'good'],
+				['limit' => 1.5,  'label' => __('Weak', 'cf-geoplugin'),         'icon' => 'battery-quarter',     'slug' => 'weak'],
+				['limit' => INF,  'label' => __('Bad', 'cf-geoplugin'),          'icon' => 'battery-empty',       'slug' => 'bad'],
 			];
+
 
 			foreach ($levels as $level) {
 				if ($runtime <= $level['limit']) {
-					$label = esc_attr__($level['label'], 'cf-geoplugin');
+					$label = esc_attr($level['label']);
 					$slug = esc_attr($level['slug']);
 					$icon = esc_attr($level['icon']);
 					echo sprintf(

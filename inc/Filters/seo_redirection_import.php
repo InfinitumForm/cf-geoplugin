@@ -19,32 +19,66 @@ add_action('cfgp/page/seo_redirection/form/import', function () { global $wpdb; 
 <div class="postbox">
 	<h3 class="hndle" style="margin-bottom:0;padding-bottom:0;"><span><?php esc_html_e('SEO Redirection CSV Upload', 'cf-geoplugin'); ?></span></h3><hr>
 	<div class="inside">
-    	<p><?php esc_html_e('If you want to make large amounts of redirects easier, we give you this option. Here you can easily enter a thousand redirects by the rules you define in your CSV file with just a few clicks. Before proceeding with this, you need to be informed about the structure of the CSV file that we expect.', 'cf-geoplugin'); ?></p>
-        <p><strong><?php esc_html_e('Please carefully follow this manual to avoid unnecessary problems and waste of time.', 'cf-geoplugin'); ?></strong></p>
-        <p><?php esc_html_e('The file must be a standard comma separated CSV with exactly 8 columns. The order of the column is extremely important and its content is strict. If you do not follow the format and column order, CSV will be rejected.', 'cf-geoplugin'); ?></p>
+    <p>
+        <?php esc_html_e('If you want to create or manage a large number of redirects more easily, this option allows you to do so. You can import thousands of redirects defined in a CSV file with just a few clicks. Before continuing, please read carefully about the required CSV file structure.', 'cf-geoplugin'); ?>
+    </p>
 
-        <dl>
-            <dt>country</dt>
-            <dd><?php esc_html_e('Country Code - standard 2 letter country code (example: RS)', 'cf-geoplugin'); ?></dd>
-            <dt>region</dt>
-            <dd><?php esc_html_e('Region Name (example: Belgrade)', 'cf-geoplugin'); ?></dd>
-            <dt>city</dt>
-            <dd><?php esc_html_e('City Name (example: Belgrade)', 'cf-geoplugin'); ?></dd>
-            <dt>postcode</dt>
-            <dd><?php esc_html_e('Postcode Name (example: 1210)', 'cf-geoplugin'); ?></dd>
-            <dt>url</dt>
-            <dd><?php esc_html_e('Redirect URL - valid URL format', 'cf-geoplugin'); ?></dd>
-            <dt>http_code</dt>
-            <dd><?php esc_html_e('HTTP Status Code - Accept 301, 302, 303 and 404', 'cf-geoplugin'); ?></dd>
-            <dt>active</dt>
-            <dd><?php esc_html_e('Active - Optional, accept integer (1-Enable, 0-Disable)', 'cf-geoplugin'); ?></dd>
-            <dt>only_once</dt>
-            <dd><?php esc_html_e('Redirect only once - Optional, accept integer (1-Enable, 0-Disable)', 'cf-geoplugin'); ?></dd>
-        </dl>
-        <?php if (CFGP_SEO_Table::table_exists()) : ?>
-        <p class="submit"><button type="button" class="button button-primary button-cfgeo-seo-import-csv" data-label="<i class='cfa cfa-upload'></i> <?php esc_attr_e('Click Here to Upload CSV', 'cf-geoplugin'); ?>" data-confirm="<?php esc_attr_e('Are you sure? Once you start the import you will not be able to stop it. You must know that this operation deletes all existing data and replaces it with new one. We strongly recommend that you export the existing data first and then continue with this operation.', 'cf-geoplugin'); ?>" data-nonce="<?php echo esc_attr(CFGP_U::request_string('nonce')); ?>" data-callback="<?php echo esc_url(CFGP_U::admin_url('admin.php?page=cf-geoplugin-seo-redirection')); ?>"><i class="cfa cfa-upload"></i> <?php esc_html_e('Click Here to Upload CSV', 'cf-geoplugin'); ?></button> <?php echo(CFGP_U::has_seo_redirection() ? sprintf('<a aria="button" href="%s" class="button" style="float:right"><i class="cfa cfa-table"></i> %s</a> ', esc_url(CFGP_U::admin_url('/admin.php?page=cf-geoplugin-seo-redirection&action=export&nonce='.wp_create_nonce(CFGP_NAME.'-seo-export-csv'))), esc_html__('Export CSV', 'cf-geoplugin')) : ''); ?></p>
-		<?php endif; ?>
-    </div>
+    <p>
+        <strong><?php esc_html_e('Please follow the instructions carefully to avoid errors or wasting time.', 'cf-geoplugin'); ?></strong>
+    </p>
+
+    <p>
+        <?php esc_html_e('The file must be a standard comma-separated CSV with exactly 8 columns. The order of the columns is extremely important and the content of each must follow the required format. If the format or order is not respected, the CSV will be rejected.', 'cf-geoplugin'); ?>
+    </p>
+
+    <dl>
+        <dt>country</dt>
+        <dd><?php esc_html_e('Country Code – a standard 2-letter country code (example: RS).', 'cf-geoplugin'); ?></dd>
+
+        <dt>region</dt>
+        <dd><?php esc_html_e('Region Name (example: Belgrade).', 'cf-geoplugin'); ?></dd>
+
+        <dt>city</dt>
+        <dd><?php esc_html_e('City Name (example: Belgrade).', 'cf-geoplugin'); ?></dd>
+
+        <dt>postcode</dt>
+        <dd><?php esc_html_e('Postcode (example: 1210).', 'cf-geoplugin'); ?></dd>
+
+        <dt>url</dt>
+        <dd><?php esc_html_e('Redirect URL – must be a valid URL format.', 'cf-geoplugin'); ?></dd>
+
+        <dt>http_code</dt>
+        <dd><?php esc_html_e('HTTP Status Code – accepts only 301, 302, 303, or 404.', 'cf-geoplugin'); ?></dd>
+
+        <dt>active</dt>
+        <dd><?php esc_html_e('Active – optional, accepts integer values (1 = Enabled, 0 = Disabled).', 'cf-geoplugin'); ?></dd>
+
+        <dt>only_once</dt>
+        <dd><?php esc_html_e('Redirect only once – optional, accepts integer values (1 = Enabled, 0 = Disabled).', 'cf-geoplugin'); ?></dd>
+    </dl>
+
+    <?php if (CFGP_SEO_Table::table_exists()) : ?>
+        <p class="submit">
+			<button type="button"
+				class="button button-primary button-cfgeo-seo-import-csv"
+				data-label="<i class='cfa cfa-upload'></i> <?php esc_attr_e('Upload CSV File', 'cf-geoplugin'); ?>"
+				data-confirm="<?php esc_attr_e('Are you sure? Once the import begins, it cannot be stopped. This action will delete all existing data and replace it with the new data from your CSV file. We strongly recommend exporting your current data before proceeding.', 'cf-geoplugin'); ?>"
+				data-nonce="<?php echo esc_attr(CFGP_U::request_string('nonce')); ?>"
+				data-callback="<?php echo esc_url(CFGP_U::admin_url('admin.php?page=cf-geoplugin-seo-redirection')); ?>">
+				<i class="cfa cfa-upload"></i> <?php esc_html_e('Upload CSV File', 'cf-geoplugin'); ?>
+			</button>
+
+			<?php
+			if (CFGP_U::has_seo_redirection()) {
+				printf(
+					'<a aria="button" href="%s" class="button" style="float:right"><i class="cfa cfa-table"></i> %s</a>',
+					esc_url(CFGP_U::admin_url('/admin.php?page=cf-geoplugin-seo-redirection&action=export&nonce=' . wp_create_nonce(CFGP_NAME . '-seo-export-csv'))),
+					esc_html__('Export Current CSV', 'cf-geoplugin')
+				);
+			}
+			?>
+		</p>
+    <?php endif; ?>
 </div>
 <?php });
 

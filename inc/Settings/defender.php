@@ -98,7 +98,10 @@ if (!empty($block_city) && !is_array($block_city) && preg_match('/\]|\[/', $bloc
                             </nav>
                             
                             <div class="cfgp-tab-panel cfgp-tab-panel-active" id="defender-settings">
-                            	<p><?php esc_html_e('With Anti Spam Protection you can block the access from the specific IP, country, state and city to your site. Names of countries, states, regions or cities are not case sensitive, but the name must be entered correctly (in English) to get this feature work correctly. This feature is very safe and does not affect SEO.', 'cf-geoplugin'); ?></p>
+                            	<p>
+									<?php esc_html_e('With Anti-Spam Protection you can block access from specific IPs, countries, states, and cities to your site. Names of countries, states, regions, or cities are not case-sensitive, but they must be entered correctly (in English) for this feature to work properly. This feature is very safe and does not affect SEO.', 'cf-geoplugin'); ?>
+								</p>
+
                                 
                                 <div class="nav-tab-wrapper-chosen cfgp-country-region-city-multiple-form">
                                     <nav class="nav-tab-wrapper">
@@ -109,7 +112,7 @@ if (!empty($block_city) && !is_array($block_city) && preg_match('/\]|\[/', $bloc
                                     </nav>
                                     <div class="cfgp-tab-panel cfgp-tab-panel-active" id="ip-restriction">
                                     	<div class="cfgp-form-group">
-                                            <label for="block_ip"><?php esc_html_e('IP address separated by comma or by new line', 'cf-geoplugin'); ?>:</label>
+                                            <label for="block_ip"><?php esc_html_e('IP addresses separated by commas or new lines', 'cf-geoplugin'); ?>:</label>
                                             <textarea class="form-control" id="block_ip" name="block_ip" rows="5" style="min-height:115px"><?php echo wp_kses_post(CFGP_Options::get('block_ip', '')); ?></textarea>
                                         </div>
                                     </div>
@@ -125,39 +128,39 @@ if (!empty($block_city) && !is_array($block_city) && preg_match('/\]|\[/', $bloc
                                                     $block_country,
                                                     true
                                                 );
-?>
+											?>
                                             <br>
                                             <button type="button" class="button cfgp-select-all" data-target="block_country"><object data="<?php echo esc_url(CFGP_ASSETS . '/images/select.svg'); ?>" width="10" height="10"></object> <?php esc_attr_e('Select/Deselect all', 'cf-geoplugin'); ?></button>
                                         </div>
 										<div class="cfgp-form-group">
                                             <label for="block_region"><?php esc_html_e('Choose Region', 'cf-geoplugin'); ?>:</label>
                                             <?php
-    CFGP_Form::select_regions(
-        [
-            'name'         => 'block_region',
-            'id'           => 'block_region',
-            'country_code' => $block_country,
-        ],
-        $block_region,
-        true
-    );
-?>
+												CFGP_Form::select_regions(
+													[
+														'name'         => 'block_region',
+														'id'           => 'block_region',
+														'country_code' => $block_country,
+													],
+													$block_region,
+													true
+												);
+											?>
 											<!-- br>
                                             <button type="button" class="button cfgp-select-all" data-target="block_region"><object data="<?php echo esc_url(CFGP_ASSETS . '/images/select.svg'); ?>" width="10" height="10"></object> <?php esc_attr_e('Select/Deselect all', 'cf-geoplugin'); ?></button -->
                                         </div>
 										<div class="cfgp-form-group">
                                             <label for="block_city"><?php esc_html_e('Choose Cities', 'cf-geoplugin'); ?>:</label>
                                             <?php
-    CFGP_Form::select_cities(
-        [
-            'name'         => 'block_city',
-            'id'           => 'block_city',
-            'country_code' => $block_country,
-        ],
-        $block_city,
-        true
-    );
-?>
+												CFGP_Form::select_cities(
+													[
+														'name'         => 'block_city',
+														'id'           => 'block_city',
+														'country_code' => $block_country,
+													],
+													$block_city,
+													true
+												);
+											?>
 											<!-- br>
                                             <button type="button" class="button cfgp-select-all" data-target="block_city"><object data="<?php echo esc_url(CFGP_ASSETS . '/images/select.svg'); ?>" width="10" height="10"></object> <?php esc_attr_e('Select/Deselect all', 'cf-geoplugin'); ?></button -->
                                         </div>
@@ -167,18 +170,18 @@ if (!empty($block_city) && !is_array($block_city) && preg_match('/\]|\[/', $bloc
 											<p><?php esc_html_e('Protect your site from unwanted visitors using proxies and VPNs with just one click.', 'cf-geoplugin'); ?></p>
 											<div class="cfgp-form-group-checkboxes">
 												<?php
-        CFGP_Form::radio(
-            [
-                1 => esc_html__('Block Proxy', 'cf-geoplugin'),
-                0 => esc_html__('Do not block Proxy', 'cf-geoplugin'),
-            ],
-            [
-                'name' => 'block_proxy',
-                'id'   => 'block_proxy_enable',
-            ],
-            CFGP_Options::get('block_proxy', 0)
-        );
-?>
+													CFGP_Form::radio(
+														[
+															1 => esc_html__('Block Proxy', 'cf-geoplugin'),
+															0 => esc_html__('Do not block Proxy', 'cf-geoplugin'),
+														],
+														[
+															'name' => 'block_proxy',
+															'id'   => 'block_proxy_enable',
+														],
+														CFGP_Options::get('block_proxy', 0)
+													);
+												?>
 											</div>
 										</div>
 									</div>
@@ -190,25 +193,48 @@ if (!empty($block_city) && !is_array($block_city) && preg_match('/\]|\[/', $bloc
                                     </div>
                                  </div>
 								 
-								 <p><strong><?php esc_html_e('Warning: This option may also block your access to the site if your ISP uses a proxy to serve internet information. Therefore, you must place one cookie in your browser to avoid this problem for you.', 'cf-geoplugin'); ?></strong></p>
-								<p><?php esc_html_e('Copy this link and keep it in a secret and safe place:', 'cf-geoplugin'); ?></p>
-								<p><strong><code><?php echo esc_url(home_url('?cfgp_admin_access=' . str_rot13(substr(CFGP_U::KEY(), 3, 32)))); ?></code></strong></p>
-								<p><?php esc_html_e('When you check this option, we will set a cookie for you automatically but you can use this link whenever the plugin blocks you from accessing your site.', 'cf-geoplugin'); ?></p>
-                                 
-                                 <?php if (CFGP_Options::get('enable_spam_ip')): ?>
-                                     <p><strong><?php echo wp_kses_post(sprintf(__('Automatic IP Address Blacklist Check is enabled. All of these IPs are from a safe source and most of them are bots and crawlers. Blacklisted IPs will be automatically recognized and blocked. If you don\'t want this kind of protection %s.', 'cf-geoplugin'),
-                                         '<a href="'.esc_url(admin_url('admin.php?page=cf-geoplugin-settings')).'#spam-protection">'
-                                             .esc_html__('disable it in plugin settings', 'cf-geoplugin')
-                                         .'</a>')); ?></strong></p>
-                                 <?php else: ?>
-                                     <p><strong><?php echo wp_kses_post(sprintf(__('Automatic IP address blacklist check is NOT ENABLED. If you want additional protection %s.', 'cf-geoplugin'),
-                                         '<a href="'.esc_url(admin_url('admin.php?page=cf-geoplugin-settings')).'#spam-protection">'
-                                             .esc_html__('enable it in settings', 'cf-geoplugin')
-                                         .'</a>')); ?></strong></p>
-                                 <?php endif; ?>
-                                 
-                                 <p style="color:#cc0000;"><?php esc_html_e('These options will remove all your content, template, design and display custom messages to your visitors.', 'cf-geoplugin'); ?></p>
-                                 <?php submit_button(); ?>
+								 <p>
+									<strong><?php esc_html_e('Warning: This option may also block your access to the site if your ISP uses a proxy to serve internet data. To avoid this issue, a cookie must be placed in your browser.', 'cf-geoplugin'); ?></strong>
+								</p>
+
+								<p><?php esc_html_e('Copy this link and keep it in a safe and secure place:', 'cf-geoplugin'); ?></p>
+
+								<p>
+									<strong><code><?php echo esc_url(home_url('?cfgp_admin_access=' . str_rot13(substr(CFGP_U::KEY(), 3, 32)))); ?></code></strong>
+								</p>
+
+								<p><?php esc_html_e('When you enable this option, a cookie will be set for you automatically. However, you can always use this link if the plugin blocks you from accessing your site.', 'cf-geoplugin'); ?></p>
+
+								<?php if (CFGP_Options::get('enable_spam_ip')) : ?>
+									<p>
+										<strong>
+											<?php echo wp_kses_post(sprintf(
+												__('Automatic IP Address Blacklist Check is enabled. All of these IPs come from a trusted source, and most of them are bots and crawlers. Blacklisted IPs will be automatically recognized and blocked. If you don’t want this kind of protection, %s.', 'cf-geoplugin'),
+												'<a href="' . esc_url(admin_url('admin.php?page=cf-geoplugin-settings')) . '#spam-protection">'
+													. esc_html__('disable it in the plugin settings', 'cf-geoplugin')
+												. '</a>'
+											)); ?>
+										</strong>
+									</p>
+								<?php else : ?>
+									<p>
+										<strong>
+											<?php echo wp_kses_post(sprintf(
+												__('Automatic IP Address Blacklist Check is NOT enabled. If you want additional protection, %s.', 'cf-geoplugin'),
+												'<a href="' . esc_url(admin_url('admin.php?page=cf-geoplugin-settings')) . '#spam-protection">'
+													. esc_html__('enable it in the settings', 'cf-geoplugin')
+												. '</a>'
+											)); ?>
+										</strong>
+									</p>
+								<?php endif; ?>
+
+								<p style="color:#cc0000;">
+									<?php esc_html_e('These options will remove all your content, templates, and designs, and display custom messages to your visitors.', 'cf-geoplugin'); ?>
+								</p>
+
+								<?php submit_button(); ?>
+
                             </div>
                             
                             <div class="cfgp-tab-panel" id="defender-settings-page">

@@ -1,5 +1,14 @@
 == Changelog ==
 
+= 8.9.0 =
+* Complete rewrite of plugin documentation with clearer structure and new usage examples.
+* Added Disclaimer / Legal Notice and Accessibility Statement.
+* Updated Privacy Policy and Terms & Conditions references.
+* Improved explanations for shortcodes, CSS, and Google Maps integration.
+* Enhanced CSV import/export instructions for SEO redirection.
+* Fixed minor typos and grammar issues across admin settings.
+* Small UI text refinements for better user experience.
+
 = 8.8.8 =
 * Improved GUI, fixed documentation.
 

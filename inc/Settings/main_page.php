@@ -72,7 +72,14 @@ $API = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
                         </nav>
                         <?php do_action('cfgp/main_page/tab-panel/before', $API, $remove_tags, $gps_keys); ?>
                         <div class="cfgp-tab-panel cfgp-tab-panel-active" id="shortcodes">
-                        	<p><?php esc_html_e('These are short codes available for use in places where short codes can be executed.', 'cf-geoplugin'); ?> <?php printf(esc_html__('The use and functionality of these short codes are described in our %s.', 'cf-geoplugin'), '<a href="https://wpgeocontroller.com/documentation/quick-start/cf-geoplugin-shortcodes" target="_blank">' . esc_html__('documentation', 'cf-geoplugin') . '</a>'); ?></p>
+                        	<p>
+								<?php esc_html_e('These are the shortcodes available for use in places where shortcodes can be executed.', 'cf-geoplugin'); ?>
+								<?php printf(
+									esc_html__('The usage and functionality of these shortcodes are explained in our %s.', 'cf-geoplugin'),
+									'<a href="' . CFGP_STORE . '/documentation/quick-start/geo-controller-shortcodes" target="_blank">' . esc_html__('documentation', 'cf-geoplugin') . '</a>'
+								); ?>
+							</p>
+
                             <?php if ($API) : ?>
                             <table class="wp-list-table widefat fixed striped table-view-list posts table-cf-geoplugin-shortcodes">
                                 <thead>
@@ -124,8 +131,17 @@ $API = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
                         </div>
                         <?php if (CFGP_Options::get_beta('enable_simple_shortcode')) : ?>
                             <div class="cfgp-tab-panel" id="simple-shortcodes">
-                                <p><?php esc_html_e('These are short codes available for use in places where short codes can be executed.', 'cf-geoplugin'); ?> <?php echo wp_kses_post(sprintf(__('The use and functionality of these short codes are described in our %s.', 'cf-geoplugin'), '<a href="https://wpgeocontroller.com/documentation/quick-start/cf-geoplugin-shortcodes" target="_blank">' . esc_html__('documentation', 'cf-geoplugin') . '</a>')); ?></p>
-                                <p><?php esc_html_e('These shortcodes only have the purpose to return available geo-information. You can\'t include, exclude or add default values. Just display geodata following with appropriate shortcodes.', 'cf-geoplugin'); ?></p>
+                                <p>
+									<?php esc_html_e('These are the shortcodes available for use in places where shortcodes can be executed.', 'cf-geoplugin'); ?>
+									<?php echo wp_kses_post(sprintf(
+										__('The usage and functionality of these shortcodes are explained in our %s.', 'cf-geoplugin'),
+										'<a href="' . CFGP_STORE . '/documentation/quick-start/geo-controller-shortcodes/cfgeo_property" target="_blank">' . esc_html__('documentation', 'cf-geoplugin') . '</a>'
+									)); ?>
+								</p>
+								<p>
+									<?php esc_html_e('These shortcodes are only intended to return available geo-information. You cannot include, exclude, or add default values. They simply display geodata according to the appropriate shortcode.', 'cf-geoplugin'); ?>
+								</p>
+
                                 <?php if ($API) : ?>
                                 <table class="wp-list-table widefat fixed striped table-view-list posts table-cf-geoplugin-shortcodes">
                                     <thead>
@@ -171,7 +187,13 @@ $API = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
                             </div>
                         <?php endif; ?>
                         <div class="cfgp-tab-panel" id="tags">
-                       		<p><?php esc_html_e('These special tags are intended for quick insertion of geo information into pages and posts. These tags allow the use of geo information in the titles & content of pages, categories and other taxonomy. It can also be used in widgets, various page builders and supports several SEO plugins like Yoast, All in One Seo Pack, SEO Framework and WordPress SEO Plugin by Rank Math.', 'cf-geoplugin'); ?></p>
+                       		<p>
+								<?php echo wp_kses_post(sprintf(
+									__('These special tags are designed for quickly inserting geo-information into pages and posts. They allow the use of geo-information in page titles and content, categories, and other taxonomies. They can also be used in widgets, various page builders, and are supported by several SEO plugins such as Yoast, All in One SEO Pack, SEO Framework, and Rank Math. For more details, please read our %s.', 'cf-geoplugin'),
+									'<a href="' . CFGP_STORE . '/documentation/quick-start/cf-geo-plugin-tags" target="_blank">' . esc_html__('documentation', 'cf-geoplugin') . '</a>'
+								)); ?>
+							</p>
+
                             <?php if ($API) : ?>
                             <table class="wp-list-table widefat fixed striped table-view-list posts table-cf-geoplugin-shortcodes">
                                 <thead>
@@ -216,11 +238,23 @@ $API = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
 						<?php if (CFGP_Options::get('enable_css')) : ?>
 						<div class="cfgp-tab-panel" id="css-property">
 							
-							<p><?php esc_html_e('The Geo Controller has dynamic CSS settings that can hide or display some content if you use it properly.', 'cf-geoplugin'); ?></p>
+							<p><?php esc_html_e('Geo Controller provides dynamic CSS settings that can hide or display content when used correctly.', 'cf-geoplugin'); ?></p>
+
 							<p><b><big><?php esc_html_e('How to use it?', 'cf-geoplugin'); ?></big></b></p>
-							<p><?php esc_html_e('These CSS settings are dynamic and depend on the geolocation of the visitor.', 'cf-geoplugin'); ?></p>
-							<p><?php echo wp_kses_post(sprintf(__('A different CSS setting is generated for each state, city, region according to the following principle: %s or %s, where the %s is actually a geo-location name in lowercase letters and multiple words separated by a minus sign.', 'cf-geoplugin'), '<code>cfgeo-show-in-' . esc_html__('{property}', 'cf-geoplugin') . '</code>', '<code>cfgeo-hide-from-' . esc_html__('{property}', 'cf-geoplugin') . '</code>', '<code>' . esc_html__('{property}', 'cf-geoplugin') . '</code>')); ?></p>
-							<p><?php esc_html_e('These CSS settings you can insert inside your HTML via class attribute just like any other CSS setting.', 'cf-geoplugin'); ?></p>
+
+							<p><?php esc_html_e('These CSS settings are dynamic and depend on the visitor’s geolocation.', 'cf-geoplugin'); ?></p>
+
+							<p>
+								<?php echo wp_kses_post(sprintf(
+									__('A different CSS class is generated for each state, city, or region following this principle: %s or %s, where %s represents the geo-location name in lowercase letters with multiple words separated by a dash.', 'cf-geoplugin'),
+									'<code>cfgeo-show-in-' . esc_html__('{property}', 'cf-geoplugin') . '</code>',
+									'<code>cfgeo-hide-from-' . esc_html__('{property}', 'cf-geoplugin') . '</code>',
+									'<code>' . esc_html__('{property}', 'cf-geoplugin') . '</code>'
+								)); ?>
+							</p>
+
+							<p><?php esc_html_e('You can insert these CSS classes inside your HTML via the class attribute, just like any other CSS rule.', 'cf-geoplugin'); ?></p>
+
 
 							<table class="wp-list-table widefat fixed striped table-view-list posts table-cf-geoplugin-shortcodes">
                                 <thead>

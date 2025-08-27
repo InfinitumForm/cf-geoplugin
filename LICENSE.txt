@@ -1,29 +1,41 @@
-Geo Plugin for WordPress
+                 Geo Controller for WordPress
 
-Copyright 2014-2022 by Ivijan-Stefan Stipic - info@cfgeoplugin.com
+          Copyright © 2014–present Ivijan-Stefan Stipic
+      info@wpgeocontroller.com – https://wpgeocontroller.com
 
-This program is free software; you can redistribute it and/or modify
+
+This plugin is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2 of the License, or
 (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
+This plugin is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
-Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+along with this plugin; if not, write to the Free Software
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
+
+
+                           API Service
+
+   The Geo Controller plugin integrates with a commercial API developed
+   and operated by INFINITUM FORM® (https://infinitumform.com).
+   Usage of the API service requires a valid license and may be subject
+   to separate terms and conditions:
+   https://wpgeocontroller.com/terms-and-conditions
+
 
 This program is based on the work covered by the following copyright and
 permission notices:
 
-  WordPress - Web publishing software
+			    WordPress – Web publishing software
+		   Copyright © 2003–present by the contributors
+		        WordPress is released under the GPL
 
-  Copyright 2014-2022 by the contributors
 
-  WordPress is released under the GPL
 
 =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
