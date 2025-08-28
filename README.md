@@ -1,20 +1,102 @@
-Geo Controller (known as CF Geo Plugin) [<img class="aligncenter" src="https://plugintests.com/plugins/cf-geoplugin/wp-badge.svg" alt="Geo Controller is WordPress 5.2.x Compatible">](https://plugintests.com/plugins/cf-geoplugin/latest) [<img class="aligncenter" src="https://plugintests.com/plugins/cf-geoplugin/php-badge.svg" alt="Geo Controller is PHP7 Compatible">](https://plugintests.com/plugins/cf-geoplugin/latest) [<img class="aligncenter" src="https://img.shields.io/badge/CF%20GeoPlugin-8.x-green.svg" alt="Geo Controller version 8.x">](https://cfgeoplugin.com)
-========
+# Geo Controller for WordPress  
+*(formerly known as CF Geo Plugin)*  
 
-The **Geo Controller** is FREE plugin that allows you to attach content, geographic information and Google maps to posts, pages, widgets and custom templates by using simple Shortcodes, PHP code or JavaScript by user IP address. It also lets you to specify a default geographic location for your entire WordPress blog. This plugin is also great for SEO and increasing conversions on your blog or landing pages.
+[![WordPress 5.2+ Compatible](https://plugintests.com/plugins/cf-geoplugin/wp-badge.svg)](https://plugintests.com/plugins/cf-geoplugin/latest)  
+[![PHP 7+ Compatible](https://plugintests.com/plugins/cf-geoplugin/php-badge.svg)](https://plugintests.com/plugins/cf-geoplugin/latest)  
+![Geo Controller version](https://img.shields.io/badge/Geo%20Controller-8.x-green.svg)  
 
-If you need GPS support for our plugin, you can test our new **[GPS addon](https://github.com/CreativForm/wordpress-geoplugin-gps)** what you can download **[here](https://github.com/CreativForm/wordpress-geoplugin-gps)**.
+---
 
-GAMEPLAY:
-========
+## 🌍 What is Geo Controller?  
+The **Geo Controller** is a **free WordPress plugin** that allows you to attach content, geographic information, and Google Maps to posts, pages, widgets, and custom templates by detecting the **user’s IP address**.  
 
-This repository is made for anyone who want to contribute and improve this plugin. You are free to fork, made updates and push request for it. Also if you notice some error, bug or anything that need to be improved or change, you are welcome. All your names will be counted inside plugin and you will be a part of CF family.
+With just a few simple **shortcodes, PHP functions, or JavaScript calls**, you can:  
+- Display geolocation-specific content to your visitors.  
+- Control menus, banners, CSS, and JavaScript based on visitor location.  
+- Embed Google Maps with customizable defaults.  
+- Improve SEO and conversion rates on landing pages.  
 
-CONTACT:
-========
+⚡ **Bonus**: You can also set a **default geographic location** for your entire WordPress site.  
 
-Please contact us anytime regarding anything related to Geo Controller office@cfgeoplugin.com
+---
 
-Copyright &copy; [Geo Controller](https://cfgeoplugin.com)
-Created by [INFINITUM FORM](https://infinitumform.com)
+## ✨ Key Features  
+- 🔹 Shortcodes for quick integration anywhere in WordPress.  
+- 🔹 PHP and JavaScript support for developers.  
+- 🔹 Google Maps integration with customizable zoom, markers, and info windows.  
+- 🔹 Geo-based navigation menu control.  
+- 🔹 Dynamic CSS/JS based on location.  
+- 🔹 REST API endpoints for advanced integrations.  
+- 🔹 SEO redirection and geotags support.  
+- 🔹 Spam and proxy protection (TOR, IP blacklist, etc).  
+- 🔹 GDPR-friendly, with Privacy Policy, Disclaimer, and Accessibility Statement included.  
 
+---
+
+## 🚀 Installation  
+1. Download or clone this repository.  
+2. Upload the plugin folder to your WordPress site under:  
+   ```
+   /wp-content/plugins/
+   ```  
+3. Activate the plugin from the **WordPress Admin → Plugins** page.  
+4. Configure the plugin under **Settings → Geo Controller**.  
+
+---
+
+## 🛠 Usage  
+
+### Shortcodes Example  
+```php
+[cfgeo_map latitude="40.7128" longitude="-74.0060" zoom="12"]
+```
+
+### PHP Example  
+```php
+<?php
+$data = cfgeo_get();
+echo 'Your country is: ' . esc_html($data->country);
+```
+### JavaScript Example  
+```javascript
+cfgeo.get(function(data) {
+    alert("Hello visitor from " + data.country);
+});
+```
+
+More examples and documentation:  
+👉 [Official Documentation](https://wpgeocontroller.com/documentation/)  
+
+---
+
+## 📦 Add-ons  
+
+If you need GPS support, try our free **[GPS Add-on](https://github.com/CreativForm/wordpress-geoplugin-gps)**.  
+You can download it directly from the repository.  
+
+---
+
+## 🤝 Contributing  
+We welcome contributions! 🎉  
+
+- Fork this repository.  
+- Create a new branch for your fix or feature.  
+- Submit a pull request.  
+
+If you notice any errors, bugs, or have suggestions for improvement, feel free to open an issue.  
+All contributors will be credited inside the plugin — become part of the **Geo Controller family**.  
+
+---
+
+## 📧 Contact  
+- Website: [wpgeocontroller.com](https://wpgeocontroller.com)  
+- Email: info@wpgeocontroller.com  
+- Company: [INFINITUM FORM®](https://infinitumform.com)  
+
+---
+
+## 📜 License  
+This plugin is released under the **GNU General Public License v2 (or later)**.  
+
+Copyright © 2014–present [Ivijan-Stefan Stipic](mailto:info@wpgeocontroller.com)  
+Developed and maintained by [INFINITUM FORM®](https://infinitumform.com).  
