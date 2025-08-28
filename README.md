@@ -54,7 +54,7 @@ With just a few simple **shortcodes, PHP functions, or JavaScript calls**, you c
 ### PHP Example  
 ```php
 <?php
-$data = cfgeo_get();
+$data = CFGP_U::api();
 echo 'Your country is: ' . esc_html($data->country);
 ```
 ### JavaScript Example  
