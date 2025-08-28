@@ -42,6 +42,9 @@ With just a few simple **shortcodes, PHP functions, or JavaScript calls**, you c
 3. Activate the plugin from the **WordPress Admin → Plugins** page.  
 4. Configure the plugin under **Settings → Geo Controller**.  
 
+For the official release version, please download it from the **WordPress.org Plugin Directory**:  
+👉 https://wordpress.org/plugins/cf-geoplugin/  
+
 ---
 
 ## 🛠 Usage  
@@ -90,6 +93,7 @@ All contributors will be credited inside the plugin — become part of the **Geo
 
 ## 📧 Contact  
 - Website: [wpgeocontroller.com](https://wpgeocontroller.com)  
+- WordPress.org Plugin Page: [cf-geoplugin](https://wordpress.org/plugins/cf-geoplugin/)  
 - Email: info@wpgeocontroller.com  
 - Company: [INFINITUM FORM®](https://infinitumform.com)  
 
