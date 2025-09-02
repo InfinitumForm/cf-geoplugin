@@ -115,10 +115,12 @@ if (!class_exists('CFGP_Init', false)) : final class CFGP_Init
         $includes = apply_filters('cfgp/init/include_classes', [
             CFGP_CLASS . '/Cache.php',					// Memory control class
             CFGP_CLASS . '/Cache_DB.php',				// Cache control class
-            CFGP_CLASS . '/OS.php',						// Operating System info and tool class
+            CFGP_CLASS . '/OS_Helper.php',				// Client Hints helper
+			CFGP_CLASS . '/OS.php',						// Operating System info and tool class
             CFGP_CLASS . '/Browser.php',				// Browser class
             CFGP_CLASS . '/Defaults.php',				// Default values, data
-            CFGP_CLASS . '/Utilities.php',				// Utilities
+            CFGP_CLASS . '/Bots.php',					// Bots
+			CFGP_CLASS . '/Utilities.php',				// Utilities
             CFGP_CLASS . '/Library.php',				// Library, data
             CFGP_CLASS . '/Form.php',					// Form class
             CFGP_CLASS . '/Options.php',				// Plugin option class

@@ -1,5 +1,13 @@
 == Changelog ==
 
+= 8.9.1 =
+* Added Client Hints (UA-CH) support for accurate detection
+* Improved UA fallback parsing, safer regex, and bot-first detection
+* Cleaner platform mapping
+* Backward compatible API
+* Fixed GUI and documentation
+* Code optimization
+
 = 8.9.0 =
 * Complete rewrite of plugin documentation with clearer structure and new usage examples.
 * Added Disclaimer / Legal Notice and Accessibility Statement.

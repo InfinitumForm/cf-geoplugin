@@ -5,7 +5,7 @@ Tags: Geo Location, WordPress Geolocation Plugin, Location-Based Personalization
 Requires at least: 6.0
 Tested up to: 6.8
 Requires PHP: 7.0
-Stable tag: 8.9.0
+Stable tag: 8.9.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -321,24 +321,25 @@ YES, just add the attribute `default` in shortcode and corresponding text like t
 In PHP you can use WordPress function `[do_shortcode()](https://developer.wordpress.org/reference/functions/do_shortcode/)` to display data via shortcode inside your PHP file. Also you have option to use PHP class `new CF_Geoplugin` or you can use GLOBALS and get data via `global $CF_Geo` like example:
 
 `
-// check if plugin exists
-if(class_exists("CF_Geoplugin")){
-	// include plugin class
-	$cfgeo = new CF_Geoplugin;
-	// get data
-	$geo = $cfgeo->get();
-	// print data
-	echo $geo->city;
+// Preferred usage
+$data = CFGP_U::api();              // Full structured geodata array
+$country = $data['country'] ?? '';  // Safe access to fields
+
+// Access a single field from the API via helper
+$country = CFGP_U::api('country');      // e.g. "Germany"
+$countryCode = CFGP_U::api('country_code');
+
+// Explicit lookup via the API class (advanced)
+$response = CFGP_API::lookup('8.8.8.8', ['dns' => true]);
+// Always validate keys defensively
+if (is_array($response)) {
+    $city = $response['city'] ?? '';
 }
 `
 
 or with globals:
 
 `
-// object oriented
-global $CF_GEO;
-echo $CF_GEO->city;
-
 // Array
 global $CFGEO;
 echo $CFGEO['city'];
@@ -412,6 +413,14 @@ Please inform us if any of these errors occur via contact form on our website [h
 14. WooCommerce Settings
 
 == Changelog ==
+
+= 8.9.1 =
+* Added Client Hints (UA-CH) support for accurate detection
+* Improved UA fallback parsing, safer regex, and bot-first detection
+* Cleaner platform mapping
+* Backward compatible API
+* Fixed GUI and documentation
+* Code optimization
 
 = 8.9.0 =
 * Complete rewrite of plugin documentation with clearer structure and new usage examples.
@@ -514,6 +523,14 @@ Please inform us if any of these errors occur via contact form on our website [h
 * Improved javascript algorithms
 
 == Upgrade Notice ==
+
+= 8.9.1 =
+* Added Client Hints (UA-CH) support for accurate detection
+* Improved UA fallback parsing, safer regex, and bot-first detection
+* Cleaner platform mapping
+* Backward compatible API
+* Fixed GUI and documentation
+* Code optimization
 
 = 8.9.0 =
 * Complete rewrite of plugin documentation with clearer structure and new usage examples.

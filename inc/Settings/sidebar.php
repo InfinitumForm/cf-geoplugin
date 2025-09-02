@@ -277,8 +277,8 @@ if (!class_exists('CFGP_Sidebar', false)) :
 					'text' => __('Pricing', 'cf-geoplugin'),
 				],
 				[
-					'url'  => "{$base_url}/blog/",
-					'text' => __('Blog', 'cf-geoplugin'),
+					'url'  => "{$base_url}/resources/",
+					'text' => __('Resources', 'cf-geoplugin'),
 				]
 			];
 

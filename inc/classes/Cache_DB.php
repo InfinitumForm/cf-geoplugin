@@ -312,21 +312,16 @@ if (!class_exists('CFGP_DB_Cache', false)) : class CFGP_DB_Cache
      */
     public static function has_redis()
     {
-        return CFGP_Options::get('enable_redis_cache', 0) !== 0 && extension_loaded('redis');
+        return CFGP_Options::get('enable_redis_cache', 0) !== 0 && apply_filters('cfgp_enable_redis', extension_loaded('redis'));
     }
 
     /*
      * Checks if Memcache is active
      * @verson    1.0.0
      */
-    protected static $has_memcache = null;
     public static function has_memcache()
     {
-        if (self::$has_memcache === null) {
-            self::$has_memcache = apply_filters('cfgp_enable_memcache', true) && class_exists('Memcached', false);
-        }
-
-        return self::$has_memcache;
+        return apply_filters('cfgp_enable_memcache', class_exists('Memcached', false));
     }
 
     /*

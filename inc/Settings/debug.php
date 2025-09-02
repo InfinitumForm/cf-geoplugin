@@ -239,7 +239,13 @@ if ($plugin_activation && is_array($plugin_activation)) {
                                         <td>
 										<?php if (defined('CFGP_ALLOW_DEPRECATED_METHODS') && CFGP_ALLOW_DEPRECATED_METHODS) : ?>
 											<strong class="text-success"><?php esc_html_e('Deprecated code support is activated.', 'cf-geoplugin'); ?></strong>
-											<br><?php esc_html_e('For now, we\'ve approved the use of deprecated code by default to make transition easier. We recommend that you switch your project to new code as we will be removing support for deprecated code in the future.', 'cf-geoplugin'); ?>
+											<br><?php esc_html_e('For now, we\'ve approved the use of deprecated code by default to make transition easier. We recommend that you switch your project to new code as we will be removing support for deprecated code in the future.', 'cf-geoplugin');
+
+											printf(
+												' <a href="%1$s" target="_blank">%2$s</a>',
+												CFGP_STORE . '/documentation/advanced-usage/deprecated-code-notice',
+												esc_html__('Read more...', 'cf-geoplugin')
+											); ?>
 										<?php else : ?>
 											<strong class="text-default"><?php esc_html_e('Deprecated code support is not active.', 'cf-geoplugin'); ?></strong>
 										<?php endif; ?>
@@ -330,12 +336,12 @@ if ($plugin_activation && is_array($plugin_activation)) {
 									<tr>
                                         <td><strong><?php esc_html_e('PHP: Server Cache', 'cf-geoplugin'); ?></strong></td>
                                         <td><strong><?php echo(
-                                            CFGP_DB_Cache::has_redis()
+                                            extension_loaded('redis')
                                             ? '<span class="text-success">'
                                                 . esc_html__('Redis Cache', 'cf-geoplugin')
                                             . '</span>'
                                             : (
-                                                CFGP_DB_Cache::has_memcache()
+                                                class_exists('Memcached', false)
                                                 ? '<span class="text-success">'
                                                     . esc_html__('Memcached', 'cf-geoplugin')
                                                 . '</span>'

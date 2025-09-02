@@ -784,7 +784,7 @@ if (!class_exists('CFGP_Admin', false)) :
                     'footer_menu' => [
                         'documentation' => __('Documentation', 'cf-geoplugin'),
                         'contact'       => __('Contact', 'cf-geoplugin'),
-                        'blog'          => __('Blog', 'cf-geoplugin'),
+						'resources'     => __('Resources', 'cf-geoplugin'),
                         'faq'           => __('FAQ', 'cf-geoplugin'),
                         'thank_you'     => __('Thank you for using', 'cf-geoplugin'),
                     ],

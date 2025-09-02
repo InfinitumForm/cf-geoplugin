@@ -415,7 +415,7 @@ if (!class_exists('CFGP_U', false)) : class CFGP_U
 
             setcookie($name, $val, $cookie_time, COOKIEPATH, COOKIE_DOMAIN);
 
-            if (CFGP_Options::get('cache-support', 'yes') == 'yes') {
+            if (CFGP_Options::get('cache-support', 'yes') === 'yes') {
                 self::cache_flush();
             }
 
@@ -652,11 +652,7 @@ if (!class_exists('CFGP_U', false)) : class CFGP_U
 
             foreach ($location_parts as $key => $match) {
                 if (urldecode($match) == '*') {
-                    if (($_GET[$key] ?? null)) {
-                        $location_parts[$key] = $_GET[$key];
-                    } else {
-                        $location_parts[$key] = null;
-                    }
+					$location_parts[$key] = ($_GET[$key] ?? null) ?: null;
                 }
             }
 
@@ -666,7 +662,7 @@ if (!class_exists('CFGP_U', false)) : class CFGP_U
         }
 
         // Cache control
-        if (CFGP_Options::get('cache-support', 'yes') == 'yes') {
+        if (CFGP_Options::get('cache-support', 'yes') === 'yes') {
             self::cache_flush();
         }
 
@@ -860,35 +856,112 @@ if (!class_exists('CFGP_U', false)) : class CFGP_U
      * @since	7.0.0
      * @return	true/false
      */
-    public static function is_connected()
-    {
+	public static function is_connected(int $ttl = 15): bool
+	{
+		// ---- 0) Cached short-circuit (plugin cache or WP transients) ----
+		$cache_key = 'cfgp_is_connected';
+		$cached    = (class_exists('CFGP_Cache') && method_exists('CFGP_Cache', 'get'))
+			? \CFGP_Cache::get($cache_key)
+			: get_transient($cache_key);
 
-        if (CFGP_Cache::get('is_connected')) {
-            return true;
-        }
+		if ($cached) {
+			return true;
+		}
 
-        // List connections
-        $urls = [
-            'www.google.com',
-            'www.facebook.com',
-        ];
+		// Allow integrators to override/extend targets (order matters: fastest first).
+		$targets = apply_filters('cfgp_connectivity_targets', [
+			// Pure IP (no DNS) - quick TCP handshake probes
+			['host' => '1.1.1.1', 'port' => 443, 'type' => 'tcp'], // Cloudflare
+			['host' => '8.8.8.8', 'port' => 443, 'type' => 'tcp'], // Google
+			['host' => '9.9.9.9', 'port' => 443, 'type' => 'tcp'], // Quad9
+			['host' => '1.0.0.1', 'port' => 443, 'type' => 'tcp'], // Cloudflare secondary
 
-        foreach ($urls as $url) {
-            // list ports
-            foreach ([443,80] as $port) {
-                $connected = fsockopen($url, $port);
+			// WordPress HTTP API fallbacks (respect WP proxy/settings/guidelines)
+			['url'  => 'http://clients3.google.com/generate_204',         'type' => 'wp-http'], // returns 204
+			['url'  => 'https://www.cloudflare.com/cdn-cgi/trace',        'type' => 'wp-http'], // lightweight 200
+			['url'  => 'https://www.wordpress.org/',                      'type' => 'wp-http'], // stable 200
+		]);
 
-                if ($connected !== false) {
-                    fclose($connected);
+		$tcp_timeout  = 0.3; // 300ms per TCP attempt
+		$http_timeout = 0.8; // 800ms per HTTP attempt
+		$connected    = false;
 
-                    return CFGP_Cache::set('is_connected', true);
-                }
-            }
-        }
+		foreach ($targets as $t) {
+			// ---- 1) stream_socket_client over TCP (no DNS) ----
+			if (($t['type'] ?? '') === 'tcp' && function_exists('stream_socket_client')) {
+				$errno = 0;
+				$errstr = '';
+				$conn = @stream_socket_client(
+					'tcp://' . $t['host'] . ':' . (int) $t['port'],
+					$errno,
+					$errstr,
+					$tcp_timeout,
+					STREAM_CLIENT_CONNECT
+				);
+				if ($conn) {
+					fclose($conn);
+					$connected = true;
+					break;
+				}
+			}
 
-        // OK you not have connection - boohooo
-        return false;
-    }
+			// ---- 2) fsockopen fallback over TCP (no DNS) ----
+			if (($t['type'] ?? '') === 'tcp' && function_exists('fsockopen')) {
+				$errno = 0;
+				$errstr = '';
+				$conn = @fsockopen($t['host'], (int) $t['port'], $errno, $errstr, $tcp_timeout);
+				if ($conn) {
+					fclose($conn);
+					$connected = true;
+					break;
+				}
+			}
+
+			// ---- 3) WordPress HTTP API HEAD fallback (guideline-compliant) ----
+			if (($t['type'] ?? '') === 'wp-http' && function_exists('wp_remote_head')) {
+				// Validate URL before calling
+				if (function_exists('wp_http_validate_url') && ! wp_http_validate_url($t['url'])) {
+					continue;
+				}
+
+				$res = wp_remote_head($t['url'], [
+					'timeout'            => $http_timeout,
+					'redirection'        => 0,
+					'sslverify'          => true,
+					'reject_unsafe_urls' => true,
+					'headers'            => [ 'User-Agent' => 'CFGP-Connectivity/1.0 (+WP HTTP API)' ],
+				]);
+
+				if (!is_wp_error($res)) {
+					$code = (int) wp_remote_retrieve_response_code($res);
+					if ($code >= 200 && $code < 300) {
+						$connected = true;
+						break;
+					}
+				}
+			}
+		}
+
+		// Cache only positive results (short TTL) to avoid sticky false negatives.
+		if ($connected) {
+			if (class_exists('CFGP_Cache') && method_exists('CFGP_Cache', 'set')) {
+				\CFGP_Cache::set($cache_key, true, $ttl);
+			} else {
+				set_transient($cache_key, true, $ttl);
+			}
+		}
+
+		/**
+		 * Action hook for logging/metrics.
+		 *
+		 * @param bool  $connected Result of connectivity check.
+		 * @param array $targets   Targets used for this probe.
+		 */
+		do_action('cfgp_connectivity_result', $connected, $targets);
+
+		return $connected;
+	}
+
 
     /**
      * Detect is proxy enabled
@@ -909,160 +982,7 @@ if (!class_exists('CFGP_U', false)) : class CFGP_U
      **/
     public static function is_bot($ip = false)
     {
-        // Search by IP
-        if (empty($ip)) {
-            $ip = CFGP_IP::get();
-        }
-
-        $range = apply_filters('cfgp/crawler/ip/range', [
-            // Google
-            '34.65.0.0'      => '34.155.255.255',
-            '64.18.0.0'      => '64.18.15.255',
-            '64.68.90.1'     => '64.68.90.255',
-            '64.233.173.193' => '64.233.173.255',
-            '64.233.160.0'   => '64.233.191.255',
-            '66.249.64.0'    => '66.249.95.255 ',
-            '66.102.0.0'     => '66.102.15.255',
-            '72.14.192.0'    => '72.14.255.255',
-            '74.125.0.0'     => '74.125.255.255',
-            '108.177.8.0'    => '108.177.15.255',
-            '172.217.0.0'    => '172.217.31.255',
-            '173.194.0.0'    => '173.194.255.255',
-            '207.126.144.0'  => '207.126.159.255',
-            '209.85.128.0'   => '209.85.255.255',
-            '216.58.192.0'   => '216.58.223.255',
-            '216.239.32.0'   => '216.239.63.255',
-            // MSN
-            '64.4.0.0'     => '64.4.63.255',
-            '65.52.0.0'    => '65.55.255.255',
-            '131.253.21.0' => '131.253.47.255',
-            '157.54.0.0'   => '157.60.255.255',
-            '207.46.0.0'   => '207.46.255.255',
-            '207.68.128.0' => '207.68.207.255',
-            // Yahoo
-            '8.12.144.0'    => '8.12.144.255',
-            '66.196.64.0'   => '66.196.127.255',
-            '66.228.160.0'  => '66.228.191.255',
-            '67.195.0.0'    => '67.195.255.255',
-            '68.142.192.0'  => '68.142.255.255',
-            '72.30.0.0'     => '72.30.255.255',
-            '74.6.0.0'      => '74.6.255.255',
-            '98.136.0.0'    => '98.139.255.255',
-            '202.160.176.0' => '202.160.191.255',
-            '209.191.64.0'  => '209.191.127.255',
-            // Bing
-            '104.146.0.0'   => '104.146.63.255',
-            '104.146.100.0' => '104.146.113.255',
-            // Yandex
-            '100.43.64.0' => '100.43.79.255',
-            '100.43.80.0' => '100.43.83.255',
-            // Baidu
-            '103.6.76.0'     => '103.6.79.255',
-            '104.193.88.0'   => '104.193.91.255',
-            '106.12.0.0'     => '106.13.255.255',
-            '115.231.36.136' => '115.231.36.159',
-            '39.156.69.79',
-            '220.181.38.148',
-            // DuckDuckGo
-            '50.16.241.113'  => '50.16.241.117',
-            '54.208.100.253' => '54.208.102.37',
-            '72.94.249.34'   => '72.94.249.38',
-            '23.21.227.69',
-            '40.88.21.235',
-            '50.16.247.234',
-            '52.204.97.54',
-            '52.5.190.19',
-            '54.197.234.188',
-            '107.21.1.8',
-            // Sogou
-            '118.191.216.42' => '118.191.216.57',
-            '119.28.109.132',
-            // Ask
-            '65.214.45.143' => '65.214.45.148',
-            '66.235.124.7',
-            '66.235.124.101',
-            '66.235.124.193',
-            '66.235.124.73',
-            '66.235.124.196',
-            '66.235.124.74',
-            '63.123.238.8',
-            '202.143.148.61',
-            // Pinterest
-            '54.236.1.1' => '54.236.1.255',
-            '54.82.14.182',
-            '54.81.171.36',
-            '23.20.24.147',
-            '54.237.150.66',
-            '54.237.197.55',
-            '54.211.68.214',
-            '54.234.164.192',
-            '50.16.155.205',
-            '23.20.84.153',
-            '54.224.131.213',
-            // Facebook
-            '69.63.176.0'  => '69.63.176.21',
-            '69.63.184.0'  => '69.63.184.21',
-            '66.220.144.0' => '66.220.144.21',
-            '69.63.176.0'  => '69.63.176.20',
-            '31.13.24.0'   => '31.13.24.21',
-            '31.13.64.0'   => '31.13.64.18',
-            '69.171.224.0' => '69.171.224.19',
-            '74.119.76.0'  => '74.119.76.22',
-            '103.4.96.0'   => '103.4.96.22',
-            '173.252.64.0' => '173.252.64.18',
-            '204.15.20.0'  => '204.15.20.22',
-            // Twitter
-            '199.59.156.0' => '199.59.156.255',
-            // Linkedin
-            '144.2.22.0'   => '144.2.22.24',
-            '144.2.224.0'  => '144.2.224.24',
-            '144.2.225.0'  => '144.2.225.24',
-            '144.2.228.0'  => '144.2.228.24',
-            '144.2.229.0'  => '144.2.229.24',
-            '144.2.233.0'  => '144.2.233.24',
-            '144.2.237.0'  => '144.2.237.24',
-            '216.52.16.0'  => '216.52.16.24',
-            '216.52.17.0'  => '216.52.17.24',
-            '216.52.18.0'  => '216.52.18.24',
-            '216.52.20.0'  => '216.52.20.24',
-            '216.52.21.0'  => '216.52.21.24',
-            '216.52.22.0'  => '216.52.22.24',
-            '65.156.227.0' => '65.156.227.24',
-            '8.39.53.0'    => '8.39.53.24',
-            // YOU.com
-            '172.66.40.57',
-            '172.66.43.199',
-        ]);
-
-        $ip2long = sprintf('%u', ip2long($ip));
-
-        if ($ip2long !== false) {
-            foreach ($range as $start => $end) {
-                $end   = sprintf('%u', ip2long($end));
-                $start = sprintf('%u', ip2long($start));
-
-                $is_key = ($start === false || $start == 0);
-
-                if ($end === false || $end == 0) {
-                    continue;
-                }
-
-                if (is_numeric($start) && $is_key && $end == $ip2long) {
-                    return true;
-                } else {
-                    if (!$is_key && $ip2long >= $start && $ip2long <= $end) {
-                        return true;
-                    }
-                }
-            }
-        }
-
-        // Get by user agent (wide range)
-        if (isset($_SERVER['HTTP_USER_AGENT']) && !empty($_SERVER['HTTP_USER_AGENT'])) {
-            return (preg_match('/rambler|abacho|ac(oi|cona)|aspseek|al(tavista|exa)|estyle|scrubby|lycos|geona|ia_archiver|sogou|facebook|duckduck(bot|go)?|twitter|pinterest|linkedin|skype|naver|bing(bot)?|google|ya(hoo|ndex)|baidu(spider)?|teoma|xing|java\/1\.7\.0_45|crawl|you|slurp|spider|mediapartners|\sbot\s|\sask\s|\saol\s/i', $_SERVER['HTTP_USER_AGENT']) ? true : false);
-        }
-
-        return false;
+        return CFGP_Bots::validate($ip);
     }
 
     /**
@@ -2601,25 +2521,6 @@ if (!class_exists('CFGP_U', false)) : class CFGP_U
         ]);
 
         return $wp_kses_allowed_html;
-    }
-
-    /*
-     * Checks if Redis Cache exists
-     * @verson    1.0.1
-     */
-    public static function redis_cache_exists()
-    {
-        static $has_redis;
-
-        if (null === $has_redis) {
-            if (apply_filters('cfgp_enable_redis', true)) {
-                $has_redis = class_exists('Redis', false);
-            } else {
-                $has_redis = false;
-            }
-        }
-
-        return $has_redis;
     }
 
     /*
