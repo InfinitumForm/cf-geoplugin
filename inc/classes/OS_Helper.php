@@ -213,8 +213,12 @@ final class CFGP_ClientHints
         return $m;
     }
 
-    private static function composeOsName(string $platform, bool $isWin11, bool $isWin10, string $ua): string
+    private static function composeOsName(?string $platform, bool $isWin11, bool $isWin10, string $ua): string
     {
+		if(!$platform) {
+			return 'Unknown';
+		}
+	
         if ($platform === 'Windows') {
             if ($isWin11) return 'Windows 11';
             if ($isWin10) return 'Windows 10';
@@ -228,6 +232,7 @@ final class CFGP_ClientHints
         if ($platform === 'Linux')   return 'Linux';
         if ($platform === 'Android') return 'Android';
         if ($platform === 'iOS')     return 'iOS';
+		
         return 'Unknown';
     }
 }

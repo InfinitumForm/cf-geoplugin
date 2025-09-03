@@ -1,5 +1,8 @@
 == Changelog ==
 
+= 8.9.2 =
+* Fixed unexpected PHP errors
+
 = 8.9.1 =
 * Added Client Hints (UA-CH) support for accurate detection
 * Improved UA fallback parsing, safer regex, and bot-first detection

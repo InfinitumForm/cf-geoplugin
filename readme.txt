@@ -5,7 +5,7 @@ Tags: Geo Location, WordPress Geolocation Plugin, Location-Based Personalization
 Requires at least: 6.0
 Tested up to: 6.8
 Requires PHP: 7.0
-Stable tag: 8.9.1
+Stable tag: 8.9.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -414,6 +414,9 @@ Please inform us if any of these errors occur via contact form on our website [h
 
 == Changelog ==
 
+= 8.9.2 =
+* Fixed unexpected PHP errors
+
 = 8.9.1 =
 * Added Client Hints (UA-CH) support for accurate detection
 * Improved UA fallback parsing, safer regex, and bot-first detection
@@ -523,6 +526,9 @@ Please inform us if any of these errors occur via contact form on our website [h
 * Improved javascript algorithms
 
 == Upgrade Notice ==
+
+= 8.9.2 =
+* Fixed unexpected PHP errors
 
 = 8.9.1 =
 * Added Client Hints (UA-CH) support for accurate detection

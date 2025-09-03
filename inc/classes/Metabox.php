@@ -630,7 +630,7 @@ function CF_GeoPlugin_Google_Map_GeoTag() {
         ) {
             $url = CFGP_U::get_url();
 
-            wp_enqueue_style(CFGP_NAME . '-fontawesome', CFGP_ASSETS . '/css/font-awesome.min.css', [], (string)CFGP_VERSION);
+            wp_enqueue_style(CFGP_NAME . '-fontawesome', CFGP_ASSETS . '/css/fonts.min.css', [], (string)CFGP_VERSION);
             wp_enqueue_style(CFGP_NAME . '-metabox', CFGP_ASSETS . '/css/style-metabox.css', [CFGP_NAME . '-fontawesome'], (string)CFGP_VERSION, false);
 
             wp_enqueue_style(CFGP_NAME . '-select2', CFGP_ASSETS . '/css/select2.min.css', 1, '4.1.0-rc.0');
