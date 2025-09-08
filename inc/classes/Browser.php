@@ -876,7 +876,7 @@ final class CFGP_Browser
 
 			// Get information (if available)
             $ch = CFGP_ClientHints::detect();
-            if (!empty($ch['osName']) && $ch['osName'] !== 'Unknown') {
+            if (!empty($ch['osName']??null) && $ch['osName'] !== 'Unknown') {
                 $this->_platform = $ch['osName'];
             }
         }

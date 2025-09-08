@@ -1,7 +1,12 @@
 <?php
 
+// If someone try to called this file directly via URL, abort.
 if (!defined('WPINC')) {
     die("Don't mess with us.");
+}
+
+if (!defined('ABSPATH')) {
+    exit;
 }
 
 if (!class_exists('CFGP_Bots', false)): class CFGP_Bots

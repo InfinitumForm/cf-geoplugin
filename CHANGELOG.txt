@@ -1,5 +1,8 @@
 == Changelog ==
 
+= 8.9.3 =
+* Added PHP support for the older PHP versions (7.0 and bove)
+
 = 8.9.2 =
 * Fixed unexpected PHP errors
 
