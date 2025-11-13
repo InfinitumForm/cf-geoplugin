@@ -739,16 +739,16 @@ SELECT
 FROM
     `{$wpdb->posts}` AS `banner`
 LEFT JOIN
-    `{$wpdb->postmeta}` AS `c` 
-    ON `c`.`post_id` = `banner`.`ID` 
+    `{$wpdb->postmeta}` AS `c`
+    ON `c`.`post_id` = `banner`.`ID`
     AND `c`.`meta_key` = 'cfgp-banner-location-country'
 LEFT JOIN
-    `{$wpdb->postmeta}` AS `r` 
-    ON `r`.`post_id` = `banner`.`ID` 
+    `{$wpdb->postmeta}` AS `r`
+    ON `r`.`post_id` = `banner`.`ID`
     AND `r`.`meta_key` = 'cfgp-banner-location-region'
 LEFT JOIN
-    `{$wpdb->postmeta}` AS `s` 
-    ON `s`.`post_id` = `banner`.`ID` 
+    `{$wpdb->postmeta}` AS `s`
+    ON `s`.`post_id` = `banner`.`ID`
     AND `s`.`meta_key` = 'cfgp-banner-location-city'
 WHERE
     `banner`.`ID` = %d
@@ -910,7 +910,7 @@ LIMIT 1
 				infoWindow : []
 			},
 			initMaps = document.getElementsByClassName('CF_GeoPlugin_Google_Map_Shortcode'), i, e;
-			
+
 		for(i=0; i<initMaps.length; i++)
 		{
 			// Main initializations for the map and the setup
@@ -925,16 +925,16 @@ LIMIT 1
 					center: target,
 					mapTypeId: google.maps.MapTypeId.ROADMAP
 				};
-			
+
 			// Empty div before map is builded
 			if(content)
 			{
 				initMaps[i].innerHTML = '';
 			}
-			
+
 			// Add active statemant to map
 			initMaps[i].className = classes.concat(' active');
-			
+
 			// Collect all "data-" attributes
 			for(option in init.dataset)
 			{
@@ -955,7 +955,7 @@ LIMIT 1
 
 			// Build and call Google Map
 			MAP.init[i] = new google.maps.Map(init, options);
-			
+
 			// Add multi locations
 			if(typeof init.dataset.locations != 'undefined'){
 				var getLocations = init.dataset.locations.split('|'), a, collectLocations=[];
@@ -974,7 +974,7 @@ LIMIT 1
 				map: MAP.init[i],
 				animation: google.maps.Animation.DROP
 			};
-			
+
 			// Put custom pointer
 			if(typeof init.dataset.pointer != 'undefined'){
 				markerOptions.icon = {
@@ -986,7 +986,7 @@ LIMIT 1
 					class : "cf-geoplugin-google-map-icon"
 				};
 			}
-			
+
 			// Put custom title
 			if(typeof init.dataset.title != 'undefined'){
 				markerOptions.title = init.dataset.title;
@@ -1013,7 +1013,7 @@ LIMIT 1
 				});
 			}
 		}
-		
+
 		// Let's collect all and put into addListener for the actions
 		for(e = 0; e < MAP.infoWindow.length; e++)
 		{
@@ -1026,7 +1026,7 @@ LIMIT 1
 	}
 
 	(function(position, callback){
-		
+
 		if( typeof google != 'undefined' )
 		{
 			if(typeof callback == 'function') {
@@ -1038,16 +1038,16 @@ LIMIT 1
 			var url = '<?php echo esc_url(CFGP_Defaults::API['googleapis_map']); ?>/api/js?key=<?php echo esc_attr(CFGP_Options::get('map_api_key')); ?>',
 				head = document.getElementsByTagName('head')[0],
 				script = document.createElement("script");
-			
+
 			position = position || 0;
-			
+
 			script.src = url + (typeof CF_GeoPlugin_Google_Map_GeoTag != 'undefined' ? '&libraries=places' : ''); /* One of the Gutenberg BUG fixing */
 			script.type = 'text/javascript';
 			script.charset = 'UTF-8';
 			script.async = true;
 			script.defer = true;
 			head.appendChild(script);
-			head.insertBefore(script,head.childNodes[position]);		
+			head.insertBefore(script,head.childNodes[position]);
 			script.onload = function(){
 				if(typeof callback == 'function') {
 					callback(google, script);
@@ -1265,7 +1265,7 @@ LIMIT 1
 								<label class="form-label cfgp-form-label" for="<?php echo esc_attr($label_amount); ?>"><?php echo esc_html($amount) ?></label>
 								<input type="text" name="cfgp_currency_amount" class="form-control cfgp-form-control" id="<?php echo esc_attr($label_amount); ?>" placeholder="<?php echo esc_attr($amount); ?>" autocomplete="off">
 							</div>
-							
+
 							<?php $label_from = sprintf('%s-%s', 'cfgp-currency-from', CFGP_U::generate_token(5)); ?>
 							<div class="form-group cfgp-form-group cfgp-form-group-from">
 								<label class="form-label cfgp-form-label" for="<?php echo esc_attr($label_from); ?>"><?php echo (isset($instance['from']) && !empty($instance['from'])) ? esc_html($instance['from']) : esc_html__('From', 'cf-geoplugin'); ?></label>
@@ -1294,7 +1294,7 @@ LIMIT 1
         ?>
 								</select>
 							</div>
-	
+
 							<?php $label_to = sprintf('%s-%s', 'cfgp-currency-to', CFGP_U::generate_token(5)); ?>
 							<div class="form-group cfgp-form-group cfgp-form-group-to">
 								<label class="form-label cfgp-form-label" for="<?php echo esc_attr($label_to); ?>"><?php echo (isset($instance['to']) && !empty($instance['to'])) ? esc_html($instance['to']) : esc_html__('To', 'cf-geoplugin'); ?></label>
@@ -1328,7 +1328,7 @@ LIMIT 1
 							</div>
 							<div class="cfgp-form-group cfgp-form-group-submit">
 								<button type="submit" class="button submit cfgp-btn cfgp-btn-calculate"><?php esc_html_e($instance['convert'], 'cf-geoplugin'); ?></button>
-								<button type="button" class="button submit cfgp-btn cfgp-exchange-currency">&#8646;</button> 
+								<button type="button" class="button submit cfgp-btn cfgp-exchange-currency">&#8646;</button>
 							</div>
                             <?php wp_nonce_field('cfgeo_full_currency_converter', 'cfgeo_currency_converter_nonce__'); ?>
 						</form>
@@ -2083,7 +2083,7 @@ LIMIT 1
         }
 
         // Generate a unique transient ID based on the shortcode, options, and post ID
-        $transient_id = CFGP_U::hash(serialize(['cfgeo_' . $shortcode, $options, strip_tags($content, '<svg><img><form><input><select><textarea>'), $default, get_the_ID()]), 'whirlpool');
+        $transient_id = CFGP_U::hash(serialize(['cfgeo_' . $shortcode, $options, strip_tags($content ?? '', '<svg><img><form><input><select><textarea>'), $default, get_the_ID()]), 'whirlpool');
 
         // Store transient with content, default values, and shortcode for 1 year
         if (!CFGP_DB_Cache::get('cfgp-' . $transient_id)) {
