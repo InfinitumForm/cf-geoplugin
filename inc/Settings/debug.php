@@ -132,7 +132,7 @@ if ($NEW_API = CFGP_API::lookup(CFGP_U::request_string('cfgp_lookup'))) {
                                     <tr>
                                         <td><strong><?php esc_html_e('SIP', 'cf-geoplugin'); ?></strong></td>
                                         <td><?php echo esc_html(CFGP_IP::server()) . (CFGP_U::proxy() ? ' <strong><a class="text-danger" href="'.esc_url(admin_url('admin.php?page=cf-geoplugin-settings')).'">('.esc_html__('Proxy Enabled', 'cf-geoplugin').')</a></strong> ' : ''); ?></td>
-                                        <td><?php esc_html_e('Server IP Address'); ?></td>
+                                        <td><?php esc_html_e('Server IP Address', 'cf-geoplugin'); ?></td>
                                     </tr>
                                     <tr>
                                         <td><strong><?php esc_html_e('Host', 'cf-geoplugin'); ?></strong></td>
