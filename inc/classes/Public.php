@@ -200,7 +200,7 @@ if (!class_exists('CFGP_Public', false)) : class CFGP_Public extends CFGP_Global
 				})
 			}).catch((error) => {
 				console.error('<?php
-                    esc_attr__e('The geo controller could not update the CSS.', 'cf-geoplugin');
+                    echo esc_js( __( 'The geo controller could not update the CSS.', 'cf-geoplugin' ) );
         ?>');
 				
 				setTimeout(function(){
