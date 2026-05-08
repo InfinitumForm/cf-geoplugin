@@ -1,5 +1,10 @@
 == Changelog ==
 
+= 8.9.6 =
+* IMPORTANT UPDATE: Fix security issues in plugin core
+* Remove exposed API key and improve access control
+* Enforce capability checks and harden AJAX/REST endpoints
+
 = 8.9.5 =
 * Fixed problem with false localhost detection
 * Fixed problems with license activation

@@ -326,21 +326,25 @@ if (!class_exists('CFGP_REST', false)) : class CFGP_REST extends CFGP_Global
      */
     public function ajax__generate_secret_key()
     {
-        if (wp_verify_nonce(CFGP_U::request_string('nonce'), CFGP_NAME.'-secret-key') !== false) {
-            $secret_key = CFGP_U::generate_token(5) .'_'. CFGP_U::generate_token(28) .'_'. CFGP_U::generate_token(8);
-            self::set('secret_key', $secret_key);
+		if (
+			!current_user_can('manage_options')
+			|| !wp_verify_nonce(CFGP_U::request_string('nonce'), CFGP_NAME . '-secret-key')
+		) {
+			wp_die('ERROR!', 403);
+		}
+		
 
-            // Delete all access tokens
-            global $wpdb;
-            $wpdb->query($wpdb->prepare(
-                "DELETE FROM {$wpdb->cfgp_rest_access_token} WHERE secret_key NOT LIKE %s",
-                $secret_key
-            ));
+		$secret_key = CFGP_U::generate_token(5) .'_'. CFGP_U::generate_token(28) .'_'. CFGP_U::generate_token(8);
+		self::set('secret_key', $secret_key);
 
-            echo esc_html($secret_key);
-        } else {
-            echo 'ERROR!';
-        }
+		// Delete all access tokens
+		global $wpdb;
+		$wpdb->query($wpdb->prepare(
+			"DELETE FROM {$wpdb->cfgp_rest_access_token} WHERE secret_key NOT LIKE %s",
+			$secret_key
+		));
+
+		echo esc_html($secret_key);
         exit;
     }
 
@@ -349,16 +353,19 @@ if (!class_exists('CFGP_REST', false)) : class CFGP_REST extends CFGP_Global
      */
     public function ajax__delete_access_token()
     {
-        if (wp_verify_nonce(CFGP_U::request_string('nonce'), CFGP_NAME.'-token-remove') !== false) {
-            global $wpdb;
-            $wpdb->query($wpdb->prepare(
-                "DELETE FROM {$wpdb->cfgp_rest_access_token} WHERE ID = %d",
-                CFGP_U::request_int('token_id')
-            ));
-            echo 1;
-        } else {
-            echo -1;
-        }
+		if (
+			!current_user_can('manage_options')
+			|| !wp_verify_nonce(CFGP_U::request_string('nonce'), CFGP_NAME . '-token-remove')
+		) {
+			wp_die(-1, 403);
+		}
+
+		global $wpdb;
+		$wpdb->query($wpdb->prepare(
+			"DELETE FROM {$wpdb->cfgp_rest_access_token} WHERE ID = %d",
+			CFGP_U::request_int('token_id')
+		));
+		echo 1;
         exit;
     }
 
@@ -430,7 +437,6 @@ if (!class_exists('CFGP_REST', false)) : class CFGP_REST extends CFGP_Global
                             'error'         => true,
                             'code'          => 'not_authorized',
                             'error_message' => __('You are not authorized to access this information.', 'cf-geoplugin'),
-                        'key'               => CFGP_U::KEY(),
                             'status'        => 404,
                         ]);
                     }
