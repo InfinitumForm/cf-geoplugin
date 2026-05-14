@@ -35,7 +35,7 @@ if (!class_exists('CFGP_SEO', false)) : class CFGP_SEO extends CFGP_Global
      */
     public function ajax__csv_upload()
     {
-        if (wp_verify_nonce(CFGP_U::request_string('nonce'), CFGP_NAME.'-seo-import-csv') !== false) {
+        if (current_user_can('manage_options') && wp_verify_nonce(CFGP_U::request_string('nonce'), CFGP_NAME.'-seo-import-csv') !== false) {
             if ($url = CFGP_U::request_string('attachment_url')) {
                 // Parse CSV
                 if (!class_exists('CFGP_CSV', false)) {
@@ -160,7 +160,7 @@ if (!class_exists('CFGP_SEO', false)) : class CFGP_SEO extends CFGP_Global
     public function save_form()
     {
         if (isset($_SERVER['REQUEST_METHOD']) && strtolower($_SERVER['REQUEST_METHOD']) === 'post') {
-            if (CFGP_U::request_string('action') == 'new' && wp_verify_nonce(CFGP_U::request_string('nonce'), CFGP_NAME.'-seo-new') !== false) {
+            if (CFGP_U::request_string('action') == 'new' && current_user_can('manage_options') && wp_verify_nonce(CFGP_U::request_string('nonce'), CFGP_NAME.'-seo-new') !== false) {
                 $action          = CFGP_U::request_string('action');
                 $redirection_url = CFGP_U::request_string('url');
 

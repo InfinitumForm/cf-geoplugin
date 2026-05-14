@@ -77,7 +77,7 @@ if (!defined('CFGP_PLUGINS')) {
 
 // Limit ( for the information purposes )
 if (!defined('CFGP_LIMIT')) {
-    define('CFGP_LIMIT', 1000);
+    define('CFGP_LIMIT', 500);
 }
 
 // Developer license ( enable developer license support )

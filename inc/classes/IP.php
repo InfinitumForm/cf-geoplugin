@@ -396,65 +396,99 @@ if (!class_exists('CFGP_IP')) :
          *
          * @return (bool) true/false
          */
-        public static function is_localhost()
-        {
-            // Cloudflare
-            if (CFGP_Options::get('enable_cloudflare', false)
-                && isset($_SERVER['HTTP_CF_CONNECTING_IP'])
-                && !empty($_SERVER['HTTP_CF_CONNECTING_IP'])
-            ) {
-                return false;
-            }
+        public static function is_localhost(): bool
+		{
+			// Cloudflare means external request
+			if (
+				CFGP_Options::get('enable_cloudflare', false)
+				&& !empty($_SERVER['HTTP_CF_CONNECTING_IP'])
+			) {
+				return false;
+			}
 
-            // Set cache name
-            $cache_name = '__is_localhost';
+			$cache_name = '__is_localhost';
 
-            // Return cached result
-            if (null !== ($is_localhost = CFGP_Cache::get($cache_name, null))) {
-                return $is_localhost;
-            }
+			$is_localhost = CFGP_Cache::get($cache_name, null);
 
-            // Get Remote address properly
-            if (filter_has_var(INPUT_SERVER, 'REMOTE_ADDR')) {
-                $ip = filter_input(INPUT_SERVER, 'REMOTE_ADDR', FILTER_VALIDATE_IP);
-            } elseif (filter_has_var(INPUT_ENV, 'REMOTE_ADDR')) {
-                $ip = filter_input(INPUT_ENV, 'REMOTE_ADDR', FILTER_VALIDATE_IP);
-            } elseif (isset($_SERVER['REMOTE_ADDR'])) {
-                $ip = filter_var($_SERVER['REMOTE_ADDR'], FILTER_VALIDATE_IP);
-            } else {
-                $ip = null;
-            }
+			if (null !== $is_localhost) {
+				return (bool) $is_localhost;
+			}
 
-            $localhost = false;
+			$ip   = null;
+			$host = null;
 
-            if (!empty($ip)) {
-                // Check for localhost IP addresses
-                if (in_array($ip, ['127.0.0.1', '::1'], true)) {
-                    $localhost = true;
-                }
+			// Detect IP
+			if (!empty($_SERVER['REMOTE_ADDR'])) {
+				$ip = filter_var(
+					wp_unslash($_SERVER['REMOTE_ADDR']),
+					FILTER_VALIDATE_IP
+				);
+			}
 
-                // Check for private network ranges
-                $private_ip_patterns = [
-                    '~^10\.\d{1,3}\.\d{1,3}\.\d{1,3}$~',
-                    '~^172\.(1[6-9]|2[0-9]|3[0-1])\.\d{1,3}\.\d{1,3}$~',
-                    '~^192\.168\.\d{1,3}\.\d{1,3}$~',
-                    '~^fc00:~',
-                    '~^fd00:~',
-                ];
+			// Detect host (without port)
+			if (!empty($_SERVER['HTTP_HOST'])) {
+				$host = strtolower(preg_replace('/:\d+$/', '', wp_unslash($_SERVER['HTTP_HOST'])));
+			} elseif (!empty($_SERVER['SERVER_NAME'])) {
+				$host = strtolower(wp_unslash($_SERVER['SERVER_NAME']));
+			}
 
-                foreach ($private_ip_patterns as $pattern) {
-                    if (preg_match($pattern, $ip)) {
-                        $localhost = true;
-                        break;
-                    }
-                }
-            }
+			$localhost = false;
 
-            // Cache the result
-            CFGP_Cache::set($cache_name, $localhost);
+			// 1. IP based detection
+			if (!empty($ip)) {
+				if (
+					'::1' === $ip
+					|| (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) && strpos($ip, '127.') === 0)
+				) {
+					$localhost = true;
+				}
+			}
 
-            return $localhost;
-        }
+			// 2. Hostname based detection (PHP 7 compatible ends_with)
+			if (!$localhost && !empty($host)) {
+				if (
+					$host === 'localhost'
+					|| self::ends_with($host, '.localhost')
+					|| self::ends_with($host, '.test')
+					|| self::ends_with($host, '.local')
+				) {
+					$localhost = true;
+				}
+			}
+
+			CFGP_Cache::set($cache_name, $localhost);
+
+			return $localhost;
+		}
+
+		/**
+		 * PHP 7 compatible ends_with helper.
+		 *
+		 * @param string $haystack
+		 * @param string $needle
+		 * @return bool
+		 */
+		private static function ends_with($haystack, $needle)
+		{
+			// Native PHP 8+ support
+			if (function_exists('str_ends_with')) {
+				return str_ends_with($haystack, $needle);
+			}
+
+			// Normalize types (safety)
+			$haystack = (string) $haystack;
+			$needle   = (string) $needle;
+
+			$length = strlen($needle);
+
+			if ($length === 0) {
+				return true;
+			}
+
+			// Faster than substr in many cases
+			return $length <= strlen($haystack)
+				&& substr_compare($haystack, $needle, -$length) === 0;
+		}
 
         /**
          * Check is IP valid or not

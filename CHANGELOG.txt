@@ -1,5 +1,17 @@
 == Changelog ==
 
+= 8.9.6 =
+* IMPORTANT UPDATE: Fix security issues in plugin core
+* Remove exposed API key and improve access control
+* Enforce capability checks and harden AJAX/REST endpoints
+
+= 8.9.5 =
+* Fixed problem with false localhost detection
+* Fixed problems with license activation
+
+= 8.9.4 =
+* Changed business model and reduced free lookup from 1000 to 500 views per day.
+
 = 8.9.3 =
 * Added PHP support for the older PHP versions (7.0 and bove)
 

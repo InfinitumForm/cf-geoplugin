@@ -556,9 +556,9 @@ if (!class_exists('CFGP_Menus', false)) : class CFGP_Menus extends CFGP_Global
 
         $uid = absint(sanitize_text_field($_POST['uid'] ?? 0));
 
-        if (!user_can($uid, 'edit_theme_options')) {
-            exit;
-        }
+        if (!current_user_can('edit_theme_options')) {
+			wp_die(-1, 403);
+		}
 
         $locations = get_registered_nav_menus();
         $countries = CFGP_Library::get_countries();
@@ -650,7 +650,7 @@ if (!class_exists('CFGP_Menus', false)) : class CFGP_Menus extends CFGP_Global
         $uid = absint(sanitize_text_field($_POST['uid'] ?? 0));
 
         if (!user_can($uid, 'edit_theme_options')) {
-            exit;
+            wp_die(-1, 403);
         }
 
         if ($term_id) {

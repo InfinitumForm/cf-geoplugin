@@ -3,9 +3,9 @@ Contributors: ivijanstefan, creativform
 Donate link: https://www.buymeacoffee.com/ivijanstefan
 Tags: Geo Location, WordPress Geolocation Plugin, Location-Based Personalization, User Location Detection, SEO Optimization
 Requires at least: 6.0
-Tested up to: 6.8
+Tested up to: 6.9
 Requires PHP: 7.0
-Stable tag: 8.9.3
+Stable tag: 8.9.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -25,7 +25,7 @@ For more information, visit [Geo Controller Plugin](https://wpgeocontroller.com)
 
 = FREE AND PAID SERVICES =
 
-Geo Controller for WordPress is completely free! But, just like a superhero needs their trusty sidekick, Geo Controller also works with [paid services](https://wpgeocontroller.com/information/new-plugin-new-features-new-success/) that give you unlimited information about your website's visitors. However, for the free users, the API services are [limited to 1000 lookups](https://wpgeocontroller.com/documentation/quick-start/frequently-asked-questions/how-does-lookup-work) per day. But don't worry, if you want to take your location detection game to the next level, you can upgrade to UNLIMITED lookups by visiting our [official website](https://wpgeocontroller.com/pricing/).
+Geo Controller for WordPress is completely free! But, just like a superhero needs their trusty sidekick, Geo Controller also works with [paid services](https://wpgeocontroller.com/information/new-plugin-new-features-new-success/) that give you unlimited information about your website's visitors. However, for the free users, the API services are [limited to 500 lookups](https://wpgeocontroller.com/documentation/quick-start/frequently-asked-questions/how-does-lookup-work) per day. But don't worry, if you want to take your location detection game to the next level, you can upgrade to UNLIMITED lookups by visiting our [official website](https://wpgeocontroller.com/pricing/).
 
 And the best part? We often have monthly promotions and discounts, so don't forget to check out our [pricing page](https://wpgeocontroller.com/pricing/) on the official website for more information.
 
@@ -283,7 +283,7 @@ In summary, while Geo Controller aims to be compatible with most plugins, the sh
 
 Geo Controller uses a combination of free and paid services that return information about the locations.
 
-Geo Controller is free by itself but API lookup is limited to 1000 lookups per day for the free users. If you need to have UNLIMITED lookup with NO RESTRICTIONS, please visit [official website](https://wpgeocontroller.com/pricing/) for more information regarding prices.
+Geo Controller is free by itself but API lookup is limited to 500 lookups per day for the free users. If you need to have UNLIMITED lookup with NO RESTRICTIONS, please visit [official website](https://wpgeocontroller.com/pricing/) for more information regarding prices.
 
 The reason for the payment of the license is obvious: -We have to pay the server we use to provide you information via API, development requires hours and hours of work at the daily level, the availability of the service must be 24/7 with no stop and for a lot of coffee.
 
@@ -414,6 +414,18 @@ Please inform us if any of these errors occur via contact form on our website [h
 
 == Changelog ==
 
+= 8.9.6 =
+* IMPORTANT UPDATE: Fix security issues in plugin core
+* Remove exposed API key and improve access control
+* Enforce capability checks and harden AJAX/REST endpoints
+
+= 8.9.5 =
+* Fixed problem with false localhost detection
+* Fixed problems with license activation
+
+= 8.9.4 =
+* Changed business model and reduced free lookup from 1000 to 500 views per day.
+
 = 8.9.3 =
 * Added PHP support for the older PHP versions (7.0 and bove)
 
@@ -530,11 +542,10 @@ Please inform us if any of these errors occur via contact form on our website [h
 
 == Upgrade Notice ==
 
-= 8.9.3 =
-* Added PHP support for the older PHP versions (7.0 and bove)
-
-= 8.9.2 =
-* Fixed unexpected PHP errors
+= 8.9.6 =
+* IMPORTANT UPDATE: Fix security issues in plugin core
+* Remove exposed API key and improve access control
+* Enforce capability checks and harden AJAX/REST endpoints
 
 == Other Notes ==
 
