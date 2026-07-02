@@ -1,5 +1,11 @@
 == Changelog ==
 
+= 8.9.7 =
+* Security: Fixed CVE-2026-12147 and improved security hardening.
+* Compatibility: Improved compatibility with the latest WordPress release and Plugin Check.
+* Improvements: Enhanced code quality, internationalization, and WordPress Coding Standards compliance.
+* Maintenance: General stability improvements, optimizations, and minor bug fixes.
+
 = 8.9.6 =
 * IMPORTANT UPDATE: Fix security issues in plugin core
 * Remove exposed API key and improve access control

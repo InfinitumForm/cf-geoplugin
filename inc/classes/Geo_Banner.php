@@ -159,6 +159,7 @@ if (!class_exists('CFGP_Geo_Banner', false)) : class CFGP_Geo_Banner extends CFG
         $city_sql    = '%"' . $wpdb->esc_like(sanitize_title(CFGP_U::transliterate(CFGP_U::api('city')))) . '"%';
 
         // Execute
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Direct prepared post lookup is intentional for banner resolution against postmeta geo conditions.
         $post = $wpdb->get_row($wpdb->prepare("
 			SELECT
 				`banner`.`ID`,

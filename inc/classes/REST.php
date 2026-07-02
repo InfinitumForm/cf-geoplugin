@@ -170,6 +170,7 @@ if (!class_exists('CFGP_REST', false)) : class CFGP_REST extends CFGP_Global
                     $app_name = sanitize_title($GET['app_name']);
 
                     global $wpdb;
+                    // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Direct query is required to read plugin-owned REST access token rows using prepared values.
                     $get_token = $wpdb->get_row($wpdb->prepare(
                         "SELECT ID, token, lookup FROM {$wpdb->cfgp_rest_access_token} WHERE secret_key = %s AND app_name = %s",
                         $secret_key,
@@ -178,6 +179,7 @@ if (!class_exists('CFGP_REST', false)) : class CFGP_REST extends CFGP_Global
 
                     if (isset($get_token->token)) {
                         $access_token = $get_token->token;
+                        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Direct query is required to update plugin-owned REST access token usage counters.
                         $wpdb->update(
                             $wpdb->cfgp_rest_access_token,
                             [
@@ -195,6 +197,7 @@ if (!class_exists('CFGP_REST', false)) : class CFGP_REST extends CFGP_Global
                         );
                     } else {
                         $access_token = CFGP_U::generate_token(mt_rand(mt_rand(10, 20), 32)) .'_'. CFGP_U::generate_token(mt_rand(10, 32));
+                        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- Direct query is required to insert plugin-owned REST access token rows.
                         $wpdb->insert(
                             $wpdb->cfgp_rest_access_token,
                             [
@@ -269,6 +272,7 @@ if (!class_exists('CFGP_REST', false)) : class CFGP_REST extends CFGP_Global
         if ($api_key == $GET['api_key']) {
             global $wpdb;
 
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Direct query is required to read plugin-owned REST access token rows using prepared values.
             $confirm_token = $wpdb->get_row($wpdb->prepare(
                 "SELECT ID, token, lookup FROM {$wpdb->cfgp_rest_access_token} WHERE secret_key = %s AND token = %s",
                 $secret_key,
@@ -278,6 +282,7 @@ if (!class_exists('CFGP_REST', false)) : class CFGP_REST extends CFGP_Global
             if (isset($confirm_token->ID)) {
                 $api = CFGP_API::lookup($GET['ip'], $GET);
 
+                // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Direct query is required to update plugin-owned REST access token usage counters.
                 $wpdb->update(
                     $wpdb->cfgp_rest_access_token,
                     [
@@ -339,6 +344,7 @@ if (!class_exists('CFGP_REST', false)) : class CFGP_REST extends CFGP_Global
 
 		// Delete all access tokens
 		global $wpdb;
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Direct query is required to rotate plugin-owned REST access token rows.
 		$wpdb->query($wpdb->prepare(
 			"DELETE FROM {$wpdb->cfgp_rest_access_token} WHERE secret_key NOT LIKE %s",
 			$secret_key
@@ -361,6 +367,7 @@ if (!class_exists('CFGP_REST', false)) : class CFGP_REST extends CFGP_Global
 		}
 
 		global $wpdb;
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Direct query is required to delete a plugin-owned REST access token row by prepared ID.
 		$wpdb->query($wpdb->prepare(
 			"DELETE FROM {$wpdb->cfgp_rest_access_token} WHERE ID = %d",
 			CFGP_U::request_int('token_id')
@@ -735,6 +742,7 @@ if (!class_exists('CFGP_REST', false)) : class CFGP_REST extends CFGP_Global
                     $city     = CFGP_U::api('city');
                     $city_sql = '%"' . $wpdb->esc_like(esc_sql(sanitize_title(CFGP_U::transliterate($city)))) . '"%';
 
+                    // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Direct prepared post lookup is intentional for this REST banner resolution query.
                     $post = $wpdb->get_row($wpdb->prepare(
                         "
 						SELECT
@@ -970,6 +978,7 @@ if (!class_exists('CFGP_REST', false)) : class CFGP_REST extends CFGP_Global
         global $wpdb;
 
         if (null === $cache || $dry) {
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Direct table existence check is required for the plugin-owned REST token table bootstrap.
             if ($wpdb->get_var("SHOW TABLES LIKE '{$wpdb->cfgp_rest_access_token}'") != $wpdb->cfgp_rest_access_token) {
                 if ($dry) {
                     return false;

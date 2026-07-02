@@ -89,11 +89,20 @@ if (!class_exists('CFGP_Notifications', false)) : class CFGP_Notifications exten
         $plugin_info  = get_plugin_data(CFGP_FILE, true, true);
         $reviewurl    = esc_url('https://wordpress.org/support/plugin/cf-geoplugin/reviews/?filter=5#new-post');
 
+        $heading = sprintf(
+            /* translators: %s: plugin name. */
+            __('You have been using <b> %1$s </b> plugin for a while. We hope you liked it!', 'cf-geoplugin'),
+            esc_html($plugin_info['Name'])
+        );
+
         echo wp_kses_post(sprintf(
-            '<div class="notice notice-info"><h3>'.__('You have been using <b> %1$s </b> plugin for a while. We hope you liked it!', 'cf-geoplugin').'</h3><p>'.__('Please give us a quick rating, it works as a boost for us to keep working on the plugin!', 'cf-geoplugin').'</p><p class="void-review-btn"><a href="%2$s" class="button button-primary" target="_blank">'.__('Rate Now!', 'cf-geoplugin').'</a> &nbsp;&nbsp;<a href="%3$s" class="void-grid-review-done">'.__('I\'ve already done that!', 'cf-geoplugin').'</a></p></div>',
-            $plugin_info['Name'],
+            '<div class="notice notice-info"><h3>%1$s</h3><p>%2$s</p><p class="void-review-btn"><a href="%3$s" class="button button-primary" target="_blank">%4$s</a> &nbsp;&nbsp;<a href="%5$s" class="void-grid-review-done">%6$s</a></p></div>',
+            $heading,
+            __('Please give us a quick rating, it works as a boost for us to keep working on the plugin!', 'cf-geoplugin'),
             $reviewurl,
-            $dont_disturb
+            __('Rate Now!', 'cf-geoplugin'),
+            $dont_disturb,
+            __('I\'ve already done that!', 'cf-geoplugin')
         ));
     }
 
@@ -129,13 +138,15 @@ if (!class_exists('CFGP_Notifications', false)) : class CFGP_Notifications exten
             $message[] = '<p>' . esc_html__('Hi there,', 'cf-geoplugin') . '</p>';
             $message[] = '<p>' . esc_html__('Your lookup will expire soon and geo controller services will be unavailable until the next day.', 'cf-geoplugin') . '</p>';
             $message[] = '<p>' . wp_kses_post(sprintf(
+                /* translators: %s: link to the unlimited lookup pricing page. */
                 __('If your site has a large traffic and you need the full functionality of the plugin, you need to get the appropriate license and activate the %1$s.', 'cf-geoplugin'),
-                '<a href="' . CFGP_STORE . '/pricing/" target="_blank">' . esc_html__('UNLIMITED LOOKUP.', 'cf-geoplugin') . '</a>'
+                '<a href="' . esc_url(CFGP_STORE . '/pricing/') . '" target="_blank">' . esc_html__('UNLIMITED LOOKUP.', 'cf-geoplugin') . '</a>'
             )) . '</p>';
             $message[] = '<p>' . wp_kses_post(sprintf(
-                __('You currently have %1$d lookups left for today and if you want to have an unlimited lookup, you need to %s.', 'cf-geoplugin'),
+                /* translators: 1: number of remaining lookups, 2: link to extend the license. */
+                __('You currently have %1$d lookups left for today and if you want to have an unlimited lookup, you need to %2$s.', 'cf-geoplugin'),
                 $lookup,
-                '<a href="' . CFGP_STORE . '/pricing/" target="_blank">' . esc_html__('extend your license', 'cf-geoplugin') . '</a>'
+                '<a href="' . esc_url(CFGP_STORE . '/pricing/') . '" target="_blank">' . esc_html__('extend your license', 'cf-geoplugin') . '</a>'
             )) . '</p>';
 
             $message = apply_filters('cfgp/notification/message/body/expire_soon', $message);
@@ -598,7 +609,11 @@ if (!class_exists('CFGP_Notifications', false)) : class CFGP_Notifications exten
     </style>
   </head>
   <body class="">
-	<span class="preheader"><?php echo wp_kses_post(sprintf(__('If you no longer wish to receive these notifications, please read how to %1$s.', 'cf-geoplugin'), '<a href="' . esc_url(CFGP_STORE) . '/documentation/advanced-usage/php-integration/constants/cfgp_disable_notification/" target="_blank">' . __('disable this notifications', 'cf-geoplugin') . '</a>')); ?></span>
+	<span class="preheader"><?php echo wp_kses_post(sprintf(
+            /* translators: %s: link to disable notification documentation. */
+            __('If you no longer wish to receive these notifications, please read how to %1$s.', 'cf-geoplugin'),
+            '<a href="' . esc_url(CFGP_STORE . '/documentation/advanced-usage/php-integration/constants/cfgp_disable_notification/') . '" target="_blank">' . __('disable this notifications', 'cf-geoplugin') . '</a>'
+        )); ?></span>
     <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="body">
       <tr>
         <td>&nbsp;</td>
@@ -630,18 +645,30 @@ if (!class_exists('CFGP_Notifications', false)) : class CFGP_Notifications exten
               <table role="presentation" border="0" cellpadding="0" cellspacing="0">
                 <tr>
                   <td class="content-block">
-                    <span class="apple-link"><?php echo wp_kses_post(sprintf(__('This email is automatically sent by Geo Controller via site %1$s.', 'cf-geoplugin'), '<a href="' . esc_url(get_bloginfo('url')) . '" target="_blank">' . esc_html(get_bloginfo('name')) . '</a>')); ?><br>
+                    <span class="apple-link"><?php echo wp_kses_post(sprintf(
+                        /* translators: %s: link to the site homepage. */
+                        __('This email is automatically sent by Geo Controller via site %1$s.', 'cf-geoplugin'),
+                        '<a href="' . esc_url(get_bloginfo('url')) . '" target="_blank">' . esc_html(get_bloginfo('name')) . '</a>'
+                    )); ?><br>
 					<a href="<?php echo esc_url(CFGP_STORE) ?>/privacy-policy/" target="_blank"><?php esc_html_e('Privacy Policy', 'cf-geoplugin'); ?></a> | <a href="<?php echo esc_url(CFGP_STORE) ?>/terms-and-conditions/" target="_blank"><?php esc_html_e('Terms And Conditions', 'cf-geoplugin'); ?></a> | <a href="<?php echo esc_url(CFGP_STORE) ?>/documentation/" target="_blank"><?php esc_html_e('Documentation', 'cf-geoplugin'); ?></a> | <a href="<?php echo esc_url(CFGP_STORE) ?>/contact-and-support/" target="_blank"><?php esc_html_e('Contact & Support', 'cf-geoplugin'); ?></a></span>
                   </td>
                 </tr>
                 <tr>
                   <td class="content-block powered-by">
-                    <?php echo wp_kses_post(sprintf(__('Powered by  %1$s.', 'cf-geoplugin'), '<a href="' . esc_url(CFGP_STORE) . '" target="_blank">Geo Controller</a>')); ?>
+                    <?php echo wp_kses_post(sprintf(
+                        /* translators: %s: link to the Geo Controller website. */
+                        __('Powered by  %1$s.', 'cf-geoplugin'),
+                        '<a href="' . esc_url(CFGP_STORE) . '" target="_blank">Geo Controller</a>'
+                    )); ?>
                   </td>
                 </tr>
 				<tr>
                   <td class="content-block powered-by"><br><br>
-                    <?php echo wp_kses_post(sprintf(__('If you no longer wish to receive these notifications, please read how to %1$s.', 'cf-geoplugin'), '<a href="' . CFGP_STORE . '/documentation/advanced-usage/php-integration/constants/cfgp_disable_notification/" target="_blank">' . __('disable this notifications', 'cf-geoplugin') . '</a>')); ?>
+                    <?php echo wp_kses_post(sprintf(
+                        /* translators: %s: link to disable notification documentation. */
+                        __('If you no longer wish to receive these notifications, please read how to %1$s.', 'cf-geoplugin'),
+                        '<a href="' . esc_url(CFGP_STORE . '/documentation/advanced-usage/php-integration/constants/cfgp_disable_notification/') . '" target="_blank">' . __('disable this notifications', 'cf-geoplugin') . '</a>'
+                    )); ?>
                   </td>
                 </tr>
               </table>

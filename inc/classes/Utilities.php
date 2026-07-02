@@ -478,19 +478,25 @@ if (!class_exists('CFGP_U', false)) : class CFGP_U
     {
         global $wpdb;
 
-        // Determine the table and column name based on the site type.
-        $table_name  = (is_multisite() && is_main_site() && is_main_network()) ? $wpdb->sitemeta : $wpdb->options;
-        $column_name = (is_multisite() && is_main_site() && is_main_network()) ? 'meta_key' : 'option_name';
-
-        // Create the SQL statement.
-        $sql = "DELETE FROM `{$table_name}`
-				WHERE `{$column_name}` LIKE '_transient_cfgp-api-%'
-				   OR `{$column_name}` LIKE '_transient_timeout_cfgp-api-%'
-				   OR `{$column_name}` LIKE '_site_transient_cfgp-api-%'
-				   OR `{$column_name}` LIKE '_site_transient_timeout_cfgp-api-%'";
-
-        // Execute the SQL statement.
-        $wpdb->query($sql);
+        if (is_multisite() && is_main_site() && is_main_network()) {
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Direct query is required to clear plugin transients from multisite metadata rows.
+            $wpdb->query(
+                "DELETE FROM `{$wpdb->sitemeta}`
+                WHERE `meta_key` LIKE '_transient_cfgp-api-%'
+                   OR `meta_key` LIKE '_transient_timeout_cfgp-api-%'
+                   OR `meta_key` LIKE '_site_transient_cfgp-api-%'
+                   OR `meta_key` LIKE '_site_transient_timeout_cfgp-api-%'"
+            ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Clears plugin transients from the multisite meta table.
+        } else {
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Direct query is required to clear plugin transients from options rows.
+            $wpdb->query(
+                "DELETE FROM `{$wpdb->options}`
+                WHERE `option_name` LIKE '_transient_cfgp-api-%'
+                   OR `option_name` LIKE '_transient_timeout_cfgp-api-%'
+                   OR `option_name` LIKE '_site_transient_cfgp-api-%'
+                   OR `option_name` LIKE '_site_transient_timeout_cfgp-api-%'"
+            ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Clears plugin transients from the options table.
+        }
 
         // Remove current cache
         CFGP_Cache::flush();
@@ -682,7 +688,12 @@ if (!class_exists('CFGP_U', false)) : class CFGP_U
                 }
 
                 // Do redirection
-                return wp_redirect($location, $status, CFGP_NAME);
+                if ($safe && function_exists('wp_safe_redirect')) {
+                    return wp_safe_redirect($location, $status, CFGP_NAME);
+                }
+
+                // External redirects are intentional here; local URLs use wp_safe_redirect() above and all destinations are validated earlier.
+                return wp_redirect($location, $status, CFGP_NAME); // phpcs:ignore WordPress.Security.SafeRedirect.wp_redirect_wp_redirect -- External redirects are supported for validated URLs in this branch.
             } else {
                 // Windows server need some nice touch
                 global $is_IIS;
@@ -1416,6 +1427,7 @@ if (!class_exists('CFGP_U', false)) : class CFGP_U
             $slug = end($parts);
 
             if (!empty($slug)) {
+                // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Direct prepared post lookup is intentional for current-request slug resolution.
                 if ($post_id = $wpdb->get_var(
                     $wpdb->prepare(
                         "SELECT `{$wpdb->posts}`.`ID` FROM `{$wpdb->posts}`
@@ -1773,6 +1785,7 @@ if (!class_exists('CFGP_U', false)) : class CFGP_U
 
         global $wpdb;
 
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Direct query is required for the initial plugin-owned SEO redirection existence check, and the result is cached via CFGP_Cache.
         return CFGP_Cache::set('has_seo_redirection', ($wpdb->get_var("SELECT 1 FROM `{$wpdb->cfgp_seo_redirection}` WHERE 1=1 LIMIT 1") == 1));
     }
 

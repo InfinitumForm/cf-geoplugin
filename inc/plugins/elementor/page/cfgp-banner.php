@@ -1,5 +1,7 @@
-<?php if (!defined('WPINC') || !defined('ABSPATH')) {
-    die("Don't try to trick us. We know who you are!");
+<?php
+
+if (!defined('ABSPATH')) {
+    exit;
 }
 
 /**

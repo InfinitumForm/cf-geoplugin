@@ -164,8 +164,14 @@ if (!class_exists('CFGP_Sidebar', false)) :
 							$used = CFGP_LIMIT - $available_lookup;
 							$left = $available_lookup;
 							printf(
-								'<p>' . esc_html__('You have used %1$d of the %3$d available lookups. This means you have %2$d lookups remaining today.', 'cf-geoplugin') . '</p>',
-								esc_html($used), esc_html($left), esc_html(CFGP_LIMIT)
+								'<p>%s</p>',
+								sprintf(
+									/* translators: 1: used lookups, 2: remaining lookups, 3: daily lookup limit. */
+									esc_html__('You have used %1$d of the %3$d available lookups. This means you have %2$d lookups remaining today.', 'cf-geoplugin'),
+									absint($used),
+									absint($left),
+									absint(CFGP_LIMIT)
+								)
 							);
 
 							if ($available_lookup <= (CFGP_LIMIT / 3)) {
@@ -173,8 +179,9 @@ if (!class_exists('CFGP_Sidebar', false)) :
 							}
 
 							echo '<p>' . wp_kses_post(sprintf(
+								/* translators: 1: link to unlimited lookup documentation, 2: link to the license activation screen. */
 								__('If you want to get %1$s, you need to %2$s.', 'cf-geoplugin'),
-								'<a href="' . esc_url(CFGP_STORE) . '/documentation/quick-start/what-do-i-get-from-unlimited-license" target="_blank">' . esc_html__('unlimited lookups', 'cf-geoplugin') . '</a>',
+								'<a href="' . esc_url(CFGP_STORE . '/documentation/quick-start/what-do-i-get-from-unlimited-license') . '" target="_blank">' . esc_html__('unlimited lookups', 'cf-geoplugin') . '</a>',
 								'<a href="' . esc_url(CFGP_U::admin_url('admin.php?page=cf-geoplugin-activate')) . '" target="_blank"><strong>' . esc_html__('activate your license', 'cf-geoplugin') . '</strong></a>'
 							)) . '</p>';
 						elseif ($available_lookup == 0) :
@@ -209,8 +216,8 @@ if (!class_exists('CFGP_Sidebar', false)) :
 		 */
 		private function render_error(string $title, string $message): void {
 			printf('<h3><span class="cfa cfa-close"></span> %s</h3><p>%s</p>',
-				esc_html__($title, 'cf-geoplugin'),
-				esc_html__($message, 'cf-geoplugin')
+				esc_html($title),
+				esc_html($message)
 			);
 		}
 
@@ -315,9 +322,10 @@ if (!class_exists('CFGP_Sidebar', false)) :
 			<p class="community-events-footer" id="cf-geoplugin-copyright" style="font-size:0.85em; text-align:center;">
 				<?php
 				printf(
-					esc_html__('Copyright © %d-%d Geo Controller. All rights reserved.', 'cf-geoplugin'),
-					esc_html(2015),
-					esc_html((int)date('Y'))
+					/* translators: 1: copyright start year, 2: current year. */
+					esc_html__('Copyright © %1$d-%2$d Geo Controller. All rights reserved.', 'cf-geoplugin'),
+					2015,
+					(int) date('Y')
 				);
 				?>
 			</p>
@@ -343,7 +351,19 @@ if (!class_exists('CFGP_Sidebar', false)) :
 				);
 			}
 
-			echo implode(' | ', $output);
+			echo wp_kses(
+				implode(' | ', $output),
+				[
+					'a'    => [
+						'href'   => true,
+						'target' => true,
+					],
+					'span' => [
+						'aria-hidden' => true,
+						'class'       => true,
+					],
+				]
+			);
 			echo '</p>';
 		}
 
@@ -380,18 +400,47 @@ if (!class_exists('CFGP_Sidebar', false)) :
 				<li><strong><?php esc_html_e('Homepage', 'cf-geoplugin'); ?>:</strong> <span><a href="<?php echo esc_url($plugin->homepage); ?>" target="_blank"><?php echo esc_url($plugin->homepage); ?></a></span></li>
 				<li><strong><?php esc_html_e('WordPress Support', 'cf-geoplugin'); ?>:</strong> <span><?php
 					if (version_compare(get_bloginfo('version'), $plugin->requires, '>=')) {
-						printf('<span class="text-success">' . esc_html__('Supported on WordPress version %s', 'cf-geoplugin') . '</span>', esc_html(get_bloginfo('version')));
+						printf(
+							'<span class="text-success">%s</span>',
+							sprintf(
+								/* translators: %s: current WordPress version. */
+								esc_html__('Supported on WordPress version %s', 'cf-geoplugin'),
+								esc_html(get_bloginfo('version'))
+							)
+						);
 					} else {
-						printf('<span class="text-danger">' . esc_html__('This plugin requires WordPress version %s or higher.', 'cf-geoplugin') . '</span>', esc_html($plugin->requires));
+						printf(
+							'<span class="text-danger">%s</span>',
+							sprintf(
+								/* translators: %s: required WordPress version. */
+								esc_html__('This plugin requires WordPress version %s or higher.', 'cf-geoplugin'),
+								esc_html($plugin->requires)
+							)
+						);
 					}
 				?></span></li>
 				<li><strong><?php esc_html_e('PHP Support', 'cf-geoplugin'); ?>:</strong> <?php
 					preg_match("#^\d+(\.\d+)*#", PHP_VERSION, $match);
 
 					if (version_compare(PHP_VERSION, $plugin->requires_php, '>=')) {
-						printf('<span class="text-success">' . esc_html__('Supported on PHP version %s', 'cf-geoplugin') . '</span>', esc_html($match[0]));
+						printf(
+							'<span class="text-success">%s</span>',
+							sprintf(
+								/* translators: %s: current PHP version. */
+								esc_html__('Supported on PHP version %s', 'cf-geoplugin'),
+								esc_html($match[0])
+							)
+						);
 					} else {
-						printf('<span class="text-danger">' . esc_html__('This plugin does not support PHP version %1$s. Please use PHP version %2$s or higher.', 'cf-geoplugin') . '</span>', esc_html(PHP_VERSION), esc_html($plugin->requires_php));
+						printf(
+							'<span class="text-danger">%s</span>',
+							sprintf(
+								/* translators: 1: current PHP version, 2: required PHP version. */
+								esc_html__('This plugin does not support PHP version %1$s. Please use PHP version %2$s or higher.', 'cf-geoplugin'),
+								esc_html(PHP_VERSION),
+								esc_html($plugin->requires_php)
+							)
+						);
 					}
 				?></li>
 			</ul>
@@ -423,15 +472,27 @@ if (!class_exists('CFGP_Sidebar', false)) :
 
 			foreach ($levels as $level) {
 				if ($runtime <= $level['limit']) {
-					$label = esc_attr($level['label']);
+					$label = esc_html($level['label']);
 					$slug = esc_attr($level['slug']);
 					$icon = esc_attr($level['icon']);
-					echo sprintf(
-						'<span class="cfa cfa-%1$s %2$s%3$s" aria-hidden="true" title="%4$s"></span> <span class="cfgp-statistic-label %2$s">%4$s</span>',
+					$class = esc_attr($class);
+					$html  = sprintf(
+						'<span class="cfa cfa-%1$s %2$s%3$s" aria-hidden="true" title="%4$s"></span> <span class="cfgp-statistic-label %2$s">%5$s</span>',
 						$icon,
 						$slug,
 						$class,
+						esc_attr($level['label']),
 						$label
+					);
+					echo wp_kses(
+						$html,
+						[
+							'span' => [
+								'aria-hidden' => true,
+								'class'       => true,
+								'title'       => true,
+							],
+						]
 					);
 					break;
 				}

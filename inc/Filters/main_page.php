@@ -61,6 +61,7 @@ add_action('cfgp/table/after/shortcodes', function ($API) { ?>
             } else {
                 echo wp_kses_post(sprintf(
                     sprintf(
+                        /* translators: %s: link to the Geo Controller GPS extension. */
                         ' ' . __('GPS is enabled only with %s extension', 'cf-geoplugin'),
                         sprintf(
                             '<a href="%1$s" class="thickbox open-plugin-details-modal" target="_blank">' . esc_html__('Geo Controller GPS', 'cf-geoplugin') . '</a>',
@@ -139,6 +140,7 @@ add_action('cfgp/table/after/simple_shortcodes', function ($API) { ?>
             } else {
                 echo wp_kses_post(sprintf(
                     sprintf(
+                        /* translators: %s: link to the Geo Controller GPS extension. */
                         ' ' . __('GPS is enabled only with %s extension', 'cf-geoplugin'),
                         sprintf(
                             '<a href="%1$s" class="thickbox open-plugin-details-modal" target="_blank">' . esc_html__('Geo Controller GPS', 'cf-geoplugin') . '</a>',

@@ -730,6 +730,7 @@ if (!class_exists('CFGP_Shortcodes', false)) : class CFGP_Shortcodes extends CFG
         $city     = CFGP_U::api('city');
         $city_sql = '%"' . $wpdb->esc_like(esc_sql(sanitize_title(CFGP_U::transliterate($city)))) . '"%';
 
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Direct prepared post lookup is intentional for shortcode banner resolution against postmeta geo conditions.
         $post = $wpdb->get_row($wpdb->prepare(
             "
 SELECT
@@ -1327,7 +1328,7 @@ LIMIT 1
 								<p class="cfgp-currency-converted"></p>
 							</div>
 							<div class="cfgp-form-group cfgp-form-group-submit">
-								<button type="submit" class="button submit cfgp-btn cfgp-btn-calculate"><?php esc_html_e($instance['convert'], 'cf-geoplugin'); ?></button>
+								<button type="submit" class="button submit cfgp-btn cfgp-btn-calculate"><?php echo esc_html($instance['convert']); ?></button>
 								<button type="button" class="button submit cfgp-btn cfgp-exchange-currency">&#8646;</button> 
 							</div>
                             <?php wp_nonce_field('cfgeo_full_currency_converter', 'cfgeo_currency_converter_nonce__'); ?>
@@ -1345,7 +1346,9 @@ LIMIT 1
      */
     public function ajax__cfgeo_full_currency_converter()
     {
-        if (!isset($_REQUEST['cfgeo_currency_converter_nonce__']) || !wp_verify_nonce($_REQUEST['cfgeo_currency_converter_nonce__'], 'cfgeo_full_currency_converter')) {
+        $nonce = isset($_REQUEST['cfgeo_currency_converter_nonce__']) ? sanitize_text_field(wp_unslash($_REQUEST['cfgeo_currency_converter_nonce__'])) : '';
+
+        if (!$nonce || !wp_verify_nonce($nonce, 'cfgeo_full_currency_converter')) {
             $this->show_conversion_card_message('error_direct');
             wp_die();
         }

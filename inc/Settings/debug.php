@@ -64,7 +64,11 @@ if ($NEW_API = CFGP_API::lookup(CFGP_U::request_string('cfgp_lookup'))) {
                         
 						<?php do_action('cfgp/debug/tab-panel/before'); ?>
                         <div class="cfgp-tab-panel cfgp-tab-panel-active" id="recived-data">
-                        <p><?php echo wp_kses_post(sprintf(__('Information that the Geo Controller API ver.%s receives', 'cf-geoplugin'), esc_html(CFGP_VERSION))); ?></p>
+                        <p><?php echo wp_kses_post(sprintf(
+                            /* translators: %s: plugin version. */
+                            __('Information that the Geo Controller API ver.%s receives', 'cf-geoplugin'),
+                            esc_html(CFGP_VERSION)
+                        )); ?></p>
                         <?php if ($API) : ?>
                             <table class="wp-list-table widefat fixed striped table-view-list posts table-cf-geoplugin-debug-recived-data">
                                 <thead>
@@ -108,7 +112,11 @@ if ($NEW_API = CFGP_API::lookup(CFGP_U::request_string('cfgp_lookup'))) {
                         
                         <div class="cfgp-tab-panel" id="sent-data">
                         	<p><?php esc_html_e('This information are sent to Geo Controller API. All of this informations (hostname, IP and timezone) are available for general public, world wide and we only use them for API purpose which helps plugin to determine the exact location of the visitors and prevent accidental collapse between the IP address. Your IP and email address is also a guarantee that you\'re not a robot or some spamming software.', 'cf-geoplugin'); ?></p>
-                            <p><?php echo wp_kses_post(sprintf(__('If you are concerned about your private informations, please read the %s', 'cf-geoplugin'), '<a href="http://wpgeocontroller.com/privacy-policy" target="_blank">'.esc_html__('Privacy Policy', 'cf-geoplugin').'</a>')); ?></p>
+                            <p><?php echo wp_kses_post(sprintf(
+                                /* translators: %s: link to the privacy policy. */
+                                __('If you are concerned about your private informations, please read the %s', 'cf-geoplugin'),
+                                '<a href="http://wpgeocontroller.com/privacy-policy" target="_blank">' . esc_html__('Privacy Policy', 'cf-geoplugin') . '</a>'
+                            )); ?></p>
                             
                             <table class="wp-list-table widefat fixed striped table-view-list posts table-cf-geoplugin-debug-server-statistics"> 
                                 <thead>
@@ -132,7 +140,7 @@ if ($NEW_API = CFGP_API::lookup(CFGP_U::request_string('cfgp_lookup'))) {
                                     <tr>
                                         <td><strong><?php esc_html_e('SIP', 'cf-geoplugin'); ?></strong></td>
                                         <td><?php echo esc_html(CFGP_IP::server()) . (CFGP_U::proxy() ? ' <strong><a class="text-danger" href="'.esc_url(admin_url('admin.php?page=cf-geoplugin-settings')).'">('.esc_html__('Proxy Enabled', 'cf-geoplugin').')</a></strong> ' : ''); ?></td>
-                                        <td><?php esc_html_e('Server IP Address'); ?></td>
+                                        <td><?php esc_html_e('Server IP Address', 'cf-geoplugin'); ?></td>
                                     </tr>
                                     <tr>
                                         <td><strong><?php esc_html_e('Host', 'cf-geoplugin'); ?></strong></td>
@@ -140,7 +148,7 @@ if ($NEW_API = CFGP_API::lookup(CFGP_U::request_string('cfgp_lookup'))) {
                                         <td><?php esc_html_e('Server Host Name', 'cf-geoplugin'); ?></td>
                                     </tr>
 									<tr>
-                                        <td><strong><?php esc_html_e('Email'); ?></strong></td>
+                                        <td><strong><?php esc_html_e('Email', 'cf-geoplugin'); ?></strong></td>
                                         <td><?php echo esc_html(get_bloginfo('admin_email')); ?></td>
                                         <td><?php esc_html_e('Admin e-mail address.', 'cf-geoplugin'); ?> <?php esc_html_e('Only reason why we collect your email address is because plugin support and robot prevention. Your email address will NOT be spammed or shared with 3rd party in any case and you can any time request from us on email <a href="mailto:support@wpgeocontroller.com">support@wpgeocontroller.com</a> to remove your all personal data from our system by GDPR rules.', 'cf-geoplugin'); ?></td>
                                     </tr>
@@ -243,7 +251,7 @@ if ($plugin_activation && is_array($plugin_activation)) {
 
 											printf(
 												' <a href="%1$s" target="_blank">%2$s</a>',
-												CFGP_STORE . '/documentation/advanced-usage/deprecated-code-notice',
+												esc_url(CFGP_STORE . '/documentation/advanced-usage/deprecated-code-notice'),
 												esc_html__('Read more...', 'cf-geoplugin')
 											); ?>
 										<?php else : ?>
@@ -323,7 +331,11 @@ if ($plugin_activation && is_array($plugin_activation)) {
                                     </tr>
                                     <tr>
                                         <td><strong><?php esc_html_e('PHP: Architecture', 'cf-geoplugin'); ?></strong></td>
-                                        <td><?php printf(esc_html__('%dbit', 'cf-geoplugin'), (CFGP_OS::is_php64() ? 64 : 32)); ?></td>
+                                        <td><?php printf(
+                                            /* translators: %d: PHP architecture bitness. */
+                                            esc_html__('%dbit', 'cf-geoplugin'),
+                                            CFGP_OS::is_php64() ? 64 : 32
+                                        ); ?></td>
                                     </tr>
 									<tr>
                                         <td><strong><?php esc_html_e('PHP: Memory usage of the plugin', 'cf-geoplugin'); ?></strong></td>
@@ -331,7 +343,11 @@ if ($plugin_activation && is_array($plugin_activation)) {
                                     </tr>
                                     <tr>
                                         <td><strong><?php esc_html_e('PHP: Operting system', 'cf-geoplugin'); ?></strong></td>
-                                        <td><?php echo esc_html(CFGP_OS::get()); ?> <?php printf(esc_html__('%dbit', 'cf-geoplugin'), esc_html(CFGP_OS::architecture())); ?></td>
+                                        <td><?php echo esc_html(CFGP_OS::get()); ?> <?php printf(
+                                            /* translators: %d: operating system architecture bitness. */
+                                            esc_html__('%dbit', 'cf-geoplugin'),
+                                            absint(CFGP_OS::architecture())
+                                        ); ?></td>
                                     </tr>
 									<tr>
                                         <td><strong><?php esc_html_e('PHP: Server Cache', 'cf-geoplugin'); ?></strong></td>
@@ -348,6 +364,7 @@ if ($plugin_activation && is_array($plugin_activation)) {
                                                 : '<span class="text-danger">'
                                                     . esc_html__('No', 'cf-geoplugin')
                                                 . '</span><br>' . sprintf(
+                                                    /* translators: 1: Memcache documentation link, 2: Redis website link. */
                                                     esc_html__('And if our plugin has an internal cache system, we strongly recommend using %1$s or %2$s to get the best performance.', 'cf-geoplugin'),
                                                     '<a href="https://www.php.net/manual/en/book.memcached.php" target="_blank">Memcache</a>',
                                                     '<a href="https://redis.io/" target="_blank">Redis Cache</a>'
@@ -357,7 +374,12 @@ if ($plugin_activation && is_array($plugin_activation)) {
                                     </tr>
                                     <tr>
                                         <td><strong><?php esc_html_e('Browser', 'cf-geoplugin'); ?></strong></td>
-                                        <td><?php echo wp_kses_post(sprintf(_x('%1$s (%2$s)', 'Debug: User agent (Browser)', 'cf-geoplugin'), esc_html(CFGP_Browser::instance()->getBrowser()), esc_html(CFGP_Browser::instance()->getVersion()))); ?></td>
+                                        <td><?php echo wp_kses_post(sprintf(
+                                            /* translators: 1: browser name, 2: browser version. */
+                                            _x('%1$s (%2$s)', 'Debug: User agent (Browser)', 'cf-geoplugin'),
+                                            esc_html(CFGP_Browser::instance()->getBrowser()),
+                                            esc_html(CFGP_Browser::instance()->getVersion())
+                                        )); ?></td>
                                     </tr>
 									<tr>
                                         <td><strong><?php esc_html_e('User platform', 'cf-geoplugin'); ?></strong></td>
@@ -377,7 +399,11 @@ if ($plugin_activation && is_array($plugin_activation)) {
                                     </tr>
                                     <tr>
                                         <td><strong><?php esc_html_e('Session API expire', 'cf-geoplugin'); ?></strong></td>
-                                        <td><?php printf(esc_html__('%d minutes', 'cf-geoplugin'), esc_html(CFGP_SESSION)); ?></td>
+                                        <td><?php printf(
+                                            /* translators: %d: session lifetime in minutes. */
+                                            esc_html__('%d minutes', 'cf-geoplugin'),
+                                            absint(CFGP_SESSION)
+                                        ); ?></td>
                                     </tr>
                                 </tbody>
                         	</table>

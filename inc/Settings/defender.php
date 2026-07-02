@@ -209,6 +209,7 @@ if (!empty($block_city) && !is_array($block_city) && preg_match('/\]|\[/', $bloc
 									<p>
 										<strong>
 											<?php echo wp_kses_post(sprintf(
+												/* translators: %s: link to disable the blacklist check in plugin settings. */
 												__('Automatic IP Address Blacklist Check is enabled. All of these IPs come from a trusted source, and most of them are bots and crawlers. Blacklisted IPs will be automatically recognized and blocked. If you don’t want this kind of protection, %s.', 'cf-geoplugin'),
 												'<a href="' . esc_url(admin_url('admin.php?page=cf-geoplugin-settings')) . '#spam-protection">'
 													. esc_html__('disable it in the plugin settings', 'cf-geoplugin')
@@ -220,6 +221,7 @@ if (!empty($block_city) && !is_array($block_city) && preg_match('/\]|\[/', $bloc
 									<p>
 										<strong>
 											<?php echo wp_kses_post(sprintf(
+												/* translators: %s: link to enable the blacklist check in plugin settings. */
 												__('Automatic IP Address Blacklist Check is NOT enabled. If you want additional protection, %s.', 'cf-geoplugin'),
 												'<a href="' . esc_url(admin_url('admin.php?page=cf-geoplugin-settings')) . '#spam-protection">'
 													. esc_html__('enable it in the settings', 'cf-geoplugin')

@@ -351,6 +351,7 @@ if (!class_exists('CFGP_Menus', false)) : class CFGP_Menus extends CFGP_Global
         ) );
         */
 
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Direct term and termmeta join is intentional for geolocated menu admin rendering.
         $geolocate_menus = $wpdb->get_results("
 			SELECT DISTINCT
 				`menu`.*,
@@ -514,6 +515,7 @@ if (!class_exists('CFGP_Menus', false)) : class CFGP_Menus extends CFGP_Global
 
         global $wpdb;
 
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Direct term and termmeta join is intentional for runtime geolocated menu resolution.
         if ($geolocate_menus = $wpdb->get_results("
 			SELECT DISTINCT
 				`menu`.*,
@@ -568,7 +570,8 @@ if (!class_exists('CFGP_Menus', false)) : class CFGP_Menus extends CFGP_Global
 
         if ($country && $location) {
             $menu_name = sprintf(
-                __('%s for %s', 'cf-geoplugin'),
+                /* translators: 1: menu location name, 2: country name. */
+                __('%1$s for %2$s', 'cf-geoplugin'),
                 esc_html($locations[$location] ?? $location),
                 esc_html($countries[$country] ?? $country)
             );
@@ -593,6 +596,7 @@ if (!class_exists('CFGP_Menus', false)) : class CFGP_Menus extends CFGP_Global
 
         global $wpdb;
 
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Direct term and termmeta join is intentional for geolocated menu admin AJAX rendering.
         if ($geolocate_menus = $wpdb->get_results("
 			SELECT DISTINCT
 				`menu`.*,

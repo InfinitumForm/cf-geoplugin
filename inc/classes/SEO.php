@@ -95,6 +95,7 @@ if (!class_exists('CFGP_SEO', false)) : class CFGP_SEO extends CFGP_Global
                         // Define table name
                         $table = $wpdb->cfgp_seo_redirection;
                         // We need old data prepared to return if we have some error
+                        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Direct query is required during SEO CSV import rollback handling for the plugin-owned custom table.
                         $original_data = $wpdb->query("SELECT * FROM `{$table}` WHERE 1;");
                         // Let's clean table
                         $wpdb->query("TRUNCATE TABLE {$table};");
@@ -102,6 +103,7 @@ if (!class_exists('CFGP_SEO', false)) : class CFGP_SEO extends CFGP_Global
                         $num_saved = 0;
 
                         foreach ($csv as $save) {
+                            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- Direct query is required to insert plugin-owned SEO redirection rows during CSV import.
                             if ($wpdb->insert($table, $save, ['%s', '%s', '%s', '%s', '%s', '%d', '%d', '%d'])) {
                                 ++$num_saved;
                             }
@@ -119,6 +121,7 @@ if (!class_exists('CFGP_SEO', false)) : class CFGP_SEO extends CFGP_Global
                             // We need old data back on the error
                             if (!empty($original_data)) {
                                 foreach ($original_data as $data) {
+                                    // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- Direct query is required to restore plugin-owned SEO redirection rows during CSV import rollback.
                                     $wpdb->insert($table, $data);
                                 }
                             }
@@ -129,9 +132,15 @@ if (!class_exists('CFGP_SEO', false)) : class CFGP_SEO extends CFGP_Global
                             ]);
                         }
                     } else {
+                        /* translators: %1$d: expected number of CSV columns. */
+                        $message = __('We did not find any valid CSV data. We did not make any changes. Make sure you have all %1$d columns properly defined.', 'cf-geoplugin');
+
                         wp_send_json([
                             'return'  => false,
-                            'message' => sprintf(__('We did not find any valid CSV data. We did not make any changes. Make sure you have all %d columns properly defined.', 'cf-geoplugin'), $columns_max),
+                            'message' => sprintf(
+                                $message,
+                                absint($columns_max)
+                            ),
                         ]);
                     }
                 } else {
@@ -271,6 +280,7 @@ if (!class_exists('CFGP_SEO', false)) : class CFGP_SEO extends CFGP_Global
 
             global $wpdb;
             $table  = $wpdb->cfgp_seo_redirection;
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Direct query is required to export plugin-owned SEO redirection rows without altering row order or values.
             $result = $wpdb->get_results("SELECT country, region, city, postcode, url, http_code, active, only_once FROM {$table} WHERE 1", ARRAY_A);
 
             $num_fields = count($result);
@@ -331,6 +341,7 @@ if (!class_exists('CFGP_SEO', false)) : class CFGP_SEO extends CFGP_Global
     public static function get($ID)
     {
         global $wpdb;
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Direct prepared query is required to fetch a plugin-owned SEO redirection row by ID.
         $get = $wpdb->get_row($wpdb->prepare(
             "SELECT * FROM {$wpdb->cfgp_seo_redirection} WHERE ID = %d",
             $ID
@@ -346,6 +357,7 @@ if (!class_exists('CFGP_SEO', false)) : class CFGP_SEO extends CFGP_Global
     {
         global $wpdb;
 
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- Direct query is required to insert a plugin-owned SEO redirection row.
         return $wpdb->insert(
             $wpdb->cfgp_seo_redirection,
             [
@@ -378,6 +390,7 @@ if (!class_exists('CFGP_SEO', false)) : class CFGP_SEO extends CFGP_Global
     {
         global $wpdb;
 
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Direct query is required to delete a plugin-owned SEO redirection row by ID.
         return $wpdb->delete(
             $wpdb->cfgp_seo_redirection,
             [
@@ -396,6 +409,7 @@ if (!class_exists('CFGP_SEO', false)) : class CFGP_SEO extends CFGP_Global
     {
         global $wpdb;
 
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Direct query is required to update a plugin-owned SEO redirection row by ID.
         return $wpdb->update(
             $wpdb->cfgp_seo_redirection,
             [

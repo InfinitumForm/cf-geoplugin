@@ -410,7 +410,11 @@ if (!class_exists('CFGP_Admin', false)) :
 
                 __('Geo Controller is a Geomarketing tool that allows you to have full geo control of your WordPress. Geo Controller gives you the ability to attach content, geographic information, geo tags, Google Maps to posts, pages, widgets and custom templates by using simple options, shortcodes, PHP code or JavaScript. It also lets you specify a default geographic location for your entire WordPress blog, do SEO redirection, spam protection, WooCommerce control and many more. Geo Controller help you to increase conversion, do better SEO, capture leads on your blog or landing pages.', 'cf-geoplugin'),
 
-                sprintf(__('This website uses API services, technology and goods from the Geo Controller and that part belongs to the <a href="%1$s" target="_blank">Geo Controller Privacy Policy</a>.', 'cf-geoplugin'), CFGP_STORE . '/privacy-policy/'),
+                sprintf(
+                    /* translators: %s: link to the Geo Controller privacy policy. */
+                    __('This website uses API services, technology and goods from the Geo Controller and that part belongs to the <a href="%1$s" target="_blank">Geo Controller Privacy Policy</a>.', 'cf-geoplugin'),
+                    esc_url(CFGP_STORE . '/privacy-policy/')
+                ),
             ];
 
             wp_add_privacy_policy_content(
@@ -769,7 +773,9 @@ if (!class_exists('CFGP_Admin', false)) :
                         'error' => __('Option you provide not match to global variables. Permission denied!', 'cf-geoplugin'),
                     ],
                     'csv' => [
+                        /* translators: %d: number of saved CSV records. */
                         'saved'       => __('Successfuly saved %d records.', 'cf-geoplugin'),
+                        /* translators: %d: number of CSV rows that failed to import. */
                         'fail'        => __('Failed to add %d rows.', 'cf-geoplugin'),
                         'upload'      => __('Upload CSV file.', 'cf-geoplugin'),
                         'filetype'    => __('The file must be comma separated CSV type', 'cf-geoplugin'),
