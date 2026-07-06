@@ -124,51 +124,74 @@ if (!class_exists('CFGP__Plugin__contact_form_7', false)):
                 }
 
                 $tag_generator->add(
-                    $key,
-                    $key,
-                    function ($contact_form, $args = '') {
-                        $args = wp_parse_args($args, []);
-                        ?>
-					<div class="control-box">
-					<fieldset>
-					<legend><?php
-                                printf(esc_html__('To use "%s" tag added by Geo Controller, you need to define tag name and use it into your form. This tag will create hidden input field what will pickup geo information from the your visitor.', 'cf-geoplugin'), '<b>' . esc_html($args['id']) . '</b>');
-                        ?></legend>
+					$key,
+					$key,
+					function ($contact_form, $args = '') {
+						$args = wp_parse_args($args, []);
+						?>
+						<div class="control-box">
+							<fieldset>
+								<legend>
+									<?php
+									printf(
+										/* translators: %s: Contact Form 7 tag name. */
+										esc_html__('To use "%s" tag added by Geo Controller, you need to define tag name and use it into your form. This tag will create hidden input field what will pickup geo information from the your visitor.', 'cf-geoplugin'),
+										'<b>' . esc_html($args['id']) . '</b>'
+									);
+									?>
+								</legend>
 
-					<table class="form-table">
-						<tbody>
-							<tr>
-								<th scope="row"><label for="<?php echo esc_attr($args['content'] . '-name'); ?>"><?php esc_html_e('Name', 'cf-geoplugin'); ?></label></th>
-								<td><input type="text" name="name" class="namevalue tg-name oneline" id="<?php echo esc_attr($args['content'] . '-name'); ?>"></td>
-							</tr>
-							<tr>
-								<th scope="row"><label for="<?php echo esc_attr($args['content'] . '-id'); ?>"><?php esc_html_e('Id attribute', 'cf-geoplugin'); ?></label></th>
-								<td><input type="text" name="id" class="idvalue oneline option" id="<?php echo esc_attr($args['content'] . '-id'); ?>" /></td>
-							</tr>
-							<tr>
-								<th scope="row"><label for="<?php echo esc_attr($args['content'] . '-class'); ?>"><?php esc_html_e('Class attribute', 'cf-geoplugin'); ?></label></th>
-								<td><input type="text" name="class" class="classvalue oneline option" id="<?php echo esc_attr($args['content'] . '-class'); ?>" /></td>
-							</tr>
-						</tbody>
-					</table>
-
-					</fieldset>
-					</div>
-
-					<div class="insert-box">
-						<input type="text" name="<?php echo esc_attr($args['id']); ?>" class="tag code" readonly onfocus="this.select()" />
-
-						<div class="submitbox">
-						<input type="button" class="button button-primary insert-tag" value="<?php
-                                /* translators: Insert shortcode tag into the page content */
-                                esc_attr_e('Insert Tag', 'cf-geoplugin');
-                        ?>" />
+								<table class="form-table">
+									<tbody>
+										<tr>
+											<th scope="row">
+												<label for="<?php echo esc_attr($args['content'] . '-name'); ?>">
+													<?php esc_html_e('Name', 'cf-geoplugin'); ?>
+												</label>
+											</th>
+											<td>
+												<input type="text" name="name" class="namevalue tg-name oneline" id="<?php echo esc_attr($args['content'] . '-name'); ?>">
+											</td>
+										</tr>
+										<tr>
+											<th scope="row">
+												<label for="<?php echo esc_attr($args['content'] . '-id'); ?>">
+													<?php esc_html_e('Id attribute', 'cf-geoplugin'); ?>
+												</label>
+											</th>
+											<td>
+												<input type="text" name="id" class="idvalue oneline option" id="<?php echo esc_attr($args['content'] . '-id'); ?>">
+											</td>
+										</tr>
+										<tr>
+											<th scope="row">
+												<label for="<?php echo esc_attr($args['content'] . '-class'); ?>">
+													<?php esc_html_e('Class attribute', 'cf-geoplugin'); ?>
+												</label>
+											</th>
+											<td>
+												<input type="text" name="class" class="classvalue oneline option" id="<?php echo esc_attr($args['content'] . '-class'); ?>">
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</fieldset>
 						</div>
-					</div>
-				<?php
-                    },
-                    [ 'nameless' => 1 ]
-                );
+
+						<div class="insert-box">
+							<input type="text" name="<?php echo esc_attr($args['id']); ?>" class="tag code" readonly onfocus="this.select()">
+
+							<div class="submitbox">
+								<input type="button" class="button button-primary insert-tag" value="<?php esc_attr_e('Insert Tag', 'cf-geoplugin'); ?>">
+							</div>
+						</div>
+						<?php
+					},
+					[
+						'nameless' => 1,
+						'version'  => 2,
+					]
+				);
             }
 
         }

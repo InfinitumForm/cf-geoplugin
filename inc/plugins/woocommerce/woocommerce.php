@@ -753,7 +753,11 @@ if ($flag = CFGP_U::admin_country_flag(get_post_meta($order_id, '_billing_countr
                         'type' => 'title',
                         'desc' => __('Configure payment methods for each country in a detailed and precise manner.', 'cf-geoplugin') . (
                             (isset($custom_attributes['disabled']) && $custom_attributes['disabled']) || CFGP_U::dev_mode()
-                    ? ' <br><span style="color:#dc3545;">' . sprintf(__('This option is only available with the licensed version of the %s.', 'cf-geoplugin'), '<a href="' . CFGP_U::admin_url('admin.php?page=cf-geoplugin-activate') . '">Geo Controller</a>') . '</span>'
+                    ? ' <br><span style="color:#dc3545;">' . sprintf(
+                        /* translators: %s: link to the Geo Controller license activation page. */
+                        __('This option is only available with the licensed version of the %s.', 'cf-geoplugin'),
+                        '<a href="' . esc_url(CFGP_U::admin_url('admin.php?page=cf-geoplugin-activate')) . '">Geo Controller</a>'
+                    ) . '</span>'
                     : ''
                         ) . '<hr>',
                         'id' => 'cf_geoplugin_payment_restriction',

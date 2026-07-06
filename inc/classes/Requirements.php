@@ -69,8 +69,16 @@ if (!class_exists('CFGP_Requirements', false)) : class CFGP_Requirements
         if (version_compare($current_db_version, CFGP_DATABASE_VERSION, '!=')) {
             add_action('admin_notices', function () {
                 echo '<div class="notice notice-info" id="cf-geoplugin-database-update">';
-                echo '<p><strong>'.sprintf(esc_html__('%1$s database update required!', 'cf-geoplugin'), esc_html($this->title), esc_html(CFGP_DATABASE_VERSION)).'</strong></p>';
-                echo '<p>'.sprintf(esc_html__('%1$s has been updated! To keep things running smoothly, we have to update your database to the newest version.', 'cf-geoplugin'), esc_html($this->title), esc_html(CFGP_DATABASE_VERSION)).'</p>';
+                echo '<p><strong>' . sprintf(
+                    /* translators: %s: plugin title. */
+                    esc_html__('%1$s database update required!', 'cf-geoplugin'),
+                    esc_html($this->title)
+                ) . '</strong></p>';
+                echo '<p>' . sprintf(
+                    /* translators: %s: plugin title. */
+                    esc_html__('%1$s has been updated! To keep things running smoothly, we have to update your database to the newest version.', 'cf-geoplugin'),
+                    esc_html($this->title)
+                ) . '</p>';
                 echo '<p class="submit"><a href="' . esc_url(add_query_arg([
                     'cf_geoplugin_db_update' => 'true',
                     'cf_geoplugin_nonce'     => wp_create_nonce('cf_geoplugin_db_update'),
@@ -95,8 +103,16 @@ if (!class_exists('CFGP_Requirements', false)) : class CFGP_Requirements
                     deactivate_plugins(plugin_basename($this->file));
                     wp_mail(
                         get_option('admin_email'),
-                        sprintf(esc_html__('NOTICE: The %s is disabled for some reason!', 'cf-geoplugin'), esc_html($this->title)),
-                        sprintf(esc_html__("There has been some incompatibility with your server and %s is disabled.\r\n\r\nPlease visit your admin panel, go to plugins page and check what is causing this problem.", 'cf-geoplugin'), esc_html($this->title))
+                        sprintf(
+                            /* translators: %s: plugin title. */
+                            esc_html__('NOTICE: The %s is disabled for some reason!', 'cf-geoplugin'),
+                            esc_html($this->title)
+                        ),
+                        sprintf(
+                            /* translators: %s: plugin title. */
+                            esc_html__("There has been some incompatibility with your server and %s is disabled.\r\n\r\nPlease visit your admin panel, go to plugins page and check what is causing this problem.", 'cf-geoplugin'),
+                            esc_html($this->title)
+                        )
                     );
                 }
             });
@@ -123,7 +139,14 @@ if (!class_exists('CFGP_Requirements', false)) : class CFGP_Requirements
 
         add_action('admin_notices', function () {
             echo '<div class="notice notice-error">';
-            printf('<p><strong>%s</strong></p><ol>', sprintf(esc_html__('%s requires the following PHP modules (extensions) to be activated:', 'cf-geoplugin'), esc_html($this->title)));
+            printf(
+                '<p><strong>%s</strong></p><ol>',
+                sprintf(
+                    /* translators: %s: plugin title. */
+                    esc_html__('%s requires the following PHP modules (extensions) to be activated:', 'cf-geoplugin'),
+                    esc_html($this->title)
+                )
+            );
 
             foreach ($this->required_php_extensions as $fn => $obj) {
                 if (!function_exists($fn)) {
@@ -149,7 +172,12 @@ if (!class_exists('CFGP_Requirements', false)) : class CFGP_Requirements
         } else {
             add_action('admin_notices', function () {
                 echo '<div class="notice notice-error">';
-                echo '<p>'.sprintf(esc_html__('The %1$s cannot run on PHP versions older than PHP %2$s. Please contact your host and ask them to upgrade.', 'cf-geoplugin'), esc_html($this->title), esc_html($this->php)).'</p>';
+                echo '<p>' . sprintf(
+                    /* translators: 1: plugin title, 2: required PHP version. */
+                    esc_html__('The %1$s cannot run on PHP versions older than PHP %2$s. Please contact your host and ask them to upgrade.', 'cf-geoplugin'),
+                    esc_html($this->title),
+                    esc_html($this->php)
+                ) . '</p>';
                 echo '</div>';
             });
 
@@ -167,7 +195,12 @@ if (!class_exists('CFGP_Requirements', false)) : class CFGP_Requirements
         } else {
             add_action('admin_notices', function () {
                 echo '<div class="notice notice-error">';
-                echo '<p>'.sprintf(esc_html__('The %1$s cannot run on WordPress versions older than %2$s. Please update your WordPress installation.', 'cf-geoplugin'), esc_html($this->title), esc_html($this->wp)).'</p>';
+                echo '<p>' . sprintf(
+                    /* translators: 1: plugin title, 2: required WordPress version. */
+                    esc_html__('The %1$s cannot run on WordPress versions older than %2$s. Please update your WordPress installation.', 'cf-geoplugin'),
+                    esc_html($this->title),
+                    esc_html($this->wp)
+                ) . '</p>';
                 echo '</div>';
             });
 
@@ -204,7 +237,11 @@ font-weight:600;
 /* ]]> */
 </style>
 <div class="cf-geoplugin-upgrade-notice">
-<h3><?php printf(esc_html__('Important upgrade notice for the version %s:', 'cf-geoplugin'), esc_html($response->new_version)); ?></h3>
+<h3><?php printf(
+    /* translators: %s: new plugin version. */
+    esc_html__('Important upgrade notice for the version %s:', 'cf-geoplugin'),
+    esc_html($response->new_version)
+); ?></h3>
 <div class="cf-geoplugin-upgrade-notice-list">
 	<?php echo wp_kses_post(str_replace(
 	    [

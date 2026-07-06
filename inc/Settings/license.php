@@ -16,7 +16,11 @@ do_action('cfgp/page/license/save');
         if (CFGP_U::api('available_lookup') == 'lifetime') {
             esc_html_e('Congratulations, you have a lifetime lookup!', 'cf-geoplugin');
         } elseif (CFGP_License::activated()) {
-            printf(esc_html__('Your license is successfully active until %s', 'cf-geoplugin'), esc_html(CFGP_License::expire_date()));
+            printf(
+                /* translators: %s: license expiration date. */
+                esc_html__('Your license is successfully active until %s', 'cf-geoplugin'),
+                esc_html(CFGP_License::expire_date())
+            );
         } else {
             esc_html_e('Select the desired license and activate the plugin', 'cf-geoplugin');
         }

@@ -335,19 +335,25 @@ if (!class_exists('CFGP_API', false)) :
         {
             global $wpdb;
 
-            // Determine the table and column name based on the site type.
-            $table_name  = (is_multisite() && is_main_site() && is_main_network()) ? $wpdb->sitemeta : $wpdb->options;
-            $column_name = (is_multisite() && is_main_site() && is_main_network()) ? 'meta_key' : 'option_name';
-
-            // Create the SQL statement.
-            $sql = "DELETE FROM `{$table_name}`
-				WHERE `{$column_name}` LIKE '_transient_cfgp-api-%'
-				   OR `{$column_name}` LIKE '_transient_timeout_cfgp-api-%'
-				   OR `{$column_name}` LIKE '_site_transient_cfgp-api-%'
-				   OR `{$column_name}` LIKE '_site_transient_timeout_cfgp-api-%'";
-
-            // Execute the SQL statement.
-            $wpdb->query($sql);
+            if (is_multisite() && is_main_site() && is_main_network()) {
+                // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Direct query is required to clear plugin transients from multisite metadata rows.
+                $wpdb->query(
+                    "DELETE FROM `{$wpdb->sitemeta}`
+                    WHERE `meta_key` LIKE '_transient_cfgp-api-%'
+                       OR `meta_key` LIKE '_transient_timeout_cfgp-api-%'
+                       OR `meta_key` LIKE '_site_transient_cfgp-api-%'
+                       OR `meta_key` LIKE '_site_transient_timeout_cfgp-api-%'"
+                ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Clears plugin transients from the multisite meta table.
+            } else {
+                // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Direct query is required to clear plugin transients from options rows.
+                $wpdb->query(
+                    "DELETE FROM `{$wpdb->options}`
+                    WHERE `option_name` LIKE '_transient_cfgp-api-%'
+                       OR `option_name` LIKE '_transient_timeout_cfgp-api-%'
+                       OR `option_name` LIKE '_site_transient_cfgp-api-%'
+                       OR `option_name` LIKE '_site_transient_timeout_cfgp-api-%'"
+                ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Clears plugin transients from the options table.
+            }
 
             // Clear the related cache.
             CFGP_Cache::delete('API');

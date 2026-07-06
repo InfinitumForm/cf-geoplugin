@@ -61,6 +61,10 @@ if (get_option(CFGP_NAME . '-reviewed')) {
     delete_option(CFGP_NAME . '-reviewed');
 }
 
+if (false !== get_option(CFGP_NAME . '-w3tc-dynamic-security-key', false)) {
+    delete_option(CFGP_NAME . '-w3tc-dynamic-security-key');
+}
+
 if (get_option(CFGP_NAME . '-woo-transition')) {
     delete_option(CFGP_NAME . '-woo-transition');
 }
@@ -83,12 +87,16 @@ if ('cf_geoplugin' === get_option('woocommerce_default_customer_address')) {
 }
 
 // Delete MySQL tables
+// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange -- Expected plugin-owned custom table cleanup during uninstall.
 $wpdb->query(sprintf('DROP TABLE IF EXISTS %scfgp_rest_access_token', $wpdb->prefix));
+// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange -- Expected plugin-owned custom table cleanup during uninstall.
 $wpdb->query(sprintf('DROP TABLE IF EXISTS %scfgp_seo_redirection', $wpdb->prefix));
+// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange -- Expected plugin-owned custom table cleanup during uninstall.
 $wpdb->query(sprintf('DROP TABLE IF EXISTS %scfgp_cache', $wpdb->prefix));
 
 // Remove plugins cache
 if (is_multisite() && is_main_site() && is_main_network()) {
+    // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Direct uninstall cleanup query removes only plugin transient and settings rows from multisite metadata storage.
     $wpdb->query("DELETE FROM
 		`{$wpdb->sitemeta}`
 	WHERE (
@@ -101,6 +109,7 @@ if (is_multisite() && is_main_site() && is_main_network()) {
 			`{$wpdb->sitemeta}`.`option_name` LIKE 'woocommerce_cf_geoplugin_%'
 	)");
 } else {
+    // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Direct uninstall cleanup query removes only plugin transient and settings rows from options storage.
     $wpdb->query("DELETE FROM
 		`{$wpdb->options}`
 		WHERE (

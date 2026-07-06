@@ -217,7 +217,11 @@ if (!class_exists('CFGP_Elementor_Vat_Widget', false)) :
                 $this->start_controls_section(
                     "style_section_{$i}",
                     [
-                        'label' => __("Heading H{$i}", 'cf-geoplugin'),
+                        'label' => sprintf(
+                            /* translators: %d: heading level number. */
+                            esc_html__('Heading H%1$d', 'cf-geoplugin'),
+                            absint($i)
+                        ),
                         'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
                     ]
                 );

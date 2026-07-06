@@ -15,8 +15,9 @@ add_action('cfgp/settings/nav-tab/after', function () { ?>
 add_action('cfgp/settings/tab-panel/after', function () {
     if (CFGP_Options::get('enable_rest', 0)) :
         global $wpdb;
-        $api_key    = get_option(CFGP_NAME . '-ID');
-        $secret_key = CFGP_REST::get('secret_key');
+        $api_key      = get_option(CFGP_NAME . '-ID');
+        $secret_key   = CFGP_REST::get('secret_key');
+        $tokens_table = $wpdb->get_blog_prefix() . 'cfgp_rest_access_token';
         ?>
 <div class="cfgp-tab-panel" id="rest-api">
 	<section class="cfgp-tab-panel-section" id="rest-api-intro">
@@ -68,7 +69,22 @@ add_action('cfgp/settings/tab-panel/after', function () {
                     <td><kbd>action</kbd></td>
                     <td>string</td>
                     <td><?php esc_html_e('required', 'cf-geoplugin') ?></td>
-                    <td><?php esc_html_e('Endpoint action. Should always be: <strong>cf_geoplugin_authenticate</strong>', 'cf-geoplugin') ?></td>
+                    <td>
+                        <?php
+                        /* translators: %s: admin-ajax action name. */
+                        $description = __('Endpoint action. Should always be: %s', 'cf-geoplugin');
+
+                        printf(
+                            wp_kses(
+                                $description,
+                                array(
+                                    'strong' => array(),
+                                )
+                            ),
+                            '<strong>cf_geoplugin_authenticate</strong>'
+                        );
+                        ?>
+                    </td>
                 </tr>
                 <tr>
                     <td><kbd>api_key</kbd></td>
@@ -150,7 +166,22 @@ add_action('cfgp/settings/tab-panel/after', function () {
                     <td><kbd>action</kbd></td>
                     <td>string</td>
                     <td><?php esc_html_e('required', 'cf-geoplugin') ?></td>
-                    <td><?php esc_html_e('Endpoint action. Should always be: <strong>cf_geoplugin_lookup</strong>', 'cf-geoplugin') ?></td>
+                    <td>
+                        <?php
+                        /* translators: %s: admin-ajax action name. */
+                        $description = __('Endpoint action. Should always be: %s', 'cf-geoplugin');
+
+                        printf(
+                            wp_kses(
+                                $description,
+                                array(
+                                    'strong' => array(),
+                                )
+                            ),
+                            '<strong>cf_geoplugin_lookup</strong>'
+                        );
+                        ?>
+                    </td>
                 </tr>
                 <tr>
                     <td><kbd>api_key</kbd></td>
@@ -174,7 +205,22 @@ add_action('cfgp/settings/tab-panel/after', function () {
                     <td><kbd>base_currency</kbd></td>
                     <td>string</td>
                     <td><?php esc_html_e('optional', 'cf-geoplugin') ?></td>
-                    <td><?php esc_html_e('The base currency (transaction currency) - The currency by which conversion is checked by geo location. Default: <strong>'.CFGP_Options::get('base_currency').'</strong>', 'cf-geoplugin') ?></td>
+                    <td>
+                        <?php
+                        /* translators: %s: configured base currency code. */
+                        $description = __('The base currency (transaction currency) - The currency by which conversion is checked by geo location. Default: %s', 'cf-geoplugin');
+
+                        printf(
+                            wp_kses(
+                                $description,
+                                array(
+                                    'strong' => array(),
+                                )
+                            ),
+                            '<strong>' . esc_html(CFGP_Options::get('base_currency')) . '</strong>'
+                        );
+                        ?>
+                    </td>
                 </tr>
             </table>
             <h2 class="title"><?php esc_html_e('Return standard JSON API response format', 'cf-geoplugin') ?>:</h2>
@@ -226,7 +272,8 @@ add_action('cfgp/settings/tab-panel/after', function () {
                 </thead>
                 <tbody>
                 	<?php
-                                $tokens = $wpdb->get_results("SELECT * FROM `{$wpdb->cfgp_rest_access_token}` WHERE 1"); // No caching
+                                // phpcs:ignore PluginCheck.Security.DirectDB.UnescapedDBParameter, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Reads plugin-owned REST token rows from the blog-prefix custom table without user input.
+                                $tokens = $wpdb->get_results("SELECT * FROM `{$tokens_table}` WHERE 1");
 
         if (count($tokens) > 0):
             foreach ($tokens as $i => $token):

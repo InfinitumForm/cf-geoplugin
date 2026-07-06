@@ -12,7 +12,11 @@ add_action('cfgp/page/seo_redirection/form/import', function () { global $wpdb; 
 
 <?php if (!CFGP_SEO_Table::table_exists()) : ?>
 <div class="notice notice-error"> 
-	<p><?php echo esc_html(sprintf(__('The database table "%s" not exists! You can try to reactivate the Geo Controller to correct this error.', 'cf-geoplugin'), '<strong>' . esc_html($wpdb->cfgp_seo_redirection) . '</strong>')); ?></p>
+	<p><?php echo esc_html(sprintf(
+        /* translators: %s: database table name. */
+        __('The database table "%s" not exists! You can try to reactivate the Geo Controller to correct this error.', 'cf-geoplugin'),
+        '<strong>' . esc_html($wpdb->cfgp_seo_redirection) . '</strong>'
+    )); ?></p>
 </div>
 <?php endif; ?>
 

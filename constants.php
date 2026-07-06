@@ -77,7 +77,7 @@ if (!defined('CFGP_PLUGINS')) {
 
 // Limit ( for the information purposes )
 if (!defined('CFGP_LIMIT')) {
-    define('CFGP_LIMIT', 1000);
+    define('CFGP_LIMIT', 500);
 }
 
 // Developer license ( enable developer license support )
@@ -91,9 +91,73 @@ if (!defined('CFGP_SESSION')) {
 
 }
 
+// Plugin name
+if (!defined('CFGP_NAME')) {
+    define('CFGP_NAME', 'cf-geoplugin');
+}
+
+// W3 Total Cache security option name
+if (!defined('CFGP_W3TC_DYNAMIC_SECURITY_OPTION')) {
+    define('CFGP_W3TC_DYNAMIC_SECURITY_OPTION', CFGP_NAME . '-w3tc-dynamic-security-key');
+}
+
+if (!function_exists('cfgp_get_w3tc_dynamic_security_key')) {
+    /**
+     * Get or create the per-installation W3 Total Cache fragment security key.
+     *
+     * @return string
+     */
+    function cfgp_get_w3tc_dynamic_security_key()
+    {
+        $option_name = CFGP_W3TC_DYNAMIC_SECURITY_OPTION;
+        $pattern     = '/^cfgeo_[a-f0-9]{32}$/';
+        $key         = get_option($option_name, '');
+
+        if (is_string($key)) {
+            $key = trim($key);
+        }
+
+        if (is_string($key) && preg_match($pattern, $key)) {
+            return $key;
+        }
+
+        $key = '';
+
+        if (function_exists('random_bytes')) {
+            try {
+                $key = 'cfgeo_' . bin2hex(random_bytes(16));
+            } catch (Exception $e) {
+                $key = '';
+            } catch (Error $e) {
+                $key = '';
+            }
+        }
+
+        if (!$key && function_exists('wp_generate_password')) {
+            $fallback = wp_generate_password(16, true, true);
+
+            if (is_string($fallback) && $fallback !== '') {
+                $key = 'cfgeo_' . bin2hex($fallback);
+            }
+        }
+
+        if (!is_string($key) || !preg_match($pattern, $key)) {
+            return '';
+        }
+
+        if (false === get_option($option_name, false)) {
+            add_option($option_name, $key, '', false);
+        } else {
+            update_option($option_name, $key, false);
+        }
+
+        return $key;
+    }
+}
+
 // W3 total cache setup
 if (!defined('W3TC_DYNAMIC_SECURITY')) {
-    define('W3TC_DYNAMIC_SECURITY', 'cfgeo_' . md5(get_bloginfo('url')));
+    define('W3TC_DYNAMIC_SECURITY', cfgp_get_w3tc_dynamic_security_key());
 }
 
 // Disable email notifications
@@ -124,11 +188,6 @@ if (!defined('CFGP_URL')) {
 // Assets URL
 if (!defined('CFGP_ASSETS')) {
     define('CFGP_ASSETS', CFGP_URL . '/assets');
-}
-
-// Plugin name
-if (!defined('CFGP_NAME')) {
-    define('CFGP_NAME', 'cf-geoplugin');
 }
 
 // Allow deprecated methods (Enabled for some next few versions)

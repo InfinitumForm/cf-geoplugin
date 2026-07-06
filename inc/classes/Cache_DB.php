@@ -36,6 +36,7 @@ if (!class_exists('CFGP_DB_Cache', false)) : class CFGP_DB_Cache
     {
         if (!self::has_redis() && self::table_exists()) {
             global $wpdb;
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Direct query is required for plugin-owned cache table expiry cleanup.
             $wpdb->query($wpdb->prepare("DELETE FROM `{$wpdb->cfgp_cache}` WHERE `expire` != 0 AND `expire` <= %d", time()));
         }
 
@@ -69,6 +70,7 @@ if (!class_exists('CFGP_DB_Cache', false)) : class CFGP_DB_Cache
             $transient         = get_transient($key);
             self::$cache[$key] = $transient ?: $default;
         } else {
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Direct query is required because this method is the plugin cache-table backend read path.
             $result = $wpdb->get_var($wpdb->prepare("SELECT `{$wpdb->cfgp_cache}`.`value` FROM `{$wpdb->cfgp_cache}` WHERE `{$wpdb->cfgp_cache}`.`key` = %s", $key));
 
             if ($result) {
@@ -107,6 +109,7 @@ if (!class_exists('CFGP_DB_Cache', false)) : class CFGP_DB_Cache
 
             $value = maybe_serialize($value);
 
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Direct query is required for plugin-owned cache table writes.
             $save = $wpdb->query($wpdb->prepare("INSERT IGNORE INTO `{$wpdb->cfgp_cache}` (`key`, `value`, `expire`) VALUES (%s, %s, %d)", $key, $value, $expire));
         }
 
@@ -203,6 +206,7 @@ if (!class_exists('CFGP_DB_Cache', false)) : class CFGP_DB_Cache
 
             $value = maybe_serialize($value);
 
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Direct query is required for plugin-owned cache table updates.
             $save = $wpdb->query($wpdb->prepare(
                 "UPDATE `{$wpdb->cfgp_cache}` SET `value` = %s, `expire` = %d WHERE `key` = %s",
                 $value,
@@ -245,6 +249,7 @@ if (!class_exists('CFGP_DB_Cache', false)) : class CFGP_DB_Cache
             unset(self::$cache[$key]);
         }
 
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- Direct query is required for plugin-owned cache table deletes.
         return $wpdb->query($wpdb->prepare("DELETE FROM `{$wpdb->cfgp_cache}` WHERE `key` = %s", $key));
     }
 
@@ -334,6 +339,7 @@ if (!class_exists('CFGP_DB_Cache', false)) : class CFGP_DB_Cache
         global $wpdb;
 
         if (null === $table_exists || $dry) {
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Direct table existence check is required for the plugin-owned cache table bootstrap.
             if ($wpdb->get_var("SHOW TABLES LIKE '{$wpdb->cfgp_cache}'") != $wpdb->cfgp_cache) {
                 if ($dry) {
                     return false;

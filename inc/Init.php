@@ -327,6 +327,8 @@ if (!class_exists('CFGP_Init', false)) : final class CFGP_Init
             if (!current_user_can('activate_plugins')) {
                 return;
             }
+
+            cfgp_get_w3tc_dynamic_security_key();
             // clear old cache
             CFGP_U::flush_plugin_cache();
 
@@ -368,6 +370,8 @@ if (!class_exists('CFGP_Init', false)) : final class CFGP_Init
             if (!current_user_can('activate_plugins')) {
                 return;
             }
+
+            cfgp_get_w3tc_dynamic_security_key();
 
             if (CFGP_VERSION !== get_option(CFGP_NAME . '-version', CFGP_VERSION)) {
                 // Get global variables
@@ -477,6 +481,7 @@ if (!class_exists('CFGP_Init', false)) : final class CFGP_Init
         if (false === $last_execution || (time() - $last_execution) > 300) {
             set_transient('delete_expired_transients_last_run', time(), 300);
 
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Direct cleanup query is required to remove expired plugin transients from core options rows.
             $wpdb->query(
                 $wpdb->prepare(
                     "DELETE a, b FROM {$wpdb->options} a, {$wpdb->options} b
@@ -492,6 +497,7 @@ if (!class_exists('CFGP_Init', false)) : final class CFGP_Init
 
             if (!is_multisite()) {
                 // Single site stores site transients in the options table.
+                // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Direct cleanup query is required to remove expired plugin site transients from core options rows.
                 $wpdb->query(
                     $wpdb->prepare(
                         "DELETE a, b FROM {$wpdb->options} a, {$wpdb->options} b
@@ -506,6 +512,7 @@ if (!class_exists('CFGP_Init', false)) : final class CFGP_Init
                 );
             } elseif (is_multisite() && is_main_site() && is_main_network()) {
                 // Multisite stores site transients in the sitemeta table.
+                // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Direct cleanup query is required to remove expired plugin site transients from multisite metadata rows.
                 $wpdb->query(
                     $wpdb->prepare(
                         "DELETE a, b FROM {$wpdb->sitemeta} a, {$wpdb->sitemeta} b

@@ -227,8 +227,9 @@ add_filter('cfgp/settings', function ($options = []) {
 							],
 							'default' => 1,
 							'info'    => sprintf(
+								/* translators: %s: admin URL for the Menus screen. */
 								__('This option allows you to control menu locations by geography. Once enabled, new options will appear in <strong>Appearance → <a href="%s">Menus</a></strong>.', 'cf-geoplugin'),
-								CFGP_U::admin_url('/nav-menus.php')
+								esc_url(CFGP_U::admin_url('/nav-menus.php'))
 							),
 						],
 						[
@@ -474,6 +475,7 @@ add_filter('cfgp/settings', function ($options = []) {
 					'desc'    => [
 						__('Geo Controller sends notifications in three cases: 1) When fewer than 50 lookups remain, 2) When the lookups expire, 3) When the license expires.', 'cf-geoplugin'),
 						sprintf(
+							/* translators: %s: link to the notification documentation. */
 							__('This option is important and cannot be disabled here. If you want to turn off these notifications, %s.', 'cf-geoplugin'),
 							'<a href="https://wpgeocontroller.com/documentation/advanced-usage/php-integration/constants/cfgp_disable_notification" target="_blank">' . __('read this documentation', 'cf-geoplugin') . '</a>'
 						),
@@ -566,6 +568,7 @@ add_filter('cfgp/settings', function ($options = []) {
 					'title' => __('Proxy Settings', 'cf-geoplugin'),
 					'desc'  => [
 						sprintf(
+							/* translators: %s: link to the recommended proxy service. */
 							__('Some servers do not share the real IP address for security reasons, or the IP may be blocked from geolocation. By using a proxy, you can bypass these restrictions and allow Geo Controller to work properly. However, on some servers, this may cause inaccurate geo information, so the option is disabled by default. You should test it on your setup and use it carefully. Need a proxy service? %s.', 'cf-geoplugin'),
 							'<a href="https://affiliates.nordvpn.com/publisher/#!/offer/15" class="affiliate-nordvpn" target="_blank">' . __('We Recommend This Service', 'cf-geoplugin') . '</a>'
 						),

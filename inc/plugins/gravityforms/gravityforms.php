@@ -168,7 +168,9 @@ if (!class_exists('CFGP__Plugin__gravityforms', false)):
          */
         public function ajax_autocomplete_locations()
         {
-            if (!wp_verify_nonce($_POST['nonce'], 'cfgp-gfield-autocomplete-location')) {
+            $nonce = isset($_POST['nonce']) ? sanitize_text_field(wp_unslash($_POST['nonce'])) : '';
+
+            if (!wp_verify_nonce($nonce, 'cfgp-gfield-autocomplete-location')) {
                 wp_send_json_error([
                     'message' => esc_attr__('The connection you requested has timed out. Please refresh the page and try again.', 'cf-geoplugin'),
                 ]);

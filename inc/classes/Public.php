@@ -68,14 +68,14 @@ if (!class_exists('CFGP_Public', false)) : class CFGP_Public extends CFGP_Global
         // Public currency converter shortcode
         wp_register_style(CFGP_NAME . '-public-cc', CFGP_ASSETS . '/css/style-cc' . $min . '.css', 1, (string)CFGP_VERSION);
         // Public Twism Script
-        wp_register_script(CFGP_NAME . '-maps', CFGP_ASSETS . '/js/jquery.maps' . $min . '.js', ['jquery'], (string)CFGP_VERSION);
+        wp_register_script(CFGP_NAME . '-maps', CFGP_ASSETS . '/js/jquery.maps' . $min . '.js', ['jquery'], (string)CFGP_VERSION, true);
         wp_localize_script(CFGP_NAME . '-maps', 'CFGP_MAP', [
             'ajaxurl' => admin_url('admin-ajax.php'),
             'cache'   => (CFGP_Options::get('enable_cache', 0) ? '1' : '0'),
             'maps'    => CFGP_ASSETS . '/maps',
         ]);
         // Public JavaScript for the shortcodes
-        wp_register_script(CFGP_NAME . '-public', CFGP_ASSETS . '/js/script-public' . $min . '.js', ['jquery'], (string)CFGP_VERSION);
+        wp_register_script(CFGP_NAME . '-public', CFGP_ASSETS . '/js/script-public' . $min . '.js', ['jquery'], (string)CFGP_VERSION, true);
         wp_localize_script(CFGP_NAME . '-public', 'CFGP', [
             'ajaxurl'             => admin_url('admin-ajax.php'),
             'cache'               => (CFGP_Options::get('enable_cache', 0) ? '1' : '0'),
@@ -84,7 +84,7 @@ if (!class_exists('CFGP_Public', false)) : class CFGP_Public extends CFGP_Global
             'rest_enabled'        => (CFGP_U::is_rest_enabled() ? '1' : '0'),
         ]);
         // Public Shortcode for the currency converter
-        wp_register_script(CFGP_NAME . '-public-cc', CFGP_ASSETS . '/js/script-cc' . $min . '.js', ['jquery'], (string)CFGP_VERSION);
+        wp_register_script(CFGP_NAME . '-public-cc', CFGP_ASSETS . '/js/script-cc' . $min . '.js', ['jquery'], (string)CFGP_VERSION, true);
         wp_localize_script(CFGP_NAME . '-public-cc', 'CFGP_CC', [
             'ajaxurl'     => admin_url('admin-ajax.php'),
             'loading_gif' => apply_filters('cfgp/public/js/loading_image_url', (CFGP_ASSETS . '/images/loading.gif'), (CFGP_ASSETS . '/images/loading.gif')),

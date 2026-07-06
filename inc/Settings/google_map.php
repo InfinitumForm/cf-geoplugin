@@ -34,6 +34,7 @@ $API = CFGP_Cache::get('API');
 									'%s %s',
 									__('Google Maps is a desktop web mapping service developed by Google. It offers satellite imagery, street maps, 360° panoramic views of streets (Street View), real-time traffic conditions (Google Traffic), and route planning for traveling by foot, car, bicycle (in beta), or public transportation.', 'cf-geoplugin'),
 									sprintf(
+										/* translators: %s: Google Maps shortcode. */
 										__('CF GeoPlugin allows you to easily place Google Maps in your WordPress site using the simple shortcode %s.', 'cf-geoplugin'),
 										'<code>[cfgeo_map]</code>'
 									)
@@ -44,6 +45,7 @@ $API = CFGP_Cache::get('API');
 							<p>
 								<?php
 								echo wp_kses_post(sprintf(
+									/* translators: %s: Google Maps shortcode. */
 									__('The list below contains all available settings for the %s shortcode.', 'cf-geoplugin'),
 									'<code>[cfgeo_map]</code>'
 								));
@@ -64,7 +66,11 @@ $API = CFGP_Cache::get('API');
 									</tr>
 									<tr>
 										<td><strong>latitude</strong></td>
-										<td><strong><?php esc_html_e('Number', 'cf-geoplugin'); ?></strong> - <?php echo wp_kses_post(sprintf(__('Latitude is an angle ranging from 0° at the Equator to 90° (North or South) at the poles.%s', 'cf-geoplugin'), '<br><br><strong>- ' . esc_html__('By default, it points to the visitor’s city or address automatically.', 'cf-geoplugin') . '</strong>')); ?></td>
+								<td><strong><?php esc_html_e('Number', 'cf-geoplugin'); ?></strong> - <?php echo wp_kses_post(sprintf(
+									/* translators: %s: additional note about the default latitude behavior. */
+									__('Latitude is an angle ranging from 0° at the Equator to 90° (North or South) at the poles.%s', 'cf-geoplugin'),
+									'<br><br><strong>- ' . esc_html__('By default, it points to the visitor’s city or address automatically.', 'cf-geoplugin') . '</strong>'
+								)); ?></td>
 									</tr>
 									<tr>
 										<td><strong>longitude</strong></td>
@@ -128,6 +134,7 @@ $API = CFGP_Cache::get('API');
 									<tr>
 										<td>
 											<?php echo wp_kses_post(sprintf(
+												/* translators: %s: Google Maps shortcode example. */
 												__('If you want to place a simple Google Map in your post or page, just insert the shortcode like this: %s – it will display the location based on the visitor’s geolocation.', 'cf-geoplugin'),
 												'<br><br><code>[cfgeo_map]</code>'
 											)); ?>
@@ -136,7 +143,8 @@ $API = CFGP_Cache::get('API');
 									<tr>
 										<td>
 											<?php echo wp_kses_post(sprintf(
-												__('If you want to display your own company street address inside a Google Map, you can add the optional attributes %s. For example: %s – this will show your company location on Google Maps.', 'cf-geoplugin'),
+												/* translators: 1: list of optional shortcode attributes, 2: Google Maps shortcode example. */
+												__('If you want to display your own company street address inside a Google Map, you can add the optional attributes %1$s. For example: %2$s – this will show your company location on Google Maps.', 'cf-geoplugin'),
 												__('<code>longitude</code> and <code>latitude</code>', 'cf-geoplugin'),
 												'<br><br><code>[cfgeo_map longitude="-74.0059" latitude="40.7128" zoom="15"]</code>'
 											)); ?>
@@ -155,6 +163,7 @@ $API = CFGP_Cache::get('API');
 												</code>';
 
 											echo wp_kses_post(sprintf(
+												/* translators: %s: HTML example shown inside the map info box. */
 												__('If you want to use HTML inside the map and display an info box:<br><br>%s', 'cf-geoplugin'),
 												$html_map
 											));

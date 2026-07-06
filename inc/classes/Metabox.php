@@ -192,6 +192,8 @@ if (!class_exists('CFGP_Metabox', false)) : class CFGP_Metabox extends CFGP_Glob
         if (empty($cfgp_longitude)) {
             $cfgp_longitude = CFGP_Options::get('map_longitude', '-0.0076589');
         }
+
+        $this->enqueue_geo_tag_map_script($cfgp_dc_title, $cfgp_latitude, $cfgp_longitude);
         ?>
 <div id="cfgp-geo-tag-container">
     <label for="geo-tag-geotag-enable"><input type="checkbox" name="cfgp-geotag-enable" id="geo-tag-geotag-enable" value="1" <?php checked($cfgp_enable, 1, true); ?>> <?php esc_html_e('Enable Geo Tag on this page', 'cf-geoplugin'); ?></label>
@@ -217,171 +219,184 @@ if (!class_exists('CFGP_Metabox', false)) : class CFGP_Metabox extends CFGP_Glob
 		<label for="geo-tag-longitude"><?php esc_html_e('Longitude', 'cf-geoplugin'); ?></label><br>
 	</div>
 </div>
-<script>
-  // This example adds a search box to a map, using the Google Place Autocomplete
-  // feature. People can enter geographical searches. The search box will return a
-  // pick list containing a mix of places and predicted search terms.
+	<?php
+    }
 
-  // This example requires the Places library. Include the libraries=places
-  // parameter when you first load the API. For example:
-  // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
-
-function CF_GeoPlugin_Google_Map_GeoTag() {
-    var map = new google.maps.Map(document.getElementById('CFGP_Geo_Tag_Gmap'), {
-        center: {
-            lat: <?php echo (float)esc_attr($cfgp_latitude); ?>,
-            lng: <?php echo (float)esc_attr($cfgp_longitude); ?>
-        },
-        zoom: 13,
-        disableDefaultUI: true,
-        mapTypeId: 'roadmap'
-    });
-
-    var markers = [];
-    // Create a marker for each place.
-    markers.push(new google.maps.Marker({
-        map: map,
-        title: "<?php echo esc_attr($cfgp_dc_title); ?>",
-        position: {
-            lat: <?php echo (float)esc_attr($cfgp_latitude); ?>,
-            lng: <?php echo (float)esc_attr($cfgp_longitude); ?>
-        },
-    }));
-
-    map.setOptions({
-        draggable: false
-    });
-
-    // Create the search box and link it to the UI element.
-    var input = document.getElementById('pac-input');
-    var searchBox = new google.maps.places.SearchBox(input);
-
-    input.style.marginTop = '9px';
-
-    map.controls[google.maps.ControlPosition.TOP_CENTER].push(input);
-
-    // Bias the SearchBox results towards current map's viewport.
-    map.addListener('bounds_changed', function() {
-        searchBox.setBounds(map.getBounds());
-    });
-
-    // Listen for the event fired when the user selects a prediction and retrieve
-    // more details for that place.
-    searchBox.addListener('places_changed', function() {
-        var places = searchBox.getPlaces();
-
-        if (places.length == 0) {
+    /**
+     * Attach the Geo Tag map bootstrap script to the enqueued metabox script.
+     *
+     * @param string $title
+     * @param string $latitude
+     * @param string $longitude
+     *
+     * @return void
+     */
+    private function enqueue_geo_tag_map_script($title, $latitude, $longitude)
+    {
+        if (!wp_script_is(CFGP_NAME . '-metabox', 'enqueued')) {
             return;
         }
 
-        // Clear out the old markers.
-        markers.forEach(function(marker) {
-            marker.setMap(null);
-        });
-        markers = [];
+        $api_url = trailingslashit(CFGP_Defaults::API['googleapis_map']) . 'api/js?key=' . rawurlencode((string)CFGP_Options::get('map_api_key')) . '&libraries=places';
+        $script  = sprintf(
+            <<<'JS'
+(function(){
+    var cfgpGeoTagTitle = %1$s;
+    var cfgpGeoTagLat = %2$s;
+    var cfgpGeoTagLng = %3$s;
+    var cfgpGeoTagApiUrl = %4$s;
 
-        // For each place, get the icon, name and location.
-        var bounds = new google.maps.LatLngBounds();
-        places.forEach(function(place) {
-            if (!place.geometry) {
+    function CF_GeoPlugin_Google_Map_GeoTag() {
+        var map = new google.maps.Map(document.getElementById('CFGP_Geo_Tag_Gmap'), {
+            center: {
+                lat: cfgpGeoTagLat,
+                lng: cfgpGeoTagLng
+            },
+            zoom: 13,
+            disableDefaultUI: true,
+            mapTypeId: 'roadmap'
+        });
+
+        var markers = [];
+        markers.push(new google.maps.Marker({
+            map: map,
+            title: cfgpGeoTagTitle,
+            position: {
+                lat: cfgpGeoTagLat,
+                lng: cfgpGeoTagLng
+            }
+        }));
+
+        map.setOptions({
+            draggable: false
+        });
+
+        var input = document.getElementById('pac-input');
+        var searchBox = new google.maps.places.SearchBox(input);
+
+        input.style.marginTop = '9px';
+        map.controls[google.maps.ControlPosition.TOP_CENTER].push(input);
+
+        map.addListener('bounds_changed', function() {
+            searchBox.setBounds(map.getBounds());
+        });
+
+        searchBox.addListener('places_changed', function() {
+            var places = searchBox.getPlaces();
+
+            if (places.length == 0) {
                 return;
             }
 
-            var countryCode = '';
-            if (typeof place.address_components != 'undefined') {
-                var componentsLength = place.address_components.length;
-                for (var i = 0; i < componentsLength; i++) {
-                    if (place.address_components[i] == 'undefined') continue;
+            markers.forEach(function(marker) {
+                marker.setMap(null);
+            });
+            markers = [];
 
-                    if (place.address_components[i].types.indexOf('country') >= 0) {
-                        countryCode = place.address_components[i].short_name;
-                        break;
+            var bounds = new google.maps.LatLngBounds();
+            places.forEach(function(place) {
+                if (!place.geometry) {
+                    return;
+                }
+
+                var countryCode = '';
+                if (typeof place.address_components !== 'undefined') {
+                    var componentsLength = place.address_components.length;
+                    for (var i = 0; i < componentsLength; i++) {
+                        if (place.address_components[i] == 'undefined') {
+                            continue;
+                        }
+
+                        if (place.address_components[i].types.indexOf('country') >= 0) {
+                            countryCode = place.address_components[i].short_name;
+                            break;
+                        }
                     }
                 }
-            }
 
-			var city = (typeof place.address_components[0] != 'undefined' ? place.address_components[0].long_name : ''),
-				region = (typeof place.address_components[2] != 'undefined' ? place.address_components[2].long_name : ''),
-				country = place.address_components[place.address_components.length-1].long_name || '';
-				
-			if((place.address_components.length-1) === 2)
-				region = '';
+                var city = (typeof place.address_components[0] !== 'undefined' ? place.address_components[0].long_name : ''),
+                    region = (typeof place.address_components[2] !== 'undefined' ? place.address_components[2].long_name : ''),
+                    country = place.address_components[place.address_components.length - 1].long_name || '';
 
-            document.getElementById('geo-tag-dc-title').value = place.formatted_address;
-            document.getElementById('geo-tag-region').value = countryCode;
-            document.getElementById('geo-tag-placename').value = city;
+                if ((place.address_components.length - 1) === 2) {
+                    region = '';
+                }
 
-            document.getElementById('geo-tag-latitude').value = place.geometry.location.lat();
-            document.getElementById('geo-tag-longitude').value = place.geometry.location.lng();
+                document.getElementById('geo-tag-dc-title').value = place.formatted_address;
+                document.getElementById('geo-tag-region').value = countryCode;
+                document.getElementById('geo-tag-placename').value = city;
 
-            var icon = {
-                url: place.icon,
-                size: new google.maps.Size(71, 71),
-                origin: new google.maps.Point(0, 0),
-                anchor: new google.maps.Point(17, 34),
-                scaledSize: new google.maps.Size(25, 25)
-            };
-            // Create a marker for each place.
-            markers.push(new google.maps.Marker({
-                map: map,
-                icon: icon,
-                title: place.name,
-                position: place.geometry.location
-            }));
+                document.getElementById('geo-tag-latitude').value = place.geometry.location.lat();
+                document.getElementById('geo-tag-longitude').value = place.geometry.location.lng();
 
-            if (place.geometry.viewport) {
-                // Only geocodes have viewport.
-                bounds.union(place.geometry.viewport);
-            } else {
-                bounds.extend(place.geometry.location);
-            }
+                var icon = {
+                    url: place.icon,
+                    size: new google.maps.Size(71, 71),
+                    origin: new google.maps.Point(0, 0),
+                    anchor: new google.maps.Point(17, 34),
+                    scaledSize: new google.maps.Size(25, 25)
+                };
+
+                markers.push(new google.maps.Marker({
+                    map: map,
+                    icon: icon,
+                    title: place.name,
+                    position: place.geometry.location
+                }));
+
+                if (place.geometry.viewport) {
+                    bounds.union(place.geometry.viewport);
+                } else {
+                    bounds.extend(place.geometry.location);
+                }
+            });
+            map.fitBounds(bounds);
         });
-        map.fitBounds(bounds);
-    });
-}
-(function(position, callback){
-		
-	if( typeof google !== 'undefined' )
-	{
-		if(typeof callback === 'function') {
-			callback(google,{});
-		}
-	}
-	else
-	{
-		var url = '<?php
-                echo esc_attr(CFGP_Defaults::API['googleapis_map']);
-        ?>/api/js?key=<?php
-            echo esc_attr(CFGP_Options::get('map_api_key'));
-        ?>',
-			head = document.getElementsByTagName('head')[0],
-			script = document.createElement("script");
-		
-		position = position || 0;
-		
-		script.src = url + '&libraries=places';
-		script.type = 'text/javascript';
-		script.charset = 'UTF-8';
-		script.async = true;
-		script.defer = true;
-		head.appendChild(script);
-		head.insertBefore(script,head.childNodes[position]);		
-		script.onload = function(){
-			if(typeof callback == 'function') {
-				callback(google, script);
-			}
-		};
-		script.onerror = function(){
-			if(typeof callback == 'function') {
-				callback(undefined, script);
-			}
-		};
-	}
-}(0, function($this){
-	if( typeof $this != 'undefined' ) $this.maps.event.addDomListener(window, 'load', CF_GeoPlugin_Google_Map_GeoTag);
-}));
-</script>
-	<?php
+    }
+
+    (function(position, callback) {
+        if (typeof google !== 'undefined') {
+            if (typeof callback === 'function') {
+                callback(google, {});
+            }
+        } else {
+            var head = document.getElementsByTagName('head')[0],
+                script = document.createElement('script');
+
+            position = position || 0;
+
+            script.src = cfgpGeoTagApiUrl;
+            script.type = 'text/javascript';
+            script.charset = 'UTF-8';
+            script.async = true;
+            script.defer = true;
+            head.appendChild(script);
+            head.insertBefore(script, head.childNodes[position]);
+            script.onload = function() {
+                if (typeof callback == 'function') {
+                    callback(google, script);
+                }
+            };
+            script.onerror = function() {
+                if (typeof callback == 'function') {
+                    callback(undefined, script);
+                }
+            };
+        }
+    }(0, function($this) {
+        if (typeof $this != 'undefined') {
+            $this.maps.event.addDomListener(window, 'load', CF_GeoPlugin_Google_Map_GeoTag);
+        }
+    }));
+}());
+JS,
+            wp_json_encode((string)$title),
+            wp_json_encode((float)$latitude),
+            wp_json_encode((float)$longitude),
+            wp_json_encode($api_url)
+        );
+
+        wp_add_inline_script(CFGP_NAME . '-metabox', $script, 'after');
     }
 
     /**

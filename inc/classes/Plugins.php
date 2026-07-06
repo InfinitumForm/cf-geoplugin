@@ -82,7 +82,9 @@ if (!class_exists('CFGP_Plugins', false)) : class CFGP_Plugins extends CFGP_Glob
      */
     public function ajax_dimiss_notice()
     {
-        if (!wp_verify_nonce($_POST['nonce'], 'cfgp-dimiss-notice-plugin-support')) {
+        $nonce = isset($_POST['nonce']) ? sanitize_text_field(wp_unslash($_POST['nonce'])) : '';
+
+        if (!wp_verify_nonce($nonce, 'cfgp-dimiss-notice-plugin-support')) {
             return;
         }
 
@@ -153,7 +155,8 @@ if (!class_exists('CFGP_Plugins', false)) : class CFGP_Plugins extends CFGP_Glob
 
             if ($last) {
                 $names = sprintf(
-                    __('%s and %s', 'cf-geoplugin'),
+                    /* translators: 1: comma-separated plugin names, 2: final plugin name. */
+                    __('%1$s and %2$s', 'cf-geoplugin'),
                     join(', ', $names),
                     $last
                 );
@@ -163,8 +166,16 @@ if (!class_exists('CFGP_Plugins', false)) : class CFGP_Plugins extends CFGP_Glob
 
             //Fire notice
             ?><div class="notice notice-info is-dismissible" id="cf-geoplugin-notice-plugin-support">
-	<h3><?php echo wp_kses_post(sprintf(__('Attention %s enthusiasts!', 'cf-geoplugin'), $names)); ?></h3>
-	<p><?php echo wp_kses_post(sprintf(__('Get ready to unleash the full potential of your website with <b>Geo Controller</b> integration. The plugins are all installed, active, and waiting for you to activate the magic. You need to go to the %s and activate the integration for the mentioned plugins.', 'cf-geoplugin'), '<a href="' . esc_url(admin_url('admin.php?page=cf-geoplugin-settings').'#plugin_support') . '">' . __('Geo Controller settings', 'cf-geoplugin') . '</a>')); ?></p>
+	<h3><?php echo wp_kses_post(sprintf(
+                /* translators: %s: plugin names. */
+                __('Attention %s enthusiasts!', 'cf-geoplugin'),
+                $names
+            )); ?></h3>
+	<p><?php echo wp_kses_post(sprintf(
+                /* translators: %s: link to the Geo Controller settings page. */
+                __('Get ready to unleash the full potential of your website with <b>Geo Controller</b> integration. The plugins are all installed, active, and waiting for you to activate the magic. You need to go to the %s and activate the integration for the mentioned plugins.', 'cf-geoplugin'),
+                '<a href="' . esc_url(admin_url('admin.php?page=cf-geoplugin-settings') . '#plugin_support') . '">' . __('Geo Controller settings', 'cf-geoplugin') . '</a>'
+            )); ?></p>
 	<p><a href="<?php echo esc_url(add_query_arg([
                     'cfgp_activate_all_plugins_support' => true,
                     'plugins'                           => join(',', $slugs),
@@ -196,7 +207,11 @@ if (!class_exists('CFGP_Plugins', false)) : class CFGP_Plugins extends CFGP_Glob
                     $plugin_options[] = [
                         'name'    => 'enable-' . $dir_name,
                         'label'   => $plugin_info->name,
-                        'desc'    => sprintf(__('Enable %s integration.', 'cf-geoplugin'), $plugin_info->name),
+                        'desc'    => sprintf(
+                            /* translators: %s: plugin name. */
+                            __('Enable %s integration.', 'cf-geoplugin'),
+                            $plugin_info->name
+                        ),
                         'type'    => 'radio',
                         'options' => [
                             1 => __('Yes', 'cf-geoplugin'),

@@ -137,11 +137,12 @@ if (!class_exists('CFGP_SEO_Redirection', false)) : class CFGP_SEO_Redirection e
                 $city     = CFGP_U::api('city');
                 $postcode = CFGP_U::api('region_code');
 
+                $seo_table = $wpdb->get_blog_prefix() . 'cfgp_seo_redirection';
                 $where = $where_relative = [];
 
                 if ($country || $country_code) {
                     $where[] = $wpdb->prepare(
-                        "TRIM(LOWER(`{$wpdb->cfgp_seo_redirection}`.`country`)) IN( %s, %s, %s, %s )",
+                        "TRIM(LOWER(`{$seo_table}`.`country`)) IN( %s, %s, %s, %s )",
                         CFGP_U::strtolower($country_code),
                         sanitize_title(CFGP_U::transliterate($country)),
                         CFGP_U::strtolower(CFGP_U::transliterate($country)),
@@ -152,7 +153,7 @@ if (!class_exists('CFGP_SEO_Redirection', false)) : class CFGP_SEO_Redirection e
 
                 if ($region || $region_code) {
                     $where[] = $wpdb->prepare(
-                        "TRIM(LOWER(`{$wpdb->cfgp_seo_redirection}`.`region`)) IN( %s, %s, %s, %s )",
+                        "TRIM(LOWER(`{$seo_table}`.`region`)) IN( %s, %s, %s, %s )",
                         sanitize_title(CFGP_U::transliterate($region)),
                         CFGP_U::strtolower(CFGP_U::transliterate($region)),
                         CFGP_U::strtolower($region),
@@ -162,7 +163,7 @@ if (!class_exists('CFGP_SEO_Redirection', false)) : class CFGP_SEO_Redirection e
 
                 if ($city) {
                     $where[] = $wpdb->prepare(
-                        "TRIM(LOWER(`{$wpdb->cfgp_seo_redirection}`.`city`)) IN( %s, %s, %s )",
+                        "TRIM(LOWER(`{$seo_table}`.`city`)) IN( %s, %s, %s )",
                         sanitize_title(CFGP_U::transliterate($city)),
                         CFGP_U::strtolower(CFGP_U::transliterate($city)),
                         CFGP_U::strtolower($city)
@@ -170,7 +171,7 @@ if (!class_exists('CFGP_SEO_Redirection', false)) : class CFGP_SEO_Redirection e
                 }
 
                 if ($postcode) {
-                    $where[] = $wpdb->prepare("TRIM(LOWER(`{$wpdb->cfgp_seo_redirection}`.`postcode`)) = %s", CFGP_U::strtolower($postcode));
+                    $where[] = $wpdb->prepare("TRIM(LOWER(`{$seo_table}`.`postcode`)) = %s", CFGP_U::strtolower($postcode));
                 }
 
                 if (!empty($where)) {
@@ -181,27 +182,33 @@ if (!class_exists('CFGP_SEO_Redirection', false)) : class CFGP_SEO_Redirection e
                 }
 
                 $fields = "
-					TRIM(`{$wpdb->cfgp_seo_redirection}`.`url`) AS `url`,
-					TRIM(LOWER(`{$wpdb->cfgp_seo_redirection}`.`country`)) AS `country`,
-					TRIM(LOWER(`{$wpdb->cfgp_seo_redirection}`.`region`)) AS `region`,
-					TRIM(LOWER(`{$wpdb->cfgp_seo_redirection}`.`city`)) AS `city`,
-					TRIM(LOWER(`{$wpdb->cfgp_seo_redirection}`.`postcode`)) AS `postcode`,
-					`{$wpdb->cfgp_seo_redirection}`.`http_code` AS `http_code`,
-					`{$wpdb->cfgp_seo_redirection}`.`only_once` AS `only_once`
+					TRIM(`{$seo_table}`.`url`) AS `url`,
+					TRIM(LOWER(`{$seo_table}`.`country`)) AS `country`,
+					TRIM(LOWER(`{$seo_table}`.`region`)) AS `region`,
+					TRIM(LOWER(`{$seo_table}`.`city`)) AS `city`,
+					TRIM(LOWER(`{$seo_table}`.`postcode`)) AS `postcode`,
+					`{$seo_table}`.`http_code` AS `http_code`,
+					`{$seo_table}`.`only_once` AS `only_once`
 				";
 
-                $query = apply_filters(
-                    'cfgp/seo/redirection/query/exact',
-                    "SELECT {$fields} FROM `{$wpdb->cfgp_seo_redirection}` WHERE `{$wpdb->cfgp_seo_redirection}`.`active` = 1{$where_exact}"
+                // phpcs:ignore PluginCheck.Security.DirectDB.UnescapedDBParameter, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Allows developer SQL customization for the plugin-owned table while request-derived conditions are prepared above, and results are cached in the request scope.
+                $exact_redirects = $wpdb->get_results(
+                    apply_filters(
+                        'cfgp/seo/redirection/query/exact',
+                        "SELECT {$fields} FROM `{$seo_table}` WHERE `{$seo_table}`.`active` = 1{$where_exact}"
+                    ),
+                    ARRAY_A
                 );
-                $exact_redirects = $wpdb->get_results($query, ARRAY_A);
 
                 if (empty($exact_redirects)) {
-                    $query = apply_filters(
-                        'cfgp/seo/redirection/query/relative',
-                        "SELECT {$fields} FROM `{$wpdb->cfgp_seo_redirection}` WHERE `{$wpdb->cfgp_seo_redirection}`.`active` = 1{$where_relative}"
+                    // phpcs:ignore PluginCheck.Security.DirectDB.UnescapedDBParameter, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Allows developer SQL customization for the plugin-owned table while request-derived conditions are prepared above, and results are cached in the request scope.
+                    $relative_redirects = $wpdb->get_results(
+                        apply_filters(
+                            'cfgp/seo/redirection/query/relative',
+                            "SELECT {$fields} FROM `{$seo_table}` WHERE `{$seo_table}`.`active` = 1{$where_relative}"
+                        ),
+                        ARRAY_A
                     );
-                    $relative_redirects = $wpdb->get_results($query, ARRAY_A);
                 }
 
                 $this->seo_redirection_cache = [
@@ -367,8 +374,8 @@ if (!class_exists('CFGP_SEO_Redirection', false)) : class CFGP_SEO_Redirection e
         }
 
         // Let's redirect
-        if ($do_redirection && $this->control_redirection($redirect)) {
-            return CFGP_U::redirect($redirect['url'], $redirect['http_code']);
+        if ($do_redirection && $this->control_redirection($redirect) && CFGP_U::redirect($redirect['url'], $redirect['http_code'])) {
+            exit;
         }
 
         // End

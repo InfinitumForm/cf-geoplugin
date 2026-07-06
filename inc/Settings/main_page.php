@@ -74,10 +74,11 @@ $API = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
                         <div class="cfgp-tab-panel cfgp-tab-panel-active" id="shortcodes">
                         	<p>
 								<?php esc_html_e('These are the shortcodes available for use in places where shortcodes can be executed.', 'cf-geoplugin'); ?>
-								<?php printf(
-									esc_html__('The usage and functionality of these shortcodes are explained in our %s.', 'cf-geoplugin'),
-									'<a href="' . CFGP_STORE . '/documentation/quick-start/geo-controller-shortcodes" target="_blank">' . esc_html__('documentation', 'cf-geoplugin') . '</a>'
-								); ?>
+								<?php echo wp_kses_post(sprintf(
+									/* translators: %s: link to the shortcodes documentation. */
+									__('The usage and functionality of these shortcodes are explained in our %s.', 'cf-geoplugin'),
+									'<a href="' . esc_url(CFGP_STORE . '/documentation/quick-start/geo-controller-shortcodes') . '" target="_blank">' . esc_html__('documentation', 'cf-geoplugin') . '</a>'
+								)); ?>
 							</p>
 
                             <?php if ($API) : ?>
@@ -134,8 +135,9 @@ $API = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
                                 <p>
 									<?php esc_html_e('These are the shortcodes available for use in places where shortcodes can be executed.', 'cf-geoplugin'); ?>
 									<?php echo wp_kses_post(sprintf(
+										/* translators: %s: link to the shortcode documentation. */
 										__('The usage and functionality of these shortcodes are explained in our %s.', 'cf-geoplugin'),
-										'<a href="' . CFGP_STORE . '/documentation/quick-start/geo-controller-shortcodes/cfgeo_property" target="_blank">' . esc_html__('documentation', 'cf-geoplugin') . '</a>'
+										'<a href="' . esc_url(CFGP_STORE . '/documentation/quick-start/geo-controller-shortcodes/cfgeo_property') . '" target="_blank">' . esc_html__('documentation', 'cf-geoplugin') . '</a>'
 									)); ?>
 								</p>
 								<p>
@@ -189,8 +191,9 @@ $API = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
                         <div class="cfgp-tab-panel" id="tags">
                        		<p>
 								<?php echo wp_kses_post(sprintf(
+									/* translators: %s: link to the tags documentation. */
 									__('These special tags are designed for quickly inserting geo-information into pages and posts. They allow the use of geo-information in page titles and content, categories, and other taxonomies. They can also be used in widgets, various page builders, and are supported by several SEO plugins such as Yoast, All in One SEO Pack, SEO Framework, and Rank Math. For more details, please read our %s.', 'cf-geoplugin'),
-									'<a href="' . CFGP_STORE . '/documentation/quick-start/cf-geo-plugin-tags" target="_blank">' . esc_html__('documentation', 'cf-geoplugin') . '</a>'
+									'<a href="' . esc_url(CFGP_STORE . '/documentation/quick-start/cf-geo-plugin-tags') . '" target="_blank">' . esc_html__('documentation', 'cf-geoplugin') . '</a>'
 								)); ?>
 							</p>
 
@@ -246,7 +249,8 @@ $API = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
 
 							<p>
 								<?php echo wp_kses_post(sprintf(
-									__('A different CSS class is generated for each state, city, or region following this principle: %s or %s, where %s represents the geo-location name in lowercase letters with multiple words separated by a dash.', 'cf-geoplugin'),
+									/* translators: 1: CSS class example for showing content, 2: CSS class example for hiding content, 3: geo property placeholder. */
+									__('A different CSS class is generated for each state, city, or region following this principle: %1$s or %2$s, where %3$s represents the geo-location name in lowercase letters with multiple words separated by a dash.', 'cf-geoplugin'),
 									'<code>cfgeo-show-in-' . esc_html__('{property}', 'cf-geoplugin') . '</code>',
 									'<code>cfgeo-hide-from-' . esc_html__('{property}', 'cf-geoplugin') . '</code>',
 									'<code>' . esc_html__('{property}', 'cf-geoplugin') . '</code>'

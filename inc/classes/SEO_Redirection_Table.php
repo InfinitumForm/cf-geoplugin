@@ -86,10 +86,14 @@ if (!class_exists('CFGP_SEO_Table', false)) : class CFGP_SEO_Table extends WP_Li
                 '%'.$wpdb->esc_like($s).'%',
                 $s
             );
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Direct query is required to count plugin-owned SEO redirection rows for the current admin list filter state.
             $count['enabled']  = absint($wpdb->get_var($query . " AND `{$wpdb->cfgp_seo_redirection}`.`active` = 1"));
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Direct query is required to count plugin-owned SEO redirection rows for the current admin list filter state.
             $count['disabled'] = absint($wpdb->get_var($query . " AND `{$wpdb->cfgp_seo_redirection}`.`active` = 0"));
         } else {
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Direct query is required to count plugin-owned SEO redirection rows for the current admin list filter state.
             $count['enabled']  = absint($wpdb->get_var($query . " WHERE `{$wpdb->cfgp_seo_redirection}`.`active` = 1"));
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Direct query is required to count plugin-owned SEO redirection rows for the current admin list filter state.
             $count['disabled'] = absint($wpdb->get_var($query . " WHERE `{$wpdb->cfgp_seo_redirection}`.`active` = 0"));
         }
 
@@ -146,7 +150,13 @@ if (!class_exists('CFGP_SEO_Table', false)) : class CFGP_SEO_Table extends WP_Li
                     if ($checkboxes = array_filter($checkboxes)) {
                         global $wpdb;
                         $checkboxes_prepare = implode(',', array_fill(0, count($checkboxes), '%d'));
-                        $wpdb->query($wpdb->prepare($query = "DELETE FROM `{$wpdb->cfgp_seo_redirection}` WHERE `{$wpdb->cfgp_seo_redirection}`.`ID` IN ({$checkboxes_prepare})", $checkboxes));
+                        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Direct query is required for bulk deletes on the plugin-owned SEO redirection table.
+                        $wpdb->query(
+                            $wpdb->prepare(
+                                "DELETE FROM `{$wpdb->cfgp_seo_redirection}` WHERE `{$wpdb->cfgp_seo_redirection}`.`ID` IN ({$checkboxes_prepare})",
+                                $checkboxes
+                            )
+                        );
                     }
                 }
                 break;
@@ -161,7 +171,13 @@ if (!class_exists('CFGP_SEO_Table', false)) : class CFGP_SEO_Table extends WP_Li
                         global $wpdb;
                         $checkboxes_prepare = implode(',', array_fill(0, count($checkboxes), '%d'));
                         $enable_disable     = ($action === 'enable' ? 1 : 0);
-                        $wpdb->query($wpdb->prepare($query = "UPDATE `{$wpdb->cfgp_seo_redirection}` SET `active` = {$enable_disable} WHERE `{$wpdb->cfgp_seo_redirection}`.`ID` IN ({$checkboxes_prepare})", $checkboxes));
+                        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Direct query is required for bulk status updates on the plugin-owned SEO redirection table.
+                        $wpdb->query(
+                            $wpdb->prepare(
+                                "UPDATE `{$wpdb->cfgp_seo_redirection}` SET `active` = {$enable_disable} WHERE `{$wpdb->cfgp_seo_redirection}`.`ID` IN ({$checkboxes_prepare})",
+                                $checkboxes
+                            )
+                        );
                     }
                 }
                 break;
@@ -176,7 +192,13 @@ if (!class_exists('CFGP_SEO_Table', false)) : class CFGP_SEO_Table extends WP_Li
                         global $wpdb;
                         $checkboxes_prepare = implode(',', array_fill(0, count($checkboxes), '%d'));
                         $enable_disable     = ($action === 'only_once' ? 1 : 0);
-                        $wpdb->query($wpdb->prepare($query = "UPDATE `{$wpdb->cfgp_seo_redirection}` SET `only_once` = {$enable_disable} WHERE `{$wpdb->cfgp_seo_redirection}`.`ID` IN ({$checkboxes_prepare})", $checkboxes));
+                        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Direct query is required for bulk once-per-session updates on the plugin-owned SEO redirection table.
+                        $wpdb->query(
+                            $wpdb->prepare(
+                                "UPDATE `{$wpdb->cfgp_seo_redirection}` SET `only_once` = {$enable_disable} WHERE `{$wpdb->cfgp_seo_redirection}`.`ID` IN ({$checkboxes_prepare})",
+                                $checkboxes
+                            )
+                        );
                     }
                 }
                 break;
@@ -288,18 +310,20 @@ if (!class_exists('CFGP_SEO_Table', false)) : class CFGP_SEO_Table extends WP_Li
             $perpage = (int)$perpage;
         }
         /* -- Preparing your query -- */
-        $query = "SELECT * FROM `{$wpdb->cfgp_seo_redirection}`";
+        $table        = $wpdb->get_blog_prefix() . 'cfgp_seo_redirection';
+        $where_sql    = '';
+        $order_by_sql = '';
 
         /* -- Search -- */
         if (wp_verify_nonce(($_GET['_wpnonce'] ?? null), CFGP_NAME.'-seo-search') && ($s = CFGP_U::request_string('s', ''))) {
-            $query .= $wpdb->prepare(
+            $where_sql .= $wpdb->prepare(
                 " WHERE (
-						`{$wpdb->cfgp_seo_redirection}`.`url` LIKE %s 
-						OR `{$wpdb->cfgp_seo_redirection}`.`country` LIKE %s 
-						OR `{$wpdb->cfgp_seo_redirection}`.`region` LIKE %s 
-						OR `{$wpdb->cfgp_seo_redirection}`.`city` LIKE %s 
-						OR `{$wpdb->cfgp_seo_redirection}`.`postcode` LIKE %s 
-						OR `{$wpdb->cfgp_seo_redirection}`.`http_code` = %d
+						`{$table}`.`url` LIKE %s
+						OR `{$table}`.`country` LIKE %s
+						OR `{$table}`.`region` LIKE %s
+						OR `{$table}`.`city` LIKE %s
+						OR `{$table}`.`postcode` LIKE %s
+						OR `{$table}`.`http_code` = %d
 					) ",
                 '%'.$wpdb->esc_like($s).'%',
                 '%'.$wpdb->esc_like($s).'%',
@@ -311,17 +335,17 @@ if (!class_exists('CFGP_SEO_Table', false)) : class CFGP_SEO_Table extends WP_Li
 
             if ($filter = CFGP_U::request_string('filter', null)) {
                 if ($filter == 'enabled') {
-                    $query .= " AND `{$wpdb->cfgp_seo_redirection}`.`active` = 1";
+                    $where_sql .= " AND `{$table}`.`active` = 1";
                 } elseif ($filter == 'disabled') {
-                    $query .= " AND `{$wpdb->cfgp_seo_redirection}`.`active` = 0";
+                    $where_sql .= " AND `{$table}`.`active` = 0";
                 }
             }
         } else {
             if ($filter = CFGP_U::request_string('filter', null)) {
                 if ($filter == 'enabled') {
-                    $query .= " WHERE `{$wpdb->cfgp_seo_redirection}`.`active` = 1";
+                    $where_sql .= " WHERE `{$table}`.`active` = 1";
                 } elseif ($filter == 'disabled') {
-                    $query .= " WHERE `{$wpdb->cfgp_seo_redirection}`.`active` = 0";
+                    $where_sql .= " WHERE `{$table}`.`active` = 0";
                 }
             }
         }
@@ -344,13 +368,16 @@ if (!class_exists('CFGP_SEO_Table', false)) : class CFGP_SEO_Table extends WP_Li
                     'only_once',
                 ], true)
             ) {
-                $query .= " ORDER BY `{$wpdb->cfgp_seo_redirection}`.`{$orderby}` {$order}";
+                $order_by_sql = " ORDER BY `{$table}`.`{$orderby}` {$order}";
             }
         }
 
         /* -- Pagination parameters -- */
         //Number of elements in your table?
-        $totalitems = $wpdb->query($query); //return the total number of affected rows
+        // phpcs:ignore PluginCheck.Security.DirectDB.UnescapedDBParameter, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- The table name is plugin-owned, while filters and limits are validated above for this admin pagination count query.
+        $totalitems = (int) $wpdb->get_var(
+            "SELECT COUNT(*) FROM `{$table}`{$where_sql}"
+        );
         //Which page is this?
         $paged = CFGP_U::request_int('paged', 0);
 
@@ -362,9 +389,10 @@ if (!class_exists('CFGP_SEO_Table', false)) : class CFGP_SEO_Table extends WP_Li
         $totalpages = ceil($totalitems / $perpage);
 
         //adjust the query to take pagination into account
+        $limit_sql = '';
         if (!empty($paged) && !empty($perpage)) {
             $offset = (int)(($paged - 1) * $perpage);
-            $query .= " LIMIT {$offset},{$perpage}";
+            $limit_sql = $wpdb->prepare(' LIMIT %d,%d', $offset, $perpage);
         }
         /* -- Register the pagination -- */
         $this->set_pagination_args([
@@ -385,7 +413,10 @@ if (!class_exists('CFGP_SEO_Table', false)) : class CFGP_SEO_Table extends WP_Li
             $sortable,
         ];
 
-        $this->items = $wpdb->get_results($query);
+        // phpcs:ignore PluginCheck.Security.DirectDB.UnescapedDBParameter, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- The table name is plugin-owned, while filters and limits are validated above for this admin list read query.
+        $this->items = $wpdb->get_results(
+            "SELECT * FROM `{$table}`{$where_sql}{$order_by_sql}{$limit_sql}"
+        );
     }
 
     /**
@@ -536,6 +567,7 @@ if (!class_exists('CFGP_SEO_Table', false)) : class CFGP_SEO_Table extends WP_Li
         global $wpdb;
 
         if (null === $cache || $dry) {
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Direct table existence check is required for the plugin-owned SEO redirection table bootstrap.
             if ($wpdb->get_var("SHOW TABLES LIKE '{$wpdb->cfgp_seo_redirection}'") != $wpdb->cfgp_seo_redirection) {
                 if ($dry) {
                     return false;

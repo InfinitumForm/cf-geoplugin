@@ -135,12 +135,14 @@ add_action('cfgp/page/license/sidebar', function () {
 	<div class="inside">
     	<?php if (CFGP_License::activated()) : ?>
 			<p><?php echo wp_kses_post(sprintf(
+				/* translators: 1: license expiration date, 2: link to the Geo Controller account page. */
 				__('Thank you for using an unlimited license. Your license is active until %1$s. We recommend extending your license before that date. After the expiration date, the plugin will be limited.<br><br>To review or deactivate your license, please visit your %2$s.', 'cf-geoplugin'),
 				'<strong>' . (CFGP_License::get('expire') == 0 ? esc_html__('never', 'cf-geoplugin') : CFGP_License::expire_date()) . '</strong>',
 				'<a href="' . esc_url(CFGP_License::get('url')) . '" target="_blank">' . esc_html__('Geo Controller account', 'cf-geoplugin') . '</a>'
 			)); ?></p>
 
 			<p><?php echo wp_kses_post(sprintf(
+				/* translators: 1: link to the privacy policy, 2: link to the terms and conditions. */
 				__('By purchasing and using this license, you have agreed to our %2$s in accordance with the %1$s.', 'cf-geoplugin'),
 				'<strong><a href="https://wpgeocontroller.com/privacy-policy/" target="_blank">' . esc_html__('Privacy Policy', 'cf-geoplugin') . '</a></strong>',
 				'<strong><a href="https://wpgeocontroller.com/terms-and-conditions/" target="_blank">' . esc_html__('Terms & Conditions', 'cf-geoplugin') . '</a></strong>'
@@ -153,6 +155,7 @@ add_action('cfgp/page/license/sidebar', function () {
 
 		<?php else: ?>
 			<p><?php echo wp_kses_post(sprintf(
+				/* translators: 1: daily lookup limit, 2: remaining lookups today, 3: link to documentation about unlimited lookups. */
 				__('You are currently using the free version of the plugin, which has a limited number of lookups. Each free version is limited to %1$s lookups per day, and you have only %2$s lookups left for today. To unlock unlimited lookups, please enter your license key. If you are unsure what this means, read %3$s.', 'cf-geoplugin'),
 				'<strong>' . esc_html(CFGP_LIMIT) . '</strong>',
 				'<strong>' . esc_html(CFGP_U::api('available_lookup')) . '</strong>',
@@ -160,6 +163,7 @@ add_action('cfgp/page/license/sidebar', function () {
 			)); ?></p>
 
 			<p><?php echo wp_kses_post(sprintf(
+				/* translators: 1: link to the privacy policy, 2: link to the terms and conditions. */
 				__('Before taking any action, please read and agree to the %1$s and %2$s.', 'cf-geoplugin'),
 				'<strong><a href="https://wpgeocontroller.com/privacy-policy/" target="_blank">' . __('Privacy Policy', 'cf-geoplugin') . '</a></strong>',
 				'<strong><a href="https://wpgeocontroller.com/terms-and-conditions/" target="_blank">' . __('Terms & Conditions', 'cf-geoplugin') . '</a></strong>'
