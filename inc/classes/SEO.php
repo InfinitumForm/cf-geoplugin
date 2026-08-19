@@ -34,134 +34,141 @@ if (!class_exists('CFGP_SEO', false)) : class CFGP_SEO extends CFGP_Global
      * AJAX: CSV Upload
      */
     public function ajax__csv_upload()
-    {
-        if (current_user_can('manage_options') && wp_verify_nonce(CFGP_U::request_string('nonce'), CFGP_NAME.'-seo-import-csv') !== false) {
-            if ($url = CFGP_U::request_string('attachment_url')) {
-                // Parse CSV
-                if (!class_exists('CFGP_CSV', false)) {
-                    CFGP_U::include_once(CFGP_CLASS . '/CSV.php');
-                }
+	{
+		if (current_user_can('manage_options') && wp_verify_nonce(CFGP_U::request_string('nonce'), CFGP_NAME . '-seo-import-csv') !== false) {
+			if ($url = CFGP_U::request_string('attachment_url')) {
+				// Parse CSV
+				if (!class_exists('CFGP_CSV', false)) {
+					CFGP_U::include_once(CFGP_CLASS . '/CSV.php');
+				}
 
-                if ($csv = CFGP_CSV::import($url, false, ',')) {
-                    // We need time for this
-                    if (function_exists('ignore_user_abort')) {
-                        ignore_user_abort(true);
-                    }
+				if ($csv = CFGP_CSV::import($url, false, ',')) {
+					// We need time for this
+					if (function_exists('ignore_user_abort')) {
+						ignore_user_abort(true);
+					}
 
-                    if (function_exists('set_time_limit')) {
-                        set_time_limit(0);
-                    }
+					if (function_exists('set_time_limit')) {
+						set_time_limit(0);
+					}
 
-                    if (function_exists('ini_set')) {
-                        ini_set('max_execution_time', 0);
-                    }
+					if (function_exists('ini_set')) {
+						ini_set('max_execution_time', 0);
+					}
 
-                    // Active columns in the exact order
-                    $columns     = ['country', 'region', 'city', 'postcode', 'url', 'http_code', 'active', 'only_once'];
-                    $columns_max = count($columns);
+					// Active columns in the exact order
+					$columns     = ['country', 'region', 'city', 'postcode', 'url', 'http_code', 'active', 'only_once'];
+					$columns_max = count($columns);
 
-                    // Remove headers
-                    foreach ($csv as $i => $column) {
-                        foreach ($column as $val) {
-                            if (in_array($val, $columns, true) !== false) {
-                                unset($csv[$i]);
-                                break;
-                            }
-                        }
-                    }
+					// Remove headers
+					foreach ($csv as $i => $column) {
+						foreach ($column as $val) {
+							if (in_array($val, $columns, true) !== false) {
+								unset($csv[$i]);
+								break;
+							}
+						}
+					}
 
-                    // Asign fields
-                    foreach ($csv as $i => $data) {
-                        // We need exact number of columns
-                        if (count($data) !== $columns_max) {
-                            unset($csv[$i]);
-                            continue;
-                        }
+					// Assign fields
+					foreach ($csv as $i => $data) {
+						// We need exact number of columns
+						if (count($data) !== $columns_max) {
+							unset($csv[$i]);
+							continue;
+						}
 
-                        // Now assign data to columns
-                        foreach ($columns as $x => $column) {
-                            if (filter_var($data[$x], FILTER_VALIDATE_URL) !== false || is_numeric($data[$x])) {
-                                $csv[$i][$column] = CFGP_Options::sanitize($data[$x]);
-                            } else {
-                                $csv[$i][$column] = CFGP_Options::sanitize(strtolower(sanitize_title($data[$x])));
-                            }
-                            unset($csv[$i][$x]);
-                        }
-                    }
+						// Now assign data to columns
+						foreach ($columns as $x => $column) {
+							if (filter_var($data[$x], FILTER_VALIDATE_URL) !== false || is_numeric($data[$x])) {
+								$csv[$i][$column] = CFGP_Options::sanitize($data[$x]);
+							} else {
+								$csv[$i][$column] = CFGP_Options::sanitize(strtolower(sanitize_title($data[$x])));
+							}
 
-                    // Let's try clean database and add new data
-                    if (!empty($csv)) {
-                        global $wpdb;
-                        // Define table name
-                        $table = $wpdb->cfgp_seo_redirection;
-                        // We need old data prepared to return if we have some error
-                        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Direct query is required during SEO CSV import rollback handling for the plugin-owned custom table.
-                        $original_data = $wpdb->query("SELECT * FROM `{$table}` WHERE 1;");
-                        // Let's clean table
-                        $wpdb->query("TRUNCATE TABLE {$table};");
-                        // Now we can save new data
-                        $num_saved = 0;
+							unset($csv[$i][$x]);
+						}
+					}
 
-                        foreach ($csv as $save) {
-                            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- Direct query is required to insert plugin-owned SEO redirection rows during CSV import.
-                            if ($wpdb->insert($table, $save, ['%s', '%s', '%s', '%s', '%s', '%d', '%d', '%d'])) {
-                                ++$num_saved;
-                            }
-                        }
+					// Let's try clean database and add new data
+					if (!empty($csv)) {
+						global $wpdb;
 
-                        // Validate
-                        if ($num_saved > 0) {
-                            //	CFGP_DB_Cache::set('cfgp-seo-form-success', __('CSV uploaded successfully.', 'cf-geoplugin'), YEAR_IN_SECONDS);
+						// Define table name
+						$table = $wpdb->cfgp_seo_redirection;
 
-                            wp_send_json([
-                                'return'  => true,
-                                'message' => __('An error occurred while saving data to the database. We have restored your old parameters. There is no change here.', 'cf-geoplugin'),
-                            ]);
-                        } else {
-                            // We need old data back on the error
-                            if (!empty($original_data)) {
-                                foreach ($original_data as $data) {
-                                    // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- Direct query is required to restore plugin-owned SEO redirection rows during CSV import rollback.
-                                    $wpdb->insert($table, $data);
-                                }
-                            }
+						// Store the current data so it can be restored if the import fails.
+						// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Direct query is required during SEO CSV import rollback handling for the plugin-owned custom table.
+						$original_data = $wpdb->get_results(
+							"SELECT * FROM `{$table}` WHERE 1;",
+							ARRAY_A
+						);
 
-                            wp_send_json([
-                                'return'  => false,
-                                'message' => __('An error occurred while saving data to the database. We have restored your old parameters. There is no change here.', 'cf-geoplugin'),
-                            ]);
-                        }
-                    } else {
-                        /* translators: %1$d: expected number of CSV columns. */
-                        $message = __('We did not find any valid CSV data. We did not make any changes. Make sure you have all %1$d columns properly defined.', 'cf-geoplugin');
+						// Let's clean table
+						// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- Direct query is required to reset the plugin-owned SEO redirection table before CSV import.
+						$wpdb->query("TRUNCATE TABLE {$table};");
 
-                        wp_send_json([
-                            'return'  => false,
-                            'message' => sprintf(
-                                $message,
-                                absint($columns_max)
-                            ),
-                        ]);
-                    }
-                } else {
-                    wp_send_json([
-                        'return' => false,
-                    'message'    => __('There was an error unpacking the CSV file. Check the format of your CSV file.', 'cf-geoplugin'),
-                    ]);
-                }
-            } else {
-                wp_send_json([
-                    'return'  => false,
-                    'message' => __('CSV file not defined.', 'cf-geoplugin'),
-                ]);
-            }
-        } else {
-            wp_send_json([
-                'return'  => false,
-                'message' => __('There was an error validating the data. Please refresh the page and try again.', 'cf-geoplugin'),
-            ]);
-        }
-    }
+						// Now we can save new data
+						$num_saved = 0;
+
+						foreach ($csv as $save) {
+							// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- Direct query is required to insert plugin-owned SEO redirection rows during CSV import.
+							if ($wpdb->insert($table, $save, ['%s', '%s', '%s', '%s', '%s', '%d', '%d', '%d'])) {
+								++$num_saved;
+							}
+						}
+
+						// Validate
+						if ($num_saved > 0) {
+							wp_send_json([
+								'return'  => true,
+								'message' => __('An error occurred while saving data to the database. We have restored your old parameters. There is no change here.', 'cf-geoplugin'),
+							]);
+						} else {
+							// We need old data back on the error
+							if (!empty($original_data)) {
+								foreach ($original_data as $data) {
+									// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- Direct query is required to restore plugin-owned SEO redirection rows during CSV import rollback.
+									$wpdb->insert($table, $data);
+								}
+							}
+
+							wp_send_json([
+								'return'  => false,
+								'message' => __('An error occurred while saving data to the database. We have restored your old parameters. There is no change here.', 'cf-geoplugin'),
+							]);
+						}
+					} else {
+						/* translators: %1$d: expected number of CSV columns. */
+						$message = __('We did not find any valid CSV data. We did not make any changes. Make sure you have all %1$d columns properly defined.', 'cf-geoplugin');
+
+						wp_send_json([
+							'return'  => false,
+							'message' => sprintf(
+								$message,
+								absint($columns_max)
+							),
+						]);
+					}
+				} else {
+					wp_send_json([
+						'return'  => false,
+						'message' => __('There was an error unpacking the CSV file. Check the format of your CSV file.', 'cf-geoplugin'),
+					]);
+				}
+			} else {
+				wp_send_json([
+					'return'  => false,
+					'message' => __('CSV file not defined.', 'cf-geoplugin'),
+				]);
+			}
+		} else {
+			wp_send_json([
+				'return'  => false,
+				'message' => __('There was an error validating the data. Please refresh the page and try again.', 'cf-geoplugin'),
+			]);
+		}
+	}
 
     /*
      * Edit/Save form

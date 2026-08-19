@@ -132,17 +132,21 @@ if (!class_exists('CFGP__Plugin__gravityforms__GF_Country', false)):
         }
 
         private function prettyListOutput($value)
-        {
-            $value = maybe_unserialize($value);
+		{
+			if (!is_string($value)) {
+				return esc_attr__('(empty)', 'cf-geoplugin');
+			}
 
-            if (empty($value)) {
-                return esc_attr__('(empty)', 'cf-geoplugin');
-            }
-            $countries = CFGP_Library::get_countries();
-            $value     = $countries[strtolower($value)] ?? esc_attr__('(empty)', 'cf-geoplugin');
+			$value = strtolower(trim($value));
 
-            return $value;
-        }
+			if (!preg_match('/^[a-z]{2}$/', $value)) {
+				return esc_attr__('(empty)', 'cf-geoplugin');
+			}
+
+			$countries = CFGP_Library::get_countries();
+
+			return $countries[$value] ?? esc_attr__('(empty)', 'cf-geoplugin');
+		}
 
         /**
          * Returns the field inner markup.
@@ -175,7 +179,11 @@ if (!class_exists('CFGP__Plugin__gravityforms__GF_Country', false)):
             $invalid_attribute  = $this->failed_validation ? ' aria-invalid="true"' : ' aria-invalid="false"';
 
             $countries = CFGP_Library::get_countries();
-            $value     = maybe_unserialize($value);
+            $value = is_string($value) ? strtoupper(trim($value)) : '';
+
+			if (!preg_match('/^[A-Z]{2}$/', $value)) {
+				$value = '';
+			}
 
             $select = [];
 

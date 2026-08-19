@@ -132,17 +132,19 @@ if (!class_exists('CFGP__Plugin__gravityforms__GF_IP', false)):
         }
 
         private function prettyListOutput($value)
-        {
-            $value = maybe_unserialize($value);
+		{
+			if (!is_string($value)) {
+				return esc_attr__('(empty)', 'cf-geoplugin');
+			}
 
-            if (empty($value)) {
-                return esc_attr__('(empty)', 'cf-geoplugin');
-            }
-            $countries = CFGP_Library::get_countries();
-            $value     = $countries[strtolower($value)] ?? esc_attr__('(empty)', 'cf-geoplugin');
+			$value = trim($value);
 
-            return $value;
-        }
+			if (!filter_var($value, FILTER_VALIDATE_IP)) {
+				return esc_attr__('(empty)', 'cf-geoplugin');
+			}
+
+			return esc_html($value);
+		}
 
         /**
          * Returns the field inner markup.

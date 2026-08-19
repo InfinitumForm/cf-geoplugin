@@ -160,24 +160,74 @@ if (!class_exists('CFGP__Plugin__gravityforms__GF_Country_Region_City', false)):
         {
             return $this->prettyListOutput($value);
         }
+		
+		private function normalizeValue($value)
+		{
+			if (is_string($value) && is_serialized($value)) {
+				$value = @unserialize(
+					trim($value),
+					[
+						'allowed_classes' => false,
+					]
+				);
+			}
+
+			if (!is_array($value)) {
+				return [];
+			}
+
+			return array_map(
+				static function ($item) {
+					if (!is_scalar($item)) {
+						return '';
+					}
+
+					return sanitize_text_field((string) $item);
+				},
+				$value
+			);
+		}
 
         private function prettyListOutput($value)
-        {
-            $value = maybe_unserialize($value);
+		{
+			$value = $this->normalizeValue($value);
 
-            if (empty($value)) {
-                return esc_attr__('(empty)', 'cf-geoplugin');
-            } else {
-                $value = array_map(function ($s) {
-                    return mb_convert_encoding($s, 'UTF-8', mb_detect_encoding($s, 'UTF-8, ISO-8859-1', true));
-                }, $value);
-            }
-            $countries = CFGP_Library::get_countries();
-            $value[0]  = $countries[strtolower($value[0])] ?? null;
-            $value     = array_filter($value);
+			if (empty($value)) {
+				return esc_attr__('(empty)', 'cf-geoplugin');
+			}
 
-            return join(', ', $value);
-        }
+			$value = array_map(
+				static function ($item) {
+					if (!is_scalar($item)) {
+						return '';
+					}
+
+					$item = sanitize_text_field((string) $item);
+
+					return mb_convert_encoding(
+						$item,
+						'UTF-8',
+						mb_detect_encoding($item, 'UTF-8, ISO-8859-1', true)
+					);
+				},
+				$value
+			);
+
+			$countries = CFGP_Library::get_countries();
+
+			if (isset($value[0])) {
+				$country_code = strtolower($value[0]);
+				$value[0]     = $countries[$country_code] ?? '';
+			}
+
+			$value = array_filter($value);
+
+			if (empty($value)) {
+				return esc_attr__('(empty)', 'cf-geoplugin');
+			}
+
+			return esc_html(implode(', ', $value));
+		}
 
         /**
          * Returns the field inner markup.
@@ -214,15 +264,27 @@ if (!class_exists('CFGP__Plugin__gravityforms__GF_Country_Region_City', false)):
             $invalid_attribute  = $this->failed_validation ? ' aria-invalid="true"' : ' aria-invalid="false"';
 
             $countries = CFGP_Library::get_countries();
-            $value     = maybe_unserialize($value);
+            
+			$value = $this->normalizeValue($value);
 
-            if (empty($value)) {
-                $value = [];
-            } else {
-                $value = array_map(function ($s) {
-                    return mb_convert_encoding($s, 'UTF-8', mb_detect_encoding($s, 'UTF-8, ISO-8859-1', true));
-                }, $value);
-            }
+			if (!empty($value)) {
+				$value = array_map(
+					static function ($item) {
+						if (!is_scalar($item)) {
+							return '';
+						}
+
+						$item = sanitize_text_field((string) $item);
+
+						return mb_convert_encoding(
+							$item,
+							'UTF-8',
+							mb_detect_encoding($item, 'UTF-8, ISO-8859-1', true)
+						);
+					},
+					$value
+				);
+			}
 
             $default_country = CFGP_U::api('country_code', strtoupper(array_key_first($countries)));
 

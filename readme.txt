@@ -1,11 +1,11 @@
 ﻿=== Geo Controller ===
 Contributors: ivijanstefan, creativform
-Donate link: https://www.buymeacoffee.com/ivijanstefan
+Donate link: https://ko-fi.com/ivijanstefanstipic
 Tags: Geo Location, WordPress Geolocation Plugin, Location-Based Personalization, User Location Detection, SEO Optimization
 Requires at least: 6.0
-Tested up to: 7.0
+Tested up to: 7.1
 Requires PHP: 7.0
-Stable tag: 8.9.7
+Stable tag: 8.9.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -414,6 +414,14 @@ Please inform us if any of these errors occur via contact form on our website [h
 
 == Changelog ==
 
+= 8.9.9 =
+* Security: Hardened Gravity Forms field value handling and validation.
+* Security: Improved authorization checks and data handling in SEO redirection tools.
+* Fixed SEO CSV import rollback handling to correctly preserve existing redirection data.
+
+= 8.9.8 =
+* Confirmed compatibility with WordPress 7.1
+
 = 8.9.7 =
 * Security: Fixed CVE-2026-12147 and improved security hardening.
 * Compatibility: Improved compatibility with the latest WordPress release and Plugin Check.
@@ -548,16 +556,10 @@ Please inform us if any of these errors occur via contact form on our website [h
 
 == Upgrade Notice ==
 
-= 8.9.7 =
-* Security: Fixed CVE-2026-12147 and improved security hardening.
-* Compatibility: Improved compatibility with the latest WordPress release and Plugin Check.
-* Improvements: Enhanced code quality, internationalization, and WordPress Coding Standards compliance.
-* Maintenance: General stability improvements, optimizations, and minor bug fixes.
-
-= 8.9.6 =
-* IMPORTANT UPDATE: Fix security issues in plugin core
-* Remove exposed API key and improve access control
-* Enforce capability checks and harden AJAX/REST endpoints
+= 8.9.9 =
+* Security: Hardened Gravity Forms field value handling and validation.
+* Security: Improved authorization checks and data handling in SEO redirection tools.
+* Fixed SEO CSV import rollback handling to correctly preserve existing redirection data.
 
 == Other Notes ==
 
