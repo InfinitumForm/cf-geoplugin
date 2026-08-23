@@ -7,14 +7,14 @@
  *
  * Plugin Name:       Geo Controller
  * Plugin URI:        https://wpgeocontroller.com/
- * Description:       Unlock the power of location-based functionality of WordPress – The ultimate all-in-one geolocation plugin for WordPress.
+ * Description:       Unlock the power of location-based functionality of WordPress - the ultimate all-in-one geolocation plugin for WordPress.
  * Version:           8.9.9
  * Requires at least: 6.0
  * Requires PHP:      7.0
  * Author:            INFINITUM FORM
  * Author URI:        https://infinitumform.com/
- * License:           GPL v2 or later
- * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
+ * License:           GPLv2 or later
+ * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       cf-geoplugin
  * Domain Path:       /languages
  * Network:           true
