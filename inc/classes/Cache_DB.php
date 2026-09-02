@@ -183,7 +183,7 @@ if (!class_exists('CFGP_DB_Cache', false)) : class CFGP_DB_Cache
 
         // If value is empty, delete the cache and return NULL
         if (empty($value)) {
-            sef::delete($key);
+            self::delete($key);
 
             return null;
         }

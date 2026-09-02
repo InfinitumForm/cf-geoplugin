@@ -18,6 +18,14 @@ add_action('cfgp/settings/tab-panel/after', function () {
         $api_key      = get_option(CFGP_NAME . '-ID');
         $secret_key   = CFGP_REST::get('secret_key');
         $tokens_table = $wpdb->get_blog_prefix() . 'cfgp_rest_access_token';
+        $api_mode      = CFGP_REST::public_api_mode();
+        $is_rest_mode  = ($api_mode === 'rest');
+        $authentication_endpoint = $is_rest_mode
+            ? get_rest_url(null, CFGP_REST::NAMESPACE_V1 . '/authenticate')
+            : admin_url('admin-ajax.php?action=cf_geoplugin_authenticate');
+        $lookup_endpoint = $is_rest_mode
+            ? get_rest_url(null, CFGP_REST::NAMESPACE_V1 . '/lookup')
+            : admin_url('admin-ajax.php?action=cf_geoplugin_lookup');
         ?>
 <div class="cfgp-tab-panel" id="rest-api">
 	<section class="cfgp-tab-panel-section" id="rest-api-intro">
@@ -26,6 +34,7 @@ add_action('cfgp/settings/tab-panel/after', function () {
         <p class="text-danger"><?php esc_html_e('NOTE: The REST API is only functional for the Business License', 'cf-geoplugin') ?></p>
         <?php endif; ?>
         <p><?php esc_html_e('The Geo Controller REST API allows external apps to use geo information and make your WordPress like a geo information provider.', 'cf-geoplugin') ?></p>
+        <p><strong><?php echo esc_html($is_rest_mode ? __('WordPress REST API is currently enabled.', 'cf-geoplugin') : __('Legacy AJAX API is currently enabled.', 'cf-geoplugin')); ?></strong></p>
         <h2 class="title"><?php esc_html_e('API KEY', 'cf-geoplugin') ?>:</h2>
         <div><code style="font-size: large;width: 100%;text-align: center;font-weight: 800;padding: 10px; margin-left:13px;"><?php echo esc_html($api_key); ?></code></div>
         <h2 class="title"><?php esc_html_e('Secret API KEY', 'cf-geoplugin') ?>:</h2>
@@ -56,7 +65,7 @@ add_action('cfgp/settings/tab-panel/after', function () {
         <div class="cfgp-tab-panel cfgp-tab-panel-active" id="authentication">
         	<h2 class="title"><?php esc_html_e('Authentication endpoint', 'cf-geoplugin') ?>:</h2>
             <p><?php esc_html_e('Endpoint used to authenticate connection between Geo Controller on your site and your external app.', 'cf-geoplugin') ?></p>
-            <p><code><?php echo esc_url(admin_url('admin-ajax.php?action=cf_geoplugin_authenticate')); ?></code></p>
+            <p><code><?php echo esc_url($authentication_endpoint); ?></code></p>
             <p><?php esc_html_e('Expected GET or POST parameters.', 'cf-geoplugin') ?></p>
             <table class="wp-list-table widefat fixed striped table-view-list posts">
                 <tr>
@@ -65,6 +74,7 @@ add_action('cfgp/settings/tab-panel/after', function () {
                     <th style="width:13%"><?php esc_html_e('Obligation', 'cf-geoplugin') ?></th>
                     <th><?php esc_html_e('Description', 'cf-geoplugin') ?></th>
                 </tr>
+                <?php if (!$is_rest_mode) : ?>
                 <tr>
                     <td><kbd>action</kbd></td>
                     <td>string</td>
@@ -86,6 +96,7 @@ add_action('cfgp/settings/tab-panel/after', function () {
                         ?>
                     </td>
                 </tr>
+                <?php endif; ?>
                 <tr>
                     <td><kbd>api_key</kbd></td>
                     <td>string</td>
@@ -153,7 +164,7 @@ add_action('cfgp/settings/tab-panel/after', function () {
         <div class="cfgp-tab-panel" id="lookup">
         	<h2 class="title"><?php esc_html_e('Lookup endpoint', 'cf-geoplugin') ?>:</h2>
             <p><?php esc_html_e('Endpoint used to look up IP address information. To make this work properly, you must have a valid KEY and Access Token API.', 'cf-geoplugin') ?></p>
-            <p><code><?php echo esc_url(admin_url('admin-ajax.php?action=cf_geoplugin_lookup')); ?></code></p>
+            <p><code><?php echo esc_url($lookup_endpoint); ?></code></p>
             <p><?php esc_html_e('Expected GET or POST parameters.', 'cf-geoplugin') ?></p>
             <table class="wp-list-table widefat fixed striped table-view-list posts">
                 <tr>
@@ -162,6 +173,7 @@ add_action('cfgp/settings/tab-panel/after', function () {
                     <th style="width:13%"><?php esc_html_e('Obligation', 'cf-geoplugin') ?></th>
                     <th><?php esc_html_e('Description', 'cf-geoplugin') ?></th>
                 </tr>
+                <?php if (!$is_rest_mode) : ?>
                 <tr>
                     <td><kbd>action</kbd></td>
                     <td>string</td>
@@ -183,6 +195,7 @@ add_action('cfgp/settings/tab-panel/after', function () {
                         ?>
                     </td>
                 </tr>
+                <?php endif; ?>
                 <tr>
                     <td><kbd>api_key</kbd></td>
                     <td>string</td>

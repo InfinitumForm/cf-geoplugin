@@ -8,12 +8,22 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-if (CFGP_U::request_bool('preview')) {
+if (
+    CFGP_U::request_bool('preview')
+    && current_user_can('manage_options')
+    && wp_verify_nonce(CFGP_U::request_string('nonce'), CFGP_NAME.'-defender-preview') !== false
+) {
     die(wp_kses_post(wpautop(html_entity_decode(stripslashes(CFGP_Options::get('block_country_messages', '') ?? '')))));
     exit;
 }
 
-if (CFGP_U::request_bool('save_defender') && wp_verify_nonce(sanitize_text_field($_REQUEST['nonce'] ?? ''), CFGP_NAME.'-save-defender') !== false && isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'POST') {
+if (
+    CFGP_U::request_bool('save_defender')
+    && isset($_SERVER['REQUEST_METHOD'])
+    && $_SERVER['REQUEST_METHOD'] === 'POST'
+    && current_user_can('manage_options')
+    && wp_verify_nonce(sanitize_text_field($_REQUEST['nonce'] ?? ''), CFGP_NAME.'-save-defender') !== false
+) {
     if (!isset($_POST['block_country'])) {
         CFGP_Options::set('block_country', '');
     }
@@ -94,7 +104,7 @@ if (!empty($block_city) && !is_array($block_city) && preg_match('/\]|\[/', $bloc
                         	<nav class="nav-tab-wrapper">
                             	<a href="javascript:void(0);" class="nav-tab nav-tab-active" data-id="#defender-settings"><i class="cfa cfa-wrench"></i><span class="label"> <?php esc_html_e('General Defender Settings', 'cf-geoplugin'); ?></span></a>
                                 <a href="javascript:void(0);" class="nav-tab" data-id="#defender-settings-page"><i class="cfa cfa-file"></i><span class="label"> <?php esc_html_e('Defender page', 'cf-geoplugin'); ?></span></a>
-                                <a href="<?php echo esc_url(CFGP_U::admin_url('admin.php?page=cf-geoplugin-defender&preview=true')); ?>" class="nav-tab" target="_blank"><i class="cfa cfa-desktop"></i><span class="label"> <?php esc_html_e('Preview', 'cf-geoplugin'); ?></span></a>
+                                <a href="<?php echo esc_url(CFGP_U::admin_url('admin.php?page=cf-geoplugin-defender&preview=true&nonce=' . wp_create_nonce(CFGP_NAME.'-defender-preview'))); ?>" class="nav-tab" target="_blank"><i class="cfa cfa-desktop"></i><span class="label"> <?php esc_html_e('Preview', 'cf-geoplugin'); ?></span></a>
                             </nav>
                             
                             <div class="cfgp-tab-panel cfgp-tab-panel-active" id="defender-settings">

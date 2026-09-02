@@ -293,6 +293,18 @@ add_filter('cfgp/settings', function ($options = []) {
 								'class' => 'enable-disable-rest',
 							],
 						],
+						[
+							'name'    => 'rest_api_mode',
+							'label'   => __('Public API Transport', 'cf-geoplugin'),
+							'desc'    => __('Choose the legacy admin-ajax API for existing integrations or the WordPress REST API for /wp-json endpoints.', 'cf-geoplugin'),
+							'type'    => 'radio',
+							'options' => [
+								'ajax' => __('Legacy AJAX API', 'cf-geoplugin'),
+								'rest' => __('WordPress REST API', 'cf-geoplugin'),
+							],
+							'default' => 'ajax',
+							'display' => CFGP_Options::get('enable_rest', 0),
+						],
 					],
 				],
 

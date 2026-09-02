@@ -416,8 +416,16 @@ Please inform us if any of these errors occur via contact form on our website [h
 == Changelog ==
 
 = 9.0.0 =
-* Improved PHP 8.x compatibility by safely handling optional shortcode, option, and filter values.
-* Updated the Google Maps shortcode loader and retained compatibility with legacy map API key storage.
+* Compatibility: maintained PHP 7.0 to PHP 8.4-compatible syntax across the stabilized code paths.
+* Stabilized shortcode and Geo Banner cache reads and cleanup through the shared cache backend, aligned with WordPress transient, plugin database cache, and Redis modes.
+* Fixed the cache cleanup method call and prevented Geo Banner cache records when caching is disabled.
+* Stabilized simple shortcodes, GPS, Geo Banner, and Google Map shortcode attributes while preserving legacy shortcode support.
+* Added an optional WordPress REST API transport for public authentication and lookup endpoints; the legacy AJAX API remains the default.
+* Added the public API transport choice and mode-specific endpoint documentation in plugin settings.
+* Preserved existing public API response bodies and access-token behavior through shared API handling.
+* Security: protected Defender saves, previews, and administrative bypass-cookie creation with capability, nonce, and request-method checks; Defender cookie deletion now expires correctly.
+* Security: protected global SEO mutations and page-level SEO redirection metadata with explicit capabilities, nonces, and request-method checks.
+* Fixed global postcode matching, the country-and-city redirect execution path, page-level exclude matching, safe empty CSV export, and CSV import rollback handling.
 
 = 8.9.9 =
 * Security: Hardened Gravity Forms field value handling and validation.
@@ -562,8 +570,9 @@ Please inform us if any of these errors occur via contact form on our website [h
 == Upgrade Notice ==
 
 = 9.0.0 =
-* Improved PHP 8.x compatibility by safely handling optional shortcode, option, and filter values.
-* Updated the Google Maps shortcode loader and retained compatibility with legacy map API key storage.
+* Stabilized cache, shortcode, and Geo Banner behavior across the supported cache modes.
+* Legacy AJAX remains the default public API; WordPress REST API transport is optional.
+* Added Defender and SEO authorization hardening plus targeted redirect and CSV stability fixes.
 
 = 8.9.9 =
 * Security: Hardened Gravity Forms field value handling and validation.

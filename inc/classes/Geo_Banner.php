@@ -75,7 +75,7 @@ if (!class_exists('CFGP_Geo_Banner', false)) : class CFGP_Geo_Banner extends CFG
 
         // Get transient ID
         $transient_id = CFGP_U::request_string('nonce');
-        $data         = get_transient('cfgp-' . $transient_id);
+        $data         = CFGP_DB_Cache::get('cfgp-' . $transient_id);
 
         // Check if transient exists
         if (!$data) {
@@ -90,7 +90,7 @@ if (!class_exists('CFGP_Geo_Banner', false)) : class CFGP_Geo_Banner extends CFG
 
         // Check secret key
         if (sanitize_text_field($data['key']) !== CFGP_U::CACHE_KEY()) {
-            delete_transient('cfgp-' . $transient_id);
+            CFGP_DB_Cache::delete('cfgp-' . $transient_id);
             header_remove('Cache-Control');
             wp_send_json_error([
                 'error'         => true,
@@ -102,7 +102,7 @@ if (!class_exists('CFGP_Geo_Banner', false)) : class CFGP_Geo_Banner extends CFG
 
         // Check hash
         if (sanitize_text_field($data['hash']) !== $transient_id) {
-            delete_transient('cfgp-' . $transient_id);
+            CFGP_DB_Cache::delete('cfgp-' . $transient_id);
             header_remove('Cache-Control');
             wp_send_json_error([
                 'error'         => true,

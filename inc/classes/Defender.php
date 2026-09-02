@@ -109,6 +109,9 @@ if (!class_exists('CFGP_Defender', false)) : class CFGP_Defender extends CFGP_Gl
         // Set cookie
         if (
             is_admin()
+            && isset($_SERVER['REQUEST_METHOD'])
+            && $_SERVER['REQUEST_METHOD'] === 'POST'
+            && current_user_can('manage_options')
             && CFGP_U::request_bool('save_defender')
             && wp_verify_nonce(sanitize_text_field($_REQUEST['nonce'] ?? ''), CFGP_NAME.'-save-defender') !== false
             && isset($_POST['block_proxy'])

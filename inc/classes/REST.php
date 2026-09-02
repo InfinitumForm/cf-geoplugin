@@ -37,13 +37,28 @@ if (!class_exists('CFGP_REST', false)) : class CFGP_REST extends CFGP_Global
      */
     protected $default_api_mode = 'ajax';
 
+    /**
+     * Return the supported public API transport mode.
+     *
+     * Existing installations and unsupported saved values must continue to use
+     * the legacy AJAX API.
+     *
+     * @return string
+     */
+    public static function public_api_mode()
+    {
+        $mode = CFGP_Options::get('rest_api_mode', 'ajax');
+
+        return in_array($mode, ['ajax', 'rest'], true) ? $mode : 'ajax';
+    }
+
     /*
      * Main construct
      */
     private function __construct()
     {
 
-        if (CFGP_Options::get('rest_api_mode', $this->default_api_mode) === 'ajax') {
+        if (self::public_api_mode() === 'ajax') {
             if (CFGP_License::level() > 4) {
                 /*
                  * AJAX: Request access token
@@ -65,8 +80,8 @@ if (!class_exists('CFGP_REST', false)) : class CFGP_REST extends CFGP_Global
                 $this->add_action('wp_ajax_cf_geoplugin_lookup', 'ajax__license_error');
                 $this->add_action('wp_ajax_nopriv_cf_geoplugin_lookup', 'ajax__license_error');
             }
-        } elseif (CFGP_Options::get('rest_api_mode', $this->default_api_mode) === 'rest') {
-
+        } elseif (CFGP_License::level() > 4) {
+            $this->add_action('rest_api_init', 'register_public_api_routes');
         }
 
         /*
@@ -101,7 +116,9 @@ if (!class_exists('CFGP_REST', false)) : class CFGP_REST extends CFGP_Global
      */
     public function rest__authenticate(WP_REST_Request $request)
     {
+        $result = $this->authenticate($this->rest_request_parameters($request, ['api_key', 'secret_key', 'app_name'], true));
 
+        return new WP_REST_Response($result['data'], $result['status']);
     }
 
     /*
@@ -123,7 +140,106 @@ if (!class_exists('CFGP_REST', false)) : class CFGP_REST extends CFGP_Global
      */
     public function rest__lookup(WP_REST_Request $request)
     {
+        $result = $this->lookup($this->rest_request_parameters($request, ['api_key', 'access_token', 'ip', 'base_currency']));
 
+        return new WP_REST_Response($result['data'], $result['status']);
+    }
+
+    /**
+     * Register the public, license-gated REST API routes.
+     *
+     * Authentication is performed by the callbacks with the submitted plugin
+     * API key, secret key, or access token.
+     */
+    public function register_public_api_routes()
+    {
+        if (CFGP_License::level() <= 4) {
+            return;
+        }
+
+        $public_permission = function () {
+            return true;
+        };
+
+        register_rest_route(self::NAMESPACE_V1, '/authenticate', [
+            'methods'             => ['GET', 'POST'],
+            'permission_callback' => $public_permission,
+            'callback'            => [$this, 'rest__authenticate'],
+            'args'                => $this->public_api_route_args(['api_key', 'secret_key', 'app_name']),
+        ]);
+
+        register_rest_route(self::NAMESPACE_V1, '/lookup', [
+            'methods'             => ['GET', 'POST'],
+            'permission_callback' => $public_permission,
+            'callback'            => [$this, 'rest__lookup'],
+            'args'                => $this->public_api_route_args(['api_key', 'access_token', 'ip', 'base_currency']),
+        ]);
+    }
+
+    /**
+     * REST route argument schema for public API parameters.
+     *
+     * @param array $parameters Parameter names.
+     * @return array
+     */
+    public function public_api_route_args($parameters)
+    {
+        $args = [];
+
+        foreach ($parameters as $parameter) {
+            $args[$parameter] = [
+                // The shared handlers retain the legacy missing-parameter
+                // response bodies and HTTP statuses.
+                'required'          => false,
+                'sanitize_callback' => [$this, 'sanitize_public_api_parameter'],
+                'validate_callback' => [$this, 'validate_public_api_parameter'],
+            ];
+        }
+
+        return $args;
+    }
+
+    /**
+     * Sanitize a scalar public API argument.
+     *
+     * @param mixed $value Parameter value.
+     * @return string
+     */
+    public function sanitize_public_api_parameter($value)
+    {
+        return is_scalar($value) ? sanitize_text_field((string) $value) : '';
+    }
+
+    /**
+     * Reject structured public API argument values.
+     *
+     * @param mixed $value Parameter value.
+     * @return bool
+     */
+    public function validate_public_api_parameter($value)
+    {
+        return is_scalar($value);
+    }
+
+    /**
+     * Read REST request parameters with the same scalar normalization as AJAX.
+     *
+     * @param WP_REST_Request $request Request object.
+     * @param array           $allowed Allowed parameter names.
+     * @param bool            $only_present Keep only submitted parameters.
+     * @return array
+     */
+    private function rest_request_parameters(WP_REST_Request $request, $allowed, $only_present = false)
+    {
+        $parameters = [];
+
+        foreach ($allowed as $field) {
+            if (!$only_present || $request->has_param($field)) {
+                $parameters[$field] = $this->sanitize_public_api_parameter($request->get_param($field));
+            }
+        }
+
+        return $parameters;
     }
 
     ################################## END REST VERSION ##################################
@@ -149,18 +265,8 @@ if (!class_exists('CFGP_REST', false)) : class CFGP_REST extends CFGP_Global
      * @return    string  access_token      -Return only when authentication is successful
      * @return    string  message           -Return only when authentication is successful
      */
-    public function ajax__authenticate()
+    private function authenticate($GET)
     {
-        $allowed = ['api_key','secret_key','app_name'];
-        $GET     = [];
-
-        foreach ($allowed as $field) {
-            if (isset($_REQUEST[$field])) {
-                $GET[$field] = CFGP_U::request_string($field);
-            }
-        }
-        $allowed = null;
-
         if (count($GET) === 3) {
             $api_key    = get_option(CFGP_NAME . '-ID');
             $secret_key = CFGP_REST::get('secret_key');
@@ -215,27 +321,58 @@ if (!class_exists('CFGP_REST', false)) : class CFGP_REST extends CFGP_Global
                         );
                     }
 
-                    wp_send_json(array_merge(self::$return, [
-                        'error'         => false,
-                        'error_message' => null,
-                        'access_token'  => $access_token,
-                        'code'          => 200,
-                    ]), 200);
+                    return [
+                        'data' => array_merge(self::$return, [
+                            'error'         => false,
+                            'error_message' => null,
+                            'access_token'  => $access_token,
+                            'code'          => 200,
+                        ]),
+                        'status' => 200,
+                    ];
                 } else {
-                    wp_send_json(array_merge(self::$return, [
-                        'error_message' => __('Secret key is invalid.', 'cf-geoplugin'),
-                    ]), 400);
+                    return [
+                        'data' => array_merge(self::$return, [
+                            'error_message' => __('Secret key is invalid.', 'cf-geoplugin'),
+                        ]),
+                        'status' => 400,
+                    ];
                 }
             } else {
-                wp_send_json(array_merge(self::$return, [
-                    'error_message' => __('API key is invalid.', 'cf-geoplugin'),
-                ]), 400);
+                return [
+                    'data' => array_merge(self::$return, [
+                        'error_message' => __('API key is invalid.', 'cf-geoplugin'),
+                    ]),
+                    'status' => 400,
+                ];
             }
         } else {
-            wp_send_json(array_merge(self::$return, [
-                'error_message' => __('Required fields are not defined.', 'cf-geoplugin'),
-            ]), 400);
+            return [
+                'data' => array_merge(self::$return, [
+                    'error_message' => __('Required fields are not defined.', 'cf-geoplugin'),
+                ]),
+                'status' => 400,
+            ];
         }
+    }
+
+    /**
+     * Legacy AJAX wrapper for public API authentication.
+     */
+    public function ajax__authenticate()
+    {
+        $allowed = ['api_key', 'secret_key', 'app_name'];
+        $parameters = [];
+
+        foreach ($allowed as $field) {
+            if (isset($_REQUEST[$field])) {
+                $parameters[$field] = CFGP_U::request_string($field);
+            }
+        }
+
+        $result = $this->authenticate($parameters);
+
+        wp_send_json($result['data'], $result['status']);
     }
 
     /*
@@ -255,17 +392,8 @@ if (!class_exists('CFGP_REST', false)) : class CFGP_REST extends CFGP_Global
      * @return    int     code              -Allways exists
      * @return    Geo informations
      */
-    public function ajax__lookup()
+    private function lookup($GET)
     {
-        $allowed = ['api_key','access_token','ip','base_currency'];
-
-        $GET = [];
-
-        foreach ($allowed as $field) {
-            $GET[$field] = CFGP_U::request_string($field);
-        }
-        $allowed = null;
-
         $api_key    = get_option(CFGP_NAME . '-ID');
         $secret_key = CFGP_REST::get('secret_key');
 
@@ -299,21 +427,47 @@ if (!class_exists('CFGP_REST', false)) : class CFGP_REST extends CFGP_Global
                     ]
                 );
 
-                wp_send_json(array_merge($api, self::$return, [
-                    'error'         => false,
-                    'error_message' => null,
-                    'code'          => 200,
-                ]), 200);
+                return [
+                    'data' => array_merge($api, self::$return, [
+                        'error'         => false,
+                        'error_message' => null,
+                        'code'          => 200,
+                    ]),
+                    'status' => 200,
+                ];
             } else {
-                wp_send_json(array_merge(self::$return, [
-                    'error_message' => __('Access token is invalid.', 'cf-geoplugin'),
-                ]), 400);
+                return [
+                    'data' => array_merge(self::$return, [
+                        'error_message' => __('Access token is invalid.', 'cf-geoplugin'),
+                    ]),
+                    'status' => 400,
+                ];
             }
         } else {
-            wp_send_json(array_merge(self::$return, [
-                'error_message' => __('API key is invalid.', 'cf-geoplugin'),
-            ]), 400);
+            return [
+                'data' => array_merge(self::$return, [
+                    'error_message' => __('API key is invalid.', 'cf-geoplugin'),
+                ]),
+                'status' => 400,
+            ];
         }
+    }
+
+    /**
+     * Legacy AJAX wrapper for public IP lookups.
+     */
+    public function ajax__lookup()
+    {
+        $allowed = ['api_key', 'access_token', 'ip', 'base_currency'];
+        $parameters = [];
+
+        foreach ($allowed as $field) {
+            $parameters[$field] = CFGP_U::request_string($field);
+        }
+
+        $result = $this->lookup($parameters);
+
+        wp_send_json($result['data'], $result['status']);
     }
 
     /*
@@ -499,7 +653,7 @@ if (!class_exists('CFGP_REST', false)) : class CFGP_REST extends CFGP_Global
                     }
 
                     // Check if the transient exists
-                    if ($data = get_transient('cfgp-' . $transient_id)) {
+                    if ($data = CFGP_DB_Cache::get('cfgp-' . $transient_id)) {
                         $content   = wp_kses_post($data['content']);
                         $default   = wp_kses_post($data['default']);
                         $shortcode = sanitize_text_field($data['shortcode']);
@@ -510,7 +664,7 @@ if (!class_exists('CFGP_REST', false)) : class CFGP_REST extends CFGP_Global
 
                         // Secret Key do not match
                         if (CFGP_U::CACHE_KEY() !== $key) {
-                            delete_transient('cfgp-' . $transient_id);
+                            CFGP_DB_Cache::delete('cfgp-' . $transient_id);
                             header_remove('Cache-Control');
 
                             return new WP_REST_Response([
@@ -523,7 +677,7 @@ if (!class_exists('CFGP_REST', false)) : class CFGP_REST extends CFGP_Global
 
                         // If shortcode and transient do not match
                         if ($hash !== $transient_id || $shortcode !== $type) {
-                            delete_transient('cfgp-' . $transient_id);
+                            CFGP_DB_Cache::delete('cfgp-' . $transient_id);
                             header_remove('Cache-Control');
 
                             return new WP_REST_Response([
@@ -639,7 +793,7 @@ if (!class_exists('CFGP_REST', false)) : class CFGP_REST extends CFGP_Global
 
                     // Stop if transient not exists
                     $transient_id = CFGP_U::request_string('nonce');
-                    $data         = get_transient('cfgp-' . $transient_id);
+                    $data         = CFGP_DB_Cache::get('cfgp-' . $transient_id);
 
                     if (!$data) {
                         header_remove('Cache-Control');
@@ -654,7 +808,7 @@ if (!class_exists('CFGP_REST', false)) : class CFGP_REST extends CFGP_Global
 
                     // Stop if hidden key not exists
                     if (sanitize_text_field($data['key']) !== CFGP_U::CACHE_KEY()) {
-                        delete_transient('cfgp-' . $transient_id);
+                        CFGP_DB_Cache::delete('cfgp-' . $transient_id);
                         header_remove('Cache-Control');
 
                         return new WP_REST_Response([
@@ -667,7 +821,7 @@ if (!class_exists('CFGP_REST', false)) : class CFGP_REST extends CFGP_Global
 
                     // Let's keep proper transient
                     if (sanitize_text_field($data['hash']) !== $transient_id) {
-                        delete_transient('cfgp-' . $transient_id);
+                        CFGP_DB_Cache::delete('cfgp-' . $transient_id);
                         header_remove('Cache-Control');
 
                         return new WP_REST_Response([

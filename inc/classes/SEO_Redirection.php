@@ -135,7 +135,7 @@ if (!class_exists('CFGP_SEO_Redirection', false)) : class CFGP_SEO_Redirection e
                 $region_code = CFGP_U::api('region_code');
 
                 $city     = CFGP_U::api('city');
-                $postcode = CFGP_U::api('region_code');
+                $postcode = CFGP_U::api('postcode');
 
                 $seo_table = $wpdb->get_blog_prefix() . 'cfgp_seo_redirection';
                 $where = $where_relative = [];
@@ -351,7 +351,7 @@ if (!class_exists('CFGP_SEO_Redirection', false)) : class CFGP_SEO_Redirection e
                     CFGP_U::check_user_by_city($redirect['city'])
                     && CFGP_U::check_user_by_country($redirect['country'])
                 ) {
-                    return true;
+                    $do_redirection = true;
                 }
                 break;
             case 'country_city_postcode':

@@ -125,17 +125,19 @@ if (!class_exists('CFGP_SEO_Table', false)) : class CFGP_SEO_Table extends WP_Li
 
     public function process_bulk_action()
     {
+        if (
+            !isset($_SERVER['REQUEST_METHOD'])
+            || $_SERVER['REQUEST_METHOD'] !== 'POST'
+            || !current_user_can('manage_options')
+        ) {
+            return;
+        }
 
-        // security check!
-        if (isset($_POST['_wpnonce']) && !empty($_POST['_wpnonce'])) {
+        $nonce  = sanitize_text_field($_POST['_wpnonce'] ?? '');
+        $action = 'bulk-' . $this->_args['plural'];
 
-            $nonce  = sanitize_text_field($_POST['_wpnonce']);
-            $action = 'bulk-' . $this->_args['plural'];
-
-            if (!wp_verify_nonce($nonce, $action)) {
-                wp_die(esc_html__('Nope! Security check failed!', 'cf-geoplugin'));
-            }
-
+        if (!wp_verify_nonce($nonce, $action)) {
+            wp_die(esc_html__('Nope! Security check failed!', 'cf-geoplugin'));
         }
 
         $action = $this->current_action();
@@ -490,11 +492,11 @@ if (!class_exists('CFGP_SEO_Table', false)) : class CFGP_SEO_Table extends WP_Li
 										<span class="edit"><a href="' . esc_url($edit_link).'">'
                                     . esc_html__('Edit', 'cf-geoplugin')
                                 . '</a> | </span>
-										<span class="trash"><a href="' . esc_url($delete_link) . '" class="submitdelete"  onclick="if (confirm(\''
+										<span class="trash"><button type="submit" class="submitdelete" name="action" value="delete" formaction="' . esc_url($delete_link) . '" onclick="if (confirm(\''
                                     . esc_attr__('Are you sure you want to delete this redirection?', 'cf-geoplugin')
-                                . '\')){return true;}else{event.stopPropagation(); event.preventDefault();};">'
+                                . '\')){return true;}event.stopPropagation(); event.preventDefault(); return false;">'
                                     . esc_html__('Delete', 'cf-geoplugin')
-                                . '</a></span>
+                                . '</button></span>
 									</div>';
                             echo '</td>';
                             break;

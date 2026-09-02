@@ -35,7 +35,12 @@ if (!class_exists('CFGP_SEO', false)) : class CFGP_SEO extends CFGP_Global
      */
     public function ajax__csv_upload()
 	{
-		if (current_user_can('manage_options') && wp_verify_nonce(CFGP_U::request_string('nonce'), CFGP_NAME . '-seo-import-csv') !== false) {
+		if (
+			isset($_SERVER['REQUEST_METHOD'])
+			&& $_SERVER['REQUEST_METHOD'] === 'POST'
+			&& current_user_can('manage_options')
+			&& wp_verify_nonce(CFGP_U::request_string('nonce'), CFGP_NAME . '-seo-import-csv') !== false
+		) {
 			if ($url = CFGP_U::request_string('attachment_url')) {
 				// Parse CSV
 				if (!class_exists('CFGP_CSV', false)) {
@@ -70,12 +75,14 @@ if (!class_exists('CFGP_SEO', false)) : class CFGP_SEO extends CFGP_Global
 						}
 					}
 
+					$invalid_data = false;
+
 					// Assign fields
 					foreach ($csv as $i => $data) {
 						// We need exact number of columns
 						if (count($data) !== $columns_max) {
-							unset($csv[$i]);
-							continue;
+							$invalid_data = true;
+							break;
 						}
 
 						// Now assign data to columns
@@ -88,6 +95,26 @@ if (!class_exists('CFGP_SEO', false)) : class CFGP_SEO extends CFGP_Global
 
 							unset($csv[$i][$x]);
 						}
+
+						$url_parts = wp_parse_url($csv[$i]['url']);
+						if (
+							filter_var($csv[$i]['url'], FILTER_VALIDATE_URL) === false
+							|| empty($url_parts['scheme'])
+							|| !in_array(strtolower($url_parts['scheme']), ['http', 'https'], true)
+							|| !in_array(absint($csv[$i]['http_code']), [301, 302, 303, 307, 308, 404], true)
+							|| !in_array((string) $csv[$i]['active'], ['0', '1'], true)
+							|| !in_array((string) $csv[$i]['only_once'], ['0', '1'], true)
+						) {
+							$invalid_data = true;
+							break;
+						}
+					}
+
+					if ($invalid_data) {
+						wp_send_json([
+							'return'  => false,
+							'message' => __('The CSV contains an invalid URL, HTTP status, or option value. No changes were made.', 'cf-geoplugin'),
+						]);
 					}
 
 					// Let's try clean database and add new data
@@ -119,13 +146,15 @@ if (!class_exists('CFGP_SEO', false)) : class CFGP_SEO extends CFGP_Global
 						}
 
 						// Validate
-						if ($num_saved > 0) {
+						if ($num_saved === count($csv)) {
 							wp_send_json([
 								'return'  => true,
-								'message' => __('An error occurred while saving data to the database. We have restored your old parameters. There is no change here.', 'cf-geoplugin'),
+								'message' => __('CSV data imported successfully.', 'cf-geoplugin'),
 							]);
 						} else {
 							// We need old data back on the error
+							// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- Remove partial imported rows before restoring the previous plugin-owned data set.
+							$wpdb->query("TRUNCATE TABLE {$table};");
 							if (!empty($original_data)) {
 								foreach ($original_data as $data) {
 									// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- Direct query is required to restore plugin-owned SEO redirection rows during CSV import rollback.
@@ -193,7 +222,7 @@ if (!class_exists('CFGP_SEO', false)) : class CFGP_SEO extends CFGP_Global
 
                     $save = CFGP_SEO::save($redirection_url, $select_country, $select_region, $select_city, $select_postcode, $http_code, $only_once, $redirect_enable);
 
-                    if (is_wp_error($save)) {
+                    if (!$save || is_wp_error($save)) {
                         CFGP_DB_Cache::set('cfgp-seo-form-error', __('This redirection was not saved due to a database error. Please try again.', 'cf-geoplugin'), YEAR_IN_SECONDS);
                     } else {
                         CFGP_DB_Cache::set('cfgp-seo-form-success', __('Settings saved.', 'cf-geoplugin'), YEAR_IN_SECONDS);
@@ -215,7 +244,7 @@ if (!class_exists('CFGP_SEO', false)) : class CFGP_SEO extends CFGP_Global
                         }
                     }
                 }
-            } elseif (CFGP_U::request_string('action') == 'edit' && wp_verify_nonce(CFGP_U::request_string('nonce'), CFGP_NAME.'-seo-edit') !== false) {
+            } elseif (CFGP_U::request_string('action') == 'edit' && current_user_can('manage_options') && wp_verify_nonce(CFGP_U::request_string('nonce'), CFGP_NAME.'-seo-edit') !== false) {
                 $redirection_url = CFGP_U::request_string('url');
 
                 if (empty($redirection_url)) {
@@ -232,7 +261,7 @@ if (!class_exists('CFGP_SEO', false)) : class CFGP_SEO extends CFGP_Global
 
                     $save = CFGP_SEO::update($ID, $redirection_url, $select_country, $select_region, $select_city, $select_postcode, $http_code, $only_once, $redirect_enable);
 
-                    if (is_wp_error($save)) {
+                    if (!$save || is_wp_error($save)) {
                         CFGP_DB_Cache::set('cfgp-seo-form-error', __('This redirection was not saved due to a database error. Please try again.', 'cf-geoplugin'), YEAR_IN_SECONDS);
                     } else {
                         CFGP_DB_Cache::set('cfgp-seo-form-success', __('Settings saved.', 'cf-geoplugin'), YEAR_IN_SECONDS);
@@ -241,7 +270,13 @@ if (!class_exists('CFGP_SEO', false)) : class CFGP_SEO extends CFGP_Global
             }
         }
 
-        if (CFGP_U::request_string('action') === 'delete' && wp_verify_nonce(CFGP_U::request_string('nonce'), CFGP_NAME.'-seo-delete') !== false) {
+        if (
+            isset($_SERVER['REQUEST_METHOD'])
+            && $_SERVER['REQUEST_METHOD'] === 'POST'
+            && CFGP_U::request_string('action') === 'delete'
+            && current_user_can('manage_options')
+            && wp_verify_nonce(CFGP_U::request_string('nonce'), CFGP_NAME.'-seo-delete') !== false
+        ) {
             $ID     = CFGP_U::request_int('id', 0);
             $delete = CFGP_SEO::delete($ID);
 
@@ -271,7 +306,11 @@ if (!class_exists('CFGP_SEO', false)) : class CFGP_SEO extends CFGP_Global
      */
     public function export_csv()
     {
-        if (CFGP_U::request_string('action') === 'export' && wp_verify_nonce(CFGP_U::request_string('nonce'), CFGP_NAME.'-seo-export-csv') !== false) {
+        if (
+            CFGP_U::request_string('action') === 'export'
+            && current_user_can('manage_options')
+            && wp_verify_nonce(CFGP_U::request_string('nonce'), CFGP_NAME.'-seo-export-csv') !== false
+        ) {
             // We need time for this
             if (function_exists('ignore_user_abort')) {
                 ignore_user_abort(true);
@@ -290,22 +329,17 @@ if (!class_exists('CFGP_SEO', false)) : class CFGP_SEO extends CFGP_Global
             // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Direct query is required to export plugin-owned SEO redirection rows without altering row order or values.
             $result = $wpdb->get_results("SELECT country, region, city, postcode, url, http_code, active, only_once FROM {$table} WHERE 1", ARRAY_A);
 
-            $num_fields = count($result);
-            $headers    = [];
-
-            foreach ($result[0] as $header => $value) {
-                $headers[] = $header;
-            }
+            $headers = ['country', 'region', 'city', 'postcode', 'url', 'http_code', 'active', 'only_once'];
             $fp = fopen('php://output', 'w');
 
-            if ($fp && $result) {
+            if ($fp) {
                 header('Content-Type: text/csv');
                 header('Content-Disposition: attachment; filename="cfgeo_seo_export_'.esc_attr(date('Y-m-d').'_'.CFGP_TIME).'.csv"');
                 header('Pragma: no-cache');
                 header('Expires: 0');
                 fputcsv($fp, $headers);
 
-                foreach ($result as $i => $row) {
+                foreach ($result as $row) {
                     fputcsv($fp, $row);
                 }
                 fclose($fp);
@@ -362,6 +396,10 @@ if (!class_exists('CFGP_SEO', false)) : class CFGP_SEO extends CFGP_Global
      */
     public static function save($url, $country = '', $region = '', $city = '', $postcode = '', $http_code = 302, $only_once = 0, $active = 1)
     {
+        if (!self::is_valid_redirection($url, $http_code, $only_once, $active)) {
+            return false;
+        }
+
         global $wpdb;
 
         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- Direct query is required to insert a plugin-owned SEO redirection row.
@@ -395,6 +433,12 @@ if (!class_exists('CFGP_SEO', false)) : class CFGP_SEO extends CFGP_Global
      */
     public static function delete($ID)
     {
+        $ID = absint($ID);
+
+        if ($ID < 1) {
+            return false;
+        }
+
         global $wpdb;
 
         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Direct query is required to delete a plugin-owned SEO redirection row by ID.
@@ -414,6 +458,12 @@ if (!class_exists('CFGP_SEO', false)) : class CFGP_SEO extends CFGP_Global
      */
     public static function update($ID, $url, $country = '', $region = '', $city = '', $postcode = '', $http_code = 302, $only_once = 0, $active = 1)
     {
+        $ID = absint($ID);
+
+        if ($ID < 1 || !self::is_valid_redirection($url, $http_code, $only_once, $active)) {
+            return false;
+        }
+
         global $wpdb;
 
         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Direct query is required to update a plugin-owned SEO redirection row by ID.
@@ -445,6 +495,23 @@ if (!class_exists('CFGP_SEO', false)) : class CFGP_SEO extends CFGP_Global
             [
                 '%d',
             ]
+        );
+    }
+
+    /**
+     * Validate the values that can change a global redirection rule.
+     */
+    public static function is_valid_redirection($url, $http_code, $only_once, $active)
+    {
+        $url_parts = wp_parse_url($url);
+
+        return (
+            filter_var($url, FILTER_VALIDATE_URL) !== false
+            && !empty($url_parts['scheme'])
+            && in_array(strtolower($url_parts['scheme']), ['http', 'https'], true)
+            && in_array(absint($http_code), [301, 302, 303, 307, 308, 404], true)
+            && in_array((int) $only_once, [0, 1], true)
+            && in_array((int) $active, [0, 1], true)
         );
     }
 

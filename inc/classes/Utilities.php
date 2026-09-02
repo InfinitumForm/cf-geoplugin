@@ -435,7 +435,7 @@ if (!class_exists('CFGP_U', false)) : class CFGP_U
         $cookie_name = 'cfgp__' . str_rot13(substr($token, 6, 8));
         $time        = (int)apply_filters('cfgp_set_defender_cookie_timeout', HOUR_IN_SECONDS);
 
-        return self::setcookie($cookie_name, $token, $time);
+        return self::set_defender_cookie_value($cookie_name, $token, CFGP_TIME + $time);
     }
 
     /*
@@ -446,9 +446,32 @@ if (!class_exists('CFGP_U', false)) : class CFGP_U
     {
         $token       = self::KEY();
         $cookie_name = 'cfgp__' . str_rot13(substr($token, 6, 8));
-        $time        = ceil(CFGP_TIME - ((int)apply_filters('cfgp_set_defender_cookie_timeout', HOUR_IN_SECONDS) * 2));
+        $time        = CFGP_TIME - ((int)apply_filters('cfgp_set_defender_cookie_timeout', HOUR_IN_SECONDS) * 2);
 
-        return self::setcookie($cookie_name, $token, $time);
+        return self::set_defender_cookie_value($cookie_name, $token, $time);
+    }
+
+    /**
+     * Set the Defender-only bypass cookie without changing other plugin cookies.
+     */
+    private static function set_defender_cookie_value($name, $value, $expires)
+    {
+        if (headers_sent()) {
+            return false;
+        }
+
+        $path = (defined('COOKIEPATH') && COOKIEPATH) ? COOKIEPATH : '/';
+        $path .= '; samesite=Lax';
+        $domain = defined('COOKIE_DOMAIN') ? COOKIE_DOMAIN : '';
+        $secure = function_exists('is_ssl') ? is_ssl() : false;
+
+        setcookie($name, $value, $expires, $path, $domain, $secure, true);
+
+        if (CFGP_Options::get('cache-support', 'yes') === 'yes') {
+            self::cache_flush();
+        }
+
+        return true;
     }
 
     /*

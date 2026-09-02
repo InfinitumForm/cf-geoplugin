@@ -51,6 +51,16 @@ if (!class_exists('CFGP_Metabox', false)) : class CFGP_Metabox extends CFGP_Glob
 
         // SEO Redirection
         if (in_array($post_type, CFGP_Options::get('enable_seo_posts', []), true)) {
+            if (
+                !isset($_POST[CFGP_NAME . '-page-seo-redirection-nonce'])
+                || !wp_verify_nonce(
+                    sanitize_text_field($_POST[CFGP_NAME . '-page-seo-redirection-nonce']),
+                    CFGP_NAME . '-page-seo-redirection'
+                )
+            ) {
+                // Do not alter existing SEO redirection metadata when this
+                // metabox was not submitted (autosave, REST, quick edit).
+            } else {
             $save = [];
             $i    = 0;
 
@@ -59,18 +69,33 @@ if (!class_exists('CFGP_Metabox', false)) : class CFGP_Metabox extends CFGP_Glob
                     $prepared_data = array_filter($prepared_data);
 
                     foreach ($prepared_data as $data) {
+                        $data = CFGP_Options::sanitize($data);
+
                         if (isset($data['url']) && !empty($data['url'])) {
-                            $save[$i] = CFGP_Options::sanitize($data);
+                            if (!CFGP_SEO::is_valid_redirection(
+                                $data['url'],
+                                $data['http_code'] ?? 302,
+                                $data['only_once'] ?? 0,
+                                $data['active'] ?? 1
+                            )) {
+                                $save = null;
+                                break;
+                            }
+
+                            $save[$i] = $data;
                             ++$i;
                         }
                     }
                 }
             }
 
-            update_post_meta($post_id, "{$this->metabox}-enabled", !empty($save));
-            update_post_meta($post_id, $this->metabox, $save);
+            if (is_array($save)) {
+                update_post_meta($post_id, "{$this->metabox}-enabled", !empty($save));
+                update_post_meta($post_id, $this->metabox, $save);
 
-            delete_post_meta($post_id, CFGP_METABOX . 'redirection');
+                delete_post_meta($post_id, CFGP_METABOX . 'redirection');
+            }
+            }
         }
 
         // Geo Tags
@@ -404,6 +429,8 @@ JS,
      */
     public function add_seo_redirection__callback($post)
     {
+
+        wp_nonce_field(CFGP_NAME . '-page-seo-redirection', CFGP_NAME . '-page-seo-redirection-nonce');
 
         $seo_redirection = get_post_meta($post->ID, $this->metabox, true);
 

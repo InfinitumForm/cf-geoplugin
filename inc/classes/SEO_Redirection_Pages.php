@@ -226,42 +226,44 @@ if (!class_exists('CFGP_SEO_Redirection_Pages', false)) : class CFGP_SEO_Redirec
 
                     // Exclude countries
                     if ($data['exclude_country'] ?? null) {
-                        $country = [];
-                        $mode    = 'async';
+                        $mode = 'async';
                     }
 
                     // Exclude regions
                     if ($data['exclude_region'] ?? null) {
-                        $region = [];
-                        $mode   = 'async';
+                        $mode = 'async';
                     }
 
                     // Exclude cities
                     if ($data['exclude_city'] ?? null) {
-                        $city = [];
                         $mode = 'async';
                     }
 
                     // Exclude postcodes
                     if ($data['exclude_postcode'] ?? null) {
-                        $postcode = [];
-                        $mode     = 'async';
+                        $mode = 'async';
                     }
 
                     // Switch mode
                     switch ($mode) {
                         case 'async':
-                            if (count(array_filter(array_map(
-                                function ($obj) {
-                                    return !empty($obj);
-                                },
-                                [
-                                    CFGP_U::check_user_by_city($city),
-                                    CFGP_U::check_user_by_region($region),
-                                    CFGP_U::check_user_by_country($country),
-                                    CFGP_U::check_user_by_postcode($postcode),
-                                ]
-                            )))) {
+                            $checks = [];
+
+                            foreach ([
+                                'country'  => $country,
+                                'region'   => $region,
+                                'city'     => $city,
+                                'postcode' => $postcode,
+                            ] as $field => $values) {
+                                if (empty($values)) {
+                                    continue;
+                                }
+
+                                $matches = call_user_func(['CFGP_U', 'check_user_by_' . $field], $values);
+                                $checks[] = !empty($data['exclude_' . $field]) ? !$matches : $matches;
+                            }
+
+                            if (!empty($checks) && !in_array(false, $checks, true)) {
                                 $do_redirection = true;
                             }
                             break;
