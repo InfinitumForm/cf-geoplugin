@@ -8,6 +8,32 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+$recovery_link    = '';
+$recovery_message = '';
+
+if (
+    isset($_SERVER['REQUEST_METHOD'])
+    && $_SERVER['REQUEST_METHOD'] === 'POST'
+    && current_user_can('manage_options')
+    && isset($_POST['cfgp_recovery_action'])
+    && wp_verify_nonce(
+        sanitize_text_field($_POST['cfgp_recovery_nonce'] ?? ''),
+        CFGP_NAME . '-defender-recovery'
+    )
+) {
+    $recovery_action = sanitize_key($_POST['cfgp_recovery_action']);
+
+    if ($recovery_action === 'generate') {
+        $recovery_link = CFGP_Defender::generate_recovery_link(get_current_user_id());
+        $recovery_message = $recovery_link
+            ? __('Recovery link generated. Save it now; it will not be shown again.', 'cf-geoplugin')
+            : __('Unable to generate a recovery link. Please try again.', 'cf-geoplugin');
+    } elseif ($recovery_action === 'revoke') {
+        CFGP_Defender::revoke_recovery_link();
+        $recovery_message = __('Recovery link revoked.', 'cf-geoplugin');
+    }
+}
+
 if (
     CFGP_U::request_bool('preview')
     && current_user_can('manage_options')
@@ -100,6 +126,7 @@ if (!empty($block_city) && !is_array($block_city) && preg_match('/\]|\[/', $bloc
         	<div id="post-body">
             	<div id="post-body-content">
 					<form method="post" action="<?php echo esc_url(CFGP_U::admin_url('admin.php?page=cf-geoplugin-defender&save_defender=true&nonce='.wp_create_nonce(CFGP_NAME.'-save-defender'))); ?>">
+						<?php wp_nonce_field(CFGP_NAME . '-defender-recovery', 'cfgp_recovery_nonce'); ?>
                     	<div class="nav-tab-wrapper-chosen">
                         	<nav class="nav-tab-wrapper">
                             	<a href="javascript:void(0);" class="nav-tab nav-tab-active" data-id="#defender-settings"><i class="cfa cfa-wrench"></i><span class="label"> <?php esc_html_e('General Defender Settings', 'cf-geoplugin'); ?></span></a>
@@ -203,17 +230,6 @@ if (!empty($block_city) && !is_array($block_city) && preg_match('/\]|\[/', $bloc
                                     </div>
                                  </div>
 								 
-								 <p>
-									<strong><?php esc_html_e('Warning: This option may also block your access to the site if your ISP uses a proxy to serve internet data. To avoid this issue, a cookie must be placed in your browser.', 'cf-geoplugin'); ?></strong>
-								</p>
-
-								<p><?php esc_html_e('Copy this link and keep it in a safe and secure place:', 'cf-geoplugin'); ?></p>
-
-								<p>
-									<strong><code><?php echo esc_url(home_url('?cfgp_admin_access=' . str_rot13(substr(CFGP_U::KEY(), 3, 32)))); ?></code></strong>
-								</p>
-
-								<p><?php esc_html_e('When you enable this option, a cookie will be set for you automatically. However, you can always use this link if the plugin blocks you from accessing your site.', 'cf-geoplugin'); ?></p>
 
 								<?php if (CFGP_Options::get('enable_spam_ip')) : ?>
 									<p>
@@ -240,6 +256,21 @@ if (!empty($block_city) && !is_array($block_city) && preg_match('/\]|\[/', $bloc
 										</strong>
 									</p>
 								<?php endif; ?>
+
+                                <hr>
+                                <h2><?php esc_html_e('Recovery Login', 'cf-geoplugin'); ?></h2>
+                                <p><?php esc_html_e('Generate a one-time link that can open only the WordPress login page for 15 minutes after it is used. The token is shown only once and is never stored in plain text.', 'cf-geoplugin'); ?></p>
+                                <?php if (!empty($recovery_message)) : ?>
+                                    <div class="notice <?php echo $recovery_link ? 'notice-success' : 'notice-info'; ?> inline"><p><?php echo esc_html($recovery_message); ?></p></div>
+                                <?php endif; ?>
+                                <?php if (!empty($recovery_link)) : ?>
+                                    <p><label for="cfgp-recovery-link"><strong><?php esc_html_e('Save this link in a secure place. It cannot be shown again.', 'cf-geoplugin'); ?></strong></label></p>
+                                    <p><input type="text" id="cfgp-recovery-link" class="large-text code" readonly value="<?php echo esc_attr($recovery_link); ?>"></p>
+                                <?php endif; ?>
+                                <p>
+                                    <button type="submit" class="button" name="cfgp_recovery_action" value="generate" formaction="<?php echo esc_url(CFGP_U::admin_url('admin.php?page=cf-geoplugin-defender')); ?>"><?php esc_html_e('Generate Recovery Link', 'cf-geoplugin'); ?></button>
+                                    <button type="submit" class="button" name="cfgp_recovery_action" value="revoke" formaction="<?php echo esc_url(CFGP_U::admin_url('admin.php?page=cf-geoplugin-defender')); ?>" onclick="return window.confirm('<?php echo esc_attr__('Revoke the current recovery link?', 'cf-geoplugin'); ?>');"><?php esc_html_e('Revoke Recovery Link', 'cf-geoplugin'); ?></button>
+                                </p>
 
 								<p style="color:#cc0000;">
 									<?php esc_html_e('These options will remove all your content, templates, and designs, and display custom messages to your visitors.', 'cf-geoplugin'); ?>

@@ -424,6 +424,8 @@ Please inform us if any of these errors occur via contact form on our website [h
 * Added the public API transport choice and mode-specific endpoint documentation in plugin settings.
 * Preserved existing public API response bodies and access-token behavior through shared API handling.
 * Security: protected Defender saves, previews, and administrative bypass-cookie creation with capability, nonce, and request-method checks; Defender cookie deletion now expires correctly.
+* Security: restricted permanent Defender bypass to logged-in administrators with manage_options; removed the legacy recovery URL, bypass-cookie, and User-Agent bot bypasses.
+* Security: added a one-time recovery link that temporarily opens only the WordPress login flow; recovery tokens are stored only as hashes and are invalidated after first use.
 * Security: protected global SEO mutations and page-level SEO redirection metadata with explicit capabilities, nonces, and request-method checks.
 * Fixed global postcode matching, the country-and-city redirect execution path, page-level exclude matching, safe empty CSV export, and CSV import rollback handling.
 
@@ -573,6 +575,7 @@ Please inform us if any of these errors occur via contact form on our website [h
 * Stabilized cache, shortcode, and Geo Banner behavior across the supported cache modes.
 * Legacy AJAX remains the default public API; WordPress REST API transport is optional.
 * Added Defender and SEO authorization hardening plus targeted redirect and CSV stability fixes.
+* Defender bypass requires a logged-in administrator with manage_options; legacy URL, cookie, and User-Agent bypasses are removed, with a restricted one-time login recovery link available.
 
 = 8.9.9 =
 * Security: Hardened Gravity Forms field value handling and validation.

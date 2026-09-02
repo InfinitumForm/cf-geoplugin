@@ -25,6 +25,8 @@ if (!class_exists('CFGP_Defender', false)) : class CFGP_Defender extends CFGP_Gl
 {
     public function __construct()
     {
+        $this->add_action('init', 'recovery_endpoint', 0);
+        $this->add_action('init', 'clear_recovery_after_login', 0);
         $this->add_action('init', 'tor_protection', 1);
         $this->add_action('init', 'protect', 2);
     }
@@ -36,6 +38,10 @@ if (!class_exists('CFGP_Defender', false)) : class CFGP_Defender extends CFGP_Gl
      */
     public function tor_protection()
     {
+        if (self::can_bypass_protection() || self::can_access_login_recovery()) {
+            return;
+        }
+
         switch ((int)CFGP_Options::get('block_tor_network', 0)) {
 
             // TOR Access: Unrestricted
@@ -89,13 +95,12 @@ if (!class_exists('CFGP_Defender', false)) : class CFGP_Defender extends CFGP_Gl
     // Protect site from visiting
     public function protect()
     {
-        // Defender is disabled ???
-        if (CFGP_Options::get('enable_defender', 0) == 0) {
+        if (self::can_bypass_protection() || self::can_access_login_recovery()) {
             return;
         }
 
-        // Browser is allow to access to website
-        if (CFGP_U::check_defender_cookie()) {
+        // Defender is disabled ???
+        if (CFGP_Options::get('enable_defender', 0) == 0) {
             return;
         }
 
@@ -104,28 +109,6 @@ if (!class_exists('CFGP_Defender', false)) : class CFGP_Defender extends CFGP_Gl
         // Block on error
         if (empty($ip) || CFGP_U::api('error')) {
             return;
-        }
-
-        // Set cookie
-        if (
-            is_admin()
-            && isset($_SERVER['REQUEST_METHOD'])
-            && $_SERVER['REQUEST_METHOD'] === 'POST'
-            && current_user_can('manage_options')
-            && CFGP_U::request_bool('save_defender')
-            && wp_verify_nonce(sanitize_text_field($_REQUEST['nonce'] ?? ''), CFGP_NAME.'-save-defender') !== false
-            && isset($_POST['block_proxy'])
-        ) {
-            CFGP_U::set_defender_cookie();
-        }
-
-        if (
-            isset($_REQUEST['cfgp_admin_access'])
-            && (
-                CFGP_U::request_string('cfgp_admin_access') === str_rot13(substr(CFGP_U::KEY(), 3, 32))
-            )
-        ) {
-            CFGP_U::set_defender_cookie();
         }
 
         // Whitelist IP addresses
@@ -173,8 +156,7 @@ if (!class_exists('CFGP_Defender', false)) : class CFGP_Defender extends CFGP_Gl
     // Check what to do with user
     public function check()
     {
-        // Bots need to see this website
-        if (CFGP_U::is_bot()) {
+        if (self::can_bypass_protection()) {
             return false;
         }
 
@@ -254,6 +236,368 @@ if (!class_exists('CFGP_Defender', false)) : class CFGP_Defender extends CFGP_Gl
 
         // Hey, we are all good. Right?
         return false;
+    }
+
+    /**
+     * The only global Defender bypass is an authenticated site administrator.
+     *
+     * @return bool
+     */
+    private static function can_bypass_protection()
+    {
+        return (
+            function_exists('is_user_logged_in')
+            && is_user_logged_in()
+            && function_exists('current_user_can')
+            && current_user_can('manage_options')
+        );
+    }
+
+    /**
+     * Generate a one-time recovery URL for an authenticated administrator.
+     *
+     * @param int $user_id Administrator user ID.
+     * @return string|false
+     */
+    public static function generate_recovery_link($user_id)
+    {
+        if (!function_exists('random_bytes')) {
+            return false;
+        }
+
+        try {
+            $token = self::base64url_encode(random_bytes(32));
+        } catch (Exception $exception) {
+            return false;
+        }
+
+        self::save_recovery_record([
+            'hash'       => self::secret_hash($token),
+            'created_at' => CFGP_TIME,
+            'created_by' => absint($user_id),
+            'used_at'    => null,
+            'revoked'    => false,
+        ]);
+
+        return add_query_arg('cfgp_recovery', '1', home_url('/')) . '#token=' . $token;
+    }
+
+    /**
+     * Revoke the currently stored recovery token.
+     */
+    public static function revoke_recovery_link()
+    {
+        $record = self::get_recovery_record();
+
+        if (!is_array($record)) {
+            return;
+        }
+
+        $record['hash']    = null;
+        $record['revoked'] = true;
+        self::save_recovery_record($record);
+    }
+
+    /**
+     * Render or process the isolated public recovery page.
+     */
+    public function recovery_endpoint()
+    {
+        if (!self::is_recovery_request()) {
+            return;
+        }
+
+        self::send_recovery_headers();
+
+        if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'POST') {
+            $token = isset($_POST['cfgp_recovery_token'])
+                ? trim(sanitize_text_field(wp_unslash($_POST['cfgp_recovery_token'])))
+                : '';
+
+            if (self::validate_recovery_token($token)) {
+                self::create_recovery_session();
+                wp_safe_redirect(wp_login_url(admin_url()));
+                exit;
+            }
+        }
+
+        self::render_recovery_page();
+        exit;
+    }
+
+    /**
+     * Clear the restricted recovery session after any WordPress login.
+     */
+    public function clear_recovery_after_login()
+    {
+        if (function_exists('is_user_logged_in') && is_user_logged_in()) {
+            self::delete_recovery_session();
+        }
+    }
+
+    /**
+     * Recovery session may only bypass Defender for the WordPress login flow.
+     *
+     * @return bool
+     */
+    private static function can_access_login_recovery()
+    {
+        if (!self::is_login_request()) {
+            return false;
+        }
+
+        $token = isset($_COOKIE['cfgp_recovery_session'])
+            ? sanitize_text_field(wp_unslash($_COOKIE['cfgp_recovery_session']))
+            : '';
+
+        if (empty($token)) {
+            return false;
+        }
+
+        $hash    = self::secret_hash($token);
+        $session = get_transient('cfgp_defender_recovery_session_' . $hash);
+
+        return (
+            is_array($session)
+            && isset($session['hash'])
+            && hash_equals($session['hash'], $hash)
+        );
+    }
+
+    /**
+     * Validate a submitted one-time token without exposing its state.
+     *
+     * @param string $token Recovery token.
+     * @return bool
+     */
+    private static function validate_recovery_token($token)
+    {
+        if (empty($token) || self::recovery_rate_limited()) {
+            return false;
+        }
+
+        $record = self::get_recovery_record();
+        $hash   = self::secret_hash($token);
+
+        if (
+            !is_array($record)
+            || !empty($record['revoked'])
+            || !empty($record['used_at'])
+            || empty($record['hash'])
+            || !hash_equals($record['hash'], $hash)
+        ) {
+            self::record_recovery_failure();
+
+            return false;
+        }
+
+        // Invalidate the token before creating a restricted login session.
+        $record['hash']    = null;
+        $record['used_at'] = CFGP_TIME;
+        self::save_recovery_record($record);
+        self::clear_recovery_rate_limit();
+
+        return true;
+    }
+
+    /**
+     * Create an independent, restricted fifteen-minute login session.
+     */
+    private static function create_recovery_session()
+    {
+        $token = self::base64url_encode(random_bytes(32));
+        $hash  = self::secret_hash($token);
+        $ttl   = 15 * MINUTE_IN_SECONDS;
+
+        set_transient('cfgp_defender_recovery_session_' . $hash, [
+            'hash' => $hash,
+        ], $ttl);
+
+        self::set_recovery_cookie($token, CFGP_TIME + $ttl);
+    }
+
+    /**
+     * Remove the restricted login session and its cookie.
+     */
+    private static function delete_recovery_session()
+    {
+        $token = isset($_COOKIE['cfgp_recovery_session'])
+            ? sanitize_text_field(wp_unslash($_COOKIE['cfgp_recovery_session']))
+            : '';
+
+        if (!empty($token)) {
+            delete_transient('cfgp_defender_recovery_session_' . self::secret_hash($token));
+        }
+
+        self::set_recovery_cookie('', CFGP_TIME - HOUR_IN_SECONDS);
+    }
+
+    /**
+     * Store the recovery cookie only for the login flow, never for site access.
+     */
+    private static function set_recovery_cookie($token, $expires)
+    {
+        if (headers_sent()) {
+            return false;
+        }
+
+        $path   = '/; samesite=Strict';
+        $domain = defined('COOKIE_DOMAIN') ? COOKIE_DOMAIN : '';
+        $secure = function_exists('is_ssl') ? is_ssl() : false;
+
+        return setcookie('cfgp_recovery_session', $token, $expires, $path, $domain, $secure, true);
+    }
+
+    /**
+     * Limit invalid public recovery attempts by remote address.
+     *
+     * @return bool
+     */
+    private static function recovery_rate_limited()
+    {
+        $attempts = get_transient(self::recovery_rate_limit_key());
+
+        return is_array($attempts) && isset($attempts['count']) && absint($attempts['count']) >= 5;
+    }
+
+    /**
+     * Record a failed public recovery attempt for fifteen minutes.
+     */
+    private static function record_recovery_failure()
+    {
+        $key      = self::recovery_rate_limit_key();
+        $attempts = get_transient($key);
+        $count    = is_array($attempts) && isset($attempts['count']) ? absint($attempts['count']) : 0;
+
+        set_transient($key, ['count' => $count + 1], 15 * MINUTE_IN_SECONDS);
+    }
+
+    /**
+     * Remove the current IP's temporary recovery rate limit.
+     */
+    private static function clear_recovery_rate_limit()
+    {
+        delete_transient(self::recovery_rate_limit_key());
+    }
+
+    /**
+     * @return string
+     */
+    private static function recovery_rate_limit_key()
+    {
+        $ip = isset($_SERVER['REMOTE_ADDR']) ? (string) $_SERVER['REMOTE_ADDR'] : '';
+
+        return 'cfgp_defender_recovery_rate_' . hash_hmac('sha256', $ip, wp_salt('auth'));
+    }
+
+    /**
+     * @return bool
+     */
+    private static function is_recovery_request()
+    {
+        return isset($_GET['cfgp_recovery']) && (string) $_GET['cfgp_recovery'] === '1';
+    }
+
+    /**
+     * @return bool
+     */
+    private static function is_login_request()
+    {
+        global $pagenow;
+
+        return (
+            $pagenow === 'wp-login.php'
+            || (isset($_SERVER['SCRIPT_NAME']) && basename($_SERVER['SCRIPT_NAME']) === 'wp-login.php')
+        );
+    }
+
+    /**
+     * @param string $secret Secret value.
+     * @return string
+     */
+    private static function secret_hash($secret)
+    {
+        return hash_hmac('sha256', $secret, wp_salt('auth'));
+    }
+
+    /**
+     * @param string $value Binary value.
+     * @return string
+     */
+    private static function base64url_encode($value)
+    {
+        return rtrim(strtr(base64_encode($value), '+/', '-_'), '=');
+    }
+
+    /**
+     * @return array|false
+     */
+    private static function get_recovery_record()
+    {
+        $option = CFGP_NAME . '-defender-recovery';
+
+        return CFGP_NETWORK_ADMIN ? get_site_option($option, false) : get_option($option, false);
+    }
+
+    /**
+     * @param array $record Recovery token metadata.
+     */
+    private static function save_recovery_record($record)
+    {
+        $option = CFGP_NAME . '-defender-recovery';
+
+        if (CFGP_NETWORK_ADMIN) {
+            update_site_option($option, $record, false);
+        } else {
+            update_option($option, $record, false);
+        }
+    }
+
+    /**
+     * Send the headers required for a secret-bearing public recovery page.
+     */
+    private static function send_recovery_headers()
+    {
+        header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+        header('Pragma: no-cache');
+        header('Referrer-Policy: no-referrer');
+        header('X-Robots-Tag: noindex, nofollow, noarchive');
+        header('X-Content-Type-Options: nosniff');
+    }
+
+    /**
+     * Render a local recovery form without loading WordPress theme resources.
+     */
+    private static function render_recovery_page()
+    {
+        $action = esc_url(add_query_arg('cfgp_recovery', '1', home_url('/')));
+        ?>
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title><?php esc_html_e('Recovery Login', 'cf-geoplugin'); ?></title></head>
+<body>
+<main>
+<h1><?php esc_html_e('Recovery Login', 'cf-geoplugin'); ?></h1>
+<p><?php esc_html_e('Enter your one-time recovery token to continue to the WordPress login page.', 'cf-geoplugin'); ?></p>
+<form method="post" action="<?php echo $action; ?>" id="cfgp-recovery-form">
+<label for="cfgp_recovery_token"><?php esc_html_e('Recovery token', 'cf-geoplugin'); ?></label>
+<input type="password" id="cfgp_recovery_token" name="cfgp_recovery_token" autocomplete="off" required>
+<button type="submit"><?php esc_html_e('Continue to login', 'cf-geoplugin'); ?></button>
+</form>
+</main>
+<script>
+(function () {
+    var hash = window.location.hash.match(/(?:^#|&)token=([^&]+)/);
+    if (!hash) { return; }
+    var input = document.getElementById('cfgp_recovery_token');
+    input.value = decodeURIComponent(hash[1]);
+    window.history.replaceState(null, '', window.location.pathname + window.location.search);
+    document.getElementById('cfgp-recovery-form').submit();
+}());
+</script>
+</body>
+</html>
+<?php
     }
 
     private static function process_block_data($option_key)
