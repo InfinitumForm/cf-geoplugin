@@ -289,13 +289,31 @@ if (!class_exists('CFGP_Defender', false)) : class CFGP_Defender extends CFGP_Gl
     {
         $record = self::get_recovery_record();
 
-        if (!is_array($record)) {
-            return;
-        }
+        // Invalidate every outstanding restricted login session as well.
+        self::revoke_recovery_sessions();
 
-        $record['hash']    = null;
-        $record['revoked'] = true;
-        self::save_recovery_record($record);
+        if (is_array($record)) {
+            $record['hash']    = null;
+            $record['revoked'] = true;
+            self::save_recovery_record($record);
+        }
+    }
+
+    /**
+     * Determine whether an unused recovery link currently exists.
+     *
+     * @return bool
+     */
+    public static function has_active_recovery_link()
+    {
+        $record = self::get_recovery_record();
+
+        return (
+            is_array($record)
+            && !empty($record['hash'])
+            && empty($record['used_at'])
+            && empty($record['revoked'])
+        );
     }
 
     /**
@@ -360,7 +378,9 @@ if (!class_exists('CFGP_Defender', false)) : class CFGP_Defender extends CFGP_Gl
         return (
             is_array($session)
             && isset($session['hash'])
+            && isset($session['version'])
             && hash_equals($session['hash'], $hash)
+            && absint($session['version']) === self::get_recovery_session_version()
         );
     }
 
@@ -410,7 +430,8 @@ if (!class_exists('CFGP_Defender', false)) : class CFGP_Defender extends CFGP_Gl
         $ttl   = 15 * MINUTE_IN_SECONDS;
 
         set_transient('cfgp_defender_recovery_session_' . $hash, [
-            'hash' => $hash,
+            'hash'    => $hash,
+            'version' => self::get_recovery_session_version(),
         ], $ttl);
 
         self::set_recovery_cookie($token, CFGP_TIME + $ttl);
@@ -433,6 +454,39 @@ if (!class_exists('CFGP_Defender', false)) : class CFGP_Defender extends CFGP_Gl
     }
 
     /**
+     * Invalidate every active restricted login session without storing its token.
+     */
+    private static function revoke_recovery_sessions()
+    {
+        self::save_recovery_session_version(self::get_recovery_session_version() + 1);
+    }
+
+    /**
+     * @return int
+     */
+    private static function get_recovery_session_version()
+    {
+        $option = CFGP_NAME . '-defender-recovery-session-version';
+        $version = CFGP_NETWORK_ADMIN ? get_site_option($option, 0) : get_option($option, 0);
+
+        return absint($version);
+    }
+
+    /**
+     * @param int $version Recovery session version.
+     */
+    private static function save_recovery_session_version($version)
+    {
+        $option = CFGP_NAME . '-defender-recovery-session-version';
+
+        if (CFGP_NETWORK_ADMIN) {
+            update_site_option($option, absint($version), false);
+        } else {
+            update_option($option, absint($version), false);
+        }
+    }
+
+    /**
      * Store the recovery cookie only for the login flow, never for site access.
      */
     private static function set_recovery_cookie($token, $expires)
@@ -441,11 +495,22 @@ if (!class_exists('CFGP_Defender', false)) : class CFGP_Defender extends CFGP_Gl
             return false;
         }
 
-        $path   = '/; samesite=Strict';
         $domain = defined('COOKIE_DOMAIN') ? COOKIE_DOMAIN : '';
         $secure = function_exists('is_ssl') ? is_ssl() : false;
 
-        return setcookie('cfgp_recovery_session', $token, $expires, $path, $domain, $secure, true);
+        if (PHP_VERSION_ID >= 70300) {
+            return setcookie('cfgp_recovery_session', $token, [
+                'expires'  => $expires,
+                'path'     => '/',
+                'domain'   => $domain,
+                'secure'   => $secure,
+                'httponly' => true,
+                'samesite' => 'Strict',
+            ]);
+        }
+
+        // PHP 7.0-7.2 do not support the options-array cookie signature.
+        return setcookie('cfgp_recovery_session', $token, $expires, '/', $domain, $secure, true);
     }
 
     /**

@@ -460,12 +460,22 @@ if (!class_exists('CFGP_U', false)) : class CFGP_U
             return false;
         }
 
-        $path = (defined('COOKIEPATH') && COOKIEPATH) ? COOKIEPATH : '/';
-        $path .= '; samesite=Lax';
+        $path   = (defined('COOKIEPATH') && COOKIEPATH) ? COOKIEPATH : '/';
         $domain = defined('COOKIE_DOMAIN') ? COOKIE_DOMAIN : '';
         $secure = function_exists('is_ssl') ? is_ssl() : false;
 
-        setcookie($name, $value, $expires, $path, $domain, $secure, true);
+        if (PHP_VERSION_ID >= 70300) {
+            setcookie($name, $value, [
+                'expires'  => $expires,
+                'path'     => $path,
+                'domain'   => $domain,
+                'secure'   => $secure,
+                'httponly' => true,
+                'samesite' => 'Lax',
+            ]);
+        } else {
+            setcookie($name, $value, $expires, $path, $domain, $secure, true);
+        }
 
         if (CFGP_Options::get('cache-support', 'yes') === 'yes') {
             self::cache_flush();

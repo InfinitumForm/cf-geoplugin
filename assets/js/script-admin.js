@@ -363,9 +363,21 @@
 		});
 	});
 	
-	/* Prevent double submit */
-	$('form').submit(function(){
-		 $(this).find('[type="submit"]').prop('disabled',true);
+	/* Prevent double submit. Preserve the clicked recovery action before disabling it. */
+	$('form').submit(function(event){
+		var $form = $(this);
+		var submitter = event.originalEvent && event.originalEvent.submitter ? event.originalEvent.submitter : null;
+
+		if (submitter && submitter.name === 'cfgp_recovery_action') {
+			$form.find('input[data-cfgp-recovery-action]').remove();
+			$('<input>', {
+				type: 'hidden',
+				name: 'cfgp_recovery_action',
+				value: submitter.value
+			}).attr('data-cfgp-recovery-action', '1').appendTo($form);
+		}
+
+		$form.find('[type="submit"]').prop('disabled',true);
 	});
 	
 	/*
