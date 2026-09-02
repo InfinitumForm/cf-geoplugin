@@ -18,11 +18,11 @@ if (!defined('ABSPATH')) {
  */
 if (!class_exists('CFGP__Cache', false)) : trait CFGP__Cache
 {
-    // Static cache for use in static functions
-    protected static array $static_data = [];
+    /** @var array Static cache for use in static functions. */
+    protected static $static_data = [];
 
-    // Instance cache for use in non-static functions
-    protected array $data = [];
+    /** @var array Instance cache for use in non-static functions. */
+    protected $data = [];
 
     /**
      * Get data from cached data within this Object or Class
@@ -120,7 +120,7 @@ if (!class_exists('CFGP__Cache', false)) : trait CFGP__Cache
      *
      * @return void
      */
-    protected static function clear_static_cache(string $key, $index = null): void
+    protected static function clear_static_cache(string $key, $index = null)
     {
         // Add prefix to key
         $key = self::cache_key($key, $index);
@@ -138,7 +138,7 @@ if (!class_exists('CFGP__Cache', false)) : trait CFGP__Cache
      *
      * @return void
      */
-    protected function clear_cache(string $key, $index = null): void
+    protected function clear_cache(string $key, $index = null)
     {
         // Add prefix to key
         $key = self::cache_key($key, $index);
@@ -155,7 +155,7 @@ if (!class_exists('CFGP__Cache', false)) : trait CFGP__Cache
      *
      * @return void
      */
-    protected static function clear_static_cache_all(): void
+    protected static function clear_static_cache_all()
     {
         self::$static_data = [];
     }
@@ -165,7 +165,7 @@ if (!class_exists('CFGP__Cache', false)) : trait CFGP__Cache
      *
      * @return void
      */
-    public function clear_cache_all(): void
+    public function clear_cache_all()
     {
         $this->data = [];
     }
@@ -198,7 +198,8 @@ if (!class_exists('CFGP__Cache', false)) : trait CFGP__Cache
      *
      * @return string The generated cache key.
      */
-    private static array $key_cache = [];
+    /** @var array */
+    private static $key_cache = [];
     private static function cache_key(string $key, $index = null): string
     {
         // Generate a unique identifier for the cache
@@ -222,7 +223,9 @@ if (!class_exists('CFGP__Cache', false)) : trait CFGP__Cache
             if (is_array($index)) {
                 // Properly flatten and sanitize array values
                 $index = implode('.', array_map(
-                    fn ($v) => preg_replace('/[^a-zA-Z0-9_\-]/', '_', (string)$v),
+                    function ($v) {
+                        return preg_replace('/[^a-zA-Z0-9_\-]/', '_', (string) $v);
+                    },
                     self::cache_array_key($index)
                 ));
             } else {

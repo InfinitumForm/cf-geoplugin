@@ -11,11 +11,11 @@ if (!defined('ABSPATH')) {
 add_action('cfgp/page/seo_redirection/response', function () {
     CFGP_SEO::response_error();
 
-    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
         CFGP_SEO::response_success();
     }
 
-    if (CFGP_U::request_string('action') == 'edit' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (CFGP_U::request_string('action') == 'edit' && ($_SERVER['REQUEST_METHOD'] ?? '') === 'POST') {
         CFGP_SEO::response_success();
     }
 });

@@ -140,7 +140,11 @@ if (!class_exists('CFGP_Plugins', false)) : class CFGP_Plugins extends CFGP_Glob
 
             if (count($plugins) > 1) {
                 $last = '<strong>' . esc_html((end($plugins))->name ?? '') . '</strong>';
-                unset($plugins[array_key_last($plugins)]);
+                $last_key = key($plugins);
+
+                if ($last_key !== null) {
+                    unset($plugins[$last_key]);
+                }
             }
 
             foreach ($plugins as $path => $plugin) {

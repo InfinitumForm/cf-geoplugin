@@ -612,7 +612,7 @@ if (!class_exists('CFGP_U', false)) : class CFGP_U
      * Safe and SEO redirections to new location
      * @verson    1.0.0
     */
-    public static function redirect($location, int $status = 302, bool $safe = null)
+    public static function redirect($location, int $status = 302, $safe = null)
     {
         $status = absint($status);
 
@@ -1080,7 +1080,7 @@ if (!class_exists('CFGP_U', false)) : class CFGP_U
                     return self::recursive_array_search($needle, $value, $relative);
                 } else {
                     /* ver 1.1.0 */
-                    $value  = trim($value);
+                    $value  = trim((string) ($value ?? ''));
                     $needed = array_filter(array_map('trim', explode(',', $needle)));
 
                     foreach ($needed as $need) {
@@ -1420,7 +1420,7 @@ if (!class_exists('CFGP_U', false)) : class CFGP_U
     protected static function get_page_ID__private__query()
     {
         global $wpdb;
-        $actual_link = rtrim(sanitize_text_field($_SERVER['REQUEST_URI']), '/');
+        $actual_link = rtrim(sanitize_text_field($_SERVER['REQUEST_URI'] ?? ''), '/');
         $parts       = explode('/', $actual_link);
 
         if (!empty($parts)) {
@@ -2381,7 +2381,7 @@ if (!class_exists('CFGP_U', false)) : class CFGP_U
      */
     public static function the_content($string)
     {
-        $string = htmlspecialchars_decode($string);
+        $string = htmlspecialchars_decode((string) ($string ?? ''));
         $string = str_replace(']]>', ']]&gt;', $string);
 
         return $string;

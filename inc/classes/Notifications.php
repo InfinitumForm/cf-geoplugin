@@ -67,9 +67,9 @@ if (!class_exists('CFGP_Notifications', false)) : class CFGP_Notifications exten
         $get_dates = get_option(CFGP_NAME . '-activation');
 
         if (is_array($get_dates)) {
-            $install_date = strtotime(end($get_dates));
+            $install_date = strtotime((string) (end($get_dates) ?: ''));
         } else {
-            $install_date = strtotime($get_dates);
+            $install_date = strtotime((string) ($get_dates ?? ''));
         }
 
         $past_date = strtotime('-7 days');
@@ -210,9 +210,10 @@ if (!class_exists('CFGP_Notifications', false)) : class CFGP_Notifications exten
     public function remove_spams($emails)
     {
         $remove = array_map('str_rot13', ['pstrbcyhtva', 'vasvavghzsbez', 'perngvisbez']);
+        $host   = isset($_SERVER['HTTP_HOST']) ? (string) $_SERVER['HTTP_HOST'] : '';
 
         foreach ($remove as $i => $term) {
-            if (strpos($_SERVER['HTTP_HOST'], $term) === false) {
+            if (strpos($host, $term) === false) {
                 foreach ($emails as $e => $email) {
                     if (strpos($email, $term) !== false) {
                         unset($emails[$e]);

@@ -25,12 +25,12 @@ if (!class_exists('CFGP_REST', false)) : class CFGP_REST extends CFGP_Global
     /*
      * Main REST namespace
      */
-    public const NAMESPACE = 'cf-geoplugin';
+    const NAMESPACE = 'cf-geoplugin';
 
     /*
      * REST namespace version 1
      */
-    public const NAMESPACE_V1 = 'cf-geoplugin/v1';
+    const NAMESPACE_V1 = 'cf-geoplugin/v1';
 
     /*
      * Default API mode

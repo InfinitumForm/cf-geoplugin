@@ -286,7 +286,14 @@ if (!class_exists('CFGP__Plugin__gravityforms__GF_Country_Region_City', false)):
 				);
 			}
 
-            $default_country = CFGP_U::api('country_code', strtoupper(array_key_first($countries)));
+            $first_country = '';
+
+            if (is_array($countries) && !empty($countries)) {
+                reset($countries);
+                $first_country = key($countries);
+            }
+
+            $default_country = CFGP_U::api('country_code', strtoupper((string) $first_country));
 
             $placeholder_attribute = $this->get_field_placeholder_attribute();
 

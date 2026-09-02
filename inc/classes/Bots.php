@@ -300,7 +300,7 @@ if (!class_exists('CFGP_Bots', false)): class CFGP_Bots
 			// Treat plain IP as /32 or /128
 			$cidr .= self::is_ipv6($ip) ? '/128' : '/32';
 		}
-		[$subnet, $mask] = explode('/', $cidr, 2);
+		list($subnet, $mask) = explode('/', $cidr, 2);
 		$mask = (int) $mask;
 
 		$ip_bin     = @inet_pton($ip);

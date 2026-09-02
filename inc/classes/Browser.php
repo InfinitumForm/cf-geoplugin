@@ -21,63 +21,63 @@ if (!class_exists('CFGP_Browser', false)) :
 final class CFGP_Browser
 {
     // Browser constants
-    public const BROWSER_EDGE         = 'Microsoft Edge';
-    public const BROWSER_OPERA        = 'Opera';
-    public const BROWSER_OPERA_MINI   = 'Opera Mini';
-    public const BROWSER_WEBTV        = 'WebTV';
-    public const BROWSER_IE           = 'Internet Explorer';
-    public const BROWSER_POCKET_IE    = 'Pocket Internet Explorer';
-    public const BROWSER_KONQUEROR    = 'Konqueror';
-    public const BROWSER_ICAB         = 'iCab';
-    public const BROWSER_OMNIWEB      = 'OmniWeb';
-    public const BROWSER_FIREBIRD     = 'Firebird';
-    public const BROWSER_FIREFOX      = 'Firefox';
-    public const BROWSER_ICEWEASEL    = 'Iceweasel';
-    public const BROWSER_SHIRETOKO    = 'Shiretoko';
-    public const BROWSER_MOZILLA      = 'Mozilla';
-    public const BROWSER_AMAYA        = 'Amaya';
-    public const BROWSER_LYNX         = 'Lynx';
-    public const BROWSER_SAFARI       = 'Safari';
-    public const BROWSER_IPHONE       = 'iPhone';
-    public const BROWSER_IPOD         = 'iPod';
-    public const BROWSER_IPAD         = 'iPad';
-    public const BROWSER_CHROME       = 'Chrome';
-    public const BROWSER_BRAVE        = 'Brave';
-    public const BROWSER_VIVALDI      = 'Vivaldi';
-    public const BROWSER_OPERA_TOUCH  = 'Opera Touch';
-    public const BROWSER_ANDROID      = 'Android';
-    public const BROWSER_GOOGLEBOT    = 'GoogleBot';
-    public const BROWSER_SLURP        = 'Yahoo! Slurp';
-    public const BROWSER_W3CVALIDATOR = 'W3C Validator';
-    public const BROWSER_BLACKBERRY   = 'BlackBerry';
-    public const BROWSER_ICECAT       = 'IceCat';
-    public const BROWSER_NOKIA_S60    = 'Nokia S60 OSS Browser';
-    public const BROWSER_NOKIA        = 'Nokia Browser';
-    public const BROWSER_MSN          = 'MSN Browser';
-    public const BROWSER_MSNBOT       = 'MSN Bot';
-    public const BROWSER_WEBOS        = 'Web OS Browser';
-    public const BROWSER_FB           = 'Facebook Browser';
-    public const BROWSER_UNKNOWN      = 'unknown';
+    const BROWSER_EDGE         = 'Microsoft Edge';
+    const BROWSER_OPERA        = 'Opera';
+    const BROWSER_OPERA_MINI   = 'Opera Mini';
+    const BROWSER_WEBTV        = 'WebTV';
+    const BROWSER_IE           = 'Internet Explorer';
+    const BROWSER_POCKET_IE    = 'Pocket Internet Explorer';
+    const BROWSER_KONQUEROR    = 'Konqueror';
+    const BROWSER_ICAB         = 'iCab';
+    const BROWSER_OMNIWEB      = 'OmniWeb';
+    const BROWSER_FIREBIRD     = 'Firebird';
+    const BROWSER_FIREFOX      = 'Firefox';
+    const BROWSER_ICEWEASEL    = 'Iceweasel';
+    const BROWSER_SHIRETOKO    = 'Shiretoko';
+    const BROWSER_MOZILLA      = 'Mozilla';
+    const BROWSER_AMAYA        = 'Amaya';
+    const BROWSER_LYNX         = 'Lynx';
+    const BROWSER_SAFARI       = 'Safari';
+    const BROWSER_IPHONE       = 'iPhone';
+    const BROWSER_IPOD         = 'iPod';
+    const BROWSER_IPAD         = 'iPad';
+    const BROWSER_CHROME       = 'Chrome';
+    const BROWSER_BRAVE        = 'Brave';
+    const BROWSER_VIVALDI      = 'Vivaldi';
+    const BROWSER_OPERA_TOUCH  = 'Opera Touch';
+    const BROWSER_ANDROID      = 'Android';
+    const BROWSER_GOOGLEBOT    = 'GoogleBot';
+    const BROWSER_SLURP        = 'Yahoo! Slurp';
+    const BROWSER_W3CVALIDATOR = 'W3C Validator';
+    const BROWSER_BLACKBERRY   = 'BlackBerry';
+    const BROWSER_ICECAT       = 'IceCat';
+    const BROWSER_NOKIA_S60    = 'Nokia S60 OSS Browser';
+    const BROWSER_NOKIA        = 'Nokia Browser';
+    const BROWSER_MSN          = 'MSN Browser';
+    const BROWSER_MSNBOT       = 'MSN Bot';
+    const BROWSER_WEBOS        = 'Web OS Browser';
+    const BROWSER_FB           = 'Facebook Browser';
+    const BROWSER_UNKNOWN      = 'unknown';
 
     // Platforms (kept for BC where used externally)
-    public const PLATFORM_WINDOWS     = 'Windows';
-    public const PLATFORM_WINDOWS_CE  = 'Windows CE';
-    public const PLATFORM_APPLE       = 'Apple';
-    public const PLATFORM_LINUX       = 'Linux';
-    public const PLATFORM_OS2         = 'OS/2';
-    public const PLATFORM_BEOS        = 'BeOS';
-    public const PLATFORM_IPHONE      = 'iPhone';
-    public const PLATFORM_IPOD        = 'iPod';
-    public const PLATFORM_IPAD        = 'iPad';
-    public const PLATFORM_BLACKBERRY  = 'BlackBerry';
-    public const PLATFORM_NOKIA       = 'Nokia';
-    public const PLATFORM_FREEBSD     = 'FreeBSD';
-    public const PLATFORM_OPENBSD     = 'OpenBSD';
-    public const PLATFORM_NETBSD      = 'NetBSD';
-    public const PLATFORM_SUNOS       = 'SunOS';
-    public const PLATFORM_OPENSOLARIS = 'OpenSolaris';
-    public const PLATFORM_ANDROID     = 'Android';
-    public const PLATFORM_WEBOS       = 'webOS';
+    const PLATFORM_WINDOWS     = 'Windows';
+    const PLATFORM_WINDOWS_CE  = 'Windows CE';
+    const PLATFORM_APPLE       = 'Apple';
+    const PLATFORM_LINUX       = 'Linux';
+    const PLATFORM_OS2         = 'OS/2';
+    const PLATFORM_BEOS        = 'BeOS';
+    const PLATFORM_IPHONE      = 'iPhone';
+    const PLATFORM_IPOD        = 'iPod';
+    const PLATFORM_IPAD        = 'iPad';
+    const PLATFORM_BLACKBERRY  = 'BlackBerry';
+    const PLATFORM_NOKIA       = 'Nokia';
+    const PLATFORM_FREEBSD     = 'FreeBSD';
+    const PLATFORM_OPENBSD     = 'OpenBSD';
+    const PLATFORM_NETBSD      = 'NetBSD';
+    const PLATFORM_SUNOS       = 'SunOS';
+    const PLATFORM_OPENSOLARIS = 'OpenSolaris';
+    const PLATFORM_ANDROID     = 'Android';
+    const PLATFORM_WEBOS       = 'webOS';
 
     // State
     private $_agent        = '';
@@ -131,7 +131,7 @@ final class CFGP_Browser
     /**
      * Reset state from globals and Client Hints.
      */
-    public function reset(): void
+    public function reset()
     {
         $ua = isset($_SERVER['HTTP_USER_AGENT']) ? (string) $_SERVER['HTTP_USER_AGENT'] : '';
         if (function_exists('sanitize_text_field')) {
@@ -188,7 +188,7 @@ final class CFGP_Browser
         return $this->_version;
     }
 
-    public function setVersion($version): void
+    public function setVersion($version)
     {
         $this->_version = preg_replace('/[^0-9a-zA-Z\.\-]/', '', (string) $version);
         if ($this->_version === '') {
@@ -201,7 +201,7 @@ final class CFGP_Browser
         return $this->_aol_version;
     }
 
-    public function setAolVersion($version): void
+    public function setAolVersion($version)
     {
         $this->_aol_version = preg_replace('/[^0-9a-zA-Z\.]/', '', (string) $version);
         if ($this->_aol_version === '') {
@@ -224,17 +224,17 @@ final class CFGP_Browser
         return $this->_is_robot;
     }
 
-    public function setAol($isAol): void
+    public function setAol($isAol)
     {
         $this->_is_aol = (bool) $isAol;
     }
 
-    protected function setMobile($value = true): void
+    protected function setMobile($value = true)
     {
         $this->_is_mobile = (bool) $value;
     }
 
-    protected function setRobot($value = true): void
+    protected function setRobot($value = true)
     {
         $this->_is_robot = (bool) $value;
     }
@@ -244,7 +244,7 @@ final class CFGP_Browser
         return $this->_agent;
     }
 
-    public function setUserAgent($agent_string): void
+    public function setUserAgent($agent_string)
     {
         $this->reset();
         $this->_agent = (string) $agent_string;
@@ -266,7 +266,7 @@ final class CFGP_Browser
 
     // ----------------- Core detection -----------------
 
-    protected function determine(): void
+    protected function determine()
     {
         $this->checkPlatform();   // via CFGP_OS::get($ua)
         $this->checkBrowsers();   // CH-aware + UA fallback
@@ -357,7 +357,7 @@ final class CFGP_Browser
         return false;
     }
 
-    private function parseBrands(?string $raw): array
+    private function parseBrands($raw): array
     {
         if (!$raw) return [];
         // Example: Chromium;v="139.0.0.0", "Brave";v="1.69.153"
@@ -390,7 +390,7 @@ final class CFGP_Browser
         return self::BROWSER_UNKNOWN;
     }
 
-    private function stripQuotes(?string $v): ?string
+    private function stripQuotes($v)
     {
         if ($v === null) return null;
         $v = trim($v);
@@ -401,7 +401,7 @@ final class CFGP_Browser
         return $v;
     }
 
-    private function server(string $key): ?string
+    private function server(string $key)
     {
         return isset($_SERVER[$key]) && is_string($_SERVER[$key]) ? $_SERVER[$key] : null;
     }
@@ -864,7 +864,7 @@ final class CFGP_Browser
 
     // ----------------- Platform via CFGP_OS -----------------
 
-    protected function checkPlatform(): void
+    protected function checkPlatform()
     {
         if (class_exists('CFGP_ClientHints')) {
             // Encourage headers early in bootstrap:

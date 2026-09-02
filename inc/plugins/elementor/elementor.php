@@ -17,11 +17,11 @@ if (!class_exists('CFGP__Plugin__elementor', false)):
     class CFGP__Plugin__elementor extends CFGP_Global
     {
         // Current plugin version
-        public const VERSION = '1.0.2';
+        const VERSION = '1.0.2';
         // Minimum required Elementor version
-        public const MINIMUM_ELEMENTOR_VERSION = '3.3.0';
+        const MINIMUM_ELEMENTOR_VERSION = '3.3.0';
         // Minimum required PHP version
-        public const MINIMUM_PHP_VERSION = '7.0.0';
+        const MINIMUM_PHP_VERSION = '7.0.0';
 
         /*
          * Construct

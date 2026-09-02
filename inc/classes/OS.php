@@ -113,7 +113,7 @@ final class CFGP_OS
      * @param string|null $user_agent
      * @return string
      */
-    public static function get(?string $user_agent = null): string
+    public static function get($user_agent = null): string
     {
         // SERVER OS detection (no UA provided)
         if ( $user_agent === null || $user_agent === '' ) {

@@ -26,18 +26,18 @@ if (!defined('ABSPATH')) {
 if (!class_exists('CFGP_Defaults', false)) : class CFGP_Defaults
 {
     // Define license codes
-    public const BASIC_LICENSE         = 'CFGEO1M';
-    public const PERSONAL_LICENSE      = 'CFGEOSWL';
-    public const PERSONAL_LICENSE_4Y   = 'CFGEOSWL4Y';
-    public const FREELANCER_LICENSE    = 'CFGEO3WL';
-    public const FREELANCER_LICENSE_4Y = 'CFGEO3WL4Y';
-    public const BUSINESS_LICENSE      = 'CFGEODWL';
-    public const BUSINESS_LICENSE_4Y   = 'CFGEODWL4Y';
-    public const LIFETIME_LICENSE      = 'LIFETIME';
-    public const DEVELOPER_LICENSE     = 'CFGEODEV';
+    const BASIC_LICENSE         = 'CFGEO1M';
+    const PERSONAL_LICENSE      = 'CFGEOSWL';
+    const PERSONAL_LICENSE_4Y   = 'CFGEOSWL4Y';
+    const FREELANCER_LICENSE    = 'CFGEO3WL';
+    const FREELANCER_LICENSE_4Y = 'CFGEO3WL4Y';
+    const BUSINESS_LICENSE      = 'CFGEODWL';
+    const BUSINESS_LICENSE_4Y   = 'CFGEODWL4Y';
+    const LIFETIME_LICENSE      = 'LIFETIME';
+    const DEVELOPER_LICENSE     = 'CFGEODEV';
 
     // License options
-    public const LICENSE = [
+    const LICENSE = [
         'key'         => '',
         'id'          => '',
         'expire'      => '',
@@ -49,12 +49,12 @@ if (!class_exists('CFGP_Defaults', false)) : class CFGP_Defaults
     ];
 
     // License options
-    public const REST = [
+    const REST = [
         'secret_key' => '',
     ];
 
     // Plugin options
-    public const OPTIONS = [
+    const OPTIONS = [
         'enable_top_bar_menu'     => 1,
         'enable_top_bar_currency' => 1,
         'enable_beta'             => 1,
@@ -123,14 +123,14 @@ if (!class_exists('CFGP_Defaults', false)) : class CFGP_Defaults
     ];
 
     // Beta options
-    public const BETA_OPTIONS = [
+    const BETA_OPTIONS = [
         'enable_simple_shortcode',
     ];
 
     /*
      * API calls used inside Geo Controller.
      */
-    public const API = [
+    const API = [
         // Standard Geo Controller API URLs
         'main'         => 'http://api.wpgeocontroller.com/v2/',
         'authenticate' => 'http://api.wpgeocontroller.com/v2/authentication',
@@ -181,7 +181,7 @@ if (!class_exists('CFGP_Defaults', false)) : class CFGP_Defaults
     /*
      * API Return values.
      */
-    public const API_RETURN = [
+    const API_RETURN = [
         'ip'                    => null,
         'ip_version'            => null,
         'ip_number'             => null,
@@ -249,7 +249,7 @@ if (!class_exists('CFGP_Defaults', false)) : class CFGP_Defaults
     /*
      * API fields.
      */
-    public const API_FIELDS = [
+    const API_FIELDS = [
         'ip'                    => null,
         'ip_version'            => null,
         'ip_number'             => null,
@@ -306,7 +306,7 @@ if (!class_exists('CFGP_Defaults', false)) : class CFGP_Defaults
         'credit'                => null,
     ];
 
-    public const CONTINENT_LIST = [
+    const CONTINENT_LIST = [
         'AF' => 'Africa',
         'NA' => 'North America',
         'OC' => 'Oceania',
@@ -316,7 +316,7 @@ if (!class_exists('CFGP_Defaults', false)) : class CFGP_Defaults
         'SA' => 'South America',
     ];
 
-    public const COUNTRY_LIST = [
+    const COUNTRY_LIST = [
         'AF' => 'Afghanistan',
         'AL' => 'Albania',
         'DZ' => 'Algeria',
@@ -582,7 +582,7 @@ if (!class_exists('CFGP_Defaults', false)) : class CFGP_Defaults
         'AX' => 'Åland Islands',
     ];
 
-    public const COUNTRY_REGION_LIST = [
+    const COUNTRY_REGION_LIST = [
         'Australia and New Zealand' => [
             'AU' => 'Australia',
             'NZ' => 'New Zealand',
@@ -890,7 +890,7 @@ if (!class_exists('CFGP_Defaults', false)) : class CFGP_Defaults
         ],
     ];
 
-    public const CURRENCY_BY_COUNTRY = [
+    const CURRENCY_BY_COUNTRY = [
         'AFN' => [ 'AF' ],
         'ALL' => [ 'AL' ],
         'DZD' => [ 'DZ' ],
@@ -1051,7 +1051,7 @@ if (!class_exists('CFGP_Defaults', false)) : class CFGP_Defaults
         'ZWD' => [ 'ZW' ],
     ];
 
-    public const CURRENCY_SYMBOL = [
+    const CURRENCY_SYMBOL = [
         'AED' => '&#1583;.&#1573;', // ?
         'AFN' => '&#65;&#102;',
         'ALL' => '&#76;&#101;&#107;',
@@ -1215,7 +1215,7 @@ if (!class_exists('CFGP_Defaults', false)) : class CFGP_Defaults
         'RTG' => '&#90;&#36;',
     ];
 
-    public const CURRENCY_NAME = [
+    const CURRENCY_NAME = [
         'AED' => 'United Arab Emirates dirham',
         'AFN' => 'Afghan afghani',
         'ALL' => 'Albanian lek',
@@ -1382,7 +1382,7 @@ if (!class_exists('CFGP_Defaults', false)) : class CFGP_Defaults
         'RTG' => 'Zimbabwean dollar',
     ];
 
-    public const COUNTRY_TO_LOCALE = [
+    const COUNTRY_TO_LOCALE = [
         'ad' => 'ca',
         'ae' => 'ar',
         'af' => 'fa,ps',

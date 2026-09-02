@@ -325,7 +325,7 @@ if (!class_exists('CFGP_IP')) :
 
                 return CFGP_Cache::set('IP-server', $gethostbyname);
             } else {
-                $hostname = preg_replace(['~https?:\/\/~','~^w{3}\.~'], '', gethostbyname(trim(`hostname`)));
+                $hostname = preg_replace(['~https?:\/\/~','~^w{3}\.~'], '', gethostbyname(trim((string) shell_exec('hostname'))));
 
                 return CFGP_Cache::set('IP-server', $hostname);
             }

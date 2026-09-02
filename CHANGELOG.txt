@@ -1,5 +1,9 @@
 == Changelog ==
 
+= 9.0.0 =
+* Improved PHP 8.x compatibility by safely handling optional shortcode, option, and filter values.
+* Updated the Google Maps shortcode loader and retained compatibility with legacy map API key storage.
+
 = 8.9.9 =
 * Security: Hardened Gravity Forms field value handling and validation.
 * Security: Improved authorization checks and data handling in SEO redirection tools.

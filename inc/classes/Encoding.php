@@ -232,7 +232,7 @@ if (!class_exists('CFGP_Encoding', false)) : class CFGP_Encoding
 
             return $text;
         } elseif (is_string($text)) {
-            return utf8_decode(str_replace(array_keys(self::$UTF8_to_WIN1252), array_values(self::$UTF8_to_WIN1252), self::toUTF8($text)));
+            return self::utf8_to_iso88591(str_replace(array_keys(self::$UTF8_to_WIN1252), array_values(self::$UTF8_to_WIN1252), self::toUTF8($text)));
         } else {
             return $text;
         }
@@ -262,9 +262,9 @@ if (!class_exists('CFGP_Encoding', false)) : class CFGP_Encoding
 
         while ($last <> $text) {
             $last = $text;
-            $text = self::toUTF8(utf8_decode(str_replace(array_keys(self::$UTF8_to_WIN1252), array_values(self::$UTF8_to_WIN1252), $text)));
+            $text = self::toUTF8(self::utf8_to_iso88591(str_replace(array_keys(self::$UTF8_to_WIN1252), array_values(self::$UTF8_to_WIN1252), $text)));
         }
-        $text = self::toUTF8(utf8_decode(str_replace(array_keys(self::$UTF8_to_WIN1252), array_values(self::$UTF8_to_WIN1252), $text)));
+        $text = self::toUTF8(self::utf8_to_iso88591(str_replace(array_keys(self::$UTF8_to_WIN1252), array_values(self::$UTF8_to_WIN1252), $text)));
 
         return $text;
     }
@@ -275,6 +275,11 @@ if (!class_exists('CFGP_Encoding', false)) : class CFGP_Encoding
         // (ignoring Windows-1252 chars from 80 to 9F) use this function to fix it.
         // See: http://en.wikipedia.org/wiki/Windows-1252
         return str_replace(array_keys(self::$broken_UTF8_to_UTF8), array_values(self::$broken_UTF8_to_UTF8), $text);
+    }
+
+    private static function utf8_to_iso88591($text)
+    {
+        return mb_convert_encoding($text, 'ISO-8859-1', 'UTF-8');
     }
 
     public static function removeBOM($str = '')

@@ -214,7 +214,7 @@ if (!class_exists('CFGP_Sidebar', false)) :
 		/**
 		 * Render standardized error block
 		 */
-		private function render_error(string $title, string $message): void {
+		private function render_error(string $title, string $message) {
 			printf('<h3><span class="cfa cfa-close"></span> %s</h3><p>%s</p>',
 				esc_html($title),
 				esc_html($message)
@@ -337,7 +337,7 @@ if (!class_exists('CFGP_Sidebar', false)) :
 		 *
 		 * @param array $links List of links with 'url' and 'text'
 		 */
-		private function render_footer_links(array $links): void
+		private function render_footer_links(array $links)
 		{
 			echo '<p class="community-events-footer" style="text-align:center;">';
 			$output = [];

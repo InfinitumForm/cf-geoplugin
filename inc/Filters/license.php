@@ -29,7 +29,7 @@ add_action('cfgp/page/license/content', function () {
 
         $select_options = [];
 
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST') {
             if (wp_verify_nonce(CFGP_U::request_string('nonce'), CFGP_NAME.'-activate-license') !== false) {
                 CFGP_License::activate(CFGP_U::request_string('license_key'), CFGP_U::request_string('license_sku'));
             } elseif (isset($_POST['deactivate_license']) && wp_verify_nonce(CFGP_U::request_string('nonce'), CFGP_NAME.'-deactivate-license') !== false) {

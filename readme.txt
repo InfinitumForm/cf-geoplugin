@@ -5,7 +5,7 @@ Tags: geolocation, geotargeting, woocommerce, location, geoip
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.0
-Stable tag: 8.9.9
+Stable tag: 9.0.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Commercial: https://wpgeocontroller.com/
@@ -415,6 +415,10 @@ Please inform us if any of these errors occur via contact form on our website [h
 
 == Changelog ==
 
+= 9.0.0 =
+* Improved PHP 8.x compatibility by safely handling optional shortcode, option, and filter values.
+* Updated the Google Maps shortcode loader and retained compatibility with legacy map API key storage.
+
 = 8.9.9 =
 * Security: Hardened Gravity Forms field value handling and validation.
 * Security: Improved authorization checks and data handling in SEO redirection tools.
@@ -556,6 +560,10 @@ Please inform us if any of these errors occur via contact form on our website [h
 * Improved javascript algorithms
 
 == Upgrade Notice ==
+
+= 9.0.0 =
+* Improved PHP 8.x compatibility by safely handling optional shortcode, option, and filter values.
+* Updated the Google Maps shortcode loader and retained compatibility with legacy map API key storage.
 
 = 8.9.9 =
 * Security: Hardened Gravity Forms field value handling and validation.

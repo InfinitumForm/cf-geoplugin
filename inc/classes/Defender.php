@@ -53,7 +53,7 @@ if (!class_exists('CFGP_Defender', false)) : class CFGP_Defender extends CFGP_Gl
                         header('HTTP/1.0 403 Forbidden', true, 403);
                     }
 
-                    die(wp_kses_post(wpautop(html_entity_decode(stripslashes(apply_filters(
+                    die(wp_kses_post(wpautop(html_entity_decode(stripslashes((string) apply_filters(
                         'cfgp/defender/tor/denied/message',
                         sprintf(
                             '<h1>%s</h1><p>%s</p>',
@@ -73,7 +73,7 @@ if (!class_exists('CFGP_Defender', false)) : class CFGP_Defender extends CFGP_Gl
                         header('HTTP/1.0 403 Forbidden', true, 403);
                     }
 
-                    die(wp_kses_post(wpautop(html_entity_decode(stripslashes(apply_filters(
+                    die(wp_kses_post(wpautop(html_entity_decode(stripslashes((string) apply_filters(
                         'cfgp/defender/tor/exclusive/message',
                         sprintf(
                             '<h1>%s</h1><p>%s</p>',
@@ -110,7 +110,7 @@ if (!class_exists('CFGP_Defender', false)) : class CFGP_Defender extends CFGP_Gl
         if (
             is_admin()
             && CFGP_U::request_bool('save_defender')
-            && wp_verify_nonce(sanitize_text_field($_REQUEST['nonce']), CFGP_NAME.'-save-defender') !== false
+            && wp_verify_nonce(sanitize_text_field($_REQUEST['nonce'] ?? ''), CFGP_NAME.'-save-defender') !== false
             && isset($_POST['block_proxy'])
         ) {
             CFGP_U::set_defender_cookie();
@@ -147,7 +147,7 @@ if (!class_exists('CFGP_Defender', false)) : class CFGP_Defender extends CFGP_Gl
                 header('HTTP/1.0 403 Forbidden', true, 403);
             }
 
-            die(wp_kses_post(wpautop(html_entity_decode(stripslashes(CFGP_Options::get('block_country_messages'))))));
+            die(wp_kses_post(wpautop(html_entity_decode(stripslashes((string) (CFGP_Options::get('block_country_messages') ?? ''))))));
         }
 
         // Block Spam
@@ -162,7 +162,7 @@ if (!class_exists('CFGP_Defender', false)) : class CFGP_Defender extends CFGP_Gl
                     header($this->header, true, 403);
                 }
 
-                die(wp_kses_post(wpautop(html_entity_decode(stripslashes(CFGP_Options::get('block_country_messages'))))));
+                die(wp_kses_post(wpautop(html_entity_decode(stripslashes((string) (CFGP_Options::get('block_country_messages') ?? ''))))));
             }
         }
     }
