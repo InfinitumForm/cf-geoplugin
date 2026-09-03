@@ -270,17 +270,11 @@ $API = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
                                 <tbody>
                                 	<?php
                                     do_action('cfgp/table/before/css_property', $API);
-						    $CFGEO       = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
-						    $allowed_css = apply_filters('cfgp/public/css/allowed', [
-						        'country',
-						        'country_code',
-						        'region',
-						        'city',
-						        'continent',
-						        'continent_code',
-						        'currency',
-						        'base_currency',
-						    ]);
+						    $CFGEO = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
+						    $css_parameters = CFGP_Public::get_css_parameters();
+						    $properties = is_array($css_parameters) && isset($css_parameters['properties']) && is_array($css_parameters['properties']) ? $css_parameters['properties'] : [];
+						    $allowed_css = apply_filters('cfgp/public/css/allowed', $properties);
+						    $allowed_css = is_array($allowed_css) ? $allowed_css : [];
 
 						    foreach ($CFGEO as $key => $geo) :
 						        if (empty($geo) || !in_array($key, $allowed_css, true) !== false) {
@@ -293,11 +287,18 @@ $API = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
                                         <td><code>cfgeo-hide-from-<?php echo esc_html($geo); ?></code></td>
                                     </tr>
                                     <?php endforeach;
-						    do_action('cfgp/table/after/css_property', $API); ?>
+						    $controls = is_array($css_parameters) && isset($css_parameters['controls']) && is_array($css_parameters['controls']) ? $css_parameters['controls'] : [];
+						    foreach ($controls as $classes) :
+						        if (!is_array($classes) || empty($classes['show']) || empty($classes['hide'])) {
+						            continue;
+						        }
+						    ?>
 									<tr>
-                                        <td><code>cfgeo-show-in-tor</code></td>
-                                        <td><code>cfgeo-hide-from-tor</code></td>
+                                        <td><code><?php echo esc_html($classes['show']); ?></code></td>
+                                        <td><code><?php echo esc_html($classes['hide']); ?></code></td>
                                     </tr>
+						    <?php endforeach;
+						    do_action('cfgp/table/after/css_property', $API); ?>
                                 </tbody>
                                 <tfoot>
                                     <tr>

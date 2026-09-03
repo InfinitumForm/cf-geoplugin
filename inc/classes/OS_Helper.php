@@ -81,7 +81,11 @@ final class CFGP_ClientHints
         $platformVersionRaw = self::stripQuotes(self::server(self::H_SEC_CH_UA_PLATFORM_VERSION));
         $arch               = self::stripQuotes(self::server(self::H_SEC_CH_UA_ARCH));
         $bitness            = self::stripQuotes(self::server(self::H_SEC_CH_UA_BITNESS));
-        $brands             = self::stripQuotes(self::server(self::H_SEC_CH_UA_FULL_VERSION_LIST)) ?: self::stripQuotes(self::server(self::H_SEC_CH_UA));
+        // A brand list is structured data, not one quoted scalar; preserve its quotes.
+        $brandsRaw          = self::server(self::H_SEC_CH_UA_FULL_VERSION_LIST) ?: self::server(self::H_SEC_CH_UA);
+        $brands             = is_string($brandsRaw) && trim($brandsRaw) !== '' ? trim($brandsRaw) : null;
+        $mobileRaw          = trim((string) self::server(self::H_SEC_CH_UA_MOBILE));
+        $mobile             = $mobileRaw === '?1' ? true : ($mobileRaw === '?0' ? false : null);
 
         // Normalize platform name
         $platform = self::normalizePlatform($platformRaw, $ua);
@@ -113,6 +117,7 @@ final class CFGP_ClientHints
             'architecture'     => $arch ?: null,
             'bitness'          => $bitness ?: null,
             'brands'           => $brands ?: null,
+            'mobile'           => $mobile,
             'ua'               => $ua ?: null,
             'osName'           => $osName,
             'is_windows'       => $isWindows,

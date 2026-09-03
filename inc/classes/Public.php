@@ -102,62 +102,132 @@ if (!class_exists('CFGP_Public', false)) : class CFGP_Public extends CFGP_Global
 <style media="all" id="cfgp-display-control-css" data-nonce="<?php echo esc_attr(wp_create_nonce('cfgeo-process-css-cache-ajax')); ?>"><?php $this->get_generated_css(); ?></style>
 	<?php }
 
+    /**
+     * Return the single source of truth for CSS-backed API properties and controls.
+     *
+     * @return array
+     */
+    public static function get_css_parameters()
+    {
+        /*
+         * Add CSS-backed API properties and boolean display controls here.
+         * The CSS generator and the admin reference table share this definition.
+         */
+        return apply_filters('cfgp/public/css/parameters', [
+            'properties' => [
+                'country',
+                'country_code',
+                'region',
+                'city',
+                'continent',
+                'continent_code',
+                'currency',
+                'base_currency',
+            ],
+            'controls' => [
+                'is_tor' => [
+                    'show' => 'cfgeo-show-in-tor',
+                    'hide' => 'cfgeo-hide-from-tor',
+                ],
+                'is_vat' => [
+                    'show' => 'cfgeo-show-from-vat',
+                    'hide' => 'cfgeo-hide-from-vat',
+                ],
+                'is_mobile' => [
+                    'show' => 'cfgeo-show-from-mobile',
+                    'hide' => 'cfgeo-hide-from-mobile',
+                ],
+                'is_proxy' => [
+                    'show' => 'cfgeo-show-from-proxy',
+                    'hide' => 'cfgeo-hide-from-proxy',
+                ],
+                'is_spam' => [
+                    'show' => 'cfgeo-show-from-spam',
+                    'hide' => 'cfgeo-hide-from-spam',
+                ],
+                'is_eu' => [
+                    'show' => 'cfgeo-show-from-eu',
+                    'hide' => 'cfgeo-hide-from-eu',
+                ],
+            ],
+        ]);
+    }
+
     /*
      * Get generated CSS code in HTML and AJAX
      * @verson    1.0.0
      */
     public function get_generated_css()
     {
-        $is_ajax = (sanitize_text_field($_REQUEST['action'] ?? '') == 'cfgp_display_control_css');
+        $request_action = isset($_REQUEST['action']) && is_scalar($_REQUEST['action']) ? sanitize_text_field((string) $_REQUEST['action']) : '';
+        $is_ajax = ($request_action == 'cfgp_display_control_css');
 
         $CFGEO = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
 
-        if (empty($CFGEO)) {
+        if (empty($CFGEO) || !is_array($CFGEO)) {
             return;
         }
 
         $css_show = $css_hide = [];
 
-        $allowed_css = apply_filters('cfgp/public/css/allowed', [
-            'country',
-            'country_code',
-            'region',
-            'city',
-            'continent',
-            'continent_code',
-            'currency',
-            'base_currency',
-        ]);
+        $css_parameters = self::get_css_parameters();
+        $properties = is_array($css_parameters) && isset($css_parameters['properties']) && is_array($css_parameters['properties'])
+            ? $css_parameters['properties']
+            : [];
+        $allowed_css = apply_filters('cfgp/public/css/allowed', $properties);
+        $allowed_css = self::normalize_css_property_keys($allowed_css);
 
         foreach ($CFGEO as $key => $geo) {
-            if (empty($geo) || !in_array($key, $allowed_css, true) !== false) {
+            if (!is_scalar($geo) || $geo === '' || !in_array($key, $allowed_css, true)) {
                 continue;
             }
-            $geo            = sanitize_title($geo);
-            $css_show[$geo] = '.cfgeo-show-in-' . $geo;
-            $css_hide[$geo] = '.cfgeo-hide-from-' . $geo;
+            $geo = sanitize_html_class(sanitize_title((string) $geo));
+            if ($geo === '') {
+                continue;
+            }
+            $css_show['geo-' . $key . '-' . $geo] = '.cfgeo-show-in-' . $geo;
+            $css_hide['geo-' . $key . '-' . $geo] = '.cfgeo-hide-from-' . $geo;
         }
 
-        if ($CFGEO['is_tor']) {
-            $css_show['is_tor'] = '.cfgeo-show-in-tor';
-            $css_hide['is_tor'] = '.cfgeo-hide-from-tor';
-        } else {
-            $css_show['is_tor'] = '.cfgeo-hide-from-tor';
-            $css_hide['is_tor'] = '.cfgeo-show-in-tor';
+        $controls = is_array($css_parameters) && isset($css_parameters['controls']) && is_array($css_parameters['controls']) ? $css_parameters['controls'] : [];
+        foreach ($controls as $key => $classes) {
+            if (!is_array($classes) || !isset($classes['show'], $classes['hide'])) {
+                continue;
+            }
+
+            $show_class = self::normalize_css_class_name($classes['show']);
+            $hide_class = self::normalize_css_class_name($classes['hide']);
+            if ($show_class === '' || $hide_class === '') {
+                continue;
+            }
+            $is_active = !empty($CFGEO[$key]);
+            $css_show[$key] = '.' . ($is_active ? $show_class : $hide_class);
+            $css_hide[$key] = '.' . ($is_active ? $hide_class : $show_class);
         }
 
-        $css_show = apply_filters('cfgp/public/css/show', $css_show);
-        $css_hide = apply_filters('cfgp/public/css/hide', $css_hide);
+        $css_show = self::normalize_css_selectors(apply_filters('cfgp/public/css/show', $css_show));
+        $css_hide = self::normalize_css_selectors(apply_filters('cfgp/public/css/hide', $css_hide));
+        $inactive_show_selectors = self::inactive_show_selectors($css_show);
 
         ob_start('trim', 0, PHP_OUTPUT_HANDLER_REMOVABLE);
 
-        if (!empty($css_show)) :
+        if (!empty($inactive_show_selectors) || !empty($css_hide)) :
             if ($is_ajax) {
                 header('Content-type: text/css', true);
                 header('Cache-Control: no-cache, must-revalidate'); // HTTP/1.1
                 header('Expires: Sat, 26 Jul 1997 05:00:00 GMT'); // Date in the past
             }
-            ?>*[class="cfgeo-show-in-"],*[class*="cfgeo-show-in-"],*[class^="cfgeo-show-in-"]{display: none;}<?php echo esc_attr(join(',', $css_hide)); ?>{display:none !important;}<?php echo esc_attr(join(',', $css_show)); ?>{display:block !important;}<?php do_action('cfgp/public/css'); ?><?php
+            if (!empty($inactive_show_selectors)) {
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- CSS selectors are generated and sanitized internally.
+				echo $inactive_show_selectors . '{display:none !important;}';
+			}
+
+			if (!empty($css_hide)) {
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- CSS selectors are generated and sanitized internally.
+				echo implode(',', $css_hide) . '{display:none !important;}';
+			}
+
+			do_action('cfgp/public/css');
         endif;
 
         $css = '';
@@ -172,6 +242,111 @@ if (!class_exists('CFGP_Public', false)) : class CFGP_Public extends CFGP_Global
         if ($is_ajax) {
             exit;
         }
+    }
+
+    /**
+     * Normalize a class token generated from API data or parameter definitions.
+     *
+     * @param mixed $class_name
+     * @return string
+     */
+    private static function normalize_css_class_name($class_name)
+    {
+        if (!is_scalar($class_name)) {
+            return '';
+        }
+
+        return sanitize_html_class((string) $class_name);
+    }
+
+    /**
+     * @param mixed $keys
+     * @return array
+     */
+    private static function normalize_css_property_keys($keys)
+    {
+        if (!is_array($keys)) {
+            return [];
+        }
+
+        $normalized = [];
+        foreach ($keys as $key) {
+            if (is_string($key) && $key !== '') {
+                $normalized[] = $key;
+            }
+        }
+
+        return array_values(array_unique($normalized));
+    }
+
+    /**
+     * Keep only simple, validated class selectors returned through public filters.
+     *
+     * @param mixed $selectors
+     * @return array
+     */
+    private static function normalize_css_selectors($selectors)
+    {
+        if (!is_array($selectors)) {
+            return [];
+        }
+
+        $normalized = [];
+        foreach ($selectors as $selector) {
+            if (!is_scalar($selector)) {
+                continue;
+            }
+
+            $selector = trim((string) $selector);
+            if (!preg_match('/^\.([A-Za-z0-9_-]+)$/', $selector, $matches)) {
+                continue;
+            }
+
+            $class_name = self::normalize_css_class_name($matches[1]);
+            if ($class_name !== '') {
+                $normalized['.' . $class_name] = '.' . $class_name;
+            }
+        }
+
+        $normalized = array_values($normalized);
+        sort($normalized, SORT_STRING);
+
+        return $normalized;
+    }
+
+    /**
+     * Hide show-prefixed classes only when none of the active classes is present.
+     * A matching active hide class is deliberately included in the exclusions so
+     * multiple active show conditions retain their historical OR behavior.
+     *
+     * If an element also matches a selector in the active hide list, the explicit
+     * hide rule below wins and the element remains hidden.
+     *
+     * @param array $active_selectors
+     * @return string
+     */
+    private static function inactive_show_selectors($active_selectors)
+    {
+        $not_selectors = '';
+        foreach ($active_selectors as $selector) {
+            $not_selectors .= ':not(' . esc_attr($selector) . ')';
+        }
+
+        $prefix_selectors = [
+            '*[class="cfgeo-show-in-"]',
+            '*[class*="cfgeo-show-in-"]',
+            '*[class^="cfgeo-show-in-"]',
+            '*[class="cfgeo-show-from-"]',
+            '*[class*="cfgeo-show-from-"]',
+            '*[class^="cfgeo-show-from-"]',
+        ];
+
+        foreach ($prefix_selectors as &$selector) {
+            $selector .= $not_selectors;
+        }
+        unset($selector);
+
+        return implode(',', $prefix_selectors);
     }
 
     /*

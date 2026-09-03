@@ -428,6 +428,7 @@ Please inform us if any of these errors occur via contact form on our website [h
 * Security: added a one-time recovery link that temporarily opens only the WordPress login flow; recovery tokens are stored only as hashes and are invalidated after first use.
 * Security: protected global SEO mutations and page-level SEO redirection metadata with explicit capabilities, nonces, and request-method checks.
 * Fixed global postcode matching, the country-and-city redirect execution path, page-level exclude matching, safe empty CSV export, and CSV import rollback handling.
+* CSS display controls now preserve the matching element's original display mode, including flex, grid, inline, inline-block, and table layouts.
 
 = 8.9.9 =
 * Security: Hardened Gravity Forms field value handling and validation.
