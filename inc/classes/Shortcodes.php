@@ -99,7 +99,7 @@ if (!class_exists('CFGP_Shortcodes', false)) : class CFGP_Shortcodes extends CFG
         $this->add_shortcode('cfgeo_gps', 'cfgeo_gps');
 
         // Beta shortcodes
-        if (CFGP_Options::get('enable_beta', 0) && CFGP_Options::get_beta('enable_simple_shortcode')) {
+        if (CFGP_Options::get_beta('enable_simple_shortcode')) {
             $this->add_action('wp_loaded', 'shortcode_automat_setup');
 
             $this->add_shortcode('geo', 'cf_geoplugin');
@@ -183,36 +183,32 @@ if (!class_exists('CFGP_Shortcodes', false)) : class CFGP_Shortcodes extends CFG
         }
     }
 
-    /**
-     * Escape shortcodes for the internal docummentation purposes
-     *
-     * @since      7.4.3
-     *
-     * @version    7.4.3
-    */
-    public function cfgeo_escape_shortcode($attr, $content = '', $tag = 'escape_shortcode')
-	{
-		$cache = CFGP_U::is_attribute_exists('cache', $attr);
-
-		if (CFGP_Options::get('enable_cache', 0)) {
-			$cache = true;
+    
+	/**
+	 * Escape shortcode brackets for internal documentation.
+	 *
+	 * Preserves the original HTML markup, including pre and strong tags.
+	 * Documentation examples do not require dynamic AJAX caching.
+	 *
+	 * @since 7.4.3
+	 *
+	 * @param array|string $attr    Shortcode attributes.
+	 * @param string|null  $content Enclosed shortcode content.
+	 * @param string       $tag     Shortcode name.
+	 * @return string Escaped shortcode content.
+	 */
+	public function cfgeo_escape_shortcode( $attr, $content = '', $tag = 'escape_shortcode' ) {
+		if ( ! is_string( $content ) || '' === $content ) {
+			return '';
 		}
 
-		if (CFGP_U::is_attribute_exists('no_cache', $attr)) {
-			$cache = false;
-		}
-
-		if (is_admin()) {
-			$cache = false;
-		}
-
-		if (!empty($content)) {
-			// Simple and safe replacement of square brackets
-			$content = str_replace(['[', ']'], ['&#91;', '&#93;'], $content);
-		}
-
-		return self::__cache($tag, $content, (array)$attr, $content, $cache);
+		return str_replace(
+			array( '[', ']' ),
+			array( '&#91;', '&#93;' ),
+			$content
+		);
 	}
+
 
     /**
      * Main CF GeoPlugin Shortcode
@@ -1214,16 +1210,13 @@ LIMIT 1
             $api_params = [
                 'referer' => CFGP_U::get_host(true),
             ];
-            $api_url = add_query_arg(
-                $api_params,
-                CFGP_Defaults::API[(CFGP_Options::get('enable_ssl', 0) ? 'ssl_' : '')
-                    . 'converter']."/{$from}/{$to}/{$content}"
-            );
+            $api_url = CFGP_Defaults::API[(CFGP_Options::get('enable_ssl', 0) ? 'ssl_' : '')
+                . 'converter']."/{$from}/{$to}/{$content}";
 
-            $result = CFGP_U::curl_get($api_url);
+            $result = CFGP_U::api_request($api_url, $api_params);
 
             if (!$result) {
-                $result = CFGP_U::curl_get(CFGP_Defaults::falback_api_endpoints($api_url));
+                $result = CFGP_U::api_request(CFGP_Defaults::falback_api_endpoints($api_url), $api_params);
             }
 
             if (
@@ -1402,15 +1395,12 @@ LIMIT 1
         ];
         $from    = strtoupper(sanitize_text_field($_REQUEST['cfgp_currency_from'] ?? ''));
         $to      = strtoupper(sanitize_text_field($_REQUEST['cfgp_currency_to'] ?? ''));
-        $api_url = add_query_arg(
-            $api_params,
-            CFGP_Defaults::API[(CFGP_Options::get('enable_ssl', 0) ? 'ssl_' : '') . 'converter'].'/'.$from.'/'.$to.'/'.$amount
-        );
+        $api_url = CFGP_Defaults::API[(CFGP_Options::get('enable_ssl', 0) ? 'ssl_' : '') . 'converter'].'/'.$from.'/'.$to.'/'.$amount;
 
-        $result = CFGP_U::curl_get($api_url);
+        $result = CFGP_U::api_request($api_url, $api_params);
 
         if (!$result) {
-            $result = CFGP_U::curl_get(CFGP_Defaults::falback_api_endpoints($api_url));
+            $result = CFGP_U::api_request(CFGP_Defaults::falback_api_endpoints($api_url), $api_params);
         }
 
         if (isset($result['return'])) {
@@ -2294,53 +2284,65 @@ LIMIT 1
 
         $countries = CFGP_Library::get_countries();
 
-        add_action('wp_footer', function () use ($country_code, $id, $settings, $allowed_attr, $countries) { ?>
-	<script>
-	/* <![CDATA[ */
-	;(function($){
-		$('#<?php echo esc_attr($id); ?>').cfgeoMap("create", {
-			<?php foreach ($settings as $key => $value) {
-			    if (null !== $value && in_array($key, $allowed_attr, true)) {
-			        if (!is_numeric($value)) {
-			            if (in_array($value, ['true', 'false'], true)) {
-			                $value = ($value == 'true') ? 'true' : 'false';
-			            } else {
-			                $value = '"' . esc_attr($value) . '"';
-			            }
-			        } else {
-			            $value = esc_attr($value);
-			        }
-			        printf('%s:%s,'.PHP_EOL, esc_attr($key), esc_js($value));
-			    }
-			}; ?>
-			individualCountrySettings: [<?php echo esc_js(join(',' . PHP_EOL, array_map(function ($country_obj) use ($countries) {
-			    $color = null;
+        
+add_action('wp_footer', function () use ($id, $settings, $allowed_attr, $countries) {
+    $map_settings = [];
 
-			    if (strpos($country_obj, ':') !== false) {
-			        $country_obj = explode(':', $country_obj);
-			        $country     = esc_attr($country_obj[0] ?? '');
-			        $color       = esc_attr($country_obj[1] ?? '');
-			    } else {
-			        $country = esc_attr($country_obj);
-			    }
+    foreach ($settings as $key => $value) {
+        if (null === $value || !in_array($key, $allowed_attr, true)) {
+            continue;
+        }
 
-			    $country_name = esc_attr($countries[$country] ?? '');
+        if (is_string($value) && in_array($value, ['true', 'false'], true)) {
+            $map_settings[$key] = ('true' === $value);
+        } elseif (is_numeric($value)) {
+            $map_settings[$key] = 0 + $value;
+        } else {
+            $map_settings[$key] = $value;
+        }
+    }
 
-			    return '{
-					name: "'.esc_attr($country).'",
-					label: "'.esc_attr($country_name).'"' . ($color ? ',
-					color: "'.esc_attr($color).'"' : '') . '
-				}';
-			}, $settings['countries']))); ?>]
-		}, function() {
-			if( typeof window.cfgeo.interactive_map !== "undefined" && typeof window.cfgeo.interactive_map === "function") {
-				window.cfgeo.interactive_map( $('#<?php echo esc_attr($id); ?>') );
-			}
-		});
-	}(jQuery || window.jQuery));
-	/* ]]> */
-	</script>
-<?php }, 999);
+    $map_settings['individualCountrySettings'] = array_map(
+        static function ($country_obj) use ($countries) {
+            $parts = explode(':', $country_obj, 2);
+            $country = $parts[0];
+
+            $entry = [
+                'name'  => $country,
+                'label' => $countries[$country] ?? '',
+            ];
+
+            if (!empty($parts[1])) {
+                $entry['color'] = $parts[1];
+            }
+
+            return $entry;
+        },
+        $settings['countries']
+    );
+
+    $flags = JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT;
+
+    $options_json = wp_json_encode($map_settings, $flags);
+    $selector_json = wp_json_encode('#' . $id, $flags);
+
+    if (false === $options_json || false === $selector_json) {
+        return;
+    }
+    ?>
+    <script>
+    /* <![CDATA[ */
+    ;(function($) {
+        $(<?php echo $selector_json; ?>).cfgeoMap('create', <?php echo $options_json; ?>, function() {
+            if (window.cfgeo && typeof window.cfgeo.interactive_map === 'function') {
+                window.cfgeo.interactive_map($(<?php echo $selector_json; ?>));
+            }
+        });
+    }(jQuery || window.jQuery));
+    /* ]]> */
+    </script>
+    <?php
+}, 999);
 
         ob_start(); ?><div id="<?php echo esc_attr($id); ?>"></div><?php
 

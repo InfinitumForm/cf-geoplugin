@@ -58,14 +58,14 @@ if (!class_exists('CFGP_API', false)) : class CFGP_Options
                 if (isset($get_option[$name])) {
                     // Enable beta options
                     if (in_array($name, CFGP_Defaults::BETA_OPTIONS, true)) {
-                        if (!isset($get_option['enable_beta'])) {
-                            return apply_filters('cfgp/options/get', $get_option, $default);
-                        }
+						if (!isset($get_option['enable_beta'])) {
+							return apply_filters('cfgp/options/get', $get_option, $default);
+						}
 
-                        if ($get_option['enable_beta'] == 0) {
-                            return apply_filters('cfgp/options/get', $get_option, $default);
-                        }
-                    }
+						if ($get_option['enable_beta'] == 0) {
+							return apply_filters('cfgp/options/get', $get_option, $default);
+						}
+					}
 
                     // Return values
                     return apply_filters('cfgp/option/get', ((!empty($get_option[$name]) || $get_option[$name] === 0) ? $get_option[$name] : $default), $default);

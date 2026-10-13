@@ -48,7 +48,7 @@ if (!class_exists('CFGP__Plugin__woocommerce', false)):
             }
         }
 
-        // Check if woocommerce is installed and active
+        // Check if WooCommerce is installed and active.
         public function check_woocommerce_instalation()
         {
             if (CFGP_U::api('currency_converter') > 0) {
@@ -56,10 +56,10 @@ if (!class_exists('CFGP__Plugin__woocommerce', false)):
                     // All prices conversion
                     if ('yes' === get_option('woocommerce_cf_geoplugin_conversion_in_admin', 'yes')) {
                         if (!is_admin()) {
-                            $this->add_filter('wc_price', 'wc_price', 99, 3);
+                            $this->add_filter('wc_price', 'wc_price', 99, 4);
                         }
                     } else {
-                        $this->add_filter('wc_price', 'wc_price', 99, 3);
+                        $this->add_filter('wc_price', 'wc_price', 99, 4);
                     }
                 }
 
@@ -76,7 +76,7 @@ if (!class_exists('CFGP__Plugin__woocommerce', false)):
             if (CFGP_License::level() >= 2 || CFGP_U::dev_mode()) {
                 // Save our settings for payments
                 $this->add_action('woocommerce_update_options_cf_geoplugin_payment_restriction', 'cfgp_woocommerce_payment_settings_save');
-                // Disable payment gateways for specifis users
+                // Disable payment gateways for specific users.
                 $this->add_filter('woocommerce_available_payment_gateways', 'cfgp_woocommerce_payment_disable');
             }
 
@@ -98,19 +98,21 @@ if (!class_exists('CFGP__Plugin__woocommerce', false)):
                 $this->add_filter('woocommerce_get_tax_location', 'woocommerce_get_tax_location', 10, 3);
                 $this->add_filter('woocommerce_customer_default_location', 'woocommerce_customer_default_location', 10, 1);
                 $this->add_action('woocommerce_checkout_create_order', 'woocommerce_change_ip', 100, 1);
+                $this->add_action('woocommerce_store_api_checkout_update_order_from_request', 'woocommerce_change_ip', 100, 1);
             }
 
             if ('yes' === get_option('woocommerce_cf_geoplugin_save_checkout_location', 'no')) {
                 $this->add_action('woocommerce_checkout_create_order', 'woocommerce_geolocation_log', 20, 1);
+                $this->add_action('woocommerce_store_api_checkout_update_order_from_request', 'woocommerce_geolocation_log', 20, 1);
             }
         }
 
         public function woocommerce_change_ip($order)
         {
-            $order->update_meta_data('_customer_ip_address', CFGP_U::api('ip'));
+            $order->set_customer_ip_address((string)CFGP_U::api('ip'));
         }
 
-        public function woocommerce_update_options_general($settings)
+        public function woocommerce_update_options_general($settings = null)
         {
             CFGP_Options::set('base_currency', get_option('woocommerce_currency'));
             CFGP_U::flush_plugin_cache();
@@ -144,12 +146,12 @@ if (!class_exists('CFGP__Plugin__woocommerce', false)):
         // Get a hash of the customer location.
         public function woocommerce_geolocation_ajax_get_location_hash($geolocation)
         {
-            substr(md5(implode('', [
+            return substr(md5(strtolower(implode('', [
                 'country'  => CFGP_U::api('country_code'),
                 'state'    => CFGP_U::api('region'),
                 'city'     => CFGP_U::api('city'),
                 'postcode' => CFGP_U::api('postcode'),
-            ])), 0, 12);
+            ]))), 0, 12);
         }
 
         // Change tax location
@@ -186,7 +188,7 @@ if (!class_exists('CFGP__Plugin__woocommerce', false)):
         // Change default customer location
         public function woocommerce_customer_default_location($default_location)
         {
-            return CFGP_U::api('continent_code') . ':' . CFGP_U::api('country_code');
+            return strtoupper((string)CFGP_U::api('country_code'));
         }
 
         /**
@@ -222,52 +224,56 @@ if (!class_exists('CFGP__Plugin__woocommerce', false)):
         // Customer Order information callback
         public function geo_location_info__callback($post)
         {
+            $order = $post instanceof WC_Order
+                ? $post
+                : (is_object($post) && isset($post->ID) ? wc_get_order($post->ID) : false);
 
-            if ($post instanceof WC_Order) {
-                $order_id   = $post->get_id();
-                $order_date = $post->get_date_created();
-            } else {
-                $order_id   = $post->ID;
-                $order_date = $post->post_date_gmt;
+            if (!$order) {
+                return;
             }
 
-            if ($GEO = get_post_meta($order_id, '_cfgp_location_log', true)):
+            $order_date = $order->get_date_created();
+
+            if ($GEO = $order->get_meta('_cfgp_location_log', true)):
                 $GEO = (object)$GEO;
                 ?>
 <p id="cf-geoplugin-log-ip"><strong><?php esc_html_e('Order IP address:', 'cf-geoplugin'); ?></strong><br><?php
-if ($flag = CFGP_U::admin_country_flag($GEO->country_code)) {
+if ($flag = CFGP_U::admin_country_flag($GEO->country_code ?? '')) {
     echo wp_kses_post($flag ?? '');
 } else {
     echo '<span class="cfa cfa-globe"></span>';
 }
-            ?>&nbsp;&nbsp;<big><?php echo esc_html($GEO->ip); ?></big></p>
-<p><strong><?php esc_html_e('Order Timestamp:', 'cf-geoplugin'); ?></strong><br><?php echo esc_html($GEO->timestamp_readable); ?></p>
-<p><strong><?php esc_html_e('Order Location:', 'cf-geoplugin'); ?></strong><br><?php echo esc_html($GEO->address); ?></p>
-<p><strong><?php esc_html_e('Timezone:', 'cf-geoplugin'); ?></strong><br><?php echo esc_html($GEO->timezone); ?></p>
+            ?>&nbsp;&nbsp;<big><?php echo esc_html($GEO->ip ?? ''); ?></big></p>
+<p><strong><?php esc_html_e('Order Timestamp:', 'cf-geoplugin'); ?></strong><br><?php echo esc_html($GEO->timestamp_readable ?? ''); ?></p>
+<p><strong><?php esc_html_e('Order Location:', 'cf-geoplugin'); ?></strong><br><?php echo esc_html($GEO->address ?? ''); ?></p>
+<p><strong><?php esc_html_e('Timezone:', 'cf-geoplugin'); ?></strong><br><?php echo esc_html($GEO->timezone ?? ''); ?></p>
 <p><strong><?php esc_html_e('Customer User Agent:', 'cf-geoplugin'); ?></strong>
-	<br><?php esc_html_e('Platform:', 'cf-geoplugin'); ?> <?php echo esc_html($GEO->platform); ?>
-	<br><?php esc_html_e('Browser:', 'cf-geoplugin'); ?> <?php echo esc_html($GEO->browser); ?>
-	<br><?php esc_html_e('Version:', 'cf-geoplugin'); ?> <?php echo esc_html($GEO->browser_version); ?>
+	<br><?php esc_html_e('Platform:', 'cf-geoplugin'); ?> <?php echo esc_html($GEO->platform ?? ''); ?>
+	<br><?php esc_html_e('Browser:', 'cf-geoplugin'); ?> <?php echo esc_html($GEO->browser ?? ''); ?>
+	<br><?php esc_html_e('Version:', 'cf-geoplugin'); ?> <?php echo esc_html($GEO->browser_version ?? ''); ?>
 </p>
 	<?php else :
-	    $_customer_user_agent = get_post_meta($order_id, '_customer_user_agent', true);
+	    $_customer_user_agent = $order->get_customer_user_agent();
 	    ?>
 <p id="cf-geoplugin-log-ip"><strong><?php esc_html_e('Order IP address:', 'cf-geoplugin'); ?></strong><br><?php
-if ($flag = CFGP_U::admin_country_flag(get_post_meta($order_id, '_billing_country', true))) {
+if ($flag = CFGP_U::admin_country_flag($order->get_billing_country())) {
     echo wp_kses_post($flag ?? '');
 } else {
     echo '<span class="cfa cfa-globe"></span>';
 }
-	    ?>&nbsp;&nbsp;<big><?php echo esc_html(get_post_meta($order_id, '_customer_ip_address', true)); ?></big></p>
-<p><strong><?php esc_html_e('Order Timestamp:', 'cf-geoplugin'); ?></strong><br><?php echo esc_attr(date('D, j M Y, H:i:s O', strtotime($$order_date))); ?></p>
+	    ?>&nbsp;&nbsp;<big><?php echo esc_html($order->get_customer_ip_address()); ?></big></p>
+<p><strong><?php esc_html_e('Order Timestamp:', 'cf-geoplugin'); ?></strong><br><?php echo esc_html($order_date ? wc_format_datetime($order_date, 'D, j M Y, H:i:s O') : ''); ?></p>
 <p><strong><?php esc_html_e('Order Location:', 'cf-geoplugin'); ?></strong><br><?php
-	        $country = get_post_meta($order_id, '_billing_country', true);
+	        $country = $order->get_billing_country();
+	    $states      = WC()->countries->get_states($country);
 	    $location    = [
-	        get_post_meta($order_id, '_billing_city', true),
-	        (WC()->countries->get_states($country)[get_post_meta($order_id, '_billing_state', true)] ?? null),
+	        $order->get_billing_city(),
+	        (is_array($states) ? ($states[$order->get_billing_state()] ?? null) : null),
 	        (WC()->countries->countries[$country] ?? null) . ' (' . $country . ')',
 	    ];
-	    $location = array_map('trim', $location);
+            $location = array_map(function ($value) {
+                return trim((string)$value);
+            }, $location);
 	    $location = array_filter($location);
 	    echo esc_html(join(', ', $location));
 	    ?></p>
@@ -310,7 +316,7 @@ if ($flag = CFGP_U::admin_country_flag(get_post_meta($order_id, '_billing_countr
         }
 
         /* We must recreate wc_price in order to perform conversion wisely */
-        public function wc_price($original_formatted_price, $price, $args)
+        public function wc_price($original_formatted_price, $price, $args, $raw_price = null)
         {
             global $product;
 
@@ -319,6 +325,10 @@ if ($flag = CFGP_U::admin_country_flag(get_post_meta($order_id, '_billing_countr
             // Ensure price is a float number
             $price_split = explode($args['decimal_separator'], $price);
             $price       = floatval(preg_replace('/[^0-9]+/', '', $price_split[0]) . '.' . (!empty($price_split[1]) ? $price_split[1] : '00'));
+
+            if (null !== $raw_price && (float)$raw_price < 0) {
+                $price *= -1;
+            }
 
             // Extract product ID and SKU if available
             if (is_object($product)) {
@@ -508,6 +518,7 @@ if ($flag = CFGP_U::admin_country_flag(get_post_meta($order_id, '_billing_countr
                     case 'up':
                         $price = ceil($price);
                         break;
+                    case 'neares':
                     case 'nearest':
                         $price = round($price);
                         break;
@@ -523,7 +534,8 @@ if ($flag = CFGP_U::admin_country_flag(get_post_meta($order_id, '_billing_countr
         // Add custom option to general woocommerce options
         public function conversion_options($settings)
         {
-            $key = 0;
+            $key          = 0;
+            $new_settings = [];
 
             foreach ($settings as $values) {
                 $new_settings[$key] = $values;
@@ -682,7 +694,7 @@ if ($flag = CFGP_U::admin_country_flag(get_post_meta($order_id, '_billing_countr
         {
             $new_tab = ['cf_geoplugin_payment_restriction' => __('Payments Control', 'cf-geoplugin')];
 
-            // Find "Payments" tab possition
+            // Find the position of the "Payments" tab.
             $payments_position = array_search('checkout', array_keys($settings_tabs), true) + 1;
 
             // Add new tab after "Payments" tab
@@ -838,8 +850,8 @@ if ($flag = CFGP_U::admin_country_flag(get_post_meta($order_id, '_billing_countr
                 $settings[] = [
                     'name' => __('Geo Controller Payments Control', 'cf-geoplugin'),
                     'type' => 'title',
-                    'desc' => '<b>' . __('No enabled woocommerce payments yet.', 'cf-geoplugin'),
-                    'id'   => 'cf_geoplugin_payment_restriction' . '</b>',
+                    'desc' => '<b>' . __('No enabled woocommerce payments yet.', 'cf-geoplugin') . '</b>',
+                    'id'   => 'cf_geoplugin_payment_restriction',
                 ];
                 $settings[] = [ 'type' => 'sectionend', 'id' => 'cf_geoplugin_payment_restriction' ];
 
@@ -852,35 +864,54 @@ if ($flag = CFGP_U::admin_country_flag(get_post_meta($order_id, '_billing_countr
         {
             $original_gateways = $gateways;
 
-            // If plugin is not available, return the original gateways
-            if (!CFGP_U::api('country_code', null)) {
-                return $gateways;
-            }
-
             // Check if we're in the admin area to prevent unintended changes
             if (is_admin()) {
                 return $gateways;
             }
 
-            // Determine the user's country
-            if (!is_user_logged_in()) {
-                $current_country = sanitize_text_field(
-                    $_POST['s_country'] ?? $_POST['billing_country'] ?? CFGP_U::api('country_code', null) ?? WC()->countries->get_base_country()
-                );
-            } elseif (WC()->customer instanceof WC_Customer) {
-                $current_country = sanitize_text_field(
-                    $_POST['s_country'] ?? $_POST['billing_country'] ?? WC()->customer->get_billing_country() ?? CFGP_U::api('country_code', null) ?? WC()->countries->get_base_country()
-                );
-            } else {
-                $current_country = CFGP_U::api('country_code', null) ?? WC()->countries->get_base_country();
+            // Prefer submitted checkout data, then the customer session used by the Store API.
+            $current_country = '';
+
+            foreach (['s_country', 'billing_country'] as $country_field) {
+                if (isset($_POST[ $country_field ])) {
+                    $posted_country = wp_unslash($_POST[ $country_field ]);
+
+                    if (is_string($posted_country) || is_numeric($posted_country)) {
+                        $current_country = sanitize_text_field((string)$posted_country);
+
+                        if ($current_country !== '') {
+                            break;
+                        }
+                    }
+                }
             }
 
-            $current_country = strtolower($current_country);
+            if ($current_country === '' && WC()->customer instanceof WC_Customer) {
+                $customer_country = WC()->customer->get_billing_country();
+                $current_country  = is_string($customer_country) || is_numeric($customer_country)
+                    ? sanitize_text_field((string)$customer_country)
+                    : '';
+            }
+
+            if ($current_country === '') {
+                $api_country     = CFGP_U::api('country_code', null);
+                $current_country = is_string($api_country) || is_numeric($api_country)
+                    ? sanitize_text_field((string)$api_country)
+                    : '';
+            }
+
+            $current_country = is_string($current_country) || is_numeric($current_country)
+                ? strtolower(sanitize_text_field((string)$current_country))
+                : '';
+
+            if ($current_country === '') {
+                return $gateways;
+            }
 
             // Main loop to disable or enable payment methods
             if (!empty($gateways) && is_array($gateways)) {
                 foreach ($gateways as $gateway_id => $gateway) {
-                    if (is_null($gateway)) {
+                    if (!is_object($gateway)) {
                         continue;
                     }
 
@@ -889,7 +920,21 @@ if ($flag = CFGP_U::admin_country_flag(get_post_meta($order_id, '_billing_countr
                     $type      = get_option(sprintf('woocommerce_cfgp_method_%s', $gateway->id));
                     $countries = get_option(sprintf('woocommerce_cfgp_method_%s_select', $gateway->id));
 
-                    if (empty($countries) || $type == 'cfgp_payment_woo') {
+                    if (empty($countries) || !is_array($countries) || $type == 'cfgp_payment_woo') {
+                        continue;
+                    }
+
+                    $normalized_countries = [];
+
+                    foreach ($countries as $country) {
+                        if (is_string($country) || is_numeric($country)) {
+                            $normalized_countries[] = strtolower(sanitize_text_field((string)$country));
+                        }
+                    }
+
+                    $countries = array_filter($normalized_countries, 'strlen');
+
+                    if (empty($countries)) {
                         continue;
                     }
 
@@ -911,7 +956,7 @@ if ($flag = CFGP_U::admin_country_flag(get_post_meta($order_id, '_billing_countr
             );
         }
 
-        // Control of the some additional Woocommerce addons
+        // Control additional WooCommerce gateway integrations.
         public function wp_footer()
         {
 
@@ -945,7 +990,7 @@ if ($flag = CFGP_U::admin_country_flag(get_post_meta($order_id, '_billing_countr
 </style>
 <script id="cfgp-woocommerce-disable-payment-gateway-js" type="text/javascript">
 /* <![CDATA[ */
-(function(jCFGP){if(jCFGP){jCFGP(document).ready(function(){jCFGP(<?php printf('"%s"', esc_html($css)); ?>).remove();});}}(jQuery||window.jQuery));
+(function(jCFGP){if(jCFGP){jCFGP(document).ready(function(){jCFGP(<?php echo wp_json_encode($css); ?>).remove();});}}(window.jQuery));
 /* ]]> */
 </script>
 	<?php endif;

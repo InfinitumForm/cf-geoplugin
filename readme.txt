@@ -5,7 +5,7 @@ Tags: geolocation, geotargeting, woocommerce, location, geoip
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.0
-Stable tag: 9.0.0
+Stable tag: 9.0.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Commercial: https://wpgeocontroller.com/
@@ -415,20 +415,39 @@ Please inform us if any of these errors occur via contact form on our website [h
 
 == Changelog ==
 
+= 9.0.3 =
+* Security: moved dedicated Geo Controller API endpoints to HTTPS and removed the former automatic direct-IP HTTP downgrade.
+* API: added centralized, backward-compatible GET/POST transport selection; GET remains the default, while POST sends API parameters in the request body.
+* Added an optional Defender emergency direct-IP HTTP fallback that is disabled by default and excludes license keys, API secrets, authentication tokens, passwords, and renewal data.
+* Security: validated forwarding headers against trusted proxy and Cloudflare ranges, bounded and rate-limited public location requests, and restricted integration actions to administrators.
+* Security: safely JSON-encoded dynamic geolocation JavaScript property names and values so remote or cached data cannot escape the inline object.
+* Compatibility: preserved geolocation, Defender, licensing, API response handling, product information, Live News, and WordPress update integrations.
+
+= 9.0.2 =
+* Fixed escaped shortcode examples and interactive map configuration output.
+* Moved the Simple Shortcodes option to standard feature settings and kept Redis caching experimental.
+* Compatibility: improved WooCommerce Classic Checkout, Checkout Blocks, Store API, and HPOS order handling.
+* Fixed WooCommerce price conversion, geolocation, payment-country restrictions, and gateway settings output.
+
+= 9.0.1 =
+* Fixed license renewal synchronization for renewed subscription activations.
+* Added automatic renewal revalidation for valid subscription activations.
+* Improved expired-license renewal diagnostics and administrator guidance.
+
 = 9.0.0 =
-* Compatibility: maintained PHP 7.0 to PHP 8.4-compatible syntax across the stabilized code paths.
-* Stabilized shortcode and Geo Banner cache reads and cleanup through the shared cache backend, aligned with WordPress transient, plugin database cache, and Redis modes.
-* Fixed the cache cleanup method call and prevented Geo Banner cache records when caching is disabled.
-* Stabilized simple shortcodes, GPS, Geo Banner, and Google Map shortcode attributes while preserving legacy shortcode support.
-* Added an optional WordPress REST API transport for public authentication and lookup endpoints; the legacy AJAX API remains the default.
-* Added the public API transport choice and mode-specific endpoint documentation in plugin settings.
-* Preserved existing public API response bodies and access-token behavior through shared API handling.
-* Security: protected Defender saves, previews, and administrative bypass-cookie creation with capability, nonce, and request-method checks; Defender cookie deletion now expires correctly.
-* Security: restricted permanent Defender bypass to logged-in administrators with manage_options; removed the legacy recovery URL, bypass-cookie, and User-Agent bot bypasses.
-* Security: added a one-time recovery link that temporarily opens only the WordPress login flow; recovery tokens are stored only as hashes and are invalidated after first use.
-* Security: protected global SEO mutations and page-level SEO redirection metadata with explicit capabilities, nonces, and request-method checks.
-* Fixed global postcode matching, the country-and-city redirect execution path, page-level exclude matching, safe empty CSV export, and CSV import rollback handling.
-* CSS display controls now preserve the matching element's original display mode, including flex, grid, inline, inline-block, and table layouts.
+* Compatibility: maintained PHP 7.0 to PHP 8.4 support.
+* Stabilized shortcode and Geo Banner caching across transient, database, and Redis modes.
+* Fixed cache cleanup and prevented Geo Banner caching when disabled.
+* Stabilized shortcode, GPS, Geo Banner, and Google Map attributes while preserving legacy support.
+* Added optional REST API transport for public authentication and lookups; AJAX remains the default.
+* Added API transport settings and endpoint documentation.
+* Preserved existing API responses and access-token behavior.
+* Security: protected Defender saves, previews, and bypass cookies with capability, nonce, and method checks.
+* Security: limited permanent Defender bypass to administrators and removed legacy recovery and bot bypasses.
+* Security: added single-use recovery links for temporary WordPress login access.
+* Security: protected global and page-level SEO settings with capability, nonce, and method checks.
+* Fixed postcode matching, country-city redirects, exclusion rules, empty CSV exports, and import rollbacks.
+* CSS display controls now preserve flex, grid, inline, inline-block, table, and other display modes.
 
 = 8.9.9 =
 * Security: Hardened Gravity Forms field value handling and validation.
@@ -572,16 +591,31 @@ Please inform us if any of these errors occur via contact form on our website [h
 
 == Upgrade Notice ==
 
-= 9.0.0 =
-* Stabilized cache, shortcode, and Geo Banner behavior across the supported cache modes.
-* Legacy AJAX remains the default public API; WordPress REST API transport is optional.
-* Added Defender and SEO authorization hardening plus targeted redirect and CSV stability fixes.
-* Defender bypass requires a logged-in administrator with manage_options; legacy URL, cookie, and User-Agent bypasses are removed, with a restricted one-time login recovery link available.
+= 9.0.3 =
+* Security and API transport release with HTTPS hardening, trusted-proxy validation, protected location requests and integration actions, safe JavaScript serialization, configurable GET/POST support, and an opt-in emergency Defender fallback.
 
-= 8.9.9 =
-* Security: Hardened Gravity Forms field value handling and validation.
-* Security: Improved authorization checks and data handling in SEO redirection tools.
-* Fixed SEO CSV import rollback handling to correctly preserve existing redirection data.
+= 9.0.2 =
+* Maintenance release with shortcode and interactive map fixes plus WooCommerce checkout, HPOS, pricing, geolocation, and payment restriction improvements.
+
+= 9.0.1 =
+* Fixed license renewal synchronization for renewed subscription activations.
+* Added automatic renewal revalidation for valid subscription activations.
+* Improved expired-license renewal diagnostics and administrator guidance.
+
+= 9.0.0 =
+* Compatibility: maintained PHP 7.0 to PHP 8.4 support.
+* Stabilized shortcode and Geo Banner caching across transient, database, and Redis modes.
+* Fixed cache cleanup and prevented Geo Banner caching when disabled.
+* Stabilized shortcode, GPS, Geo Banner, and Google Map attributes while preserving legacy support.
+* Added optional REST API transport for public authentication and lookups; AJAX remains the default.
+* Added API transport settings and endpoint documentation.
+* Preserved existing API responses and access-token behavior.
+* Security: protected Defender saves, previews, and bypass cookies with capability, nonce, and method checks.
+* Security: limited permanent Defender bypass to administrators and removed legacy recovery and bot bypasses.
+* Security: added single-use recovery links for temporary WordPress login access.
+* Security: protected global and page-level SEO settings with capability, nonce, and method checks.
+* Fixed postcode matching, country-city redirects, exclusion rules, empty CSV exports, and import rollbacks.
+* CSS display controls now preserve flex, grid, inline, inline-block, table, and other display modes.
 
 == Other Notes ==
 

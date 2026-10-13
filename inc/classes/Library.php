@@ -31,21 +31,29 @@ if (!class_exists('CFGP_Library')) :
          */
         public static function ajax__select2_locations()
         {
-            // Get search keywords
-            $search = CFGP_U::strtolower(sanitize_text_field($_REQUEST['search'] ?? ''));
-            $type   = sanitize_text_field($_REQUEST['type'] ?? '');
-            // Set country codes
-            $country_codes = ($_REQUEST['country_codes'] ?? null);
-
-            if (is_array($country_codes)) {
-                $country_codes = array_map('sanitize_text_field', $country_codes);
-                $country_codes = array_filter($country_codes);
-                $country_codes = array_unique($country_codes);
-            } else {
-                $country_codes = null;
+            if (!self::ajax_location_request_allowed()) {
+                wp_send_json([
+                    'results'    => [],
+                    'pagination' => [
+                        'more' => false,
+                    ],
+                ], 429);
             }
+
+            // Get search keywords
+            $search_input = $_REQUEST['search'] ?? '';
+            $type_input   = $_REQUEST['type'] ?? '';
+            $page_input   = $_REQUEST['page'] ?? 1;
+            $search_input = is_scalar($search_input) ? $search_input : '';
+            $type_input   = is_scalar($type_input) ? $type_input : '';
+            $page_input   = is_scalar($page_input) ? $page_input : 1;
+            $search = CFGP_U::strtolower(sanitize_text_field(wp_unslash($search_input)));
+            $search = function_exists('mb_substr') ? mb_substr($search, 0, 100) : substr($search, 0, 100);
+            $type   = sanitize_key(wp_unslash($type_input));
+            // Set country codes
+            $country_codes = self::normalize_country_codes($_REQUEST['country_codes'] ?? []);
             // Pagination
-            $page     = absint(sanitize_text_field($_REQUEST['page'] ?? 1));
+            $page     = absint($page_input);
             $per_page = 20;
             $offset   = 0;
             $more     = 0;
@@ -158,6 +166,55 @@ if (!class_exists('CFGP_Library')) :
             exit;
         }
 
+        /**
+         * Validate and canonicalize country codes used by the public location selector.
+         */
+        private static function normalize_country_codes($country_codes)
+        {
+            if (!is_array($country_codes)) {
+                $country_codes = explode(',', (string)$country_codes);
+            }
+
+            $normalized = [];
+
+            foreach (array_slice($country_codes, 0, 300) as $country_code) {
+                if (!is_scalar($country_code)) {
+                    continue;
+                }
+
+                $country_code = strtolower(sanitize_key(wp_unslash((string)$country_code)));
+
+                if (preg_match('/^[a-z]{2}$/', $country_code)) {
+                    $normalized[] = $country_code;
+                }
+            }
+
+            $normalized = array_values(array_unique($normalized));
+            sort($normalized, SORT_STRING);
+
+            return $normalized;
+        }
+
+        /**
+         * Limit public selector requests per direct network peer.
+         */
+        private static function ajax_location_request_allowed()
+        {
+            $remote_addr = CFGP_IP::get();
+            $remote_addr = $remote_addr ?: 'unknown';
+            $cache_key   = 'cfgp_location_' . hash('sha256', $remote_addr);
+            $limit       = max(1, (int)apply_filters('cfgp/ajax/location/rate_limit', 120));
+            $requests    = (int)get_transient($cache_key);
+
+            if ($requests >= $limit) {
+                return false;
+            }
+
+            set_transient($cache_key, $requests + 1, MINUTE_IN_SECONDS);
+
+            return true;
+        }
+
         /*
          * Get Country Data by API
          */
@@ -203,12 +260,16 @@ if (!class_exists('CFGP_Library')) :
                 return $data;
             }
 
-            $response = wp_remote_get(
+            $response = CFGP_U::api_request(
                 CFGP_Defaults::API[(CFGP_Options::get('enable_ssl', 0) ? 'ssl_' : '') . 'countries'],
+                [],
+                [],
                 [
                     'Content-Type' => 'application/json; charset=utf-8',
                     'timeout'      => 60,
-                ]
+                ],
+                false,
+                true
             );
 
             if (is_array($response) && !is_wp_error($response)) {
@@ -259,13 +320,12 @@ if (!class_exists('CFGP_Library')) :
                 return '{}';
             }
 
-            if (!is_array($countries)) {
-                $countries = explode(',', $countries);
+            $countries = self::normalize_country_codes($countries);
+
+            if (empty($countries)) {
+                return $json === false ? [] : '{}';
             }
 
-            $countries = array_map('trim', $countries);
-            $countries = array_filter($countries);
-            $countries = array_map('strtolower', $countries);
             $countries = join(',', $countries);
 
             if ($data = ($regions_data[$countries] ?? null)) {
@@ -306,12 +366,16 @@ if (!class_exists('CFGP_Library')) :
                 return $data;
             }
 
-            $response = wp_remote_get(
+            $response = CFGP_U::api_request(
                 CFGP_Defaults::API[(CFGP_Options::get('enable_ssl', 0) ? 'ssl_' : '') . 'regions'] . '/' . $countries,
+                [],
+                [],
                 [
                     'Content-Type' => 'application/json; charset=utf-8',
                     'timeout'      => 60,
-                ]
+                ],
+                false,
+                true
             );
 
             if (is_array($response) && !is_wp_error($response)) {
@@ -373,13 +437,12 @@ if (!class_exists('CFGP_Library')) :
                 return '{}';
             }
 
-            if (!is_array($countries)) {
-                $countries = explode(',', $countries);
+            $countries = self::normalize_country_codes($countries);
+
+            if (empty($countries)) {
+                return $json === false ? [] : '{}';
             }
 
-            $countries = array_map('trim', $countries);
-            $countries = array_filter($countries);
-            $countries = array_map('strtolower', $countries);
             $countries = join(',', $countries);
 
             if ($data = ($cities_data[$countries] ?? null)) {
@@ -420,12 +483,16 @@ if (!class_exists('CFGP_Library')) :
                 return $data;
             }
 
-            $response = wp_remote_get(
+            $response = CFGP_U::api_request(
                 CFGP_Defaults::API[(CFGP_Options::get('enable_ssl', 0) ? 'ssl_' : '') . 'cities'] . '/' . $countries,
+                [],
+                [],
                 [
                     'Content-Type' => 'application/json; charset=utf-8',
                     'timeout'      => 120,
-                ]
+                ],
+                false,
+                true
             );
 
             if (is_array($response) && !is_wp_error($response)) {

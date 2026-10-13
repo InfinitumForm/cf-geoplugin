@@ -456,9 +456,16 @@ if (!class_exists('CFGP_Public', false)) : class CFGP_Public extends CFGP_Global
             ]);
         }
 
+        $json_flags = JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT;
+
         foreach ($CFGEO as $name => $value) {
             if (in_array($name, $exclude, true) === false) {
-                $js[] = sprintf('%1$s:"%2$s"', $name, esc_attr($value));
+                $json_name  = wp_json_encode((string)$name, $json_flags);
+                $json_value = wp_json_encode((string)$value, $json_flags);
+
+                if ($json_name !== false && $json_value !== false) {
+                    $js[] = sprintf('%1$s:%2$s', $json_name, $json_value);
+                }
             }
         }
 

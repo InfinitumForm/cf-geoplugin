@@ -8,7 +8,7 @@
  * Plugin Name:       Geo Controller
  * Plugin URI:        https://wpgeocontroller.com/
  * Description:       Unlock the power of location-based functionality of WordPress - the ultimate all-in-one geolocation plugin for WordPress.
- * Version:           9.0.0
+ * Version:           9.0.3
  * Requires at least: 6.0
  * Requires PHP:      7.0
  * Author:            INFINITUM FORM
@@ -109,20 +109,42 @@ if ($CFGP_Requirements->passes()) :
     do_action('cfgp/after_plugin_setup');
 endif;
 
-/*
- * HEY!!! YOU NEED HELP AROUND THE PLUGIN IN PHP?
+
+/*!
+ * HEY, DEVELOPER! 👋
  *
- * I believe you need the CFGP_U class located in /inc/classes/Utilities.php
+ * Looking to extend Geo Controller or integrate it into your PHP code?
+ * You're in the right place.
  *
- * There is a set of very useful functions and the most important and most commonly
- * used is CFGP_U::api() which returns an array of geo objects or an individual object
- * such as CFGP_U::api('country_code').
+ * YOUR STARTING POINT:
+ * /inc/classes/Utilities.php
  *
- * Within the /inc/classes folder are all the classes of our plugin and the file names
- * are named according to their purpose. Everywhere you have some action hooks or
- * filters you can hook up to.
+ * Meet CFGP_U — your go-to utility class.
  *
- * If you want to help document our plugin, contact us at office@infinitumform.com
+ * Need geolocation data? It's just one call away:
  *
- * Happy coding! Cheers!
+ *     CFGP_U::api();                 // Get all available geo data.
+ *     CFGP_U::api('country_code');   // Get the visitor's country code.
+ *     CFGP_U::api('city');           // Get the visitor's city.
+ *
+ * WANT TO EXPLORE MORE?
+ *
+ * Take a look inside /inc/classes/ — you'll find the plugin's
+ * core classes, organized by purpose.
+ *
+ * Geo Controller also provides WordPress actions and filters,
+ * so you can extend its behavior without modifying core files.
+ *
+ * DOCUMENTATION:
+ * https://wpgeocontroller.com/documentation/advanced-usage/php-integration
+ *
+ * Found something worth improving? Want to contribute to our docs?
+ * We'd love to hear from you:
+ *
+ * wpgeocontroller@gmail.com
+ *
+ * Build something awesome. Happy coding!
+ *
+ * — The Geo Controller Team
  */
+

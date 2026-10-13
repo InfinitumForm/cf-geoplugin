@@ -178,12 +178,19 @@ if (!class_exists('CFGP_Sidebar', false)) :
 								echo '<p style="color:#900">' . esc_html__('Your lookups are running low, and the site may soon lose important functionality.', 'cf-geoplugin') . '</p>';
 							}
 
-							echo '<p>' . wp_kses_post(sprintf(
-								/* translators: 1: link to unlimited lookup documentation, 2: link to the license activation screen. */
-								__('If you want to get %1$s, you need to %2$s.', 'cf-geoplugin'),
-								'<a href="' . esc_url(CFGP_STORE . '/documentation/quick-start/what-do-i-get-from-unlimited-license') . '" target="_blank">' . esc_html__('unlimited lookups', 'cf-geoplugin') . '</a>',
-								'<a href="' . esc_url(CFGP_U::admin_url('admin.php?page=cf-geoplugin-activate')) . '" target="_blank"><strong>' . esc_html__('activate your license', 'cf-geoplugin') . '</strong></a>'
-							)) . '</p>';
+							if (CFGP_License::requires_renewal()) {
+								echo '<p>' . esc_html__('Your license has expired and Geo Controller is currently using the standard daily lookup limit.', 'cf-geoplugin') . '</p>';
+								if (CFGP_License::get('url')) {
+									echo '<p><a href="' . esc_url(CFGP_License::get('url')) . '" target="_blank" rel="noopener noreferrer"><strong>' . esc_html__('Renew your license', 'cf-geoplugin') . '</strong></a></p>';
+								}
+							} else {
+								echo '<p>' . wp_kses_post(sprintf(
+									/* translators: 1: link to unlimited lookup documentation, 2: link to the license activation screen. */
+									__('If you want to get %1$s, you need to %2$s.', 'cf-geoplugin'),
+									'<a href="' . esc_url(CFGP_STORE . '/documentation/quick-start/what-do-i-get-from-unlimited-license') . '" target="_blank">' . esc_html__('unlimited lookups', 'cf-geoplugin') . '</a>',
+									'<a href="' . esc_url(CFGP_U::admin_url('admin.php?page=cf-geoplugin-activate')) . '" target="_blank"><strong>' . esc_html__('activate your license', 'cf-geoplugin') . '</strong></a>'
+								)) . '</p>';
+							}
 						elseif ($available_lookup == 0) :
 							echo '<p style="color:#900">' . esc_html__('You have used all your lookups. They will be available again tomorrow.', 'cf-geoplugin') . '</p>';
 						endif;

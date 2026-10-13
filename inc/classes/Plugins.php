@@ -47,6 +47,9 @@ if (!class_exists('CFGP_Plugins', false)) : class CFGP_Plugins extends CFGP_Glob
      */
     public function cfgp_activate_all_plugins_support()
     {
+        if (!current_user_can('manage_options')) {
+            return;
+        }
 
         $data = array_map('sanitize_text_field', $_GET);
 
@@ -82,6 +85,10 @@ if (!class_exists('CFGP_Plugins', false)) : class CFGP_Plugins extends CFGP_Glob
      */
     public function ajax_dimiss_notice()
     {
+        if (!current_user_can('manage_options')) {
+            return;
+        }
+
         $nonce = isset($_POST['nonce']) ? sanitize_text_field(wp_unslash($_POST['nonce'])) : '';
 
         if (!wp_verify_nonce($nonce, 'cfgp-dimiss-notice-plugin-support')) {
@@ -100,6 +107,10 @@ if (!class_exists('CFGP_Plugins', false)) : class CFGP_Plugins extends CFGP_Glob
      */
     private function notify_for_plugins($plugins)
     {
+        if (!current_user_can('manage_options')) {
+            return;
+        }
+
         // Dimissed notice
         if (get_option(CFGP_NAME . '_dimiss_notice_plugin_support')) {
             return;

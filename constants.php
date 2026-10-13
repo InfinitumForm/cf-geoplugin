@@ -45,6 +45,17 @@ if (!defined('CFGP_STORE_CODE')) {
     define('CFGP_STORE_CODE', 'YR5pv3FU8l78v3N'); // DON'T TOUCH!!!
 }
 
+// Geo Controller remote API request method (GET or POST)
+if (!defined('CFGP_API_REQUEST_METHOD')) {
+    define('CFGP_API_REQUEST_METHOD', 'GET');
+}
+
+// Opt-in emergency HTTP fallback for Defender geolocation only.
+// HTTP traffic can be intercepted or modified and must remain disabled by default.
+if (!defined('CFGP_EMERGENCY_HTTP_FALLBACK')) {
+    define('CFGP_EMERGENCY_HTTP_FALLBACK', false);
+}
+
 // Plugin root
 if (!defined('CFGP_ROOT')) {
     define('CFGP_ROOT', rtrim(plugin_dir_path(CFGP_FILE), DIRECTORY_SEPARATOR));

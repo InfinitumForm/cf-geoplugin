@@ -57,7 +57,7 @@ if (!class_exists('CFGP_Defaults', false)) : class CFGP_Defaults
     const OPTIONS = [
         'enable_top_bar_menu'     => 1,
         'enable_top_bar_currency' => 1,
-        'enable_beta'             => 1,
+        'enable_beta'             => 0,
         'enable_simple_shortcode' => 1,
         'enable_seo_csv'          => 1,
         'enable_seo_redirection'  => 1,
@@ -124,7 +124,7 @@ if (!class_exists('CFGP_Defaults', false)) : class CFGP_Defaults
 
     // Beta options
     const BETA_OPTIONS = [
-        'enable_simple_shortcode',
+        'enable_redis_cache',
     ];
 
     /*
@@ -132,19 +132,19 @@ if (!class_exists('CFGP_Defaults', false)) : class CFGP_Defaults
      */
     const API = [
         // Standard Geo Controller API URLs
-        'main'         => 'http://api.wpgeocontroller.com/v2/',
-        'authenticate' => 'http://api.wpgeocontroller.com/v2/authentication',
-        'converter'    => 'http://api.wpgeocontroller.com/v2/currency-converter',
-        'countries'    => 'http://api.wpgeocontroller.com/v2/countries',
-        'regions'      => 'http://api.wpgeocontroller.com/v2/regions',
-        'cities'       => 'http://api.wpgeocontroller.com/v2/cities',
+        'main'         => 'https://api.wpgeocontroller.com/v3/',
+        'authenticate' => 'https://api.wpgeocontroller.com/v3/authentication',
+        'converter'    => 'https://api.wpgeocontroller.com/v3/currency-converter',
+        'countries'    => 'https://api.wpgeocontroller.com/v3/countries',
+        'regions'      => 'https://api.wpgeocontroller.com/v3/regions',
+        'cities'       => 'https://api.wpgeocontroller.com/v3/cities',
         // SSL URLs
-        'ssl_main'         => 'https://api.wpgeocontroller.com/v2/',
-        'ssl_authenticate' => 'https://api.wpgeocontroller.com/v2/authentication',
-        'ssl_converter'    => 'https://api.wpgeocontroller.com/v2/currency-converter',
-        'ssl_countries'    => 'https://api.wpgeocontroller.com/v2/countries',
-        'ssl_regions'      => 'https://api.wpgeocontroller.com/v2/regions',
-        'ssl_cities'       => 'https://api.wpgeocontroller.com/v2/cities',
+        'ssl_main'         => 'https://api.wpgeocontroller.com/v3/',
+        'ssl_authenticate' => 'https://api.wpgeocontroller.com/v3/authentication',
+        'ssl_converter'    => 'https://api.wpgeocontroller.com/v3/currency-converter',
+        'ssl_countries'    => 'https://api.wpgeocontroller.com/v3/countries',
+        'ssl_regions'      => 'https://api.wpgeocontroller.com/v3/regions',
+        'ssl_cities'       => 'https://api.wpgeocontroller.com/v3/cities',
         // 3rd party IPFY free API call for finding real IP address on the local machines
         'ipfy'           => 'https://api.ipify.org',
         'smartIP'        => 'https://smart-ip.net/myip',
@@ -160,18 +160,8 @@ if (!class_exists('CFGP_Defaults', false)) : class CFGP_Defaults
         return apply_filters(
             'cfgp_defaults_fallback_api_endpoints',
             str_replace(
-                [
-                    'http:',
-                    'https:',
-                    '//',
-                    'api.wpgeocontroller.com/',
-                ],
-                [
-                    '',
-                    '',
-                    'http://',
-                    '159.203.150.139/',
-                ],
+                'http://api.wpgeocontroller.com/',
+                'https://api.wpgeocontroller.com/',
                 $request_url
             ),
             $request_url

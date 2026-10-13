@@ -41,26 +41,35 @@ if (!class_exists('CFGP_IP')) :
 
             $findIP      = [];
             $blacklistIP = self::blocked();
+            $remote_addr = isset($_SERVER['REMOTE_ADDR'])
+                ? self::validate_any(wp_unslash($_SERVER['REMOTE_ADDR']))
+                : false;
+            $trusted_proxy = self::is_trusted_proxy($remote_addr);
 
             // Enable cloudflare
             if (
                 CFGP_Options::get('enable_cloudflare', false)
+                && self::is_cloudflare_proxy($remote_addr)
                 && isset($_SERVER['HTTP_CF_CONNECTING_IP'])
                 && !empty($_SERVER['HTTP_CF_CONNECTING_IP'])
             ) {
                 $findIP[] = 'HTTP_CF_CONNECTING_IP';
             }
 
-            $findIP = apply_filters('cfgp/ip/constants', array_merge($findIP, [
-                'HTTP_X_REAL_IP',
-                'HTTP_X_FORWARDED_FOR', // X-Forwarded-For: <client>, <proxy1>, <proxy2> client = client ip address; https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-For
-                'HTTP_X_FORWARDED',
-                'HTTP_X_CLUSTER_CLIENT_IP', // Private LAN address
-                'REMOTE_ADDR', // Most reliable way, can be tricked by proxy so check it after proxies
-                'HTTP_FORWARDED_FOR',
-                'HTTP_FORWARDED', // Forwarded: by=<identifier>; for=<identifier>; host=<host>; proto=<http|https>; https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Forwarded
-                'HTTP_CLIENT_IP', // Shared Interner services - Very easy to manipulate and most unreliable way
-            ]));
+            if ($trusted_proxy) {
+                $findIP = apply_filters('cfgp/ip/constants', array_merge($findIP, [
+                    'HTTP_X_REAL_IP',
+                    'HTTP_X_FORWARDED_FOR', // X-Forwarded-For: <client>, <proxy1>, <proxy2> client = client ip address; https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-For
+                    'HTTP_X_FORWARDED',
+                    'HTTP_X_CLUSTER_CLIENT_IP', // Private LAN address
+                    'REMOTE_ADDR', // Most reliable way, can be tricked by proxy so check it after proxies
+                    'HTTP_FORWARDED_FOR',
+                    'HTTP_FORWARDED', // Forwarded: by=<identifier>; for=<identifier>; host=<host>; proto=<http|https>; https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Forwarded
+                    'HTTP_CLIENT_IP', // Shared Interner services - Very easy to manipulate and most unreliable way
+                ]));
+            } else {
+                $findIP = ['REMOTE_ADDR'];
+            }
 
             $ip = '';
             // start looping
@@ -120,7 +129,7 @@ if (!class_exists('CFGP_IP')) :
             }
 
             // let's try hacking into apache?
-            if (function_exists('apache_request_headers')) {
+            if ($trusted_proxy && function_exists('apache_request_headers')) {
                 $headers = apache_request_headers();
 
                 if (
@@ -353,6 +362,123 @@ if (!class_exists('CFGP_IP')) :
         }
 
         /**
+         * Check whether the direct network peer is an explicitly trusted proxy.
+         */
+        private static function is_trusted_proxy($ip)
+        {
+            if (!self::validate_any($ip)) {
+                return false;
+            }
+
+            $trusted_proxies = apply_filters('cfgp/ip/trusted_proxies', [], $ip);
+
+            if (!is_array($trusted_proxies)) {
+                $trusted_proxies = preg_split('/[\s,]+/', (string)$trusted_proxies, -1, PREG_SPLIT_NO_EMPTY);
+            }
+
+            if (CFGP_Options::get('enable_cloudflare', false)) {
+                $trusted_proxies = array_merge($trusted_proxies, self::cloudflare_proxies());
+            }
+
+            foreach ($trusted_proxies as $trusted_proxy) {
+                if (self::ip_in_cidr($ip, trim((string)$trusted_proxy))) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /**
+         * Check whether an IP belongs to Cloudflare's published proxy ranges.
+         */
+        private static function is_cloudflare_proxy($ip)
+        {
+            if (!self::validate_any($ip)) {
+                return false;
+            }
+
+            foreach (self::cloudflare_proxies() as $trusted_proxy) {
+                if (self::ip_in_cidr($ip, $trusted_proxy)) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /**
+         * Cloudflare IP ranges published at https://www.cloudflare.com/ips/.
+         */
+        private static function cloudflare_proxies()
+        {
+            return apply_filters('cfgp/ip/cloudflare_proxies', [
+                '173.245.48.0/20',
+                '103.21.244.0/22',
+                '103.22.200.0/22',
+                '103.31.4.0/22',
+                '141.101.64.0/18',
+                '108.162.192.0/18',
+                '190.93.240.0/20',
+                '188.114.96.0/20',
+                '197.234.240.0/22',
+                '198.41.128.0/17',
+                '162.158.0.0/15',
+                '104.16.0.0/13',
+                '104.24.0.0/14',
+                '172.64.0.0/13',
+                '131.0.72.0/22',
+                '2400:cb00::/32',
+                '2606:4700::/32',
+                '2803:f800::/32',
+                '2405:b500::/32',
+                '2405:8100::/32',
+                '2a06:98c0::/29',
+                '2c0f:f248::/32',
+            ]);
+        }
+
+        /**
+         * Match an IPv4 or IPv6 address against an address or CIDR range.
+         */
+        private static function ip_in_cidr($ip, $range)
+        {
+            if (strpos($range, '/') === false) {
+                return $ip === $range;
+            }
+
+            list($network, $prefix) = explode('/', $range, 2);
+            $ip_binary              = @inet_pton($ip);
+            $network_binary         = @inet_pton($network);
+
+            if ($ip_binary === false || $network_binary === false || strlen($ip_binary) !== strlen($network_binary)) {
+                return false;
+            }
+
+            $prefix   = (int)$prefix;
+            $max_bits = strlen($ip_binary) * 8;
+
+            if ($prefix < 0 || $prefix > $max_bits) {
+                return false;
+            }
+
+            $bytes = (int)floor($prefix / 8);
+            $bits  = $prefix % 8;
+
+            if ($bytes > 0 && substr($ip_binary, 0, $bytes) !== substr($network_binary, 0, $bytes)) {
+                return false;
+            }
+
+            if ($bits === 0) {
+                return true;
+            }
+
+            $mask = (0xFF << (8 - $bits)) & 0xFF;
+
+            return (ord($ip_binary[$bytes]) & $mask) === (ord($network_binary[$bytes]) & $mask);
+        }
+
+        /**
          * Detect is client using proxy
          *
          * @since    8.0.0
@@ -401,6 +527,7 @@ if (!class_exists('CFGP_IP')) :
 			// Cloudflare means external request
 			if (
 				CFGP_Options::get('enable_cloudflare', false)
+				&& self::is_cloudflare_proxy($_SERVER['REMOTE_ADDR'] ?? '')
 				&& !empty($_SERVER['HTTP_CF_CONNECTING_IP'])
 			) {
 				return false;

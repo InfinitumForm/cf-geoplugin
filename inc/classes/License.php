@@ -24,6 +24,8 @@ if (!class_exists('CFGP_License')) :
     class CFGP_License extends CFGP_Global
     {
         private static $activated = null;
+        private static $expired = null;
+        private static $expire_dates = [];
 
         /*
          * License names
@@ -223,7 +225,7 @@ if (!class_exists('CFGP_License')) :
                 return self::$activated;
             }
 
-            if (self::expired()) {
+            if (self::requires_renewal()) {
                 self::$activated = false;
 
                 return self::$activated;
@@ -248,17 +250,26 @@ if (!class_exists('CFGP_License')) :
          */
         public static function expired()
         {
-            static $expired = null;
+            if (self::$expired === null) {
+                $license = self::get();
+                $status = $license['status'] ?? null;
 
-            if (null === $expired) {
                 if (CFGP_Defaults::LIFETIME_LICENSE === self::get('sku')) {
-                    $expired = false;
+                    self::$expired = false;
+                } elseif (
+                    self::has_activation()
+                    && (
+                        (int)self::get('expired', 0) === 1
+                        || in_array($status, [false, 0, '0', 'expired', 'cancelled', 'refunded', 'revoked'], true)
+                    )
+                ) {
+                    self::$expired = true;
                 } else {
-                    $expired = ((int)self::expire_date('YmdH') < (int)date('YmdH'));
+                    self::$expired = ((int)self::expire_date('YmdH') < (int)date('YmdH'));
                 }
             }
 
-            return $expired;
+            return self::$expired;
         }
 
         /*
@@ -266,14 +277,12 @@ if (!class_exists('CFGP_License')) :
          */
         public static function expire_date($format = '')
         {
-            static $expire_date = null;
-
             if (empty($format)) {
                 $format = get_option('date_format');
             }
 
-            if (isset($expire_date[$format])) {
-                return $expire_date[$format];
+            if (array_key_exists($format, self::$expire_dates)) {
+                return self::$expire_dates[$format];
             }
 
             $generate_date = function ($format) {
@@ -291,13 +300,31 @@ if (!class_exists('CFGP_License')) :
                 return $ex_date;
             };
 
-            if (null === $expire_date) {
-                $expire_date = [];
+            self::$expire_dates[$format] = $generate_date($format);
+
+            return self::$expire_dates[$format];
+        }
+
+        public static function has_activation()
+        {
+            $license = self::get();
+
+            return !empty($license['key'])
+                && !empty($license['sku'])
+                && preg_match('/^\d+$/', (string)($license['id'] ?? ''));
+        }
+
+        public static function requires_renewal()
+        {
+            if (!self::has_activation() || CFGP_Defaults::LIFETIME_LICENSE === self::get('sku')) {
+                return false;
             }
 
-            $expire_date[$format] = $generate_date($format);
+            $license = self::get();
 
-            return $expire_date[$format];
+            return self::expired()
+                || (int)self::get('expired', 0) === 1
+                || in_array($license['status'] ?? null, [false, 0, '0', 'expired', 'cancelled', 'refunded', 'revoked'], true);
         }
 
         /*
@@ -427,14 +454,9 @@ if (!class_exists('CFGP_License')) :
                 'domain' => CFGP_U::get_host(true),
             ];
 
-            $request_url = CFGP_Defaults::API[(CFGP_Options::get('enable_ssl', 0) ? 'ssl_' : '') . 'authenticate'] . '?' . http_build_query(
-                $request_pharams,
-                '',
-                (ini_get('arg_separator.output') ?? '&amp;'),
-                PHP_QUERY_RFC3986
-            );
+            $request_url = CFGP_Defaults::API[(CFGP_Options::get('enable_ssl', 0) ? 'ssl_' : '') . 'authenticate'];
 
-            $response = CFGP_U::curl_get(CFGP_Defaults::falback_api_endpoints($request_url));
+            $response = CFGP_U::api_request(CFGP_Defaults::falback_api_endpoints($request_url), $request_pharams);
 
             if (empty($response)) {
                 CFGP_DB_Cache::delete('cfgp-license-response-success');
@@ -509,14 +531,9 @@ if (!class_exists('CFGP_License')) :
                 'domain'        => CFGP_U::get_host(true),
             ];
 
-            $request_url = CFGP_Defaults::API[(CFGP_Options::get('enable_ssl', 0) ? 'ssl_' : '') . 'authenticate'] . '?' . http_build_query(
-                $post_data,
-                '',
-                (ini_get('arg_separator.output') ?? '&amp;'),
-                PHP_QUERY_RFC3986
-            );
+            $request_url = CFGP_Defaults::API[(CFGP_Options::get('enable_ssl', 0) ? 'ssl_' : '') . 'authenticate'];
 
-            $response = CFGP_U::curl_get($request_url);
+            $response = CFGP_U::api_request($request_url, $post_data);
 
             /*
              * OK, we have some problems with some websites.
@@ -636,6 +653,9 @@ if (!class_exists('CFGP_License')) :
 
             // Save to cache
             CFGP_Cache::set('license', $options);
+            self::$activated = null;
+            self::$expired = null;
+            self::$expire_dates = [];
 
             return apply_filters('cfgp/license/set', $options, CFGP_Defaults::LICENSE, $name_or_array, $value);
         }

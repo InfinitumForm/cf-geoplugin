@@ -146,9 +146,15 @@ if (!class_exists('CFGP_U', false)) : class CFGP_U
      *
      * @since    4.0.4
      */
-    public static function curl_get($url, $headers = [], $new_params = [], $json = false)
+    public static function curl_get($url, $headers = [], $new_params = [], $json = false, $raw_response = false)
     {
-        $cache_name = 'cfgp-curl_get-' . self::hash(serialize([$url, $headers, $new_params, $json]));
+        $cache_data = [$url, $headers, $new_params, $json];
+
+        if ($raw_response) {
+            $cache_data[] = true;
+        }
+
+        $cache_name = 'cfgp-curl_get-' . self::hash(serialize($cache_data));
 
         if (null !== ($cache = CFGP_Cache::get($cache_name))) {
             return $cache;
@@ -183,6 +189,10 @@ if (!class_exists('CFGP_U', false)) : class CFGP_U
             return CFGP_Cache::set($cache_name, false);
         }
 
+        if ($raw_response) {
+            return $request;
+        }
+
         $output = wp_remote_retrieve_body($request);
 
         if (is_wp_error($output) || empty($output)) {
@@ -203,24 +213,26 @@ if (!class_exists('CFGP_U', false)) : class CFGP_U
      *
      * @since    4.0.4
      */
-    public static function curl_post($url, $post_data = [], $headers = ['Accept: application/json'], $new_params = [], $json = false)
+    public static function curl_post($url, $post_data = [], $headers = ['Accept: application/json'], $new_params = [], $json = false, $raw_response = false)
     {
-        $cache_name = 'cfgp-curl_post-' . self::hash(serialize([$url, $headers, $new_params, $json]));
+        $cache_name = 'cfgp-curl_post-' . self::hash(serialize([$url, $post_data, $headers, $new_params, $json, $raw_response]));
 
         if (null !== ($cache = CFGP_Cache::get($cache_name))) {
             return $cache;
         }
 
-        $proxy_settings = [
-            'WP_PROXY_HOST'     => 'proxy_ip',
-            'WP_PROXY_PORT'     => 'proxy_port',
-            'WP_PROXY_USERNAME' => 'proxy_username',
-            'WP_PROXY_PASSWORD' => 'proxy_password',
-        ];
+        if (CFGP_Options::get('proxy', 0) == 1) {
+            $proxy_settings = [
+                'WP_PROXY_HOST'     => 'proxy_ip',
+                'WP_PROXY_PORT'     => 'proxy_port',
+                'WP_PROXY_USERNAME' => 'proxy_username',
+                'WP_PROXY_PASSWORD' => 'proxy_password',
+            ];
 
-        foreach ($proxy_settings as $constant => $option_name) {
-            if (!defined($constant) && $value = CFGP_Options::get($option_name, false)) {
-                define($constant, $value);
+            foreach ($proxy_settings as $constant => $option_name) {
+                if (!defined($constant) && $value = CFGP_Options::get($option_name, false)) {
+                    define($constant, $value);
+                }
             }
         }
 
@@ -238,6 +250,10 @@ if (!class_exists('CFGP_U', false)) : class CFGP_U
             return CFGP_Cache::set($cache_name, false);
         }
 
+        if ($raw_response) {
+            return $request;
+        }
+
         $output = wp_remote_retrieve_body($request);
 
         if (is_wp_error($output) || empty($output)) {
@@ -251,6 +267,63 @@ if (!class_exists('CFGP_U', false)) : class CFGP_U
         CFGP_Cache::set($cache_name, $output);
 
         return $output;
+    }
+
+    /**
+     * Send a request to the Geo Controller remote API.
+     *
+     * GET remains the default for backward compatibility. POST sends the same
+     * scalar parameters in an application/x-www-form-urlencoded request body.
+     */
+    public static function api_request($url, $data = [], $headers = [], $new_params = [], $json = false, $raw_response = false)
+    {
+        $url = esc_url_raw($url);
+
+        if (strtolower((string)wp_parse_url($url, PHP_URL_SCHEME)) !== 'https') {
+            return false;
+        }
+
+        $method = defined('CFGP_API_REQUEST_METHOD')
+            ? strtoupper(trim((string)CFGP_API_REQUEST_METHOD))
+            : 'GET';
+        $method = in_array($method, ['GET', 'POST'], true) ? $method : 'GET';
+
+        if ($method === 'POST') {
+            $post_headers = [
+                'Accept'       => 'application/json',
+                'Content-Type' => 'application/x-www-form-urlencoded; charset=UTF-8',
+            ];
+
+            foreach ((array)$headers as $name => $value) {
+                if (is_int($name)) {
+                    $header = explode(':', (string)$value, 2);
+
+                    if (count($header) === 2) {
+                        $post_headers[trim($header[0])] = trim($header[1]);
+                    }
+                } else {
+                    $post_headers[$name] = $value;
+                }
+            }
+
+            // Do not allow a redirect to forward credentials or rewrite POST as GET.
+            $new_params['redirection']        = 0;
+            $new_params['sslverify']          = true;
+            $new_params['reject_unsafe_urls'] = true;
+
+            return self::curl_post($url, $data, $post_headers, $new_params, $json, $raw_response);
+        }
+
+        if (!empty($data)) {
+            $url .= (strpos($url, '?') === false ? '?' : '&') . http_build_query(
+                $data,
+                '',
+                (ini_get('arg_separator.output') ?? '&amp;'),
+                PHP_QUERY_RFC3986
+            );
+        }
+
+        return self::curl_get($url, $headers, $new_params, $json, $raw_response);
     }
 
     /*
@@ -921,7 +994,7 @@ if (!class_exists('CFGP_U', false)) : class CFGP_U
 			['host' => '1.0.0.1', 'port' => 443, 'type' => 'tcp'], // Cloudflare secondary
 
 			// WordPress HTTP API fallbacks (respect WP proxy/settings/guidelines)
-			['url'  => 'http://clients3.google.com/generate_204',         'type' => 'wp-http'], // returns 204
+			['url'  => 'https://clients3.google.com/generate_204',        'type' => 'wp-http'], // returns 204
 			['url'  => 'https://www.cloudflare.com/cdn-cgi/trace',        'type' => 'wp-http'], // lightweight 200
 			['url'  => 'https://www.wordpress.org/',                      'type' => 'wp-http'], // stable 200
 		]);

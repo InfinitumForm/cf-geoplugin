@@ -26,6 +26,15 @@ add_action('admin_footer', function () {
 add_action('cfgp/page/license/content', function () {
 
     if (CFGP_U::api('available_lookup') != 'lifetime') :
+        if (CFGP_License::requires_renewal()) :
+            ?>
+            <p><?php esc_html_e('Your existing activation has been preserved. Renew the same license in your Geo Controller account to restore licensed features.', 'cf-geoplugin'); ?></p>
+            <?php if (CFGP_License::get('url')) : ?>
+                <p><a class="button button-primary" href="<?php echo esc_url(CFGP_License::get('url')); ?>" target="_blank" rel="noopener noreferrer"><?php esc_html_e('Renew License', 'cf-geoplugin'); ?></a></p>
+            <?php endif; ?>
+            <?php
+            return;
+        endif;
 
         $select_options = [];
 
@@ -147,6 +156,16 @@ add_action('cfgp/page/license/sidebar', function () {
 				'<strong><a href="https://wpgeocontroller.com/privacy-policy/" target="_blank">' . esc_html__('Privacy Policy', 'cf-geoplugin') . '</a></strong>',
 				'<strong><a href="https://wpgeocontroller.com/terms-and-conditions/" target="_blank">' . esc_html__('Terms & Conditions', 'cf-geoplugin') . '</a></strong>'
 			)); ?></p>
+
+		<?php elseif (CFGP_License::requires_renewal()) : ?>
+			<p><strong><?php esc_html_e('Status:', 'cf-geoplugin'); ?></strong> <?php esc_html_e('Expired', 'cf-geoplugin'); ?></p>
+			<?php if (CFGP_License::expire_date()) : ?>
+				<p><strong><?php esc_html_e('Expiration:', 'cf-geoplugin'); ?></strong> <?php echo esc_html(CFGP_License::expire_date()); ?></p>
+			<?php endif; ?>
+			<p><?php esc_html_e('Geo Controller is currently using the standard daily lookup limit. Your existing activation has been preserved.', 'cf-geoplugin'); ?></p>
+			<?php if (CFGP_License::get('url')) : ?>
+				<p><a class="button button-primary" href="<?php echo esc_url(CFGP_License::get('url')); ?>" target="_blank" rel="noopener noreferrer"><?php esc_html_e('Renew License', 'cf-geoplugin'); ?></a></p>
+			<?php endif; ?>
 
 		<?php elseif (CFGP_U::api('available_lookup') === 'unlimited') : ?>
 			<p style="font-weight:600;"><?php esc_html_e('An update error occurred, and your license was not recorded on your server.', 'cf-geoplugin'); ?></p>

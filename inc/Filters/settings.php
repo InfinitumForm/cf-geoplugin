@@ -217,6 +217,17 @@ add_filter('cfgp/settings', function ($options = []) {
 					'desc'   => __('Here you can enable or disable the features you need. This is useful because you can turn off functionality that you do not require.', 'cf-geoplugin'),
 					'inputs' => [
 						[
+							'name'    => 'enable_simple_shortcode',
+							'label'   => __('Enable Simple Shortcodes', 'cf-geoplugin'),
+							'desc'    => __('Allow alternative, simplified shortcode syntax for easier use and greater flexibility.', 'cf-geoplugin'),
+							'type'    => 'radio',
+							'options' => [
+								1 => __('Yes', 'cf-geoplugin'),
+								0 => __('No', 'cf-geoplugin'),
+							],
+							'default' => 1,
+						],
+						[
 							'name'    => 'enable_menus_control',
 							'label'   => __('Enable Navigation Menus', 'cf-geoplugin'),
 							'desc'    => __('Control the display of menu items by geolocation. Enable this feature and then go to the navigation settings for further configuration.', 'cf-geoplugin'),
@@ -528,17 +539,6 @@ add_filter('cfgp/settings', function ($options = []) {
 							'name'    => 'enable_beta',
 							'label'   => __('Enable BETA Features', 'cf-geoplugin'),
 							'desc'    => __('Enable or disable all BETA functionality by default.', 'cf-geoplugin'),
-							'type'    => 'radio',
-							'options' => [
-								1 => __('Yes', 'cf-geoplugin'),
-								0 => __('No', 'cf-geoplugin'),
-							],
-							'default' => 1,
-						],
-						[
-							'name'    => 'enable_simple_shortcode',
-							'label'   => __('Enable Simple Shortcodes', 'cf-geoplugin'),
-							'desc'    => __('Allow the use of additional simple shortcode formats.', 'cf-geoplugin'),
 							'type'    => 'radio',
 							'options' => [
 								1 => __('Yes', 'cf-geoplugin'),
