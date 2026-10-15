@@ -5,7 +5,7 @@ Tags: geolocation, geotargeting, woocommerce, location, geoip
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.0
-Stable tag: 9.0.3
+Stable tag: 9.0.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Commercial: https://wpgeocontroller.com/
@@ -415,6 +415,9 @@ Please inform us if any of these errors occur via contact form on our website [h
 
 == Changelog ==
 
+= 9.0.4 =
+* Fixed [in_eu] and [not_in_eu] shortcode registration after the Simple Shortcodes option moved from beta to standard settings.
+
 = 9.0.3 =
 * Security: moved dedicated Geo Controller API endpoints to HTTPS and removed the former automatic direct-IP HTTP downgrade.
 * API: added centralized, backward-compatible GET/POST transport selection; GET remains the default, while POST sends API parameters in the request body.
@@ -542,80 +545,13 @@ Please inform us if any of these errors occur via contact form on our website [h
 * Fixed bugs with IP address detection
 * Optimized PHP code
 
-= 8.7.11 =
-* Improved cache headers
-
-= 8.7.10 =
-* Fixed issue with Woocommerce checkout info
-
-= 8.7.9 =
-* Fixed issue with Woocommerce HPOS metabox
-
-= 8.7.8 =
-* Fixed WooCommerce bugs and improved performances
-
-= 8.7.7 =
-* Support for the WordPress version 6.7
-
-= 8.7.6 =
-* Fixing Geo Defender algo
-* Improved PHP algos and code optimization
-* Improved cookie control
-* Improved WooCommerce module
-
-= 8.7.5 =
-* Adding user permission to the GEO menus
-
-= 8.7.4 =
-* Fixing Missing Authorization to Authenticated (Subscriber+) Menu Creation/Deletion
-* Imorived WooCommerce geo pricing
-
-= 8.7.3 =
-* Fixing slow loading of the plugin
-
-= 8.7.2 =
-* Fixed problems with country flags cache
-* Optimized shortcode cache
-
-= 8.7.1 =
-* Fixed security recommendations
-* Advanced security protocols
-* Improved performance for content rendering
-* Fixed bugs and PHP errors from the previous version
-
-= 8.7.0 =
-* Fixed plugin security
-* Protected AJAX calls from XXS attacks
-* Added better caching
-* Improved javascript algorithms
-
 == Upgrade Notice ==
+
+= 9.0.4 =
+* Restored [in_eu] and [not_in_eu] shortcode registration after the Simple Shortcodes option moved to standard settings.
 
 = 9.0.3 =
 * Security and API transport release with HTTPS hardening, trusted-proxy validation, protected location requests and integration actions, safe JavaScript serialization, configurable GET/POST support, and an opt-in emergency Defender fallback.
-
-= 9.0.2 =
-* Maintenance release with shortcode and interactive map fixes plus WooCommerce checkout, HPOS, pricing, geolocation, and payment restriction improvements.
-
-= 9.0.1 =
-* Fixed license renewal synchronization for renewed subscription activations.
-* Added automatic renewal revalidation for valid subscription activations.
-* Improved expired-license renewal diagnostics and administrator guidance.
-
-= 9.0.0 =
-* Compatibility: maintained PHP 7.0 to PHP 8.4 support.
-* Stabilized shortcode and Geo Banner caching across transient, database, and Redis modes.
-* Fixed cache cleanup and prevented Geo Banner caching when disabled.
-* Stabilized shortcode, GPS, Geo Banner, and Google Map attributes while preserving legacy support.
-* Added optional REST API transport for public authentication and lookups; AJAX remains the default.
-* Added API transport settings and endpoint documentation.
-* Preserved existing API responses and access-token behavior.
-* Security: protected Defender saves, previews, and bypass cookies with capability, nonce, and method checks.
-* Security: limited permanent Defender bypass to administrators and removed legacy recovery and bot bypasses.
-* Security: added single-use recovery links for temporary WordPress login access.
-* Security: protected global and page-level SEO settings with capability, nonce, and method checks.
-* Fixed postcode matching, country-city redirects, exclusion rules, empty CSV exports, and import rollbacks.
-* CSS display controls now preserve flex, grid, inline, inline-block, table, and other display modes.
 
 == Other Notes ==
 

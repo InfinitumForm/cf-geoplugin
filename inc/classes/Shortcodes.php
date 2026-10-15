@@ -99,7 +99,7 @@ if (!class_exists('CFGP_Shortcodes', false)) : class CFGP_Shortcodes extends CFG
         $this->add_shortcode('cfgeo_gps', 'cfgeo_gps');
 
         // Beta shortcodes
-        if (CFGP_Options::get_beta('enable_simple_shortcode')) {
+        if (CFGP_Options::get('enable_simple_shortcode')) {
             $this->add_action('wp_loaded', 'shortcode_automat_setup');
 
             $this->add_shortcode('geo', 'cf_geoplugin');

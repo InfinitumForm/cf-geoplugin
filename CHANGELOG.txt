@@ -1,5 +1,8 @@
 == Changelog ==
 
+= 9.0.4 =
+* Fixed [in_eu] and [not_in_eu] shortcode registration after the Simple Shortcodes option moved from beta to standard settings.
+
 = 9.0.3 =
 * Security: moved dedicated Geo Controller API endpoints to HTTPS and removed the former automatic direct-IP HTTP downgrade.
 * API: added centralized, backward-compatible GET/POST transport selection; GET remains the default, while POST sends API parameters in the request body.
