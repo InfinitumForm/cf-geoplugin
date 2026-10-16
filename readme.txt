@@ -1,7 +1,7 @@
-﻿=== Geo Controller ===
+﻿=== Geo Controller - IP Geolocation & Geotargeting ===
 Contributors: ivijanstefan, creativform
 Donate link: https://ko-fi.com/ivijanstefanstipic
-Tags: geolocation, geotargeting, woocommerce, location, geoip
+Tags: geolocation, geotargeting, geoip, geomarketing, geo redirect
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.0
@@ -10,7 +10,7 @@ License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Commercial: https://wpgeocontroller.com/
 
-Enhance your WordPress site with Geo Controller – a comprehensive plugin offering advanced location-based features and personalized content delivery.
+Turn visitor locations into conversions with personalized content, smart geo redirects, targeted offers and WooCommerce localization.
 
 == Description ==
 

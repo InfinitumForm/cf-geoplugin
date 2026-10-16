@@ -3,11 +3,11 @@
 /**
  * @wordpress-plugin
  *
- * Geo Controller
+ * Geo Controller - IP Geolocation & Geotargeting
  *
- * Plugin Name:       Geo Controller
+ * Plugin Name:       Geo Controller - IP Geolocation & Geotargeting
  * Plugin URI:        https://wpgeocontroller.com/
- * Description:       Unlock the power of location-based functionality of WordPress - the ultimate all-in-one geolocation plugin for WordPress.
+ * Description:       Turn visitor locations into conversions with personalized content, smart geo redirects, targeted offers and WooCommerce localization.
  * Version:           9.0.4
  * Requires at least: 6.0
  * Requires PHP:      7.0
