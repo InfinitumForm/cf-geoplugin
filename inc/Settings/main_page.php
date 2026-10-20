@@ -45,9 +45,24 @@ $gps_keys = apply_filters('cfgp/main_page/gps_keys', [
 ]);
 
 $API = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
+$copy_button = '<button type="button" class="button button-small cfgp-copy-button" aria-label="' . esc_attr__('Copy', 'cf-geoplugin') . '" title="' . esc_attr__('Copy', 'cf-geoplugin') . '"><span class="dashicons dashicons-admin-page" aria-hidden="true"></span><span class="cfgp-copy-button-label">' . esc_html__('Copy', 'cf-geoplugin') . '</span></button><span class="screen-reader-text cfgp-copy-status" aria-live="polite"></span>';
+$copy_allowed_html = [
+	'code'   => [],
+	'button' => [
+		'type'       => true,
+		'class'      => true,
+		'aria-label' => true,
+		'title'      => true,
+	],
+	'span'   => [
+		'class'       => true,
+		'aria-hidden' => true,
+		'aria-live'   => true,
+	],
+];
 
 ?>
-<div class="wrap cfgp-wrap" id="<?php echo esc_attr(sanitize_text_field($_GET['page'] ?? null)); ?>">
+<div class="wrap cfgp-wrap cfgp-copy-scope" id="<?php echo esc_attr(sanitize_text_field($_GET['page'] ?? null)); ?>" data-copy-label="<?php esc_attr_e('Copy', 'cf-geoplugin'); ?>" data-copied-label="<?php esc_attr_e('Copied', 'cf-geoplugin'); ?>" data-copy-failed-label="<?php esc_attr_e('Copy failed', 'cf-geoplugin'); ?>">
 	<h1 class="wp-heading-inline"><i class="cfa cfa-map-marker"></i> <?php esc_html_e('Geo Controller', 'cf-geoplugin'); ?></h1>
     <hr class="wp-header-end">
 
@@ -61,7 +76,7 @@ $API = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
                         <nav class="nav-tab-wrapper">
                         	<?php do_action('cfgp/main_page/nav-tab/before', $API, $remove_tags, $gps_keys); ?>
                             <a href="javascript:void(0);" class="nav-tab nav-tab-active" data-id="#shortcodes"><i class="cfa cfa-code"></i><span class="label"> <?php esc_html_e('Shortcodes', 'cf-geoplugin'); ?></span></a>
-                            <?php if (CFGP_Options::get_beta('enable_simple_shortcode')) : ?>
+                            <?php if (CFGP_Options::get('enable_simple_shortcode')) : ?>
                             	<a href="javascript:void(0);" class="nav-tab" data-id="#simple-shortcodes"><i class="cfa cfa-code"></i><span class="label"> <?php esc_html_e('Simple Shortcodes', 'cf-geoplugin'); ?></span></a>
                             <?php endif; ?>
                             <a href="javascript:void(0);" class="nav-tab" data-id="#tags"><i class="cfa cfa-tag"></i><span class="label"> <?php esc_html_e('Tags', 'cf-geoplugin'); ?></span></a>
@@ -77,7 +92,7 @@ $API = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
 								<?php echo wp_kses_post(sprintf(
 									/* translators: %s: link to the shortcodes documentation. */
 									__('The usage and functionality of these shortcodes are explained in our %s.', 'cf-geoplugin'),
-									'<a href="' . esc_url(CFGP_STORE . '/documentation/quick-start/geo-controller-shortcodes') . '" target="_blank">' . esc_html__('documentation', 'cf-geoplugin') . '</a>'
+									'<a href="' . esc_url(CFGP_STORE . '/documentation/quick-start/geo-controller-shortcodes') . '" target="_blank" rel="noopener noreferrer">' . esc_html__('documentation', 'cf-geoplugin') . '</a>'
 								)); ?>
 							</p>
 
@@ -99,10 +114,10 @@ $API = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
                                     } ?>
                                     <tr>
                                     <?php if (in_array($key, ['cfgeo_flag'], true)) : ?>
-                                    	<td><code>[<?php echo esc_html($key); ?>]</code></td>
+                                        <td><code>[<?php echo esc_html($key); ?>]</code><?php echo $copy_button; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Static markup with escaped translations. ?></td>
                                     <?php else : ?>
                                     	<td>
-											<code>[cfgeo return="<?php echo esc_attr($key); ?>"]</code>
+											<code>[cfgeo return="<?php echo esc_attr($key); ?>"]</code><?php echo $copy_button; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Static markup with escaped translations. ?>
 										</td>
                                     <?php endif; ?>
                                         <td>
@@ -130,14 +145,14 @@ $API = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
                             </table>
                             <?php endif; ?>
                         </div>
-                        <?php if (CFGP_Options::get_beta('enable_simple_shortcode')) : ?>
+                        <?php if (CFGP_Options::get('enable_simple_shortcode')) : ?>
                             <div class="cfgp-tab-panel" id="simple-shortcodes">
                                 <p>
 									<?php esc_html_e('These are the shortcodes available for use in places where shortcodes can be executed.', 'cf-geoplugin'); ?>
 									<?php echo wp_kses_post(sprintf(
 										/* translators: %s: link to the shortcode documentation. */
 										__('The usage and functionality of these shortcodes are explained in our %s.', 'cf-geoplugin'),
-										'<a href="' . esc_url(CFGP_STORE . '/documentation/quick-start/geo-controller-shortcodes/cfgeo_property') . '" target="_blank">' . esc_html__('documentation', 'cf-geoplugin') . '</a>'
+										'<a href="' . esc_url(CFGP_STORE . '/documentation/quick-start/geo-controller-shortcodes/cfgeo_property') . '" target="_blank" rel="noopener noreferrer">' . esc_html__('documentation', 'cf-geoplugin') . '</a>'
 									)); ?>
 								</p>
 								<p>
@@ -161,7 +176,7 @@ $API = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
                                             continue;
                                         } ?>
                                         <tr>
-                                            <td><code>[cfgeo_<?php echo esc_attr($key); ?>]</code></td>
+                                            <td><code>[cfgeo_<?php echo esc_attr($key); ?>]</code><?php echo $copy_button; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Static markup with escaped translations. ?></td>
                                             <td>
 												<span class="cfgp-value"><?php
                                                 if (in_array($key, ['country_flag', 'credit'], true)) {
@@ -193,7 +208,7 @@ $API = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
 								<?php echo wp_kses_post(sprintf(
 									/* translators: %s: link to the tags documentation. */
 									__('These special tags are designed for quickly inserting geo-information into pages and posts. They allow the use of geo-information in page titles and content, categories, and other taxonomies. They can also be used in widgets, various page builders, and are supported by several SEO plugins such as Yoast, All in One SEO Pack, SEO Framework, and Rank Math. For more details, please read our %s.', 'cf-geoplugin'),
-									'<a href="' . esc_url(CFGP_STORE . '/documentation/quick-start/cf-geo-plugin-tags') . '" target="_blank">' . esc_html__('documentation', 'cf-geoplugin') . '</a>'
+									'<a href="' . esc_url(CFGP_STORE . '/documentation/quick-start/cf-geo-plugin-tags') . '" target="_blank" rel="noopener noreferrer">' . esc_html__('documentation', 'cf-geoplugin') . '</a>'
 								)); ?>
 							</p>
 
@@ -211,7 +226,7 @@ $API = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
                                         continue;
                                     } ?>
                                     <tr>
-                                        <td><code>%%<?php echo esc_html($key); ?>%%</code></td>
+                                        <td><code>%%<?php echo esc_html($key); ?>%%</code><?php echo $copy_button; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Static markup with escaped translations. ?></td>
                                         <td>
 											<span class="cfgp-value"><?php
                                                 if (in_array($key, ['cfgeo_flag', 'credit'], true)) {
@@ -248,13 +263,13 @@ $API = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
 							<p><?php esc_html_e('These CSS settings are dynamic and depend on the visitor’s geolocation.', 'cf-geoplugin'); ?></p>
 
 							<p>
-								<?php echo wp_kses_post(sprintf(
+								<?php echo wp_kses(sprintf(
 									/* translators: 1: CSS class example for showing content, 2: CSS class example for hiding content, 3: geo property placeholder. */
 									__('A different CSS class is generated for each state, city, or region following this principle: %1$s or %2$s, where %3$s represents the geo-location name in lowercase letters with multiple words separated by a dash.', 'cf-geoplugin'),
-									'<code>cfgeo-show-in-' . esc_html__('{property}', 'cf-geoplugin') . '</code>',
-									'<code>cfgeo-hide-from-' . esc_html__('{property}', 'cf-geoplugin') . '</code>',
+									'<code>cfgeo-show-in-' . esc_html__('{property}', 'cf-geoplugin') . '</code>' . $copy_button,
+									'<code>cfgeo-hide-from-' . esc_html__('{property}', 'cf-geoplugin') . '</code>' . $copy_button,
 									'<code>' . esc_html__('{property}', 'cf-geoplugin') . '</code>'
-								)); ?>
+								), $copy_allowed_html); ?>
 							</p>
 
 							<p><?php esc_html_e('You can insert these CSS classes inside your HTML via the class attribute, just like any other CSS rule.', 'cf-geoplugin'); ?></p>
@@ -283,8 +298,8 @@ $API = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
 						        $geo = sanitize_title($geo);
 						        ?>
                                     <tr>
-                                        <td><code>cfgeo-show-in-<?php echo esc_html($geo); ?></code></td>
-                                        <td><code>cfgeo-hide-from-<?php echo esc_html($geo); ?></code></td>
+                                        <td><code>cfgeo-show-in-<?php echo esc_html($geo); ?></code><?php echo $copy_button; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Static markup with escaped translations. ?></td>
+                                        <td><code>cfgeo-hide-from-<?php echo esc_html($geo); ?></code><?php echo $copy_button; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Static markup with escaped translations. ?></td>
                                     </tr>
                                     <?php endforeach;
 						    $controls = is_array($css_parameters) && isset($css_parameters['controls']) && is_array($css_parameters['controls']) ? $css_parameters['controls'] : [];
@@ -294,8 +309,8 @@ $API = CFGP_U::api(false, CFGP_Defaults::API_RETURN);
 						        }
 						    ?>
 									<tr>
-                                        <td><code><?php echo esc_html($classes['show']); ?></code></td>
-                                        <td><code><?php echo esc_html($classes['hide']); ?></code></td>
+                                        <td><code><?php echo esc_html($classes['show']); ?></code><?php echo $copy_button; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Static markup with escaped translations. ?></td>
+                                        <td><code><?php echo esc_html($classes['hide']); ?></code><?php echo $copy_button; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Static markup with escaped translations. ?></td>
                                     </tr>
 						    <?php endforeach;
 						    do_action('cfgp/table/after/css_property', $API); ?>

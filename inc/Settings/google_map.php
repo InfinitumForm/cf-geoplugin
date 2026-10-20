@@ -9,9 +9,25 @@ if (!defined('ABSPATH')) {
 }
 
 $API = CFGP_Cache::get('API');
+$copy_button = '<button type="button" class="button button-small cfgp-copy-button" aria-label="' . esc_attr__('Copy', 'cf-geoplugin') . '" title="' . esc_attr__('Copy', 'cf-geoplugin') . '"><span class="dashicons dashicons-admin-page" aria-hidden="true"></span><span class="cfgp-copy-button-label">' . esc_html__('Copy', 'cf-geoplugin') . '</span></button><span class="screen-reader-text cfgp-copy-status" aria-live="polite"></span>';
+$copy_allowed_html = [
+	'br'     => [],
+	'code'   => [],
+	'button' => [
+		'type'       => true,
+		'class'      => true,
+		'aria-label' => true,
+		'title'      => true,
+	],
+	'span'   => [
+		'class'       => true,
+		'aria-hidden' => true,
+		'aria-live'   => true,
+	],
+];
 
 ?>
-<div class="wrap cfgp-wrap" id="<?php echo esc_attr(sanitize_text_field($_GET['page'] ?? null)); ?>">
+<div class="wrap cfgp-wrap cfgp-copy-scope" id="<?php echo esc_attr(sanitize_text_field($_GET['page'] ?? null)); ?>" data-copy-label="<?php esc_attr_e('Copy', 'cf-geoplugin'); ?>" data-copied-label="<?php esc_attr_e('Copied', 'cf-geoplugin'); ?>" data-copy-failed-label="<?php esc_attr_e('Copy failed', 'cf-geoplugin'); ?>">
 	<h1 class="wp-heading-inline"><i class="cfa cfa-globe"></i> <?php esc_html_e('Google Map', 'cf-geoplugin'); ?></h1>
     <hr class="wp-header-end">
     <div id="post">
@@ -30,25 +46,25 @@ $API = CFGP_Cache::get('API');
                         <div class="cfgp-tab-panel cfgp-tab-panel-active" id="property">
                         	<p>
 								<?php
-								echo wp_kses_post(sprintf(
+								echo wp_kses(sprintf(
 									'%s %s',
 									__('Google Maps is a desktop web mapping service developed by Google. It offers satellite imagery, street maps, 360° panoramic views of streets (Street View), real-time traffic conditions (Google Traffic), and route planning for traveling by foot, car, bicycle (in beta), or public transportation.', 'cf-geoplugin'),
 									sprintf(
 										/* translators: %s: Google Maps shortcode. */
 										__('CF GeoPlugin allows you to easily place Google Maps in your WordPress site using the simple shortcode %s.', 'cf-geoplugin'),
-										'<code>[cfgeo_map]</code>'
+										'<code>[cfgeo_map]</code>' . $copy_button
 									)
-								));
+								), $copy_allowed_html);
 								?>
 							</p>
 
 							<p>
 								<?php
-								echo wp_kses_post(sprintf(
+								echo wp_kses(sprintf(
 									/* translators: %s: Google Maps shortcode. */
 									__('The list below contains all available settings for the %s shortcode.', 'cf-geoplugin'),
-									'<code>[cfgeo_map]</code>'
-								));
+									'<code>[cfgeo_map]</code>' . $copy_button
+								), $copy_allowed_html);
 								?>
 							</p>
 
@@ -133,21 +149,21 @@ $API = CFGP_Cache::get('API');
 								<tbody>
 									<tr>
 										<td>
-											<?php echo wp_kses_post(sprintf(
+											<?php echo wp_kses(sprintf(
 												/* translators: %s: Google Maps shortcode example. */
 												__('If you want to place a simple Google Map in your post or page, just insert the shortcode like this: %s – it will display the location based on the visitor’s geolocation.', 'cf-geoplugin'),
-												'<br><br><code>[cfgeo_map]</code>'
-											)); ?>
+												'<br><br><code>[cfgeo_map]</code>' . $copy_button
+											), $copy_allowed_html); ?>
 										</td>
 									</tr>
 									<tr>
 										<td>
-											<?php echo wp_kses_post(sprintf(
+											<?php echo wp_kses(sprintf(
 												/* translators: 1: list of optional shortcode attributes, 2: Google Maps shortcode example. */
 												__('If you want to display your own company street address inside a Google Map, you can add the optional attributes %1$s. For example: %2$s – this will show your company location on Google Maps.', 'cf-geoplugin'),
 												__('<code>longitude</code> and <code>latitude</code>', 'cf-geoplugin'),
-												'<br><br><code>[cfgeo_map longitude="-74.0059" latitude="40.7128" zoom="15"]</code>'
-											)); ?>
+												'<br><br><code>[cfgeo_map longitude="-74.0059" latitude="40.7128" zoom="15"]</code>' . $copy_button
+											), $copy_allowed_html); ?>
 										</td>
 									</tr>
 									<tr>
@@ -160,13 +176,13 @@ $API = CFGP_Cache::get('API');
 												&lt;p&gt;' . __('We have what you need', 'cf-geoplugin') . '&lt;/p&gt;<br>
 												&lt;/address&gt;<br>
 												[/cfgeo_map]
-												</code>';
+												</code>' . $copy_button;
 
-											echo wp_kses_post(sprintf(
+											echo wp_kses(sprintf(
 												/* translators: %s: HTML example shown inside the map info box. */
 												__('If you want to use HTML inside the map and display an info box:<br><br>%s', 'cf-geoplugin'),
 												$html_map
-											));
+											), $copy_allowed_html);
 											?>
 										</td>
 									</tr>

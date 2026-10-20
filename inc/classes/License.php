@@ -390,11 +390,13 @@ if (!class_exists('CFGP_License')) :
             $response = CFGP_DB_Cache::get('cfgp-license-response-success');
 
             if ($response) {
+                $title = CFGP_DB_Cache::get('cfgp-license-response-success-title');
                 ob_start(null, 0, PHP_OUTPUT_HANDLER_REMOVABLE); ?>
-            <h3><?php esc_html_e('Activation succeeded', 'cf-geoplugin'); ?></h3>
+            <h3><?php echo esc_html($title ?: __('Activation succeeded', 'cf-geoplugin')); ?></h3>
             <p><?php echo wp_kses_post($response ?? ''); ?></p>
 			<?php
                 CFGP_DB_Cache::delete('cfgp-license-response-success');
+                CFGP_DB_Cache::delete('cfgp-license-response-success-title');
 
                 $notice = '';
 
@@ -519,8 +521,54 @@ if (!class_exists('CFGP_License')) :
         /*
          * Deactivate plugin
          */
+        private static function is_expired_deactivation_error($response)
+        {
+            if (!is_array($response) || empty($response['error'])) {
+                return false;
+            }
+
+            $expired_messages = [
+                'license key has expired',
+                'license key provided has expired',
+            ];
+            $is_expired_message = static function ($message) use ($expired_messages) {
+                $message = strtolower(rtrim(trim(strip_tags((string)$message)), '.'));
+
+                return in_array($message, $expired_messages, true);
+            };
+
+            if (isset($response['message']) && $is_expired_message($response['message'])) {
+                return true;
+            }
+
+            foreach (['errors_raw', 'errors'] as $error_key) {
+                if (empty($response[$error_key]) || !is_array($response[$error_key])) {
+                    continue;
+                }
+
+                foreach ($response[$error_key] as $key => $messages) {
+                    if ((string)$key === '200') {
+                        return true;
+                    }
+
+                    if ($key !== 'license_key') {
+                        continue;
+                    }
+
+                    foreach ((array)$messages as $message) {
+                        if ($is_expired_message($message)) {
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            return false;
+        }
+
         public static function deactivate()
         {
+            CFGP_DB_Cache::delete('cfgp-license-response-success-title');
 
             $post_data = [
                 'license_key'   => self::get('key'),
@@ -535,22 +583,63 @@ if (!class_exists('CFGP_License')) :
 
             $response = CFGP_U::api_request($request_url, $post_data);
 
-            /*
-             * OK, we have some problems with some websites.
-             *
-             * In that case, we will force deactivation until we find
-             * the perfect solution to the problem we are facing.
-             */
+            if (empty($response)) {
+                CFGP_DB_Cache::delete('cfgp-license-response-success');
+                CFGP_DB_Cache::set('cfgp-license-response-errors', [
+                    'no_connection' => [
+                        __('Unable to connect to server.', 'cf-geoplugin'),
+                    ],
+                ], DAY_IN_SECONDS);
+
+                return false;
+            }
+
+            $local_only = self::is_expired_deactivation_error($response);
+
+            if (!empty($response['error']) && !$local_only) {
+                CFGP_DB_Cache::delete('cfgp-license-response-success');
+
+                if (!empty($response['errors_raw'])) {
+                    $response['errors'] = $response['errors_raw'];
+                }
+
+                CFGP_DB_Cache::set(
+                    'cfgp-license-response-errors',
+                    isset($response['errors']) ? $response['errors'] : [
+                        'api_error' => [
+                            $response['message'] ?? __('License disconnection failed.', 'cf-geoplugin'),
+                        ],
+                    ],
+                    DAY_IN_SECONDS
+                );
+
+                return false;
+            }
 
             // Clear responses if exists
             CFGP_DB_Cache::delete('cfgp-license-response-errors');
             CFGP_DB_Cache::delete('cfgp-license-response-success');
             // Clear license
             self::set(CFGP_Defaults::LICENSE);
-            CFGP_DB_Cache::set('cfgp-license-response-success', __('License successfully deactivated!', 'cf-geoplugin'), DAY_IN_SECONDS);
             // Clear special API cache
             CFGP_API::remove_cache();
-            CFGP_DB_Cache::flush();
+            if (!$local_only) {
+                CFGP_DB_Cache::flush();
+            }
+            CFGP_DB_Cache::set(
+                'cfgp-license-response-success-title',
+                $local_only
+                    ? __('License disconnected locally', 'cf-geoplugin')
+                    : __('License disconnected', 'cf-geoplugin'),
+                DAY_IN_SECONDS
+            );
+            CFGP_DB_Cache::set(
+                'cfgp-license-response-success',
+                $local_only
+                    ? __('The expired license was disconnected from this website. The licensing server did not revoke the remote activation because it rejected deactivation for the expired license key.', 'cf-geoplugin')
+                    : ($response['message'] ?? __('License successfully disconnected!', 'cf-geoplugin')),
+                DAY_IN_SECONDS
+            );
 
             return true;
         }

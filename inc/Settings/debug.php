@@ -52,7 +52,7 @@ if ($NEW_API = CFGP_API::lookup(CFGP_U::request_string('cfgp_lookup'))) {
                     <div class="nav-tab-wrapper-chosen">
                         <nav class="nav-tab-wrapper">
 						<?php do_action('cfgp/debug/nav-tab/before'); ?>
-                        	<a href="javascript:void(0);" class="nav-tab nav-tab-active" data-id="#recived-data"><i class="cfa cfa-database"></i><span class="label"> <?php esc_html_e('Recived data', 'cf-geoplugin'); ?></span></a>
+							<a href="javascript:void(0);" class="nav-tab nav-tab-active" data-id="#recived-data"><i class="cfa cfa-database"></i><span class="label"> <?php esc_html_e('Received data', 'cf-geoplugin'); ?></span></a>
                             <a href="javascript:void(0);" class="nav-tab" data-id="#sent-data"><i class="cfa cfa-share-square"></i><span class="label"> <?php esc_html_e('Sent data', 'cf-geoplugin'); ?></span></a>
                             <a href="javascript:void(0);" class="nav-tab" data-id="#server-statistics"><i class="cfa cfa-server"></i><span class="label"> <?php esc_html_e('Server statistics', 'cf-geoplugin'); ?></span></a>
                             <?php if (CFGP_Options::get('enable_gmap', 0)): ?>
@@ -111,11 +111,11 @@ if ($NEW_API = CFGP_API::lookup(CFGP_U::request_string('cfgp_lookup'))) {
                         </div>
                         
                         <div class="cfgp-tab-panel" id="sent-data">
-                        	<p><?php esc_html_e('This information are sent to Geo Controller API. All of this informations (hostname, IP and timezone) are available for general public, world wide and we only use them for API purpose which helps plugin to determine the exact location of the visitors and prevent accidental collapse between the IP address. Your IP and email address is also a guarantee that you\'re not a robot or some spamming software.', 'cf-geoplugin'); ?></p>
+							<p><?php esc_html_e('This request information is sent to the Geo Controller API to perform the lookup. IP-based geolocation is approximate and can be affected by VPNs, proxies, mobile networks and CDNs.', 'cf-geoplugin'); ?></p>
                             <p><?php echo wp_kses_post(sprintf(
                                 /* translators: %s: link to the privacy policy. */
-                                __('If you are concerned about your private informations, please read the %s', 'cf-geoplugin'),
-                                '<a href="http://wpgeocontroller.com/privacy-policy" target="_blank">' . esc_html__('Privacy Policy', 'cf-geoplugin') . '</a>'
+								__('For information about how data is handled, please read the %s.', 'cf-geoplugin'),
+								'<a href="https://wpgeocontroller.com/privacy-policy" target="_blank" rel="noopener noreferrer">' . esc_html__('Privacy Policy', 'cf-geoplugin') . '</a>'
                             )); ?></p>
                             
                             <table class="wp-list-table widefat fixed striped table-view-list posts table-cf-geoplugin-debug-server-statistics"> 
@@ -250,7 +250,7 @@ if ($plugin_activation && is_array($plugin_activation)) {
 											<br><?php esc_html_e('For now, we\'ve approved the use of deprecated code by default to make transition easier. We recommend that you switch your project to new code as we will be removing support for deprecated code in the future.', 'cf-geoplugin');
 
 											printf(
-												' <a href="%1$s" target="_blank">%2$s</a>',
+												' <a href="%1$s" target="_blank" rel="noopener noreferrer">%2$s</a>',
 												esc_url(CFGP_STORE . '/documentation/advanced-usage/deprecated-code-notice'),
 												esc_html__('Read more...', 'cf-geoplugin')
 											); ?>
@@ -366,8 +366,8 @@ if ($plugin_activation && is_array($plugin_activation)) {
                                                 . '</span><br>' . sprintf(
                                                     /* translators: 1: Memcache documentation link, 2: Redis website link. */
                                                     esc_html__('And if our plugin has an internal cache system, we strongly recommend using %1$s or %2$s to get the best performance.', 'cf-geoplugin'),
-                                                    '<a href="https://www.php.net/manual/en/book.memcached.php" target="_blank">Memcache</a>',
-                                                    '<a href="https://redis.io/" target="_blank">Redis Cache</a>'
+                                                    '<a href="https://www.php.net/manual/en/book.memcached.php" target="_blank" rel="noopener noreferrer">Memcache</a>',
+                                                    '<a href="https://redis.io/" target="_blank" rel="noopener noreferrer">Redis Cache</a>'
                                                 )
                                             )
                                         ); ?></strong></td>

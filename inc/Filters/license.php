@@ -19,6 +19,49 @@ add_action('admin_footer', function () {
 }, 30);
 
 /**
+ * Disconnect an active or expired license.
+ *
+ * @since 9.0.5
+ */
+add_action('cfgp/page/license/save', function () {
+    if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST' || !isset($_POST['disconnect_license'])) {
+        return;
+    }
+
+    if (!current_user_can('manage_options')) {
+        wp_die(esc_html__('You are not allowed to disconnect this license.', 'cf-geoplugin'));
+    }
+
+    check_admin_referer(CFGP_NAME . '-disconnect-license', 'nonce');
+
+    if (CFGP_U::request_string('license_disconnect_confirmation') !== 'DELETE') {
+        CFGP_DB_Cache::delete('cfgp-license-response-success');
+        CFGP_DB_Cache::set('cfgp-license-response-errors', [
+            'input_field' => [
+                __('Type DELETE to confirm license disconnection.', 'cf-geoplugin'),
+            ],
+        ], DAY_IN_SECONDS);
+    } elseif (
+        !CFGP_License::has_activation()
+        || CFGP_Defaults::LIFETIME_LICENSE === CFGP_License::get('sku')
+        || CFGP_U::api('available_lookup') === 'lifetime'
+    ) {
+        CFGP_DB_Cache::delete('cfgp-license-response-success');
+        CFGP_DB_Cache::set('cfgp-license-response-errors', [
+            'api_error' => [
+                __('No disconnectable license activation was found.', 'cf-geoplugin'),
+            ],
+        ], DAY_IN_SECONDS);
+    } else {
+        CFGP_License::deactivate();
+    }
+
+    if (CFGP_U::redirect(CFGP_U::admin_url('/admin.php?page=cf-geoplugin-activate'))) {
+        exit;
+    }
+}, 1);
+
+/**
  * License Page
  *
  * @since    8.0.0
@@ -32,17 +75,13 @@ add_action('cfgp/page/license/content', function () {
             <?php if (CFGP_License::get('url')) : ?>
                 <p><a class="button button-primary" href="<?php echo esc_url(CFGP_License::get('url')); ?>" target="_blank" rel="noopener noreferrer"><?php esc_html_e('Renew License', 'cf-geoplugin'); ?></a></p>
             <?php endif; ?>
-            <?php
-            return;
-        endif;
+        <?php else :
 
         $select_options = [];
 
         if (($_SERVER['REQUEST_METHOD'] ?? '') === 'POST') {
             if (wp_verify_nonce(CFGP_U::request_string('nonce'), CFGP_NAME.'-activate-license') !== false) {
                 CFGP_License::activate(CFGP_U::request_string('license_key'), CFGP_U::request_string('license_sku'));
-            } elseif (isset($_POST['deactivate_license']) && wp_verify_nonce(CFGP_U::request_string('nonce'), CFGP_NAME.'-deactivate-license') !== false) {
-                CFGP_License::deactivate();
             }
 
             if (CFGP_U::redirect(CFGP_U::admin_url('/admin.php?page=cf-geoplugin-activate'))) {
@@ -85,7 +124,7 @@ add_action('cfgp/page/license/content', function () {
         );
     }
     ?>
-<form method="post" autocomplete="off"<?php echo (CFGP_License::activated() ? ' onsubmit="return confirm(\'' . esc_attr__('Are you sure you want to deactivate your license? This action may limit the functionality of the plugin.', 'cf-geoplugin') . '\');"' : ''); ?>>
+<form method="post" autocomplete="off">
 <div class="cfgp-license-container">
 	    
     <div class="cfgp-form-product-checkbox">
@@ -109,10 +148,6 @@ add_action('cfgp/page/license/content', function () {
 					<p>(<?php esc_html_e('The license type must match the license key you ordered.', 'cf-geoplugin'); ?>)</p>
 					<button type="submit" class="button button-primary cfgp-activate-license"><?php esc_html_e('Activate License', 'cf-geoplugin'); ?></button>
 					<input type="hidden" name="nonce" value="<?php echo esc_attr(wp_create_nonce(CFGP_NAME . '-activate-license')); ?>">
-				<?php else: ?>
-					<button type="submit" class="button button-primary cfgp-deactivate-license"><?php esc_html_e('Deactivate Current License', 'cf-geoplugin'); ?></button>
-					<input type="hidden" name="deactivate_license" value="1">
-					<input type="hidden" name="nonce" value="<?php echo esc_attr(wp_create_nonce(CFGP_NAME . '-deactivate-license')); ?>">
 				<?php endif; ?>
 
             </div>
@@ -121,6 +156,27 @@ add_action('cfgp/page/license/content', function () {
     
 </div>	
 </form>
+<?php endif; ?>
+
+<?php if (CFGP_License::has_activation()) : ?>
+<div class="cfgp-license-disconnect">
+	<button type="button" class="button button-secondary cfgp-disconnect-license-open" data-confirm="<?php esc_attr_e('Are you sure you want to disconnect your license? Licensed features will become unavailable on this website.', 'cf-geoplugin'); ?>"><?php esc_html_e('Disconnect License', 'cf-geoplugin'); ?></button>
+</div>
+<div class="cfgp-license-disconnect-modal" hidden aria-hidden="true">
+	<div class="cfgp-license-disconnect-dialog" role="dialog" aria-modal="true" aria-labelledby="cfgp-license-disconnect-title" tabindex="-1">
+		<form method="post" autocomplete="off">
+			<h2 id="cfgp-license-disconnect-title"><?php esc_html_e('Type DELETE to confirm license disconnection.', 'cf-geoplugin'); ?></h2>
+			<input type="text" class="regular-text cfgp-license-disconnect-confirmation" name="license_disconnect_confirmation" value="" autocomplete="off" spellcheck="false">
+			<input type="hidden" name="disconnect_license" value="1">
+			<input type="hidden" name="nonce" value="<?php echo esc_attr(wp_create_nonce(CFGP_NAME . '-disconnect-license')); ?>">
+			<p class="cfgp-license-disconnect-actions">
+				<button type="button" class="button cfgp-license-disconnect-cancel"><?php esc_html_e('Cancel', 'cf-geoplugin'); ?></button>
+				<button type="submit" class="button button-primary cfgp-license-disconnect-submit" disabled><?php esc_html_e('Disconnect License', 'cf-geoplugin'); ?></button>
+			</p>
+		</form>
+	</div>
+</div>
+<?php endif; ?>
 <?php else : ?>
 <p><?php esc_html_e('As one of the first users of our plugin, you have the privilege of a unique lifetime license that gives you unlimited lookups.', 'cf-geoplugin'); ?></p>
 <p><?php esc_html_e('Therefore, you do not have the option to change or deactivate this license.', 'cf-geoplugin'); ?></p>

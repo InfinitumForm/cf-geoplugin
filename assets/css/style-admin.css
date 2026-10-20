@@ -2,7 +2,7 @@
 	position: fixed;
     z-index: 10;
     top: 32px;
-    right: 10px;
+    right: 155px;
     background: #fff;
     border: 1px solid #ccc;
     border-top: 0;
@@ -742,4 +742,228 @@ button.cfgp-select-all {
 }
 #cf-geoplugin-defender #location-restriction .cfgp-form-group:last-child {
 	margin-top:10px;
+}
+
+/* Compact admin UI for Geo Controller pages. */
+.cfgp-wrap:is(#cf-geoplugin, #cf-geoplugin-google-map, #cf-geoplugin-defender, #cf-geoplugin-debug, #cf-geoplugin-settings) {
+	--cfgp-admin-accent: #2271b1;
+	--cfgp-admin-border: #dcdcde;
+	--cfgp-admin-surface: #fff;
+	--cfgp-admin-muted: #f6f7f7;
+	--cfgp-admin-text-muted: #50575e;
+}
+
+.cfgp-wrap:is(#cf-geoplugin, #cf-geoplugin-google-map, #cf-geoplugin-defender, #cf-geoplugin-debug, #cf-geoplugin-settings) > .wp-heading-inline {
+	margin-bottom: 8px;
+}
+
+.cfgp-wrap:is(#cf-geoplugin, #cf-geoplugin-google-map, #cf-geoplugin-defender, #cf-geoplugin-debug, #cf-geoplugin-settings) .nav-tab-wrapper-chosen > .nav-tab-wrapper {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 4px;
+	align-items: flex-end;
+	padding: 0 4px;
+	border-bottom-color: var(--cfgp-admin-border);
+}
+
+.cfgp-wrap:is(#cf-geoplugin, #cf-geoplugin-google-map, #cf-geoplugin-defender, #cf-geoplugin-debug, #cf-geoplugin-settings) .nav-tab {
+	margin-left: 0;
+	padding: 8px 13px;
+	border-color: var(--cfgp-admin-border);
+	border-radius: 4px 4px 0 0;
+	background: var(--cfgp-admin-muted);
+	color: #2c3338;
+	transition: border-color .15s ease, background-color .15s ease, color .15s ease;
+}
+
+.cfgp-wrap:is(#cf-geoplugin, #cf-geoplugin-google-map, #cf-geoplugin-defender, #cf-geoplugin-debug, #cf-geoplugin-settings) .nav-tab:is(:hover, :focus) {
+	border-color: #8c8f94;
+	background: #fff;
+	color: var(--cfgp-admin-accent);
+}
+
+.cfgp-wrap:is(#cf-geoplugin, #cf-geoplugin-google-map, #cf-geoplugin-defender, #cf-geoplugin-debug, #cf-geoplugin-settings) .nav-tab.nav-tab-active {
+	border-top-color: var(--cfgp-admin-accent);
+	background: var(--cfgp-admin-surface);
+	color: #1d2327;
+}
+
+.cfgp-wrap:is(#cf-geoplugin, #cf-geoplugin-google-map, #cf-geoplugin-defender, #cf-geoplugin-debug, #cf-geoplugin-settings) .cfgp-tab-panel {
+	border-color: var(--cfgp-admin-border);
+	border-radius: 0 0 5px 5px;
+}
+
+.cfgp-wrap:is(#cf-geoplugin, #cf-geoplugin-google-map, #cf-geoplugin-defender, #cf-geoplugin-debug, #cf-geoplugin-settings) .cfgp-tab-panel-active {
+	box-shadow: 0 1px 2px rgba(0, 0, 0, .04);
+}
+
+.cfgp-wrap:is(#cf-geoplugin, #cf-geoplugin-google-map, #cf-geoplugin-defender, #cf-geoplugin-debug, #cf-geoplugin-settings) .cfgp-tab-panel > p,
+#cf-geoplugin-settings .cfgp-section-description {
+	color: var(--cfgp-admin-text-muted);
+	line-height: 1.55;
+}
+
+.cfgp-wrap:is(#cf-geoplugin, #cf-geoplugin-google-map, #cf-geoplugin-defender, #cf-geoplugin-debug, #cf-geoplugin-settings) .wp-list-table {
+	border-color: var(--cfgp-admin-border);
+	box-shadow: none;
+}
+
+.cfgp-wrap:is(#cf-geoplugin, #cf-geoplugin-google-map, #cf-geoplugin-defender, #cf-geoplugin-debug, #cf-geoplugin-settings) .wp-list-table :is(thead, tfoot) th {
+	padding: 10px 12px;
+	background: var(--cfgp-admin-muted);
+	font-weight: 600;
+}
+
+.cfgp-wrap:is(#cf-geoplugin, #cf-geoplugin-google-map, #cf-geoplugin-defender, #cf-geoplugin-debug, #cf-geoplugin-settings) .wp-list-table td {
+	padding: 9px 12px;
+	vertical-align: middle;
+}
+
+.cfgp-wrap:is(#cf-geoplugin, #cf-geoplugin-google-map, #cf-geoplugin-defender, #cf-geoplugin-debug, #cf-geoplugin-settings) .wp-list-table tbody tr:hover td {
+	background-color: #f0f6fc;
+}
+
+.cfgp-wrap:is(#cf-geoplugin, #cf-geoplugin-google-map, #cf-geoplugin-defender, #cf-geoplugin-debug, #cf-geoplugin-settings) .cfgp-tab-panel-section + .cfgp-tab-panel-section {
+	border-top-color: var(--cfgp-admin-border);
+}
+
+.cfgp-wrap:is(#cf-geoplugin, #cf-geoplugin-google-map, #cf-geoplugin-defender, #cf-geoplugin-debug, #cf-geoplugin-settings) :is(input, select, textarea):focus {
+	border-color: var(--cfgp-admin-accent);
+	box-shadow: 0 0 0 1px var(--cfgp-admin-accent);
+}
+
+.cfgp-copy-control {
+	display: inline-flex;
+	max-width: 100%;
+	align-items: center;
+	gap: 6px;
+	vertical-align: middle;
+}
+
+.cfgp-copy-control code {
+	display: inline-block;
+	max-width: 100%;
+	padding: 3px 6px;
+	border: 1px solid #dcdcde;
+	border-radius: 3px;
+	background: #f6f7f7;
+	color: #1d2327;
+	overflow-wrap: anywhere;
+}
+
+#cf-geoplugin-google-map #info .cfgp-copy-control {
+	align-items: flex-start;
+}
+
+#cf-geoplugin-google-map #info .cfgp-copy-control code {
+	white-space: pre-wrap;
+}
+
+.cfgp-copy-button.button-small {
+	min-height: 26px;
+	margin-left: 6px;
+	padding: 0 8px;
+	line-height: 24px;
+	white-space: nowrap;
+}
+
+.cfgp-copy-button .dashicons {
+	width: 16px;
+	height: 16px;
+	margin: 4px 3px 0 0;
+	font-size: 16px;
+	line-height: 16px;
+}
+
+.cfgp-copy-button.is-copied {
+	border-color: #00a32a;
+	color: #008a20;
+}
+
+.cfgp-copy-button.is-error {
+	border-color: #d63638;
+	color: #b32d2e;
+}
+
+.cfgp-copy-button,
+.cfgp-copy-button:hover,
+.cfgp-copy-button:active,
+.cfgp-copy-button:focus,
+.cfgp-copy-button:focus-visible,
+.cfgp-copy-button.is-copied,
+.cfgp-copy-button.is-copied:hover,
+.cfgp-copy-button.is-copied:active,
+.cfgp-copy-button.is-copied:focus,
+.cfgp-copy-button.is-copied:focus-visible {
+    border: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+.cfgp-copy-button:not(.is-copied) .cfgp-copy-button-label{
+	display: none !important;
+}
+
+.cfgp-copy-fallback {
+	position: fixed !important;
+	top: -1000px !important;
+	left: -1000px !important;
+	width: 1px !important;
+	height: 1px !important;
+	opacity: 0 !important;
+}
+
+@media screen and (max-width: 782px) {
+	.cfgp-copy-control {
+		align-items: flex-start;
+	}
+
+	.cfgp-copy-button.button-small {
+		min-height: 30px;
+		line-height: 28px;
+	}
+}
+
+#cf-geoplugin-activate .cfgp-license-disconnect {
+	margin-top: 12px;
+}
+
+#cf-geoplugin-activate .cfgp-license-disconnect-modal {
+	position: fixed;
+	z-index: 100100;
+	inset: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 20px;
+	background: rgba(0, 0, 0, .45);
+}
+
+#cf-geoplugin-activate .cfgp-license-disconnect-modal[hidden] {
+	display: none;
+}
+
+#cf-geoplugin-activate .cfgp-license-disconnect-dialog {
+	width: min(420px, 100%);
+	padding: 20px;
+	border: 1px solid #c3c4c7;
+	border-radius: 4px;
+	background: #fff;
+	box-shadow: 0 3px 12px rgba(0, 0, 0, .2);
+}
+
+#cf-geoplugin-activate .cfgp-license-disconnect-dialog h2 {
+	margin-top: 0;
+}
+
+#cf-geoplugin-activate .cfgp-license-disconnect-confirmation {
+	width: 100%;
+}
+
+#cf-geoplugin-activate .cfgp-license-disconnect-actions {
+	display: flex;
+	justify-content: flex-end;
+	gap: 8px;
+	margin-bottom: 0;
 }

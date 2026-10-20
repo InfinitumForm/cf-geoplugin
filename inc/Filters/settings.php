@@ -396,7 +396,7 @@ add_filter('cfgp/settings', function ($options = []) {
 					'title' => __('Spam Protection', 'cf-geoplugin'),
 					'desc'  => [
 						__('With Anti-Spam Protection, you can enable filters to block access from specific IPs, countries, states, and cities.', 'cf-geoplugin'),
-						__('This feature is safe and does not affect SEO. By enabling it, you get full spam protection with over 60,000 blacklisted IP addresses.', 'cf-geoplugin'),
+						__('These restrictions can affect visitors, search crawlers and WordPress administration. Review the whitelist and recovery process before enabling them.', 'cf-geoplugin'),
 					],
 					'inputs' => [
 						[
@@ -500,7 +500,7 @@ add_filter('cfgp/settings', function ($options = []) {
 						sprintf(
 							/* translators: %s: link to the notification documentation. */
 							__('This option is important and cannot be disabled here. If you want to turn off these notifications, %s.', 'cf-geoplugin'),
-							'<a href="https://wpgeocontroller.com/documentation/advanced-usage/php-integration/constants/cfgp_disable_notification" target="_blank">' . __('read this documentation', 'cf-geoplugin') . '</a>'
+							'<a href="https://wpgeocontroller.com/documentation/advanced-usage/php-integration/constants/cfgp_disable_notification" target="_blank" rel="noopener noreferrer">' . __('read this documentation', 'cf-geoplugin') . '</a>'
 						),
 					],
 					'inputs' => [
@@ -582,7 +582,7 @@ add_filter('cfgp/settings', function ($options = []) {
 						sprintf(
 							/* translators: %s: link to the recommended proxy service. */
 							__('Some servers do not share the real IP address for security reasons, or the IP may be blocked from geolocation. By using a proxy, you can bypass these restrictions and allow Geo Controller to work properly. However, on some servers, this may cause inaccurate geo information, so the option is disabled by default. You should test it on your setup and use it carefully. Need a proxy service? %s.', 'cf-geoplugin'),
-							'<a href="https://affiliates.nordvpn.com/publisher/#!/offer/15" class="affiliate-nordvpn" target="_blank">' . __('We Recommend This Service', 'cf-geoplugin') . '</a>'
+							'<a href="https://affiliates.nordvpn.com/publisher/#!/offer/15" class="affiliate-nordvpn" target="_blank" rel="noopener noreferrer">' . __('We Recommend This Service', 'cf-geoplugin') . '</a>'
 						),
 						__('This is especially useful if you use an Onion domain, are a general user of the private web, or run your websites in private networks.', 'cf-geoplugin'),
 					],

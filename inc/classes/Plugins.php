@@ -317,7 +317,13 @@ if (!class_exists('CFGP_Plugins', false)) : class CFGP_Plugins extends CFGP_Glob
             }
 
             if (!empty($notify)) {
-                $this->notify_for_plugins($notify);
+                if (did_action('plugins_loaded')) {
+                    $this->notify_for_plugins($notify);
+                } else {
+                    add_action('plugins_loaded', function () use ($notify) {
+                        $this->notify_for_plugins($notify);
+                    });
+                }
             }
         }
     }

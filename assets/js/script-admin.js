@@ -181,6 +181,140 @@
 			});
 		}
 	}( $('.nav-tab-wrapper-chosen > .nav-tab-wrapper > a.nav-tab') ));
+
+	/**
+	 * Copy displayed shortcode, geo tag and CSS syntax.
+	 */
+	(function copy_syntax_controls() {
+		var syntax_text = function syntax_text(source) {
+			var clone = source.cloneNode(true),
+				breaks = clone.querySelectorAll('br'),
+				text,
+				lines,
+				i;
+
+			for (i = breaks.length - 1; i >= 0; i--) {
+				breaks[i].parentNode.replaceChild(document.createTextNode('\n'), breaks[i]);
+			}
+
+			text = clone.textContent || clone.innerText || '';
+			lines = text.replace(/\r\n/g, '\n').split('\n');
+
+			for (i = 0; i < lines.length; i++) {
+				lines[i] = lines[i].trim();
+			}
+
+			return lines.join('\n').trim();
+		};
+
+		var fallback_copy = function fallback_copy(text) {
+			var textarea = document.createElement('textarea'),
+				copied = false;
+
+			textarea.value = text;
+			textarea.setAttribute('readonly', 'readonly');
+			textarea.className = 'cfgp-copy-fallback';
+			document.body.appendChild(textarea);
+			textarea.focus();
+			textarea.select();
+			textarea.setSelectionRange(0, textarea.value.length);
+
+			try {
+				copied = document.execCommand('copy');
+			} catch (error) {
+				copied = false;
+			}
+
+			document.body.removeChild(textarea);
+			return copied;
+		};
+
+		$(document).on('click', '.cfgp-copy-scope .cfgp-copy-button', function() {
+			var $button = $(this),
+				$scope = $button.closest('.cfgp-copy-scope'),
+				$source = $button.siblings('code').first(),
+				text = $source.length ? syntax_text($source.get(0)) : '',
+				copy_label = $scope.attr('data-copy-label') || 'Copy',
+				copied_label = $scope.attr('data-copied-label') || 'Copied',
+				failed_label = $scope.attr('data-copy-failed-label') || 'Copy failed',
+				$label = $button.find('.cfgp-copy-button-label'),
+				$status = $button.siblings('.cfgp-copy-status').first();
+
+			if (!text) {
+				return;
+			}
+
+			var feedback = function feedback(message, state_class) {
+				var timer = $button.data('cfgp-copy-timer');
+
+				if (timer) {
+					window.clearTimeout(timer);
+				}
+
+				$button.removeClass('is-copied is-error').addClass(state_class).attr('aria-label', message);
+				$label.text(message);
+				$status.text(message);
+				$button.data('cfgp-copy-timer', window.setTimeout(function() {
+					$button.removeClass('is-copied is-error').attr('aria-label', copy_label);
+					$label.text(copy_label);
+					$status.text('');
+				}, 1600));
+			};
+
+			var copied = function copied() {
+				feedback(copied_label, 'is-copied');
+			};
+
+			var failed = function failed() {
+				feedback(failed_label, 'is-error');
+			};
+
+			if (navigator.clipboard && window.isSecureContext) {
+				navigator.clipboard.writeText(text).then(copied, function() {
+					if (fallback_copy(text)) {
+						copied();
+					} else {
+						failed();
+					}
+				});
+			} else if (fallback_copy(text)) {
+				copied();
+			} else {
+				failed();
+			}
+		});
+	}());
+
+	/**
+	 * Confirm license disconnection.
+	 */
+	$(document).on('click', '.cfgp-disconnect-license-open', function() {
+		if (!window.confirm($(this).attr('data-confirm'))) {
+			return;
+		}
+
+		var $modal = $('.cfgp-license-disconnect-modal').first(),
+			$input = $modal.find('.cfgp-license-disconnect-confirmation');
+
+		$modal.prop('hidden', false).attr('aria-hidden', 'false');
+		$input.val('').trigger('input').trigger('focus');
+	});
+
+	$(document).on('input', '.cfgp-license-disconnect-confirmation', function() {
+		$(this).closest('form').find('.cfgp-license-disconnect-submit').prop('disabled', this.value !== 'DELETE');
+	});
+
+	$(document).on('click', '.cfgp-license-disconnect-cancel', function() {
+		var $modal = $(this).closest('.cfgp-license-disconnect-modal');
+		$modal.prop('hidden', true).attr('aria-hidden', 'true');
+		$('.cfgp-disconnect-license-open').first().trigger('focus');
+	});
+
+	$(document).on('submit', '.cfgp-license-disconnect-dialog form', function(event) {
+		if ($(this).find('.cfgp-license-disconnect-confirmation').val() !== 'DELETE') {
+			event.preventDefault();
+		}
+	});
 	
 	
 	$(document).ready(function(){

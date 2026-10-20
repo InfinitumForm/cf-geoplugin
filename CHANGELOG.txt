@@ -1,5 +1,19 @@
 == Changelog ==
 
+= 9.0.6 =
+* Fixed a fatal error during WordPress initialization caused by an early user capability check. Deferred plugin integration notifications until WordPress user functions are available.
+
+= 9.0.5 =
+* Reworked the WordPress.org readme for clearer, source-verified geolocation, geotargeting, WooCommerce, access-control, privacy, caching, and licensing information.
+* Fixed expired license disconnection by allowing confirmed local removal only when the licensing API explicitly rejects deactivation because the key has expired.
+* Expanded native contextual Help across the main, SEO redirection, Google Maps, Defender, Debug, and Settings admin pages, with verified documentation links and corrected guidance.
+* Added secure license disconnection for active and expired licenses with explicit confirmation and API error handling.
+* Fixed admin Copy controls being removed by HTML sanitization or obscured by CSS, with visible success and failure feedback.
+* Added accessible Copy controls for shortcode, geo tag, CSS property, and Google Maps syntax examples.
+* Added Clipboard API fallback and compact translated copy feedback without changing existing Defender recovery-link copying.
+* Refined the five primary admin pages with cleaner tabs, tables, sections, descriptions, focus states, and compact responsive controls.
+* Aligned Simple Shortcodes tab visibility with its standard feature setting.
+
 = 9.0.4 =
 * Fixed [in_eu] and [not_in_eu] shortcode registration after the Simple Shortcodes option moved from beta to standard settings.
 

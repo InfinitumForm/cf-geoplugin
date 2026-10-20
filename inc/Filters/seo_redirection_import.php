@@ -52,7 +52,7 @@ add_action('cfgp/page/seo_redirection/form/import', function () { global $wpdb; 
         <dd><?php esc_html_e('Redirect URL – must be a valid URL format.', 'cf-geoplugin'); ?></dd>
 
         <dt>http_code</dt>
-        <dd><?php esc_html_e('HTTP Status Code – accepts only 301, 302, 303, or 404.', 'cf-geoplugin'); ?></dd>
+        <dd><?php esc_html_e('HTTP Status Code – accepts 301, 302, 303, 307, 308, or 404. Status 404 returns Not Found and is not a normal redirect.', 'cf-geoplugin'); ?></dd>
 
         <dt>active</dt>
         <dd><?php esc_html_e('Active – optional, accepts integer values (1 = Enabled, 0 = Disabled).', 'cf-geoplugin'); ?></dd>

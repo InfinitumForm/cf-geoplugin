@@ -104,7 +104,7 @@ add_action('cfgp/page/seo_redirection/form/content', function () {
                     <th scope="row" valign="top" class="cfgp-label"><label for="url"><?php esc_html_e('Redirect URL', 'cf-geoplugin'); ?></label></th>
                     <td valign="top">
 					<?php CFGP_Form::input('url', ['name' => 'url','value' => $redirection_url, 'style' => 'width:100%;max-width:50%;']); ?>
-					<p class="description"><?php esc_html_e('If you want to pass one of the URL parameters, you can do it like this:', 'cf-geoplugin'); ?> <code>https://example.com/?pharam_1=*&pharam_2=*</code>.<br><?php esc_html_e('If any of defined parameters exist in the URL, they will be passed to the new redirect URL.', 'cf-geoplugin'); ?></p>
+					<p class="description"><?php esc_html_e('If you want to pass one of the URL parameters, you can do it like this:', 'cf-geoplugin'); ?> <code>https://example.com/?param_1=*&amp;param_2=*</code>.<br><?php esc_html_e('If any of the defined parameters exist in the URL, they will be passed to the new redirect URL.', 'cf-geoplugin'); ?></p>
 					</td>
                 </tr>
                 <tr>

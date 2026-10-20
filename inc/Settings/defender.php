@@ -152,7 +152,7 @@ if (!empty($block_city) && !is_array($block_city) && preg_match('/\]|\[/', $bloc
                             
                             <div class="cfgp-tab-panel cfgp-tab-panel-active" id="defender-settings">
                             	<p>
-									<?php esc_html_e('With Anti-Spam Protection you can block access from specific IPs, countries, states, and cities to your site. Names of countries, states, regions, or cities are not case-sensitive, but they must be entered correctly (in English) for this feature to work properly. This feature is very safe and does not affect SEO.', 'cf-geoplugin'); ?>
+									<?php esc_html_e('With Anti-Spam Protection you can block access from specific IPs, countries, states, and cities. Location names are not case-sensitive, but they must be entered correctly in English. These rules can affect public pages and WordPress administration, and location detection may be approximate, so test the whitelist and recovery link before relying on them.', 'cf-geoplugin'); ?>
 								</p>
 
                                 
