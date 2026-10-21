@@ -5,7 +5,7 @@ Tags: geolocation, geotargeting, geoip, woocommerce, redirect
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.0
-Stable tag: 9.0.6
+Stable tag: 9.0.7
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Commercial: https://wpgeocontroller.com/
@@ -237,6 +237,9 @@ Start with the [documentation](https://wpgeocontroller.com/documentation). If th
 
 == Changelog ==
 
+= 9.0.7 =
+* Fix crawler detection, improve Googlebot and Bingbot recognition, CIDR validation, and correct bot detection caching.
+
 = 9.0.6 =
 * Fixed a fatal error during WordPress initialization caused by an early user capability check. Deferred plugin integration notifications until WordPress user functions are available.
 
@@ -285,17 +288,8 @@ Start with the [documentation](https://wpgeocontroller.com/documentation). If th
 
 == Upgrade Notice ==
 
-= 9.0.6 =
-* Fixed a fatal error during WordPress initialization caused by an early user capability check. Deferred plugin integration notifications until WordPress user functions are available.
-
-= 9.0.5 =
-* Improved the primary admin interfaces and added accessible syntax Copy controls without changing plugin business logic.
-
-= 9.0.4 =
-* Restored [in_eu] and [not_in_eu] shortcode registration after the Simple Shortcodes option moved to standard settings.
-
-= 9.0.3 =
-* Security and API transport release with HTTPS hardening, trusted-proxy validation, protected location requests and integration actions, safe JavaScript serialization, configurable GET/POST support, and an opt-in emergency Defender fallback.
+= 9.0.7 =
+* Fix crawler detection, improve Googlebot and Bingbot recognition, CIDR validation, and correct bot detection caching.
 
 == Other Notes ==
 

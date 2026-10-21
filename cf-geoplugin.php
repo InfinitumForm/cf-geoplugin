@@ -8,7 +8,7 @@
  * Plugin Name:       Geo Controller - IP Geolocation & Geotargeting
  * Plugin URI:        https://wpgeocontroller.com/
  * Description:       Turn visitor locations into conversions with personalized content, smart geo redirects, targeted offers and WooCommerce localization.
- * Version:           9.0.6
+ * Version:           9.0.7
  * Requires at least: 6.0
  * Requires PHP:      7.0
  * Author:            INFINITUM FORM

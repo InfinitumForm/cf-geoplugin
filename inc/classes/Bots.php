@@ -23,7 +23,8 @@ if (!class_exists('CFGP_Bots', false)): class CFGP_Bots
 	 * Notes:
 	 *  - No cURL. Uses WP HTTP guidelines and core PHP DNS funcs only if verification is enabled.
 	 *  - Keeps legacy filter 'cfgp/crawler/ip/range' and adds 'cfgp/crawler/ip/cidrs'.
-	 *  - Designed for large installs: tiny timeouts + short TTL cache.
+	 *  - CFGP_Cache is request-local and ignores TTL; the TTL applies only to the transient fallback.
+	 *  - Enabled DNS verification fails closed, so lookup failures also disable SEO crawler exemptions.
 	 */
 	public static function validate($ip = false)
 	{
@@ -40,12 +41,12 @@ if (!class_exists('CFGP_Bots', false)): class CFGP_Bots
 		}
 
 		// ---------------- Cache short-circuit ----------------
-		$cache_ttl  = (int) apply_filters('cfgp/is_bot/cache_ttl', 300); // 5 min
+		$cache_ttl  = (int) apply_filters('cfgp/is_bot/cache_ttl', 300); // 5 min for transient fallback.
 		$cache_key  = 'cfgp_is_bot_' . md5($ip . '|' . $ua);
-		$cache_get  = (class_exists('CFGP_Cache') && method_exists('CFGP_Cache', 'get'))
-			? \CFGP_Cache::get($cache_key)
-			: get_transient($cache_key);
-		if ($cache_get !== false) {
+		$use_cfgp_cache = class_exists('CFGP_Cache') && method_exists('CFGP_Cache', 'get');
+		$cache_get      = $use_cfgp_cache ? \CFGP_Cache::get($cache_key) : get_transient($cache_key);
+		$cache_miss     = $use_cfgp_cache ? null === $cache_get : false === $cache_get;
+		if (!$cache_miss) {
 			return (bool) $cache_get;
 		}
 
@@ -53,8 +54,13 @@ if (!class_exists('CFGP_Bots', false)): class CFGP_Bots
 		// Keep list precise to avoid false positives; general tokens use word boundaries.
 		$ua_signatures = apply_filters('cfgp/crawler/ua/signatures', [
 			// Major search engines
-			'googlebot', 'google-inspectiontool', 'googleother', 'bingbot', 'slurp', 'yandex(bot|images|mobile)?',
+			'googlebot', 'google-inspectiontool', 'googleother', 'google-agent', 'adsbot-google', 'mediapartners-google',
+			'apis-google', 'storebot-google', 'bingbot', 'bingpreview', 'msnbot', 'slurp', 'yandex(bot|images|mobile)?',
 			'baiduspider', 'duckduckbot', 'sogou', 'exabot', 'seznambot', 'qwantbot', 'petalbot', 'applebot',
+			// AI crawlers
+			'gptbot', 'chatgpt-user', 'oai-searchbot', 'claudebot', 'claude-web', 'anthropic-ai',
+			'perplexitybot', 'perplexity-user', 'cohere-ai', 'google-extended', 'bytespider', 'ccbot',
+			'meta-externalagent', 'meta-externalfetch', 'meta-externalfetcher', 'amazonbot',
 			// Social/link preview
 			'facebookexternalhit', 'facebot', 'twitterbot', 'linkedinbot', 'pinterestbot', 'skypeuripreview',
 			'slackbot', 'discordbot', 'telegrambot', 'whatsapp', 'linebot', 'nuzzel', 'embedly', 'quora link preview',
@@ -79,7 +85,10 @@ if (!class_exists('CFGP_Bots', false)): class CFGP_Bots
 		// Optional reverse DNS verification for major engines (to avoid spoofing).
 		$verify_rdns = (bool) apply_filters('cfgp/crawler/verify_rdns', false);
 		if ($ua_is_bot && $verify_rdns && self::should_verify_by_ua($ua)) {
-			$ua_is_bot = self::verify_bot_rdns($ip, $ua);
+			if (!self::verify_bot_rdns($ip, $ua)) {
+				self::set_is_bot_cache($cache_key, false, $cache_ttl);
+				return false;
+			}
 		}
 
 		if ($ua_is_bot) {
@@ -98,16 +107,12 @@ if (!class_exists('CFGP_Bots', false)): class CFGP_Bots
 		// CIDR ranges (preferable & maintainable)
 		$cidrs = (array) apply_filters('cfgp/crawler/ip/cidrs', [
 			// Examples (expand via filter in production):
-			// Googlebot IPv4 (partial/public examples)
-			'66.249.64.0/19', '64.233.160.0/19', '72.14.192.0/18', '74.125.0.0/16', '173.194.0.0/16', '209.85.128.0/17',
-			// Bingbot IPv4 (partial/public examples)
-			'13.66.0.0/15', '40.77.167.0/24', '157.55.0.0/16', '207.46.0.0/16',
+			// Search crawler ranges (partial/public examples)
+			'66.249.64.0/19', '40.77.167.0/24',
 			// Yandex (partial)
 			'5.255.253.0/24', '77.88.0.0/18',
 			// Facebook (link preview) (partial)
 			'31.13.24.0/21', '31.13.64.0/18', '69.171.224.0/19',
-			// Cloud-based preview services (example)
-			'54.236.1.0/24',
 		]);
 
 		if ($ip && self::ip_in_any_cidr($ip, $cidrs)) {
@@ -126,7 +131,7 @@ if (!class_exists('CFGP_Bots', false)): class CFGP_Bots
 		if (class_exists('CFGP_Cache') && method_exists('CFGP_Cache', 'set')) {
 			\CFGP_Cache::set($key, (bool) $value, (int) $ttl);
 		} else {
-			set_transient($key, (bool) $value, (int) $ttl);
+			set_transient($key, (int) (bool) $value, (int) $ttl);
 		}
 	}
 
@@ -134,7 +139,7 @@ if (!class_exists('CFGP_Bots', false)): class CFGP_Bots
 	private static function should_verify_by_ua(string $ua): bool
 	{
 		$verify_tokens = [
-			'googlebot', 'google-inspectiontool', 'googleother',
+			'googlebot', 'google-inspectiontool', 'googleother', 'google-agent',
 			'bingbot',
 			'slurp',           // Yahoo
 			'yandex',          // Yandex*
@@ -153,11 +158,16 @@ if (!class_exists('CFGP_Bots', false)): class CFGP_Bots
 	 */
 	private static function verify_bot_rdns(string $ip, string $ua): bool
 	{
+		if (!filter_var($ip, FILTER_VALIDATE_IP)) {
+			return false;
+		}
+
 		// Map UA → allowed PTR suffixes
 		$map = [
 			'googlebot'            => ['.googlebot.com', '.google.com'],
 			'google-inspectiontool'=> ['.google.com'],
 			'googleother'          => ['.google.com'],
+			'google-agent'         => ['.google.com'],
 			'bingbot'              => ['.search.msn.com'],
 			'slurp'                => ['.crawl.yahoo.net'],
 			'yandex'               => ['.yandex.ru', '.yandex.net'],
@@ -182,6 +192,7 @@ if (!class_exists('CFGP_Bots', false)): class CFGP_Bots
 		if (!$ptr || $ptr === $ip) {
 			return false;
 		}
+		$ptr = strtolower(rtrim($ptr, '.'));
 
 		// PTR suffix check
 		$ok_suffix = false;
@@ -208,7 +219,7 @@ if (!class_exists('CFGP_Bots', false)): class CFGP_Bots
 			$aaaa = @dns_get_record($ptr, DNS_AAAA);
 			if (is_array($aaaa)) {
 				foreach ($aaaa as $rec) {
-					if (!empty($rec['ipv6']) && strtolower($rec['ipv6']) === strtolower($ip)) {
+					if (!empty($rec['ipv6']) && self::ip_equal($rec['ipv6'], $ip)) {
 						$forward_ok = true; break;
 					}
 				}
@@ -296,20 +307,36 @@ if (!class_exists('CFGP_Bots', false)): class CFGP_Bots
 	/** CIDR match for IPv4/IPv6 */
 	private static function cidr_match(string $ip, string $cidr): bool
 	{
+		$ip   = trim($ip);
+		$cidr = trim($cidr);
+
+		if (!filter_var($ip, FILTER_VALIDATE_IP) || $cidr === '') {
+			return false;
+		}
+
 		if (strpos($cidr, '/') === false) {
 			// Treat plain IP as /32 or /128
-			$cidr .= self::is_ipv6($ip) ? '/128' : '/32';
+			$cidr .= self::is_ipv6($cidr) ? '/128' : '/32';
+		} elseif (substr_count($cidr, '/') !== 1) {
+			return false;
 		}
-		list($subnet, $mask) = explode('/', $cidr, 2);
+		list($subnet, $mask) = array_map('trim', explode('/', $cidr, 2));
+		if (!filter_var($subnet, FILTER_VALIDATE_IP) || !preg_match('/^\d+$/D', $mask)) {
+			return false;
+		}
 		$mask = (int) $mask;
 
 		$ip_bin     = @inet_pton($ip);
 		$subnet_bin = @inet_pton($subnet);
-		if ($ip_bin === false || $subnet_bin === false) {
+		if ($ip_bin === false || $subnet_bin === false || strlen($ip_bin) !== strlen($subnet_bin)) {
 			return false;
 		}
 
-		$len = strlen($ip_bin);
+		$max_mask = 8 * strlen($ip_bin);
+		if ($mask < 0 || $mask > $max_mask) {
+			return false;
+		}
+
 		$bytes = intdiv($mask, 8);
 		$bits  = $mask % 8;
 
@@ -328,7 +355,10 @@ if (!class_exists('CFGP_Bots', false)): class CFGP_Bots
 	/** Binary range compare (IPv6/IPv4 generic) */
 	private static function bin_between(string $val, string $start, string $end): bool
 	{
-		return ($val >= $start && $val <= $end);
+		return strlen($val) === strlen($start)
+			&& strlen($val) === strlen($end)
+			&& $val >= $start
+			&& $val <= $end;
 	}
 
 	/** Helpers */

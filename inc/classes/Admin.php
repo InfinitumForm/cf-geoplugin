@@ -666,11 +666,15 @@ if (!class_exists('CFGP_Admin', false)) :
             }
 
             wp_enqueue_style(CFGP_NAME . '-fonts', CFGP_ASSETS . '/css/fonts.min.css', [], CFGP_VERSION);
-            wp_enqueue_style(
+			
+            $admin_css_path = CFGP_ROOT . '/assets/css/style-admin.css';
+			wp_enqueue_style(
 				CFGP_NAME . '-admin',
 				CFGP_ASSETS . '/css/style-admin.css',
-				[CFGP_NAME . '-fonts'],
-				(CFGP_U::dev_mode() ? filesize(CFGP_ROOT . '/assets/css/style-admin.css') : CFGP_VERSION)
+				[ CFGP_NAME . '-fonts' ],
+				CFGP_U::dev_mode() && file_exists( $admin_css_path )
+					? (string) filemtime( $admin_css_path )
+					: CFGP_VERSION
 			);
         }
 

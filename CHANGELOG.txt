@@ -1,5 +1,8 @@
 == Changelog ==
 
+= 9.0.7 =
+* Fix crawler detection, improve Googlebot and Bingbot recognition, CIDR validation, and correct bot detection caching.
+
 = 9.0.6 =
 * Fixed a fatal error during WordPress initialization caused by an early user capability check. Deferred plugin integration notifications until WordPress user functions are available.
 
