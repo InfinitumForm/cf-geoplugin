@@ -1,5 +1,8 @@
 == Changelog ==
 
+= 9.0.8 =
+* Geo Controller Site Health updates.
+
 = 9.0.7 =
 * Fix crawler detection, improve Googlebot and Bingbot recognition, CIDR validation, and correct bot detection caching.
 

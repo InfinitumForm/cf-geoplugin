@@ -5,7 +5,7 @@ Tags: geolocation, geotargeting, geoip, woocommerce, redirect
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.0
-Stable tag: 9.0.7
+Stable tag: 9.0.8
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Commercial: https://wpgeocontroller.com/
@@ -237,6 +237,9 @@ Start with the [documentation](https://wpgeocontroller.com/documentation). If th
 
 == Changelog ==
 
+= 9.0.8 =
+* Geo Controller Site Health updates.
+
 = 9.0.7 =
 * Fix crawler detection, improve Googlebot and Bingbot recognition, CIDR validation, and correct bot detection caching.
 
@@ -287,6 +290,9 @@ Start with the [documentation](https://wpgeocontroller.com/documentation). If th
 * CSS display controls now preserve flex, grid, inline, inline-block, table, and other display modes.
 
 == Upgrade Notice ==
+
+= 9.0.8 =
+* Geo Controller Site Health updates.
 
 = 9.0.7 =
 * Fix crawler detection, improve Googlebot and Bingbot recognition, CIDR validation, and correct bot detection caching.

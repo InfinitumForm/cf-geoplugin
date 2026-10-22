@@ -43,6 +43,7 @@ if (!class_exists('CFGP_Init', false)) : final class CFGP_Init
             'CFGP_SEO_Redirection_Pages',	// SEO redirection for the individual pages
             'CFGP_Widgets',	                // Widgets class
             'CFGP_Notifications',	        // Notifications class
+			'CFGP_Site_Health',				// Site health
         ]);
 
         // REST class
@@ -149,6 +150,7 @@ if (!class_exists('CFGP_Init', false)) : final class CFGP_Init
             CFGP_CLASS . '/Widgets.php',				// Widgets class
             CFGP_CLASS . '/Menus.php',					// Menus class
             CFGP_CLASS . '/Notifications.php',			// Notifications class
+			CFGP_CLASS . '/Site_Health.php',			// Site Health class
         ]);
 
         // Allow deprecated class
@@ -174,6 +176,9 @@ if (!class_exists('CFGP_Init', false)) : final class CFGP_Init
         if (CFGP_U::is_rest_enabled()) {
             add_action('cfgp/init/run', ['CFGP_REST', 'rest_api_init_v1_return']);
         }
+		
+		// Site Health
+		add_filter( 'site_status_tests', array( 'CFGP_Site_Health', 'register_tests' ) );
 
         // Dynamic action
         do_action('cfgp/init/dependencies');
